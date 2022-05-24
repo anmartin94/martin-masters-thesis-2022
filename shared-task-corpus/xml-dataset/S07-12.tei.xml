@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2007 Task 12: Turkish Lexical Sample Task</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Zeynep</forename><surname>Orhan</surname></persName>
+							<email>zorhan@fatih.edu.tr</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Engineering</orgName>
+								<orgName type="institution">Fatih University</orgName>
+								<address>
+									<postCode>34500</postCode>
+									<settlement>Büyükçekmece, Istanbul</settlement>
+									<country key="TR">Turkey</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Emine</forename><surname>Çelik</surname></persName>
+							<email>eminemm@gmail.com</email>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Engineering</orgName>
+								<orgName type="institution">Fatih University</orgName>
+								<address>
+									<postCode>34500</postCode>
+									<settlement>Büyükçekmece, Istanbul</settlement>
+									<country key="TR">Turkey</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Neslihan</forename><surname>Demirgüç</surname></persName>
+							<email>nesli_han@hotmail.com</email>
+							<affiliation key="aff2">
+								<orgName type="department">Department of Computer Engineering</orgName>
+								<orgName type="institution">Fatih University</orgName>
+								<address>
+									<postCode>34500</postCode>
+									<settlement>Büyükçekmece, Istanbul</settlement>
+									<country key="TR">Turkey</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2007 Task 12: Turkish Lexical Sample Task</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the task definition, resources, and the single participant system for Task 12: Turkish Lexical Sample Task (TLST), which was organized in the Se-mEval-2007 evaluation exercise. The methodology followed for developing the specific linguistic resources necessary for the task has been described in this context. A language-specific feature set was defined for Turkish. TLST consists of three pieces of data: The dictionary, the training data, and the evaluation data. Finally, a single system that utilizes a simple statistical method was submitted for the task and evaluated.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Effective parameters for word sense disambiguation (WSD) may vary for different languages and word types. Although, some parameters are common in many languages, some others may be language specific. Turkish is an interesting language that deserves being examined semantically. Turkish is based upon suffixation, which differentiates it sharply from the majority of European languages, and many others. Like all Turkic languages, Turkish is agglutinative, that is, grammatical functions are indicated by adding various suffixes to stems. Turkish has a SOV (Subject-Object-Verb) sentence structure but other orders are possible under certain discourse situations. As a SOV language where objects precede the verb, Turkish has postpositions rather than prepositions, and relative clauses that precede the verb. Turkish, as a widely-spoken language, is appropriate for semantic researches.</p><p>TLST utilizes some resources that are explained in Section 2-5. In Section 6 evaluation of the system is provided. In section 7 some concluding remarks and future work are discussed.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Corpus</head><p>Lesser studied languages, such as Turkish suffer from the lack of wide coverage electronic resources or other language processing tools like ontologies, dictionaries, morphological analyzers, parsers etc. There are some projects for providing data for NLP applications in Turkish like METU Corpus Project <ref type="bibr" target="#b2">(Oflazer et al., 2003)</ref>. It has two parts, the main corpus and the treebank that consists of parsed, morphologically analyzed and disambiguated sentences selected from the main corpus, respectively. The sentences are given in XML format and provide many syntactic features that can be helpful for WSD. This corpus and treebank can be used for academic purposes by contract.</p><p>The texts in main corpus have been taken from different types of Turkish written texts published in 1990 and afterwards. It has about two million words. It includes 999 written texts taken from 201 books, 87 papers and news from 3 different Turkish daily newspapers. XML and Text Encoding Initiative (TEI) style annotation have been used. The distribution of the texts in the Treebank is similar to the main corpus. There are 6930 sentences in this Treebank. These sentences have been parsed, morphologically analyzed and disambiguated. In Turkish, a word can have more than one analysis, so having disambiguated texts is very important.  xml version="1.0" encoding="windows-1254" ?&gt; -&lt;Set sentences="1"&gt; -&lt;S No="1"&gt; &lt;W IX="1" LEM="" MORPH="" IG="[(1,"soğuk+Adj")(2,"Adv+Ly")]" REL="[2,1,(MODIFIER)]"&gt;Soğukça&lt;/W&gt; &lt;W IX="2" LEM="" MORPH="" IG="[(1,"yanıtla+Verb+Pos+Past+A1sg")]"</p><p>REL="[3,1,(SENTENCE)]"&gt;yanıtladım&lt;/W&gt; &lt;W IX="3" LEM="" MORPH="" IG="[(1,".+Punc")]" REL="[,( )]"&gt;.&lt;/W&gt; &lt;/S&gt; &lt;/Set&gt; Frequencies of the words have been found as it is necessary to select appropriate ambiguous words for WSD. There are 5356 different root words and 627 of these words have 15 or more occurrences, and the rest have less.</p><p>The XML files contains tagging information in the word (morphological analysis) and sentence level as a parse tree as shown in Figure <ref type="figure">1</ref>. In the word level, inflectional forms are provided. And in the sentence level relations among words are given. The S tag is for sentence and W tag is for the word. IX is used for index of the word in the sentence, LEM is left as blank and lemma is given in the MORPH tag as a part of it with the morphological analysis of the word. REL is for parsing information. It consists of three parts, two numbers and a relation. For example REL="[2, 1, (MODI-FIER)]" means this word is modifying the first inflectional group of the second word in the sentence. The structure of the treebank data was designed by METU. Initially lemmas were decided to be provided as a tag by itself, however, lemmas are left as blank. This does not mean that lemmas are not available in the treebank; the lemmas are given as a part of "IG" tag. Programs are available for extracting this information for the time being. All participants can get these programs and thereby the lemmas easily and instantly.</p><p>The sense tags were not included in the treebank and had to be added manually. Sense tagging has been checked in order to obtain gold standard data. Initial tagging process has been finished by a single tagger and controlled. Two other native speaker in the team tagged and controlled the examples. That is, this step was completed by three taggers. Problematic cases were handled by a commission and the decision was finalized when about 90% agreement has been reached.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Dictionary</head><p>The dictionary is the one that is published by TDK 1 (Turkish Language Foundation) and it is open to public via internet. This dictionary lists the senses along with their definitions and example sentences that are provided for some senses. The dictionary is used only for sense tagging and enumeration of the senses for standardization. No specific information other than the sense numbers 1 http://tdk.org.tr/tdksozluk/sozara.htm is taken from the dictionary; therefore there is no need for linguistic processing of the dictionary.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Training and Evaluation Data</head><p>In Table <ref type="table" target="#tab_1">1</ref> statistical information about the final training and testing sets of TLST is summarized. The data have been provided for 3 words in the trial set and 26 words in the final training and testing sets (10 nouns, 10 verbs and 6 other POS for the rest of POS including adjectives and adverbs). It has been tagged about 100 examples per word, but the number of samples is incremented or decremented depending on the number of senses that specific word has. For a few words, however, fewer examples exist due to the sparse distribution of the data. Some ambiguous words had fewer examples in the corpus, therefore they were either eliminated or some other examples drawn from external resources were added in the same format. On the average, the selected words have 6.7 senses, verbs, however, have more. Approximately 70% of the examples for each word were delivered as training data, whereas approximately 30% was reserved as evaluation data. The distribution of the senses in training and evaluation data has been kept proportional. The sets are given as plain text files for each word under each POS. The samples for the words that can belong to more than one POS are listed under the majority class. POS is provided for each sample.</p><p>We have extracted example sentences of the target word(s) and some features from the XML files. Then tab delimited text files including structural and sense tag information are obtained. In these files each line has contextual information that are thought to be effective <ref type="bibr" target="#b0">(Orhan and Altan, 2006;</ref><ref type="bibr" target="#b1">Orhan and Altan, 2005)</ref> in Turkish WSD about the target words. In the upper level for each of them XML file id, sentence number and the order of the ambiguous word are kept as a unique key for that specific target. In the sentence level, three categories of information, namely the features related to the previous words, target word itself and the subsequent words in the context are provided. In the treebank relational structure, there can be more than one word in the previous context related to the target, however there is only a single word in the subsequent one. Therefore the data for all words in the previous context is provided separately. The features that are employed for previous and the subsequent words are the same and they are the root word, POS(corrected), tags for ontology level 1, level 2 and level 3, POS, inflected POS, case marker, possessor and relation. However for the target word only the root word, POS, inflected POS, case marker, possessor and relation are taken into consideration. Fine and coarse-grained (FG and CG respectively) sense numbers and the sentence that has the ambiguous word have been added as the last three feature. FG senses are the ones that are decided to be the exact senses. CG senses are given as a set that are thought to be possible alternatives in addition to the FG sense. Table <ref type="table">2</ref> demonstrates the whole list of features provided in a single line of data files along with an example. The "?" in the features shows the missing values. This is actually corresponding to the features that do not exist or can not be obtained from the treebank due to some problematic cases. The line that corresponds to this entry will be the following line (as tab delimited):</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Feature Example</head><p>00002213148.xml 9 0 tap verb abstraction attribute emotion verb adv ? fl modıfıer sev verb noun abl tr object sıkıl verb abstraction attribute emotion verb verb ? fl sentence 2 2 #ne tuhaf şey ; değil mi ?iyi olmamdan ; onu taparcasına sevmemden sıkıldı .#</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Ontology</head><p>A small scale ontology for the target words and their context was constructed. The Turkish Word-Net developed at Sabancı University 2 is somehow insufficient. Only the verbs have some levels of relations similar to English WordNet. The nouns, adjectives, adverbs and other words that are frequently used in Turkish and in the context of the ambiguous words were not included. This is not a suitable resource for fulfilling the requirements of TLST and an ontology specific to this task was required. The ontology covers the examples that are selected and has three levels of relations that are supposed to be effective in the disambiguation process. We tried to be consistent with the Word-Net tags; additionally we constructed the ontology not only for nouns and verbs but for all the words that are in the context of the ambiguous words selected. Additionally we tried to strengthen the relation among the context words by using the same tags for all POS in the ontology. This is somehow deviating from WordNet methodology, since each word category has its own set of classification in it.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation</head><p>WSD is a new area of research in Turkish. The sense tagged data provided in TLST are the first resources for this specific domain in Turkish. Due to the limited and brand new resources available and the time restrictions the participation was less. We submitted a very simple system that utilizes statistical information. It is similar to the Naïve Bayes approach. The features in the training data was used individually and the probababilities of the senses are calculated. Then in the test phase the probabilities of each sense is calculated with the given features and the three highest-scored senses are selected as the answer. The average precision and recall values for each word category are given 2 http://www.hlst.sabanciuniv.edu/TL/ in Table <ref type="table" target="#tab_3">3</ref>. The values are not so high, as it can be expected. The size of the training data is limited, but the size is the highest possible under these circumstances, but it should be incremented in the near future. The number of senses is high and providing enough instances is difficult. The data and the methodology for WSD will be improved by the experience obtained in SemEval evaluation exercise.</p><p>The evaluation is done only for FG and CG senses. For FG senses no partial points are assigned and 1 point is assigned for a correct match. On the other hand, the CG senses are evaluated partially. If the answer tags are matching with any of the answer tags they are given points.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>In TLST we have prepared the first resources for WSD researches in Turkish. Therefore it has significance in Turkish WSD studies. Although the resources and methodology have some deficiencies, a valuable effort was invested during the development of them. The resources and the methodology for Turkish WSD will be improved by the experience obtained in SemEval and will be open to public in the very near future from http://www.fatih.edu.tr/~zorhan/senseval/senseval.htm.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>Figure 1: XML file structure of the Treebank</figDesc><table><row><cell></cell><cell>Main English</cell><cell>#</cell><cell></cell><cell>Train</cell><cell>Test</cell><cell>Total #of</cell></row><row><cell>Words</cell><cell>translation</cell><cell cols="2">Senses MFS</cell><cell>size</cell><cell>size</cell><cell>instances</cell></row><row><cell>Nouns</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ara</cell><cell>distance, break, interval, look for</cell><cell>7</cell><cell>53</cell><cell>192</cell><cell>63</cell><cell>255</cell></row><row><cell>baş</cell><cell>head, leader, beginning, top, main, principal</cell><cell>5</cell><cell>34</cell><cell>68</cell><cell>22</cell><cell>90</cell></row><row><cell>el</cell><cell>hand, stranger, country</cell><cell>3</cell><cell>75</cell><cell>113</cell><cell>38</cell><cell>151</cell></row><row><cell>göz</cell><cell>eye, glance, division, drawer</cell><cell>3</cell><cell>48</cell><cell>92</cell><cell>27</cell><cell>119</cell></row><row><cell>kız</cell><cell>girl, virgin, daughter, get hot, get angry</cell><cell>2</cell><cell>72</cell><cell>96</cell><cell>21</cell><cell>117</cell></row><row><cell>ön</cell><cell>front, foreground, face, breast, prior, preliminary anterior</cell><cell>5</cell><cell>21</cell><cell>72</cell><cell>23</cell><cell>95</cell></row><row><cell>sıra</cell><cell>queue, order, sequence, turn, regularity, occasion desk</cell><cell>7</cell><cell>30</cell><cell>85</cell><cell>28</cell><cell>113</cell></row><row><cell>üst</cell><cell>upper side, outside, clothing</cell><cell>7</cell><cell>20</cell><cell>69</cell><cell>23</cell><cell>92</cell></row><row><cell>yan</cell><cell>side, direction, auxiliary, askew, burn, be on fire be alight</cell><cell>5</cell><cell>21</cell><cell>65</cell><cell>31</cell><cell>96</cell></row><row><cell>yol</cell><cell>way, road, path, method, manner, means</cell><cell>6</cell><cell>17</cell><cell>68</cell><cell>29</cell><cell>97</cell></row><row><cell>Average</cell><cell></cell><cell>5</cell><cell>39</cell><cell>92</cell><cell>31</cell><cell>123</cell></row><row><cell>Verbs</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>al</cell><cell>take, get, red</cell><cell>24</cell><cell>180</cell><cell>963</cell><cell>125</cell><cell>1088</cell></row><row><cell>bak</cell><cell>look, fac, examine</cell><cell>4</cell><cell>136</cell><cell>207</cell><cell>85</cell><cell>292</cell></row><row><cell>çalış</cell><cell>work, study, start</cell><cell>4</cell><cell>33</cell><cell>103</cell><cell>61</cell><cell>164</cell></row><row><cell>çık</cell><cell>climb, leave, increase</cell><cell>6</cell><cell>45</cell><cell>138</cell><cell>87</cell><cell>225</cell></row><row><cell>geç</cell><cell>pass,happen, late</cell><cell>11</cell><cell>51</cell><cell>164</cell><cell>90</cell><cell>254</cell></row><row><cell>gel</cell><cell>come, arrive, fit, seem</cell><cell>20</cell><cell>154</cell><cell>346</cell><cell>215</cell><cell>561</cell></row><row><cell>gir</cell><cell>enter, fit, begin, penetrate</cell><cell>6</cell><cell>88</cell><cell>163</cell><cell>84</cell><cell>247</cell></row><row><cell>git</cell><cell>go, leave, last, be over, pass</cell><cell>13</cell><cell>130</cell><cell>214</cell><cell>120</cell><cell>334</cell></row><row><cell>gör</cell><cell>see, understand, consider</cell><cell>5</cell><cell>155</cell><cell>206</cell><cell>68</cell><cell>274</cell></row><row><cell>konuş</cell><cell>talk, speak</cell><cell>6</cell><cell>42</cell><cell>129</cell><cell>63</cell><cell>192</cell></row><row><cell>Average</cell><cell></cell><cell cols="2">9.9 101.4</cell><cell>263.3</cell><cell>99.8</cell><cell>363.1</cell></row><row><cell>Others</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>büyük</cell><cell>big, extensive, important, chief, great, elder</cell><cell>6</cell><cell>34</cell><cell>97</cell><cell>26</cell><cell>123</cell></row><row><cell>doğru</cell><cell>straight, true, accurate, proper, fair, line towards, around</cell><cell>6</cell><cell>29</cell><cell>81</cell><cell>38</cell><cell>119</cell></row><row><cell>küçük</cell><cell>little, small, young, insignificant, kid</cell><cell>4</cell><cell>14</cell><cell>45</cell><cell>14</cell><cell>59</cell></row><row><cell>öyle</cell><cell>such, so, that</cell><cell>4</cell><cell>20</cell><cell>51</cell><cell>23</cell><cell>74</cell></row><row><cell>son</cell><cell>last, recent, final</cell><cell>2</cell><cell>76</cell><cell>86</cell><cell>18</cell><cell>104</cell></row><row><cell>tek</cell><cell>single, unique, alone</cell><cell>2</cell><cell>38</cell><cell>40</cell><cell>10</cell><cell>50</cell></row><row><cell>Average</cell><cell></cell><cell cols="2">4 35.2</cell><cell>66.7</cell><cell>21.5</cell><cell>88.2</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Target words in the SEMEVAL-1 Turkish Lexical Sample task &lt;?</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Average Precision and Recall values</figDesc><table /></figure>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Impact of Feature Selection for Corpus-Based WSD in Turkish, LNAI</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Orhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Altan</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2006" />
+			<publisher>Springer-Verlag</publisher>
+			<biblScope unit="volume">4293</biblScope>
+			<biblScope unit="page" from="868" to="878" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Orhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Altan</surname></persName>
+		</author>
+		<title level="m">Effective Features for Disambiguation of Turkish Verbs, IEC&apos;05</title>
+				<meeting><address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="182" to="186" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Building A Turkish Treebank, Invited Chapter</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Oflazer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Say</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">Z H</forename><surname>Tur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Tur</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Building And Exploiting Syntactically-Annotated Corpora</title>
+				<imprint>
+			<publisher>Kluwer Academic Publishers</publisher>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

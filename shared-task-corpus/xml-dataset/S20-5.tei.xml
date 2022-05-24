@@ -1,0 +1,1054 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2020 Task 5: Counterfactual Recognition</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Xiaoyu</forename><surname>Yang</surname></persName>
+							<email>xiaoyu.yang@queensu.ca</email>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Ingenuity Labs Research Institute &amp; ECE</orgName>
+								<orgName type="institution" key="instit2">Queen&apos;s University</orgName>
+								<address>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Stephen</forename><surname>Obadinma</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Ingenuity Labs Research Institute &amp; ECE</orgName>
+								<orgName type="institution" key="instit2">Queen&apos;s University</orgName>
+								<address>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Huasha</forename><surname>Zhao</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="laboratory">Alibaba Group</orgName>
+								<address>
+									<settlement>San Mateo</settlement>
+									<region>CA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Qiong</forename><surname>Zhang</surname></persName>
+							<email>qz.zhang@alibaba-inc.com</email>
+							<affiliation key="aff1">
+								<orgName type="laboratory">Alibaba Group</orgName>
+								<address>
+									<settlement>San Mateo</settlement>
+									<region>CA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Stan</forename><surname>Matwin</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">Dalhousie University</orgName>
+								<address>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Xiaodan</forename><surname>Zhu</surname></persName>
+							<email>xiaodan.zhu@queensu.ca</email>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Ingenuity Labs Research Institute &amp; ECE</orgName>
+								<orgName type="institution" key="instit2">Queen&apos;s University</orgName>
+								<address>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2020 Task 5: Counterfactual Recognition</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We present a counterfactual recognition (CR) task, the shared Task 5 of SemEval-2020. Counterfactuals describe potential outcomes (consequents) produced by actions or circumstances that did not happen or cannot happen and are counter to the facts (antecedent). Counterfactual thinking is an important characteristic of the human cognitive system; it connects antecedents and consequents with causal relations. Our task provides a benchmark for counterfactual recognition in natural language with two subtasks. Subtask-1 aims to determine whether a given sentence is a counterfactual statement or not. Subtask-2 requires the participating systems to extract the antecedent and consequent in a given counterfactual statement. During the SemEval-2020 official evaluation period, we received 27 submissions to Subtask-1 and 11 to Subtask-2. The data, baseline code, and leaderboard can be found</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Counterfactual statements describe events that did not happen or cannot happen, and the possible consequences had those events happened, e.g., "if kangaroos had no tails, they would topple over" <ref type="bibr" target="#b16">(Lewis, 2013)</ref>. By developing a connection between the antecedent (e.g., "kangaroos had no tails") and consequent (e.g., "they would topple over"), based on the imagination of possible worlds, humans can naturally form some causal judgments; e.g., having tails can prevent kangaroos from toppling over. One can understand counterfactuals using knowledge and explore the relationship between causes and effects. Although we may not be able to rollback the events which have happened or make impossible events occur in the real world, we can still think of potential outcomes of alternatives.</p><p>Counterfactual thinking is a remarkable ability of human beings and is considered by many researchers, to act as the highest level of causation in the ladder of causal reasoning. Even the most advanced artificial intelligence system may still be far from achieving human-like counterfactual reasoning. Counterfactual reasoning is an important component for AI systems in obtaining stronger capability in generalization <ref type="bibr" target="#b23">(Pearl and Mackenzie, 2018)</ref>.</p><p>Modeling counterfactuals has been studied in many different disciplines. For example, research in psychology has shown that counterfactual thinking can affect human cognition and behaviors <ref type="bibr" target="#b7">(Epstude and Roese, 2008;</ref><ref type="bibr" target="#b12">Kray et al., 2010)</ref>. The landmark paper of <ref type="bibr" target="#b9">(Goodman, 1947)</ref> gives a detailed analysis of counterfactual conditionals in philosophy and logistics. As another example, counterfactuals have also been investigated in epidemiology to reveal the relationship between certain diseases and potential risk factors for those diseases <ref type="bibr" target="#b34">(Vandenbroucke et al., 2016;</ref><ref type="bibr" target="#b13">Krieger and Davey Smith, 2016)</ref>.</p><p>We present a counterfactual recognition (CR) task, the task of determining whether a given statement conveys counterfactual thinking or not, and further analyzing the causal relations indicated by counterfactual statements. In our counterfactual recognition task, we aim to model counterfactual semantics and reasoning in natural language. Specifically, we provide a benchmark for counterfactual recognition with two subtasks. Subtask-1 requires systems to determine whether a given statement is counterfactual or not. The counterfactual detection task can serve as a foundation for downstream counterfactual analysis. Subtask-2 requires systems to further locate the antecedent and consequent text spans in a given counterfactual statement, as the connection between an antecedent and consequent can reveal core causal inference clues.</p><p>To build the dataset for counterfactual recognition, we extract over 60,000 candidate counterfactual statements by scanning through news reports in three domains: finance, politics, and healthcare. The first round of annotation focuses on labeling each sample as true or false, where true denotes a sample is counterfactual and false otherwise in Subtask-1. A portion of samples labeled as true will be further used in Subtask-2 to detect the text spans that describe the antecedent and consequent. Specifically, we carefully select 20,000 high-quality samples from the 60,000 statements and use them in Subtask-1, with 13,000 (65%) as the training set and the rest for testing. The dataset for Subtask-2 contains 5,501 samples, among which we use 3,551 (65%) for training and the rest for testing.</p><p>To achieve a decent performance in our shared task, we expect the systems should have a certain level of language understanding capacity in both semantics and syntax, together with a certain level of commonsense reasoning ability.</p><p>In Subtask-1, the top-ranked submissions all use pre-trained neural models, which appear to be an effective way to integrate knowledge learned from large corpus. All of these models use neural networks, which further confirms the effectiveness of distributed representation and subsymbolic approaches for this task. Some top systems also successfully incorporate rules to further improve the performance, suggesting the benefits of combining neural networks with symbolic approaches. The first-place model also utilizes data augmentation to further improve system performance. In Subtask-2, top systems take two main approaches: sequence labelling or question answering. Same as systems in Subtask-1, all of them benefit from pre-training. We will provide a more detailed analysis in the system and result section.</p><p>We built a dataset for this shared task from scratch. Our data, baseline code, and leaderboard can be found at https://competitions.codalab.org/competitions/21691. The data and baseline code are also available at https://zenodo.org/record/3932442. In general, our task here is a relatively basic one in counterfactual analysis in natural language. We hope it will intrigue and facilitate further research on counterfactual analysis and can benefit other related downstream tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Setup</head><p>In this section, we detail the two counterfactual recognition subtasks and the metrics used to evaluate the performance. During the evaluation, participants can work on both subtasks or any one of them.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Subtask-1: Recognizing Counterfactual Statements (RCS)</head><p>We formulate the Subtask-1 as a binary classification problem which asks the participating systems to detect whether a particular sentence is counterfactual or not. Below are two examples of counterfactual statements that need to be recognized:</p><p>• Example-1: Officials say if they had authority to shut non-bank firms, the collapse of Lehman Brothers, which touched off the most virulent phase of the credit crisis, could have been avoided.</p><p>• Example-2: The delivery numbers would have been high had it not been for the restrictions imposed by the military for security reasons.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Subtask-2: Detecting Antecedent and Consequent (DAC)</head><p>Indicating causal relationships is an inherent characteristic of counterfactuals. To further detect the causal knowledge conveyed in counterfactual statements, Subtask-2 aims to extract the antecedents and consequents. Specifically, given a counterfactual statement, systems for Subtask-2 need to identify the indices of the characters which indicate the start and end positions for antecedent and consequent, in terms of character indices: antecedent start ind, antecedent end ind, consequent start ind, consequent end ind.</p><p>For some statements, the consequents may not be expressed in the statements, then the corresponding consequent start ind and consequent end ind will be set as −1.</p><p>• Example-3: The delivery numbers would have been high had it not been for the restrictions imposed by the military for security reasons. Antecedent: had it not been for the restrictions imposed by the military for security reasons Consequent: the delivery numbers would have been high Label: 42, 122, 0, 40 A counterfactual statement can be converted to a contrapositive with a true antecedent and consequent, by assuming the antecedent and consequent in the original counterfactual statement is inalterably false <ref type="bibr" target="#b9">(Goodman, 1947)</ref>. Consider the Example-3 above. It can be transposed into "since the restrictions imposed by the military for security reasons, the delivery numbers were not high". After extracting the antecedent and the corresponding consequent from a counterfactual statement, we may derive a contrapositive by performing an appropriate transformation, which can naturally reveal a causal relationship between the two parts or even further indicate the properties of each part. In this way, it is possible to extract causal knowledge across corpora.</p><formula xml:id="formula_0">•</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Evaluation Metrics</head><p>Subtask-1 is a binary classification problem evaluated with Precision, Recall, and F1 score 1 . In Subtask-2, we utilize two metrics: (i) Exact match is used to evaluate the percentage of predictions that exactly match the ground truth boundaries of the antecedents and consequents. (ii) F1 score is used to measure the overlap between the predictions and ground truth spans. For each sample, we calculate the number of tokens in the overlapped intervals by comparing the predictions and ground truth indices of antecedent and consequent boundaries. Then we can compute precision, recall, and F1 score for each sample. We take the average F1 score across all the samples in the test set. Note the F1 score used in both subtasks is calculated as: F 1 = 2 * P recision * Recall P recision+Recall .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data Development</head><p>We develop our dataset from news articles in the finance, politics, or healthcare domain. The data development consists of data collection and annotation. We use different approaches to ensure the quality of the data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Collection</head><p>There are two major challenges in our data construction process. First, due to the relative sparsity of counterfactual statements in the text, manually annotating each sentence in the original text is not of time and financial efficiency. Accordingly, we perform a filtering step to narrow down candidates. The second challenge is rooted in the flexibility and complexity of counterfactual expressions. Not all counterfactual statements follow certain patterns, e.g., the "if + past perfect" pattern (although this is a good pattern which can indicate a conditional relationship between the antecedent and the potential consequent). To solve these problems, we create a set of templates considering the trade-off between the effectiveness of filtering and its diversity in finding candidate counterfactuals, without making the filtering stage too rigorous.</p><p>Token-based Filtering The template set consists of two subsets that jointly work to find candidate potential counterfactual statements when they are used to search through news articles. The first subset focuses on word token patterns and the second subset leverages POS tag-based patterns. The full list of token-based patterns are listed in Appendix A. Some of the patterns are based on the previous research which revealed common counterfactual constructions <ref type="bibr" target="#b10">(Hobbs, 2005;</ref><ref type="bibr" target="#b32">Son et al., 2017;</ref><ref type="bibr" target="#b31">Rouvoli et al., 2019)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>POS-based Filtering</head><p>The second subset of templates utilize patterns based on part-of-speech tags. We identified five counterfactual forms based on <ref type="bibr" target="#b11">(Janocko et al., 2016)</ref> and coverted them into POS-based patterns to increase the chances of identifying true counterfactual statements. The details of the POSbased rules are presented in Appendix B. To apply the rules, we tokenize each sentence and conduct POS tagging with the NLTK library <ref type="bibr" target="#b4">(Bird et al., 2009)</ref>. Then we extract the sentences which match one of the pre-defined patterns.</p><p>By applying both the token-based and POS-based rules, we obtain the candidate statements for further human annotation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Annotation</head><p>As described above, each sample in Subtask-1 is labeled either as true (counterfactual) or false (noncounterfactual). We employ a two-step annotation strategy. First, each sample in the candidate statement set is annotated by five annotators to determine whether it is a counterfactual statement or not. We include those annotated as true (counterfactuals) by all five annotators, i.e., with an agreement rate of 100%. For negative samples (non-counterfactual statements), we take all of those labeled as false with 100% agreement and some sentences with 80% agreement, which 4 out of the 5 annotators label as false.</p><p>We use the Amazon Mechanical Turk (AMT) platform for our annotation, by splitting the samples into HITs (Human Intelligent Task, where each HIT contains 20 to 30 samples) and distributing these HITs to qualified annotators along with thorough instructions and examples.</p><p>In subtask 2, a portion of counterfactual statements (labeled as true in Subtask-1) are further annotated, in which the text spans of antecedents and consequents in counterfactual statements are obtained. In this stage, each sample was annotated by a single annotator on Amazon Mechanical Turk, and the annotators were asked to double-check whether the sample is a counterfactual statement before underlining specific spans. All the samples are further manually checked by ourselves to ensure the antecedent and consequent spans are appropriately labelled by a consistent standard.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Quality Control</head><p>We further make the following efforts to control the quality of our datasets. First we set additional requirements when inviting workers to perform annotation. We only invite workers from English-speaking countries and only if the approval rates of their previous HITs are above 82%. In addition, workers take a qualification test before starting their annotation work. The test provides detailed instructions and examples and includes 40 samples for workers to label which of the samples are counterfactuals. Using this method, we have over 70 qualified workers for our data annotation task. Having a stable pool of trained workers is beneficial for ensuring the quality of annotation. In the entire process of annotation, we randomly select some HITs to evaluate the accuracy and the performance of workers to justify whether to accept them or not.</p><p>For subtask 2, we manually check all of the samples to ensure: (i) the samples are counterfactual statements (any incorrectly labelled statements are further removed from both Subtask-1 and Subtask-2 datasets); (ii) for a very small number of statements, if the antecedent and consequent spans labelled by the Turkers are not full constituent phrases, we manually adjust the span to make them full phrases.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Data Statistics</head><p>Table <ref type="table" target="#tab_1">1</ref> shows the statistics of the data used in Subtask-1. We obtain 20,000 statements in total and we randomly split them into the training (65%) and test set (35%    <ref type="table" target="#tab_2">2</ref> shows the size of data used in Subtask-2. In total, we have 5,501 samples and randomly split them into the training and test set. Specifically, 3,551 samples are for training and the rest for testing. Not all counterfactuals have both an antecedent and a consequent, so we also provide statistics for samples that have only antecedents, and those that have both antecedents and consequents. Figure <ref type="figure">1</ref> in Appendix C shows statistics for the frequency of the number of words in both the Subtask-1 and Subtask-2 training and test datasets.</p><p>4 Systems and Results</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Subtask 1: Recognizing Counterfactual Statements (RCS)</head><p>The baseline used for Subtask-1 is a simple SVM classifier with the linear kernel function. In the baseline model, we first take some basic preprocessing steps starting with lemmatization; we then extract term frequency and inverse document frequency (tf-idf) features for training the SVM model to perform binary classification. The motivation behind using this simple SVM as a baseline is to create a simple model that can identify counterfactuals by learning and searching for the presence keywords and phrases like "had" or "should have been", that tend to mark the presence of a counterfactual in a number of counterfactual grammatical forms. The baseline has poor performance, signalling that most counterfactuals cannot be determined based on the presence of certain words and that reasoning is necessary. The baseline is not shown on the official leaderboard but in Table <ref type="table">3</ref>. We received 27 submissions to Subtask-1. Table <ref type="table">3</ref> shows all the official submission results and nearly all of them exceed the performance of the provided baseline model. The top-ranked submissions all use pre-trained neural models, which have achieved the state-of-the-art results across many natural language processing (NLP) tasks <ref type="bibr" target="#b6">(Devlin et al., 2018;</ref><ref type="bibr" target="#b28">Radford et al., 2018;</ref><ref type="bibr" target="#b29">Radford et al., 2019;</ref><ref type="bibr" target="#b37">Yang et al., 2019;</ref><ref type="bibr" target="#b19">Liu et al., 2019;</ref><ref type="bibr" target="#b14">Lan et al., 2019)</ref>, which we believe is an effective way to integrate additional external knowledge that does not exist in the training data, including common sense. Some participants like shngt experimented with classic machine learning methods like SVM and gradient boosted random forests, and found that model performance plateaued at an F1 score of around 60 percent <ref type="bibr" target="#b1">(Anil Ojha et al., 2020)</ref>, showing that these methods cannot capture counterfactual reasoning as well as the pre-trained models. One team, Serena, use a non-transformer approach, basing their system on Ordered Neurons LSTM (ON-LSTM) with Hierarchical Attention Network (HAN) and a Pooling operation is done for dimensionality reduction <ref type="bibr" target="#b21">(Ou et al., 2020)</ref>. Their system struggles with data imbalance and they conclude that transformer networks can improve their performance. Among the top 8 competitors, BERT and RoBERTa based systems are most popular, being used as the primary models or as a part of their final ensemble in 5 and 4 of the top 8 participants' systems respectively. XLNet and ALBERT are less popular choices, but they are also used in the first and second of the top 8 participating systems respectively.</p><p>In addition, the top models adopt ensemble strategies, and in most cases, achieve better performance than that of individual classifiers. One of the teams, shgnt, also found using a convolutional neural network model with GloVe embeddings in their ensemble helped to enhance it <ref type="bibr" target="#b1">(Anil Ojha et al., 2020)</ref>, showing that non-transformer network based methods can be useful. Despite the commonality of using pre-trained models, many of the participating systems differ in the structures they add above the pre-trained models, to capture additional information. Rather than adding a fully connected layer on top, some competitors reconstruct the top structure of the pre-trained models or add a neural network on top. For example, to capture local patterns in counterfactual statements, Roger <ref type="bibr" target="#b20">(Lu et al., 2020)</ref> and shngt (Anil Ojha et al., 2020) add a CNN before classification in some of their systems. Similarly, Baiyang2581 experiments with this upper structure and use a bidirectional GRU and bidirectional LSTM in some of their systems after the transformer network <ref type="bibr" target="#b3">(Bai and Zhou, 2020)</ref>. In contrast to modifying the upper structure of transformer networks, the fifth-place team, lenyabloko, uses rule-based specialist modules by combining fine-tuned pre-trained models with constituency and dependency parsers to compensate for deficiencies in deep learning methods for causal inference in language to great effect <ref type="bibr" target="#b36">(Yabloko, 2020)</ref>.</p><p>The dataset is highly imbalanced in favour of non-counterfactuals, and many participants use techniques to deal with this imbalance. A range of techniques like pseudo-labelling used by haodingkui <ref type="bibr" target="#b35">(Xiao et al., 2020)</ref>, multi sample dropout used by Ferryman <ref type="bibr" target="#b5">(Chen et al., 2020)</ref>, and oversampling and undersampling used by some other teams, notably ad6398 who found that undersampling non-counterfactuals optimized the performance of their models . changshivek experimented with 2 novel forms of data augmentation to increase the number of counterfactual samples <ref type="bibr" target="#b18">(Liu and Yu, 2020)</ref>. The first was back translation, which involves taking counterfactual samples and translating them into another language and then translating them back in English and adding them to the dataset. The second technique was Easy Data Augmentation (EDA), namely synonym replacement of words in the counterfactual samples while making sure to preserve words relating to counterfactuals like "should". Back translation yielded poor performance, but decent improvement was seen when using EDA showing that this could be a viable method. These methods are all done to combat overfitting. K-fold cross validation is also a common strategy utilized by many of the participating systems to deal with the relatively small, highly imbalanced dataset to reduce some of the bias.</p><p>Lastly, many teams experimented with pre-processing the data. Baiyang251 notes that minimal preprocessing (e.g. deleting punctuation, making sentences all lower-case) on the data yields the best results as they theorize removing these results in the loss of information useful for prediction <ref type="bibr" target="#b3">(Bai and Zhou, 2020)</ref>. Other groups note that extensive pre-processing does not yield notable performance improvements either and can even slightly hurt performance.</p><p>The best F1 score in Subtask-1, 90.9%, was achieved by haodingkui <ref type="bibr" target="#b35">(Xiao et al., 2020)</ref>. In their approach, a pseudo-labelling strategy is used to generate more data to alleviate overfitting during training. In this strategy, if all classifiers agree on the labels of certain samples in the test set, then those samples will also be used for training. For model ensembling, they incorporate BERT, RoBERTa, and XLNet. The second-place system from josefjon concludes that using an ensemble of RoBERTa large models performs better than any other pre-trained model <ref type="bibr" target="#b8">(Fajcik et al., 2020)</ref>. The third-place system, proposed by Roger, incorporates convolutional neural networks to capture strong local context information in addition to fine-tuning pre-trained models. Furthermore, it theorizes about the effectiveness of using knowledge-enriched transformers to improve performance on the task <ref type="bibr" target="#b20">(Lu et al., 2020)</ref>. Some top systems also successfully incorporate rules to further improve the performance, suggesting the benefits of combining neural nets with symbolic approaches.</p><p>Further Analysis and Challenges In general, one of the main challenges of Subtask-1 is that identifying counterfactuals requires inference and reasoning based on common sense and knowledge. Particularly, the fact that counterfactuals often do not follow specific grammatical rules makes such an ability important for some statements. The imbalanced nature of the dataset in Subtask-1 is another challenge; therefore different methods have been proposed to address this issue such as over-sampling and under-sampling. Some of the top models also try different methods of data augmentation so that they can have more positive examples to tackle the imbalance issue. By inspecting more details of submitted predictions of top systems, we found most of the wrongly classified samples require systems to understand the statement better while the existing models often lean toward memorizing and overweighting token level features to make predictions. Take a counterfactual sentence as an example, "if I were asked to, I would be happy to talk to anyone". This is misclassified likely because of including "were...to" in the antecedent, which is highly correlated to non-counterfactual statements, suggesting a major flaw of existing methods. Similarly, some non-counterfactual sentences are incorrectly labelled for they include some token-level counterfactual features while not indicating counterfactuals. For example, the sentence "under the current alignment, he said, American multinational corporations like Pfizer might invest more money in the United States, not less, if they had their tax domiciles abroad" is a non-counterfactual sentence for it is not assuming anything counter to the facts, while "if had" part along with the modal verb ("might" in this case) in the same sentence is usually correlated to a counterfactual.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Subtask-2: Detecting Antecedent and Consequent (DAC)</head><p>We build a conditional random field (CRF) model for sequence labeling as the baseline model for Subtask-2. This model can assign labels to each token in the input sequence by taking advantage of all input tokens and previous predictions. Specifically, same as in many name entity recognition systems, this baseline model annotates the antecedent and consequent using the B/I/O scheme, marking whether a word is at the Beginning, Inside or Outside either the antecedent or consequent. A common set of features for each word are extracted and used to train this model, including POS tags, features of nearby words, and whether the word has an uppercase/lowercase/title flag. The performance of the CRF baseline can be found in Table <ref type="table">4</ref>.</p><p>The performance of the baseline model and submitted systems are shown in Table <ref type="table">4</ref>. We received 11 official submissions to Subtask-2, and most of the submissions outperform the provided baseline model. In subtask 2, top systems take two main approaches: sequence labelling or question answering, and nearly all of them benefit from pretraining. An exception is the 6th ranked team, Anderson Sung, that use a multi-stack, birdirectional LSTM architecture to some success <ref type="bibr" target="#b33">(Sung et al., 2020)</ref>, showing that non-transformer approaches are viable for the task. Similarly, habi-akl experiments with a BiLSTM Conditional Random Fields (CRF) model for Subtask-2, but find that a BERT based model with a multilayer perceptron classifier outperforms the LSTM and conclude that the semi-supervised systems show a better level of understanding of challenging counterfactual forms <ref type="bibr" target="#b0">(Abi Akl et al., 2020)</ref>.</p><p>One approach among the top models formulates the problem as an extractive question answering (QA) task, with the target being extracting the answer from the given context towards a specific question. The others formulate the task as a sequence labeling task. In the top 4 systems, half of the teams took the QA approach, and the other half took the sequence labelling approach. The choice between BERT and RoBERTa has split almost evenly amongst most of the participants. As is the case for Subtask-1, many teams sought to build on top of the pre-trained models and add additional upper layer structures to handle the task better.</p><p>The best results are achieved by team Martin, with an F1 score of 88.2 and an exact match score of 57.5 <ref type="bibr" target="#b8">(Fajcik et al., 2020)</ref>. To predict the start and ending positions of antecedents and consequents, the model utilizes an ensemble of RoBERTa models and extend it in the same manner as how BERT was extended for the SQuAD dataset <ref type="bibr" target="#b30">(Rajpurkar et al., 2016)</ref>. The second-place system pouria babvey uses a sequence labelling approach: the authors develop the model on top of BERT with a multi-head attention layer and label masking to capture mutual information between nearby labels <ref type="bibr" target="#b2">(Babvey et al., 2020)</ref>. Label masking, in which only part of the labels is fed during training and the rest have to be predicted, has shown to be particularly effective for improving accuracy, which can be seen as a form of regularization. In addition, a multi-stage algorithm is used to gradually improve certainty in predictions after each step. The third-place system, Roger, formulates the problem as a query-based question answering problem, where antecedents and consequents are extracted after an antecedent and consequent query are supplied along with the original statement into BERT. Pointer networks are further used to predict the start and ending positions <ref type="bibr" target="#b20">(Lu et al., 2020)</ref> . A unique approach for Subtask-2 is used by 7th placed team, rajaswa patil, where they use a base architecture for both subtasks. They first train with a binary-classification module for Subtask-1, then replace it with a regression-module and further fine-tune the system for Subtask-2 <ref type="bibr" target="#b22">(Patil and Baths, 2020)</ref>, leveraging the commonality between the two tasks.</p><p>We can observe that there is still a gap between the performance of exact match and F1, which is mainly due to the fact that Exact Match is sensitive to non-essential phrases in predictions even the core parts are identified correctly.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Related Work</head><p>Modelling counterfactual thinking has started to attract more interest. One of the previous works closest to ours is <ref type="bibr" target="#b32">(Son et al., 2017)</ref>, in which a small-scale counterfactual tweet dataset is collected from social media. There are three main differences between that dataset and ours. First, there are only 2,000 samples in the tweet dataset (including the supplement data mentioned in the paper), while our dataset for counterfactual detection in Subtask-1 is ten times larger, which we believe is important for training deep learning based models. Second, our benchmark provides evaluation for antecedents and consequents extraction, which are essential components of counterfactual analysis. Third, our dataset includes statements from three different domains (finance, politics, healthcare). In contrast to the statements collected from tweets, which have a very large portion that are open-ended, vague thoughts, the counterfactuals in our dataset are more meaningful domain-related statements.</p><p>There is another dataset TIMETRAVEL proposed in <ref type="bibr" target="#b27">(Qin et al., 2019)</ref>  in which given a short story and an alternative counterfactual event context, the story needs to be minimally revised to keep compatible with the intervening counterfactual event. The empirical results show that it is still challenging for current neural language models to perform well on the counterfactual story rewriting task due to the lack of counterfactual reasoning capabilities.</p><p>In a broader viewpoint, counterfatuals are an important form of causal reasoning. Researchers argue that the notion of counterfactuals is essential for causal reasoning, in which causal modeling is proposed to interpret counterfactual conditionals in natural language, and such work has been discussed since the possible worlds semantics developed in the 1970s <ref type="bibr" target="#b16">(Lewis, 2013;</ref><ref type="bibr" target="#b15">Lewis, 1986)</ref>. The more recent work renders useful insights by formulating causal inference as a three-level hierarchy, which are association, intervention, and counterfactual, respectively <ref type="bibr" target="#b23">(Pearl and Mackenzie, 2018;</ref><ref type="bibr" target="#b26">Pearl, 2019)</ref>. The top of the hierarchy is counterfactual-if a model can correctly answer counterfactual queries like "what would happen if we had acted differently", it should also be able to answer association and intervention queries. The research in <ref type="bibr" target="#b24">(Pearl, 1995;</ref><ref type="bibr" target="#b25">Pearl, 2010)</ref> also made contributions to a general theory of causal inference, which is based on the Structural Causal Model (SCM), and counterfactual analysis is provided with a formal mathematical formalism.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Summary and Future Work</head><p>We present a counterfactual recognition task that includes two basic subtasks. Subtask-1 evaluates whether a given statement is counterfactual or not with 20,000 training and test statements. Subtask-2 aims at recognizing antecedents and consequents in counterfactual statements. The official task received 27 submissions to Subtask-1 and 11 submissions for Subtask-2. The state-of-the-art performances achieved a 90% F1 score in Subtask 1, as well as an 88.2% F1 and 57.5% Exact Match score in Subtask-2. We hope this task and dataset will intrigue and facilitate further research on counterfactual analysis in natural language.</p><p>4. Wish/Should Implied: The Wish/Should Implied counterfactual form only explicitly contains an antecedent in the sentence, with the consequent being implied, and it must contain an independent clause following a wish or should <ref type="bibr" target="#b11">(Janocko et al., 2016)</ref>. To capture this form, sentences that contain the token 'wish' and that have a word after this with a past tense verb or a past participle verb tag.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">Verb Inversion:</head><p>The category has two specific forms that differ in if the antecedent presents before or after the consequent. In either case, according to <ref type="bibr" target="#b11">(Janocko et al., 2016)</ref>, the antecedent contains a had or were inversion along with a past tense verb, and the consequent has a modal verb and a past or present tense verb.</p><p>(a) The antecedent presents first in this case. Thus, for this form the sentence first has to contain had or were as the first token. After this, a token with a past tense or past participle verb token must be present, but only if the first token is had. In either case, a word with a modal verb tag has to follow, and then further followed by a base verb, present non third person singular verb, present third person singular verb, or a past tense verb tag. (b) In this form a consequent presents first. As a result, a word with a modal verb tag must follow, and is in turn followed by a word with base verb, present non third person singular verb, present third person singular verb, or a past tense verb tag. After this the sentence had to contain a had or were token. If it does contain a had token, an additional past tense or past participle verb token word has to also follow it.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Example- 4 :</head><label>4</label><figDesc>It should have been feasible right after the collapse of Lehman Brothers (in 2008), when prices were cheap. Antecedent: it should have been feasible right after the collapse of Lehman Brothers (in 2008) Consequent: None Label: 0, 81, −1, −1</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>). The participants can select their own development set from the training set or use cross validation to develop their models. The training set</figDesc><table><row><cell cols="4">Dataset Counterfact. Non-counterfact. Total</cell></row><row><cell>Train</cell><cell>1,454</cell><cell>11,546</cell><cell>13,000</cell></row><row><cell>Test</cell><cell>738</cell><cell>6,262</cell><cell>7,000</cell></row><row><cell>Total</cell><cell>2,192</cell><cell>17,808</cell><cell>20,000</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Sizes of the training and test set used in Subtask-1.</figDesc><table><row><cell cols="4">Dataset Antecedent only Ante. &amp; Cons. Total</cell></row><row><cell>Train</cell><cell>520</cell><cell>3,031</cell><cell>3,551</cell></row><row><cell>Test</cell><cell>268</cell><cell>1,682</cell><cell>1,950</cell></row><row><cell>Total</cell><cell>788</cell><cell>4,713</cell><cell>5,501</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Sizes of the training and test set used in Subtask-2. Antecedent only are statements that only have antecedents but not consequents, and Ante. &amp; Cons. means statements having both antecedents and consequents.</figDesc><table /><note>includes 1,454 counterfactual statements and the test set includes 738 true counterfactual statements. The number of statements is balanced among the three domains-each domain has roughly one third of candidate statements. Table</note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">In the official evaluation period of Subtask-1, the ranking is based on F1.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">. Conjunctive Converse: An antecedent follows the consequent in a conjunctive converse form sentence. In the consequent, there has to be a modal verb followed by a past or present tense verb. In the antecedent, there has to be a conditional conjunction followed by a past tense subjective or past tense modal verb<ref type="bibr" target="#b11">(Janocko et al., 2016)</ref>. Locating counterfactual sentences of this form requires locating sentences that contain a token with a modal verb tag, and are followed by a token with a base form verb tag. An if has to be present afterwards, and after this a token needs to contain either a modal verb, past tense verb, or past participle verb token.3. Modal Normal:A modal normal counterfactual sentence has the consequent following the antecedent.Inside the antecedent, there must be a modal verb and a past participle verb, and inside the consequent there must be past/present tense modal verb<ref type="bibr" target="#b11">(Janocko et al., 2016)</ref>. Capturing this form entails selecting sentences that have a token with a modal verb tag. A token containing a past participle verb tag must be somewhere after, and then there must be a token with a modal verb tag.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>The first author was supported by Vector Institute Scholarship on Artificial Intelligence and Alibaba Innovative Research Grant. The second author was supported NSERC Undergraduate Student Research Awards (USRA). The last author is sponsored by NSERC Discovery Grants and DAS Grants. We thank Jiaqi Li and Qianyu Zhang for their help in this project.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix A. Token-based Patterns</head><p>The full list of token-based patterns are listed in Table <ref type="table">5</ref>. Specifically we have 14 rows of patterns. On each raw, we first apply the inclusion patterns listed in the second column to identify candidate counterfactual statements, and then we apply the additional exclusion patterns in the third column to remove the candidates that satisfy these exclusion rules.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix B. POS-based Filtering Rules</head><p>The POS-based filtering patterns are only applied to candidate counterfactuals found by the rules on row 1, 8, 11, and 14 in Table <ref type="table">5</ref>. Specifically, for candidates found by these rules, only if they further satisfy the POS-based patterns, they will be finally included. When we applying the following rules, words that match a set of POS tag criteria must be present somewhere in a sentence and in a particular order. The POS-based rules and their order are detailed as follows:</p><p>1. Conjunctive normal: This is a counterfactual form in which the consequent follows the antecedent.</p><p>The conjunctive normal form dictates a conditional conjunction is followed by a past tense subjective or past modal verb in the antecedent, and there is a past or present tense modal verb in the consequent <ref type="bibr" target="#b11">(Janocko et al., 2016)</ref>. To filter sentences following this form, we first search for the word if in the sentence. A word with a past tense verb, modal verb, or past participle verb speech tag in the sentence must then follow. Lastly, a word with a modal verb tag must come after.   </p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Yseop at semeval-2020 task 5: Cascaded bert language model for counterfactual statement analysis</title>
+		<author>
+			<persName><forename type="first">Dominique</forename><surname>Hanna Abi Akl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Estelle</forename><surname>Mariko</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Labidurie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">IITK-RSA at semeval-2020 task 5: Detecting counterfactuals</title>
+		<author>
+			<persName><forename type="first">Rohin</forename><surname>Anirudh Anil Ojha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shashank</forename><surname>Garg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Modi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Pheonix at semeval-2020 task 5: Masking the labels lubricates models for sequence labeling</title>
+		<author>
+			<persName><forename type="first">Pouria</forename><surname>Babvey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dario</forename><surname>Borrelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yutong</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlo</forename><surname>Lipizzi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">BYteam at semeval-2020 task 5:detecting counterfactual statements classification with bert and ensembles</title>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Bai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaobing</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Natural language processing with Python: analyzing text with the natural language toolkit</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bird</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ewan</forename><surname>Klein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Loper</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+			<publisher>Reilly Media, Inc</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Ferryman as semeval-2020 task 5: Optimized bert for detecting counterfactuals</title>
+		<author>
+			<persName><forename type="first">Weilong</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yan</forename><surname>Zhuang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Feng</forename><surname>Hong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yanru</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">Bert: Pre-training of deep bidirectional transformers for language understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">The functional theory of counterfactual thinking. Personality and social psychology review</title>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Epstude</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Neal J Roese</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="168" to="192" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">BUT-FIT at semeval-2020 task 5: Automatic detection of counterfactual statements with deep pre-trained language representation models</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Fajcik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Jon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Docekal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pavel</forename><surname>Smrz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">The problem of counterfactual conditionals</title>
+		<author>
+			<persName><forename type="first">Nelson</forename><surname>Goodman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Journal of Philosophy</title>
+		<imprint>
+			<biblScope unit="volume">44</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="113" to="128" />
+			<date type="published" when="1947" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Toward a useful concept of causality for lexical semantics</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Jerry</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hobbs</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Semantics</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="181" to="209" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">Counterfactuals in the language of social media: A natural language processing project in conjunction with the world well being project</title>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Janocko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Allegra</forename><surname>Larche</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joseph</forename><surname>Raso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Zembroski</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">From what might have been to what must have been: Counterfactual thinking creates meaning</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Laura</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Linda</forename><forename type="middle">G</forename><surname>Kray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katie</forename><forename type="middle">A</forename><surname>George</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><forename type="middle">D</forename><surname>Liljenquist</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philip</forename><forename type="middle">E</forename><surname>Galinsky</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Tetlock</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Roese</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of personality and social psychology</title>
+		<imprint>
+			<biblScope unit="volume">98</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">106</biblScope>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">The tale wagged by the dag: broadening the scope of causal inference and explanation for epidemiology</title>
+		<author>
+			<persName><forename type="first">Nancy</forename><surname>Krieger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">Davey</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International journal of epidemiology</title>
+		<imprint>
+			<biblScope unit="volume">45</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="1787" to="1808" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Albert: A lite bert for self-supervised learning of language representations</title>
+		<author>
+			<persName><forename type="first">Zhenzhong</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Goodman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Gimpel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piyush</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1909.11942</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">K</forename><surname>David</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lewis</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1986" />
+		</imprint>
+	</monogr>
+	<note>Causation</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">David</forename><surname>Lewis</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+			<publisher>John Wiley &amp; Sons</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Lee at semeval-2020 task 5: ALBERT model based on the maximum ensemble strategy and different data sampling methods for detecting counterfactual statements</title>
+		<author>
+			<persName><forename type="first">Junyi</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuhang</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bin</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haiyan</forename><surname>Ding</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">BLCU-NLP at semeval-2020 task 5 subtask 1: Data augmentation for efficient counterfactual detecting</title>
+		<author>
+			<persName><forename type="first">Chang</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dong</forename><surname>Yu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">Roberta: A robustly optimized bert pretraining approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">ISCAS at semeval-2020 task 5: Pre-trained transformers for counterfactual statement modeling</title>
+		<author>
+			<persName><forename type="first">Yaojie</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Annan</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongyu</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xianpei</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Le</forename><surname>Sun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">YNU-oxz at semeval-2020 task 5: Detecting counterfactuals based on ordered neurons LSTM and hierarchical attention network</title>
+		<author>
+			<persName><forename type="first">Xiaozhi</forename><surname>Ou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shengyan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongling</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">CNRL at semeval-2020 task 5: Modelling causal reasoning in language with multi-head self-attentionweights based counterfactual detection</title>
+		<author>
+			<persName><forename type="first">Rajaswa</forename><surname>Patil</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veeky</forename><surname>Baths</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">The book of why: the new science of cause and effect</title>
+		<author>
+			<persName><forename type="first">Judea</forename><surname>Pearl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dana</forename><surname>Mackenzie</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<publisher>Basic Books</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Causal diagrams for empirical research</title>
+		<author>
+			<persName><forename type="first">Judea</forename><surname>Pearl</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Biometrika</title>
+		<imprint>
+			<biblScope unit="volume">82</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="669" to="688" />
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">An introduction to causal inference</title>
+		<author>
+			<persName><forename type="first">Judea</forename><surname>Pearl</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The international journal of biostatistics</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">The seven tools of causal inference, with reflections on machine learning</title>
+		<author>
+			<persName><forename type="first">Judea</forename><surname>Pearl</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Communications of the ACM</title>
+		<imprint>
+			<biblScope unit="volume">62</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="54" to="60" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<author>
+			<persName><forename type="first">Lianhui</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antoine</forename><surname>Bosselut</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ari</forename><surname>Holtzman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chandra</forename><surname>Bhagavatula</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yejin</forename><surname>Choi</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1909.04076</idno>
+		<title level="m">Counterfactual story reasoning and generation</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Improving language understanding by generative pre-training</title>
+		<author>
+			<persName><forename type="first">Alec</forename><surname>Radford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karthik</forename><surname>Narasimhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Salimans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+		<ptr target="https://s3-us-west-2.amazonaws.com/openai-assets/researchcovers/languageunsupervised/languageunderstandingpaper.pdf" />
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Language models are unsupervised multitask learners</title>
+		<author>
+			<persName><forename type="first">Alec</forename><surname>Radford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rewon</forename><surname>Child</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Luan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dario</forename><surname>Amodei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">OpenAI Blog</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page">9</biblScope>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Squad: 100,000+ questions for machine comprehension of text</title>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Rajpurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Konstantin</forename><surname>Lopyrev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1606.05250</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title level="m" type="main">If they had been more transparent, the child would have discovered them more easily: How counterfactuals develop</title>
+		<author>
+			<persName><forename type="first">Lina</forename><surname>Rouvoli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vina</forename><surname>Tsakali</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Kazanina</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Recognizing counterfactual thinking in social media texts</title>
+		<author>
+			<persName><forename type="first">Youngseo</forename><surname>Son</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anneke</forename><surname>Buffone</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joe</forename><surname>Raso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Allegra</forename><surname>Larche</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Janocko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Zembroski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Schwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lyle</forename><surname>Ungar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="654" to="658" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Multi-task stacked bi-lstms for detecting antecedent and consequent in conditional statements</title>
+		<author>
+			<persName><forename type="first">Mingyou</forename><surname>Sung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Parsa</forename><surname>Bagherzadeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Bergler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Causality and causal inference in epidemiology: the need for a pluralistic approach</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Jan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Vandenbroucke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Neil</forename><surname>Broadbent</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pearce</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International journal of epidemiology</title>
+		<imprint>
+			<biblScope unit="volume">45</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="1776" to="1786" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">HIT-SCIR at Semeval-2020 Task 5: Training Pre-trained Language Model with Pseudo-labeling data for Counterfactuals Detection</title>
+		<author>
+			<persName><forename type="first">Ding</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dingkui</forename><surname>Hao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuewei</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kuo</forename><surname>Liao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhongyang</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">ETHAN at semeval-2020 task 5: Modelling causal reasoning in language using neurosymbolic cloud computing</title>
+		<author>
+			<persName><forename type="first">Leonid</forename><surname>Yabloko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Xlnet: Generalized autoregressive pretraining for language understanding</title>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Russ</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc V</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Le</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="5754" to="5764" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

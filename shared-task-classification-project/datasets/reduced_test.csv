@@ -1,0 +1,328 @@
+	Unnamed: 0	id	paper_id	headers	local_pos	global_pos	local_pct	global_pct	sentences	labels
+0	2093	2093	S07-2	title	1	1	4.0	1.0	Semeval-2007 Task 02: Evaluating Word Sense Induction and Discrimination Systems	1
+1	2094	2094	S07-2	abstract	1	2	1.0	1.0	The goal of this task is to allow for comparison across sense-induction and discrimination systems, and also to compare these systems to other supervised and knowledgebased systems.	0
+2	2095	2095	S07-2	abstract	2	3	2.0	1.0	In total there were 6 participating systems.	0
+3	2096	2096	S07-2	abstract	3	4	3.0	1.0	We reused the SemEval-2007 English lexical sample subtask of task 17, and set up both clustering-style unsupervised evaluation (using OntoNotes senses as gold-standard) and a supervised evaluation (using the part of the dataset for mapping).	0
+4	2097	2097	S07-2	abstract	4	5	4.0	1.0	We provide a comparison to the results of the systems participating in the lexical sample subtask of task 17.	0
+5	2098	2098	S07-2	Introduction	1	6	1.0	1.0	Word Sense Disambiguation (WSD) is a key enabling-technology.	0
+6	2099	2099	S07-2	Introduction	2	7	1.0	1.0	Supervised WSD techniques are the best performing in public evaluations, but need large amounts of hand-tagging data.	0
+7	2100	2100	S07-2	Introduction	3	8	1.0	1.0	Existing hand-annotated corpora like SemCor (Miller et al., 1993), which is annotated with WordNet senses (Fellbaum, 1998) allow for a small improvement over the simple most frequent sense heuristic, as attested in the all-words track of the last Senseval competition (Snyder and Palmer, 2004).	0
+8	2101	2101	S07-2	Introduction	4	9	1.0	1.0	In theory, larger amounts of training data (SemCor has approx.	0
+9	2102	2102	S07-2	Introduction	5	10	2.0	1.0	500M words) would improve the performance of supervised WSD, but no current project exists to provide such an expensive resource.	0
+10	2103	2103	S07-2	Introduction	6	11	2.0	1.0	Another problem of the supervised approach is that the inventory and distribution of senses changes dramatically from one domain to the other, requiring additional hand-tagging of corpora (Martínez and Agirre, 2000;	0
+11	2104	2104	S07-2	Introduction	7	12	2.0	1.0	Koeling et al., 2005).	0
+12	2105	2105	S07-2	Introduction	8	13	2.0	1.0	"Supervised WSD is based on the ""fixed-list of senses"" paradigm, where the senses for a target word are a closed list coming from a dictionary or lexicon."	0
+13	2106	2106	S07-2	Introduction	9	14	2.0	1.0	Lexicographers and semanticists have long warned about the problems of such an approach, where senses are listed separately as discrete entities, and have argued in favor of more complex representations, where, for instance, senses are dense regions in a continuum (Cruse, 2000).	0
+14	2107	2107	S07-2	Introduction	10	15	3.0	1.0	Unsupervised Word Sense Induction and Discrimination (WSID, also known as corpus-based unsupervised systems) has followed this line of thinking, and tries to induce word senses directly from the corpus.	1
+15	2108	2108	S07-2	Introduction	11	16	3.0	1.0	Typical WSID systems involve clustering techniques, which group together similar examples.	0
+16	2109	2109	S07-2	Introduction	12	17	3.0	1.0	Given a set of induced clusters (which represent word uses or senses 1 ), each new occurrence of the target word will be compared to the clusters and the most similar cluster will be selected as its sense.	0
+17	2110	2110	S07-2	Introduction	13	18	3.0	1.0	One of the problems of unsupervised systems is that of managing to do a fair evaluation.	0
+18	2111	2111	S07-2	Introduction	14	19	3.0	1.0	Most of current unsupervised systems are evaluated in-house, with a brief comparison to a re-implementation of a former system, leading to a proliferation of unsupervised systems with little ground to compare among them.	0
+19	2112	2112	S07-2	Introduction	15	20	4.0	1.0	The goal of this task is to allow for comparison across sense-induction and discrimination systems, and also to compare these systems to other supervised and knowledge-based systems.	0
+20	2113	2113	S07-2	Introduction	16	21	4.0	1.0	The paper is organized as follows.	0
+21	2114	2114	S07-2	Introduction	17	22	4.0	1.0	Section 2 presents the evaluation framework used in this task.	0
+22	2115	2115	S07-2	Introduction	18	23	4.0	1.0	Section 3 presents the systems that participated in the task, and the official results.	0
+23	2116	2116	S07-2	Introduction	19	24	4.0	1.0	Finally, Section 5 draws the conclusions.	0
+24	2816	2816	S07-9	abstract	1	2	2.0	1.0	In this paper we describe SemEval-2007 task number 9 (Multilevel Semantic Annotation of Catalan and Spanish).	0
+25	2817	2817	S07-9	abstract	2	3	3.0	1.0	In this task, we aim at evaluating and comparing automatic systems for the annotation of several semantic linguistic levels for Catalan and Spanish.	1
+26	2818	2818	S07-9	abstract	3	4	4.0	1.0	Three semantic levels are considered: noun sense disambiguation, named entity recognition, and semantic role labeling.	0
+27	5273	5273	S10-12	abstract	1	2	2.0	1.0	Parser Evaluation using Textual Entailments (PETE) is a shared task in the SemEval-2010 Evaluation Exercises on Semantic Evaluation.	0
+28	5274	5274	S10-12	abstract	2	3	3.0	1.0	The task involves recognizing textual entailments based on syntactic information alone.	1
+29	5275	5275	S10-12	abstract	3	4	4.0	1.0	PETE introduces a new parser evaluation scheme that is formalism independent, less prone to annotation error, and focused on semantically relevant distinctions.	0
+30	5276	5276	S10-12	Introduction	1	5	1.0	1.0	Parser Evaluation using Textual Entailments (PETE) is a shared task that involves recognizing textual entailments based on syntactic information alone.	1
+31	5277	5277	S10-12	Introduction	2	6	1.0	1.0	"Given two text fragments called ""text"" and ""hypothesis"", textual entailment recognition is the task of determining whether the meaning of the hypothesis is entailed (can be inferred) from the text."	0
+32	5278	5278	S10-12	Introduction	3	7	1.0	1.0	In contrast with general RTE tasks (Dagan et al., 2009) the PETE task focuses on syntactic entailments:	0
+33	5279	5279	S10-12	Introduction	4	8	1.0	1.0	Text:	0
+34	5280	5280	S10-12	Introduction	5	9	1.0	1.0	The man with the hat was tired.	0
+35	5281	5281	S10-12	Introduction	6	10	1.0	1.0	Hypothesis-1: The man was tired.	0
+36	5282	5282	S10-12	Introduction	7	11	1.0	1.0	(yes) Hypothesis-2: The hat was tired.	0
+37	5283	5283	S10-12	Introduction	8	12	1.0	1.0	(no) PETE is an evaluation scheme based on a natural human linguistic competence (i.e. the ability to comprehend sentences and answer simple yes/no questions about them).	0
+38	5284	5284	S10-12	Introduction	9	13	1.0	1.0	We believe systems should try to model natural human linguistic competence rather than their dubious competence in artificial tagging tasks.	0
+39	5285	5285	S10-12	Introduction	10	14	1.0	1.0	The PARSEVAL measures introduced nearly two decades ago (Black et al., 1991) still dominate the field of parser evaluation.	0
+40	5286	5286	S10-12	Introduction	11	15	1.0	1.0	"These methods compare phrase-structure bracketings produced by the parser with bracketings in the annotated corpus, or ""treebank""."	0
+41	5287	5287	S10-12	Introduction	12	16	1.0	1.0	Parser evaluation using short textual entailments has the following advantages compared to treebank based evaluation.	0
+42	5288	5288	S10-12	Introduction	13	17	1.0	1.0	Consistency: Recognizing syntactic entailments is a more natural task for people than treebank annotation.	0
+43	5289	5289	S10-12	Introduction	14	18	1.0	1.0	Focusing on a natural human competence makes it practical to collect high quality evaluation data from untrained annotators.	0
+44	5290	5290	S10-12	Introduction	15	19	1.0	1.0	The PETE dataset was annotated by untrained Amazon Mechanical Turk workers at an insignificant cost and each annotation is based on the unanimous agreement of at least three workers.	0
+45	5291	5291	S10-12	Introduction	16	20	2.0	1.0	In contrast, of the 36306 constituent strings that appear multiple times in the Penn Treebank (Marcus et al., 1994), 5646 (15%) have multiple conflicting annotations.	0
+46	5292	5292	S10-12	Introduction	17	21	2.0	1.0	If indicative of the general level of inconsistency, 15% is a very high number given that the state of the art parsers claim f-scores above 90% (Charniak and Johnson, 2005).	0
+47	5293	5293	S10-12	Introduction	18	22	2.0	1.0	Relevance: PETE automatically focuses attention on semantically relevant phenomena rather than differences in annotation style or linguistic convention.	0
+48	5294	5294	S10-12	Introduction	19	23	2.0	1.0	Whether a phrase is tagged ADJP vs ADVP rarely affects semantic interpretation.	0
+49	5295	5295	S10-12	Introduction	20	24	2.0	1.0	Attaching the wrong subject to a verb or the wrong prepositional phrase to a noun changes the meaning of the sentence.	0
+50	5296	5296	S10-12	Introduction	21	25	2.0	1.0	Standard treebank based evaluation metrics do not distinguish between semantically relevant and irrelevant errors (Bonnema et al., 1997).	0
+51	5297	5297	S10-12	Introduction	22	26	2.0	1.0	In PETE semantically relevant differences lead to different entailments, semantically irrelevant differences do not.	0
+52	5298	5298	S10-12	Introduction	23	27	2.0	1.0	Framework independence: Entailment recognition is a formalism independent task.	0
+53	5299	5299	S10-12	Introduction	24	28	2.0	1.0	A common evaluation method for parsers that do not use the Penn Treebank formalism is to automatically convert the Penn Treebank to the appropriate formalism and to perform treebank based evaluation (Nivre et al., 2007a;	0
+54	5300	5300	S10-12	Introduction	25	29	2.0	1.0	Hockenmaier and Steedman, 2007).	0
+55	5301	5301	S10-12	Introduction	26	30	2.0	1.0	The inevitable conversion errors compound the already mentioned problems of treebank based evaluation.	0
+56	5302	5302	S10-12	Introduction	27	31	2.0	1.0	In addition, manually designed treebanks do not naturally lend themselves to unsupervised parser evaluation.	0
+57	5303	5303	S10-12	Introduction	28	32	2.0	1.0	Unlike treebank based evaluation, PETE can compare phrase structure parsers, dependency parsers, unsupervised parsers and other approaches on an equal footing.	0
+58	5304	5304	S10-12	Introduction	29	33	2.0	1.0	PETE was inspired by earlier work on representations of grammatical dependency, proposed for ease of use by end users and suitable for parser evaluation.	0
+59	5305	5305	S10-12	Introduction	30	34	2.0	1.0	These include the grammatical relations (GR) by (Carroll et al., 1999), the PARC representation (King et al., 2003), and Stanford typed dependencies (SD) (De Marneffe et al., 2006) (See (Bos and others, 2008) for other proposals).	0
+60	5306	5306	S10-12	Introduction	31	35	3.0	1.0	Each use a set of binary relations between words in a sentence as the primary unit of representation.	0
+61	5307	5307	S10-12	Introduction	32	36	3.0	1.0	They share some common motivations: usability by people who are not (computational) linguists and suitability for relation extraction applications.	0
+62	5308	5308	S10-12	Introduction	33	37	3.0	2.0	Here is an example sentence and its SD representation (De Marneffe and Manning, 2008):	0
+63	5309	5309	S10-12	Introduction	34	38	3.0	2.0	Bell, based in Los Angeles, makes and distributes electronic, computer and building products.	0
+64	5310	5310	S10-12	Introduction	35	39	3.0	2.0	nsubj(makes-8, Bell-1) nsubj(distributes-10, Bell-1) partmod(Bell-1, based-3) nn(Angeles-6, Los-5) prep-in(based-3, Angeles-6) conj-and(makes-8, distributes-10) amod (products-16, electronic-11) conj-and(electronic-11, computer-13) amod (products-16, computer-13) conj-and(electronic-11, building-15) amod(products-16, building-15) dobj(makes-8, products-16) PETE goes one step further by translating most of these dependencies into natural language entailments.	0
+65	5311	5311	S10-12	Introduction	36	40	3.0	2.0	Bell makes something.	0
+66	5312	5312	S10-12	Introduction	37	41	3.0	2.0	Bell distributes something.	0
+67	5313	5313	S10-12	Introduction	38	42	3.0	2.0	Someone is based in Los Angeles.	0
+68	5314	5314	S10-12	Introduction	39	43	3.0	2.0	Someone makes products.	0
+69	5315	5315	S10-12	Introduction	40	44	3.0	2.0	PETE has some advantages over representations based on grammatical relations.	0
+70	5316	5316	S10-12	Introduction	41	45	3.0	2.0	For example SD defines 55 relations organized in a hierarchy, and it may be non-trivial for a non-linguist to understand the difference between ccomp (clausal complement with internal subject) and xcomp (clausal complement with external subject) or between nsubj (nominal subject) and xsubj (controlling subject).	0
+71	5317	5317	S10-12	Introduction	42	46	3.0	2.0	In fact it could be argued that proposals like SD replace one artificial annotation formalism with another and no two such proposals agree on the ideal set of binary relations to use.	0
+72	5318	5318	S10-12	Introduction	43	47	3.0	2.0	In contrast, untrained annotators have no difficulty unanimously agreeing on the validity of most PETE type entailments.	0
+73	5319	5319	S10-12	Introduction	44	48	3.0	2.0	However there are also significant challenges associated with an evaluation scheme like PETE.	0
+74	5320	5320	S10-12	Introduction	45	49	3.0	2.0	It is not always clear how to convert certain relations into grammatical hypothesis sentences without including most of the original sentence in the hypothesis.	0
+75	5321	5321	S10-12	Introduction	46	50	4.0	2.0	Including too much of the sentence in the hypothesis would increase the chances of getting the right answer with the wrong parse.	0
+76	5322	5322	S10-12	Introduction	47	51	4.0	2.0	Grammatical hypothesis sentences are especially difficult to construct when a (negative) entailment is based on a bad parse of the sentence.	0
+77	5323	5323	S10-12	Introduction	48	52	4.0	2.0	"Introducing dummy words like ""someone"" or ""something"" alleviates part of the problem but does not help in the case of clausal complements."	0
+78	5324	5324	S10-12	Introduction	49	53	4.0	2.0	In summary, PETE makes the annotation phase more practical and consistent but shifts the difficulty to the entailment creation phase.	0
+79	5325	5325	S10-12	Introduction	50	54	4.0	2.0	PETE gets closer to an extrinsic evaluation by focusing on semantically relevant, application oriented differences that can be expressed in natural language sentences.	0
+80	5326	5326	S10-12	Introduction	51	55	4.0	2.0	This makes the evaluation procedure indirect: a parser developer has to write an extension that can handle entailment questions.	0
+81	5327	5327	S10-12	Introduction	52	56	4.0	2.0	However, given the simplicity of the entailments, the complexity of such an extension is comparable to one that extracts grammatical relations.	0
+82	5328	5328	S10-12	Introduction	53	57	4.0	2.0	The balance of what is being evaluated is also important.	0
+83	5329	5329	S10-12	Introduction	54	58	4.0	2.0	A treebank based evaluation scheme may mix semantically relevant and irrelevant mistakes, but at least it covers every sentence at a uniform level of detail.	0
+84	5330	5330	S10-12	Introduction	55	59	4.0	2.0	In this evaluation, we focused on sentences and relations where state of the art parsers disagree.	0
+85	5331	5331	S10-12	Introduction	56	60	4.0	2.0	We hope this methodology will uncover weaknesses that the next generation systems can focus on.	0
+86	5332	5332	S10-12	Introduction	57	61	4.0	2.0	The remaining sections will go into more detail about these challenges and the solutions we have chosen to implement.	0
+87	5333	5333	S10-12	Introduction	58	62	4.0	2.0	Section 2 explains the method followed to create the PETE dataset.	0
+88	5334	5334	S10-12	Introduction	59	63	4.0	2.0	Sec-tion 3 evaluates the baseline systems the task organizers created by implementing simple entailment extensions for several state of the art parsers.	0
+89	5335	5335	S10-12	Introduction	60	64	4.0	2.0	Section 4 presents the participating systems, their methods and results.	0
+90	5336	5336	S10-12	Introduction	61	65	4.0	2.0	Section 5 summarizes our contribution.	0
+91	5839	5839	S10-18	Task Set up 2.1 Task description	1	31	1.0	1.0	In this task, we focus on 14 frequently used sentiment ambiguous adjectives in Chinese, which all have the meaning of measurement, as shown below.	0
+92	5840	5840	S10-18	Task Set up 2.1 Task description	2	32	1.0	1.0	"(1) Sentiment ambiguous adjectives(SAAs) ={ 大 da "" large"" , 多 duo "" many"" , 高 gao "" high"" , 厚 hou "" thick"" , 深 shen "" deep"" , 重 zhong "" heavy"" , 巨大 ju-da "" huge"" , 重大 zhong-da "" great"" , 小 xiao "" small"" , 少 shao "" few"" , 低 di "" low"" , 薄 bao "" thin"" , 浅 qian "" shallow"" , 轻 qing "" light"" }"	0
+93	5841	5841	S10-18	Task Set up 2.1 Task description	3	33	2.0	1.0	These adjectives are neutral out of context, but when they co-occur with some target nouns, positive or negative emotion will be evoked.	0
+94	5842	5842	S10-18	Task Set up 2.1 Task description	4	34	2.0	1.0	Although the number of such ambiguous adjectives is not large, they are frequently used in real text, especially in the texts expressing opinions and emotions.	0
+95	5843	5843	S10-18	Task Set up 2.1 Task description	5	35	3.0	1.0	The task is designed to automatically determine the SO of these sentiment ambiguous adjectives within context: positive or negative.	1
+96	5844	5844	S10-18	Task Set up 2.1 Task description	6	36	3.0	1.0	"For example, 高 gao "" high""should be assigned as positive in 工 资 高 gong-zi -gao "" salary is high""but negative in 价格高 jia-ge-gao "" price is high"" ."	0
+97	5845	5845	S10-18	Task Set up 2.1 Task description	7	37	4.0	1.0	This task was carried out in an unsupervised setting.	0
+98	5846	5846	S10-18	Task Set up 2.1 Task description	8	38	4.0	1.0	No training data was provided, but external resources are encouraged to use.	0
+99	7084	7084	S12-6	Systems Evaluation	1	106	1.0	3.0	Given two sentences, s1 and s2, an STS system would need to return a similarity score.	1
+100	7085	7085	S12-6	Systems Evaluation	2	107	1.0	3.0	Participants can also provide a confidence score indicating their confidence level for the result returned for each pair, but this confidence is not used for the main results.	1
+101	7086	7086	S12-6	Systems Evaluation	3	108	2.0	3.0	The output of the systems performance is evaluated using the Pearson product-moment correlation coefficient between the system scores and the human scores, as customary in text similarity (Rubenstein and Goodenough, 1965).	0
+102	7087	7087	S12-6	Systems Evaluation	4	109	2.0	3.0	We calculated Pearson for each evaluation dataset separately.	0
+103	7088	7088	S12-6	Systems Evaluation	5	110	2.0	3.0	In order to have a single Pearson measure for each system we concatenated the gold standard (and system outputs) for all 5 datasets into a single gold stan-dard file (and single system output).	0
+104	7089	7089	S12-6	Systems Evaluation	6	111	3.0	3.0	The first version of the results were published using this method, but the overall score did not correspond well to the individual scores in the datasets, and participants proposed two additional evaluation metrics, both of them based on Pearson correlation.	0
+105	7090	7090	S12-6	Systems Evaluation	7	112	3.0	3.0	The organizers of the task decided that it was more informative, and on the benefit of the community, to also adopt those evaluation metrics, and the idea of having a single main evaluation metric was dropped.	0
+106	7091	7091	S12-6	Systems Evaluation	8	113	4.0	3.0	This decision was not without controversy, but the organizers gave more priority to openness and inclusiveness and to the involvement of participants.	0
+107	7092	7092	S12-6	Systems Evaluation	9	114	4.0	3.0	The final result table thus included three evaluation metrics.	0
+108	7093	7093	S12-6	Systems Evaluation	10	115	4.0	3.0	For the future we plan to analyze the evaluation metrics, including non-parametric metrics like Spearman.	0
+109	8124	8124	S13-5	Introduction	1	7	1.0	1.0	Numerous past tasks have focused on leveraging the meaning of word types or words in context.	0
+110	8125	8125	S13-5	Introduction	2	8	1.0	1.0	Examples of the former are noun categorization and the TOEFL test, examples of the latter are word sense disambiguation, metonymy resolution, and lexical substitution.	0
+111	8126	8126	S13-5	Introduction	3	9	1.0	1.0	As these tasks have enjoyed a lot success, a natural progression is the pursuit of models that can perform similar tasks taking into account multiword expressions and complex compositional structure.	0
+112	8127	8127	S13-5	Introduction	4	10	1.0	1.0	In this paper, we present two subtasks designed to evaluate such phrasal models: a. Semantic similarity of words and compositional phrases b.	1
+113	8128	8128	S13-5	Introduction	5	11	1.0	1.0	Evaluating the compositionality of phrases in context	1
+114	8129	8129	S13-5	Introduction	6	12	2.0	1.0	"For example, the first subtask addresses computing how similar the word ""valuation"" is to the compositional sequence ""price assessment"", while the second subtask addresses deciding whether the phrase ""piece of cake"" is used literally or figuratively in the sentence ""Labour was a piece of cake!""."	0
+115	8130	8130	S13-5	Introduction	7	13	2.0	1.0	The aim of these subtasks is two-fold.	0
+116	8131	8131	S13-5	Introduction	8	14	2.0	1.0	Firstly, considering that there is a spread interest lately in phrasal semantics in its various guises, they provide an opportunity to draw together approaches to numerous related problems under a common evaluation set.	0
+117	8132	8132	S13-5	Introduction	9	15	2.0	1.0	It is intended that after the competition, the evaluation setting and the datasets will comprise an on-going benchmark for the evaluation of these phrasal models.	0
+118	8133	8133	S13-5	Introduction	10	16	2.0	1.0	Secondly, the subtasks attempt to bridge the gap between established lexical semantics and fullblown linguistic inference.	0
+119	8134	8134	S13-5	Introduction	11	17	2.0	1.0	Thus, we anticipate that they will stimulate an increased interest around the general issue of phrasal semantics.	0
+120	8135	8135	S13-5	Introduction	12	18	3.0	1.0	We use the notion of phrasal semantics here as opposed to lexical compounds or compositional semantics.	0
+121	8136	8136	S13-5	Introduction	13	19	3.0	1.0	Bridging the gap between lexical semantics and linguistic inference could provoke novel approaches to certain established tasks, such as lexical entailment and paraphrase identification.	0
+122	8137	8137	S13-5	Introduction	14	20	3.0	1.0	In addition, it could ul-timately lead to improvements in a wide range of applications in natural language processing, such as document retrieval, clustering and classification, question answering, query expansion, synonym extraction, relation extraction, automatic translation, or textual advertisement matching in search engines, all of which depend on phrasal semantics.	0
+123	8138	8138	S13-5	Introduction	15	21	3.0	1.0	The remainder of this paper is structured as follows: Section 2 presents details about the data sources and the variety of sources applicable to the task.	0
+124	8139	8139	S13-5	Introduction	16	22	3.0	1.0	Section 3 discusses the first subtask, which is about semantic similarity of words and compositional phrases.	0
+125	8140	8140	S13-5	Introduction	17	23	3.0	1.0	In subsection 3.1 the subtask is described in detail together with some information about its background.	0
+126	8141	8141	S13-5	Introduction	18	24	4.0	1.0	Subsection 3.2 discusses the data creation process and subsection 3.3 discusses the participating systems and their results.	0
+127	8142	8142	S13-5	Introduction	19	25	4.0	1.0	Section 4 introduces the second subtask, which is about evaluating the compositionality of phrases in context.	0
+128	8143	8143	S13-5	Introduction	20	26	4.0	1.0	Subsection 4.1 explains the data creation process for this subtask.	0
+129	8144	8144	S13-5	Introduction	21	27	4.0	1.0	In subsection 4.2 the evaluation statistics of participating systems are presented.	0
+130	8145	8145	S13-5	Introduction	22	28	4.0	1.0	Section 5 is a discussion about the conclusions of the entire task.	0
+131	8146	8146	S13-5	Introduction	23	29	4.0	1.0	Finally, in section 6 we summarize this presentation and discuss briefly our vision about challenges in distributional semantics.	0
+132	9050	9050	S13-11	abstract	1	2	2.0	1.0	In this paper we describe our Semeval-2013 task on Word Sense Induction and Disambiguation within an end-user application, namely Web search result clustering and diversification.	0
+133	9051	9051	S13-11	abstract	2	3	3.0	1.0	Given a target query, induction and disambiguation systems are requested to cluster and diversify the search results returned by a search engine for that query.	1
+134	9052	9052	S13-11	abstract	3	4	4.0	1.0	The task enables the end-to-end evaluation and comparison of systems.	0
+135	9390	9390	S13-13	Task Description	1	22	1.0	1.0	This task required participating systems to annotate instances of nouns, verb, and adjectives using Word-Net 3.1 (Fellbaum, 1998), which was selected due to its fine-grained senses.	1
+136	9391	9391	S13-13	Task Description	2	23	1.0	1.0	Participants could label each instance with one or more senses, weighting	1
+137	9392	9392	S13-13	Task Description	3	24	2.0	1.0	We all are relieved to lay aside our fight-or-flight reflexes and to commemorate our births from out of the dark centers of the women, to feel the complexity of our love and frustration with each other, to stretch our cognition to encompass the thoughts of every entity we know.	0
+138	9393	9393	S13-13	Task Description	4	25	2.0	1.0	dark%3:00:01:: -devoid of or deficient in light or brightness; shadowed or black dark%3:00:00:: -secret I ask because my practice has always been to allow about five minutes grace, then remove it.	0
+139	9394	9394	S13-13	Task Description	5	26	2.0	1.0	ask%2:32:02:: -direct or put; seek an answer to ask%2:32:04:: -address a question to and expect an answer from Table 1: Example instances with multiple senses due to intended double meanings (top) or contextual ambiguity (bottom).	0
+140	9395	9395	S13-13	Task Description	6	27	3.0	1.0	Senses are specified using their WordNet 3.1 sense keys.	0
+141	9396	9396	S13-13	Task Description	7	28	3.0	1.0	each by their applicability.	0
+142	9397	9397	S13-13	Task Description	8	29	3.0	1.0	Table 1 highlights two example contexts where multiple senses apply.	0
+143	9398	9398	S13-13	Task Description	9	30	4.0	1.0	The first example shows a case of an intentional double meaning that evokes both the physical aspect of dark.	0
+144	9399	9399	S13-13	Task Description	10	31	4.0	1.0	a as being devoid of light and the causal result of being secret.	0
+145	9400	9400	S13-13	Task Description	11	32	4.0	1.0	"In contrast, the second example shows a case of multiple interpretations from ambiguity; a different preceding context could generate the alternate interpretations ""I ask [you] because"" (sense ask%2:32:04::) or ""I ask [the question] because"" (sense ask%2:32:02::)."	0
+146	10487	10487	S14-6	abstract	1	2	1.0	1.0	SemEval-2014	0
+147	10488	10488	S14-6	abstract	2	3	2.0	1.0	Task 6 aims to advance semantic parsing research by providing a high-quality annotated dataset to compare and evaluate approaches.	0
+148	10489	10489	S14-6	abstract	3	4	2.0	1.0	The task focuses on contextual parsing of robotic commands, in which the additional context of spatial scenes can be used to guide a parser to control a robot arm.	1
+149	10490	10490	S14-6	abstract	4	5	3.0	1.0	Six teams submitted systems using both rule-based and statistical methods.	0
+150	10491	10491	S14-6	abstract	5	6	4.0	1.0	The best performing (hybrid) system scored 92.5% and 90.5% for parsing with and without spatial context.	0
+151	10492	10492	S14-6	abstract	6	7	4.0	1.0	However, the best performing statistical system scored 87.35% and 60.84% respectively, indicating that generalized understanding of commands given to a robot remains challenging, despite the fixed domain used for the task.	0
+152	11047	11047	S14-9	Subtask A: Contextual Polarity Disambiguation	1	38	2.0	2.0	Given a message containing a marked instance of a word or a phrase, determine whether that instance is positive, negative or neutral in that context.	1
+153	11048	11048	S14-9	Subtask A: Contextual Polarity Disambiguation	2	39	4.0	2.0	The instance boundaries were provided: this was a classification task, not an entity recognition task.	0
+154	12454	12454	S15-6	abstract	1	2	1.0	1.0	Clinical TempEval 2015 brought the temporal information extraction tasks of past Temp-Eval campaigns to the clinical domain.	0
+155	12455	12455	S15-6	abstract	2	3	2.0	1.0	Nine sub-tasks were included, covering problems in time expression identification, event expression identification and temporal relation identification.	1
+156	12456	12456	S15-6	abstract	3	4	3.0	1.0	Participant systems were trained and evaluated on a corpus of clinical notes and pathology reports from the Mayo Clinic, annotated with an extension of TimeML for the clinical domain.	0
+157	12457	12457	S15-6	abstract	4	5	4.0	1.0	Three teams submitted a total of 13 system runs, with the best systems achieving near-human performance on identifying events and times, but with a large performance gap still remaining for temporal relations.	0
+158	13717	13717	S15-13	title	1	1	4.0	1.0	SemEval-2015 Task 13: Multilingual All-Words Sense Disambiguation and Entity Linking	1
+159	13718	13718	S15-13	abstract	1	2	1.0	1.0	In this paper we present the Multilingual All-Words Sense Disambiguation and Entity Linking task.	1
+160	13719	13719	S15-13	abstract	2	3	2.0	1.0	Word Sense Disambiguation (WSD) and Entity Linking (EL) are well-known problems in the Natural Language Processing field and both address the lexical ambiguity of language.	0
+161	13720	13720	S15-13	abstract	3	4	3.0	1.0	Their main difference lies in the kind of meaning inventories that are used: EL uses encyclopedic knowledge, while WSD uses lexicographic information.	0
+162	13721	13721	S15-13	abstract	4	5	4.0	1.0	Our aim with this task is to analyze whether, and if so, how, using a resource that integrates both kinds of inventories (i.e., BabelNet 2.5.1) might enable WSD and EL to be solved by means of similar (even, the same) methods.	0
+163	13722	13722	S15-13	abstract	5	6	4.0	1.0	Moreover, we investigate this task in a multilingual setting and for some specific domains.	0
+164	23178	23178	S19-2	abstract	1	2	1.0	1.0	This paper presents Unsupervised Lexical	0
+165	23179	23179	S19-2	abstract	2	3	2.0	1.0	Frame Induction, Task 2 of the International Workshop on Semantic Evaluation in 2019.	0
+166	23180	23180	S19-2	abstract	3	4	2.0	1.0	Given a set of prespecified syntactic forms in context, the task requires that verbs and their arguments be clustered to resemble semantic frame structures.	1
+167	23181	23181	S19-2	abstract	4	5	3.0	1.0	Results are useful in identifying polysemous words, i.e., those whose frame structures are not easily distinguished, as well as discerning semantic relations of the arguments.	0
+168	23182	23182	S19-2	abstract	5	6	3.0	1.0	Evaluation of unsupervised frame induction methods fell into two tracks: Task A) Verb Clustering based on FrameNet 1.7; and B) Argument Clustering, with B.1) based on FrameNet's core frame elements, and B.2) on VerbNet 3.2 semantic roles.	0
+169	23183	23183	S19-2	abstract	6	7	4.0	1.0	The shared task attracted nine teams, of whom three reported promising results.	0
+170	23184	23184	S19-2	abstract	7	8	4.0	1.0	This paper describes the task and its data, reports on methods and resources that these systems used, and offers a comparison to human annotation.	0
+171	26005	26005	S20-4	abstract	1	2	1.0	1.0	In this paper, we present SemEval-2020 Task 4, Commonsense Validation and Explanation (ComVE), which includes three subtasks, aiming to evaluate whether a system can distinguish a natural language statement that makes sense to humans from one that does not, and provide the reasons.	1
+172	26006	26006	S20-4	abstract	2	3	1.0	1.0	Specifically, in our first subtask, the participating systems are required to choose from two natural language statements of similar wording the one that makes sense and the one does not.	0
+173	26007	26007	S20-4	abstract	3	4	2.0	1.0	The second subtask additionally asks a system to select the key reason from three options why a given statement does not make sense.	0
+174	26008	26008	S20-4	abstract	4	5	2.0	1.0	In the third subtask, a participating system needs to generate the reason.	0
+175	26009	26009	S20-4	abstract	5	6	3.0	1.0	We finally attracted 39 teams participating at least one of the three subtasks.	0
+176	26010	26010	S20-4	abstract	6	7	3.0	1.0	For Subtask A and Subtask B, the performances of top-ranked systems are close to that of humans.	0
+177	26011	26011	S20-4	abstract	7	8	4.0	1.0	However, for Subtask C, there is still a relatively large gap between systems and human performance.	0
+178	26012	26012	S20-4	abstract	8	9	4.0	1.0	The dataset used in our task can be found at https://github.com/wangcunxiang/SemEval2020-Task4-Commonsense-Validation-and-Explanation;	0
+179	26013	26013	S20-4	abstract	9	10	4.0	1.0	The leaderboard can be found at https://competitions.codalab.org/competitions/21080#results.	0
+180	26300	26300	S20-5	Introduction	1	10	1.0	1.0	"Counterfactual statements describe events that did not happen or cannot happen, and the possible consequences had those events happened, e.g., ""if kangaroos had no tails, they would topple over"" (Lewis, 2013)."	0
+181	26301	26301	S20-5	Introduction	2	11	1.0	1.0	"By developing a connection between the antecedent (e.g., ""kangaroos had no tails"") and consequent (e.g., ""they would topple over""), based on the imagination of possible worlds, humans can naturally form some causal judgments; e.g., having tails can prevent kangaroos from toppling over."	0
+182	26302	26302	S20-5	Introduction	3	12	1.0	1.0	One can understand counterfactuals using knowledge and explore the relationship between causes and effects.	0
+183	26303	26303	S20-5	Introduction	4	13	1.0	1.0	Although we may not be able to rollback the events which have happened or make impossible events occur in the real world, we can still think of potential outcomes of alternatives.	0
+184	26304	26304	S20-5	Introduction	5	14	1.0	1.0	Counterfactual thinking is a remarkable ability of human beings and is considered by many researchers, to act as the highest level of causation in the ladder of causal reasoning.	0
+185	26305	26305	S20-5	Introduction	6	15	1.0	1.0	Even the most advanced artificial intelligence system may still be far from achieving human-like counterfactual reasoning.	0
+186	26306	26306	S20-5	Introduction	7	16	1.0	1.0	Counterfactual reasoning is an important component for AI systems in obtaining stronger capability in generalization (Pearl and Mackenzie, 2018).	0
+187	26307	26307	S20-5	Introduction	8	17	1.0	1.0	Modeling counterfactuals has been studied in many different disciplines.	0
+188	26308	26308	S20-5	Introduction	9	18	1.0	1.0	For example, research in psychology has shown that counterfactual thinking can affect human cognition and behaviors (Epstude and Roese, 2008;	0
+189	26309	26309	S20-5	Introduction	10	19	2.0	1.0	Kray et al., 2010).	0
+190	26310	26310	S20-5	Introduction	11	20	2.0	1.0	The landmark paper of (Goodman, 1947) gives a detailed analysis of counterfactual conditionals in philosophy and logistics.	0
+191	26311	26311	S20-5	Introduction	12	21	2.0	1.0	As another example, counterfactuals have also been investigated in epidemiology to reveal the relationship between certain diseases and potential risk factors for those diseases (Vandenbroucke et al., 2016;	0
+192	26312	26312	S20-5	Introduction	13	22	2.0	1.0	Krieger and Davey Smith, 2016).	0
+193	26313	26313	S20-5	Introduction	14	23	2.0	1.0	We present a counterfactual recognition (CR) task, the task of determining whether a given statement conveys counterfactual thinking or not, and further analyzing the causal relations indicated by counterfactual statements.	0
+194	26314	26314	S20-5	Introduction	15	24	2.0	1.0	In our counterfactual recognition task, we aim to model counterfactual semantics and reasoning in natural language.	1
+195	26315	26315	S20-5	Introduction	16	25	2.0	1.0	Specifically, we provide a benchmark for counterfactual recognition with two subtasks.	0
+196	26316	26316	S20-5	Introduction	17	26	2.0	1.0	Subtask-1 requires systems to determine whether a given statement is counterfactual or not.	0
+197	26317	26317	S20-5	Introduction	18	27	2.0	1.0	The counterfactual detection task can serve as a foundation for downstream counterfactual analysis.	0
+198	26318	26318	S20-5	Introduction	19	28	3.0	1.0	Subtask-2 requires systems to further locate the antecedent and consequent text spans in a given counterfactual statement, as the connection between an antecedent and consequent can reveal core causal inference clues.	0
+199	26319	26319	S20-5	Introduction	20	29	3.0	1.0	To build the dataset for counterfactual recognition, we extract over 60,000 candidate counterfactual statements by scanning through news reports in three domains: finance, politics, and healthcare.	0
+200	26320	26320	S20-5	Introduction	21	30	3.0	1.0	The first round of annotation focuses on labeling each sample as true or false, where true denotes a sample is counterfactual and false otherwise in Subtask-1.	0
+201	26321	26321	S20-5	Introduction	22	31	3.0	1.0	A portion of samples labeled as true will be further used in Subtask-2 to detect the text spans that describe the antecedent and consequent.	0
+202	26322	26322	S20-5	Introduction	23	32	3.0	1.0	Specifically, we carefully select 20,000 high-quality samples from the 60,000 statements and use them in Subtask-1, with 13,000 (65%) as the training set and the rest for testing.	0
+203	26323	26323	S20-5	Introduction	24	33	3.0	1.0	The dataset for Subtask-2 contains 5,501 samples, among which we use 3,551 (65%) for training and the rest for testing.	0
+204	26324	26324	S20-5	Introduction	25	34	3.0	1.0	To achieve a decent performance in our shared task, we expect the systems should have a certain level of language understanding capacity in both semantics and syntax, together with a certain level of commonsense reasoning ability.	0
+205	26325	26325	S20-5	Introduction	26	35	3.0	1.0	In Subtask-1, the top-ranked submissions all use pre-trained neural models, which appear to be an effective way to integrate knowledge learned from large corpus.	0
+206	26326	26326	S20-5	Introduction	27	36	3.0	1.0	All of these models use neural networks, which further confirms the effectiveness of distributed representation and subsymbolic approaches for this task.	0
+207	26327	26327	S20-5	Introduction	28	37	4.0	1.0	Some top systems also successfully incorporate rules to further improve the performance, suggesting the benefits of combining neural networks with symbolic approaches.	0
+208	26328	26328	S20-5	Introduction	29	38	4.0	1.0	The first-place model also utilizes data augmentation to further improve system performance.	0
+209	26329	26329	S20-5	Introduction	30	39	4.0	1.0	In Subtask-2, top systems take two main approaches: sequence labelling or question answering.	0
+210	26330	26330	S20-5	Introduction	31	40	4.0	1.0	Same as systems in Subtask-1, all of them benefit from pre-training.	0
+211	26331	26331	S20-5	Introduction	32	41	4.0	1.0	We will provide a more detailed analysis in the system and result section.	0
+212	26332	26332	S20-5	Introduction	33	42	4.0	1.0	We built a dataset for this shared task from scratch.	0
+213	26333	26333	S20-5	Introduction	34	43	4.0	1.0	Our data, baseline code, and leaderboard can be found at https://competitions.codalab.org/competitions/21691.	0
+214	26334	26334	S20-5	Introduction	35	44	4.0	1.0	The data and baseline code are also available at https://zenodo.org/record/3932442.	0
+215	26335	26335	S20-5	Introduction	36	45	4.0	1.0	In general, our task here is a relatively basic one in counterfactual analysis in natural language.	0
+216	26336	26336	S20-5	Introduction	37	46	4.0	1.0	We hope it will intrigue and facilitate further research on counterfactual analysis and can benefit other related downstream tasks.	0
+217	30744	30744	2020.nlptea-1.4	abstract	1	2	1.0	1.0	This paper presents the NLPTEA 2020 shared task for Chinese Grammatical Error Diagnosis (CGED) which seeks to identify grammatical error types, their range of occurrence and recommended corrections within sentences written by learners of Chinese as a foreign language.	1
+218	30745	30745	2020.nlptea-1.4	abstract	2	3	2.0	1.0	We describe the task definition, data preparation, performance metrics, and evaluation results.	0
+219	30746	30746	2020.nlptea-1.4	abstract	3	4	3.0	1.0	Of the 30 teams registered for this shared task, 17 teams developed the system and submitted a total of 43 runs.	0
+220	30747	30747	2020.nlptea-1.4	abstract	4	5	4.0	1.0	System performances achieved a significant progress, reaching F1 of 91% in detection level, 40% in position level and 28% in correction level.	0
+221	30748	30748	2020.nlptea-1.4	abstract	5	6	4.0	1.0	All data sets with gold standards and scoring scripts are made publicly available to researchers.	0
+222	31215	31215	W18-3601	Introduction and Task Overview	1	8	1.0	1.0	Natural Language Generation (NLG) is attracting growing interest both in the form of end-toend tasks (e.g. data-to-text and text-to-text generation), and as embedded component tasks (e.g. in abstractive summarisation, dialogue-based interaction and question answering).	0
+223	31216	31216	W18-3601	Introduction and Task Overview	2	9	1.0	1.0	NLG research has been given a boost by two recent developments: the rapid spread of neural language generation techniques, and the growing availability of multilingual treebanks annotated with Universal Dependencies 1 (UD), to the point 1 http://universaldependencies.org/ where as many as 70 treebanks covering about 50 languages can now be downloaded freely.	0
+224	31217	31217	W18-3601	Introduction and Task Overview	3	10	1.0	1.0	2 UD treebanks facilitate the development of applications that work potentially across all languages for which UD treebanks are available in a uniform fashion, which is a big advantage for system developers.	0
+225	31218	31218	W18-3601	Introduction and Task Overview	4	11	1.0	1.0	As has already been seen in parsing, UD treebanks are also a good basis for multilingual shared tasks: a method that works for some languages may also work for others.	0
+226	31219	31219	W18-3601	Introduction and Task Overview	5	12	1.0	1.0	The SR'18 task is to generate sentences from structures at the level of abstraction of outputs in state-of-the-art parsing, encouraging participants to explore the extent to which neural network parsing algorithms can be reversed for generation.	1
+227	31220	31220	W18-3601	Introduction and Task Overview	6	13	2.0	1.0	SR'18 also addresses questions about just how suitable and useful the notion of universal dependencies-which is in the process of becoming the dominant linguistic formalism across a wide range of NLP applications, parsing in particular-is for NLG.	0
+228	31221	31221	W18-3601	Introduction and Task Overview	7	14	2.0	1.0	SR'18 follows the SR'11 pilot surface realisation task for English  which was part of Generation Challenges 2011 (GenChal'11), the fifth round of shared-task evaluation competitions (STECs) involving the language generation tasks.	0
+229	31222	31222	W18-3601	Introduction and Task Overview	8	15	2.0	1.0	Outside of the SR tasks, just three 'deep' NLG shared tasks focusing on language generation from abstract semantic representations have been organised to date: WebNLG 3 (Gardent et al., 2017), Se-mEval Task 9 4 (May and Priyadarshi, 2017), and E2E 5 (Novikova et al., 2017).	0
+230	31223	31223	W18-3601	Introduction and Task Overview	9	16	2.0	1.0	What is more, these 2 See the recent parsing shared task based on UDs (Nivre and de Marneffe et al., 2016):	0
+231	31224	31224	W18-3601	Introduction and Task Overview	10	17	2.0	1.0	http:// universaldependencies.org/conll17/.	0
+232	31225	31225	W18-3601	Introduction and Task Overview	11	18	2.0	1.0	3 http://talc1.loria.fr/webnlg/stories/ challenge.html 4 http://alt.qcri.org/semeval2017/ task9/ 5 http://www.macs.hw.ac.uk/ Interaction	0
+233	31226	31226	W18-3601	Introduction and Task Overview	12	19	3.0	1.0	Lab/E2E/ tasks have only been offered for English.	0
+234	31227	31227	W18-3601	Introduction and Task Overview	13	20	3.0	1.0	As in SR'11, the Multilingual Surface Realisation shared task (SR'18) comprises two tracks with different levels of difficulty:	0
+235	31228	31228	W18-3601	Introduction and Task Overview	14	21	3.0	1.0	Shallow Track:	0
+236	31229	31229	W18-3601	Introduction and Task Overview	15	22	3.0	1.0	This track starts from genuine UD structures in which word order information has been removed and tokens have been lemmatised.	0
+237	31230	31230	W18-3601	Introduction and Task Overview	16	23	3.0	1.0	In other words, it starts from unordered dependency trees with lemmatised nodes that hold PoS tags and morphological information as found in the original treebank annotations.	0
+238	31231	31231	W18-3601	Introduction and Task Overview	17	24	4.0	1.0	The task amounts to determining the word order and inflecting words.	0
+239	31232	31232	W18-3601	Introduction and Task Overview	18	25	4.0	1.0	Deep Track:	0
+240	31233	31233	W18-3601	Introduction and Task Overview	19	26	4.0	1.0	This track starts from UD structures from which functional words (in particular, auxiliaries, functional prepositions and conjunctions) and surface-oriented morphological and syntactic information have been removed.	0
+241	31234	31234	W18-3601	Introduction and Task Overview	20	27	4.0	1.0	In addition to what is required for the Shallow Track, the task in the Deep Track thus also requires reintroduction of the removed functional words and morphological features.	0
+242	31235	31235	W18-3601	Introduction and Task Overview	21	28	4.0	1.0	In the remainder of this paper, we describe the data we used in the two tracks (Section 2), and the evaluation methods we used to evaluate submitted systems (Sections 3.1 and 3.2).	0
+243	31236	31236	W18-3601	Introduction and Task Overview	22	29	4.0	1.0	We then briefly introduce the participating systems (Section 4), report and discuss evaluation results (Section 5), and conclude with some discussion and a look to the future (Section 6).	0
+244	31517	31517	W19-3203	abstract	1	3	1.0	1.0	The number of users of social media continues to grow, with nearly half of adults worldwide and two-thirds of all American adults using social networking on a regular basis 1 . Advances in automated data processing and NLP present the possibility of utilizing this massive data source for biomedical and public health applications, if researchers address the methodological challenges unique to this media.	0
+245	31518	31518	W19-3203	abstract	2	4	1.0	1.0	We present the Social Media Mining for Health Shared Tasks collocated with the ACL at Florence in 2019, which address these challenges for health monitoring and surveillance, utilizing state of the art techniques for processing noisy, real-world, and substantially creative language expressions from social media users.	0
+246	31519	31519	W19-3203	abstract	3	5	2.0	1.0	For the fourth execution of this challenge, we proposed four different tasks.	0
+247	31520	31520	W19-3203	abstract	4	6	2.0	1.0	Task 1 asked participants to distinguish tweets reporting an adverse drug reaction (ADR) from those that do not.	1
+248	31521	31521	W19-3203	abstract	5	7	3.0	1.0	Task 2, a follow-up to Task 1, asked participants to identify the span of text in tweets reporting ADRs.	1
+249	31522	31522	W19-3203	abstract	6	8	3.0	1.0	Task 3 is an end-to-end task where the goal was to first detect tweets mentioning an ADR and then map the extracted colloquial mentions of ADRs in the tweets to their corresponding standard concept IDs in the MedDRA vocabulary.	1
+250	31523	31523	W19-3203	abstract	7	9	4.0	1.0	Finally, Task 4 asked participants to classify whether a tweet contains a personal mention of one's health, a more general discussion of the health issue, or is an unrelated mention.	1
+251	31524	31524	W19-3203	abstract	8	10	4.0	1.0	A total of 34 teams from around the world registered and 19 teams from 12 countries submitted a system run.	0
+252	31525	31525	W19-3203	abstract	9	11	4.0	1.0	We summarize here the corpora for this challenge which are freely available at https://competitions.codalab. org/competitions/22521, and present an overview of the methods and the results of the competing systems.	0
+253	32775	32775	2020.sigmorphon-1.1	Task Description	1	44	1.0	1.0	The 2020 iteration of our task is similar to CoNLL-SIGMORPHON 2017 (Cotterell et al., 2017) and 2018 (Cotterell et al., 2018) in that participants are required to design a model that learns to generate inflected forms from a lemma and a set of morphosyntactic features that derive the desired target form.	1
+254	32776	32776	2020.sigmorphon-1.1	Task Description	2	45	1.0	1.0	For each language we provide a separate training, development, and test set.	0
+255	32777	32777	2020.sigmorphon-1.1	Task Description	3	46	1.0	1.0	"More historically, all of these tasks resemble the classic ""wug""-test that Berko (1958) developed to test child and human knowledge of English nominal morphology."	0
+256	32778	32778	2020.sigmorphon-1.1	Task Description	4	47	2.0	1.0	Unlike the task from earlier years, this year's task proceeds in three phases: a Development Phase, a Generalization Phase, and an Evaluation Phase, in which each phase introduces previously unseen data.	0
+257	32779	32779	2020.sigmorphon-1.1	Task Description	5	48	2.0	1.0	The task starts with the Development Phase, which was an elongated period of time (about two months), during which participants develop a model of morphological inflection.	0
+258	32780	32780	2020.sigmorphon-1.1	Task Description	6	49	2.0	1.0	In this phase, we provide training and development splits for 45 languages representing the Austronesian, Niger-Congo, Oto-Manguean, Uralic and Indo-European language families.	0
+259	32781	32781	2020.sigmorphon-1.1	Task Description	7	50	2.0	1.0	Table 1 provides details on the languages.	0
+260	32782	32782	2020.sigmorphon-1.1	Task Description	8	51	3.0	1.0	The Generalization Phase is a short period of time (it started about a week before the Evaluation Phase) during which participants fine-tune their models on new data.	0
+261	32783	32783	2020.sigmorphon-1.1	Task Description	9	52	3.0	1.0	At the start of the phase, we provide training and development splits for 45 new languages where approximately half are genetically related (belong to the same family) and half are genetically unrelated (are isolates or belong to a different family) to the languages presented in the Development Phase.	0
+262	32784	32784	2020.sigmorphon-1.1	Task Description	10	53	3.0	1.0	More specifically, we introduce (surprise) languages from Afro-Asiatic, Algic, Dravidian, Indo-European, Niger-Congo, Sino-Tibetan, Siouan, Songhay, Southern Daly, Tungusic, Turkic, Uralic, and Uto-Aztecan families.	0
+263	32785	32785	2020.sigmorphon-1.1	Task Description	11	54	3.0	1.0	See Table 2 for more details.	0
+264	32786	32786	2020.sigmorphon-1.1	Task Description	12	55	4.0	1.0	Finally, test splits for all 90 languages are released in the Evaluation Phase.	0
+265	32787	32787	2020.sigmorphon-1.1	Task Description	13	56	4.0	1.0	During this phase, the models are evaluated on held-out forms.	0
+266	32788	32788	2020.sigmorphon-1.1	Task Description	14	57	4.0	1.0	Importantly, the languages from both previous phases are evaluated simultaneously.	0
+267	32789	32789	2020.sigmorphon-1.1	Task Description	15	58	4.0	1.0	This way, we evaluate the extent to which models (especially those with shared parameters) overfit to the development data: a model based on the morphological patterning of the Indo-European languages may end up with a bias towards suffixing and will struggle to learn prefixing or infixation.	0
+268	38175	38175	K15-2001	Task Definition	1	47	1.0	1.0	The goal of the shared task on shallow discourse parsing is to detect and categorize individual discourse relations.	0
+269	38176	38176	K15-2001	Task Definition	2	48	1.0	1.0	Specifically, given a newswire article as input, a participating system is asked to return a set of discourse relations contained in the text.	1
+270	38177	38177	K15-2001	Task Definition	3	49	2.0	1.0	A discourse relation, as defined in the PDTB, from which the training data for the shared task is drawn, is a relation taking two abstract objects (events, states, facts, or propositions) as arguments.	1
+271	38178	38178	K15-2001	Task Definition	4	50	2.0	1.0	Discourse relations may be expressed with explicit connectives like because, however, but, or implicitly inferred between abstract object units.	0
+272	38179	38179	K15-2001	Task Definition	5	51	2.0	1.0	In the current version of the PDTB, non-explicit relations are inferred only between adjacent units.	0
+273	38180	38180	K15-2001	Task Definition	6	52	3.0	1.0	Each discourse relation is labeled with a sense selected from a sense hierarchy, and its arguments are generally in the form of sentences, clauses, or in some rare cases, noun phrases.	0
+274	38181	38181	K15-2001	Task Definition	7	53	3.0	1.0	To detect a discourse relation, a participating system needs to:	0
+275	38182	38182	K15-2001	Task Definition	8	54	4.0	1.0	1. Identify the text span of an explicit discourse connective, if present; 2. Identify the spans of text that serve as the two arguments for each relation; 3. Label the arguments as (Arg1 or Arg2) to indicate the order of the arguments;	0
+276	38183	38183	K15-2001	Task Definition	9	55	4.0	1.0	"4. Predict the sense of the discourse relation (e.g., ""Cause"", ""Condition"", ""Contrast"")."	0
+277	38184	38184	K15-2001	Task Definition	10	56	4.0	1.0	3 Data	0
+278	42558	42558	D19-5719	abstract	1	2	1.0	1.0	This paper presents the fourth edition of the Bacteria Biotope task at BioNLP Open Shared Tasks 2019.	0
+279	42559	42559	D19-5719	abstract	2	3	2.0	1.0	The task focuses on the extraction of the locations and phenotypes of microorganisms from PubMed abstracts and fulltext excerpts, and the characterization of these entities with respect to reference knowledge sources (NCBI taxonomy, OntoBiotope ontology).	1
+280	42560	42560	D19-5719	abstract	3	4	3.0	1.0	The task is motivated by the importance of the knowledge on biodiversity for fundamental research and applications in microbiology.	0
+281	42561	42561	D19-5719	abstract	4	5	4.0	1.0	The paper describes the different proposed subtasks, the corpus characteristics, and the challenge organization.	0
+282	42562	42562	D19-5719	abstract	5	6	4.0	1.0	We also provide an analysis of the results obtained by participants, and inspect the evolution of the results since the last edition in 2016.	0
+283	42963	42963	D19-6007	Introduction	1	6	1.0	1.0	Due to the rise of powerful pre-trained word and sentence representations, automated text processing has come a long way in recent years, with systems that perform even better than humans on some datasets (Rajpurkar et al., 2016a).	0
+284	42964	42964	D19-6007	Introduction	2	7	1.0	1.0	However, natural language understanding also involves complex challenges.	0
+285	42965	42965	D19-6007	Introduction	3	8	1.0	1.0	One important difference between human and machine text understanding lies in the fact that humans can access commonsense knowledge while processing text, which helps them to draw inferences about facts that are not mentioned in a text, but that are assumed to be common ground.	0
+286	42966	42966	D19-6007	Introduction	4	9	1.0	1.0	"(1) Max: ""It's 1 pm already, I think we should get lunch."""	0
+287	42967	42967	D19-6007	Introduction	5	10	1.0	1.0	"Dustin: ""Let me get my wallet."""	0
+288	42968	42968	D19-6007	Introduction	6	11	2.0	1.0	Consider the conversation in Example 1: Max will not be surprised that Dustin needs to get his wallet, since she knows that paying is a part of getting lunch.	0
+289	42969	42969	D19-6007	Introduction	7	12	2.0	1.0	Also, she knows that a wallet is needed for paying, so Dustin needs to get a wallet for lunch.	0
+290	42970	42970	D19-6007	Introduction	8	13	2.0	1.0	This is part of the commonsense knowledge about getting lunch and should be known by both persons.	0
+291	42971	42971	D19-6007	Introduction	9	14	2.0	1.0	For a computer system, inferring such unmentioned facts is a non-trivial challenge.	0
+292	42972	42972	D19-6007	Introduction	10	15	2.0	1.0	The workshop on Commonsense Inference in NLP (COIN) is focused on such phenomena, looking at models, data, and evaluation methods for commonsense inference.	0
+293	42973	42973	D19-6007	Introduction	11	16	3.0	1.0	This report summarizes the results of the COIN shared tasks, an unofficial extension of the Sem-Eval 2018 shared task 11, Machine Comprehension using Commonsense Knowledge (Ostermann et al., 2018b).	0
+294	42974	42974	D19-6007	Introduction	12	17	3.0	1.0	The tasks aim to evaluate the commonsense inference capabilities of text understanding systems in two settings: Commonsense inference in everyday narrations (task 1) and commonsense inference in news texts (task 2).	1
+295	42975	42975	D19-6007	Introduction	13	18	3.0	1.0	Framed as machine comprehension evaluations, the datasets used for both tasks contain challenging reading comprehension questions asking for facts that are not explicitly mentioned in the given reading texts.	0
+296	42976	42976	D19-6007	Introduction	14	19	3.0	1.0	Several teams participated in the shared tasks and submitted system description papers.	0
+297	42977	42977	D19-6007	Introduction	15	20	3.0	1.0	All systems are based on Transformer architectures (Vaswani et al., 2017), some of them explicitly incorporating commonsense knowledge resources, whereas others only use pretraining on other machine comprehension data sets.	0
+298	42978	42978	D19-6007	Introduction	16	21	4.0	1.0	The best submitted system achieves 90.6% accuracy and 83.7% F1-score on task 1 and task 2, respectively.	0
+299	42979	42979	D19-6007	Introduction	17	22	4.0	1.0	Still, there are cases that remain elusive: Humans outperform this system by a margin of 7% (task 1) and 8% (task 2).	0
+300	42980	42980	D19-6007	Introduction	18	23	4.0	1.0	Our results indicate that while Transformer models are able to perform extremely well on the data used in our shared task, there are still some remaining cases demonstrating that human level is not achieved yet.	0
+301	42981	42981	D19-6007	Introduction	19	24	4.0	1.0	Still, we believe that our results also imply the need for more challenging data sets.	0
+302	42982	42982	D19-6007	Introduction	20	25	4.0	1.0	In particular, we need data sets that make it harder to benefit from redundancy in the training data or large-scale pretraining on similar domains.	0
+303	42983	42983	D19-6007	Introduction	21	26	4.0	1.0	In the following, we briefly describe the data sets ( §2), baselines and evaluation metrics of the shared tasks ( §3) and we present a summary of the participating systems ( §4), their results ( §5) as well as a discussion thereof ( §6).	0
+304	45242	45242	I17-4002	Task Description	1	25	1.0	2.0	This task seeks to evaluate the capability of systems for predicting dimensional sentiments of Chinese words and phrases.	0
+305	45243	45243	I17-4002	Task Description	2	26	1.0	2.0	For a given word or phrase, participants were asked to provide a realvalued score from 1 to 9 for both the valence and arousal dimensions, respectively indicating the degree from most negative to most positive for valence, and from most calm to most excited for arousal.	1
+306	45244	45244	I17-4002	Task Description	3	27	1.0	2.0	"The input format is ""term_id, term"", and the output format is ""term_id, valence_rating, arousal_rating""."	0
+307	45245	45245	I17-4002	Task Description	4	28	1.0	2.0	"Below are the input/output formats of the example words ""好"" (good), ""非常好"" (very good), ""滿意"" (satisfy) and ""不滿意"" (not satisfy)."	0
+308	45246	45246	I17-4002	Task Description	5	29	2.0	2.0	with valence-arousal ratings.	0
+309	45247	45247	I17-4002	Task Description	6	30	2.0	2.0	For multi-word phrases, we first selected a set of modifiers such as negators (e.g., not), degree adverbs (e.g., very) and modals (e.g., would).	0
+310	45248	45248	I17-4002	Task Description	7	31	2.0	2.0	These modifiers were combined with the affective words in CVAW to form multi-word phrases.	0
+311	45249	45249	I17-4002	Task Description	8	32	2.0	2.0	The frequency of each phrase was then retrieved from a large web-based corpus.	0
+312	45250	45250	I17-4002	Task Description	9	33	2.0	2.0	Only phrases with a frequency greater than or equal to 3 were retained as candidates.	0
+313	45251	45251	I17-4002	Task Description	10	34	3.0	2.0	To avoid several modifiers dominating the whole dataset, each modifier (or modifier combination) can have at most 50 phrases.	0
+314	45252	45252	I17-4002	Task Description	11	35	3.0	2.0	In addition, the phrases were selected to maximize the balance between positive and negative words.	0
+315	45253	45253	I17-4002	Task Description	12	36	3.0	2.0	Finally, a total of 3,000 phrases were collected by excluding unusual and semantically incomplete candidate phrases, of which 2,250 phrases were randomly selected as the training set according to the proportions of each modifier (or modifier combination) in the original set, and the remaining 750 phrases were used as the test set.	0
+316	45254	45254	I17-4002	Task Description	13	37	3.0	2.0	Test set: For single words, we selected 750 words that were not included in the CVAW 2.0 from NTUSD (Ku and Chen, 2007) using the same method presented in our previous task on Dimensional Sentiment Analysis for Chinese Words .	0
+317	45255	45255	I17-4002	Task Description	14	38	3.0	2.0	Each single word in both training and test sets was annotated with valence-arousal ratings by five annotators and the average ratings were taken as ground truth.	0
+318	45256	45256	I17-4002	Task Description	15	39	4.0	3.0	Each multi-word phrase was rated by at least 10 different annotators.	0
+319	45257	45257	I17-4002	Task Description	16	40	4.0	3.0	Once the rating process was finished, a corpus clean up procedure was performed to remove outlier ratings that did not fall within the mean plus/minus 1.5 standard deviations.	0
+320	45258	45258	I17-4002	Task Description	17	41	4.0	3.0	They were then excluded from the calculation of the average ratings for each phrase.	0
+321	45259	45259	I17-4002	Task Description	18	42	4.0	3.0	The policy of this shared task was implemented as is an open test.	0
+322	45260	45260	I17-4002	Task Description	19	43	4.0	3.0	That is, in addition to the above official datasets, participating teams were allowed to use other publicly available data for system development, but such sources should be specified in the final technical report.	0
+323	46116	46116	W11-1802	abstract	1	2	2.0	1.0	The Genia event task, a bio-molecular event extraction task, is arranged as one of the main tasks of BioNLP Shared Task 2011.	1
+324	46117	46117	W11-1802	abstract	2	3	3.0	1.0	As its second time to be arranged for community-wide focused efforts, it aimed to measure the advance of the community since 2009, and to evaluate generalization of the technology to full text papers.	0
+325	46118	46118	W11-1802	abstract	3	4	4.0	1.0	After a 3-month system development period, 15 teams submitted their performance results on test cases.	0
+326	46119	46119	W11-1802	abstract	4	5	1.0	1.0	The results show the community has made a significant advancement in terms of both performance improvement and generalization.	0

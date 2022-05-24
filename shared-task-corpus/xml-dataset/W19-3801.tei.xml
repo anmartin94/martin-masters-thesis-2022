@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Gendered Ambiguous Pronouns (GAP) Shared Task at the Gender Bias in NLP Workshop 2019</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Kellie</forename><surname>Webster</surname></persName>
+							<email>websterk@google.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Google Research</orgName>
+								<address>
+									<addrLine>111 8th Avenue</addrLine>
+									<settlement>New York</settlement>
+									<region>NY</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Marta</forename><forename type="middle">R</forename><surname>Costa-Jussà</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Universitat</orgName>
+								<address>
+									<addrLine>Politecnica de Catalunya</addrLine>
+									<settlement>Barcelona</settlement>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Christian</forename><surname>Hardmeier</surname></persName>
+							<email>christian.hardmeier@lingfil.uu.se</email>
+							<affiliation key="aff2">
+								<orgName type="institution">Uppsala Universitet</orgName>
+								<address>
+									<country key="SE">Sweden</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Will</forename><surname>Radford</surname></persName>
+							<email>will.r@canva.com</email>
+							<affiliation key="aff3">
+								<orgName type="institution">Canva</orgName>
+								<address>
+									<addrLine>110 Kippax Street Surry Hills</addrLine>
+									<country key="AU">Australia</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Gendered Ambiguous Pronouns (GAP) Shared Task at the Gender Bias in NLP Workshop 2019</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The 1st ACL workshop on Gender Bias in Natural Language Processing included a shared task on gendered ambiguous pronoun (GAP) resolution. This task was based on the coreference challenge defined in <ref type="bibr" target="#b23">Webster et al. (2018)</ref>, designed to benchmark the ability of systems to resolve pronouns in real-world contexts in a gender-fair way. 263 teams competed via a Kaggle competition, with the winning system achieving logloss of 0.13667 and near gender parity. We review the approaches of eleven systems with accepted description papers, noting their effective use of BERT , both via fine-tuning and for feature extraction, as well as ensembling.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Gender bias is one of the typologies of social bias (e.g. race, politics) that is alarming the Natural Language Processing (NLP) community. An illustration of the problematic behaviour are the recurrently appearing occupational stereotypes that homemaker is to woman as programmer is to man <ref type="bibr" target="#b4">(Bolukbasi et al., 2016)</ref>. Recent studies have aimed to detect, analyse and mitigate gender bias in different NLP tools and applications including word embeddings <ref type="bibr" target="#b4">(Bolukbasi et al., 2016;</ref><ref type="bibr" target="#b9">Gonen and Goldberg, 2019)</ref>, coreference resolution <ref type="bibr" target="#b19">(Rudinger et al., 2018;</ref><ref type="bibr" target="#b26">Zhao et al., 2018)</ref>, sentiment analysis <ref type="bibr" target="#b15">(Park et al., 2018;</ref><ref type="bibr" target="#b3">Bhaskaran and Bhallamudi, 2019)</ref> and machine translation ( <ref type="bibr" target="#b21">Vanmassenhove et al., 2018;</ref><ref type="bibr" target="#b8">Font and Costa-jussà, 2019)</ref>. One of the main sources of gender bias is believed to be societal artefacts in the data from which our algorithms learn. To address this, many have created gender-labelled and gender-balanced datasets <ref type="bibr" target="#b19">(Rudinger et al., 2018;</ref><ref type="bibr" target="#b26">Zhao et al., 2018;</ref><ref type="bibr" target="#b21">Vanmassenhove et al., 2018)</ref>.</p><p>We present the results of a shared task evaluation conducted at the 1st Workshop on Gender Bias in Natural Language Processing at the ACL 2019 conference. The shared task is based on the gender-balanced GAP coreference dataset <ref type="bibr" target="#b23">(Webster et al., 2018)</ref> and allows us to test the hypothesis that fair datasets would be enough to solve the gender bias challenge in NLP.</p><p>The strong results of submitted systems tend to support this hypothesis and gives the community a great starting point for mitigating bias in models. Indeed, the enthusiastic participation we saw for this shared task has yielded systems which achieve near-human accuracy while achieving near gender-parity at 0.99, measured by the ratio between F1 scores on feminine and masculine examples. We are excited for future work extending this success to more languages, domains, and tasks. However, we especially note future work in algorithms which achieve fair outcomes given biased data, given the wealth of information from existing unbalanced datasets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task</head><p>The goal of our shared task was to encourage research in gender-fair models for NLP by providing a well-defined task that is known to be sensitive to gender bias and an evaluation procedure addressing this issue. We chose the GAP resolution task <ref type="bibr" target="#b23">(Webster et al., 2018)</ref>, which measures the ability of systems to resolve gendered pronoun reference from real-world contexts in a gender-fair way. Specifically, GAP asks systems to resolve a target personal pronoun to one of two names, or neither name. For instance, a perfect resolver would resolve that she refers to Fujisawa and not to Mari Motohashi in the Wikipedia excerpt:</p><p>(1)</p><p>In May, Fujisawa joined Mari Motohashi's rink as the team's skip, moving back from Karuizawa to Kitami where she had spent her junior days.</p><p>The original GAP challenge encourages fairness by balancing its datasets by the gender of the pronoun, as well as using disaggregated evaluation with separate scores for masculine and feminine examples. To simplify evaluation, we did not disaggregate evaluation for this shared task, but instead encouraged fairness by not releasing the balance of masculine to feminine examples in the final evaluation data. <ref type="bibr">1</ref> The competition was run on Kaggle 2 , a wellknown platform for competitive data science and machine learning projects with an active community of participants and support.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Setting</head><p>The original GAP challenge defines four evaluation settings, depending on whether the candidate systems have to identify potential antecedents or are given a fixed choice of antecedent candidates, and whether or not they have access to the entire Wikipedia page from which the example was extracted. Our task was run in gold-two-mention with page-context. This means that, for our task, systems had access to the two names being evaluated at inference time, so that the systems were not required to do mention detection and full coreference resolution. For each example, the systems had to consider whether the target pronoun was coreferent with the first, the second or neither of the two given antecedent candidates. A valid submission consisted of a probability estimate for each of these three cases. The systems were also given the source URL for the text snippet (a Wikipedia page), enabling unlimited access to context. This minimized the chance that systems could cheat, intentionally or inadvertently, by accessing information outside the task setting.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Data</head><p>To ensure blind evaluation, we sourced 760 new annotated examples for official evaluation 3 using the same techniques from the original GAP work <ref type="bibr" target="#b23">(Webster et al., 2018)</ref>, with three changes. To ensure the highest quality of annotations for this task, we (i) only accepted examples on which the three raters provided unanimous judgement, (ii) added heuristics to remove cases with errors in entity span labeling, and (iii) did an additional, manual round to remove assorted errors. The final set of logloss F1 Bias Attree ( <ref type="formula">2019</ref>  We note many competing systems used the original GAP evaluation data 4 as training data for this task, given that the two have the same format, base domain (Wikipedia), and task definition.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Evaluation</head><p>The original GAP work defined two official evaluation metrics, F1 score and Bias, the ratio between the F1 scores on feminine and masculine examples. Bias takes a value of 1 at gender parity; a value below 1 indicates that masculine entities are resolved more accurately than feminine ones.</p><p>In contrast, the official evaluation metric of the competition was the logloss of the submitted probability estimates:</p><formula xml:id="formula_0">logloss = − 1 N N ∑ i=1 M ∑ j=1 y i j log p i j ,<label>(1)</label></formula><p>where N is the number of samples in the test set, M = 3 is the number of classes to be predicted, y i j is 1 if observation i belongs to class j according to the gold-standard annotations and 0 otherwise, and p i j is the probability estimated by the system that observation i belongs to class j.</p><p>Table <ref type="table" target="#tab_1">1</ref> tabulates results based on the original and shared task metrics. Logloss and GAP F1 both place the winners in the same order.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Prizes</head><p>A total prize pool of USD 25,000 was provided by Google. The pool was broken down into prizes of USD 12,000, 8,000, and 5,000 for the top three systems, respectively. This attracted submissions from 263 teams, covering a wide diversity of geographic locations and affiliations, see Section 3.1. Table <ref type="table" target="#tab_1">1</ref> lists results for the three prize-winning systems: Attree (2019), <ref type="bibr" target="#b22">Wang (2019), and</ref><ref type="bibr" target="#b0">Abzaliev (2019)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Submissions</head><p>In this section, we describe the diverse set of teams who competed in the shared task, and the systems they designed for the GAP challenge. We note effective use of BERT , both via fine-tuning and for feature extraction, and ensembling. Despite very little modeling targeted at debiasing for gender, the submitted systems narrowed the gender gap to near parity at 0.99, while achieving remarkably strong performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Teams</head><p>We accepted ten system description papers, from 11 of the 263 teams who competed <ref type="bibr" target="#b10">(Ionita et al. (2019)</ref> is a combined submission from the teams placing 5 and 22). Table <ref type="table" target="#tab_3">2</ref> characterises the teams by their number of members, whether their affiliation is to industry or an academic institution, and the geographic location of their affiliation. Details about participant gender were not collected.</p><p>Our first observation is that 7 of the top 10 teams submitted system descriptions, which allows us good insight into what approaches work well for the GAP task (see next, Section 3.2). Also, All these teams publicly release their code, promoting transparency and further development.</p><p>We note the geographic diversity of teams: there is at least one team from each of Africa, Asia, Europe, and USA, and one team collaborating across regions (Europe and USA). Five teams had industry affiliations and four academic; the geographically diverse team was diverse here also, comprising both academic and industry researchers.</p><p>There is a correlation between team size and affiliation: industry submissions were all from individual contributors, while academic researchers worked in groups. This correlation is somewhat indicative of performance: individual contributors from industry won all three monetary prizes, and only one academic group featured in the top ten submissions. A possible factor in this was the concurrent timing of the competition with other conference deadlines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Systems</head><p>All system descriptions were from teams who used BERT , a method to create context-sensitive word embeddings by pretraining a deep self-attention neural network on a training objective optimizing for cloze word prediction and recognition of adjacent sentences. This is perhaps not surprising, given the recent success of BERT for modeling a wide range of NLP tasks <ref type="bibr" target="#b20">(Tenney et al., 2019;</ref><ref type="bibr" target="#b11">Kwiatkowski et al., 2019)</ref> and the small amount of training data available for GAP resolution (which makes LM pretraining particularly attractive). The different models built from BERT are summarized in Table <ref type="table" target="#tab_4">3</ref>.</p><p>Eight of the eleven system descriptions used BERT via fine-tuning, the technique recommended in . To do this, the original GAP data release was used as a tuning set to learn a classifier on top of BERT to predict whether the target pronoun referred to Name A, Name B, or Neither. Abzaliev (2019) also made use of the available datasets for coreference resolution: OntoNotes 5.0 (Pradhan and Xue, 2009), Wino-Bias <ref type="bibr" target="#b26">(Zhao et al., 2018)</ref>, WinoGender <ref type="bibr" target="#b19">(Rudinger et al., 2018)</ref>, and the Definite Pronoun Resolution Dataset <ref type="bibr" target="#b18">(Rahman and Ng, 2012)</ref>. Given the multiple BERT models available, it was possible to learn multiple such classifiers; teams marked ensemble fine-tuned multiple base BERT models and ensembled their predictions, while teams marked single produced just one, from a BERT-Large variant.</p><p>An alternative way to use BERT in NLP modeling is as a feature extractor. Teams using BERT in this capacity represented mention spans as input vectors to a neural structure (typically a linear structure, e.g. feed-forward network) that learned some sort of mention compatibility, via interaction or feature crossing. To derive mention-span representations from BERT subtoken encodings, <ref type="bibr" target="#b22">Wang (2019)</ref> found that pooling using an attentionmediated process was more effective than simple mean-pooling; most teams pooled using AllenAI's SelfAttentionSpanExtractor 5 . An interesting finding was that certain BERT layers were more suitable for feature extraction than others (see <ref type="bibr" target="#b0">Abzaliev (2019)</ref>;  for an exploration).</p><p>The winning solution <ref type="bibr" target="#b1">(Attree, 2019)</ref>    novel evidence pooling technique, which used the output of off-the-shelf coreference resolvers in a way that combines aspects of ensembling and feature crossing. This perhaps explains the system's impressive performance despite its relative simplicity. Two other systems stood out as novel in their approach to the task: Chada (2019) reformulated GAP reference resolution as a question answering task, and <ref type="bibr" target="#b13">Lois et al. (2019)</ref> used BERT in a third way, directly applying the masked language modeling task to predicting resolutions. Despite the scarcity of data for this challenge, there was little use of extra resources. Only two teams made use of the URL given in the example, with Attree (2019) using it only indirectly as part of a coreference heuristic fed into evidence pooling. Two teams augmented the GAP data by using name substitutions <ref type="bibr" target="#b12">(Liu, 2019;</ref><ref type="bibr" target="#b13">Lois et al., 2019)</ref> and two automatically created extra examples of the minority label Neither <ref type="bibr" target="#b1">(Attree, 2019;</ref><ref type="bibr" target="#b2">Bao and Qiao, 2019)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Discussion</head><p>Running the GAP shared task has taught us many valuable things about reference, gender, and BERT models. Based on these, we make recommendations for future work expanding from this shared task into different languages and domains.</p><p>GAP Given the incredibly strong performance of the submitted systems, it is tempting to ask whether GAP resolution is solved. We suggest the answer is no. Firstly, the shared task only tested one of the four original GAP settings. A more challenging setting would be snippet-context, in which use of Wikipedia is not allowed, which we would extend to LM pre-training. Also, GAP only targets particular types of pronoun usage, and the time is ripe for exploring others. We are particularly excited for future work in languages with different pronoun systems (esp. prodrop languages including Portuguese, Chinese, Japanese), and gender neutral personal pronouns, e.g. English they, Spanish su or Turkish o.</p><p>Gender It is encouraging to see submitted systems improve the gender gap so close to parity at 0.99, particularly as no special modeling strategies were required. Indeed, <ref type="bibr" target="#b0">Abzaliev (2019)</ref> reported that a handcrafted pronoun gender feature had no impact. Moreover, <ref type="bibr" target="#b2">Bao and Qiao (2019)</ref> report that BERT encodings show no significant gender bias on either WEAT <ref type="bibr" target="#b5">(Caliskan et al., 2017)</ref> or SEAT <ref type="bibr" target="#b14">(May et al., 2019)</ref>. We look forward to studies considering potential biases in BERT across more tasks and dimensions of diversity.</p><p>BERT The teams competing in the shared task made effective use of BERT in at least three distinct methods: fine-tuning, feature extraction, and masked language modeling. Many system papers noted the incredible power of the model (see, e.g. <ref type="bibr" target="#b1">Attree (2019)</ref> for a good analysis), particularly when compared to hand-crafted features <ref type="bibr" target="#b0">(Abzaliev, 2019)</ref>. We also believe the widespread use of BERT is related to the low rate of external data usage, as it is easier for most teams to reuse an existing model than to clean and integrate new data. As well as the phenomenal modeling power of BERT, one possible reason for this observation is that the public releases of <ref type="bibr">BERT</ref>  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>This paper describes the insights of shared task on GAP coreference resolution held as part of the 1st ACL workshop on Gender Bias in Natural Language Processing. The task drew a generous prize pool from Google and saw enthusiastic participation across a diverse set of researchers. Winning systems made effective use of BERT and ensembling, achieving near human accuracy and gender parity despite little efforts targeted at mitigating gender bias. We learned where the next research challenges in gender-fair pronoun resolution lie, as well as promising directions for testing the robustness of powerful language model pre-training methods, especially BERT.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Performance of prize-winning submissions on the blind Kaggle evaluation set. logloss was the official task metric, and correlates well with F1 score, which was used in the original GAP work. 760 clean examples was dispersed in a larger set of 11,599 unlabeled examples to produce a set of 12,359 examples that competing systems had to rate. This augmentation was to discourage submissions based on manual labeling.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell cols="5">: Teams with accepted system description papers. *Note the two teams placing 5 and 22 submitted a</cell></row><row><cell>combined system description paper.</cell><cell></cell><cell></cell><cell></cell></row><row><cell cols="2">Rank</cell><cell cols="2">logloss Fine-tuning Feature</cell><cell>Resources</cell></row><row><cell></cell><cell></cell><cell></cell><cell>Crossing</cell></row><row><cell>Attree (2019)</cell><cell cols="2">1 0.13667 single</cell><cell>-</cell><cell>syntax, coref, URL</cell></row><row><cell>Wang (2019)</cell><cell cols="2">2 0.17289 single</cell><cell>linear</cell><cell>-</cell></row><row><cell>Abzaliev (2019)</cell><cell cols="2">3 0.18397 ensemble</cell><cell>linear</cell><cell>synax, URL</cell></row><row><cell>Yang et al. (2019)</cell><cell cols="2">4 0.18498 ensemble</cell><cell>siamese</cell><cell>-</cell></row><row><cell>Ionita et al. (2019)*</cell><cell cols="2">5 0.19189 ensemble</cell><cell>linear</cell><cell>syntax, NER, coref</cell></row><row><cell>Liu (2019)</cell><cell cols="2">7 0.19473 -</cell><cell>linear</cell><cell>-</cell></row><row><cell>Chada (2019)</cell><cell cols="2">9 0.20238 ensemble</cell><cell>-</cell><cell>-</cell></row><row><cell>Bao and Qiao (2019)</cell><cell cols="2">14 0.20758 single</cell><cell>SVM &amp;</cell><cell>-</cell></row><row><cell></cell><cell></cell><cell></cell><cell>BIDAF</cell></row><row><cell>Ionita et al. (2019)*</cell><cell cols="2">22 0.22562 ensemble</cell><cell>linear</cell><cell>synax, NER, coref</cell></row><row><cell>Lois et al. (2019)</cell><cell cols="2">46 0.30151 -</cell><cell>-</cell><cell>-</cell></row><row><cell>Xu and Yang (2019)</cell><cell cols="2">67 0.39479 -</cell><cell>R-GCN</cell><cell>syntax</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Highlights of systems with accepted description papers. *Note the two teams placing 5 and 22 submitted a combined system description paper.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head></head><label></label><figDesc>are trained on the same domain as the GAP examples, Wikipedia. Future work could benchmark non-Wikipedia BERT models on the shared task examples, or collect more GAP examples from different domains.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">We used 1:1 masculine to feminine examples. 2 https://www.kaggle.com/c/ gendered-pronoun-resolution 3 Official evaluation ran in Stage 2, following an initial, development stage evaluated on the original GAP data, available at https://github.com/ google-research-datasets/gap-coreference</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">https://github.com/ google-research-datasets/gap-coreference</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">https://github.com/allenai/allennlp/blob/ master/allennlp/modules/span_extractors/self_ attentive_span_extractor.py</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We would like to extend very many thanks to the Kaggle team (especially Julia Elliot and Will Cukierski) and the Google Data Compute team (especially Daphne Luong and Ashwin Kakarla) who made this shared task possible.</p><p>This work is supported in part by the Spanish Ministerio de Economía y Competitividad and the European Regional Development Fund and the Agencia Estatal de Investigación, through the post-doctoral senior grant Ramón y Cajal and by the Swedish Research Council through grant 2017-930.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">On GAP coreference resolution shared task: insights from the 3rd place solution</title>
+		<author>
+			<persName><forename type="first">Artem</forename><surname>Abzaliev</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Gendered Pronoun Resolution Shared Task: Boosting Model Confidence by Evidence Pooling</title>
+		<author>
+			<persName><forename type="first">Sandeep</forename><surname>Attree</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Transfer Learning from Pre-trained BERT for Pronoun Resolution</title>
+		<author>
+			<persName><forename type="first">Xingce</forename><surname>Bao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qianqian</forename><surname>Qiao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Good Secretaries, Bad Truck Drivers? Occupational Gender Stereotypes in Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Jayadev</forename><surname>Bhaskaran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isha</forename><surname>Bhallamudi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Man is to computer programmer as woman is to homemaker? debiasing word embeddings</title>
+		<author>
+			<persName><forename type="first">Tolga</forename><surname>Bolukbasi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Zou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Venkatesh</forename><surname>Saligrama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Kalai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 30th International Conference on Neural Information Processing Systems, NIPS&apos;16</title>
+				<meeting>the 30th International Conference on Neural Information Processing Systems, NIPS&apos;16<address><addrLine>USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Curran Associates Inc</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="4356" to="4364" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Semantics derived automatically from language corpora contain human-like biases</title>
+		<author>
+			<persName><forename type="first">Aylin</forename><surname>Caliskan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joanna</forename><forename type="middle">J</forename><surname>Bryson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arvind</forename><surname>Narayanan</surname></persName>
+		</author>
+		<idno type="DOI">10.1126/science.aal4230</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">356</biblScope>
+			<biblScope unit="issue">6334</biblScope>
+			<biblScope unit="page" from="183" to="186" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Gendered Pronoun Resolution using BERT and an extractive question answering formulation</title>
+		<author>
+			<persName><forename type="first">Rakesh</forename><surname>Chada</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long and Short Papers</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Equalizing Gender Biases in Neural Machine Translation with Word Embeddings Techniques</title>
+		<author>
+			<persName><forename type="first">Joel</forename><forename type="middle">Escudé</forename><surname>Font</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><forename type="middle">R</forename><surname>Costa-Jussà</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Lipstick on a pig: Debiasing methods cover up systematic gender biases in word embeddings but do not remove them</title>
+		<author>
+			<persName><forename type="first">Hila</forename><surname>Gonen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long and Short Papers</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="609" to="614" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Gender-unbiased BERT-based Pronoun Resolution</title>
+		<author>
+			<persName><forename type="first">Matei</forename><surname>Ionita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yury</forename><surname>Kashnitsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ken</forename><surname>Krige</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vladimir</forename><surname>Larin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Atanas</forename><surname>Atanasov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Kwiatkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennimaria</forename><surname>Palomaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olivia</forename><surname>Redfield</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Collins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankur</forename><surname>Parikh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Alberti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danielle</forename><surname>Epstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Kelcey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><forename type="middle">N</forename><surname>Toutanova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+		<title level="m">Natural Questions: a Benchmark for Question Answering Research. Transactions of the Association of Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Anonymized BERT: An Augmentation Approach to the Gendered Pronoun Resolution Challenge</title>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">BERT Masked Language Modeling for Coreference Resolution</title>
+		<author>
+			<persName><forename type="first">Felipe</forename><surname>Alfaro Lois</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">R</forename><surname>José</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><forename type="middle">R</forename><surname>Fonollosa</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Costa-Jussà</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">On measuring social biases in sentence encoders</title>
+		<author>
+			<persName><forename type="first">Chandler</forename><surname>May</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shikha</forename><surname>Bordia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><forename type="middle">R</forename><surname>Bowman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Rudinger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="622" to="628" />
+		</imprint>
+	</monogr>
+	<note>Minneapolis</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Reducing gender bias in abusive language detection</title>
+		<author>
+			<persName><forename type="first">Ji</forename><surname>Ho Park</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jamin</forename><surname>Shin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pascale</forename><surname>Fung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2799" to="2804" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">OntoNotes: The 90% solution</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sameer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Xue</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Human Language Technologies</title>
+				<meeting>Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m">Annual Conference of the North American Chapter of the Association for Computational Linguistics, Companion Volume: Tutorial Abstracts</title>
+				<meeting><address><addrLine>Boulder, Colorado</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<biblScope unit="page" from="11" to="12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Resolving complex cases of definite pronouns: The Winograd schema challenge</title>
+		<author>
+			<persName><forename type="first">Altaf</forename><surname>Rahman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2012 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</title>
+				<meeting>the 2012 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning<address><addrLine>Jeju Island, Korea</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="777" to="789" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Gender bias in coreference resolution</title>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Rudinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Naradowsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brian</forename><surname>Leonard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Van Durme</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N18-2002</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="8" to="14" />
+		</imprint>
+	</monogr>
+	<note>Short Papers</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Ian</forename><surname>Tenney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dipanjan</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ellie</forename><surname>Pavlick</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">BERT Rediscovers the Classical NLP Pipeline</title>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Getting gender right in neural machine translation</title>
+		<author>
+			<persName><forename type="first">Eva</forename><surname>Vanmassenhove</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Hardmeier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andy</forename><surname>Way</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="3003" to="3008" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">MSnet: A BERT-based Network for Gendered Pronoun Resolution</title>
+		<author>
+			<persName><forename type="first">Zili</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Mind the GAP: A balanced corpus of gendered ambiguous pronouns</title>
+		<author>
+			<persName><forename type="first">Kellie</forename><surname>Webster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Recasens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vera</forename><surname>Axelrod</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Baldridge</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00240</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Transactions of the Association for Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="605" to="617" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Look Again at the Syntax: Relational Graph Convolutional Network for Gendered Ambiguous Pronoun Resolution</title>
+		<author>
+			<persName><forename type="first">Yinchuan</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junlin</forename><surname>Yang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Fill the GAP: Exploiting BERT for Pronoun Resolution</title>
+		<author>
+			<persName><forename type="first">Kai-Chou</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Niven</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hung-Yu</forename><surname>Kao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Gender Bias for Natural Language Processing</title>
+				<meeting>the First Workshop on Gender Bias for Natural Language Processing<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Gender bias in coreference resolution: Evaluation and debiasing methods</title>
+		<author>
+			<persName><forename type="first">Jieyu</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tianlu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Yatskar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vicente</forename><surname>Ordonez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N18-2003</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="15" to="20" />
+		</imprint>
+	</monogr>
+	<note>Short Papers. Association for Computational Linguistics</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

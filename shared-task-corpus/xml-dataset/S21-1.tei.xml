@@ -1,0 +1,1815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2021 Task 1: Lexical Complexity Prediction</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Matthew</forename><surname>Shardlow</surname></persName>
+							<email>m.shardlow@mmu.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Manchester Metropolitan University</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Richard</forename><surname>Evans</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">University of Wolverhampton</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Gustavo</forename><forename type="middle">Henrique</forename><surname>Paetzold</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">Universidade Tecnológica Federal do Paraná</orgName>
+								<address>
+									<country key="BR">Brazil</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Marcos</forename><surname>Zampieri</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="institution">Rochester Institute of Technology</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2021 Task 1: Lexical Complexity Prediction</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the results and main findings of SemEval-2021 Task 1 -Lexical Complexity Prediction. We provided participants with an augmented version of the CompLex Corpus <ref type="bibr" target="#b54">(Shardlow et al., 2020)</ref>. CompLex is an English multi-domain corpus in which words and multi-word expressions (MWEs) were annotated with respect to their complexity using a five point Likert scale. SemEval-2021 Task 1 featured two Sub-tasks: Sub-task 1 focused on single words and Sub-task 2 focused on MWEs. The competition attracted 198 teams in total, of which 54 teams submitted official runs on the test data to Sub-task 1 and 37 to Sub-task 2.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The occurrence of an unknown word in a sentence can adversely affect its comprehension by readers. Either they give up, misinterpret, or plough on without understanding. A committed reader may take the time to look up a word and expand their vocabulary, but even in this case they must leave the text, undermining their concentration. The natural language processing solution is to identify candidate words in a text that may be too difficult for a reader <ref type="bibr" target="#b53">(Shardlow, 2013;</ref><ref type="bibr" target="#b38">Paetzold and Specia, 2016a)</ref>. Each potential word is assigned a judgment by a system to determine if it was deemed 'complex' or not. These scores indicate which words are likely to cause problems for a reader. The words that are identified as problematic can be the subject of numerous types of intervention, such as direct replacement in the setting of lexical simplification <ref type="bibr" target="#b20">(Gooding and Kochmar, 2019)</ref>, or extra information being given in the context of explanation generation .</p><p>Whereas previous solutions to this task have typically considered the Complex Word Identification (CWI) task <ref type="bibr" target="#b38">(Paetzold and Specia, 2016a;</ref><ref type="bibr" target="#b68">Yimam et al., 2018)</ref> in which a binary judgment of a word's complexity is given (i.e., is a word complex or not?), we instead focus on the Lexical Complexity Prediction (LCP) task <ref type="bibr" target="#b54">(Shardlow et al., 2020)</ref> in which a value is assigned from a continuous scale to identify a word's complexity (i.e., how complex is this word?). We ask multiple annotators to give a judgment on each instance in our corpus and take the average prediction as our complexity label. The former task (CWI) forces each user to make a subjective judgment about the nature of the word that models their personal vocabulary. Many factors may affect the annotator's judgment including their education level, first language, specialism or familiarity with the text at hand. The annotators may also disagree on the level of difficulty at which to label a word as complex. One annotator may label every word they feel is above average difficulty, another may label words that they feel unfamiliar with, but understand from the context, whereas another annotator may only label those words that they find totally incomprehensible, even in context. Our introduction of the LCP task seeks to address this annotator confusion by giving annotators a Likert scale to provide their judgments. Whilst annotators must still give a subjective judgment depending on their own understanding, familiarity and vocabulary -they do so in a way that better captures the meaning behind each judgment they have given. By aggregating these judgments we have developed a dataset that contains continuous labels in the range of 0-1 for each instance. This means that rather than a system predicting whether a word is complex or not (0 or 1), instead a system must now predict where, on our continuous scale, a word falls (0-1).</p><p>Consider the following sentence taken from a biomedical source, where the target word 'observation' has been highlighted:</p><p>(1) The observation of unequal expression leads to a number of questions.</p><p>In the binary annotation setting of CWI some annotators may rightly consider this term non-complex, whereas others may rightly consider it to be complex. Whilst the meaning of the word is reasonably clear to someone with scientific training, the context in which it is used is unfamiliar for a lay reader and will likely lead to them considering it complex. In our new LCP setting, we are able to ask annotators to mark the word on a scale from very easy to very difficult. Each user can give their subjective interpretation on this scale indicating how difficult they found the word. Whilst annotators will inevitably disagree (some finding it more or less difficult), this is captured and quantified as part of our annotations, with a word of this type likely to lead to a medium complexity value.</p><p>LCP is useful as part of the wider task of lexical simplification <ref type="bibr" target="#b15">(Devlin and Tait, 1998)</ref>, where it can be used to both identify candidate words for simplification <ref type="bibr" target="#b53">(Shardlow, 2013)</ref> and rank potential words as replacements . LCP is also relevant to the field of readability assessment, where knowing the proportion of complex words in a text helps to identify the overall complexity of the text <ref type="bibr" target="#b12">(Dale and Chall., 1948)</ref>. This paper presents SemEval-2021 Task 1: Lexical Complexity Prediction. In this task we developed a new dataset for complexity prediction based on the previously published CompLex dataset. Our dataset covers 10,800 instances spanning 3 genres and containing unigrams and bigrams as targets for complexity prediction. We solicited participants in our task and released a trial, training and test split in accordance with the SemEval schedule. We accepted submissions in two separate Sub-tasks, the first being single words only and the second taking single words and multi-word expressions (modelled by our bigrams). In total 55 teams participated across the two Sub-tasks.</p><p>The rest of this paper is structured as folllows: In Section 2 we discuss the previous two iterations of the CWI task. In Section 3, we present the CompLex 2.0 dataset that we have used for our task, including the methodology we used to produce trial, test and training splits. In Section 5, we show the results of the participating systems and compare the features that were used by each system. We finally discuss the nature of LCP in Section 7 and give concluding remarks in Section 8 2 Related Tasks CWI 2016 at SemEval The CWI shared task was organized at SemEval 2016 <ref type="bibr" target="#b38">(Paetzold and Specia, 2016a)</ref>. The CWI 2016 organizers introduced a new CWI dataset and reported the results of 42 CWI systems developed by 21 teams. Words in their dataset were considered complex if they were difficult to understand for non-native English speakers according to a binary labelling protocol. A word was considered complex if at least one of the annotators found it to be difficult. The training dataset consisted of 2,237 instances, each labelled by 20 annotators and the test dataset had 88,221 instances, each labelled by 1 annotator <ref type="bibr" target="#b38">(Paetzold and Specia, 2016a)</ref>.</p><p>The participating systems leveraged lexical features <ref type="bibr" target="#b10">(Choubey and Pateria, 2016;</ref><ref type="bibr" target="#b7">Bingel et al., 2016;</ref><ref type="bibr" target="#b44">Quijada and Medero, 2016)</ref> and word embeddings <ref type="bibr" target="#b30">(Kuru, 2016;</ref><ref type="bibr" target="#b58">S.P et al., 2016;</ref><ref type="bibr" target="#b17">Gillin, 2016)</ref>, as well as finding that frequency features, such as those taken from Wikipedia <ref type="bibr" target="#b29">(Konkol, 2016;</ref><ref type="bibr" target="#b65">Wróbel, 2016)</ref> were useful. Systems used binary classifiers such as SVMs <ref type="bibr" target="#b30">(Kuru, 2016;</ref><ref type="bibr" target="#b58">S.P et al., 2016;</ref><ref type="bibr" target="#b10">Choubey and Pateria, 2016)</ref>, Decision Trees <ref type="bibr" target="#b10">(Choubey and Pateria, 2016;</ref><ref type="bibr" target="#b44">Quijada and Medero, 2016;</ref><ref type="bibr" target="#b33">Malmasi et al., 2016</ref><ref type="bibr">), Random Forests (Ronzano et al., 2016</ref><ref type="bibr" target="#b8">Brooke et al., 2016;</ref><ref type="bibr" target="#b37">Mukherjee et al., 2016)</ref> and thresholdbased metrics <ref type="bibr" target="#b26">(Kauchak, 2016;</ref><ref type="bibr" target="#b65">Wróbel, 2016)</ref> to predict the complexity labels. The winning system made use of threshold-based methods and features extracted from Simple Wikipedia <ref type="bibr" target="#b39">(Paetzold and Specia, 2016b)</ref>.</p><p>A post-competition analysis <ref type="bibr" target="#b72">(Zampieri et al., 2017)</ref> with oracle and ensemble methods showed that most systems performed poorly due mostly to the way in which the data was annotated and the the small size of the training dataset.</p><p>CWI 2018 at BEA The second CWI Shared Task was organized at the BEA workshop 2018 <ref type="bibr" target="#b68">(Yimam et al., 2018)</ref>. Unlike the first task, this second task had two objectives. The first objective was the binary complex or non-complex classification of target words. The second objective was regression or probabilistic classification in which 13 teams were asked to assign the probability of a target word being considered complex by a set of language learners. A major difference in this second task was that datasets of differing genres: (TEXT GENRES) as well as English, German and Spanish datasets for monolingual speakers and a French dataset for multilingual speakers were provided <ref type="bibr" target="#b68">(Yimam et al., 2018)</ref>.</p><p>Similar to 2016, systems made use of a variety of lexical features including word length <ref type="bibr" target="#b64">(Wani et al., 2018;</ref><ref type="bibr" target="#b13">De Hertog and Tack, 2018;</ref><ref type="bibr">AbuRa'ed and Saggion, 2018;</ref><ref type="bibr" target="#b22">Hartmann and dos Santos, 2018;</ref><ref type="bibr" target="#b1">Alfter and Pilán, 2018;</ref><ref type="bibr" target="#b25">Kajiwara and Komachi, 2018)</ref>, frequency <ref type="bibr" target="#b13">(De Hertog and Tack, 2018;</ref><ref type="bibr" target="#b3">Aroyehun et al., 2018;</ref><ref type="bibr" target="#b1">Alfter and Pilán, 2018;</ref><ref type="bibr" target="#b25">Kajiwara and Komachi, 2018)</ref>, N-gram features <ref type="bibr" target="#b19">(Gooding and Kochmar, 2018;</ref><ref type="bibr" target="#b43">Popović, 2018;</ref><ref type="bibr" target="#b22">Hartmann and dos Santos, 2018;</ref><ref type="bibr" target="#b1">Alfter and Pilán, 2018;</ref><ref type="bibr" target="#b9">Butnaru and Ionescu, 2018)</ref> and word embeddings <ref type="bibr" target="#b13">(De Hertog and Tack, 2018;</ref><ref type="bibr">AbuRa'ed and Saggion, 2018;</ref><ref type="bibr" target="#b3">Aroyehun et al., 2018;</ref><ref type="bibr" target="#b9">Butnaru and Ionescu, 2018)</ref>. A variety of classifiers were used ranging from traditional machine learning classifiers <ref type="bibr" target="#b19">(Gooding and Kochmar, 2018;</ref><ref type="bibr" target="#b43">Popović, 2018;</ref><ref type="bibr">AbuRa'ed and</ref><ref type="bibr">Saggion, 2018), to Neural Networks (De Hertog and</ref><ref type="bibr" target="#b3">Aroyehun et al., 2018)</ref>. The winning system made use of Adaboost with WordNet features, POS tags, dependency parsing relations and psycholinguistic features <ref type="bibr" target="#b19">(Gooding and Kochmar, 2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data</head><p>We previously reported on the annotation of the CompLex dataset <ref type="bibr" target="#b54">(Shardlow et al., 2020)</ref> (hereafter referred to as CompLex 1.0), in which we annotated around 10,000 instances for lexical complexity using the Figure Eight platform. The instances spanned three genres: Europarl, taken from the proceedings of the European Parliament <ref type="bibr" target="#b28">(Koehn, 2005)</ref>; The Bible, taken from an electronic distribution of the World English Bible translation <ref type="bibr" target="#b11">(Christodouloupoulos and Steedman, 2015)</ref> and Biomedical literature, taken from the CRAFT corpus <ref type="bibr" target="#b5">(Bada et al., 2012)</ref>. We limited our annotations to focus only on nouns and multi-word expressions following a Noun-Noun or Adjective-Noun pattern, using the POS tagger from Stanford CoreNLP <ref type="bibr" target="#b35">(Manning et al., 2014)</ref> to identify these patterns.</p><p>Whilst these annotations allowed us to report on the dataset and to show some trends, the overall quality of the annotations we received was poor and we ended up discarding a large number of the annotations. For CompLex 1.0 we retained only instances with four or more annotations and the low number of annotations (average number of annotators = 7) led to the overall dataset being less reliable than initially expected For the Shared Task we chose to boost the number of annotations on the same data as used for CompLex 1.0 using Amazon's Mechanical Turk platform. We requested a further 10 annotations on each data instance bringing up the average number of annotators per instance. Annotators were presented with the same task layout as in the annotation of CompLex 1.0 and we defined the Likert Scale points as previously:</p><p>Very Easy: Words which were very familiar to an annotator.</p><p>Easy: Words with which an annotator was aware of the meaning.</p><p>Neutral: A word which was neither difficult nor easy.</p><p>Difficult: Words which an annotator was unclear of the meaning, but may have been able to infer the meaning from the sentence.</p><p>Very Difficult: Words that an annotator had never seen before, or were very unclear.</p><p>These annotations were aggregated with the retained annotations of CompLex 1.0 to give our new dataset, CompLex 2.0, covering 10,800 instances across single and multi-words and across 3 genres. The features that make our corpus distinct from other corpora which focus on the CWI and LCP tasks are described below:</p><p>Continuous Annotations: We have annotated our data using a 5-point Likert Scale. Each instance has been annotated multiple times and we have taken the mean average of these annotations as the label for each data instance. To calculate this average we converted the Likert Scale points to a continuous scale as follows: Very Easy → 0, Easy → 0.25, Neutral → 0.5, Difficult → 0.75, Very Difficult → 1.0.</p><p>Contextual Annotations: Each instance in the corpus is presented with its enclosing sentence as context. This ensures that the sense of a word can be identified when assigning it a complexity value. Whereas previous work has reannotated the data from the CWI-2018 shared task with word senses <ref type="bibr" target="#b60">(Strohmaier et al., 2020)</ref>, we do not make explicit sense distinctions between our tokens, instead leaving this task up to participants.</p><p>Repeated Token Instances: We provide more than one context for each token (up to a maximum of five contexts per genre). These words were annotated separately during annotation, with the expectation that tokens in different contexts would receive differing complexity values. This deliberately penalises systems that do not take the context of a word into account.</p><p>Multi-word Expressions: In our corpus we have provided 1,800 instances of multi-word expressions (split across our 3 sub-corpora).</p><p>Each MWE is modelled as a Noun-Noun or Adjective-Noun pattern followed by any POS tag which is not a noun. This avoids selecting the first portion of complex noun phrases.</p><p>There is no guarantee that these will correspond to true MWEs that take on a meaning beyond the sum of their parts, and further investigation into the types of MWEs present in the corpus would be informative.</p><p>Aggregated Annotations: By aggregating the Likert scale labels we have generated crowdsourced complexity labels for each instance in our corpus. We are assuming that, although there is inevitably some noise in any large annotation project (and especially so in crowdsourcing), this will even out in the averaging process to give a mean value reflecting the appropriate complexity for each instance. By taking the mean average we are assuming unimodal distributions in our annotations.</p><p>Varied Genres: We have selected for diverse genres as mentioned above. Previous CWI datasets have focused on informal text such as Wikipedia and multi-genre text, such as news. By focusing on specific texts we force systems to learn generalised complexity annotations that are appropriate in a cross-genre setting.</p><p>We have presented summary statistics for Com-pLex 2.0 in Table <ref type="table" target="#tab_1">1</ref>. In total, 5,617 unique words are split across 10,800 contexts, with an average complexity across our entire dataset of 0.321. Each genre has 3,600 contexts, with each split between 3,000 single words and 600 multi-word expressions. Whereas single words are slightly below the average complexity of the dataset at 0.302, multiword expressions are much more complex at 0.419, indicating that annotators found these more difficult to understand. Similarly Europarl and the Bible were less complex than the corpus average, whereas the Biomedical articles were more complex. The number of unique tokens varies from one genre to another as the tokens were selected at random and discarded if there were already more than 5 occurrences of the given token already in the dataset. This stochastic selection process led to a varied dataset with some tokens only having one context, whereas others have as many as five in a given genre. On average each token has around 2 contexts.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data Splits</head><p>In order to run the shared task we partitioned our dataset into Trial, Train and Test splits and distributed these according to the SemEval schedule.</p><p>A criticism of previous CWI shared tasks is that the training data did not accurately reflect the distribution of instances in the testing data. We sought to avoid this by stratifying our selection process for a number of factors. The first factor we considered was genre. We ensured that an even number of instances from each genre was present in each split. We also stratified for complexity, ensuring that each split had a similar distribution of complexities. Finally we also stratified the splits by token, ensuring that multiple instances containing the same token occurred in only one split. This last criterion ensures that systems do not overfit to the test data by learning the complexities of specific tokens in the training data. Performing a robust stratification of a dataset according to multiple features is a non-trivial optimisation problem. We solved this by first grouping all instances in a genre by token and sorting these groups by the complexity of the least complex instance in the group. For each genre, we passed through this sorted list and for each set of 20 groups we put the first group in the trial set, the next two groups in the test set and the remaining 17 groups in the training data. This allowed us to get a rough 5-85-10 split between trial, training and test data. The trial and training data were released in this ordered format, however to prevent systems from guessing the labels based on the data ordering we randomised the order of the instances in the test data prior to release. The splits that we used for the Shared Task are available via GitHub 1 .    </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results</head><p>The full results of our task can be seen in Appendix A. We had 55 teams participate in our 2 Sub-tasks, with 19 participating in Sub-task 1 only, 1 participating in Sub-task 2 only and 36 participating in both Sub-tasks. We have used Pearson's correlation for our final ranking of participants, but we have also included other metrics that are appropriate for evaluating continuous and ranked data and provided secondary rankings of these. Sub-task 1 asked participants to assign complexity values to each of the single words instances in our corpus. For Sub-task 2, we asked participants to submit results on both single words and MWEs. We did not rank participants on MWE-only submis-sions due to the relatively small number of MWEs in our corpus (184 in the test set).</p><p>The metrics we chose for ranking were as follows:</p><p>Pearson's Correlation: We chose this metric as our primary method of ranking as it is well known and understood, especially in the context of evaluating systems with continuous outputs. Pearson's correlation is robust to changes in scale and measures how the input variables change with each other.</p><p>Spearman's Rank: This metric does not consider the values output by a system, or in the test labels, only the order of those labels. It was chosen as a secondary metric as it is more robust to outliers than Pearson's correlation.</p><p>Mean Absolute Error (MAE): Typically used for the evaluation of regression tasks, we included MAE as it gives an indication of how close the predicted labels were to the gold labels for our task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Mean Squared Error (MSE):</head><p>There is little difference in the calculation of MSE vs. MAE, however we also include this metric for completeness.</p><p>R2: This measures the proportion of variance of the original labels captured by the predicted labels. It is possible to do well on all the other metrics, yet do poorly on R2 if a system produces annotations with a different distribution than those in the original labels.</p><p>In  Correlation. We have only reported on Pearson's correlation and R2 in these tables, but the full results with all metrics are available in Appendix A.</p><p>We have included a Frequency Baseline produced using log-frequency from the Google Web1T and linear regression, which was beaten by the majority of our systems. From these results we can see that systems were able to attain reasonably high scores on our dataset, with the winning systems reporting Pearson's Correlation of 0.7886 for Sub-task 1 and 0.8612 for Sub-task 2, as well as high R2 scores of 0.6210 for Sub-task 1 and 0.7389 for Sub-task 2.</p><p>The rankings remained stable across Spearman's rank, MAE and MSE, with some small variations. Scores were generally higher on Sub-task 2 than on Sub-task 1, and this is likely to be because of the different groups of token-types (single words and MWEs). MWEs are known to be more complex than single words and so this fact may have implictly helped systems to better model the variance of complexities between the two groups.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Participating Systems</head><p>In this section we have analysed the participating systems in our task. System Description papers were submitted by 32 teams. In the subsections below, we have first given brief summaries of some of the top systems according to Pearson's correlation for each task for which we had a description. We then discuss the features used across different systems, as well as the approaches to the task that different teams chose to take. We have prepared a comprehensive table comparing the features and approaches of all systems for which we have the relevant information in Appendix B. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Approaches</head><p>There are three main types of systems that were submitted to our task. In line with the state of the art in modern NLP, these can be categorised as: Feature-based systems, Deep Learning Systems and Systems which use a hybrid of the former two approaches. Although Deep Learning Based systems have attained the highest Pearson's Correlation on both Sub-tasks, occupying the first two places in each task, Feature based systems are not far behind, attaining the third and fourth spots on Sub-task 1 with a similar score to the top systems.</p><p>We have described each approach as applied to our task below. Feature-based systems use a variety of features known to be useful for lexical complexity. In particular, lexical frequency and word length feature heavily with many different ways of calculating these metrics such as looking at various corpora and investigating syllable or morpheme length. Psycholinguistic features which model people's perception of words are understandably popular for this task as complexity is a perceived phenomenon.</p><p>Semantic features taken from WordNet modelling the sense of the word and it's ambiguity or abstractness have been used widely, as well as sentence level features aiming to model the context around the target words. Some systems chose to identify named entities, as these may be innately more difficult for a reader. Word inclusion lists were also a popular feature, denoting whether a word was found on a given list of easy to read vocabulary. Finally, word embeddings are a popular feature, coming from static resources such as GLoVE or Word2Vec, but also being derived through the use of Transformer models such as BERT, RoBERTa, XLNet or GPT-2, which provide context dependent embeddings suitable for our task.</p><p>These features are passed through a regression system, with Gradient Boosted Regression and Random Forest Regression being two popular approaches amongst participants for this task. Both apply scale invariance meaning that less preprocessing of inputs is necessary.</p><p>Deep Learning Based systems invariably rely on a pre-trained language model and fine-tune this using transfer learning to attain strong scores on the task. BERT and RoBERTa were used widely in our task, with some participants also opting for AL-BERT, ERNIE, or other such language models. To prepare data for these language models, most participants following this approach concatenated the token with the context, separated by a special token ( SEP ). The Language Model was then trained and the embedding of the CLS token extracted and passed through a further fine-tuned network for complexity prediction. Adaptations to this methodology include applying training strategies such as adversarial training, multi-task learning, dummy annotation generation and capsule networks.</p><p>Finally, hybrid approaches use a mixture of Deep Learning by fine-tuning a neural network alongside feature-based approaches. The features may be concatenated to the input embeddings, or may be concatenated at the output prior to further training. Whilst this strategy appears to be the best of both worlds, uniting linguistic knowledge with the power of pre-trained language models, the hybrid systems do not tend to perform as well as either feature based or deep learning systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3">MWEs</head><p>For Sub-task 2 we asked participants to submit both predictions for single words and multi-words from our corpus. We hoped this would encourage participants to consider models that adapted single word lexical complexity to multi-word lexical complexity. We observed a number of strategies that participants employed to create the annotations for this secondary portion of our data.</p><p>For systems that employed a deep learning approach, it was relatively simple to incorporate MWEs as part of their training procedure. These systems encoded the input using a query and context, separated by a SEP token. The number of tokens prior to the SEP token did not matter and either one or two tokens could be placed there to handle single and multi-word instances simultaneously.</p><p>However, feature based systems could not employ this trick and needed to devise more imaginative strategies for handling MWEs. Some systems handled them by averaging the features of both tokens in the MWE, or by predicting scores for each token and then averaging these scores. Other systems doubled their feature space for MWEs and trained a new model which took the features of both words into account.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Discussion</head><p>In this paper we have posited the new task of Lexical Complexity Prediction. This builds on previous work on Complex Word Identification, specifically by providing annotations which are continuous rather than binary or probabilistic as in previous tasks. Additionally, we provided a dataset with annotations in context, covering three diverse genres and incorporating MWEs, as well as single tokens. We have moved towards this task, rather than rerunning another CWI task as the outputs of the models are more useful for a diverse range of follow-on tasks. For example, whereas CWI is particularly useful as a preprocessing step for Lexical simplification (identifying which words should be transformed), LCP may also be useful for readability assessment or as a rich feature in other downstream NLP tasks. A continuous annotation allows a ranking to be given over words, rather than binary categories, meaning that we can not only tell whether a word is likely to be difficult for a reader, but also how difficult that word is likely to be. If a system requires binary complexity (as in the case of lexical simplification) it is easy to transform our continuous complexity values into a binary value by placing a threshold on the complex-ity scale. The value of the threshold to be selected will likely depend on the target audience, with more competent speakers requiring a higher threshold. When selecting a threshold, the categories we used for annotation should be taken into account, so for example a threshold of 0.5 would indicate all words that were rated as neutral or above.</p><p>To create our annotated dataset, we employed crowdsourcing with a Likert scale and aggregated the categorical judgments on this scale to give a continuous annotation. It should be noted that this is not the same as giving a truly continuous judgment (i.e., asking each annotator to give a value between 0 and 1). We selected this protocol as the Likert Scale is familiar to annotators and allows them to select according to defined points (we provided the definitions given earlier at annotation time). The annotation points that we gave were not intended to give an even distribution of annotations and it was our expectation that most words would be familiar to some degree, falling in the very easy or easy categories. We pre-selected for harder words to ensure that there were also words in the difficult and very difficult categories. As such, the corpus we have presented is not designed to be representative of the distribution of words across the English language. To create such a corpus, one would need to annotate all words according to our scale with no filtering. The general distribution of annotations in our corpus is towards the easier end of the Likert scale.</p><p>A criticism of the approach we have employed is that it allows for subjectivity in the annotation process. Certainly one annotator's perception of complexity will be different to another's. Giving fixed values of complexity for every word will not reflect the specific difficulties that one reader, or one reader group will face. The annotations we have provided are averaged values of the annotations given by our annotators, we chose to keep all instances, rather than filtering out those where annotators gave a wide spread of complexity annotations. Further work may be undertaken to give interesting insights into the nature of subjectivity in annotations. For example, some words may be rated as easy or difficult by all annotators, whereas others may receive both easy and difficult annotations, indicating that the perceived complexity of the instance is more subjective. We did not make the individual annotations available as part of the shared task data, to encourage systems to focus primarily on the prediction of complexity.</p><p>An issue with the previous shared tasks is that scores were typically low and that systems tended to struggle to beat reasonable baselines, such as those based on lexical frequency. We were pleased to see that systems participating in our task returned scores that indicated that they had learnt to model the problem well (Pearson's Correlation of 0.7886 on Task 1 and 0.8612 on Task 2). MWEs are typically more complex than single words and it may be the case that these exhibited a lower variance, and were thus easier to predict for the systems. The strong Pearson's Correlation is backed up by a high R2 score (0.6172 for Task 1 and 0.7389 for Task 2), which indicates that the variance in the data is captured accurately by the models' predictions. These models strongly outperformed a reasonable baseline based on word frequency as shown in Table 3.</p><p>Whilst we have chosen in this report to rank systems based on their score on Pearson's correlation, giving a final ranking over all systems, it should be noted that there is very little variation in score between the top systems and all other systems. For Task 1 there are 0.0182 points of Pearson's Correlation separating the systems at ranks 1 and 10. For Task 2 a similar difference of 0.021 points of Pearson's Correlation separates the systems at ranks 1 and 10. These are small differences and it may be the case that had we selected a different random split in our dataset this would have led to a different ordering in our results <ref type="bibr" target="#b21">(Gorman and Bedrick, 2019;</ref><ref type="bibr">Søgaard et al., 2020)</ref>. This is not unique to our task and is something for the SemEval community to ruminate on as the focus of NLP tasks continues to move towards better evaluation rather than better systems.</p><p>An analysis of the systems that participated in our task showed that there was little variation between Deep Learning approaches and Feature Based approaches, although Deep Learning approaches ultimately attained the highest scores on our data. Generally the Deep Learning and Feature Based approaches are interleaved in our results table, showing that both approaches are still relevant for LCP. One factor that did appear to affect system output was the inclusion of context, whether that was in a deep learning setting or a feature based setting. Systems which reported using no context appeared to perform worse in the overall rankings. Another feature that may have helped performance is the inclusion of previous CWI datasets <ref type="bibr" target="#b69">(Yimam et al., 2017;</ref><ref type="bibr" target="#b32">Maddela and Xu, 2018)</ref>. We were aware of these when developing the corpus and attempted to make our data sufficiently distinct in style to prevent direct reuse of these resources.</p><p>A limitation of our task is that it focuses solely on LCP for the English Language. Previous CWI shared tasks <ref type="bibr" target="#b68">(Yimam et al., 2018)</ref> and simplification efforts <ref type="bibr" target="#b52">(Saggion et al., 2015;</ref><ref type="bibr" target="#b2">Aluísio and Gasperin, 2010)</ref> have focused on languages other than English and we hope to extend this task in the future to other languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>We have presented the SemEval-2021 Task 1 on Lexical Complexity Prediction. We developed a new dataset focusing on continuous annotations in context across three genres. We solicited participants via SemEval and 55 teams submitted results across our two Sub-tasks. We have shown the results of these systems and discussed the factors that helped systems to perform well. We have analysed all the systems that participated and categorised their findings to help future researchers understand which approaches are suitable for LCP.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Full Results</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Rank Team</head><p>Pearson   </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>The statistics for CompLex 2.0.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2</head><label>2</label><figDesc>presents statistics on each split in our data, where it can be seen that we were able to achieve a roughly even split between genres across the trial, train and test data.</figDesc><table><row><cell cols="2">Subset Genre</cell><cell cols="3">Trial Train Test</cell></row><row><cell></cell><cell>Total</cell><cell>520</cell><cell cols="2">9179 1101</cell></row><row><cell>All</cell><cell cols="2">Europarl 180 Biomed 168</cell><cell>3010 3090</cell><cell>410 342</cell></row><row><cell></cell><cell>Bible</cell><cell>172</cell><cell>3079</cell><cell>349</cell></row><row><cell></cell><cell>Total</cell><cell>421</cell><cell>7662</cell><cell>917</cell></row><row><cell>Single</cell><cell cols="2">Europarl 143 Biomed 135</cell><cell>2512 2576</cell><cell>345 289</cell></row><row><cell></cell><cell>Bible</cell><cell>143</cell><cell>2574</cell><cell>283</cell></row><row><cell></cell><cell>Total</cell><cell>99</cell><cell>1517</cell><cell>184</cell></row><row><cell>MWE</cell><cell>Europarl Biomed</cell><cell>37 33</cell><cell>498 514</cell><cell>65 53</cell></row><row><cell></cell><cell>Bible</cell><cell>29</cell><cell>505</cell><cell>66</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>The Trial, Train and Test splits that were used as part of the shared task.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell>Team</cell><cell cols="2">Task 1 Pearson</cell><cell>R2</cell></row><row><cell>JUST BLUE</cell><cell>0.7886 (1)</cell><cell cols="2">0.6172 (2)</cell></row><row><cell>DeepBlueAI</cell><cell>0.7882 (2)</cell><cell cols="2">0.6210 (1)</cell></row><row><cell cols="2">Alejandro Mosquera 0.7790 (3)</cell><cell cols="2">0.6062 (3)</cell></row><row><cell>Andi</cell><cell>0.7782 (4)</cell><cell cols="2">0.6036 (4)</cell></row><row><cell>CS-UM6P</cell><cell cols="3">0.7779 (5) 0.3813 (47)</cell></row><row><cell>tuqa</cell><cell cols="3">0.7772 (6) 0.5771 (12)</cell></row><row><cell cols="2">OCHADAI-KYOTO 0.7772 (7)</cell><cell cols="2">0.6015 (5)</cell></row><row><cell>BigGreen</cell><cell>0.7749 (8)</cell><cell cols="2">0.5983 (6)</cell></row><row><cell>CSECU-DSC</cell><cell>0.7716 (9)</cell><cell cols="2">0.5909 (8)</cell></row><row><cell>IA PUCP</cell><cell cols="3">0.7704 (10) 0.5929 (7)</cell></row><row><cell>Frequency Baseline</cell><cell>0.5287</cell><cell></cell><cell>0.2779</cell></row><row><cell></cell><cell cols="2">Task 2</cell></row><row><cell>DeepBlueAI</cell><cell>0.8612 (1)</cell><cell cols="2">0.7389 (1)</cell></row><row><cell>rg pa</cell><cell>0.8575 (2)</cell><cell cols="2">0.7035 (5)</cell></row><row><cell>xiang wen tian</cell><cell>0.8571 (3)</cell><cell cols="2">0.7012 (7)</cell></row><row><cell>andi gpu</cell><cell>0.8543 (4)</cell><cell cols="2">0.7055 (4)</cell></row><row><cell>ren wo xing</cell><cell>0.8541 (5)</cell><cell cols="2">0.6967 (8)</cell></row><row><cell>Andi</cell><cell>0.8506 (6)</cell><cell cols="2">0.7107 (2)</cell></row><row><cell>CS-UM6P</cell><cell cols="3">0.8489 (7) 0.6380 (17)</cell></row><row><cell cols="2">OCHADAI-KYOTO 0.8438 (8)</cell><cell cols="2">0.7103 (3)</cell></row><row><cell>LAST</cell><cell>0.8417 (9)</cell><cell cols="2">0.7030 (6)</cell></row><row><cell>KFU</cell><cell cols="3">0.8406 (10) 0.6967 (9)</cell></row><row><cell>Frequency Baseline</cell><cell>0.6571</cell><cell></cell><cell>0.4030</cell></row></table><note>we show the scores of the top 10 systems across our 2 Sub-tasks according to Pearson's</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>The top 10 systems for each task according to Pearson's correlation. We have also included R2 score to help interpret the former. For full rankings, see Appendix A</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>Sub-task 1: Results and rank (in brackets) in terms of Pearson, Spearman, MAE, MSE, and R2. The rank corresponds to Pearson.</figDesc><table><row><cell cols="2">Rank Team</cell><cell cols="3">Pearson Spearman MAE</cell><cell>MSE</cell><cell>R2</cell></row><row><cell>1</cell><cell>DeepBlueAI</cell><cell>0.8612</cell><cell>0.8526</cell><cell cols="2">0.0616 0.0063 0.7389</cell></row><row><cell>2</cell><cell>rg pa</cell><cell>0.8575</cell><cell>0.8529</cell><cell cols="2">0.0672 0.0072 0.7035</cell></row><row><cell>3</cell><cell>xiang wen tian</cell><cell>0.8571</cell><cell>0.8548</cell><cell cols="2">0.0675 0.0072 0.7012</cell></row><row><cell>4</cell><cell>andi gpu</cell><cell>0.8543</cell><cell>0.8448</cell><cell cols="2">0.0664 0.0071 0.7055</cell></row><row><cell>5</cell><cell>ren wo xing</cell><cell>0.8541</cell><cell>0.8473</cell><cell cols="2">0.0677 0.0073 0.6967</cell></row><row><cell>6</cell><cell>Andi</cell><cell>0.8506</cell><cell>0.8381</cell><cell cols="2">0.0667 0.0070 0.7107</cell></row><row><cell>7</cell><cell>CS-UM6P</cell><cell>0.8489</cell><cell>0.8406</cell><cell cols="2">0.0760 0.0087 0.6380</cell></row><row><cell>8</cell><cell>OCHADAI-KYOTO</cell><cell>0.8438</cell><cell>0.8285</cell><cell cols="2">0.0660 0.0070 0.7103</cell></row><row><cell>9</cell><cell>LAST</cell><cell>0.8417</cell><cell>0.8299</cell><cell cols="2">0.0677 0.0072 0.7030</cell></row><row><cell>10</cell><cell>KFU</cell><cell>0.8406</cell><cell>0.8337</cell><cell cols="2">0.0686 0.0073 0.6967</cell></row><row><cell>11</cell><cell>jiu mo zhi</cell><cell>0.8355</cell><cell>0.8277</cell><cell cols="2">0.0710 0.0083 0.6560</cell></row><row><cell>12</cell><cell>CSECU-DSG</cell><cell>0.8311</cell><cell>0.8153</cell><cell cols="2">0.0678 0.0077 0.6825</cell></row><row><cell>13</cell><cell>acccb</cell><cell>0.8310</cell><cell>0.8157</cell><cell cols="2">0.0697 0.0076 0.6850</cell></row><row><cell>14</cell><cell>Stanford MLab</cell><cell>0.8280</cell><cell>0.8124</cell><cell cols="2">0.0711 0.0080 0.6671</cell></row><row><cell>15</cell><cell>IITK@LCP</cell><cell>0.8277</cell><cell>0.8228</cell><cell cols="2">0.0811 0.0098 0.5949</cell></row><row><cell>16</cell><cell>qnamqj</cell><cell>0.8246</cell><cell>0.8227</cell><cell cols="2">0.0787 0.0094 0.6097</cell></row><row><cell>17</cell><cell>LRL NC</cell><cell>0.8244</cell><cell>0.8156</cell><cell cols="2">0.0702 0.0079 0.6737</cell></row><row><cell>18</cell><cell>mau lih</cell><cell>0.8234</cell><cell>0.8211</cell><cell cols="2">0.0790 0.0096 0.6042</cell></row><row><cell>19</cell><cell>TUDA-CCL</cell><cell>0.8190</cell><cell>0.8091</cell><cell cols="2">0.0711 0.0080 0.6677</cell></row><row><cell>20</cell><cell>Alejandro Mosquera</cell><cell>0.8093</cell><cell>0.8017</cell><cell cols="2">0.0731 0.0084 0.6519</cell></row><row><cell>21</cell><cell>LucasHub</cell><cell>0.8000</cell><cell>0.7797</cell><cell cols="2">0.0754 0.0089 0.6323</cell></row><row><cell>22</cell><cell>UPB</cell><cell>0.7962</cell><cell>0.7988</cell><cell cols="2">0.0788 0.0099 0.5917</cell></row><row><cell>23</cell><cell>CompNA</cell><cell>0.7931</cell><cell>0.7800</cell><cell cols="2">0.0783 0.0093 0.6160</cell></row><row><cell>24</cell><cell>justglowing</cell><cell>0.7902</cell><cell>0.7851</cell><cell cols="2">0.0786 0.0092 0.6169</cell></row><row><cell>25</cell><cell>BigGreen</cell><cell>0.7898</cell><cell>0.7769</cell><cell cols="2">0.0903 0.0124 0.4858</cell></row><row><cell>26</cell><cell>Katildakat</cell><cell>0.7848</cell><cell>0.7869</cell><cell cols="2">0.0807 0.0101 0.5816</cell></row><row><cell>27</cell><cell cols="2">Manchester Metropolitan 0.7611</cell><cell>0.7711</cell><cell cols="2">0.0806 0.0102 0.5770</cell></row><row><cell>28</cell><cell>UTFPR</cell><cell>0.7601</cell><cell>0.7504</cell><cell cols="2">0.0817 0.0102 0.5754</cell></row><row><cell>29</cell><cell>UNBNLP</cell><cell>0.7515</cell><cell>0.7420</cell><cell cols="2">0.0802 0.0106 0.5623</cell></row><row><cell>30</cell><cell>chenshi</cell><cell>0.7500</cell><cell>0.7497</cell><cell cols="2">0.0867 0.0112 0.5365</cell></row><row><cell>31</cell><cell>PolyU CBS-Comp</cell><cell>0.7416</cell><cell>0.7222</cell><cell cols="2">0.0839 0.0109 0.5473</cell></row><row><cell>32</cell><cell>cognience</cell><cell>0.7232</cell><cell>0.7301</cell><cell cols="2">0.0851 0.0117 0.5144</cell></row><row><cell>-</cell><cell>Frequency Baseline</cell><cell>0.6571</cell><cell>0.6345</cell><cell cols="2">0.0924 0.0140 0.4030</cell></row><row><cell>33</cell><cell>C3SL</cell><cell>0.3941</cell><cell>0.3675</cell><cell cols="2">0.1145 0.0206 0.1470</cell></row><row><cell>34</cell><cell>PyGuajo</cell><cell>0.3931</cell><cell>0.3902</cell><cell cols="2">0.1132 0.0205 0.1488</cell></row><row><cell>35</cell><cell>SINAI</cell><cell>0.3197</cell><cell>0.3508</cell><cell cols="2">0.1217 0.0243 -0.0062</cell></row><row><cell>36</cell><cell>LECCE</cell><cell>0.2821</cell><cell>0.3138</cell><cell cols="2">0.1202 0.0226 0.0624</cell></row><row><cell>37</cell><cell>glitterosu</cell><cell>0.1860</cell><cell>0.1316</cell><cell cols="2">0.1332 0.0255 -0.0564</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 :</head><label>5</label><figDesc>Sub-task 2: Results and rank (in brackets) in terms of Pearson, Spearman, MAE, MSE, and R2. The Rank Corresponds to Pearson.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://github.com/MMU-TDMLab/CompLex</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">LaS-TUS/TALN at Complex Word Identification (CWI) 2018 Shared Task</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<editor>
+			<persName><forename type="first">Ahmed</forename><surname>Abura</surname></persName>
+			<persName><forename type="first">'</forename><surname>Ed</surname></persName>
+			<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+		</editor>
+		<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">SB@GU at the Complex Word Identification 2018 Shared Task</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Alfter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ildikó</forename><surname>Pilán</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Fostering digital inclusion and accessibility: The PorSimples project for simplification of Portuguese texts</title>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Aluísio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Caroline</forename><surname>Gasperin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL HLT 2010 Young Investigators Workshop on Computational Approaches to Languages of the Americas</title>
+				<meeting>the NAACL HLT 2010 Young Investigators Workshop on Computational Approaches to Languages of the Americas</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="46" to="53" />
+		</imprint>
+	</monogr>
+	<note>Los Angeles</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Complex Word Identification: Convolutional Neural Network vs. Feature Engineering</title>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Segun Taofeek Aroyehun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel Alejandro Pérez</forename><surname>Angel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Alvarez</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gelbukh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">CSECU-DSG at SemEval-2021 Task 1: Fusion of Transformer Models for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Abdul</forename><surname>Aziz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Md</forename><forename type="middle">Akram</forename><surname>Hossain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abu Nowshed</forename><surname>Chy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Concept annotation in the craft corpus</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Bada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miriam</forename><surname>Eckert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Donald</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristin</forename><surname>Garcia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Krista</forename><surname>Shipley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Sitnikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>William</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Baumgartner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karin</forename><surname>Bretonnel Cohen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Judith</forename><forename type="middle">A</forename><surname>Verspoor</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Blake</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">BMC bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="20" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">LAST at SemEval-2021 Task 1: Improving Multi-Word Complexity Prediction Using Bigram Association Measures</title>
+		<author>
+			<persName><forename type="first">Yves</forename><surname>Bestgen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">CoastalCPH at SemEval-2016 Task 11: The importance of designing your Neural Networks right</title>
+		<author>
+			<persName><forename type="first">Joachim</forename><surname>Bingel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalie</forename><surname>Schluter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Héctor Martínez</forename><surname>Alonso</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1028" to="1033" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Melbourne at SemEval 2016 Task 11: Classifying Type-level Word Complexity using Random Forests with Corpus and Word List Features</title>
+		<author>
+			<persName><forename type="first">Julian</forename><surname>Brooke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandra</forename><surname>Uitdenbogerd</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="975" to="981" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">UnibucKernel: A kernel-based learning method for complex word identification</title>
+		<author>
+			<persName><forename type="first">Andrei</forename><surname>Butnaru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu Tudor</forename><surname>Ionescu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Garuda &amp; Bhasha at SemEval-2016 Task 11: Complex Word Identification Using Aggregated Learning Models</title>
+		<author>
+			<persName><forename type="first">Prafulla</forename><surname>Choubey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shubham</forename><surname>Pateria</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1006" to="1010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">A massively parallel corpus: the bible in 100 languages. Language resources and evaluation</title>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Christodouloupoulos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Steedman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">49</biblScope>
+			<biblScope unit="page" from="375" to="395" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">A formula for predicting readability</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Dale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">S</forename><surname>Chall</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Educational research bulletin</title>
+		<imprint>
+			<biblScope unit="page">27</biblScope>
+			<date type="published" when="1948" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Deep Learning Architecture for Complex Word Identification</title>
+		<author>
+			<persName><forename type="first">Dirk</forename><surname>De Hertog</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anaïs</forename><surname>Tack</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">LCP-RIT at SemEval-2021 Task 1: Exploring Linguistic Features for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Abhinandan</forename><surname>Desai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>North</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Zampieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Homan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">The use of a psycholinguistic database in the simplification of text for aphasic readers</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tait</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Linguistic Databases</title>
+				<meeting><address><addrLine>Stanford, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>CSLI Publications</publisher>
+			<date type="published" when="1998" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Manchester Metropolitan at SemEval-2021 Task 1: Convolutional Networks for Complex Word Identification</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Flynn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Shardlow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Sensible at SemEval-2016 Task 11: Neural Nonsense Mangled in Ensemble Mess</title>
+		<author>
+			<persName><forename type="first">Nat</forename><surname>Gillin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="963" to="968" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">TUDA-CCL at SemEval-2021 Task 1: Using Gradientboosted Regression Tree Ensembles Trained on a Heterogeneous Feature Set for Predicting Lexical Complexity</title>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Gombert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Bartsch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">CAMB at CWI Shared Task 2018: Complex Word Identification with Ensemble-Based Voting</title>
+		<author>
+			<persName><forename type="first">Sian</forename><surname>Gooding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Kochmar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Recursive context-aware lexical simplification</title>
+		<author>
+			<persName><forename type="first">Sian</forename><surname>Gooding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Kochmar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</title>
+				<meeting>the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="4855" to="4865" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">We need to talk about standard splits</title>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Gorman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bedrick</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P19-1267</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="2786" to="2791" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">NILC at CWI 2018: Exploring Feature Engineering and Feature Learning</title>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Hartmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leandro</forename><surname>Borges</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Santos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">2021. hub at SemEval-2021 Task 1: Fusion of Sentence and Word Frequency to Predict Lexical Complexity</title>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Bai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaobing</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint/>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">BigGreen at SemEval-2021 Task 1: Lexical Complexity Prediction with Assembly Models</title>
+		<author>
+			<persName><forename type="first">Aadil</forename><surname>Islam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weicheng</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Soroush</forename><surname>Vosoughi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Complex Word Identification Based on Frequency in a Learner Corpus</title>
+		<author>
+			<persName><forename type="first">Tomoyuki</forename><surname>Kajiwara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mamoru</forename><surname>Komachi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Pomona at SemEval-2016 Task 11: Predicting Word Complexity Based on Corpus Frequency</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Kauchak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1047" to="1051" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">UNBNLP at SemEval-2021 Task 1: Predicting lexical complexity with masked language models and character-level encoders</title>
+		<author>
+			<persName><forename type="first">Milton</forename><surname>King</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ali</forename><surname>Hakimi Parizi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samin</forename><surname>Fakharian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Cook</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Europarl: A parallel corpus for statistical machine translation</title>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">MT summit</title>
+				<imprint>
+			<publisher>Citeseer</publisher>
+			<date type="published" when="2005" />
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="page" from="79" to="86" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">UWB at SemEval-2016 Task 11: Exploring Features for Complex Word Identification</title>
+		<author>
+			<persName><forename type="first">Michal</forename><surname>Konkol</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1038" to="1041" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">AI-KU at SemEval-2016 Task 11: Word Embeddings and Substring Features for Complex Word Identification</title>
+		<author>
+			<persName><forename type="first">Onur</forename><surname>Kuru</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1042" to="1046" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">JCT at SemEval-2021 Task 1: Contextaware Representation for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Chaya</forename><surname>Liebeskind</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Otniel</forename><surname>Elkayam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shmuel</forename><surname>Liebeskind</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">A wordcomplexity lexicon and a neural readability ranking model for lexical simplification</title>
+		<author>
+			<persName><forename type="first">Mounica</forename><surname>Maddela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Xu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="3749" to="3760" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">LTG at SemEval-2016 Task 11: Complex Word Identification with Classifier Ensembles</title>
+		<author>
+			<persName><forename type="first">Shervin</forename><surname>Malmasi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Dras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Zampieri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="996" to="1000" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">CS-UM6P at SemEval-2021 Task 1: A Deep Learning Model-based Pre-trained Transformer Encoder for Lexical Complexity</title>
+		<author>
+			<persName><forename type="first">Abdelkader</forename><forename type="middle">El</forename><surname>Nabil El Mamoun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdellah</forename><forename type="middle">El</forename><surname>Mahdaouy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kabil</forename><surname>Mekki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ismail</forename><surname>Essefar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Berrada</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">The Stanford CoreNLP natural language processing toolkit</title>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Bauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jenny</forename><surname>Finkel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mcclosky</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/v1/P14-5010</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of 52nd Annual Meeting of the Association for Computational Linguistics: System Demonstrations</title>
+				<meeting>52nd Annual Meeting of the Association for Computational Linguistics: System Demonstrations<address><addrLine>Maryland</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="55" to="60" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Alejandro Mosquera at SemEval-2021 Task 1: Exploring Sentence and Word Features for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Alejandro</forename><surname>Mosquera</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">JU NLP at SemEval-2016 Task 11: Identifying Complex Words in a Sentence</title>
+		<author>
+			<persName><forename type="first">Niloy</forename><surname>Mukherjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dipankar</forename><surname>Braja Gopal Patra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sivaji</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bandyopadhyay</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="986" to="990" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">SemEval 2016 Task 11: Complex Word Identification</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Paetzold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucia</forename><surname>Specia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="560" to="569" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">SV000gg at SemEval-2016 Task 11: Heavy Gauge Complex Word Identification with System Voting</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Paetzold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucia</forename><surname>Specia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="969" to="974" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Lexical simplification with neural ranking</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Paetzold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucia</forename><surname>Specia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Conference of the European Chapter</title>
+				<meeting>the 15th Conference of the European Chapter<address><addrLine>Valencia, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="34" to="40" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">UTFPR at SemEval-2021 Task 1: Complexity Prediction by Combining BERT Vectors and Classic Features</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><forename type="middle">Henrique</forename><surname>Paetzold</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">DeepBlueAI at SemEval-2021 Task 1: Lexical Complexity Prediction with A Deep Ensemble Approach</title>
+		<author>
+			<persName><forename type="first">Chunguang</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bingyan</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shengguang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhipeng</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Complex Word Identification using Character n-grams</title>
+		<author>
+			<persName><forename type="first">Maja</forename><surname>Popović</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">HMC at SemEval-2016 Task 11: Identifying Complex Words Using Depth-limited Decision Trees</title>
+		<author>
+			<persName><forename type="first">Maury</forename><surname>Quijada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julie</forename><surname>Medero</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1034" to="1037" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">RG PA at SemEval-2021 Task 1: A Contextual Attentionbased Model with RoBERTa for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Gang</forename><surname>Rao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maochang</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaolong</forename><surname>Hou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lianxin</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Mo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianping</forename><surname>Shen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">A plug-in to aid online reading in spanish</title>
+		<author>
+			<persName><forename type="first">Luz</forename><surname>Rello</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Carlini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ricardo</forename><surname>Baeza-Yates</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><forename type="middle">P</forename><surname>Bigham</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th Web for All Conference</title>
+				<meeting>the 12th Web for All Conference</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1" to="4" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">IAPUCP at SemEval-2021 Task 1: Stacking Fine-Tuned Transformers is Almost All You Need for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Rivas</forename><surname>Kervy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fernando Alva-Manchego</forename><surname>Rojas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">TALN at SemEval-2016 Task 11: Modelling Complex Words by Contextual, Lexical and Semantic Features</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<editor>
+			<persName><forename type="first">Francesco</forename><surname>Ronzano</surname></persName>
+			<persName><forename type="first">Ahmed</forename><surname>Abura'ed</surname></persName>
+			<persName><forename type="first">Luis</forename><surname>Espinosa Anke</surname></persName>
+			<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+		</editor>
+		<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1011" to="1016" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">ANDI at SemEval-2021 Task 1: Predicting complexity in context using distributional models, behavioural norms, and lexical resources</title>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Rotaru</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Stanford MLab at SemEval-2021 Task 1: Tree-Based Modelling of Lexical Complexity using Word Embeddings</title>
+		<author>
+			<persName><forename type="first">Erik</forename><surname>Rozi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niveditha</forename><surname>Iyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gordon</forename><surname>Chi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Enok</forename><surname>Choe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kathy</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zander</forename><surname>Lack</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jillian</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ethan</forename><forename type="middle">A</forename><surname>Chi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">2021. archer at SemEval-2021 Task 1: Contextualising Lexical Complexity</title>
+		<author>
+			<persName><forename type="first">Irene</forename><surname>Russo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">Making it simplext: Implementation and evaluation of a text simplification system for spanish</title>
+		<author>
+			<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Sanjaštajner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Bott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luz</forename><surname>Mille</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Biljana</forename><surname>Rello</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Drndarevic</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Transactions on Accessible Computing (TACCESS)</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="1" to="36" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">A comparison of techniques to automatically identify complex words</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Shardlow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">51st Annual Meeting of the Association for Computational Linguistics Proceedings of the Student Research Workshop</title>
+				<meeting><address><addrLine>Sofia, Bulgaria</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="103" to="109" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">CompLex -a new corpus for lexical complexity prediction from Likert Scale data</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Shardlow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Cooper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Zampieri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Tools and Resources to Empower People with REAding DIfficulties (READI)</title>
+				<meeting>the 1st Workshop on Tools and Resources to Empower People with REAding DIfficulties (READI)<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="57" to="62" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association</note>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">IITK@LCP at SemEval-2021 Task 1: Classification for Lexical Complexity Regression Task</title>
+		<author>
+			<persName><forename type="first">Neil</forename><surname>Shirude</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sagnik</forename><surname>Mukherjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tushar</forename><surname>Shandhilya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ananta</forename><surname>Mukherjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">Mironas Bitinis, Héctor Hernández, and Elin Asklöv. 2021. CLULEX at SemEval-2021 Task 1: A Simple System Goes a Long Way</title>
+		<author>
+			<persName><forename type="first">Greta</forename><surname>Smolenska</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Kolb</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinan</forename><surname>Tang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<monogr>
+		<title level="m" type="main">Joost Bastings, and Katja Filippova. 2020. We need to talk about random splits</title>
+		<author>
+			<persName><forename type="first">Anders</forename><surname>Søgaard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Ebert</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2005.00636</idno>
+		<imprint/>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">AmritaCEN at SemEval-2016 Task 11: Complex Word Identification using Word Embedding</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">P</forename><surname>Sanjay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anand</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Soman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">P</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1022" to="1027" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">RS GV at SemEval-2021 Task 1: Sense Relative Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Regina</forename><surname>Stodden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gayatri</forename><surname>Venugopal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">SeCoDa: Sense complexity dataset</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Strohmaier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sian</forename><surname>Gooding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shiva</forename><surname>Taslimipoor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Kochmar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th Language Resources and Evaluation Conference</title>
+				<meeting>the 12th Language Resources and Evaluation Conference<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Language Resources Association</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="5962" to="5967" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">OCHADAI-KYODAI at SemEval-2021 Task 1: Enhancing Model Generalization and Robustness for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Yuki</forename><surname>Taya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fei</forename><surname>Lis Kanashiro Pereira</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ichiro</forename><surname>Cheng</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kobayashi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">CompNA at SemEval-2021 Task 1: Prediction of lexical complexity analyzing heterogeneous features</title>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Vettigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Sorgente</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">2021. katildakat at SemEval-2021 Task 1: Lexical Complexity Prediction of Single Words and Multi-Word Expressions in English</title>
+		<author>
+			<persName><forename type="first">Katja</forename><surname>Voskoboinik</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint/>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">The Whole is Greater than the Sum of its Parts: Towards the Effectiveness of Voting Ensemble Classifiers for Complex Word Identification</title>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Wani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandeep</forename><surname>Mathias</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jayashree</forename><forename type="middle">Aanand</forename><surname>Gajjam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpak</forename><surname>Bhattacharyya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">PLUJAGH at SemEval-2016 Task 11: Simple System for Complex Word Identification</title>
+		<author>
+			<persName><forename type="first">Krzysztof</forename><surname>Wróbel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="953" to="957" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title level="a" type="main">PolyU CBS-Comp at SemEval-2021 Task 1: Lexical Complexity Prediction (LCP)</title>
+		<author>
+			<persName><forename type="first">Rong</forename><surname>Xiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinghang</forename><surname>Gu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emmanuele</forename><surname>Chersoni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wenjie</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qin</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chu-Ren</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">JUST-BLUE at SemEval-2021 Task 1: Predicting Lexical Complexity using BERT and RoBERTa Pre-trained Language Models</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<editor>
+			<persName><forename type="first">Qusai</forename><surname>Tuqa Bani Yaseen</surname></persName>
+			<persName><forename type="first">Sarah</forename><surname>Ismail</surname></persName>
+			<persName><forename type="first">Eslam</forename><surname>Al-Omari</surname></persName>
+			<persName><forename type="first">Malak</forename><surname>Al-Sobh</surname></persName>
+			<persName><surname>Abdullah</surname></persName>
+		</editor>
+		<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<analytic>
+		<title level="a" type="main">A Report on the Complex Word Identification Shared Task</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Seid Muhie Yimam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shervin</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Malmasi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luci</forename><surname>Paetzold</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Specia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anaïs</forename><surname>Sanjaštajner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Tack</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zampieri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 13th Workshop on Innovative Use of NLP for Building Educational Applications<address><addrLine>New Orleans, United States</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<analytic>
+		<title level="a" type="main">CWIG3G2 -complex word identification task across three text genres and two user groups</title>
+		<author>
+			<persName><surname>Seid Muhie Yimam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Sanjaštajner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Riedl</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Biemann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth International Joint Conference on Natural Language Processing</title>
+				<meeting>the Eighth International Joint Conference on Natural Language Processing<address><addrLine>Taipei, Taiwan</addrLine></address></meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="401" to="407" />
+		</imprint>
+	</monogr>
+	<note>Asian Federation of Natural Language Processing</note>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<analytic>
+		<title level="a" type="main">Cambridge at SemEval-2021 Task 1: An Ensemble of Feature-Based and Neural Models for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">Zheng</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gladys</forename><surname>Tyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Strohmaier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<analytic>
+		<title level="a" type="main">UPB at SemEval-2021 Task 1: Combining Deep Learning and Hand-Crafted Features for Lexical Complexity Prediction</title>
+		<author>
+			<persName><forename type="first">George-Eduard</forename><surname>Zaharia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dumitru-Clementin</forename><surname>Cercel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Dascalu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand (online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<analytic>
+		<title level="a" type="main">Complex Word Identification: Challenges in Data Annotation and System Performance</title>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Zampieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shervin</forename><surname>Malmasi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Paetzold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucia</forename><surname>Specia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th Workshop on Natural Language Processing Techniques for Educational Applications (NLPTEA 2017)</title>
+				<meeting>the 4th Workshop on Natural Language Processing Techniques for Educational Applications (NLPTEA 2017)<address><addrLine>Taipei, Taiwan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="59" to="63" />
+		</imprint>
+	</monogr>
+	<note>Asian Federation of Natural Language Processing</note>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<analytic>
+		<title level="a" type="main">MacSaar at SemEval-2016 Task 11: Zipfian and Character Features for ComplexWord Identification</title>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Zampieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liling</forename><surname>Tan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Van Genabith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1001" to="1005" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2018 Task 5: Counting Events and Participants in the Long Tail</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Marten</forename><surname>Postma</surname></persName>
+							<email>m.c.postma@vu.nl</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Vrije Universiteit Amsterdam</orgName>
+								<address>
+									<country key="NL">The Netherlands</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Filip</forename><surname>Ilievski</surname></persName>
+							<email>f.ilievski@vu.nl</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Vrije Universiteit Amsterdam</orgName>
+								<address>
+									<country key="NL">The Netherlands</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Piek</forename><surname>Vossen</surname></persName>
+							<email>piek.vossen@vu.nl</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Vrije Universiteit Amsterdam</orgName>
+								<address>
+									<country key="NL">The Netherlands</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2018 Task 5: Counting Events and Participants in the Long Tail</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper discusses SemEval-2018 Task 5: a referential quantification task of counting events and participants in local, long-tail news documents with high ambiguity. The complexity of this task challenges systems to establish the meaning, reference and identity across documents. The task consists of three subtasks and spans across three domains. We detail the design of this referential quantification task, describe the participating systems, and present additional analysis to gain deeper insight into their performance. 70 Answer: 3 Question: How many killing incidents happened in 2016 in Columbus, Mississippi? Mississippi boy killed in gun accident Shooting suspect charged with domestic aggravated assault NEWLYWED ACCUSED OF SHOOTING NEW BRIDE Columbus Police investigating early morning shooting High Winds Play Role in 2-Alarm District Heights Apartment Fire input documents</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>We present a "referential quantification" task that requires systems to establish the meaning, reference and identity of events 1 and participants in news articles. By "referential quantification", we mean questions concerning the number of incidents of an event type (e.g. How many killing incidents happened in 2016 in Columbus, MS?) or participants in roles (e.g. How many people were killed in 2016 in Columbus, MS?), as opposed to factoid questions for specific properties of individual events and entities (e.g. When was 2pac murdered?). The questions are given with certain constraints on the location, time, participants, and event types, which requires understanding of the meaning of words mentioning these properties (e.g. Word Sense Disambiguation), but also adequately establishing the identity (e.g. reference and coreference) across mentions. The task thus represents both an intrinsic and application-based evaluation, as systems are forced to resolve ambiguity of meaning and reference, as well as variation in reference in order to answer the questions.</p><p>Figure <ref type="figure" target="#fig_0">1</ref> shows an overview of our quantification task. We provide the participants with a set of questions and their corresponding news documents. <ref type="bibr">2</ref> Systems are asked to distill event-and participant-based knowledge from the documents to answer the question. Systems submit both a numeric answer (3 events in Figure <ref type="figure" target="#fig_0">1</ref>), and the corresponding events with their mentions found in the provided texts (e.g., the leftmost incident in <ref type="bibr">Figure</ref>  <ref type="figure" target="#fig_0">1</ref> is referred to by the coreferring mentions "killed" and "assault" found in two separate documents). Systems are evaluated on both the numeric answers as well as on the sets of coreferring mentions. Mentions are represented by tokens and offsets provided by the organizers.</p><p>The incidents and their corresponding news articles are obtained from structured databases, which greatly reduces the need for annotation and mainly requires validation instead. Given this data and using a metric-driven strategy, we created a task that further maximizes ambiguity and variation of the data in relation to the questions. This ambiguity and variation includes a substantial amount of low-frequent, local events and entities, reflecting a large variety of long-tail phenomena. As such, the task is not only highly ambiguous but can also not be tackled by relying on the most frequent and popular (head) interpretations.</p><p>We see the following contributions of our task: 1. To the best of our knowledge, we propose the first task that is deliberately designed to address large ambiguity of meaning and reference over a high number of infrequent instances. 2. We introduce a methodology for creating large event-based tasks while avoiding a lot of annotation, since we base the task on structured data. The remaining annotation concerns targeted mentions given the structured data rather than full doc- uments with open-ended interpretations.</p><p>3. We made all of our code to create the task available, 3 which may stimulate others to create more tasks and datasets that tackle long-tail phenomena for other aspects of language processing, either within or outside of the SemEval competition. 4. This task provides insights into the strengths and weaknesses of semantic processing systems with respect to various long-tail phenomena. We expect that systems need to innovate by adjusting (deep) learning techniques to capture the referential complexity and knowledge sparseness, or by explicitly modeling aspects of events and entities to establish identity and reference.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Motivation &amp; Target Communities</head><p>Expressions can have many different meanings and possibly an infinite number of references. At the same time, variation in language is also large, as we can make reference to the same things in many ways. This makes the tasks of Word Sense Disambiguation, Entity Linking, and Event and Nominal Coreference extremely hard. It also makes it very difficult to create a task that represents the problem at its full scale. Any sample of text will reduce the problem to a small set of meanings and references, but also to meanings that are popular at that time excluding many unpopular ones from the distributional long tail. Given this Zipfian distribution, a task that is challenging with respect to ambiguity, reference, and variation, and that is representative for the long tail as well, needs to fit certain constraints.</p><p>Our task directly relates to the following communities in semantic processing: 1. disambiguation and reference; 2. reading comprehension and question answering.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Disambiguation &amp; Reference</head><p>Semantic NLP tasks are often limited in terms of the range of concepts and meanings that are covered. This is a necessary consequence of the annotation effort that is needed to create such tasks. Likewise, in , we observed that most well-known datasets for semantic tasks have an extremely low ambiguity and variation. Even in datasets that tried to increase the ambiguity and temporal diversity for the disambiguation and reference tasks, we still measured a notable bias with respect to ambiguity, variance, dominance, and time. Overall, tasks and their datasets show a strong semantic overfitting to the head of the distribution (the most popular part of the world) and are not representative for the diversity of the long tail.</p><p>Our task differs from existing ones in that: 1. we deliberately created a task with a high number of event instances per event, many of which with similar properties, leading to high confusability 2. we present an application-based task which requires to perform on a combination of intrinsic tasks such as reference, disambiguation, and spatial-temporal reasoning, that are usually tested separately in existing tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Reading Comprehension &amp; Question Answering</head><p>In several recent tasks, systems are asked to answer entity-based questions, typically by point-ing to the correct segment or coreference chain in text, or by composing an answer by abstracting over multiple paragraphs/text pieces. These tasks are based on <ref type="bibr">Wikipedia (SQuAD (Rajpurkar et al., 2016)</ref>, WikiQA <ref type="bibr" target="#b23">(Yang et al., 2015)</ref>, QASent <ref type="bibr" target="#b21">(Wang et al., 2007)</ref>, WIKIREADING <ref type="bibr" target="#b6">(Hewlett et al., 2016)</ref>) or on annotated individual documents (MARCO <ref type="bibr" target="#b14">(Nguyen et al., 2016)</ref>, <ref type="bibr">CNN and DailyMail datasets (Hermann et al., 2015)</ref>). <ref type="bibr" target="#b22">Weston et al. (2015)</ref> outlined 20 skill sets, such as causality, resolving time and location, and reasoning over world knowledge, that are needed to build an intelligent QA system. These have been partially captured by the datasets MCTest <ref type="bibr" target="#b18">(Richardson et al., 2013)</ref> and QuizBowl <ref type="bibr" target="#b8">(Iyyer et al., 2014)</ref>), as well as the Se-mEval task on Answer Selection in Community Question Answering <ref type="bibr" target="#b12">(Nakov et al., 2015</ref><ref type="bibr" target="#b13">(Nakov et al., , 2016</ref>. <ref type="bibr">4</ref> However, all these datasets avoid representing real-world referential ambiguity to its full extent by mainly asking questions that require knowledge about popular Wikipedia entities and/or text understanding of a single document. 5 Unlike existing work, our task deliberately addresses the referential ambiguity of the world beyond Wikipedia, by asking questions about long-tail events described in multiple documents. By doing so, we require deep processing of text and establishing identity and reference across single documents.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Requirements</head><p>Our quantification task consists of questions like How many killing incidents happened in 2016 in Columbus, MS? on a dataset that maximizes confusability of meaning, reference and identity. To guide the creation of such task, we defined five requirements that apply to the data for a single event type, e.g. killing  e) location, e.g. killing A that happened in Columbus, MS, and killing B in Houston, TX. R5 Representation of non-dominant events and entities, i.e. instances that receive little media coverage. Hence, the entities would not be restricted to celebrities and the events are not widely discussed such as general elections.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data &amp; Resources</head><p>In this Section, we present our data sources and an example document. We also discuss considerations of licensing and availability.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Structured data</head><p>The majority of the source texts in this task are sampled from structured databases that contain supportive news sources about gun violence incidents. While these texts already contain enough confusability with respect to the aspects defined in Section 3, we add confusion through leveraging structured data from two other domains: fire incidents and business.</p><p>As a direct consequence of using these databases and our exploitation strategy, we are able to satisfy all requirements we set in Section 3. These databases contain many event instances per event type (R1), multiple event mentions in the same document per event instance (R2), cover a wide spread of publishing times per event instance (R3), represent non-dominant events and entities (R5), and contain rich annotation of event properties that allows us to create high confusability (R4, see Section 5.3 for our methodology).</p><p>For a large portion of the information in the structured databases, we manually validated that this information could be found in the supportive news sources, and excluded the documents for which this was not the case. For the remaining documents, we performed automatic tests to filter out low-quality entries.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.1">Gun Violence</head><p>The gun violence data is collected from the standard reports provided by the Gun Violence Archive (GVA) website. <ref type="bibr">6</ref> Each incident contains information about: 1. its location 2. its time 3. how many people were killed 4. how many people were injured 5. its participants. Participant information includes: (a) the role, i.e. victim or suspect (b) the name (c) the age 6. the news articles describing this incident. Table <ref type="table" target="#tab_2">1</ref> provides a more detailed overview of the information available in the GVA.  To prevent systems from cheating (by using the structured data directly), the set of incidents and news articles is extended with news articles from the Signal-1M Dataset <ref type="bibr" target="#b2">(Corney et al., 2016)</ref> and from the Web, that also stem from the gun violence domain, but are not found in the GVA.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.2">Other domains</head><p>For the fire incidents domain, we make use of the FireRescue1 reports, 7 which describe the following information about 417 incidents: 1. their location as a surface form 2. their reporting time 3. one free text summary describing the incidents. 4. no information about participants. Based on this information, we manually annotated the incident time and mapped the location to its representation in Wikipedia.</p><p>We further carefully selected a small amount of news articles from the business domain from The Signal-1M Dataset. Since these documents were not semantically annotated with respect to event information, we manually annotated this data with the same kind of information as the other databases: incident location, time, and information on the affected participants.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Example document</head><p>For each document, we provide its title, content (tokenized), and creation time, e.g.: Title: $70K reward in deadly shooting near N. Philadelphia school Content: A $70,000 reward is being offered for information in a quadruple shooting near a Roman Catholic school ... DCT: 2017-4-5</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Licensing &amp; Availability</head><p>The news documents in our task are published on a very diverse set of (commercial) websites. Due to this diversity, there is no easy mechanism to check their licenses individually. Instead, we overcome potential licensing issues by distributing the data under the Fair Use policy. <ref type="bibr">8 9</ref> During the SemEval-2018 period, but also afterwards, systems can easily test their submissions via our competition on Codalab. 10</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Task Design</head><p>For every incident in the task, we have finegrained structured data with respect to its event type, location, time, and participants, and unstructured data in the form of the news sources that report on it. In this Section, we explain how we exploited this data in order to create the task. We present our three subtasks and the question template after which we outline the question creation. Finally, we explain how we divided the data into trial and test sets and provide some statistics about the data. For detailed information about the task, e.g. about the question and answer representation, we refer to the CodaLab website of the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Subtasks</head><p>The task contains two event-based subtasks and one entity-based subtask.</p><p>Subtask 1 (S1): Find the single event that answers the question e.g. Which killing incident happened in Wilmington, CA in June 2014? The main challenge is not to determine how many incidents satisfy the question, but to identify the documents that describe the single answer incident.</p><p>Subtask 2 (S2): Find all events (if any) that answer the question. This subtask differs from S1 in that the system now also has to determine the number of answer incidents, which makes this subtask harder. To make it more realistic, we also include questions with zero as an answer.</p><p>Subtask 3 (S3): Find all participant-role relations that answer the question e.g. How many people were killed in Wilmington, CA with the last name Smith? The goal is to determine the number of entities that satisfy the question. The system not only needs to identify the relevant incidents, but also to reason over the participant roles.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Question Template</head><p>Questions in each subtask consist of an event type and two event properties.</p><p>Event type We consider four event types in this task described through their representation in WordNet <ref type="bibr">(Fellbaum, 1998)</ref> and FrameNet (F. <ref type="bibr" target="#b3">Baker et al., 1998)</ref>. Each question is constrained by exactly one event type.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Event properties</head><p>For each event property in our task (time, location, participants), we distinguish between three levels of granularity (see Table <ref type="table" target="#tab_2">1</ref>). In addition, we make a distinction between the surface form and the meaning of an event property value. For example, the surface form Wilmington can denote several meanings: the Wilmington cities in the states of California, North Carolina, and Delaware. When composing questions, for time and location we take the semantic (meaning) level, while for participants we use the surface form of their names. This is because the vast majority of the participants in our task are long tail instances which have no semantic representation in a structured knowledge base.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Question Creation</head><p>Our question creation strategy consists of three consecutive phases: question composition, generation of answer and confusion sets, and question scoring. These steps are common for both the event-based subtasks (S1 and S2) and the entitybased subtask S3. 1. Question composition We compose questions based on the template described in Section 5.2. This entails: 1. choice of a subtask 2. choice of an event type, e.g. killing 3. choice of two event properties (e.g. time and location) with their corresponding granularities (e.g. month and city) and concrete values (e.g. June 2014 and Wilmington, CA). This step generates a vast amount of potential questions (hundreds of thousands) in a data-driven way, i.e. we select the event type and properties per question purely based on the combinations we find in our data. Example questions are:</p><p>Which killing event happened in June 2014 in Wilmington, CA? (subtask S1)</p><p>How many killing events happened in June 2014 in Wilmington, CA? (subtask S2)</p><p>How many people were killed in June 2014 in Wilmington, CA? (subtask S3) 2. Answer and confusion sets generation For each generated question, we define a set of answer and confusion incidents with their corresponding documents. Answer incidents are the ones which entirely fit the question parameters, e.g. all killing incidents that occur in June 2014 and in the city of Wilmington, CA. Confusion incidents fit some, but not all, values of the question parameters , i.e. they differ with respect to an event type or property (e.g. all fire incidents in June 2014 in Wilmington, CA; or all killings in June 2014, but not in Wilmington, CA; or all killings in Wilmington, CA, but not in June 2014).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Question scoring</head><p>The generated questions with their corresponding answers and confusion are next scored with respect to several metrics that measure their complexity. The per-question scores allow us to detect and remove the "easy" ones, and keep those that: 1. have a high number of answer incidents (only applicable to S2 and S3) 2. have a high number of confusion incidents 3. have a high average number of answer and confusion documents, i.e. news sources describing the answer and the confusion incidents correspondingly 4. have a high temporal spread with respect to the publishing dates reporting on each incident from the answer and confusion incidents 5. have a high ambiguity with respect to the surface forms of an event property value in a granularity level (e.g. we would favor Wilmington, since it is a city in at least three US states in our task data).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Data Partitioning</head><p>We divided the overall task data into two partitions: trial and test data. In practice, we separated these two data partitions by reserving one year of news documents (2017) from our task for the trial data, while using all the other data as test data.</p><p>The trial data stems from the gun violence domain, whereas the test data also contains data from the fire incidents and business domain. A subset of the trial and test data has been annotated for event coreference. Table <ref type="table" target="#tab_6">3</ref>   We made an effort to make the trial data representative for the test data with respect to the main aspects of our task: its referential complexity, high confusability, and long-tail instances. Despite the fact that the trial data contains less questions than the test data, Table <ref type="table" target="#tab_6">3</ref> shows that it is similar to the test data with respect to the core properties, meaning that the trial data can be used as training data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation</head><p>This Section describes the evaluation criteria in this task and the baselines we compare against.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Criteria</head><p>Evaluation is performed on three levels: incidentlevel, document-level, and mention-level. The incident-level evaluation compares the numeric answer provided by the system to the gold answer for each of the questions. The comparison is done twofold: by exact matching and by Root Mean Square Error (RMSE) for difference scoring. The scores per subtask are then averaged over all questions to compute a single incidentlevel evaluation score. The document-level evaluation compares the set of answer documents between the system and the gold standard, resulting in a value for the customary metrics of Precision, Recall, and F1 per question. The scores per subtask are then averaged over all questions to compute a single documentlevel evaluation score. The mention-level evaluation is a crossdocument event coreference evaluation. Mentionlevel evaluation is only done for questions with the event types killing or injuring. We apply the customary metrics to score the event coreference: BCUB <ref type="bibr" target="#b1">(Bagga and Baldwin, 1998)</ref>, BLANC <ref type="bibr" target="#b17">(Recasens and Hovy, 2011)</ref>, entity-based CEAF (CEAF E) and mention-based CEAF (CEAF M) <ref type="bibr" target="#b10">(Luo, 2005)</ref>, and MUC <ref type="bibr" target="#b19">(Vilain et al., 1995)</ref>. The final F1-score is the average of the F1-scores of the individual metrics. The set of mentions to annotate should conform to the schema defined in the task annotation guidelines. 11</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Baselines</head><p>To stimulate participation in general and to stimulate approaches beyond surface form or majority class strategies, we implemented one baseline to infer incidents per subtask and one baseline for mention annotation. 12 Incident inference baseline This baseline uses surface forms based on the question components to find the answer documents. We only consider documents that contain the label of the event type or at least one of its WordNet synonyms. The labels of locations and participants are queried directly in the document (e.g. if the location requested is the US state of Texas, then we only consider documents that contain the surface form Texas, and similarly for participants such as John). The temporal constraint is handled differently: we only consider documents whose publishing date falls within the time requested in the question.</p><p>For subtask 1, this baseline assumes that all documents that fit the created constraints are referring to the same incident. If there is no such document, then the baseline does not answer the question (because S1 always has at least one supporting document). For subtask 2, we assume that none of the documents are coreferential. Hence, if 10 documents match the constraints, we infer that there are also 10 corresponding incidents. No baseline was implemented for subtask 3. Mention annotation baseline We annotate mentions of events of type killing and injuring, when these surface forms or their synonyms in WordNet are found as tokens in a document. We assume that all mentions of the same event type within a document are coreferential, whereas all mentions found in different documents are not.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Participants</head><p>In this Section, we describe the systems that took part in SemEval-2018 task 5. We refer to the individual system papers for further information.</p><p>NewsReader <ref type="bibr" target="#b20">(Vossen, 2018)</ref> consists of three steps: 1. the event mentions in the input documents are represented as Event-Centric Knowledge Graphs (ECKGs). 2. the ECKGs of all documents are compared to each other to decide which documents refer to the same incident, resulting in an incident-document index. 3. the constraints of each question (its event type, time, participant names, and location) are matched with the stored ECKGs, resulting in a number of incidents and source documents for each question.</p><p>NAI-SEA <ref type="bibr" target="#b9">(Liu and Li, 2018)</ref> consists of three components: 1. extraction of basic information on time, location, and participants with regular expressions, named entity recognition, and term matching; 2. event classification with an SVM classifier; 3. document similarity by applying a classifier to detect similar documents. In terms of resources, NAI-SEA combines the training data with data on American cities, counties, and states.</p><p>Team FEUP (Abreu and Oliveira, 2018) developed an experimental system to extract entities from news articles for the sake of Question &amp; Answering. For this main task, the team proposed a supervised learning approach to enable the recognition of two different types of entities: Locations (e.g. Birmingham) and Participants (e.g. John List). They have also studied the use of distancebased algorithms (using Levenshtein distance and Q-grams) for the detection of documents' closeness based on entities extracted.</p><p>Team ID-DE <ref type="bibr" target="#b11">(Mirza et al., 2018)</ref> created KOI (Knowledge of Incidents), a system that builds a knowledge graph of incidents, given news articles as input. The required steps include: 1. Document preprocessing using various semantic NLP tasks such as Word Sense Disambiguation, Named-Entity Recognition, Temporal expression recognition, and Semantic Role Labeling. 2. Incident extraction and document clustering based on the output of step 1. 3. Ontology construction to capture the knowledge model from incidents and documents which makes it possible to run SPARQL queries on the ontology to answer the questions.  Table <ref type="table">5</ref>: For subtask 3, we report the normalized incident-level accuracy (s3 inc acc norm), the accuracy on the answered questions only (s3 inc acc), and the RMSE value (s3 inc rmse). Systems are ordered by their rank (R).</p><p>Before we report the system results, we introduce a few clarifications regarding the result tables: 1. For the incident-and document-level evaluation, we report both the performance with respect to the subset of questions answered and a normalized score, which indicates the performance on all questions of a subtask. If a submission provides answers for all questions, the normalized score will be the same as the non-normalized score.</p><p>2. Contrary to the other metrics, a lower RMSE value indicates better system performance. In addition, the RMSE scores have not been normalized since it is not reasonable to set a default value for non-answered questions.</p><p>3. The mention-level evaluation was the same across all three subtasks. For this reason, results are only reported once (see Section 8.3). 4. The teams whose member co-organized SemEval-2018 task 5 are marked explicitly with an asterisk in the results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.1">Incident-level evaluation</head><p>The incident-level evaluation assesses whether the system provided the right numeric answer to a question. The results of this evaluation are given in the Tables <ref type="table" target="#tab_8">4 and 5</ref>, for the subtasks 2 and 3 correspondingly. <ref type="bibr">13</ref> On both subtasks, the order of the participating systems is identical, team FEUP having the highest score. These tables also show the RMSE values, which measure the proximity between the system and the gold answer, punishing cases where the absolute difference between them is large. While for subtask 2 the system with the lowest error rate corresponds to the system with the highest accuracy, this is different for subtask 3. NAI-SEA, ranked third in terms of accuracy, has the lowest RMSE. This means that although their answers were not exactly correct, they were on average much closer to the correct answer than those of the other systems. This is more notable in subtask 3 since here the range of answers is larger than in subtask 2 (the maximum answer in subtask 3 is 171).</p><p>We performed additional analysis to compare the performance of systems per subtype and per numeric answer class. Table <ref type="table">6</ref> shows that the system FEUP is not only superior in terms of incident-level accuracy overall, but this is also mirrored for most of the event types, especially those corresponding to the gun violence domain. On the other hand, Figure <ref type="figure" target="#fig_1">2</ref> shows the accuracy distribution of each system per answer class. Notably, for most systems the accuracy is highest for the questions with answer 0 or 1, and gradually declines for higher answers, forming a Zipfian-like distribution. The exception here is the team ID-DE, whose accuracy is almost uniformly spread across the various answer classes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.2">Document-level evaluation</head><p>The intent behind document-level evaluation is to assess the ability of systems to distinguish between answer and non-answer documents. The tables 9, 10, and 11 present the F1-scores for the <ref type="bibr">13</ref> Incident-level evaluation was not performed for subtask 1, because per definition, its answer is always 1. subtasks 1, 2, and 3, respectively. Curiously, the system ranking is very different and almost opposite compared to the incident-level rankings, with the system NAI-SEA being the one with the highest F1-score. This can be explained by the multifaceted nature of this task, in which different systems may optimize for different goals.</p><p>Next, we investigated the F1-scores of systems per event property pair. As shown in Table <ref type="table" target="#tab_16">7</ref>, the best-performing system consistently has the highest performance over all pairs of event properties.       <ref type="table">6</ref>: For subtask 2 (S2) and subtask 3 (S3), we report the incident-level accuracy and the number of questions (#Qs) per event type. The best result per event type for a subtask is marked in bold. 'ˆ' indicates that the accuracy is normalized for the number of answered questions, in cases where a system answered a subset of all questions. .   given in the task questions. The best result per property pair for a subtask is marked in bold. 'ˆ' indicates that the F1-score is normalized for the number of answered questions, in cases where a system answered a subset of all questions.   <ref type="bibr" target="#b10">(Luo, 2005)</ref>, and MUC <ref type="bibr" target="#b19">(Vilain et al., 1995)</ref>. The individual scores are averaged in a single number (AVG), which is used to rank (R) the systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.3">Mention-level evaluation</head><p>the mean F1-score over these five metrics, which is used to rank the participants. The Table shows that the system ID-DE has a slightly better event coreference score on average over all metrics than the second-ranked system, NewsReader.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Conclusions</head><p>In this paper we have introduced SemEval-2018 Task 5, a referential quantification task of counting events and participants in local news articles with high ambiguity. The complexity of this task challenges systems to establish the meaning, reference, and identity across documents. SemEval-2018 Task 5 consists of two subtasks of counting events, and one subtask of counting event participants in their corresponding roles. We evaluated system performance with a set of metrics, on three levels: incident-, document-, and mention-level. We described the approaches and presented the results of four participating systems, as well as two baseline algorithms. All four teams submitted a result for all three subtasks, and two teams participated in the mention-level evaluation. We observed that the ranking of systems differs dramatically per evaluation level. Given the multifaceted nature of this task, it is not surprising that different systems optimized for different goals. Although the systems are able to retrieve many of the answer documents, the highest accuracy of counting events or participants is 30%. This suggests that further research is necessary in order to develop complete and robust models that can natively deal with the challenge of counting referential units within sparse and ambiguous textual data.</p><p>Out-of-competition participation is enabled by the Codalab platform, where this task was hosted.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure1: Task overview. Systems are provided with a question and a set of input documents. Their goal is then to find the documents that fit the question constraints and reason over them to provide an answer.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Incident-level accuracy of all systems per numeric answer class for subtask 2. The class 10 represents all answers of 10 or higher.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>John Doe fires a gun, and John Doe fires a worker. b) variance of event mentions, e.g. John Doe kills Joe Roe, and John Doe murders Joe Roe. c) time, e.g. killing A that happened in January 2013, and killing B in October 2016. d) participants, e.g. killing A committed by John Doe, and killing B committed by Joe Roe.</figDesc><table><row><cell>a) ambiguity of event mentions, e.g.</cell></row><row><cell>).</cell></row><row><cell>Each event type should contain:</cell></row><row><cell>R1 Multiple event instances per event type, e.g. the killing of Joe Doe and the killing of Joe Roe.</cell></row><row><cell>R2 Multiple event mentions per event instance within the same document.</cell></row><row><cell>R3 Multiple documents with varying creation times that describe the same event.</cell></row><row><cell>R4 Event confusability by combining one or mul-tiple confusion factors:</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Overview of the GVA incident properties of location, time, and participant.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>Description of the event types. The meanings column lists meanings that best describe the event type. It contains both FrameNet 1.7 frames (prefixed by fn17) and Word-Net 3.0 synsets (prefixed by wn30).</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>General statistics about trial and test data.</figDesc><table><row><cell>For each subtask (S), we show the number of questions (#Qs), the aver-age answer (Avg answer), and the average number of answer documents (Avg # answer docs).</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>For subtask 2, we report the normalized incident-level accuracy (s2 inc acc norm), the accuracy on the answered questions only (s2 inc acc), and the RMSE value (s2 inc rmse). Systems are ordered by their rank (R).</figDesc><table><row><cell>R</cell><cell>Team</cell><cell cols="2">s3 inc acc norm (% of Qs answered) rmse s3 inc acc s3 inc</cell></row><row><cell cols="3">1 2 *NewsReader 21.05 FEUP 30.42 3 NAI-SEA 20.20 4 ID-DE 12.87</cell><cell>30.42 (100.0%) 478.71 21.05 (100.0%) 296.45 20.2 (100.0%) 13.45 19.32 (66.61%) 7.87</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 9</head><label>9</label><figDesc></figDesc><table><row><cell cols="4">: For subtask 1, we report the normalized document-level F1 (s1 doc f1 norm) and the accuracy on the answered questions only (s1 doc f1). Systems are ordered by their rank (R).</cell></row><row><cell>R</cell><cell>Team</cell><cell cols="2">s2 doc f1 norm (% of Qs answered) s2 doc f1</cell></row><row><cell cols="3">1 NAI-SEA 2 ID-DE 3 *NewsReader 36.91 50.52 37.24 4 FEUP 30.51 5 Baseline 26.38</cell><cell>50.52 (100.0%) 55.16 (67.5%) 36.91 (100.0%) 30.51 (100.0%) 26.38 (100.0%)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 10 :</head><label>10</label><figDesc>For subtask 2, we report the normalized document-level F1 (s2 doc f1 norm) and the accuracy on the answered questions only (s2 doc f1).</figDesc><table><row><cell></cell><cell></cell><cell cols="2">by their rank (R).</cell><cell>Systems are ordered</cell></row><row><cell>R</cell><cell>Team</cell><cell cols="2">s3 doc f1 norm (% of Qs answered) s3 doc f1</cell></row><row><cell cols="3">1 NAI-SEA 2 ID-DE 3 *NewsReader 26.84 63.59 46.33 4 FEUP 26.79</cell><cell>63.59 (100.0%) 69.56 (66.61%) 26.84 (100.0%) 26.79 (100.0%)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 11 :</head><label>11</label><figDesc>For subtask 3, we report the normalized document-level F1 (s3 doc f1 norm) and the accuracy on the answered questions only (s3 doc f1). Systems are ordered by their rank (R).</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 8</head><label>8</label><figDesc>shows the event coreference results for the participating systems: ID-DE and NewsReader, as well as our baseline. The columns present the F1score for the metrics BCUB, BLANC, CEAF E. CEAF M, and MUC. The final column indicates</figDesc><table><row><cell>Event type</cell><cell>Subtask</cell><cell cols="3">#Qs FEUP ID-DE NAI-SEA *NewsReader Baseline</cell></row><row><cell cols="2">fire burning S2 S3 injuring S2 S3 job firing S2 S3 killing S2 S3</cell><cell>79 40.51 0 -543 21.92ˆ13.44 14.36 -31.65 --1502 30.49ˆ8.39 16.78 4 0.0 -25.0 26 30.77 -26.92 371 30.19ˆ17.25 18.6 928 30.28ˆ20.47 25.54</cell><cell>39.24 -21.73 23.17 25.0 15.38 18.33 17.78</cell><cell>49.37 -17.68 -50.0 -12.13 -</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table</head><label></label><figDesc></figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_16"><head>Table 7 :</head><label>7</label><figDesc>Document-level F1-score and number of questions (#Qs) for each subtask (S1, S2, and S3) and event property pair as</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_18"><head>Table 8 :</head><label>8</label><figDesc>Results for mention-level evaluation, scored with the customary event coreference metrics: BCUB<ref type="bibr" target="#b1">(Bagga and Baldwin, 1998)</ref>, BLANC<ref type="bibr" target="#b17">(Recasens and Hovy, 2011)</ref>, entity-based CEAF (CEAF E) and mention-based CEAF (CEAF M)</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">By event, we denote a specific instance of an event, e.g. a killing incident happening at a specific location, time, and involving certain participants.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">Question parsing is unnecessary, as questions are provided in a structured format.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://github.com/cltl/ LongTailQATask</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">The 2017 run can be found at http://alt.qcri. org/semeval2017/task3/.5 e.g. the Quiz Bowl dataset deliberately focuses on domains with much training data and frequent answers, thus avoiding the long tail problem in reference.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">http://gunviolencearchive.org/ reports/ 7 https://www.firerescue1.com/ incident-reports/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">Fair use policy in USA: https://goo.gl/hXiEKL 9 Fair use policy in EU: https://goo.gl/s8V5Zs 10 https://competitions.codalab.org/ competitions/17285</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">Link to the guidelines: https://goo.gl/8JpwCE.12  The code of the baselines can be found here: https: //goo.gl/MwSqBj.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">FEUP at SemEval-2018 Task 5: An Experimental Study of a Question Answering System</title>
+		<author>
+			<persName><forename type="first">Carla</forename><surname>Abreu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eugénio</forename><surname>Oliveira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Algorithms for scoring coreference chains</title>
+		<author>
+			<persName><forename type="first">Amit</forename><surname>Bagga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Breck</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The first international conference on language resources and evaluation workshop on linguistics coreference</title>
+				<meeting><address><addrLine>Granada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="563" to="566" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">What do a million news articles look like?</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Corney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dyaa</forename><surname>Albakour</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miguel</forename><surname>Martinez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samir</forename><surname>Moussa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First International Workshop on Recent Trends in News Information Retrieval co-located with 38th European Conference on Information Retrieval (ECIR 2016)</title>
+				<meeting>the First International Workshop on Recent Trends in News Information Retrieval co-located with 38th European Conference on Information Retrieval (ECIR 2016)<address><addrLine>Padua, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-03-20" />
+			<biblScope unit="page" from="42" to="47" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">The Berkeley FrameNet Project</title>
+		<author>
+			<persName><forename type="first">Collin</forename><forename type="middle">F</forename><surname>Baker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charles</forename><forename type="middle">J</forename><surname>Fillmore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">B</forename><surname>Lowe</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The 17th International Conference on Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="volume">1</biblScope>
+		</imprint>
+	</monogr>
+	<note>COLING</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">WordNet: An Electronic Lexical Database</title>
+		<editor>Christiane Fellbaum</editor>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>The MIT Press</publisher>
+			<pubPlace>Cambridge, MA; London</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Teaching machines to read and comprehend</title>
+		<author>
+			<persName><forename type="first">Karl</forename><surname>Moritz Hermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Kocisky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Grefenstette</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lasse</forename><surname>Espeholt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Will</forename><surname>Kay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mustafa</forename><surname>Suleyman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Phil</forename><surname>Blunsom</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1693" to="1701" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">WikiReading: A Novel Large-scale Language Understanding Task over Wikipedia</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Hewlett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Lacoste</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Fandrianto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jay</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Kelcey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Berthelot</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1535" to="1545" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Semantic overfitting: what &apos;world&apos; do we consider when evaluating disambiguation of text?</title>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Ilievski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marten</forename><surname>Postma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piek</forename><surname>Vossen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers</title>
+				<meeting>COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1180" to="1191" />
+		</imprint>
+	</monogr>
+	<note>The COLING 2016 Organizing Committee</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">A Neural Network for Factoid Question Answering over Paragraphs</title>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Jordan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leonardo</forename><forename type="middle">Max</forename><surname>Boyd-Graber</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Batista Claudino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hal</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iii</forename><surname>Daumé</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">EMNLP</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="633" to="644" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">NAI-SEA at SemEval-2018 Task 5: An Event Search System</title>
+		<author>
+			<persName><forename type="first">Yingchi</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quanzhi</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">On coreference resolution performance metrics</title>
+		<author>
+			<persName><forename type="first">Xiaoqiang</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the conference on human language technology and empirical methods in natural language processing</title>
+				<meeting>the conference on human language technology and empirical methods in natural language processing</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="25" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">KOI at SemEval-2018 Task 5: Building Knowledge Graph of Incidents</title>
+		<author>
+			<persName><forename type="first">Paramita</forename><surname>Mirza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fariz</forename><surname>Darari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rahmad</forename><surname>Mahendra</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Semeval-2015 task 3: Answer selection in community question answering</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walid</forename><surname>Magdy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jim</forename><surname>Glass</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bilal</forename><surname>Randeree</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="269" to="281" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Hamdy Mubarak, abed Alhakim Freihat, Jim Glass, and Bilal Randeree</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walid</forename><surname>Magdy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="525" to="545" />
+		</imprint>
+	</monogr>
+	<note>Semeval-2016 task 3: Community question answering</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">MS MARCO: A Human Generated MAchine Reading COmprehension Dataset</title>
+		<author>
+			<persName><forename type="first">Tri</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mir</forename><surname>Rosenberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xia</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfeng</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saurabh</forename><surname>Tiwary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rangan</forename><surname>Majumder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Deng</surname></persName>
+		</author>
+		<idno>abs/1611.09268</idno>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Moving away from semantic overfitting in disambiguation datasets</title>
+		<author>
+			<persName><forename type="first">Marten</forename><surname>Postma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Ilievski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piek</forename><surname>Vossen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marieke</forename><surname>Van Erp</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Uphill Battles in Language Processing: Scaling Early Achievements to Robust Methods</title>
+				<meeting>the Workshop on Uphill Battles in Language Processing: Scaling Early Achievements to Robust Methods<address><addrLine>Austin, TX</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="17" to="21" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">SQuAD: 100, 000+ Questions for Machine Comprehension of Text</title>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Rajpurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Konstantin</forename><surname>Lopyrev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<idno>abs/1606.05250</idno>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">BLANC: Implementing the Rand index for coreference evaluation</title>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Recasens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="485" to="510" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">MCTest: A Challenge Dataset for the Open-Domain Machine Comprehension of Text</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Richardson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">C</forename><surname>Christopher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erin</forename><surname>Burges</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Renshaw</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">EMNLP</title>
+				<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page">4</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">A modeltheoretic coreference scoring scheme</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Vilain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Burger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Aberdeen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th conference on Message understanding</title>
+				<meeting>the 6th conference on Message understanding</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="1995" />
+			<biblScope unit="page" from="45" to="52" />
+		</imprint>
+	</monogr>
+	<note>Dennis Connolly, and Lynette Hirschman</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">NewsReader at SemEval-2018 Task 5: Counting events by reasoning over eventcentric-knowledge-graphs</title>
+		<author>
+			<persName><forename type="first">Piek</forename><surname>Vossen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation (SemEval-2018). Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">What is the Jeopardy Model? A Quasi-Synchronous Grammar for QA</title>
+		<author>
+			<persName><forename type="first">Mengqiu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Noah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Teruko</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mitamura</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">EMNLP-CoNLL</title>
+				<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page" from="22" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Weston</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antoine</forename><surname>Bordes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sumit</forename><surname>Chopra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><forename type="middle">M</forename><surname>Rush</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bart</forename><surname>Van Merriënboer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Joulin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1502.05698</idno>
+		<title level="m">Towards AI-complete question answering: A set of prerequisite toy tasks</title>
+				<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">WikiQA: A Challenge Dataset for Open-Domain Question Answering</title>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yih</forename><surname>Wen-Tau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Meek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<publisher>Citeseer</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="2013" to="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

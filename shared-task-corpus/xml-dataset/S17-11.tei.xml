@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2017 Task 11: End-User Development using Natural Language</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Juliano</forename><forename type="middle">Efson</forename><surname>Sales</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science and Mathematics</orgName>
+								<orgName type="institution">University of Passau</orgName>
+								<address>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Siegfried</forename><surname>Handschuh</surname></persName>
+							<email>siegfried.handschuh@uni-passau.de</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science and Mathematics</orgName>
+								<orgName type="institution">University of Passau</orgName>
+								<address>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">André</forename><surname>Freitas</surname></persName>
+							<email>andre.freitas@uni-passau.de</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science and Mathematics</orgName>
+								<orgName type="institution">University of Passau</orgName>
+								<address>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2017 Task 11: End-User Development using Natural Language</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This task proposes a challenge to support the interaction between users and applications, micro-services and software APIs using natural language. It aims to support the evaluation and evolution of the discussions surrounding the application natural language processing techniques within the context of end-user natural language programming, under scenarios of high lexical and semantic heterogeneity.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The specific syntax of traditional programming languages and the user effort associated with finding, understanding and integrating multiple interfaces within a software development task, defines the intrinsic complexity of programming. Despite the widespread demand for automating actions within a digital environment, even the basic software development tasks require previous (usually extensive) software development expertise. Domain experts processing data, analysts automating recurrent tasks, or a businessman testing an idea on the web depend on the mediation of programmers to materialise their demands, independently of the simplicity of the task to be addressed and on the availability of existing services and libraries.</p><p>Recent advances in natural language processing bring the opportunity of improving the interaction between users and software artefacts, supporting users to program tasks using natural languagebased communication. This ability to match users' actions intents and information needs to formal actions within an application programming interface (API), using the semantics of natural language as the mediation layer between both, can drastically impact the accessibility of software de-velopment. Despite the fact that some software development tasks with stricter requirements will always depend on the precise semantic definition of programming languages, there is a vast spectrum of applications with softer formalisation requirements. This subset of applications can be defined and built with the help of natural language descriptions.</p><p>This SemEval task aims to develop the state-ofthe-art discussions and techniques concerning the semantic interpretation of natural language commands and user action intents, bridging the semantic gap between users and software artefacts. The practical relevance of the challenge lies in the fact that addressing this task supports improving the accessibility of programming (meaning a systematic specification of computational operations) to a large spectrum of users which have the demand for increasing automation within some specific tasks. Moreover, with the growing availability of software artefacts, such as APIs and services, there is a higher demand to support the discoverability of these resources, i.e. devising principled semantic interpretation approaches to semantically match interface descriptions with the intent from users.</p><p>The proposed task also intersects with demands from the field of robotics, as part of the humanrobot interaction area, which depends on a systematic ability to address user commands that lie beyond navigational tasks.</p><p>From the point-of-view of computational linguistics, this challenge aims to catalyse the discussions in the following dimensions:</p><p>• Semantic parsing of natural language commands;</p><p>• Semantic representation of software interfaces;</p><p>• Statistical and ontology-based semantic matching techniques;</p><p>• Compositional models for natural language command interpretation (NLCI);</p><p>• Machine learning models for NLCI;</p><p>• API/Service composition and associated planning techniques;</p><p>• Linguistic aspects of user action intents.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Commands &amp; Programming in Natural Language</head><p>The use of natural language to instruct robots and computational systems, in general, is an active research area since the 70's and 80's <ref type="bibr" target="#b12">(Maas and Suppes, 1985;</ref><ref type="bibr">Guida and Tasso, 1982) (and within references)</ref>. Initiatives vary over a large spectrum of application domains including operating system's functions <ref type="bibr" target="#b14">(Manaris and Dominick, 1993)</ref>, web services choreography <ref type="bibr" target="#b4">(Englmeier et al., 2006)</ref>, mobile programming by voice (Amos Azaria, 2016), domain-specific natural programming languages <ref type="bibr" target="#b17">(Pane and Myers, 2006)</ref>, industrial robots <ref type="bibr" target="#b20">(Stenmark and Nugues, 2013)</ref> and home care assistants. The variability of domains translates into a wide number of research communities comprising different foci and being expressed by distinct terms such as natural language interfaces, end-user development, natural programming, programming by example and trigger-action development. Some of these terms embrace wide domains, also including non-verbal (visual) approaches.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Semantic Parsing &amp; Matching</head><p>The interpretation of natural language commands is typically associated with the task of parsing the natural language input to an internal representation of the target system. This internal representation is usually associated with a n-ary predicateargument structure which represents the interface for an action within the system. The identification of which action the command refers to and its potential parameters are at the centre of this task.</p><p>Taking as an example the natural language command:</p><p>Please convert US$ 475 to the Japanese currency and send this value to John Smith by SMS.</p><p>We can conceptualise the challenges involved in the command interpretation process in three dimensions: command chunking, term type identification and semantic matching. The chunking dimension comprises the identification of terms and segments in the original sentence that can potentially map to the system actions and parameters. The example command embodies two actions: converting currency and sending SMS. For the first action, the command interpreter needs to identify the currencies involved in the transaction and the financial amount (term type identification).</p><p>Other semantic interpretation processes might be involved. In the case of the second action, besides identifying John Smith as the message's receiver, the interpreter also needs to resolve the coreference of this value to the currency conversion result and instantiate it as a parameter in the content of the message. This first level of interpretation of the command would generate an output such as: The matching process corresponds to the mapping between terms from the user vocabulary to the terms used in the internal representation of the system (the API). In the given example, the system should find an action that can convert currencies and another that can send SMS messages.</p><p>In the example, depending on the parametrisation of the command interface, the value [US$ 475] needs to be split into two parameters, and these parts, mapped to the internal vocabulary of the system (US$ need to be interpreted as USD while Japanese currency needs to be translated to JPY. For the second action, similarly, John Smith will be used to retrieve a phone number from a user personal data source.</p><p>The final execution command is the result of the matching processing, as shown below: ACTION ENDPOINT: [action id] PARAMS: from: "USD" to: "JPY" from amount: 475</p><p>The task can be addressed using different semantic interpretation abstractions: shallow parsing, lambda-calculus-based semantic parsing <ref type="bibr" target="#b1">(Artzi et al., 2014)</ref>, compositional-distributional models <ref type="bibr" target="#b6">(Freitas and Curry, 2014;</ref><ref type="bibr" target="#b5">Freitas, 2015)</ref>, information retrieval approaches <ref type="bibr" target="#b19">(Sales et al., 2016)</ref>. Additionally, pre-processing techniques such as clausal disembedding <ref type="bibr" target="#b16">(Niklaus et al., 2016)</ref> and co-reference resolution are central components within the task.</p><p>While approaches and test collections emphasising the shallow parsing aspect of the problem are more present in the literature (Section 3), others focusing on a semantic matching process involving a broader vocabulary gap <ref type="bibr" target="#b7">(Furnas et al., 1987)</ref> are less prevalent. Part of this can be explained by the domain-specific nature of previous works (e.g. focus on spatial commands <ref type="bibr" target="#b3">(Dukes, 2014)</ref>).</p><p>In contrast, this task emphasises the creation of a test collection targeting an open domain scenario, with a large-scale set of target actions, assessing the ability of command interpretation approaches to address a larger vocabulary gap. This scenario aims to instantiate a real use case for end-user natural language programming, since the action knowledge base used in the test collection maps to real-world APIs and so a semantic interpreter developed over this test collection can become a concrete end-user programming environment.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Similar Initiatives</head><p>Most of the applications related to the parsing of natural language commands are within the context of human-robot interaction. The Human Robot Interaction Corpus (HuRIC) describes a list of spoken commands between humans and robots. It is composed of three datasets which were developed under the context of three different events. They are annotated using Frame Semantics together with Holistic Spatial Semantics <ref type="bibr" target="#b2">(Bastianelli et al., 2014)</ref>. <ref type="bibr" target="#b1">Artzi et al. (2014)</ref> and <ref type="bibr" target="#b22">Tellex et al. (2014)</ref> give a more focused contribution in the interpretation of spatial elements. In both cases, the vocabulary variability is more constrained. Similar vocabulary variability assumptions are present in <ref type="bibr" target="#b21">Thomason et al. (2015)</ref> and <ref type="bibr" target="#b0">Azaria et al. (2016)</ref>.</p><p>In 2014, SemEval hosted a task related to the parsing of natural language spatial commands <ref type="bibr" target="#b3">(Dukes, 2014)</ref>, also targeting a robotics scenario. More specifically, the task proposed the parsing of commands to move a robot arm that moved objects within a spatial region.</p><p>The proposed task can be contrasted with these previous initiatives in the following dimensions: (i) more comprehensive knowledge base of actions, (ii) generic (open domain) user programming scenarios and (iii) exploration of the interaction between actions and user personal information (Section 4).</p><p>The work that has more similarity with this test collection is the problem defined by <ref type="bibr" target="#b18">Quirk et al. (2015)</ref> under the ifttt.com platform, which targets the creation of an if-then receipt from a natural language description provided by the user. The first difference between the two tasks is the fact that, while the program structure is limited to ifthen recipes in Quirk et al., other more complex structures are supported in this task. Secondly, in the case of Quirk et al., the task requires only the mapping of the actions that comprise the recipe, keeping aside the instantiation of the parameter values, while our proposed task emphasises both. Finally, the presence of these two characteristics introduces the challenge of mapping co-references and metonymy within the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Task Definition</head><p>The task comprises 210 scenarios which consist of a total of 438 natural language commands. Figures 1 and 2 depicts an overview of the task. A scenario is a set of sentences that defines a program in natural language. The excerpt below shows an example of a scenario: "When a message from Enrico Hernandez arrives, get the necklace price; Convert it from Chilean Pesos to Euro; If it costs less than 100 EUR, send to him a message asking him to buy it; If not, write saying I am not interested."</p><p>Associated with each scenario, there is a program which is composed of actions from the Action Knowledge Base (Action KB). In addition to the actions, the program also uses If and Foreach constructors, having the same semantics commonly expressed in programming languages to define the execution flow.</p><p>Like a programming language function, an action can have input parameters and return values. Table <ref type="table" target="#tab_0">1</ref> shows examples of natural language commands describing scenarios.</p><p>Natural language scenario commands If a receive a deposit from John Sanders in my bank account, send this message to him: "Hello John, thanks for your gift, I receive your deposit of some money to me, thanks a lot, buddy." Send an email to Mark asking him for the picture we took in Munich. When I receive the answer, get the attached image and publish it on my Flickr account with the tags #munich, #germany, #my-love Find "Bachianas N.5 of Villa-Lobos" on Youtube. Get the link and send to my mum. List tweets containing #ChampionsLeague. Find a picture of Darth Vader on Flickr. Post this text to my friends on Facebook with the picture of Darth Vader: May The Force Be With Us Next Friday!!! Search on eBay for the iPhone 7 with the maximum price of 700 Euro and send the result list by e-mail to my wife. Message Dr Brown by email, asking a suitable day for a meeting; When I receive the information, sent to my wife by email; Search for a picture of Yoda. Attach that image in a Facebook post and write this: Friends, let's go to the cinema to the see Star Wars on Friday. When I receive an email from Helena, get the attachment. Print it and write to Mr Sanders by Skype: Hi Mr Sanders, the document is in the printer. If someone reports a problem in GitHub, send the problem title by Skype to John, if the project name is FinanceSystem. For all other systems, send a message to the Tech Manager. If Manchester United wins, put Thriller of Michael Jackson in Spotify "celebrations" playlist and call me to say "we are the champions, my friends". Open the door always when reached Central Park. Get a quote about science. Get a photo of Paris. Attach the photo in an email, write the quote and send to maria@hotmail.com. Get the translation of the hashtag #sqn. Convert it to a QR code and send to my Skype account. The values of the parameters map to constants (e.g. integer numbers, string values) or to tags, which represent returning data from previously executed actions. There are two types of tags.</p><p>• &lt;returnX&gt; The return tag represents the content returned by the action X, where X is a sequential identifier.</p><p>• &lt;item&gt; The item tag is used only in the context of Foreach constructors. It represents an iterated item.</p><p>Both types of tags have some additional naming assumptions in order to simplify the syntax of the generated program. Examples of valid tags are:</p><p>• &lt;return1&gt; -meaning the data returned by the first action in the scenario.</p><p>• &lt;item&gt;.url -represent the attribute url of the item.</p><p>In addition to the scenarios, the test collection consists of:</p><p>• Action KB: The set of available API functions along with their respective documentation. The information describing the API functions does not follow a strict pattern.</p><p>While some documentation has rich natural language descriptions or show usage examples, others are succinct and just contain the frame and parameter names. The same occurs concerning data format, data type and returning data. This test collection reflects the variability and heterogeneity that we find in real-world APIs.</p><p>• User KB: A personal user information dataset, which is necessary to make commands more natural by supporting coreference resolution. It allows commands like "Call John", once the system can identify the proper phone number from the User KB.</p><p>An example excerpt of the User KB is described below:</p><p>[ { "name": "Maria Alice", "address": "Rua Central, 35, Rio de Janeiro, Brasil", "facebook": "malice", "group": "classmates", "mail": "maria@alice.com.br", "phone": "555 111 222", "skype": "maria.alice", "tags": "my wife", "twitter": "malice" }, { "name": "John Sanders", "address": "7 North Avenue, New York, USA", "facebook": "jsanders", "group": null, "mail": "john@fam.com", "phone": "111 555 777", "skype": "johnjohn", "tags": null,  "twitter": "jsanders" }, ... ]</p><p>The natural language scenarios, Action KB and User KB are all described using JSON as a serialisation format. The Action KB is composed of about 3800 micro-services from Mashape (mashape.com) and 1900 actions and triggers from the ifttt.com platform. APIs from Mashape and ifttt.com are public, and their instantiation for the challenge was approved by the platform owners.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Annotation</head><p>The scenarios containing the natural language commands were created using high-level task descriptions. These high-level task descriptions were sent to a crowdsourcing platform (CrowdFlower), in which workers were requested to express in natural language the commands which entail the scenario descriptions. Motivated by those scenario descriptions, the users proposed a set of commands which addresses the specification. The excerpt below shows an example of a scenario description:</p><p>You are arranging a meeting with some people in Andre's office. Adamantios is coming for that meeting, but he does not know how to drive in Passau. Additionally, you do not know where the office is.</p><p>One possible output for that description is:</p><p>• Ask Andre for the address of his office;</p><p>• Make a map from the university to it;</p><p>• Send the map to Adamantios including driving directions.</p><p>For each scenario description, in average ten workers were invited to suggest the natural language commands. The crowdsourcing process was followed by a data curation process which discarded 70% of the commands due to low quality issues. The other part of the sample was reviewed to correct misspelling and adjusted to comply with the task requirements while preserving the original syntactic structure and vocabulary.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Analysis of The Task Complexity</head><p>The task aims to explore vocabulary and syntactic structure variation within the natural lan-guage commands. It also targets the orchestration of different natural language processing techniques, including syntactic parsing, semantic role labelling, fine-grained semantic approximation and co-reference resolution.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Semantic approximation</head><p>Different actions and parameters can be expressed using distinct lexicalizations (synonymy) and abstraction levels. For example:</p><p>"If someone reports a problem in GitHub, send the problem's headline by Skype to John."</p><p>In the examples, the action in the knowledge base is expressed as "any new issue", while intended "headline" in the returned value is expressed as "Issue Title". Given the context, it is expected the system to be able to identify the equivalence between the pairs of terms (problem, issue) and (title, headline).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Syntactic variation</head><p>Additionally, interpreters are expected to cope with syntactic variation.</p><p>"If Manchester United wins, call me." "Get ready to call me in the case of victory of Manchester United."</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Co-reference and metonymy resolution</head><p>The first type of resolution needed is the pronominal co-reference, where a pronoun refers to a constant which was previously mentioned within the context of the same scenario. The metonymy resolution consists of using the reference to an attribute or type to refer to a constant or to a different attribute of a constant. For example: "If an issue is created, send its content to the Tech Manager."</p><p>This excerpt shows both cases. The bold its makes reference to an issue, while Tech Manager is a metonymy for the Tech Manager's email (sandra@andrade.com.br according to the user KB).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation</head><p>The final dataset contains commands and their associated mappings to the Action KB. Given a command in natural language, it is expected that the participating systems provide:</p><p>• The correct action;</p><p>• The correct mapping of text chunks in the natural commands to parameters;</p><p>The participating systems were evaluated considering four criteria: Criteria 1 and 2 are quantified by using precision and recall, while 3 and 4 are quantified by the percentage of the total number of scenarios which were addressed.</p><p>Participating teams were allowed to use external linguistic resources and external tools such as taggers and parsers.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Participants and Results</head><p>Initially, nine teams demonstrated interest in the tasks, but only one participated in the challenge. <ref type="bibr" target="#b11">Kubis et al. (2017)</ref> proposed the EUDAMU system, which implements an action ranking model based on TF/IDF and a type matching system.</p><p>The EUDAMU system is composed of a pipeline divided into six steps. It starts by preprocessing the dataset using three tools (NLTK, Core-NLP and SyntaxNet). In the pre-processing step, natural language commands are tokenized and each token is enriched with its lemma, partof-speech and named entity labels. Additionally, it also adds the constituent and dependency structures associated with the commands. The final pre-processing step annotates the commands with types which supports the system to resolve co-references between the actions and references from the User KB. The same procedure (with the exception of the last step) is applied for the Action KB.</p><p>The preprocessing phase is followed by the Discourse Tagger, which is responsible for individualising the command from the paragraph description of the scenario. The team implemented this component using a rule-based approach. The next step is Action Ranker, which applies a TF-IDF  Additional details of the proposed method can be found in the original paper <ref type="bibr" target="#b11">(Kubis et al., 2017)</ref>. Table <ref type="table" target="#tab_6">4</ref> shows its results. While the proposed solution has a high recall for the number of resolved actions, it fails mainly in providing the correct value for all the required parameters. Two types of linguistic settings showed to be more challenging:</p><p>• Description of commands split into two sentences. For example:</p><p>"Get the price of the book The Intelligent Investor. If it costs less than 25 Euros, buy it."</p><p>where "25 Euros" is the parameter value of the action defined in the first sentence.</p><p>• Capturing actions with more specific/finegrained semantics. For example:</p><p>"Once I have bet my running distance target of the week, set my current weight as 100 Kg in Fitbit."</p><p>where the system ignored the temporal expression"of the week" and suggested the "Daily step goal achieved" instead of "Weekly distance goal reached" action. A second example of the same case is expressed in the command:</p><p>"Suspend the execution of my Samsung washer."</p><p>where the term "Samsung" was ignored when selecting actions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Summary</head><p>In the Semeval 2017 Task 11 we developed a test collection to support the creation of semantic interpretation methods for end-user programming environments. The test collection focuses on the following features in comparison with existing approaches: (i) open domain, (ii) large syntactic and vocabulary variability, (iii) dependent of coreference and metonymy resolution. Moreover, as the test collection uses APIs available on the open web, it can be used to build real end-user programming environments. While there is space for the improvement of the precision and recall on the identification of the command actions, the main challenge remains in the matching of the parameters between natural language commands and the API.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: An overview of the task.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: The scenario creation workflow.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head></head><label></label><figDesc>scenarios considering parameter values.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>Examples of natural language commands describing scenarios.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Examples of action frames used in the scenarios.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2</head><label>2</label><figDesc>shows examples of action frames used in the dataset and Table3shows metrics about the scenarios, actions and the associated natural language commands, showing the natural language signature of the test collection.</figDesc><table><row><cell>metric</cell><cell cols="3">training test total</cell></row><row><cell># of scenarios</cell><cell>179</cell><cell>31</cell><cell>210</cell></row><row><cell cols="2">avg # of sentences per scenario 2.72</cell><cell cols="2">2.35 2.66</cell></row><row><cell># of actions</cell><cell>374</cell><cell>64</cell><cell>438</cell></row><row><cell>avg # of actions per scenario</cell><cell>2.08</cell><cell cols="2">2.06 2.08</cell></row><row><cell>avg # of params per action</cell><cell>1.59</cell><cell cols="2">1.22 1.52</cell></row><row><cell># of conditionals in actions</cell><cell>53</cell><cell>14</cell><cell>67</cell></row><row><cell># of co-references in actions</cell><cell>124</cell><cell>17</cell><cell>141</cell></row><row><cell># of metonymy in actions</cell><cell>94</cell><cell>11</cell><cell>105</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Metrics about the scenarios, actions and the associated natural language command.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Results fromKubis et al.   model  to rank the actions. The model was indexed using all textual content present in the Action KB, plus the actions which were mapped with in the training mappings file. The next step is the Reference Matcher that is designed to identify which output of a given action act as the parameters of a subsequent action. The next step is the Parameter Matcher. It infers parameter and value types which can serve as a support to the action matching process. Finally, based on the knowledge generated and stored in the previous steps, the rulebased Statement Mapper provides a list of up to 10 elements of possible matching action instances.</figDesc><table /></figure>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Instructable intelligent personal</title>
+		<author>
+			<persName><forename type="first">Tom</forename><forename type="middle">M</forename><surname>Jayant Krishnamurthy</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mitchel Amos Azaria</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirtieth AAAI Conference on Artificial Intelligence. AAAI&apos;16</title>
+				<meeting>the Thirtieth AAAI Conference on Artificial Intelligence. AAAI&apos;16</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Learning compact lexicons for ccg semantic parsing</title>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Artzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dipanjan</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+		<ptr target="http://www.aclweb.org/anthology/D14-1134" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP). Association for Computational Linguistics</title>
+				<meeting>the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP). Association for Computational Linguistics<address><addrLine>Doha, Qatar</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1273" to="1283" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Huric: a human robot interaction corpus</title>
+		<author>
+			<persName><forename type="first">Emanuele</forename><surname>Bastianelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Castellucci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Croce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luca</forename><surname>Iocchi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Basili</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Nardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">;</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Khalid</forename><surname>Choukri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thierry</forename><surname>Declerck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hrafn</forename><surname>Loftsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bente</forename><surname>Maegaard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Ninth International Conference on Language Resources and Evaluation (LREC&apos;14). European Language Resources Association (ELRA)</title>
+				<meeting>the Ninth International Conference on Language Resources and Evaluation (LREC&apos;14). European Language Resources Association (ELRA)<address><addrLine>Joseph Mariani, Asuncion Moreno; Reykjavik, Iceland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-01" />
+		</imprint>
+	</monogr>
+	<note>Nicoletta Calzolari (Conference Chair)</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Semeval-2014 task 6: Supervised semantic parsing of robotic spatial commands</title>
+		<author>
+			<persName><forename type="first">Kais</forename><surname>Dukes</surname></persName>
+		</author>
+		<ptr target="http://www.aclweb.org/anthology/S14-2006" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="45" to="53" />
+		</imprint>
+		<respStmt>
+			<orgName>Computational Linguistics and Dublin City University</orgName>
+		</respStmt>
+	</monogr>
+	<note>Association for</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Choreography of web services based on natural language storybooks</title>
+		<author>
+			<persName><forename type="first">Kurt</forename><surname>Englmeier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Javier</forename><surname>Pereira</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josiane</forename><surname>Mothe</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/1151454.1151485</idno>
+		<ptr target="https://doi.org/10.1145/1151454.1151485" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Conference on Electronic Commerce: The New e-Commerce: Innovations for Conquering Current Barriers, Obstacles and Limitations to Conducting Successful Business on the Internet</title>
+				<meeting>the 8th International Conference on Electronic Commerce: The New e-Commerce: Innovations for Conquering Current Barriers, Obstacles and Limitations to Conducting Successful Business on the Internet<address><addrLine>New York, NY, USA, ICEC &apos;06</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="132" to="138" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Schema-agnostic queries over large-schema databases: a distributional semantics approach</title>
+		<author>
+			<persName><forename type="first">André</forename><surname>Freitas</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+	<note type="report_type">PhD Thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Natural language queries over heterogeneous linked data graphs: A distributional-compositional semantics approach</title>
+		<author>
+			<persName><forename type="first">Andre</forename><surname>Freitas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Curry</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/2557500.2557534</idno>
+		<ptr target="https://doi.org/10.1145/2557500.2557534" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 19th International Conference on Intelligent User Interfaces</title>
+				<meeting>the 19th International Conference on Intelligent User Interfaces<address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="279" to="288" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">The vocabulary problem in human-system communication</title>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">W</forename><surname>Furnas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><forename type="middle">K</forename><surname>Landauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Louis</forename><forename type="middle">M</forename><surname>Gomez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Susan</forename><forename type="middle">T</forename><surname>Dumais</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Commun. ACM</title>
+		<imprint>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="964" to="971" />
+			<date type="published" when="1987" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1145/32206.32212</idno>
+		<ptr target="https://doi.org/10.1145/32206.32212" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Nli: a robust interface for natural language personmachine communication</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Guida</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlo</forename><surname>Tasso</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Man-Machine Studies</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="417" to="433" />
+			<date type="published" when="1982" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1016/S0020-7373</idno>
+		<ptr target="https://doi.org/http://dx.doi.org/10.1016/S0020-7373" />
+		<imprint>
+			<biblScope unit="volume">82</biblScope>
+			<biblScope unit="page" from="80042" to="80044" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">EUDAMU at SemEval-2017 Task 11: Action ranking and type matching for end-user development</title>
+		<author>
+			<persName><forename type="first">Marek</forename><surname>Kubis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pawel</forename><surname>Skorzewski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomasz</forename><surname>Zietkiewicz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Natural-language interface for an instructable robot</title>
+		<author>
+			<persName><forename type="first">Elton</forename><surname>Robert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Maas</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Suppes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Man-Machine Studies</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="215" to="240" />
+			<date type="published" when="1985" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1016/S0020-7373</idno>
+		<ptr target="https://doi.org/http://dx.doi.org/10.1016/S0020-7373" />
+		<imprint>
+			<biblScope unit="volume">85</biblScope>
+			<biblScope unit="page" from="80071" to="80077" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Nalige: a user interface management system for the development of natural language interfaces</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Bill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wayne</forename><forename type="middle">D</forename><surname>Manaris</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dominick</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Man-Machine Studies</title>
+		<imprint>
+			<biblScope unit="volume">38</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="891" to="921" />
+			<date type="published" when="1993" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1006/imms.1993.1042</idno>
+		<ptr target="https://doi.org/http://dx.doi.org/10.1006/imms.1993.1042" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">A sentence simplification system for improving relation extraction</title>
+		<author>
+			<persName><forename type="first">Christina</forename><surname>Niklaus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernhard</forename><surname>Bermeitinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siegfried</forename><surname>Handschuh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">André</forename><surname>Freitas</surname></persName>
+		</author>
+		<ptr target="http://aclweb.org/anthology/C16-2036" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2016, the 26th International Conference on Computational Linguistics: System Demonstrations. The COLING 2016 Organizing Committee</title>
+				<meeting>COLING 2016, the 26th International Conference on Computational Linguistics: System Demonstrations. The COLING 2016 Organizing Committee<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="170" to="174" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">More Natural Programming Languages and Environments</title>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">F</forename><surname>Pane</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Brad</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Myers</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/1-4020-5386-X3</idno>
+		<ptr target="https://doi.org" />
+		<imprint>
+			<date type="published" when="2006" />
+			<publisher>Springer</publisher>
+			<biblScope unit="page" from="31" to="50" />
+			<pubPlace>Netherlands</pubPlace>
+		</imprint>
+	</monogr>
+	<note>End User Development</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Language to code: Learning semantic parsers for if-this-then-that recipes</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Quirk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymond</forename><surname>Mooney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michel</forename><surname>Galley</surname></persName>
+		</author>
+		<ptr target="http://www.cs.utexas.edu/users/ai-lab/pub-view.php?PubID=127514" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics (ACL-15)</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics (ACL-15)<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="878" to="888" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">A compositionaldistributional semantic model for searching complex entity categories</title>
+		<author>
+			<persName><surname>Juliano Efson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andre</forename><surname>Sales</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brian</forename><surname>Freitas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siegfried</forename><surname>Davis</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Handschuh</surname></persName>
+		</author>
+		<ptr target="http://anthology.aclweb.org/S16-2025" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth Joint Conference on Lexical and Computational Semantics</title>
+				<meeting>the Fifth Joint Conference on Lexical and Computational Semantics<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="199" to="208" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Natural language programming of industrial robots</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Stenmark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Nugues</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ISR.2013.6695630</idno>
+		<ptr target="https://doi.org/10.1109/ISR.2013.6695630" />
+	</analytic>
+	<monogr>
+		<title level="m">Robotics (ISR), 2013 44th International Symposium on</title>
+				<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Learning to interpret natural language commands through humanrobot dialog</title>
+		<author>
+			<persName><forename type="first">Jesse</forename><surname>Thomason</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shiqi</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymond</forename><surname>Mooney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Stone</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 24th International Conference on Artificial Intelligence</title>
+				<meeting>the 24th International Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="1923" to="1929" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">A framework for learning semantic maps from grounded natural language descriptions</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><forename type="middle">R</forename><surname>Walter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sachithra</forename><surname>Hemachandra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bianca</forename><surname>Homberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefanie</forename><surname>Tellex</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seth</forename><surname>Teller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Robotics Research</title>
+		<imprint>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="issue">9</biblScope>
+			<biblScope unit="page" from="1167" to="1190" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

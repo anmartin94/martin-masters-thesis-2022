@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2012 Task 5: Chinese Semantic Dependency Parsing</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Wanxiang</forename><surname>Che</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Research Center for Social Computing and Information Retrieval</orgName>
+								<orgName type="institution">Harbin Institute of Technology</orgName>
+								<address>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Meishan</forename><surname>Zhang</surname></persName>
+							<email>mszhang@ir.hit.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="department">Research Center for Social Computing and Information Retrieval</orgName>
+								<orgName type="institution">Harbin Institute of Technology</orgName>
+								<address>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yanqiu</forename><surname>Shao</surname></persName>
+							<email>yqshao@bcu.edu.cn</email>
+						</author>
+						<author>
+							<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+							<email>tliu@ir.hit.edu.cn</email>
+							<affiliation key="aff0">
+								<orgName type="department">Research Center for Social Computing and Information Retrieval</orgName>
+								<orgName type="institution">Harbin Institute of Technology</orgName>
+								<address>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">Beijing City University</orgName>
+								<address>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2012 Task 5: Chinese Semantic Dependency Parsing</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The paper presents the SemEval-2012 Shared Task 5: Chinese Semantic Dependency Parsing. The goal of this task is to identify the dependency structure of Chinese sentences from the semantic view. We firstly introduce the motivation of providing Chinese semantic dependency parsing task, and then describe the task in detail including data preparation, data format, task evaluation, and so on. Over ten thousand sentences were labeled for participants to train and evaluate their systems. At last, we briefly describe the submitted systems and analyze these results.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Semantic analysis is a long-term goal of Natural Language Processing, and as such, has been researched for several decades. A number of tasks for encoding semantic information have been developed over the years, such as entity type recognition and word sense disambiguation. Recently, sentencelevel semantics -in particular, semantic role labeling -has received increasing attention. However, some problems concerning the semantic representation method used in semantic role labeling continue to exist .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Semantic role labeling only considers</head><p>predicate-argument relations and ignores the semantic relations between a noun and its modifier.</p><p>2. The meaning of semantic roles is related to special predicates. Therefore, there are infinite semantic roles to be learned, as the number of predicates is not fixed. Although the Prop-Bank <ref type="bibr" target="#b15">(Xue and Palmer, 2003)</ref> normalizes these semantic roles into certain symbols, such as Arg0-Arg5, the same symbol can have different semantic meanings when paired with different predicates, and thus cannot be learned well.</p><p>Semantic dependency parsing is therefore proposed to solve the two problems above for Chinese. Firstly, the proposed method analyzes all the words' semantic roles in a sentence and specifies the concrete semantic relation of each word pair. Afterward, this work analyzes and summarizes all the possible semantic roles, obtaining over 100 of them, and then uses these semantic roles to specify the semantic relation for each word pair.</p><p>Dependency parsing <ref type="bibr" target="#b9">(Kübler et al., 2009)</ref> is based on dependency grammar. It has several advantages, such as concise formalization, easy comprehension, high efficiency, and so on. Dependency parsing has been studied intensively in recent decades, with most related work focusing on syntactic structure. Many research papers on Chinese linguistics demonstrate the remarkable difference between semantics and syntax <ref type="bibr" target="#b6">(Jin, 2001;</ref><ref type="bibr" target="#b18">Zhou and Zhang, 2003)</ref>. Chinese is a meaning-combined language with very flexible syntax, and semantics are more stable than syntax. The word is the basic unit of semantics, and the structure and meaning of a sentence consists mainly of a series of semantic dependencies between individual words <ref type="bibr" target="#b10">(Li et al., 2003)</ref>. Thus, a reasonable endeavor is to exploit dependency parsing for semantic analysis of Chinese languages. Figure <ref type="figure" target="#fig_0">1</ref> shows an example of Chinese semantic dependency parsing.  Figure <ref type="figure" target="#fig_0">1</ref> shows that Chinese semantic dependency parsing looks very similar to traditional syntaxdominated dependency parsing. Below is a comparison between the two tasks, dealing with three main points:</p><p>1. Semantic relations are more fine-grained than syntactic ones: the syntactic subject can either be the agent or experiencer, and the syntactic object can be the content, patient, possession, and so on. On the whole, the number of semantic relations is at least twice that of syntactic relations.</p><p>2. Semantic dependency parsing builds the dependency structure of a sentence in terms of semantics, and the word pairs of a dependency should have a direct semantic relation. This criterion determines many sizeable differences between semantics and syntax, especially in phrases formed by "XP+DEG", "XP+DEV" and prepositional phrases. For example, in "美 丽 的 祖国" (beautiful country), the head of "美丽" (beautiful) is "祖国" (country) in semantic dependency parsing, whereas the head is "的" (de) in syntax dependency parsing.</p><p>3. Semantic relations are independent of position. For example, in "空 气 被 污 染" (the air is contaminated) and "污染 了 空气" (contaminate the air), the patient "空气" (the air) can be before or behind a predicate "污染" (contaminate).</p><p>The rest of the paper is organized as follows. Section 2 gives a short overview of data annotation. Section 3 focuses on the task description. Section 4 describes the participant systems. Section 5 com-pares and analyzes the results. Finally, Section 6 concludes the paper.</p><p>2 Data Annotation 2.1 Corpus Section 10,068 sentences were selected from the Penn Chinese Treebank 6.0 1  (1-121, 1001-1078, 1100-1151) as the raw corpus from which to create the Chinese Semantic Dependency Parsing corpus. These sentences were chosen for the annotation for three reasons. First, gold syntactic dependency structures can be of great help in semantic dependency annotation, as syntactic dependency arcs are often consistent with semantic ones. Second, the semantic role labels in PropBank 2 can be very useful in the present annotation work. Third, the gold word segmentation and Part-Of-Speech can be used as the annotation input in this work.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Semantic Relations</head><p>The semantic relations in the prepared Chinese semantic dependency parsing corpus came mostly from HowNet 3 <ref type="bibr" target="#b3">(Dong and Dong, 2006)</ref>, a famous Chinese semantic thesaurus. We also referred to other sources. Aside from the relations from HowNet, we defined two kinds of new relations: reverse relations and indirect relations. When a verb modifies a noun, the relation between them is a reverse relation, and r-XXX is used to indicate this kind of relation. For instance, in "打 篮球 的 小 男 孩" (the little boy who is playing basketball), the semantic relation between the head word "男孩" (boy)</p><p>and "打" (playing) is the r-agent. When a verbal noun is the head word, the relation between it and the modifier is the indirect relation j-XXX. For instance, in "企业 管理" (business management), the head word is "管理" (management) and the modifier is "企业" (business), their relation is j-patient.</p><p>Finally, we defined 84 single-level semantic relations. The number of multi-level semantic relations that actually appear in the labeled corpus in this work is 39.</p><p>Table <ref type="table" target="#tab_6">1</ref> summarizes all of the semantic relations used for annotation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Annotation Flow</head><p>Our corpus annotation flow can be divided into the following steps.</p><p>1. Conversion of the sentences' constituent structures into dependency structures according to a set of rules similar with those used by the syntactic community to find the head of a phrase <ref type="bibr" target="#b2">(Collins, 1999)</ref>.</p><p>2. Labeling of the semantic relations for each dependency relation according to another set of rules using the functional tags in the Penn Chinese Treebank and the semantic roles in the Chinese PropBank.</p><p>3. Six human annotators are asked to check and adjust the structure and semantic relation errors introduced in Step 2.</p><p>The first two steps were performed automatically using rules. A high accuracy may be achieved with dependency structures when semantic labels are not considered. However, accuracy declines remarkably when the semantic label is considered. Unlabeled Attachment Score (UAS) and Labeled Attachment Score (LAS) can be used to evaluate the performance of the automatic conversion.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Data Format</head><p>The data format is identical to that of a syntactic dependency parsing shared task. All the sentences are in one text file, with each sentence separated by a blank line. Each sentence consists of one or more tokens, and each token is represented on one line consisting of 10 fields. <ref type="bibr" target="#b0">Buchholz and Marsi (2006)</ref> provide more detailed information on the format. Fields are separated from each other by a tab. Only five of the 10 fields are used: token id, form, pos tagger, head, and deprel. Head denotes the semantic dependency of each word, and deprel denotes the corresponding semantic relations of the dependency. In the data, the lemma column is filled with the form and the cpostag column with the postag. Figure <ref type="figure" target="#fig_1">2</ref> shows an example.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Evaluation Method</head><p>LAS, which is a method widely used in syntactic dependency parsing, is used to evaluate the performance of the semantic dependency parsing system. LAS is the proportion of "scoring" tokens assigned to both the correct head and correct semantic dependency relation. Punctuation is disregarded during the evaluation process. UAS is another important indicator, as it reflects the accuracy of the semantic dependency structure.  <ref type="bibr">-genetive, d-category, d-member, d-domain, d-quantity-p, dquantity, d-deno-p, d-deno, d-host, d-TimePhrase, d-LocPhrase, d-InstPhrase, d-attribute, d-restrictive, d-material, d-content,</ref>    </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participating Systems</head><p>Nine organizations were registered to participate in the Chinese Semantic Dependency Parsing task. Finally, nine systems were received from five different participating teams. These systems are as follows:</p><p>1. Zhou Qiaoli-1, Zhou Qiaoli-2, Zhou Qiaoli-3 These three systems propose a divide-andconquer strategy for semantic dependency parsing. The Semantic Role (SR) phrases are identified <ref type="bibr" target="#b1">(Cai et al., 2011)</ref> and then replaced by their head or the SR of the head. The original sentence is thus divided into two types of parts that can be parsed separately. The first type is SR phrase parsing, and the second involves the replacement of SR phrases with either their head or the SR of the head. Finally, the paper takes a graph-based parser <ref type="bibr" target="#b11">(Li et al., 2011)</ref> as the semantic dependency parser for all parts. These three systems differ in their phrase identification strategies.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">NJU-Parser-1, NJU-Parser-2</head><p>The NJU-Parser is based on the state-of-theart MSTParser <ref type="bibr" target="#b12">(McDonald, 2006)</ref>. NJU-Parser applies three methods to enhance semantic dependency parsing. First, sentences are split into sub-sentences using commas and semicolons: (a) sentences are split using only commas and semicolons, as in the primary system, and (b) classifiers are used to determine whether a comma or semicolon should be used to split the sentence. Second, the last character in a Chinese word is extracted as the lemma, since it usually contains the main sense or semantic class. Third, the multilevel-label is introduced into the semantic relation, for example, the r-{Main Semantic Roles}, with NJU-Parser exploiting special strategies to handle it. However, this third method does not show positive performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Zhijun Wu-1</head><p>This system extends the second-order of the MSTParser by adding third-order features, and then applying this model to Chinese semantic dependency parsing. In contrast to <ref type="bibr" target="#b7">Koo and Collins (2010)</ref> this system does not implement the third-order model using dynamic programming, as it requires O(n 4 ) time. It first first obtained the K-best results of second-order models and then added the third-order features into the results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">ICT-1</head><p>The ICT semantic dependency parser employs a system-combining strategy to obtain the dependency structure and then uses the classifier from Le Zhang's Maximum Entropy Modeling Toolkit 4 to predict the semantic relation for each dependency. The system-combining strategy involves three steps:</p><p>• Parsing each sentence using Nivre's arc standard, Nivre's arc eager <ref type="bibr" target="#b13">(Nivre and Nilsson, 2005;</ref><ref type="bibr" target="#b14">Nivre, 2008)</ref>, and Liang's dynamic algorithm <ref type="bibr" target="#b4">(Huang and Sagae, 2010)</ref>; • Combining parses given by the three parsers into a weighted directed graph; • Using the Chu-Liu-Edmonds algorithm to search for the final parse for each sentence.</p><p>5. Giuseppe Attardi-SVM-1-R, Giuseppe Attardi-SVM-1-rev We didn't receive the system description of these two systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results &amp; Analysis</head><p>LAS is the main evaluation metric in Chinese Semantic Dependency Parsing, whereas UAS is the secondary metric. Table <ref type="table" target="#tab_8">4</ref> shows the results for these two indicators in all participating systems. As shown in Table <ref type="table" target="#tab_8">4</ref>, the Zhou Qiaoli-3 system achieved the best results with LAS of 61.84. The LAS values of top systems are very closely. We performed significance tests 5 for top six results. Table <ref type="table" target="#tab_7">5</ref> shows the results , from which we can see that the performances of top five results are comparative (p &gt; 0.1) and the rank sixth system is significantly (p &lt; 10 −5 ) worse than top five results.  The average LAS for all systems was 54.22. Chinese Semantic Dependency Parsing performed much more poorly than Chinese Syntactic Dependency Parsing due to the increased complexity brought about by the greater number of semantic relations compared with syntactic relations, as well as greater difficulty in classifying semantic relations.</p><formula xml:id="formula_0">NJU-Parser-2 NJU-Parser-1 Zhijun Wu-1 Zhou Qiaoli-1 Zhou Qiaoli-2 Zhou Qiaoli-3 ∼ ∼ ∼ ∼ &gt; NJU-Parser-2 - ∼ ∼ ∼ &gt; NJU-Parser-1 - - ∼ ∼ &gt; Zhijun Wu-1 - - - ∼ &gt; Zhou Qiaoli-1 - - - - &gt;</formula><p>In general, all the systems employed the traditional syntax-dominated dependency parsing frameworks. Some new methods were proposed for this task. Zhou Qiaoli's systems first identified the semantic role phrase in a sentence, and then employed graph-based dependency parsing to analyze the semantic structure of the sentence. NJU-Parser first split the sentence into sub-sentences, then trained and parsed the sentence based on these sub-sentences; this was shown to perform well. In addition, ensemble models were also proposed to solve the task using ICT systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>We described the Chinese Semantic Dependency Parsing task for SemEval-2012, which is designed to parse the semantic structures of Chinese sentences.</p><p>Nine results were submitted by five organizations, with the best result garnering an LAS score of 61.84, which is far below the performance of Chinese Syntax. This demonstrates that further research on the structure of Chinese Semantics is needed.</p><p>In the future, we will check and improve the annotation standards while building a large, high-quality corpus for further Chinese semantic research.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: An example of Chinese Semantic Dependency Parsing.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Data format of the Chinese Semantic Dependency Parsing corpus.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell>gives</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Accuracy after conversion from gold ProbBank. Corpus StatisticsWe annotated 10,068 sentences from the Penn Chinese TreeBank for Semantic Dependency Parsing, and these sentences were divided into training, development, and test sections. Table3gives the detailed statistical information of the three sections.</figDesc><table><row><cell cols="2">3 Task Description</cell><cell></cell></row><row><cell cols="2">3.1 Data Set CTB files</cell><cell cols="2"># sent. # words.</cell></row><row><cell></cell><cell cols="2">1-10; 36-65;81-121; 8301</cell></row><row><cell cols="2">Training 1001-1078;</cell><cell></cell><cell>250311</cell></row><row><cell></cell><cell>1100-1119;</cell><cell></cell></row><row><cell></cell><cell>1126-1140</cell><cell></cell></row><row><cell>Devel</cell><cell cols="2">66-80; 1120-1125 534</cell><cell>15329</cell></row><row><cell>Test</cell><cell cols="3">11-35; 1141-1151 1233 34311</cell></row><row><cell>Total</cell><cell cols="3">1-121; 1001-1078 10068 299951</cell></row><row><cell></cell><cell>1100-1151</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Statistics of training, development and test data.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 1 :</head><label>1</label><figDesc>Semantic Relations defined for Chinese Semantic Dependency Parsing.</figDesc><table><row><cell cols="6">ID FORM LEMMA CPOS PPOS FEAT HEAD REL</cell><cell>PHEAD PREL</cell></row><row><cell cols="3">1 钱其琛 钱其琛 NR</cell><cell>NR</cell><cell>2</cell><cell>agent</cell></row><row><cell>2 谈</cell><cell>谈</cell><cell>VV</cell><cell>VV</cell><cell>0</cell><cell>ROOT</cell></row><row><cell>3 香港</cell><cell>香港</cell><cell>NR</cell><cell>NR</cell><cell>4</cell><cell>d-genetive</cell></row><row><cell>4 前景</cell><cell>前景</cell><cell>NN</cell><cell>NN</cell><cell>7</cell><cell>s-coordinate</cell></row><row><cell>5 和</cell><cell>和</cell><cell>CC</cell><cell>CC</cell><cell>7</cell><cell>aux-depend</cell></row><row><cell>6 台湾</cell><cell>台湾</cell><cell>NR</cell><cell>NR</cell><cell>7</cell><cell>d-genetive</cell></row><row><cell>7 问题</cell><cell>问题</cell><cell>NN</cell><cell>NN</cell><cell>2</cell><cell>content</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Significance tests of the top five systems. ∼ denotes that the two systems are comparable (p &gt; 0.1), and &gt; means the system of this row is significantly (p &lt; 10 −5 ) better than the system of this column.</figDesc><table><row><cell>System</cell><cell>LAS UAS</cell></row><row><cell>Zhou Qiaoli-3</cell><cell>61.84 80.60</cell></row><row><cell>NJU-Parser-2</cell><cell>61.64 80.29</cell></row><row><cell>NJU-Parser-1</cell><cell>61.63 80.35</cell></row><row><cell>Zhijun Wu-1</cell><cell>61.58 80.64</cell></row><row><cell>Zhou Qiaoli-1</cell><cell>61.15 80.41</cell></row><row><cell>Zhou Qiaoli-2</cell><cell>57.55 78.55</cell></row><row><cell>ICT-1</cell><cell>56.31 73.20</cell></row><row><cell cols="2">Giuseppe Attardi-SVM-1-R 44.46 60.83</cell></row><row><cell cols="2">Giuseppe Attardi-SVM-1-rev 21.86 40.47</cell></row><row><cell>Average</cell><cell>54.22 72.82</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>Results of the submitted systems.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://www.ldc.upenn.edu/Catalog/ catalogEntry.jsp?catalog\\Id=LDC2007T36 2 http://verbs.colorado.edu/chinese/cpb/ 3 http://www.keenage.com/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">http://homepages.inf.ed.ac.uk/s0450736/ maxenttoolkit.html 5 http://www.cis.upenn.edu/˜dbikel/ download/compare.pl</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We thank the anonymous reviewers for their helpful comments. This work was supported by National Natural Science Foundation of China (NSFC) via grant 61133012 and 61170144, and the National "863" Leading Technology Research Project via grant 2012AA011102.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Conll-x shared task on multilingual dependency parsing</title>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Buchholz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erwin</forename><surname>Marsi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth Conference on Computational Natural Language Learning (CoNLL-X)</title>
+				<meeting>the Tenth Conference on Computational Natural Language Learning (CoNLL-X)<address><addrLine>New York City</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2006-06" />
+			<biblScope unit="page" from="149" to="164" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">A collocation based approach for prepositional phrase identification</title>
+		<author>
+			<persName><forename type="first">Dongfeng</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ling</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiaoli</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yue</forename><surname>Zhao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE NLPKE</title>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">Head-Driven Statistical Models for Natural Language Parsing</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Collins</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1999" />
+		</imprint>
+		<respStmt>
+			<orgName>Pennsylvania University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Hownet And the Computation of Meaning</title>
+		<author>
+			<persName><forename type="first">Zhendong</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiang</forename><surname>Dong</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2006" />
+			<publisher>World Scientific Publishing Co., Inc</publisher>
+			<pubPlace>River Edge, NJ, USA</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Dynamic programming for linear-time incremental parsing</title>
+		<author>
+			<persName><forename type="first">Liang</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenji</forename><surname>Sagae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 48th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 48th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1077" to="1086" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Sweden</forename><surname>Uppsala</surname></persName>
+		</author>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Theory of modern Chinese verb semantic computation</title>
+		<author>
+			<persName><forename type="first">Guangjin</forename><surname>Jin</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2001" />
+			<publisher>Beijing University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Efficient thirdorder dependency parsers</title>
+		<author>
+			<persName><forename type="first">Terry</forename><surname>Koo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Collins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 48th</title>
+				<meeting>the 48th</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m">Annual Meeting of the ACL, number July</title>
+				<imprint>
+			<biblScope unit="page" from="1" to="11" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Dependency Parsing</title>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Synthesis Lectures on Human Language Technologies</title>
+				<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Building a large chinese corpus annotated with semantic dependency</title>
+		<author>
+			<persName><forename type="first">Mingqin</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juanzi</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhendong</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zuoying</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dajin</forename><surname>Lu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the second SIGHAN workshop on Chinese language processing</title>
+				<meeting>the second SIGHAN workshop on Chinese language processing<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2003" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="84" to="91" />
+		</imprint>
+	</monogr>
+	<note>SIGHAN &apos;03</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Joint models for chinese pos tagging and dependency parsing</title>
+		<author>
+			<persName><forename type="first">Zhenghua</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Min</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wanxiang</forename><surname>Che</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wenliang</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haizhou</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2011 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2011 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Edinburgh, Scotland, UK.</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-07" />
+			<biblScope unit="page" from="1180" to="1191" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Discriminative learning and spanning tree algorithms for dependency parsing</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+		<respStmt>
+			<orgName>University of Pennsylvania</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Pseudo-projective dependency parsing</title>
+		<author>
+			<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jens</forename><surname>Nilsson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 43rd Annual Meeting of the Association for Computational Linguistics (ACL)</title>
+				<meeting>the 43rd Annual Meeting of the Association for Computational Linguistics (ACL)</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Algorithms for deterministic incremental dependency parsing</title>
+		<author>
+			<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="513" to="553" />
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Annotating the propositions in the penn chinese treebank</title>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second SIGHAN Workshop on Chinese Language Processing</title>
+				<meeting>the Second SIGHAN Workshop on Chinese Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Automatic semantic role labeling for chinese verbs</title>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 19th International Joint Conference on Artificial Intelligence</title>
+				<meeting>the 19th International Joint Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">The penn chinese treebank: Phrase structure annotation of a large corpus</title>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fei</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fu-Dong</forename><surname>Chiou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="207" to="238" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">The theory and method of modern Chinese grammar</title>
+		<author>
+			<persName><forename type="first">Guoguang</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Linlin</forename><surname>Zhang</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2003" />
+			<publisher>Guangdong Higher Education Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

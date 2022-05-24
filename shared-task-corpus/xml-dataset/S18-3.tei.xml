@@ -1,0 +1,1349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2018 Task 3: Irony Detection in English Tweets</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Cynthia</forename><surname>Van Hee</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">LT3 Language and Translation Technology Team Ghent University Groot</orgName>
+								<address>
+									<addrLine>Brittanniëlaan 45</addrLine>
+									<postCode>9000</postCode>
+									<settlement>Ghent</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">LT3 Language and Translation Technology Team Ghent University Groot</orgName>
+								<address>
+									<addrLine>Brittanniëlaan 45</addrLine>
+									<postCode>9000</postCode>
+									<settlement>Ghent</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">LT3 Language and Translation Technology Team Ghent University Groot</orgName>
+								<address>
+									<addrLine>Brittanniëlaan 45</addrLine>
+									<postCode>9000</postCode>
+									<settlement>Ghent</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2018 Task 3: Irony Detection in English Tweets</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the first shared task on irony detection: given a tweet, automatic natural language processing systems should determine whether the tweet is ironic (Task A) and which type of irony (if any) is expressed (Task B). The ironic tweets were collected using irony-related hashtags (i.e. #irony, #sarcasm, #not) and were subsequently manually annotated to minimise the amount of noise in the corpus. Prior to distributing the data, hashtags that were used to collect the tweets were removed from the corpus. For both tasks, a training corpus of 3,834 tweets was provided, as well as a test set containing 784 tweets. Our shared tasks received submissions from 43 teams for the binary classification Task A and from 31 teams for the multiclass Task B. The highest classification scores obtained for both subtasks are respectively F 1 = 0.71 and F 1 = 0.51 and demonstrate that fine-grained irony classification is much more challenging than binary irony detection.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The development of the social web has stimulated the use of figurative and creative language, including irony, in public <ref type="bibr" target="#b15">(Ghosh et al., 2015)</ref>. From a philosophical/psychological perspective, discerning the mechanisms that underlie ironic speech improves our understanding of human reasoning and communication, and more and more, this interest in understanding irony also emerges in the machine learning community <ref type="bibr" target="#b48">(Wallace, 2015)</ref>. Although an unanimous definition of irony is still lacking in the literature, it is often identified as a trope whose actual meaning differs from what is literally enunciated. Due to its nature, irony has important implications for natural language processing (NLP) tasks, which aim to understand and produce human language. In fact, automatic irony detection has a large potential for various applications in the domain of text mining, especially those that require semantic analysis, such as author profiling, detecting online harassment, and, maybe the most well-known example, sentiment analysis.</p><p>Due to its importance in industry, sentiment analysis research is abundant and significant progress has been made in the field (e.g. in the context of SemEval <ref type="bibr" target="#b40">(Rosenthal et al., 2017)</ref>). However, the SemEval-2014 shared task Sentiment Analysis in Twitter <ref type="bibr" target="#b41">(Rosenthal et al., 2014)</ref> demonstrated the impact of irony on automatic sentiment classification by including a test set of ironic tweets. The results revealed that, while sentiment classification performance on regular tweets reached up to F 1 = 0.71, scores on the ironic tweets varied between F 1 = 0.29 and F 1 = 0.57. In fact, it has been demonstrated that several applications struggle to maintain high performance when applied to ironic text (e.g. <ref type="bibr" target="#b26">Liu, 2012;</ref><ref type="bibr" target="#b27">Maynard and Greenwood, 2014;</ref><ref type="bibr" target="#b16">Ghosh and Veale, 2016)</ref>. Like other types of figurative language, ironic text should not be interpreted in its literal sense; it requires a more complex understanding based on associations with the context or world knowledge. Examples 1 and 2 are sentences that regular sentiment analysis systems would probably classify as positive, whereas the intended sentiment is undeniably negative.</p><p>(1) I feel so blessed to get ocular migraines.</p><p>(2) Go ahead drop me hate, I'm looking forward to it.</p><p>For human readers, it is clear that the author of example 1 does not feel blessed at all, which can be inferred from the contrast between the positive sentiment expression "I feel so blessed", and the negative connotation associated with getting ocular migraines. Although such connotative infor-mation is easily understood by most people, it is difficult to access by machines. Example 2 illustrates implicit cyberbullying; instances that typically lack explicit profane words and where the offense is often made through irony. Similarly to example 1, a contrast can be perceived between a positive statement ("I'm looking forward to") and a negative situation (i.e. experiencing hate). To be able to interpret the above examples correctly, machines need, similarly to humans, to be aware that irony is used, and that the intended sentiment is opposite to what is literally enunciated.</p><p>The irony detection task 1 we propose is formulated as follows: given a single post (i.e. a tweet), participants are challenged to automatically determine whether irony is used and which type of irony is expressed. We thus defined two subtasks:</p><p>• Task A describes a binary irony classification task to define, for a given tweet, whether irony is expressed.</p><p>• Task B describes a multiclass irony classification task to define whether it contains a specific type of irony (verbal irony by means of a polarity clash, situational irony, or another type of verbal irony, see further) or is not ironic. Concretely, participants should define which one out of four categories a tweet contains: ironic by clash, situational irony, other verbal irony or not ironic.</p><p>It is important to note that by a tweet, we understand the actual text it contains, without metadata (e.g. user id, time stamp, location). Although such metadata could help to recognise irony, the objective of this task is to learn, at message level, how irony is linguistically realised.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Automatic Irony Detection</head><p>As described by <ref type="bibr" target="#b21">Joshi et al. (2017)</ref>, recent approaches to irony can roughly be classified as either rule-based or (supervised and unsupervised) machine learning-based. While rule-based approaches mostly rely upon lexical information and require no training, machine learning invariably makes use of training data and exploits different types of information sources (or features), such as bags of words, syntactic patterns, sentiment information or semantic relatedness.</p><p>Previous work on irony detection mostly applied supervised machine learning mainly exploiting lexical features. Other features often include punctuation mark/interjection counts (e.g <ref type="bibr" target="#b10">Davidov et al., 2010)</ref>, sentiment lexicon scores (e.g. <ref type="bibr" target="#b4">Bouazizi and Ohtsuki, 2016;</ref><ref type="bibr" target="#b11">Farías et al., 2016)</ref>, emoji (e.g. <ref type="bibr" target="#b17">González-Ibáñez et al., 2011)</ref>, writing style, emotional scenarios, part of speechpatterns (e.g. <ref type="bibr" target="#b37">Reyes et al., 2013)</ref>, and so on. Also beneficial for this task are combinations of different feature types (e.g. <ref type="bibr" target="#b46">Van Hee et al., 2016b)</ref>, author information (e.g. <ref type="bibr" target="#b1">Bamman and Smith, 2015)</ref>, features based on (semantic or factual) oppositions (e.g <ref type="bibr" target="#b23">Karoui et al., 2015;</ref><ref type="bibr" target="#b18">Gupta and Yang, 2017;</ref><ref type="bibr" target="#b44">Van Hee, 2017)</ref> and even eye-movement patterns of human readers <ref type="bibr" target="#b28">(Mishra et al., 2016)</ref>. While a wide range of features are and have been used extensively over the past years, deep learning techniques have recently gained increasing popularity for this task. Such systems often rely on semantic relatedness (i.e. through word and character embeddings (e.g. <ref type="bibr" target="#b0">Amir et al., 2016;</ref><ref type="bibr" target="#b16">Ghosh and Veale, 2016)</ref>) deduced by the network and reduce feature engineering efforts.</p><p>Regardless of the methodology and algorithm used, irony detection often involves binary classification where irony is defined as instances that express the opposite of what is meant (e.g. <ref type="bibr" target="#b38">Riloff et al., 2013;</ref><ref type="bibr" target="#b21">Joshi et al., 2017)</ref>. Twitter has been a popular data genre for this task, as it is easily accessible and provides a rapid and convenient method to find (potentially) ironic messages by looking for hashtags like #irony, #not and #sarcasm. As a consequence, irony detection research often relies on automatically annotated (i.e. based on irony-related hashtags) corpora, which contain noise <ref type="bibr" target="#b24">(Kunneman et al., 2015;</ref><ref type="bibr" target="#b44">Van Hee, 2017)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>We propose two subtasks A and B for the automatic detection of irony on Twitter, for which we provide more details below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Task A: Binary Irony Classification</head><p>The first subtask is a two-class (or binary) classification task where submitted systems have to predict whether a tweet is ironic or not. The following examples respectively present an ironic and nonironic tweet.</p><p>(3) I just love when you test my patience!! #not.</p><p>(4) Had no sleep and have got school now #not happy</p><p>Note that the examples contain irony-related hashtags (e.g. #irony) that were removed from the corpus prior to distributing the data for the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Task B: Multiclass Irony Classification</head><p>The second subtask is a multiclass classification task where submitted systems have to predict one out of four labels describing i) verbal irony realised through a polarity contrast, ii) verbal irony without such a polarity contrast (i.e. other verbal irony), iii) descriptions of situational irony, and iv) non-irony. The following paragraphs present a description and a number of examples for each label.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Verbal irony by means of a polarity contrast</head><p>This category applies to instances containing an evaluative expression whose polarity (positive, negative) is inverted between the literal and the intended evaluation, as shown in examples 5 and 6:</p><p>(5) I love waking up with migraines #not (6) I really love this year's summer; weeks and weeks of awful weather</p><p>In the above examples, the irony results from a polarity inversion between two evaluations. For instance, in example 6, the literal evaluation ("I really love this year's summer") is positive, while the intended one, which is implied by the context ("weeks and weeks of awful weather"), is negative.</p><p>Other verbal irony This category contains instances that show no polarity contrast between the literal and the intended evaluation, but are nevertheless ironic. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Corpus Construction and Annotation</head><p>A data set of 3,000 English tweets was constructed by searching Twitter for the hashtags #irony, #sarcasm and #not (hereafter referred to as the 'hashtag corpus'), which could occur anywhere in the tweet that was finally included in the corpus. All tweets were collected between 01/12/2014 and 04/01/2015 and represent 2,676 unique users.</p><p>To minimise the noise introduced by groundless irony hashtags, all tweets were manually labelled using a fine-grained annotation scheme for irony <ref type="bibr" target="#b45">(Van Hee et al., 2016a)</ref>. Prior to data annotation, the entire corpus was cleaned by removing retweets, duplicates and non-English tweets and replacing XML-escaped characters (e.g. &amp;amp;).</p><p>The corpus was entirely annotated by three students in linguistics and second-language speakers of English, with each student annotating one third of the whole corpus. All annotations were done using the brat rapid annotation tool <ref type="bibr" target="#b43">(Stenetorp et al., 2012)</ref>. To assess the reliability of the annotations, and whether the guidelines allowed to carry out the task consistently, an interannotator agreement study was set up in two rounds. Firstly, inter-rater agreement was calculated between the authors of the guidelines to test the guidelines for usability and to assess whether changes or additional clarifications were recommended prior annotating the entire corpus. For this purpose, a subset of 100 instances from the SemEval-2015 Task Sentiment Analysis of Figurative Language in Twitter <ref type="bibr" target="#b15">(Ghosh et al., 2015)</ref> dataset were annotated. Based on the results, some clarifications and refinements were added to the annotation scheme, which are thoroughly described in Van Hee (2017). Next, a second agreement study was carried out on a subset (i.e. 100 randomly chosen instances) of the corpus. As metric, we used Fleiss' Kappa <ref type="bibr" target="#b13">(Fleiss, 1971)</ref>, a widespread statistical measure in the field of computational linguistics for assessing annotator agreement on categorical ratings <ref type="bibr" target="#b8">(Carletta, 1996)</ref>. The measure calculates the degree of agreement in classification over the agreement which would be expected by chance, i.e. when annotators would randomly assign class labels.  Table <ref type="table" target="#tab_2">1</ref> presents the inter-rater scores for the binary irony distinction and for three-way irony classification ('other' includes both situational irony and other forms of verbal irony). We see that better inter-annotator agreement is obtained after the refinement of the annotation scheme, especially for the binary irony distinction. Given the difficulty of the task, a Kappa score of 0.72 for recognising irony can be interpreted as good reliability 2 .</p><p>The distribution if the different irony types in the experimental corpus are presented in Table <ref type="table" target="#tab_4">2</ref>   <ref type="bibr">(1977)</ref>.</p><p>these non-ironic tweets to the experimental corpus brought the total amount of data to 4,792 tweets (2,396 ironic + 2,396 non-ironic). For this shared task, the corpus was randomly split into a class-balanced training (80% or 3,833 instances) and test (20%, or 958 instances) set. In an additional cleaning step, we removed ambiguous tweets (i.e. where additional context was required to understand their ironic nature), from the test corpus, resulting in a test set containing 784 tweets (consisting of 40% ironic and 60% nonironic tweets).</p><p>To train their systems, participants were not restricted to the provided training corpus. They were allowed to use additional training data that was collected and annotated at their own initiative. In the latter case, the submitted system was considered unconstrained, as opposed to constrained if only the distributed training data were used for training.</p><p>It is important to note that participating teams were allowed ten submissions at CodaLab, and that they could submit a constrained and unconstrained system for each subtask. However, only their last submission was considered for the official ranking (see Table <ref type="table" target="#tab_6">3</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation</head><p>For both subtasks, participating systems were evaluated using standard evaluation metrics, including accuracy, precision, recall and F 1 score, calculated as follows: accuracy = true positives + true negatives total number of instances (1) precision = true positives true positives + f alse positives</p><p>(2) recall = true positives true positives + f alse negatives</p><p>(3)</p><formula xml:id="formula_0">F1 = 2 • precision • recall precision + recall (4)</formula><p>While accuracy provides insights into the system performance for all classes, the latter three measures were calculated for the positive class only (Task A) or were macro-averaged over four class labels (Task B). Macro-averaging of the F 1 score implies that all class labels have equal weight in the final score.</p><p>For both subtasks, two baselines were provided against which to compare the systems' performance. The first baseline randomly assigns irony labels and the second one is a linear SVM classifier with standard hyperparameter settings exploiting tf-idf word unigram features (implemented with scikit-learn <ref type="bibr" target="#b32">(Pedregosa et al., 2011)</ref>). The second baseline system is made available to the task participants via GitHub 3 .</p><p>6 Systems and results for Task A In total, 43 teams competed in Task A on binary irony classification. Table <ref type="table" target="#tab_6">3</ref> presents each team's performance in terms of accuracy, precision, recall and F 1 score. In all tables, the systems are ranked by the official F 1 score (shown in the fifth column). Scores from teams that are marked with an asterisk should be interpreted carefully, as the number of predictions they submitted does not correspond to the number of test instances.</p><p>As can be observed from the table, the SVM unigram baseline clearly outperforms the random class baseline and generally performs well for the task. Below we discuss the top five bestperforming teams for Task A, which all built a constrained (i.e. only the provided training data were used) system. The best system yielded an F 1 score of 0.705 and was developed by THU NGN <ref type="bibr" target="#b49">(Wu et al., 2018)</ref>. Their architecture consists of densely connected LSTMs based on (pre-trained) word embeddings, sentiment features using the AffectiveTweet package (Mohammad and Bravo-Marquez, 2017) and syntactic features (e.g. PoS-tag features + sentence embedding features). Hypothesising that the presence of a certain irony hashtag correlates with the type of irony that is used, they constructed a multi-task model able to predict simultaneously 1) the missing irony hashtag, 2) whether a tweet is ironic or not and 3) which fine-grained type of irony is used in a tweet.</p><p>Also in the top five are the teams NTUA-SLP (F 1 = 0.672), WLV (F 1 = 0.650), NLPRL-IITBHU (F 1 = 0.648) and NIHRIO (F 1 = 0.648). NTUA-SLP <ref type="bibr" target="#b3">(Baziotis et al., 2018)</ref> built an ensemble classifier of two deep learning models: a word-and character-based (bi-directional) LSTM to capture semantic and syntactic information in tweets, respectively. As features, the team used pre-trained character and word embeddings on a corpus of 550 million tweets. Their ensem-3 https://github.com/Cyvhee/SemEval2018-Task3/ ble classifier applied majority voting to combine the outcomes of the two models. WLV <ref type="bibr" target="#b39">(Rohanian et al., 2018)</ref> developed an ensemble voting classifier with logistic regression (LR) and a support vector machine (SVM) as component models. They combined (through averaging) pretrained word and emoji embeddings with handcrafted features, including sentiment contrasts between elements in a tweet (i.e. left vs. right sections, hashtags vs. text, emoji vs. text), sentiment intensity and word-based features like flooding and capitalisation). For Task B, they used a slightly altered (i.e. ensemble LR models and concatenated word embeddings instead of averaged) model. NLPRL-IITBHU <ref type="bibr" target="#b36">(Rangwani et al., 2018)</ref> ranked fourth and used an XGBoost Classifier to tackle Task A. They combined pre-trained CNN activations using DeepMoji <ref type="bibr" target="#b12">(Felbo et al., 2017)</ref> with ten types of handcrafted features. These were based on polarity contrast information, readability metrics, context incongruity, character flooding, punctuation counts, discourse markers/intensifiers/interjections/swear words counts, general token counts, WordNet similarity, polarity scores and URL counts. The fifth best system for Task A was built by <ref type="bibr">NIHRIO (Vu et al., 2018)</ref> and consists of a neural-networks-based architecture (i.e. Multilayer Perceptron). The system exploited lexical (word-and character-level unigrams, bigrams and trigrams), syntactic (PoS-tags with tfidf values), semantic features (word embeddings using GloVe <ref type="bibr" target="#b33">(Pennington et al., 2014)</ref>, LSI features and Brown cluster features <ref type="bibr" target="#b6">(Brown et al., 1992)</ref>) and polarity features derived from the Hu and Liu Opinion Lexicon <ref type="bibr" target="#b19">(Hu and Liu, 2004)</ref>.</p><p>As such, all teams in the top five approached the task differently, by exploiting various algorithms and features, but all of them clearly outperformed the baselines. Like most other teams, they also showed a better performance in terms of recall compared to precision.</p><p>Table <ref type="table" target="#tab_6">3</ref> displays the results of each team's official submission for Task A, i.e. no distinction is made between constrained and unconstrained systems. By contrast, Tables <ref type="table" target="#tab_5">4 and 5</ref> present the rankings of the best (i.e. not necessarily the last, and hence official submission) constrained and unconstrained submissions for Task A.    In the top five unconstrained (i.e. using additional training data) systems for Task A are #NonDicevoSulSerio, INAOE-UPV, RM@IT, Va-lenTO and UTMN, with F 1 scores ranging between 0.622 and 0.527. #NonDicevoSulserio extended the training corpus with 3,500 tweets from existing irony corpora (e.g. <ref type="bibr" target="#b38">Riloff et al. (2013)</ref>; <ref type="bibr" target="#b2">Barbieri and Saggion (2014)</ref>; <ref type="bibr" target="#b35">Ptáček et al. (2014)</ref> and built an SVM classifier exploiting structural features (e.g. hashtag count, text length), sentiment-(e.g. contrast between text and emoji sentiment), and emotion-based (i.e. emotion lexicon scores) features. INAOE-UPV combined pretrained word embeddings from the Google News corpus with word-based features (e.g. n-grams). They also extended the official training data with benchmark corpora previously used in irony research and trained their system with a total of 165,000 instances. RM@IT approached the task using an ensemble classifier based on attentionbased recurrent neural networks and the Fast-Text <ref type="bibr" target="#b22">(Joulin et al., 2017)</ref> library for learning word representations. They enriched the provided training corpus with, on the one hand, the data sets provided for SemEval-2015 Task 11 <ref type="bibr" target="#b15">(Ghosh et al., 2015)</ref> and, on the other hand, the sarcasm corpus composed by <ref type="bibr" target="#b35">Ptáček et al. (2014)</ref>. Altogether, this generated a training corpus of approximately 110,000 tweets. ValenTO took advantage of irony corpora previously used in irony detection that were manually annotated or through crowdsourcing (e.g. <ref type="bibr" target="#b38">Riloff et al., 2013;</ref><ref type="bibr" target="#b35">Ptáček et al., 2014)</ref>. In addition, they extended their corpus with an unspecified number of self-collected irony tweets using the hashtags #irony and #sarcasm. Finally, UTMN developed an SVM classifier exploiting binary bag-of-words features. They enriched the training set with 1,000 humorous tweets from SemEval-2017 Task 6 <ref type="bibr" target="#b34">(Potash et al., 2017)</ref> and another 1,000 tweets with positive polarity from SemEval-2016 Task 4 <ref type="bibr" target="#b30">(Nakov et al., 2016)</ref>, resulting in a training corpus of 5,834 tweets. Interestingly, when comparing the best constrained with the best unconstrained system for Task A, we see a difference of 10 points in favour of the constrained system, which indicates that adding more training data does not necessarily improve the classification performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>As can be deduced from</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Systems and Results for Task B</head><p>While 43 teams competed in Task A, 31 teams submitted a system for Task B on multiclass irony classification. Table <ref type="table" target="#tab_10">6</ref> presents the official ranking with each team's performance in terms of accuracy, precision, recall and F 1 score. Similar to Task A, we discuss the top five systems in the overall ranking (Table <ref type="table" target="#tab_10">6</ref>) and then zoom in on the best performing constrained and unconstrained systems (Tables <ref type="table" target="#tab_12">7 and 8</ref>).</p><p>For Task B, the top five is nearly similar to the top five for Task A and includes the following teams: UCDCC <ref type="bibr" target="#b14">(Ghosh, 2018)</ref>, NTUA-SLP <ref type="bibr" target="#b3">(Baziotis et al., 2018)</ref>, THU NGN <ref type="bibr" target="#b49">(Wu et al., 2018)</ref>, NLPRL-IITBHU <ref type="bibr" target="#b36">(Rangwani et al., 2018)</ref> and <ref type="bibr">NIHRIO (Vu et al., 2018)</ref>. All of the teams tackled multiclass irony classification by applying (mostly) the same architecture as for Task A (see earlier). Inspired by siamese networks <ref type="bibr" target="#b5">(Bromley et al., 1993)</ref> used in image classification, the UCDCC team developed a siamese architecture for irony detection in both subtasks. The neural network architecture makes use of Glove word embeddings as features and creates two identical subnetworks that are each fed with different parts of a tweet. Under the premise that ironic statements are often characterised by a form of opposition or contrast, the architecture captures this incongruity between two parts in an ironic tweet.  NTUA-SLP, THU NGN and NIHRIO used the same system for both subtasks. NLPRL-IITBHU also used the same architecture, but given the data skew for Task B, they used SMOTE <ref type="bibr" target="#b9">(Chawla et al., 2002)</ref> as an oversampling technique to make sure each irony class was equally represented in the training corpus, which lead to an F 1 score increase of 5 points.</p><p>NLPRL-IITBHU built a Random Forest classifier making use of pre-trained DeepMoji embeddings, character embeddings (using Tweet2Vec) and sentiment lexicon features.   As can be deduced from Table <ref type="table" target="#tab_12">7</ref>, the top five constrained systems correspond to the five bestperforming systems overall (Table <ref type="table" target="#tab_10">6</ref>). Only four unconstrained systems were submitted for Task B. Differently from their Task A submission, #NonDicevoSulSerio applied a cascaded approach for this task, i.e. the first algorithm served an ironic/non-ironic classification, followed by a system distinguishing between ironic by clash and other forms of irony. Lastly, a third classifier distinguished between situational and other verbal irony. To account for class imbalance in step two, the team added 869 tweets of the situational and other verbal irony categories. INAOE-UPV, INGEOTEC-IIMAS and IITG also added tweets to the original training corpus, but it is not entirely clear how many were added and how these extra tweets were annotated. Similar to Task A, the unconstrained systems do not seem to benefit from additional data, as they do not outperform the constrained submissions for the task.  A closer look at the best and worst-performing systems for each subtask reveals that Task A benefits from systems that exploit a variety of handcrafted features, especially sentiment-based (e.g. sentiment lexicon values, polarity contrast), but also bags of words, semantic cluster features and PoS-based features. Other promising features for the task are word embeddings trained on large Twitter corpora (e.g. 5M tweets). The classifiers and algorithms used are (bidirectional) LSTMs, Random Forest, Multilayer Perceptron, and an optimised (i.e. using feature selection) voting classifier combining Support Vector Machines with Logistic Regression. Neural networkbased systems exploiting word embeddings derived from the training dataset or generated from Wikipedia corpora perform less well for the task.</p><p>Similarly, Task B seems to benefit from (ensemble) neural-network architectures exploiting large corpus-based word embeddings and sentiment features. Oversampling and adjusting class weights are used to overcome the class imbalance of labels 2 and 3 versus 1 and 0 and tend to improve the classification performance. Ensemble classifiers outperform multi-step approaches and combined binary classifiers for this task.</p><p>Task B challenged the participants to distinguish between different types of irony. The class distributions in the training and test corpus are natural (i.e. no additional data were added after the annotation process) and imbalanced. For the evaluation of the task, F 1 scores were macro-averaged; on the one hand, this gives each label equal weight in the evaluation, but on the other hand, it does not show each class contribution to the average score. Table <ref type="table" target="#tab_15">9</ref> therefore presents the participating teams' performance on each of the subtypes of irony in Task B. As can be deduced from Table <ref type="table" target="#tab_15">9</ref>, all teams performed best on the non ironic and ironic by clash classes, while identifying situational irony and other irony seems to be much more challenging. Although the scores for these two classes are the lowest, we observe an important difference between situational and other verbal irony. This can probably be explained by the heterogeneous nature of the other category, which collects diverse realisations of verbal irony. A careful and manual annotation of this class, which is currently being conducted, should provide more detailed insights into this category of ironic tweets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusions</head><p>The systems that were submitted for both subtasks represent a variety of neural-network-based approaches (i.e. CNNs, RNNs and (bi-)LSTMs) exploiting word-and character embeddings as well as handcrafted features. Other popular classification algorithms include Support Vector Machines, Maximum Entropy, Random Forest, and Naïve Bayes. While most approaches were based on one algorithm, some participants experimented with ensemble learners (e.g. SVM + LR, CNN + bi-LSTM, stacked LSTMs), implemented a voting system or built a cascaded architecture (for Task B) that first distinguished ironic from nonironic tweets and subsequently differentiated between the fine-grained irony categories.</p><p>Among the most frequently used features are lexical features (e.g. n-grams, punctuation and hashtag counts, emoji presence) and sentimentor emotion-lexicon features (e.g. based on Sen-ticNet <ref type="bibr" target="#b7">(Cambria et al., 2016)</ref>, <ref type="bibr">VADER (Hutto and Gilbert, 2014)</ref>, aFinn <ref type="bibr" target="#b31">(Nielsen, 2011)</ref>). Also important but to a lesser extent were syntactic (e.g. PoS-patterns) and semantic features, based on word, character and emoji embeddings or semantic clusters.</p><p>The best systems for Task A and Task B obtained an F 1 score of respectively 0.705 and 0.507 and clearly outperformed the baselines provided for this task. When looking at the scores per class label in Task B, we observe that high scores were obtained for the non-ironic and ironic by clash classes, and that other irony appears to be the most challenging irony type. Among all submissions, a wide variety of preprocessing tools, machine learning libraries and lexicons were explored.</p><p>As the provided datasets were relatively small, participants were allowed to include additional training data for both subtasks. Nevertheless, most submissions were constrained (i.e. only the provided training data were used): only nine unconstrained submissions were made for Task A, and four for Task B. When comparing constrained to unconstrained systems, it can be observed that adding more training data does not necessarily benefit the classification results. A possible explanation for this is that most unconstrained systems added training data from related irony research that were annotated differently (e.g. automatically) than the distributed corpus, which presumably limited the beneficial effect of increasing the training corpus size.</p><p>This paper provides some general insights into the main methodologies and bottlenecks for binary and multiclass irony classification. We observed that, overall, systems performed much better on Task A than Task B and the classification results for the subtypes of irony indicate that ironic by clash is most easily recognised (top F 1 = 0.697), while other types of verbal irony and situational irony are much harder (top F 1 scores are 0.114 and 0.376, respectively).</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Inter-annotator agreement scores (Kappa) in two annotation rounds.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>.</figDesc><table><row><cell>class label</cell><cell># instances</cell></row><row><cell>Verbal irony by means of a polarity contrast</cell><cell>1,728</cell></row><row><cell>Other types of verbal irony</cell><cell>267</cell></row><row><cell>Situational irony</cell><cell>401</cell></row><row><cell>Non-ironic</cell><cell>604</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>Distribution of the different irony categories in the corpusBased on the annotations, 2,396 instances out of the 3,000 are ironic, while 604 are not. To balance the class distribution in our experimental corpus, 1,792 non-ironic tweets were added from a background corpus. The tweets in this corpus were collected from the same set of Twitter users as in the hashtag corpus, and within the same time span. It is important to note that these tweets do not contain irony-related hashtags (as opposed to the non-ironic tweets in the hashtag corpus), and were manually filtered from ironic tweets. Adding</figDesc><table /><note>2 According to magnitude guidelines by Landis and Koch</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4</head><label>4</label><figDesc></figDesc><table><row><cell>, when consid-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>Official (CodaLab) results for Task A, ranked by F 1 score. The highest scores in each column are shown in bold and the baselines are indicated in purple.that the UCDCC team ranks first (F 1 = 0.724), followed by THU NGN, NTUA-SLP, WLV and NLPRL-IITBHU, whose approach was discussed earlier in this paper. The UCDCC-system is an LSTM model exploiting Glove word embedding features.</figDesc><table><row><cell>team UCDCC THU NGN NTUA-SLP WLV NLPRL-IITBHU NCL RM@IT #NonDicevo-SulSerio DLUTNLP-1 ELiRF-UPV</cell><cell>acc 0.797 0.735 0.732 0.643 0.661 0.702 0.691 0.666 0.628 0.611</cell><cell>precision recall 0.788 0.669 0.724 F1 0.630 0.801 0.705 0.654 0.691 0.672 0.532 0.836 0.650 0.551 0.788 0.648 0.609 0.691 0.648 0.598 0.679 0.636 0.562 0.717 0.630 0.520 0.797 0.629 0.506 0.833 0.629</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>Best constrained systems for Task A.</figDesc><table><row><cell>team #NonDicevo-SulSerio INAOE-UPV RM@IT ValenTO UTMN IITG LDR milkstouts INGEOTEC-IIMAS</cell><cell>acc 0.679 0.651 0.649 0.598 0.603 0.556 0.571 0.584 0.643</cell><cell>precision recall 0.583 0.666 0.622 F1 0.546 0.714 0.618 0.544 0.714 0.618 0.496 0.781 0.607 0.500 0.556 0.527 0.450 0.540 0.491 0.455 0.408 0.431 0.427 0.142 0.213 0.897 0.113 0.200</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc>Best unconstrained systems for Task A.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 6 :</head><label>6</label><figDesc>Official (CodaLab) results for Task B, ranked by F 1 score. The highest scores in each column are shown in bold and the baselines are indicated in purple.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 7 :</head><label>7</label><figDesc>Best constrained systems for Task B. The highest scores in each column are shown in bold.</figDesc><table><row><cell>team #NonDicevo SulSerio INGEOTEC-IIMAS INAOE-UPV IITG</cell><cell>acc 0.545 0.647 0.495 0.486</cell><cell>precision recall 0.409 0.441 0.413 F1 0.508 0.386 0.407 0.347 0.379 0.350 0.336 0.291 0.278</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 8 :</head><label>8</label><figDesc>Unconstrained systems for Task B. The highest scores in each column are shown in bold.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 9 :</head><label>9</label><figDesc>Results for Task B, reporting the F 1 score for the class labels. The highest scores in each column are shown in bold.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">All practical information, data download links and the final results can be consulted via the CodaLab website of our task: https://competitions.codalab.org/competitions/17468.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Modelling Context with User Embeddings for Sarcasm Detection in Social Media</title>
+		<author>
+			<persName><forename type="first">Silvio</forename><surname>Amir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Byron</forename><forename type="middle">C</forename><surname>Wallace</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Lyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paula</forename><surname>Carvalho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mário</forename><forename type="middle">J</forename><surname>Silva</surname></persName>
+		</author>
+		<idno>abs/1607.00976</idno>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Contextualized Sarcasm Detection on Twitter</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Bamman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Ninth International Conference on Web and Social Media (ICWSM&apos;15)</title>
+				<meeting>the Ninth International Conference on Web and Social Media (ICWSM&apos;15)<address><addrLine>Oxford, UK. AAAI</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="574" to="577" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Modelling Irony in Twitter</title>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Barbieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Student Research Workshop at the 14th Conference of the European Chapter of the ACL</title>
+				<meeting>the Student Research Workshop at the 14th Conference of the European Chapter of the ACL<address><addrLine>Gothenburg, Sweden. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="56" to="64" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">NTUA-SLP at SemEval-2018 Task 3: Deep Character and Word-level RNNs with Attention for Irony Detection in Twitter</title>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Baziotis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolaos</forename><surname>Athanasiou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pinelopi</forename><surname>Papalampidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Athanasia</forename><surname>Kolovou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, LA, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Georgios Paraskevopoulos, Nikolaos Ellinas, and Alexandros Potamianos</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Sarcasm detection in twitter: &quot;all your products are incredibly amazing!!!&quot; -are they really?</title>
+		<author>
+			<persName><forename type="first">Mondher</forename><surname>Bouazizi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoaki</forename><surname>Ohtsuki</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Global Communications Conference</title>
+				<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1" to="6" />
+		</imprint>
+	</monogr>
+	<note>GLOBECOM 2015</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Signature verification using a &quot;siamese&quot; time delay neural network</title>
+		<author>
+			<persName><forename type="first">Jane</forename><surname>Bromley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isabelle</forename><surname>Guyon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yann</forename><surname>Lecun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Säckinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roopak</forename><surname>Shah</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Conference on Neural Information Processing Systems, NIPS&apos;93</title>
+				<meeting>the 6th International Conference on Neural Information Processing Systems, NIPS&apos;93<address><addrLine>San Francisco, CA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Morgan Kaufmann Publishers Inc</publisher>
+			<date type="published" when="1993" />
+			<biblScope unit="page" from="737" to="744" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Class-based N-gram Models of Natural Language</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Peter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><forename type="middle">V</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><forename type="middle">L</forename><surname>Desouza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><forename type="middle">J</forename><surname>Mercer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jenifer</forename><forename type="middle">C</forename><surname>Della Pietra</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="467" to="479" />
+			<date type="published" when="1992" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">SenticNet 4: A Semantic Resource for Sentiment Analysis Based on Conceptual Primitives</title>
+		<author>
+			<persName><forename type="first">Erik</forename><surname>Cambria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Soujanya</forename><surname>Poria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rajiv</forename><surname>Bajpai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bjoern</forename><surname>Schuller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2016, 26th International Conference on Computational Linguistics</title>
+				<meeting>COLING 2016, 26th International Conference on Computational Linguistics<address><addrLine>Osaka, Japan. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2666" to="2677" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Assessing Agreement on Classification Tasks: The Kappa Statistic</title>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Carletta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="249" to="254" />
+			<date type="published" when="1996" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">SMOTE: Synthetic Minority Over-sampling Technique</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Nitesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><forename type="middle">W</forename><surname>Chawla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lawrence</forename><forename type="middle">O</forename><surname>Bowyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">Philip</forename><surname>Hall</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kegelmeyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="321" to="357" />
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Semi-supervised Recognition of Sarcastic Sentences in Twitter and Amazon</title>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Davidov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Tsur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ari</forename><surname>Rappoport</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourteenth Conference on Computational Natural Language Learning (CoNLL&apos;10)</title>
+				<meeting>the Fourteenth Conference on Computational Natural Language Learning (CoNLL&apos;10)<address><addrLine>Uppsala, Sweden. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="107" to="116" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Irony detection in twitter: The role of affective content</title>
+		<author>
+			<persName><forename type="first">Delia Irazú Hernańdez</forename><surname>Farías</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Viviana</forename><surname>Patti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Transactions on Internet Technology</title>
+		<imprint>
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page">24</biblScope>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Using millions of emoji occurrences to learn any-domain representations for detecting sentiment, emotion and sarcasm</title>
+		<author>
+			<persName><forename type="first">Bjarke</forename><surname>Felbo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Mislove</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anders</forename><surname>Søgaard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iyad</forename><surname>Rahwan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sune</forename><surname>Lehmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Copenhagen, Denmark. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1615" to="1625" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Measuring nominal scale agreement among many raters</title>
+		<author>
+			<persName><forename type="first">Joseph</forename><forename type="middle">L</forename><surname>Fleiss</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Psychological Bulletin</title>
+		<imprint>
+			<biblScope unit="volume">76</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="378" to="382" />
+			<date type="published" when="1971" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">IronyMagnet at SemEval-2018 Task 3: A Siamese network for Irony detection in Social media</title>
+		<author>
+			<persName><forename type="first">Aniruddha</forename><surname>Ghosh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, LA, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">SemEval-2015 Task 11: Sentiment Analysis of Figurative Language in Twitter</title>
+		<author>
+			<persName><forename type="first">Aniruddha</forename><surname>Ghosh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guofu</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tony</forename><surname>Veale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Shutova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Barnden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Reyes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="470" to="478" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Fracking Sarcasm using Neural Network</title>
+		<author>
+			<persName><forename type="first">Aniruddha</forename><surname>Ghosh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tony</forename><surname>Veale</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis</title>
+				<meeting>the 7th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis<address><addrLine>San Diego, California. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="161" to="169" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Identifying Sarcasm in Twitter: A Closer Look</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>González-Ibáñez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Smaranda</forename><surname>Muresan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Wacholder</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the ACL: Human Language Technologies (HLT&apos;11)</title>
+				<meeting>the 49th Annual Meeting of the ACL: Human Language Technologies (HLT&apos;11)<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="581" to="586" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Crys-talNest at SemEval-2017 Task 4: Using Sarcasm Detection for Enhancing Sentiment Classification and Quantification</title>
+		<author>
+			<persName><forename type="first">Raj</forename><surname>Kumar Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yinping</forename><surname>Yang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="626" to="633" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Mining and summarizing customer reviews</title>
+		<author>
+			<persName><forename type="first">Minqing</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;04</title>
+				<meeting>the Tenth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;04<address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="168" to="177" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Clayton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Hutto</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gilbert</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Conference on Weblogs and Social Media (ICWSM-14)</title>
+				<meeting>the 8th International Conference on Weblogs and Social Media (ICWSM-14)</meeting>
+		<imprint>
+			<publisher>AAAI</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="216" to="225" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Automatic Sarcasm Detection:A Survey</title>
+		<author>
+			<persName><forename type="first">Aditya</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpak</forename><surname>Bhattacharyya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><forename type="middle">J</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Computing Surveys (CSUR)</title>
+		<imprint>
+			<biblScope unit="volume">50</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page">22</biblScope>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note>Carman</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Bag of Tricks for Efficient Text Classification</title>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Joulin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piotr</forename><surname>Bojanowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Conference of the European Chapter</title>
+				<meeting>the 15th Conference of the European Chapter<address><addrLine>Short Papers; Valencia, Spain. ACL</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="427" to="431" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Towards a Contextual Pragmatic Model to Detect Irony in Tweets</title>
+		<author>
+			<persName><forename type="first">Jihen</forename><surname>Karoui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benamara</forename><surname>Farah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Moriceau</forename><surname>Véronique</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathalie</forename><surname>Aussenac-Gilles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lamia</forename><surname>Hadrich-Belguith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China. ACL</addrLine></address></meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="644" to="650" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Signaling sarcasm: From hyperbole to hashtag</title>
+		<author>
+			<persName><forename type="first">Florian</forename><surname>Kunneman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christine</forename><surname>Liebrecht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Margot</forename><surname>Van Mulken</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antal</forename><surname>Van Den</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bosch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Information Processing Management</title>
+		<imprint>
+			<biblScope unit="volume">51</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="500" to="509" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">The measurement of observer agreement for categorical data</title>
+		<author>
+			<persName><forename type="first">J</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Landis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gary</forename><forename type="middle">G</forename><surname>Koch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Biometrics</title>
+		<imprint>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">33</biblScope>
+			<date type="published" when="1977" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">Sentiment Analysis and Opinion Mining. Synthesis Lectures on Human Language Technologies</title>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<publisher>Morgan &amp; Claypool Publishers</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Maynard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Greenwood</surname></persName>
+		</author>
+		<title level="m">Proceedings of the Ninth International Conference on Language Resources and Evaluation (LREC&apos;14)</title>
+				<meeting>the Ninth International Conference on Language Resources and Evaluation (LREC&apos;14)<address><addrLine>Reykjavik, Iceland</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Language Resources Association</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="4238" to="4243" />
+		</imprint>
+	</monogr>
+	<note>Who cares about Sarcastic Tweets? Investigating the Impact of Sarcasm on Sentiment Analysis</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Harnessing Cognitive Features for Sarcasm Detection</title>
+		<author>
+			<persName><forename type="first">Abhijit</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diptesh</forename><surname>Kanojia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seema</forename><surname>Nagar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kuntal</forename><surname>Dey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpak</forename><surname>Bhattacharyya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Berlin, Germany. ACL</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1095" to="1104" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Emotion Intensities in Tweets</title>
+		<author>
+			<persName><forename type="first">Saif</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felipe</forename><surname>Bravo-Marquez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Joint Conference on Lexical and Computational Semantics, *SEM @ACM 2017</title>
+				<meeting>the 6th Joint Conference on Lexical and Computational Semantics, *SEM @ACM 2017</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="65" to="77" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">SemEval-2016 Task 4: Sentiment Analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabrizio</forename><surname>Sebastiani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation (SemEval-2016)<address><addrLine>San Diego, California. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1" to="18" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">A new ANEW: evaluation of a word list for sentiment analysis in microblogs</title>
+		<author>
+			<persName><forename type="first">Finnårup</forename><surname>Nielsen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ESWC2011 Workshop on &apos;Making Sense of Microposts&apos;: Big things come in small packages</title>
+				<meeting>the ESWC2011 Workshop on &apos;Making Sense of Microposts&apos;: Big things come in small packages</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="volume">718</biblScope>
+			<biblScope unit="page" from="93" to="98" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Scikit-learn: Machine Learning in Python</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pedregosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Varoquaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gramfort</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Michel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Thirion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Grisel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Blondel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Prettenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Weiss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Dubourg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Vanderplas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Passos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Cournapeau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Brucher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Perrot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Duchesnay</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="2825" to="2830" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">GloVe: Global Vectors for Word Representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)<address><addrLine>Doha, Qatar. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">SemEval-2017 Task 6: #HashtagWars: Learning a Sense of Humor</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Potash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Romanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Rumshisky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017)</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation (SemEval-2017)</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="49" to="57" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Sarcasm detection on czech and english twitter</title>
+		<author>
+			<persName><forename type="first">Tomáš</forename><surname>Ptáček</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Habernal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun</forename><surname>Hong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2014, the 25th International Conference on Computational Linguistics: Technical Papers</title>
+				<meeting>COLING 2014, the 25th International Conference on Computational Linguistics: Technical Papers<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="213" to="223" />
+		</imprint>
+		<respStmt>
+			<orgName>Dublin City University and ACL</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">NLPRL-IITBHU at SemEval-2018 Task 3: Combining Linguistic Features and Emoji pre-trained CNN for Irony Detection in Tweets</title>
+		<author>
+			<persName><forename type="first">Harsh</forename><surname>Rangwani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Devang</forename><surname>Kulshreshtha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anil Kumar</forename><surname>Sing</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, LA, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<monogr>
+		<title level="m" type="main">A Multidimensional Approach for Detecting Irony in Twitter. Language Resources and Evaluation</title>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Reyes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tony</forename><surname>Veale</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">47</biblScope>
+			<biblScope unit="page" from="239" to="268" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Sarcasm as Contrast between a Positive Sentiment and Negative Situation</title>
+		<author>
+			<persName><forename type="first">Ellen</forename><surname>Riloff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashequl</forename><surname>Qadir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prafulla</forename><surname>Surve</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lalindra De</forename><surname>Silva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Gilbert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruihong</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing (EMNLP&apos;13)</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing (EMNLP&apos;13)<address><addrLine>Seattle, Washington, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="704" to="714" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">WLV at SemEval-2018 Task 3: Dissecting Tweets in Search of Irony</title>
+		<author>
+			<persName><forename type="first">Shiva</forename><surname>Omid Rohanian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Taslimipoor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mitkov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, LA, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">SemEval-2017 Task 4: Sentiment Analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noura</forename><surname>Farra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017)</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation (SemEval-2017)<address><addrLine>Vancouver, Canada. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="502" to="518" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">SemEval-2014 Task 9: Sentiment Analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="73" to="80" />
+		</imprint>
+		<respStmt>
+			<orgName>ACL and Dublin City University</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">The bicoherence theory of situational irony</title>
+		<author>
+			<persName><forename type="first">Cameron</forename><surname>Shelley</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognitive Science</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="775" to="818" />
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">BRAT: A Web-based Tool for NLPassisted Text Annotation</title>
+		<author>
+			<persName><forename type="first">Pontus</forename><surname>Stenetorp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Topić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoko</forename><surname>Ohta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sophia</forename><surname>Ananiadou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Conference of the European Chapter of the ACL, EACL&apos;12</title>
+				<meeting>the 13th Conference of the European Chapter of the ACL, EACL&apos;12<address><addrLine>Avignon, France. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="102" to="107" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<monogr>
+		<title level="m" type="main">Can machines sense irony? Exploring automatic irony detection on social media</title>
+		<author>
+			<persName><forename type="first">Cynthia</forename><surname>Van Hee</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+		<respStmt>
+			<orgName>Ghent University</orgName>
+		</respStmt>
+	</monogr>
+	<note>Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<monogr>
+		<title level="m" type="main">Guidelines for Annotating Irony in Social Media Text, version 2.0</title>
+		<author>
+			<persName><forename type="first">Cynthia</forename><surname>Van Hee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+		</author>
+		<idno>16-01</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+		<respStmt>
+			<orgName>LT3, Language and Translation Technology Team-Ghent University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Monday mornings are my fave #not: Exploring the Automatic Recognition of Irony in English tweets</title>
+		<author>
+			<persName><forename type="first">Cynthia</forename><surname>Van Hee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2016, 26th International Conference on Computational Linguistics</title>
+				<meeting>COLING 2016, 26th International Conference on Computational Linguistics<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2730" to="2739" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">NIHRIO at SemEval-2018 Task 3: A Simple and Accurate Neural Network Model for Irony Detection in Twitter</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation</title>
+				<editor>
+			<persName><forename type="first">Thanh</forename><surname>Vu</surname></persName>
+			<persName><forename type="first">Xuan-Son</forename><surname>Dat Quoc Nguyen</surname></persName>
+			<persName><surname>Vu</surname></persName>
+			<persName><forename type="first">Michael</forename><surname>Dai Quoc Nguyen</surname></persName>
+			<persName><forename type="first">Michael</forename><surname>Catt</surname></persName>
+			<persName><surname>Trenell</surname></persName>
+		</editor>
+		<meeting>the 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, LA, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Computational irony: A survey and new perspectives</title>
+		<author>
+			<persName><forename type="first">Byron</forename><forename type="middle">C</forename><surname>Wallace</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence Review</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="467" to="483" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">THU NGN at SemEval-2018 Task 3: Tweet Irony Detection with Densely Connected LSTM and Multi-task Learning</title>
+		<author>
+			<persName><forename type="first">Chuhan</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fangzhao</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sixing</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junxin</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhigang</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yongfeng</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, LA, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

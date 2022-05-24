@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Results of the Second SIGMORPHON Shared Task on Multilingual Grapheme-to-Phoneme Conversion</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Lucas</forename><forename type="middle">F E</forename><surname>Ashby</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Travis</forename><forename type="middle">M</forename><surname>Bartley</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Simon</forename><surname>Clematide</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computational Linguistics</orgName>
+								<orgName type="institution">University of Zurich</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Luca</forename><forename type="middle">Del</forename><surname>Signore</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Cameron</forename><surname>Gibson</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Kyle</forename><surname>Gorman</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yeonju</forename><surname>Lee-Sikka</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Peter</forename><surname>Makarov</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computational Linguistics</orgName>
+								<orgName type="institution">University of Zurich</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Aidan</forename><surname>Malanoski</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sean</forename><surname>Miller</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Omar</forename><surname>Ortiz</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Reuben</forename><surname>Raff</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Arundhati</forename><surname>Sengupta</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Bora</forename><surname>Seo</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yulia</forename><surname>Spektor</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Winnie</forename><surname>Yan</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Graduate Program in Linguistics</orgName>
+								<orgName type="department" key="dep2">Graduate Center</orgName>
+								<orgName type="institution">City University of New York</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Results of the Second SIGMORPHON Shared Task on Multilingual Grapheme-to-Phoneme Conversion</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Grapheme-to-phoneme conversion is an important component in many speech technologies, but until recently there were no multilingual benchmarks for this task. The second iteration of the SIGMORPHON shared task on multilingual grapheme-to-phoneme conversion features many improvements from the previous year's task (Gorman et al. 2020), including additional languages, a stronger baseline, three subtasks varying the amount of available resources, extensive quality assurance procedures, and automated error analyses. Four teams submitted a total of thirteen systems, at best achieving relative reductions of word error rate of 11% in the high-resource subtask and 4% in the low-resource subtask.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Many speech technologies demand mappings between written words and their pronunciations. In open-vocabulary systems-as well as certain resource-constrained embedded systems-it is insufficient to simply list all possible pronunciations; these mappings must generalize to rare or unseen words as well. Therefore, the mapping must be expressed as a mapping from a sequence of orthographic characters-graphemes-to a sequence of sounds-phones or phonemes. <ref type="bibr">1</ref> The earliest work on grapheme-to-phoneme conversion (G2P), as this task is known, used ordered rewrite rules. However, such systems are often brittle and the linguistic expertise needed to build, test, and maintain rule-based systems is often in short supply. Furthermore, rulebased systems are outperformed by modern neu- <ref type="bibr">1</ref> We note that referring to elements of transcriptions as phonemes implies an ontological commitment which may or may not be justified; see <ref type="bibr">Lee et al. 2020 (fn. 4</ref>) for discussion. Therefore, we use the term phone to refer to symbols used to transcribe pronunciations. ral sequence-to-sequence models (e.g., <ref type="bibr" target="#b25">Rao et al. 2015</ref><ref type="bibr" target="#b29">, Yao and Zweig 2015</ref><ref type="bibr" target="#b4">, van Esch et al. 2016</ref>.</p><p>With the possible exception of <ref type="bibr" target="#b4">van Esch et al. (2016)</ref>, who evaluate against a proprietary database of 20 languages and dialects, virtually all of the prior published research on graphemeto-phoneme conversion evaluates only on English, for which several free and low-cost pronunciation dictionaries are available. The 2020 SIGMOR-PHON Shared Task on Multilingual Grapheme-to-Phoneme Conversion <ref type="bibr" target="#b18">(Gorman et al. 2020</ref>) represented a first attempt to construct a multilingual benchmark for grapheme-to-phoneme conversion. The 2020 shared task targeted fifteen languages and received 23 submissions from nine teams. The second iteration of this shared task attempts to further refine this benchmark by introducing additional languages, a much stronger baseline model, new quality assurance procedures for the data, and automated error analysis techniques. Furthermore, in response to suggestions from participants in the 2020 shared task, the task has been divided into high-, medium-, and low-resource subtasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data</head><p>As in the previous year's shared task, all data was drawn from WikiPron <ref type="bibr" target="#b18">(Lee et al. 2020)</ref>, a massively multilingual pronunciation database extracted from the online dictionary Wiktionary. Depending on the language and script, Wiktionary pronunciations are either manually entered by human volunteers working from language-specific pronunciation guidelines and/or generated from the graphemic form via language-specific serverside scripting.</p><p>WikiPron scrapes these pronunciatons from Wiktionary, optionally applying case-folding to the graphemic form, removing any stress and syllable boundaries, and segmenting the pronunciation-encoded in the Interna-tional Phonetic Alphabet-using the Python library segments <ref type="bibr" target="#b22">(Moran and Cysouw 2018)</ref>. In all, 21 WikiPron languages were selected for the three subtasks, including seven new languages and fourteen of the fifteen languages used in the 2020 shared task. <ref type="bibr">2</ref> In several cases, multiple scripts or dialects are available for a given language. For instance, WikiPron has both Latin and Cyrillic entries for Serbo-Croatian, and three different dialects of Vietnamese. In such case, the largest data set of the available scripts and/or dialects is chosen. Furthermore, WikiPron distinguishes between "broad" transcriptions delimited by forward slash (/) and "narrow" transcriptions delimited by square brackets <ref type="bibr">([ and ]</ref>). 3 Once again, the larger of the two data sets is the one used for this task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Quality assurance</head><p>During the previous year's shared task we became aware of several consistency issues with the shared task data. This lead us to develop quality assurance procedures for WikiPron and the "upstream" Wiktionary data. For a few languages, we worked with Wiktionary editors who automatically enforced upstream consistency via "bots", i.e., scripts which automatically edit Wiktionary entries. We also improved WikiPron's routines for extracting pronunciation data from Wiktionary. In some cases (e.g., Vietnamese), this required the creation of language-specific extraction routines.</p><p>In early versions of WikiPron, users had limited means to separate out entries for languages written in multiple scripts. We therefore added an automated script detection system which ensures that entries for the many languages written with multiple scripts-including shared task languages Maltese, Japanese, and Serbo-Croatian-are sorted according to script.</p><p>We noticed that the WikiPron data includes many hyper-foreign pronunciations with nonnative phones. For example, the English data includes a broad pronunciation of Bach (the surname of a family of composers) as /bɑːx/ with a velar fricative /x/, a segment which is common in German but absent in modern English. Furthermore, unexpected phones may represent simple human error. Therefore, we wished to exclude pronunciations which include any nonnative segments. This was accomplished by creating phonelists which enumerate native phones for a given language. Separate phonelists may be provided for broad and narrow transcriptions of the same language. During data ingestion, if a pronunciation contains any segment not present on the phonelist, the entry was discarded. Phonelist filtration was used for all languages in the medium-and low-resource subtasks, described below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Task definition</head><p>In this task, participants were provided with a collection of words and their pronunciations, and then scored on their ability to predict the pronunciation of a set of unseen words.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Subtasks</head><p>In the previous year's shared task, each language's data consisted of 4,500 examples, sampled from WikiPron, split randomly into 80% training examples, 10% development examples, and 10% test examples. As part of their system development, two teams in the 2020 shared task <ref type="bibr">(Hauer et al. 2020</ref><ref type="bibr" target="#b30">, Yu et al. 2020</ref>) down-sampled these data to simulate a lower-resource setting, and one participant expressed concern whether the methods used in the shared task would generalize effectively to high-resource scenarios like the large English data sets traditionally used to evaluate graphemeto-phoneme systems. This motivated a division of the data into three subtasks, varying the amount of data provided, as described below. 4</p><p>High-resource subtask The first subtask consists of a roughly 41,000-word sample of Mainstream American English (eng_us). Participating teams were permitted to use any and all external resources to develop their systems except for Wiktionary or WikiPron. It was anticipated participants would exploit other freely available American English pronunciation dictionaries.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Medium-resource subtask</head><p>The second subtask represents a medium-resource task. For each of the ten target languages, a sample of 10,000 words was used. Teams participating in this subtask were permitted to use UniMorph paradigms <ref type="bibr" target="#b17">(Kirov et al. 2018)</ref> to lemmatize or to look up morphological features, but were not permitted to use any other external resources. The languages for this subtask are listed and exemplified in Table <ref type="table" target="#tab_0">1</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Low-resource subtask</head><p>The third subtask is designed to simulate a low-resource setting and consists of 1,000 words from ten languages. Teams were were not permitted to use any external resources for this subtask. The languages for this subtask are shown in Table <ref type="table" target="#tab_1">2</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Data preparation</head><p>The procedures for sampling and splitting the data are similar to those used in the previous year's shared task; see <ref type="bibr">Gorman et al. 2020, §3</ref>. For each of the three subtasks, the data for each language are first randomly downsampled according to their frequencies in the Wortschatz <ref type="bibr" target="#b6">(Goldhahn et al. 2012)</ref> norms. Words containing less than two Unicode characters or less than two phone segments are excluded, as are words with multiple pronunciations. The resulting data are randomly split into 80% training data, 10% development data, and 10% test data. As in the previous year's shared task, these splits are constrained so that inflectional variants of any given lemma-according to the UniMorph <ref type="bibr" target="#b17">(Kirov et al. 2018</ref>) paradigmscan occur in at most one of the three shards. Training and development data was made available at the start of the task. The test words were also made available at the start of the task; test pronunciations were withheld until the end of the task. Some additional processing is required for certain languages, as described below.</p><p>English The Wiktionary American English pronunciations exhibit a large number of inconsistencies. These pronunciations were validated by automatically comparing them with entries in the CALLHOME American English Lexicon <ref type="bibr" target="#b16">(Kingsbury et al. 1997)</ref>, which provides broad ARPAbet transcriptions of Mainstream American English. Furthermore, a script was used to standardize use of vowel length and enforce consistent use of tie bars with affricates (e.g., /tʃ/ → /t ͡ ʃ/). However, we note that <ref type="bibr">Gautam et al. (2021:</ref> §2.1) report several residual quality issues with this data.</p><p>Bulgarian Bulgarian Wiktionary transcriptions make inconsistent use of tie bars on affricates; for example, ц is transcribed as both /ts, t ͡ s/. Furthermore, the broad transcriptions sometimes contain allophones of the consonants /t, d, l/ <ref type="bibr" target="#b27">(Ternes and Vladimirova-Buhtz 1990</ref>); e.g., л is transcribed as both /l, ɫ/. A script was used to enforce a consistent broad transcription.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Maltese</head><p>In the Latin-script Maltese data, Wiktionary has multiple transcriptions of digraph għ, which in the contemporary language indicates lengthening of an adjacent vowel, except word-finally where it is read as [ħ] <ref type="bibr">(Hoberman 2007:278f.)</ref>. Rather than excluding multiple pronunciations, a script was used to eliminate pronunciations which contain archaic readings of this digraph, e.g., as pharyngealization or as <ref type="bibr">[ɣ]</ref>. Welsh WikiPron's transcriptions of the Southern dialect of Welsh include the effects of variable processes of monophthongization and deletion <ref type="bibr">(Hannahs 2013:18-25)</ref>. Once again, rather than excluding multiple pronunciations, a script was used to select the "longer" pronunciationnaturally, the pronunciation without variable monophthongization or deletion-of Welsh words with multiple pronunciations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation</head><p>The primary metric for this task was word error rate (WER), the percentage of words for which the hypothesized transcription sequence is not identical to the gold reference transcription. As the medium-and low-resource subtasks involve multiple languages, macro-averaged WER was used for system ranking. Participants were provided with two evaluation scripts: one which computes WER for a single language, and one which also computes macro-averaged WER across two or more languages. The 2020 shared task also reported another metric, phone error rate (PER), but this was found to be highly correlated with WER and therefore has been omitted here.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Baseline</head><p>The 2020 shared task included three baselines: a WFST-based pair n-gram model, a bidirectional LSTM encoder-decoder network, and a transformer. All models were tuned to minimize perlanguage development-set WER using a limitedbudget grid search. Best results overall were obtained by the bidirectional LSTM. Despite the extensive GPU resources required to execute a   per-language grid search, the best baseline was handily outperformed by nearly all submissions. This led us to seek a simpler, stronger, and less computationally-demanding baseline for this year's shared task.</p><p>The baseline for the 2021 shared task is a neural transducer system using an imitation learning paradigm <ref type="bibr" target="#b20">(Makarov and Clematide 2018)</ref>. A variant of this system (Makarov and Clematide 2020) was the second-best system in the 2020 shared task. <ref type="bibr">5</ref> Alignments are computed using ten iterations of expectation maximization, and the imitation learning policy is trained for up to sixty epochs (with a patience of twelve) using the Adadelta optimizer. A beam of size of four is used for prediction. Final predictions are produced by a majority-vote ten-component ensemble. Internal processing is performed using the decomposed Unicode normalization form (NFD), but pre-dictions are converted back to the composed form (NFC). An implementation of the baseline was provided during the task and participating teams were encouraged to adapt it for their submissions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Submissions</head><p>Below we provide brief descriptions of submissions to the shared task; more detailed descriptions-as well as various exploratory analyses and post-submission experiments-can be found in the system papers later in this volume. Finally, the AZ model is trained simultaneously on all languages, a method used in some of the previous year's shared task submissions (e.g., <ref type="bibr" target="#b24">Peters and</ref><ref type="bibr">Martins 2020, Vesik et al. 2020)</ref>.</p><p>CLUZH <ref type="bibr" target="#b0">Clematide and Makarov (2021)</ref> produced four submissions to the medium-resource subtask and three to the low-resource subtask. All seven submissions are variations on the imitation learning baseline model (section 6). They experiment with processing individual IPA Unicode characters instead of entire IPA "segments" (e.g., CLUZH-1, CLUZH-5, and CLUZH-6), and larger ensembles (e.g., CLUZH-3). They also experiment with input dropout, mogrifier LSTMs, and adaptive batch sizes, among other features.</p><p>Dialpad <ref type="bibr">Gautam et al. (2021)</ref> produced three systems to the high-resource subtask.</p><p>The Dialpad-1 submission is a large ensemble of seven different sequence models. Dialpad-2 is a smaller ensemble of three models. Dialpad-3 is a single transformer model implemented as part of CMU Sphinx. Gautam et al. also experiment with subword modeling techniques. UBC Lo and Nicolai (2021) submitted two systems for the low-resource subtask, both variations on the baseline model. The UBC-1 submission hypothesizes that, as previously reported by <ref type="bibr" target="#b4">van Esch et al. (2016)</ref>, inserting explicit syllable boundaries into the phone sequences enhances grapheme-tophoneme performance. They generate syllable boundaries using an automated onset maximization heuristic. The UBC-2 submission takes a different approach: it assigns additional languagespecific penalties for mis-predicted vowels and diacritic characters such as the length mark /ː/.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Results</head><p>Multiple submissions to the high-and lowresource subtasks outperformed the baseline; however, no submission to the medium-resource subtask exceeded the baseline. The best results for each language are shown in Table <ref type="table" target="#tab_3">3</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.1">Subtasks</head><p>High-resource subtask The Dialpad team submitted three systems for the high-resource subtask, all of which outperformed the baseline. Results for this subtask are shown in Table <ref type="table" target="#tab_4">4</ref>. The best submission overall, Dialpad-1, a seven-component ensemble, achieved an impressive 4.5% absolute (11% relative) reduction in WER over the baseline.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Medium-resource subtask</head><p>The CLUZH team submitted four systems for the medium-resource subtask. All of of these systems are variants of the baseline model. The results are shown in Table <ref type="table" target="#tab_6">5</ref>; note that the individual language results are expressed as three-digit percentages since there are 1,000 test examples each. While several of the CLUZH systems outperform the baseline on individual languages, including Armenian, French, Hungarian, Japanese, Korean, and Vietnamese, the baseline achieves the best macro-accuracy.</p><p>Low-resource subtask Three teams-AZ, CLUZH, and UBC-submitted a total of six systems to the low-resource subtask. Results for this subtask are shown in Table <ref type="table" target="#tab_7">6</ref>; note that the results are expressed as two-digit percentages since there are 100 test examples for each language. Three submissions outperformed the baseline. The best-performing submission was UBC-2, an adaptation of the baseline which assigns higher penalties for mis-predicted vowels and diacritic characters. It achieved a 1.0% absolute (4% relative) reduction in WER over the baseline.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.2">Error analysis</head><p>Error analysis can help identify strengths and weaknesses of existing models, suggesting future improvements and guiding the construction of ensemble models. Prior experience using gold crowd-sourced data extracted from Wiktionary suggests that a non-trivial portion of errors made by top systems are due to errors in the gold data itself. For example, <ref type="bibr" target="#b9">Gorman et al. (2019)</ref> report that a substantial portion of the prediction errors made by the top two systems in the 2017 CoNLL-SIGMORPHON Shared Task on Morphological Reinflection <ref type="bibr" target="#b1">(Cotterell et al. 2017</ref>) are due to target errors, i.e., errors in the gold data. Therefore we conducted an automatic error analysis for four target languages. It was hoped that this analysis would also help identify (and quantify) target errors in the test data.</p><p>Two forms of error analysis were employed here. First, after <ref type="bibr" target="#b21">Makarov and Clematide (2020)</ref>, the most frequent error types in each language are shown in Table <ref type="table" target="#tab_8">7</ref>. From this table it is clear that many errors can be attributed either to the ambiguity of a language's writing system. For example, in both Serbo-Croatian and Slovenian the most common errors involve the confusion or omission of suprasegmental information such as pitch accent and vowel length, neither of which are represented in the orthography. Likewise, in French and Italian the most frequent errors confuse vowel sounds   represented by the same graphemes. Many errors may also be attributable to problems with the target data. For example, the two most frequent errors for English are predicting</p><formula xml:id="formula_0">[ɪ] instead of [ә], and predicting [ɑ] instead of [ɔ].</formula><p>Impressionistically, the former is due in part to inconsistent transcription of the -ed and -es suffixes, whereas the latter may reflect inconsistent transcription of the low back merger.</p><p>The second error analysis technique used here is an adaptation of a quality assurance technique proposed by <ref type="bibr" target="#b15">Jansche (2014)</ref>. For each language targeted by the error analysis, a finite-state covering grammar is constructed by manually listing all pairs of permissible grapheme-phone mappings for that language. Let C be the set of all such g, p pairs. Then, the covering grammar γ is the rational relation given by the closure over C, thus γ = C * . Covering grammars were constructed for three medium-resource languages and four of the low-resource languages. A fragment of the Bulgarian covering grammar, showing readings of the characters б, ф, and ю, is presented in Table <ref type="table" target="#tab_9">8</ref>. <ref type="bibr">6</ref> Let G be the graphemic form of a word and let P andP be the corresponding gold and hypothesis pronunciations for that word. For error analysis we are naturally interested in cases where P ̸ =P, i.e., those cases where the gold and hypothesis pronunciations do not match, since these are exactly the cases which contribute to word error rate. Then, P = π o (G • γ) is a finite-state lattice representing the set of all "possible" pronunciations of G admitted by the covering grammar.</p><p>When P ̸ =P but P ∈ P-that is, when   the gold pronunciation is one of the possible pronunciations-we refer to such errors as model deficiencies, since this condition suggests that the system in question has failed to guess one of several possible pronunciations of the current word. In many cases this reflects genuine ambiguities in the orthography itself. For example, in Italian, e is used to write both the phonemes /e, ɛ/ and o is similarly read as /o, ɔ/ <ref type="bibr" target="#b26">(Rogers and d'Arcangeli 2004)</ref>. There are few if any orthographic clues to which mid-vowel phoneme is intended, and all submissions incorrectly predicted that the o in nome 'name' is read as [ɔ] rather than <ref type="bibr">[o]</ref>. Similar issues arise in Icelandic and French. The preceding examples both represent global ambiguities, but model deficiencies may also occur when the system has failed to disambiguate a local ambiguity. One example of this can be found in French: the verbal third-person plural suffix -ent is silent whereas the non-suffixal word-final ent is normally read as <ref type="bibr">[ɑ]</ref>. Morphological information was not provided to the covering grammar, but it could easily be exploited by grapheme-tophoneme models.</p><p>Another condition of interest is when P ̸ =P but P / ∈ P. We refer to such errors as coverage deficiencies, since they arise when the gold pronunciation is not one permitted by the covering grammar. While coverage deficiencies may result from actual deficiencies in the covering grammar itself, they more often arise when a word does not follow the normal orthographic principles of its language. For instance, Italian has borrowed the English loanword weekend    WER and model deficiency rate (MDR) is shown for select systems and three languages from the medium-resource subtask in Table <ref type="table" target="#tab_11">9</ref>, and Table <ref type="table" target="#tab_0">10</ref> shows similar statistics for four lowresource languages. Note that by construction, one can obtain the coverage deficiency rate simply by subtracting MDR from WER. By comparing WER and MDR one can see the overwhelming majority of errors in these seven languages are model deficiencies, most naturally arising from genuine ambiguities in orthography rather than target errors (i.e., data inconsistencies).</p><formula xml:id="formula_1">•t 3 geo hbs_latn _ ː 85 ː _ 76 _ ◌̌55 ◌̌◌̂53 ◌̌_ 52 hun _ ː 6 h ɦ 3 ʃ s 2 ː _ 2 jpn_hira _ ◌̥ 20 _ ◌ 11 _ d ͡ 4 ː •ɯ ̟ ᵝ 3 h ɰᵝ 3 kor _ ː 73 ː _ 28 ʌ̹ ɘː 23 ʰ ◌͈ 9 ɘː ʌ̹ 6 vie_hanoi _ w• 3 _ ˧ 3 _ w•ŋ ͡ m• 2 ◌ ͡ ɕ •ɹ 2 _ ʔ• 2 ady ʼ _ 3 ː _ 3 ʃ ʂ 3 ə• _ 2 a ә 2 gre ɾ r 8 r ɾ 3 i ʝ 3 m• _ 2 ɣ ɡ 2 ice ː _ 2 ◌̥ _ 2 _ ː 2 ita o ɔ 6 e ɛ 5 j i 3 ◌ ͡ • 2 ɔ o 2 khm aː i•ә 3 _ ʰ 3 _ •ɑː 2 ĕ ɔ 2 ɑ a 2 lav ◌̄◌̂11 _ ◌̂10 ◌̀_ 9 ◌̄_ 7 _ ◌̀4 mlt_latn _ ː 5 _ ɪ• 2 ɐ a 2 b p 2 a ɐ 2 rum ◌ ͡ • 2 slv ◌́◌̀7 ◌̀ː _ 6 ◌́ː _ 6 _ ◌́ː 5 ɛ éː 4 wel_sw ɪ iː 3 ɪ i̯ 2 _ ɛ• 2</formula><p>To facilitate ensemble construction and further error analysis, we release all submissions' test set predictions to the research community. 7</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Discussion</head><p>We once again see an enormous difference in language difficulty. One of the languages with the highest amount of data, English, also has one of the highest WERs. In contrast, the baseline and all four submissions to the medium-resource subtask achieve perfect performance on Georgian. This is a substantial change from the previous year's shared task: with a sample roughly half the size of this year's task, the best system <ref type="bibr" target="#b30">(Yu et al. 2020)</ref>    2020:47). This enormous improvement likely reflects quality assurance work on this language, 8 but we did not anticipate reaching ceiling performance. Insofar as the above quality assurance and error analysis techniques prove effective and generalizable, we may soon be able to ask what makes a language hard to pronounce (cf. <ref type="bibr">Gorman et al. 2020:45f.)</ref>.</p><p>As mentioned above, the data here are a mixture of broad and narrow transcriptions. At first glance, this might explain some of the variation in language difficulty; for example, it is easy to imagine that the additional details in narrow transcriptions make them more difficult to predict. However, for many languages, only one of the two levels of transcription is available at scale, and other languages, divergence between broad and narrow transcriptions is impressionistically quite minor. However, this impression ought to be quantified.</p><p>While we responded to community demand for lower-and higher-resource subtasks, only one team submitted to the high-and medium-resource subtasks, respectively. It was surprising that none of the medium-resource submissions were able to consistently outperform the baseline model across the ten target languages. Clearly, this year's baseline is much stronger than the previous year's.</p><p>Participants in the high-and medium-resource subtasks were permitted to make use of lemmas and morphological tags from UniMorph as additional features. However, no team made use of 8 https://github.com/CUNY-CL/wikipron/ issues/138 resources. Some prior work (e.g., <ref type="bibr" target="#b3">Demberg et al. 2007</ref>) has found morphological tags highly useful, and error analysis ( §8.2) suggests this information would make an impact in French.</p><p>There is a large performance gap between the medium-resource and low-resource subtasks. For instance, the baseline achieves a WER of 10.6 in the medium-resource scenario and a WER of 25.1 in the low-resource scenario. It seems that current models are unable to reach peak performance with the 800 training examples provided in the lowresource subtask. Further work is needed to develop more efficient models and data augmentation strategies for low-resource scenarios. In our opinion, this scenario is the most important one for speech technology, since speech resourcesincluding pronunciation data-are scarce for the vast majority of the world's written languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="10">Conclusions</head><p>The second iteration of the shared task on multilingual grapheme-to-phoneme conversion features many improvements on the previous year's task, most of all data quality. Four teams submitted thirteen systems, achieving substantial reductions in both absolute and relative error over the baseline in two of three subtasks. We hope the code and data, released under permissive licenses, 9 will be used to benchmark grapheme-to-phoneme conversion and sequence-to-sequence modeling techniques more generally.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>Armenian (Eastern) arm_e համադրություն h ɑ m ɑ d ә ɾ u tʰ j u n Bulgarian bul обоснованият o̝ b o̝ s n o v a n i j ә t̪ Dutch dut konijn k oː n ɛ i̯ n French fre joindre ʒ w ɛ̃d ʁG eorgian geo მოუქნელად m ɔ u kʰ n ɛ l ɑ d Serbo-Croatian (Latin) hbs_latn opadati o p ǎː d a t i Hungarian hun lobog l o b o ɡ Japanese (Hiragana) jpn_hira ぜんたいしゅぎ d ͡ z ẽ̞ n t a̠ i ɕ ɨᵝ ɡʲ i Korean kor 쇠가마우지 sʰ w e̞ ɡ a̠ m a̠ u d ͡ ʑ i Vietnamese (Hanoi) vie_hanoi ngừng bắn ŋ ɨ ŋ ˨˩ ʔ ɓ a n ˧˦</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>AZ</head><label></label><figDesc><ref type="bibr" target="#b11">Hammond (2021)</ref> produced a single submission to the low-resource subtask. The model is inspired by the previous year's bidirectional LSTM baseline but also employs several data augmentation strategies. First, much of the development data is used for training rather than for validation. Secondly, new training examples are generated using substrings of other training examples.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head></head><label></label><figDesc>[wikɛnd] 'id.' but has not yet adapted it to Italian orthographic principles. Finally, coverage deficiencies may indicate target errors, inconsistencies in the gold data itself. For example, in the Italian data, the tie bars used to indi-eng_us ɪ ә 113 ɑ ɔ 112 _ ʊ• 96 _ ɪ• 85 ɪ i 76 arm_e _ ә• 16 ә• _ 10 tʰ d</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>The ten languages in the medium-resource subtask with language codes and example training data pairs.</figDesc><table><row><cell>Adyghe</cell><cell>ady</cell><cell cols="2">кӏэшӏыхьан t ͡ ʃʼ a ʃʼ ә ħ aː n</cell></row><row><cell>Greek</cell><cell>gre</cell><cell>λέγεται</cell><cell>l e ʝ e t e</cell></row><row><cell>Icelandic</cell><cell>ice</cell><cell>maður</cell><cell>m aː ð ʏ r</cell></row><row><cell>Italian</cell><cell>ita</cell><cell>marito</cell><cell>m a r i t o</cell></row><row><cell>Khmer</cell><cell>khm</cell><cell>្របហារ</cell><cell>p r ɑ h aː</cell></row><row><cell>Latvian</cell><cell>lav</cell><cell>mīksts</cell><cell>m îː k s t s</cell></row><row><cell>Maltese (Latin)</cell><cell>mlt_latn</cell><cell>minna</cell><cell>m ɪ n n a</cell></row><row><cell>Romanian</cell><cell>rum</cell><cell>ierburi</cell><cell>j e r b u rʲ</cell></row><row><cell>Slovenian</cell><cell>slv</cell><cell>oprostite</cell><cell>ɔ p r ɔ s t íː t ɛ</cell></row><row><cell cols="2">Welsh (Southwest) wel_sw</cell><cell>gorff</cell><cell>ɡ ɔ r f</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>The ten languages in the low-resource subtask with language codes and example training data pairs.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Baseline WER, and the best submission(s) and their WER, for each language.</figDesc><table><row><cell></cell><cell cols="4">Baseline Dialpad-1 Dialpad-2 Dialpad-3</cell></row><row><cell>eng_us</cell><cell>41.94</cell><cell>37.43</cell><cell>41.72</cell><cell>41.58</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Results for the high-resource (US English) subtask.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 5 :</head><label>5</label><figDesc>Results for the medium-resource subtask.</figDesc><table><row><cell></cell><cell>Baseline</cell><cell cols="6">AZ CLUZH-1 CLUZH-2 CLUZH-3 UBC-1 UBC-2</cell></row><row><cell>ady</cell><cell>22</cell><cell>30</cell><cell>24</cell><cell>22</cell><cell>22</cell><cell>25</cell><cell>22</cell></row><row><cell>gre</cell><cell>21</cell><cell>23</cell><cell>20</cell><cell>22</cell><cell>20</cell><cell>22</cell><cell>22</cell></row><row><cell>ice</cell><cell>12</cell><cell>22</cell><cell>10</cell><cell>12</cell><cell>10</cell><cell>13</cell><cell>11</cell></row><row><cell>ita</cell><cell>19</cell><cell>25</cell><cell>23</cell><cell>24</cell><cell>21</cell><cell>20</cell><cell>22</cell></row><row><cell>khm</cell><cell>34</cell><cell>42</cell><cell>32</cell><cell>33</cell><cell>32</cell><cell>31</cell><cell>28</cell></row><row><cell>lav</cell><cell>55</cell><cell>53</cell><cell>53</cell><cell>49</cell><cell>49</cell><cell>58</cell><cell>49</cell></row><row><cell>mlt_latn</cell><cell>19</cell><cell>19</cell><cell>12</cell><cell>16</cell><cell>14</cell><cell>19</cell><cell>18</cell></row><row><cell>rum</cell><cell>10</cell><cell>13</cell><cell>13</cell><cell>13</cell><cell>12</cell><cell>14</cell><cell>10</cell></row><row><cell>slv</cell><cell>49</cell><cell>90</cell><cell>50</cell><cell>59</cell><cell>55</cell><cell>56</cell><cell>47</cell></row><row><cell>wel_sw</cell><cell>10</cell><cell>40</cell><cell>10</cell><cell>13</cell><cell>12</cell><cell>13</cell><cell>12</cell></row><row><cell>Macro-average</cell><cell cols="2">25.1 35.7</cell><cell>24.7</cell><cell>26.3</cell><cell>24.7</cell><cell>27.1</cell><cell>24.1</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 6 :</head><label>6</label><figDesc>Results for the low-resource subtask.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 7 :</head><label>7</label><figDesc>The five most frequent error types, represented by the hypothesis string, gold string, and count, for each language; • indicates whitespace and _ the empty string.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 8 :</head><label>8</label><figDesc>Fragment of a covering grammar for Bulgarian; the left column contains graphemes and corresponding phones are given in the right column. cate affricates are not always present, and many apparent errors are the result of gold pronunciations which omit a tie bar.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 9 :</head><label>9</label><figDesc>WER and model deficiency rate (MDR) for three languages from the medium-resource subtask.</figDesc><table><row><cell></cell><cell>Baseline</cell><cell></cell><cell>AZ</cell><cell></cell><cell cols="2">CLUZH-1</cell><cell>UBC-2</cell><cell></cell></row><row><cell></cell><cell cols="2">WER MDR</cell><cell cols="2">WER MDR</cell><cell cols="2">WER MDR</cell><cell cols="2">WER MDR</cell></row><row><cell>ady</cell><cell>22</cell><cell>22</cell><cell>30</cell><cell>23</cell><cell>24</cell><cell>21</cell><cell>22</cell><cell>22</cell></row><row><cell>gre</cell><cell>21</cell><cell>18</cell><cell>23</cell><cell>19</cell><cell>20</cell><cell>17</cell><cell>22</cell><cell>21</cell></row><row><cell>ice</cell><cell>12</cell><cell>9</cell><cell>22</cell><cell>17</cell><cell>10</cell><cell>7</cell><cell>11</cell><cell>5</cell></row><row><cell>ita</cell><cell>19</cell><cell>15</cell><cell>25</cell><cell>19</cell><cell>23</cell><cell>16</cell><cell>22</cell><cell>19</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 10 :</head><label>10</label><figDesc>WER and model deficiency rate (MDR) for four languages from the low-resource subtask.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">The fifteenth language, Lithuanian, was omitted due to unresolved quality assurance issues.3 Sorting by script, dialect, and broad vs. narrow transcription is performed automatically during data ingestion.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">Languages were sorted into medium-vs. low-resource subtasks according to data availability. For example, Icelandic was placed in the low-resource shared task simply because it has less than 10,000 pronunciations available.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">The baseline was implemented using the DyNet neural network toolkit(Neubig et al. 2017). In contrast to the previous year's baseline, the imitation learning system does not require a GPU for efficient training; it runs effectively on CPU and can exploit multiple CPU cores if present. Training, ensembling, and evaluation for all three subtasks took roughly 72 hours of wall-clock time on a commodity desktop PC.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">Error analysis software was implemented using the Pynini finite-state toolkit<ref type="bibr" target="#b7">(Gorman 2016)</ref>. SeeGorman and  Sproat 2021, ch. 3, for definitions of the various finite-state operations used here.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">https://drive.google.com/drive/folders/ 1Fer7UfHBnt5k-WFHsVXQO8ac3BvREAyC</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">https://github.com/sigmorphon/2021-task1/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We thank the Wiktionary contributors, particularly Aryaman Arora, without whom this shared task would be impossible. We also thank contributors to WikiPron, especially Sasha Gutkin, Jackson Lee, and the participants of Hacktoberfest 2020. Finally, thank you to Andrew Kirby for lastminute copy editing assistance.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">CLUZH at SIGMORPHON 2021 Shared Task on Multilingual Grapheme-to-Phoneme Conversion: variations on a baseline</title>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Clematide</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Makarov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th SIG-MORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 18th SIG-MORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">CoNLL-SIGMORPHON 2017 shared task: universal morphological reinflection in 52 languages</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL SIGMORPHON 2017</title>
+				<meeting>the CoNLL SIGMORPHON 2017</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note>Jason Eisner, and Mans Hulden</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">Shared Task: Universal Morphological Reinflection</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="30" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Phonological constraints and morphological preprocessing for grapheme-to-phoneme conversion</title>
+		<author>
+			<persName><forename type="first">Vera</forename><surname>Demberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Helmut</forename><surname>Schmid</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gregor</forename><surname>Möhler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 45th Annual Meeting of the Association of Computational Linguistics</title>
+				<meeting>the 45th Annual Meeting of the Association of Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="96" to="103" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Predicting pronunciations with syllabification and stress with recurrent neural networks</title>
+		<author>
+			<persName><forename type="first">Mason</forename><surname>Daan Van Esch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kanishka</forename><surname>Chua</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Rao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">INTER-SPEECH 2016: 17th Annual Conference of the International Speech Communication Association</title>
+				<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2841" to="2845" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">2021. Avengers, ensemble! Benefits of ensembling in grapheme-tophoneme prediction</title>
+		<author>
+			<persName><forename type="first">Vasundhara</forename><surname>Gautam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wang</forename><forename type="middle">Yau</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zafarullah</forename><surname>Mahmood</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frederic</forename><surname>Mailhot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shreekantha</forename><surname>Nadig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Riqiang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 18th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Building large monolingual dictionaries at the Leipzig Corpora Collection: from 100 to 200 languages</title>
+		<author>
+			<persName><forename type="first">Dirk</forename><surname>Goldhahn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Eckart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Uwe</forename><surname>Quasthoff</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth International Conference on Language Resources and Evaluation</title>
+				<meeting>the Eighth International Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="759" to="765" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Pynini: a Python library for weighted finite-state grammar compilation</title>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Gorman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the SIGFSM Workshop on Statistical NLP and Weighted Automata</title>
+				<meeting>the SIGFSM Workshop on Statistical NLP and Weighted Automata</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="75" to="80" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">2020. The SIGMOR-PHON 2020 shared task on multilingual graphemeto-phoneme conversion</title>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Gorman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">E</forename><surname>Lucas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aaron</forename><surname>Ashby</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shijie</forename><surname>Goyzueta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>You</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<biblScope unit="page" from="40" to="50" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Weird inflects but OK: making sense of morphological generation errors</title>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Gorman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Magdalena</forename><surname>Markowska</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd Conference on Computational Natural Language Learning</title>
+				<meeting>the 23rd Conference on Computational Natural Language Learning</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="140" to="151" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">2021. Finite-State Text Processing</title>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Gorman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Sproat</surname></persName>
+		</author>
+		<imprint>
+			<publisher>Morgan &amp; Claypool</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Data augmentation for lowresource grapheme-to-phoneme mapping</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Hammond</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 18th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">The Phonology of Welsh</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">J</forename><surname>Hannahs</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+			<publisher>Oxford University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Arnob Mallik, and Grzegorz Kondrak. 2020. Lowresource G2P and P2G conversion with synthetic training data</title>
+		<author>
+			<persName><forename type="first">Bradley</forename><surname>Hauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmad</forename><surname>Amir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yixing</forename><surname>Habibi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Luan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMOR-PHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMOR-PHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<biblScope unit="page" from="117" to="122" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Maltese morphology</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Hoberman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Morphologies of Asia and Africa</title>
+				<editor>
+			<persName><forename type="first">Alan</forename><forename type="middle">S</forename><surname>Kaye</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Eisenbrauns</publisher>
+			<date type="published" when="2007" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="257" to="282" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Computer-aided quality assurance of an Icelandic pronunciation dictionary</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Jansche</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Ninth International Conference on Language Resources and Evaluation</title>
+				<meeting>the Ninth International Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="2111" to="2114" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Kingsbury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephanie</forename><surname>Strassel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cynthia</forename><surname>Mclemore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Macintyre</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+		<respStmt>
+			<orgName>CALL-HOME American English Lexicon (PRONLEX</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">UniMorph 2.0: universal morphology</title>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th Language Resources and Evaluation Conference</title>
+				<meeting>the 11th Language Resources and Evaluation Conference</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1868" to="1873" />
+		</imprint>
+	</monogr>
+	<note>Jason Eisner, and Mans Hulden</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Massively multilingual pronunciation mining with WikiPron</title>
+		<author>
+			<persName><forename type="first">Jackson</forename><forename type="middle">L</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">E</forename><surname>Lucas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">Elizabeth</forename><surname>Ashby</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yeonju</forename><surname>Garza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sean</forename><surname>Lee-Sikka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Miller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Wong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gorman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th Language Resources and Evaluation Conference</title>
+				<meeting>the 12th Language Resources and Evaluation Conference</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="4216" to="4221" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Linguistic knowledge in multilingual grapheme-tophoneme conversion</title>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">-Hsiang</forename><surname>Lo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Nicolai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 18th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Imitation learning for neural morphological string transduction</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Makarov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Clematide</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2877" to="2882" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">CLUZH at SIGMORPHON 2020 shared task on multilingual grapheme-to-phoneme conversion</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Makarov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Clematide</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="171" to="176" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">The Unicode Cookbook for Linguists: Managing Writing Systems using Orthography Profiles</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Moran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Cysouw</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<publisher>Language Science Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Neubig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Austin</forename><surname>Matthews</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Waleed</forename><surname>Ammar</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1701.03980</idno>
+		<title level="m">Antonios Anastasopoulos, and Pengcheng Yin. 2017. DyNet: the dynamic neural network toolkit</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">One-sizefits-all multilingual models</title>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">T</forename><surname>André</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Martins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="63" to="69" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Grapheme-to-phoneme conversion using long short-term memory recurrent neural networks</title>
+		<author>
+			<persName><forename type="first">Kanishka</forename><surname>Rao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fuchun</forename><surname>Peng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haşim</forename><surname>Sak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Françoise</forename><surname>Beaufays</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2015 IEEE International Conference on Acoustics, Speech and Signal Processing</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="4225" to="4229" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Derek</forename><surname>Rogers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luciana</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Italian. Journal of the International Phonetic Association</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="117" to="121" />
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Elmar</forename><surname>Ternes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tatjana</forename><surname>Vladimirova-Buhtz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Bulgarian. Journal of the International Phonetic Association</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="45" to="47" />
+			<date type="published" when="1990" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">One model to pronounce them all: multilingual grapheme-to-phoneme conversion with a transformer ensemble</title>
+		<author>
+			<persName><forename type="first">Kaili</forename><surname>Vesik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Abdul-Mageed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Silfverberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="146" to="152" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Sequenceto-sequence neural net models for grapheme-tophoneme conversion</title>
+		<author>
+			<persName><forename type="first">Kaisheng</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Zweig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">INTERSPEECH 2015: 16th Annual Conference of the International Speech Communication Association</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="3330" to="3334" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Ensemble self-training for low-resource languages: grapheme-to-phoneme conversion and morphological inflection</title>
+		<author>
+			<persName><forename type="first">Xiang</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ngoc</forename><forename type="middle">Thang</forename><surname>Vu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonas</forename><surname>Kuhn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIG-MORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIG-MORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="70" to="78" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

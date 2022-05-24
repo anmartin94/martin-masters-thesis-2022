@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2021 Task 9: Fact Verification and Evidence Finding for Tabular Data in Scientific Documents (SEM-TAB-FACTS)</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Nancy</forename><forename type="middle">X R</forename><surname>Wang</surname></persName>
+							<email>nancywang1991@gmail.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">IBM Research</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Diwakar</forename><surname>Mahajan</surname></persName>
+							<email>dmahaja@us.ibm.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">IBM Research</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Marina</forename><surname>Danilevsky</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">IBM Research</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+							<email>sjrosenthal@us.ibm.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">IBM Research</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2021 Task 9: Fact Verification and Evidence Finding for Tabular Data in Scientific Documents (SEM-TAB-FACTS)</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Understanding tables is an important and relevant task that involves understanding table structure as well as being able to compare and contrast information within cells. In this paper, we address this challenge by presenting a new dataset and tasks that addresses this goal in a shared task in SemEval 2020 Task 9: Fact Verification and Evidence Finding for Tabular Data in Scientific Documents (SEM-TAB-FACTS). Our dataset contains 981 manuallygenerated tables and an auto-generated dataset of 1980 tables providing over 180K statement and over 16M evidence annotations. SEM-TAB-FACTS featured two sub-tasks. In subtask A, the goal was to determine if a statement is supported, refuted or unknown in relation to a table. In sub-task B, the focus was on identifying the specific cells of a table that provide evidence for the statement. 69 teams signed up to participate in the task with 19 successful submissions to subtask A and 12 successful submissions to subtask B. We present our results and main findings from the competition.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Tables are ubiquitous in documents and presentations for conveying important information in a concise manner. This is true in many domains, stretching from scientific to government documents. In fact, surrounding text in these articles are often statements summarizing or highlighting some information derived from the primary source of data in tables. A relevant example is shown in Figure <ref type="figure">1</ref> from a Business Insider article analyzing the impact of <ref type="bibr">Covid-19 (Aylin Woodward and Gal, 2020)</ref>. Describing all the information provided in this table in a readable manner would be lengthy and considerably more difficult to understand. Despite their importance, popular question answering (e.g. SQuAD and Natural Question <ref type="bibr">(Rajpurkar et al.,</ref> Figure <ref type="figure">1</ref>: Surrounding text often highlights some information from the table but does not capture all data. Alternately, the linked text may be subjective or even misleading without the original table to check the claims. 2016; <ref type="bibr" target="#b17">Kwiatkowski et al., 2019)</ref>) and truth verification tasks (e.g. SemEval-2019 Fact Checking Task <ref type="bibr" target="#b18">(Mihaylova et al., 2019)</ref>) have not focused on tables, being composed solely of written text. This is likely due to their complexity to parse and understand, despite their rich amount of information.</p><p>Further, the structure of tables allows much more information to be presented in an efficient manner as humans can interpret meaning in the spatial relationship between cells. However, due to their challenging nature, recent algorithms have been less successful at extracting <ref type="bibr" target="#b11">(Hoffswell and Liu, 2019)</ref> and understanding header and data structure in tables <ref type="bibr" target="#b3">(Cafarella et al., 2018)</ref>. In addition, any hierarchical and nested headers (common in printed documents) increases the difficulty in interpreting data cells, as shown in Figure <ref type="figure">2</ref>.</p><p>In this paper, we propose to bridge this gap with statement verification and evidence finding using tables from scientific articles. This important task promotes proper interpretation of the surrounding article. In fact, the misunderstanding of tables can lead to the reporting of fake news that we see as being all too prevalent today.</p><p>Figure <ref type="figure">2</ref>: A complex table sourced from <ref type="bibr" target="#b7">(East et al., 2018)</ref> with hierarchical column and row structure. Additional difficulty follows from row hierarchy not being delineated by separate columns.</p><p>We present the first SemEval challenge to address table understanding. We introduce a brand new dataset of 1980 tables from scientific articles that addresses two challenging tasks important to table understanding:</p><p>A: Statement Fact Verification Given a statement, determine whether it is supported, refuted or unknown according to the table.</p><p>B: Cell Evidence Selection Given a statement, select the cells in the table that provide evidence supporting or refuting the statement.</p><p>The rest of this paper is formatted as follows: We first discuss related work. We then present a new large table understanding dataset containing close to 2000 tables that is the first to provide evidence labels at the cell level for statements and the first to focus on scientific articles. We provide a detailed analysis of the dataset including several baseline results. We then discuss the performance and approaches of the 19 participants in our challenge and end with an aggregated analysis of participating teams. Finally, we discuss future work.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Natural Language Inference (NLI) The table evidence task can be best understood as a variation of the natural language inference task <ref type="bibr" target="#b5">(Dagan et al., 2005)</ref>, but on tabular data. NLI asks whether one (or more) sentence entails, refutes, or is unrelated to another sentence; our framing asks whether a given table entails, refutes, or is unrelated to a sentence. Several datasets have been created for studying NLI, such as SNLI <ref type="bibr" target="#b2">(Bowman et al., 2015)</ref>, MultiNLI , and SciTail <ref type="bibr" target="#b14">(Khot et al., 2018)</ref>.</p><p>Table <ref type="table">QA</ref> This task is also closely related to the problem of search and question answering on ta-bles. The closest example would be, given a table that is known to contain the relevant information, return cell values that answer a natural language question <ref type="bibr" target="#b20">(Pasupat and Liang, 2015)</ref>. A variation requires analyzing a collection of tables rather than a single one, along with the natural language question <ref type="bibr" target="#b23">(Sun et al., 2016)</ref>. Two of the most recent works are TAPAS <ref type="bibr" target="#b10">(Herzig et al., 2020)</ref> and TaBERT <ref type="bibr" target="#b27">(Yin et al., 2020)</ref>, which jointly pre-train over textual and tabular data to facilitate table QA. However, such approaches have previously focused on traditional natural language questions ("What is the population of France?") rather than inference statements ("France has the highest population in Europe"), which may be entailed, refuted or unknowable from the given table.</p><p>Related Datasets The works closest to our dataset are TabFact (Wenhu Chen and Wang, 2020) and INFOTABS <ref type="bibr" target="#b9">(Gupta et al., 2020)</ref>. Both datasets were sourced from Wikipedia tables and contain hypothesis and premise pairs. TabFact has entailment and refute hypothesis types while INFOTABS has an additional "neutral" hypothesis category, much like our "unknown" statements. Both works show that neural models still lag far behind human performance for the fact checking task with tables.</p><p>While both datasets have been great at kindling interest in fact verification with tabular data, our dataset differs in two key aspects. First, we source from scientific articles in a variety of domains rather than Wikipedia infoboxes. Scientific tables have very specialized vocabulary and can be more difficult to interpret. Additionally, scientific tables have much more complex structure, like hierarchical column and row headers, rendering the assumption that the first column/row is the header unhelpful. Finally, tables are often directly referenced in scientific text unlike Wikipedia tables that are generally stand-alone. This creates an opportunity to leverage natural statements that depict the original author's style and intent. The second key differentiator of SEM-TAB-FACTS is the accompanying evidence annotations. We believe the future of fact verification and AI in general will be in cooperation with humans rather than in replacement. Thus, it is essential that models are able to present explanations for decisions on the relationship between the statement and table by showing the most relevant cells in a potentially very large table.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Dataset Details</head><p>Our dataset consists of two forms of generation: (1) a crowdsourced dataset, and (2) an auto-generated dataset. Table <ref type="table" target="#tab_1">1</ref> presents the statistics of the dataset. We detail our dataset creation process in the following sections.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data extraction and preprocessing</head><p>We sourced our tables from scientific articles belonging to active journals that are currently being published by Elsevier and are available on Sci-enceDirect 1 . We utilized Elsevier ScienceDirect APIs 2 to scrape scientific articles which belong to this list, and satisfy the following criteria: (1) the article is open-access 3 , (2) the article is available under "Creative Commons Attribution 4.0 (CC-BY)" user license 4 , and (3) the article has at least one table. We downloaded 1,920 articles belonging to 722 journals which contained 6,773 tables. We further filtered out complicated tables (e.g. multiple tables in a single table) using hand-written rules to get a set of 2,762 candidate tables from 1,085 articles for annotation. We also extracted sentences mentioning the table within the scientific article as candidate statements, which are corrected and then labeled manually by the annotators.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Crowdsourced labeling</head><p>The manually generated statements were collected using the crowdsourcing platform Appen 5 . We collected five entailed and five refuted statements for each table from the business preferred operators (BPO) on Appen. The BPO crowd is composed of employees hired by Appen on an hourly basis at a constant pay rate determined by Appen. We found that the workers were much more motivated for the task as they were able to ask questions if needed and we were also able to provide direct feedback to the workers. We initially attempted generating statements with workers from the Appen opencrowd, which is on-demand, but the quality was very poor as it was hard to automatically validate naturally generated statements. Our instructions explicitly lay out 7 types of statements and ask that workers attempt to make one of each type. We encourage the use of different sets of cells whenever possible. The types of statements are aggregation, superlative, count, comparative, unique, all and usage of caption or common sense knowledge. These are derived from the INFOTABS analysis <ref type="bibr" target="#b9">(Gupta et al., 2020)</ref>. We asked workers to avoid subjective adjectives like "best", "worst", "seldom" and lookup statements that only require reasoning with one cell. The pay for each statement set was 75 cents.</p><p>In total, we collected 10000 statements for 1000 unique tables. See Figure <ref type="figure">3</ref> for an example table with its manually generated and natural statements.</p><p>Additionally, for our training data, we conducted a verification task to check for grammatical issues and doubly verify the statement label for both the generated and natural in-text statements. The verification task was paid at 3 cents per statement, which equates to 30 cents per table. We restricted the verification task to the workers in the open-crowd from English speaking countries. After verification, we only preserved the statements that were verified to be grammatically correct and the new label matched the original label. Natural statements were also verified in the same process. Although natural statements were generally factually correct, they were sometimes not able to be verified by the referenced table. Additionally, these statements often required rewording to ensure that all parts of the statement can be verified by the table, which was a step taken only for the development and test sets. This left us with 981 tables and 4506 statements. The majority of the removals were due to We initially attempted to collect the development and test sets as well as evidence annotations via the same method as the training set. However, we found that the quality was not gold-level and thus we (three of the authors) decided to manually correct the statements and annotate the evidence ourselves. All authors first annotated a small set of 102 statements to test inter-annotator agreement for statement relationship and evidence labeling. Out of 102 statements, we found 5 statements where at least one of three annotators disagreed on the relationship and a further 5 statements where the relationship was agreed but the evidence annotation differed. The other 92 were in complete agreement, indicating high agreement. Therefore, the annotations for the rest of the dev set were annotated by just one person. The test set was annotated fully by one author and the two other authors checked the annotations with all disagreements being resolved. See Figure <ref type="figure" target="#fig_0">4</ref> for a screenshot of the statement annotation correction and evidence annotation interface. See the third and fourth rows of Table <ref type="table" target="#tab_1">1</ref> for detailed statistics of the dev and test sets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Automatically generated statements</head><p>IBM Watson™ Discovery 6 is an AI-powered search and text analytics engine for extracting answers from complex business documents. One of the available functionalities is a Table Understanding service that produces a detailed enrichment of table data within an html document. We use this service to identify the body and header cells, as well as the cell relationships, within our dataset. We then proceed to use a set of templates to automatically create statements about each table. We begin by identifying which cells and columns are numeric and non-numeric using a simple regex. Unlike non-numeric cells, numeric cells and columns are appropriate for specific templates that expect numeric values, such as 'Value [V] is the maximum of Column [C]', where every value in column [C] has been identified as numeric. We also generate evidence for some of these templates. The template and evidence generation rules along with their inputs are detailed in Table <ref type="table" target="#tab_4">2</ref>. This process generated 3,512,978 statements from 1,980 tables which were highly skewed in favor of refuted statements. This dataset was then down-sampled to a maximum of 50 statements per table while ensuring a more even distribution between the two classes to form our final released auto-generated dataset. The full statistics for the auto-generated training data is shown in the second row of Table <ref type="table" target="#tab_1">1</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Metrics</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Task A: Statement Fact Verification</head><p>The goal of task A is to determine if a statement is entailed or refuted by the given table, or whether, as is in some cases, this cannot be determined from the table. We show two evaluation results. The first is a standard 3-way Precision / Recall / F1 micro evaluation of a multi-class classification that evaluates whether each table was classified correctly as Entailed / Refuted / Unknown. This tests whether the classification algorithm understands cases where there is insufficient information to make a determination. The second, simpler evaluation, uses the same P/R/F1 metric but is a 2-way classification that removes statements with the "unknown" ground truth label from the evaluation. The 2-way metric still penalizes misclassifying refuted/ entailed statement as unknown.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Task B: Cell Evidence Selection</head><p>In Task B, the goal is to determine for each cell and each statement, if the cell is within the minimum set of cells needed to provide evidence for the statement ("relevant") or not ("irrelevant"). In other words, if the table were shown with all other cells blurred out, would this be enough for a human to reasonably determine that the table entails or refutes the statement? The evaluation calculates the recall and precision for each cell, with "relevant" cells as the positive category. For some statements, there may be multiple minimal sets of cells that can be used to determine statement entailment or refusal. In such cases, our dataset contains all of these versions. We compare the prediction to each ground truth version and count the highest score.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Experiments</head><p>We present our baseline experimental setup for each task below.  As our dataset contains unknown statements, in such cases we consider all columns to be a match and flatten the entire table.</p><p>Using the above process, we perform the following experiments (1) apply the Table-BERT model out-of-the-box (2) re-train Table-BERT model with unknown statement and apply on our test data (3) fine-tune the model in (2) with our manual+autogenerated data and apply on our test data. We also compare these experiments with a majority baseline with entailed as our majority class. The results are presented in Table <ref type="table" target="#tab_2">3</ref>. Applying Table-BERT model out-of-the-box provides some improvement over a majority-baseline. However, when the model is retrained with previously missing unknown statements, the performance improves for three-way classification. Further fine-tuning the model with our training dataset (both manual and auto-generated) provides the best performance on the two-way F1-score.</p><p>Task B We present the following two baselines for Task B: (1) a random baseline where each cell is marked relevant or irrelevant randomly (2) a simple word-match-based baseline where a cell is marked relevant if it overlaps with the statement. The baseline results are presented in Table <ref type="table" target="#tab_7">4</ref>.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Competition Results</head><p>We present two leaderboards for each task 8 . The official leaderboard is from participants who have given us detailed descriptions on their system and affirmed that they did not incorporate any information from the test set that changed their final model. This is a more accurate representation of system quality. The unverified leaderboard is composed of participants who either did not give enough detail or have affirmed that they incorporated some test data information in their final model. The participants did not have access to labels for test data but some teams altered their models upon examining  the input data in the test set. Although we discouraged this approach, we present the results in hopes it can give some interesting information about how much improvement might be possible with having access to input test data. 19 teams participated in Task A. Of the 14 teams on the official leaderboard, King001 obtained the highest score for task A for both the 2-way (88.74) and 3-way (84.48) F-scores. However, the top three participants have comparable scores. All teams except for the last two beat our best baseline in Table <ref type="table" target="#tab_2">3</ref>. The unverified leaderboard includes 5 teams and contains higher scores thank in the official leaderboard. However, due to the reasons outlined above, we cannot say with certainty that the results are reproducible. The full leaderboard results for all participants are in Table <ref type="table" target="#tab_9">5</ref>.</p><p>Task B is a much harder task and fewer teams participated in this challenge. Of the 12 teams that participated, 8 are in the official leaderboard. The best score is 65.17 by Breaking-BERT@IITK(65.17) which is noticeably lower than the F-scores in Task A. Similarly to Task A the results in the unverified leaderboard are considerably higher. The full leaderboard results for all participants are in Table <ref type="table" target="#tab_11">6</ref>.</p><p>We summarize the system details for all participating teams in Tables 7 (Task A) and 8 (Task B). In general, deep learning was the most popular approach used by the participants e.g. BiL-   <ref type="bibr" target="#b10">(Herzig et al., 2020)</ref>, TaBERT <ref type="bibr" target="#b27">(Yin et al., 2020)</ref> and <ref type="bibr">Table-BERT (Wenhu Chen and Wang, 2020)</ref>. One third of the participants employed some form of ensembling technique in their submission.</p><p>Most of the participants have used the manually generated ground-truth in the development of their systems, with only one team not finding it useful. Further, a large percentage of participants have used the auto-generated ground truth in their systems with three teams not finding it helpful in their evaluation.</p><p>In terms of external resources, a majority of the participants used external table understanding resources in their systems. Further, most of the participants employed pre-processing techniques like acronym completion, removing special characters, etc... A substantial percentage of participants used techniques like incorporating word embeddings, entity resolution etc. Finally, a large number of participants used TabFact (Wenhu Chen and Wang, 2020) as an external dataset.</p><p>We also conducted additional analyses on participant submissions on the official leaderboard. We show through the average confusion matrix for Task A in Table <ref type="table" target="#tab_13">9</ref> that the Unknown label was the most difficult. In fact, there were more unknown statements incorrectly labelled as entailed than were correctly categorized. Naturally, the statements with the lowest accuracy (&lt; 25%) consist of mainly unknown statements, especially those statements  Out of the entailed and refuted statements, ones that require numerical reasoning, like range, count or comparisons seemed to be most challenging.</p><p>The statements with the highest accuracy (&gt; 95%) generally had most words or numbers exactly overlapping with those in the table. In task B, out of the statements with less than 30% evidence F-score, 86% were ones with a refuted relationship. Conversely, the statements with greater than 70% Fscore, 74% were ones with an entailed relationship. This shows that it is more difficult to find the most direct evidence to prove that a statement is refuted by a table than it is to show the positive evidence that a particular statement is supported by it. We believe this is an interesting line of research for future studies.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion and Future Works</head><p>In this paper, we presented the data and competition results for SEM-TAB-FACTS, Shared Task 9 of SemEval 2021. We created a large dataset via automated and crowdsourced fact verification as well as evidence finding for tables. Our 19 teams had a variety of techniques to tackle this unique but very relevant problem. The evidence finding scores are still quite low and have a large improvement potential. Additionally, the test set may be expanded in future versions of this task with a combination of manually generated, natural, and automated statements.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 4 :</head><label>4</label><figDesc>Figure 4: Screenshot showing the labeling interface for statement rephrasing, relationship labeling and evidence annotation.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Statistics for our SEM-TAB-FACTS dataset.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Figure 3 :</head><label>3</label><figDesc>Sample crowd-sourced statements for one table (sourced from (Carney et al., 2020)). Please note that these are the original statements without any further corrections nor rephrasing. grammatical errors as most BPO workers are not native English speakers. See Table 1 (first row) for detailed statistics of the crowd-sourced training set.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>Template and evidence rules used for auto-generated ground truth. The examples are derived from Table 4 in Figure 4. setting in BERT. To overcome the lack of unknown statements in our dataset, we supplement each table with randomly chosen statements from other tables. In Table-BERT, if the entity linking results in no matches, the flattened table is marked as [UNK].</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>Task A baseline results using F1-score.</figDesc><table><row><cell>Experiment</cell><cell>Dev</cell><cell>Test</cell></row><row><cell cols="3">random-baseline 21.18 20.47</cell></row><row><cell>word-match</cell><cell cols="2">49.53 47.39</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>Task B baseline results using F1-Score</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 :</head><label>5</label><figDesc></figDesc><table /><note>Task A Leaderboard</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 6</head><label>6</label><figDesc></figDesc><table><row><cell>: Task B Leaderboard</cell></row><row><cell>STM with attention, BERT (Devlin et al., 2019) etc.</cell></row><row><cell>Most of the participants used transformer-based</cell></row><row><cell>models to train their systems with flavors ranging</cell></row><row><cell>from general-domain BERT (Devlin et al., 2019) to</cell></row><row><cell>table-understanding specific versions like TAPAS</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 9 :</head><label>9</label><figDesc>Task A average confusion matrix that have words overlapping with those in the table.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://www.elsevier.com/__data/ promis_misc/sd-content/journals/ jnlactive.xlsx 2 https://dev.elsevier.com/sd_apis.html 3 https://www.elsevier.com/open-access 4 https://www.elsevier.com/about/ policies/open-access-licenses/ user-licences 5 https://appen.com/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">https://www.ibm.com/cloud/watson-discovery</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">https://github.com/wenhuchen/ Table-Fact-Checking</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">We made the assumption that teams would not make any use of the test data, as is usually the case for algorithm evaluation, but we did not make this explicit ahead of time and some teams did not realize this was an issue. We decided to have two leaderboards to have a fair comparison for all teams.</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Team Description</head><p>AttesTable <ref type="bibr" target="#b24">(Varma et al., 2021)</ref> Extended TAPAS to 3 classes by fine-tuning it. Employed a novel way of synthesizing "unknown" samples.</p><p>BreakingBERT@IITK <ref type="bibr">(Jindal et al., 2021)</ref> Ensemble models with TAPAS and TableBERT Transformers in a hierarchical two-step method for 3-way classification (unknown vs not unknown first) Ensemble models in a hierarchical two-step method. 8-model to identify unknown statements and 9-model ensemble to classify entailed/refuted. Incorporated different ensemble weights for various statement types (count, superlative, unique).</p><p>Volta <ref type="bibr" target="#b8">(Gautam et al., 2021)</ref> Finetuned TAPAS that was pretrained on TabFact. Pre-processing to standardize multiple header rows to a single header.   </p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Kaushikacharya at SemEval-2021 task 9: Candidate generation for fact verification over tables</title>
+		<author>
+			<persName><forename type="first">Kaushik</forename><surname>Acharya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th international workshop on semantic evaluation</title>
+				<meeting>the 15th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">What to know about the coronavirus outbreak in 17 charts and maps</title>
+		<author>
+			<persName><forename type="first">Ruobing</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aylin</forename><surname>Woodward</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shayanne</forename><surname>Gal</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">Business Insider</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">A large annotated corpus for learning natural language inference</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Samuel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gabor</forename><surname>Bowman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Angeli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Potts</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D15-1075</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="632" to="642" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Ten years of webtables</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Cafarella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Halevy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongrae</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jayant</forename><surname>Madhavan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cong</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daisy</forename><forename type="middle">Zhe</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eugene</forename><surname>Wu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the VLDB Endowment</title>
+				<meeting>the VLDB Endowment</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="page" from="2140" to="2149" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Board connections and crisis performance: Family, state, and political networks</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Richard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Travers</forename><forename type="middle">Barclay</forename><surname>Carney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiang</forename><surname>Child</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Corporate Finance</title>
+		<imprint>
+			<biblScope unit="volume">64</biblScope>
+			<biblScope unit="page">101630</biblScope>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">The PASCAL recognising textual entailment challenge</title>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Ido Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernardo</forename><surname>Glickman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Magnini</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/11736790_9</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First International Conference on Machine Learning Challenges: Evaluating Predictive Uncertainty Visual Object Classification, and Recognizing Textual Entailment, MLCW&apos;05</title>
+				<meeting>the First International Conference on Machine Learning Challenges: Evaluating Predictive Uncertainty Visual Object Classification, and Recognizing Textual Entailment, MLCW&apos;05<address><addrLine>Berlin, Heidelberg</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer-Verlag</publisher>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="177" to="190" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-1423</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long and Short Papers</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">The association between smoking and electronic cigarette use in a cohort of young people</title>
+		<author>
+			<persName><forename type="first">Katherine</forename><surname>East</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Sara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ioannis</forename><surname>Hitchman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sarah</forename><surname>Bakolis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hazel</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deborah</forename><surname>Cheeseman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ann</forename><surname>Arnott</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mcneill</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Adolescent Health</title>
+		<imprint>
+			<biblScope unit="volume">62</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="539" to="547" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Volta at SemEval-2021 task 9: Statement verification and evidence finding with tables using TAPAS and transfer learning</title>
+		<author>
+			<persName><forename type="first">Devansh</forename><surname>Gautam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kshitij</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manish</forename><surname>Shrivastava</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th International Workshop on Semantic Evaluation</title>
+				<meeting>the 15th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">INFOTABS: Inference on tables as semi-structured data</title>
+		<author>
+			<persName><forename type="first">Vivek</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maitrey</forename><surname>Mehta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pegah</forename><surname>Nokhiz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vivek</forename><surname>Srikumar</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.210</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Online. Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="2309" to="2324" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">TaPas: Weakly supervised table parsing via pre-training</title>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Krzysztof</forename><surname>Nowak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Piccinno</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julian</forename><surname>Eisenschlos</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.398</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Online. Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="4320" to="4333" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Interactive repair of tables extracted from pdf documents on mobile devices</title>
+		<author>
+			<persName><forename type="first">Jane</forename><surname>Hoffswell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhicheng</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM Human Factors in Computing Systems (CHI)</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<author>
+			<persName><forename type="first">Aditya</forename><surname>Jindal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankur</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaya</forename><surname>Srivastava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preeti</forename><surname>Menghwani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vijit</forename><surname>Malik</surname></persName>
+		</author>
+		<title level="m">Vishesh Kaushik, and Ashutosh Modi. 2021. Breakingbert@iitk at</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Statement verification and evidence finding with tables</title>
+		<idno>SemEval-2021 task 9</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th international workshop on semantic evaluation</title>
+				<meeting>the 15th international workshop on semantic evaluation</meeting>
+		<imprint/>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Scitail: A textual entailment dataset from science question answering</title>
+		<author>
+			<persName><forename type="first">Tushar</forename><surname>Khot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Sabharwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">AAAI Conference on Artificial Intelligence</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<author>
+			<persName><forename type="first">Abdullatif</forename><surname>Köksal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yusuf</forename><surname>Yüksel</surname></persName>
+		</author>
+		<title level="m">Bekir Yıldırım, and ArzucanÖzgür. 2021. BOUN at SemEval-2021</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Text Augmentation Techniques for Fact Verification in Tabular Data</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Natural questions: A benchmark for question answering research</title>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Kwiatkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennimaria</forename><surname>Palomaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olivia</forename><surname>Redfield</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Collins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankur</forename><surname>Parikh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Alberti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danielle</forename><surname>Epstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Kelcey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">M</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00276</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page" from="452" to="466" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">SemEval-2019 task 8: Fact checking in community question answering forums</title>
+		<author>
+			<persName><forename type="first">Tsvetomila</forename><surname>Mihaylova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgi</forename><surname>Karadzhov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Atanasova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramy</forename><surname>Baly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitra</forename><surname>Mohtarami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/S19-2149</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th International Workshop on Semantic Evaluation</title>
+				<meeting>the 13th International Workshop on Semantic Evaluation<address><addrLine>Minneapolis, Minnesota, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="860" to="869" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">TAPAS at SemEval-2021 task 9: Reasoning over tables with intermediate pretraining</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julian</forename><surname>Martin Eisenschlos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Syrine</forename><surname>Krichene</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation. International Committee for Computational Linguistics</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation. International Committee for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Compositional semantic parsing on semi-structured tables</title>
+		<author>
+			<persName><forename type="first">Panupong</forename><surname>Pasupat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/v1/P15-1142</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1470" to="1480" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">SQuAD: 100,000+ questions for machine comprehension of text</title>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Rajpurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Konstantin</forename><surname>Lopyrev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D16-1264</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Austin, Texas</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2383" to="2392" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Sattiy at SemEval-2021 task 9: Method for statement verification and evidence finding with tables based on multimodel ensemble</title>
+		<author>
+			<persName><forename type="first">Xiaoyi</forename><surname>Ruan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Mei Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lianxin</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mo</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianping</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Shen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th international workshop on semantic evaluation</title>
+				<meeting>the 15th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Table cell search for question answering</title>
+		<author>
+			<persName><forename type="first">Huan</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodong</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wen-Tau</forename><surname>Yih</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xifeng</forename><surname>Yan</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/2872427.2883080</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 25th International Conference on World Wide Web, WWW &apos;16</title>
+				<meeting>the 25th International Conference on World Wide Web, WWW &apos;16<address><addrLine>Republic and Canton of Geneva, CHE</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="771" to="782" />
+		</imprint>
+	</monogr>
+	<note>ternational World Wide Web Conferences Steering Committee</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Attestable at SemEval-2021 task 9: Extending statement verification with tables for unknown class, and semantic evidence finding</title>
+		<author>
+			<persName><forename type="first">Harshit</forename><surname>Varma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aadish</forename><surname>Jain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pratik</forename><surname>Ratadiya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abhishek</forename><surname>Rathi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th international workshop on semantic evaluation</title>
+				<meeting>the 15th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Tabfact : A large-scale dataset for table-based fact verification</title>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations (ICLR)</title>
+				<editor>
+			<persName><forename type="first">Jianshu Chen Yunkai Zhang Hong Wang Shiyang Li Xiyou Zhou Wenhu</forename><surname>Chen</surname></persName>
+			<persName><forename type="first">Hongmin</forename><surname>Wang</surname></persName>
+			<persName><forename type="first">William</forename><forename type="middle">Yang</forename><surname>Wang</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Addis Ababa, Ethiopia</addrLine></address></meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">A broad-coverage challenge corpus for sentence understanding through inference</title>
+		<author>
+			<persName><forename type="first">Adina</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikita</forename><surname>Nangia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Bowman</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N18-1101</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1112" to="1122" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">TaBERT: Pretraining for joint understanding of textual and tabular data</title>
+		<author>
+			<persName><forename type="first">Pengcheng</forename><surname>Yin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Neubig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yih</forename><surname>Wen-Tau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.745</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="8413" to="8426" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Thifly queen at SemEval-2021 task 9: Statement verification and evidence finding with tables</title>
+		<author>
+			<persName><forename type="first">Zhou</forename><surname>Zhou Yuxuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liu</forename><surname>Kaiyin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Xien</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ji</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhu</forename><surname>Xiaodan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th international workshop on semantic evaluation</title>
+				<meeting>the 15th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

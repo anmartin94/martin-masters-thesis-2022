@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2014 Task 6: Supervised Semantic Parsing of Robotic Spatial Commands</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Kais</forename><surname>Dukes</surname></persName>
+							<email>sckd@leeds.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Computing</orgName>
+								<orgName type="institution">University of Leeds</orgName>
+								<address>
+									<postCode>LS2 9JT</postCode>
+									<settlement>Leeds</settlement>
+									<country key="GB">United Kingdom</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2014 Task 6: Supervised Semantic Parsing of Robotic Spatial Commands</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>SemEval-2014 Task 6 aims to advance semantic parsing research by providing a high-quality annotated dataset to compare and evaluate approaches. The task focuses on contextual parsing of robotic commands, in which the additional context of spatial scenes can be used to guide a parser to control a robot arm. Six teams submitted systems using both rule-based and statistical methods. The best performing (hybrid) system scored 92.5% and 90.5% for parsing with and without spatial context. However, the best performing statistical system scored 87.35% and 60.84% respectively, indicating that generalized understanding of commands given to a robot remains challenging, despite the fixed domain used for the task.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Semantic parsers analyze sentences to produce formal meaning representations that are used for the computational understanding of natural language. Recently, state-of-the-art semantic parsing methods have used for a variety of applications, including question answering <ref type="bibr" target="#b20">(Kwiatkowski et al., 2013;</ref><ref type="bibr" target="#b18">Krishnamurthy and Mitchell, 2012)</ref>, dialog systems <ref type="bibr" target="#b0">(Artzi and Zettlemoyer, 2011)</ref>, entity relation extraction <ref type="bibr" target="#b14">(Kate and Mooney, 2010)</ref> and robotic control <ref type="bibr">(Tellex, 2011;</ref><ref type="bibr" target="#b17">Kim and Mooney, 2012)</ref>.</p><p>Different parsers can be distinguished by the level of supervision they require during training. Fully supervised training typically requires an annotated dataset that maps natural language (NL) to a formal meaning representation such as logical form. However, because annotated data is often not available, a recent trend in semantic parsing research has been to eschew supervised training in favour of either unsupervised or weakly-supervised methods that utilize additional information. For example, <ref type="bibr" target="#b1">Berant and Liang (2014)</ref> use a dataset of 5,810 questionanswer pairs without annotated logical forms to induce a parser for a question-answering system. In comparison, <ref type="bibr" target="#b26">Poon (2013)</ref> converts NL questions into formal queries via indirect supervision through database interaction.</p><p>In contrast to previous work, the shared task described in this paper uses the Robot Commands Treebank <ref type="bibr" target="#b7">(Dukes, 2013a)</ref>, a new dataset made available for supervised semantic parsing. The chosen domain is robotic control, in which NL commands are given to a robot arm used to manipulate shapes on an 8 x 8 game board. Despite the fixed domain, the task is challenging as correctly parsing commands requires understanding spatial context. For example, the command in Figure <ref type="figure" target="#fig_0">1</ref> may have several plausible interpretations, given different board configurations.</p><p>'Move the pyramid on the blue cube on the gray one.' The task is inspired by the classic AI system SHRLDU, which responded to NL commands to control a robot for a similar game board <ref type="bibr" target="#b32">(Winograd, 1972)</ref>, although that system is reported to not have generalized well <ref type="bibr" target="#b5">(Dreyfus, 2009;</ref><ref type="bibr" target="#b23">Mitkov, 1999)</ref>. More recent research in command understanding has focused on parsing jointly with grounding, the process of mapping NL descriptions of entities within an environment to a semantic representation. Previous work includes <ref type="bibr">Tellex et al. (2011)</ref>, who develop a small corpus of commands for a simulated fork lift robot, with grounding performed using a factor graph. Similarly, <ref type="bibr" target="#b17">Kim and Mooney (2012)</ref> perform joint parsing and grounding using a corpus of navigation commands. In contrast, this paper focuses on parsing using additional situational context for disambiguation and by using a larger NL dataset, in comparison to previous robotics research.</p><p>In the remainder of this paper, we describe the task, the dataset and the metrics used for evaluation. We then compare the approaches used by participant systems and conclude with suggested improvements for future work.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>The long term research goal encouraged by the task is to develop a system that will robustly execute NL robotic commands. In general, this is a highly complex problem involving computational processing of language, spatial reasoning, contextual awareness and knowledge representation. To simplify the problem, participants were provided with additional tools and resources, allowing them to focus on developing a semantic parser for a fixed domain that would fit into an existing component architecture. Figure <ref type="figure" target="#fig_1">2</ref> shows how these components interact.</p><p>Semantic parser: Systems submitted by participants are semantic parsers that accept an NL command as input, mapping this to a formal Robot Control Language (RCL), described further in section 3.3. The Robot Commands Treebank used for the both training and evaluation is an annotated corpus that pairs NL commands with contextual RCL statements.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Spatial planner:</head><p>A spatial planner is provided as an open Java API 1 . Commands in the treebank are specified in the context of spatial scenes. By interfacing with the planner, participant systems 1 https://github.com/kaisdukes/train-robots have access to this additional information. For example, given an RCL fragment for the expression 'the red cube on the blue block', the planner will ground the entity, returning a list of zero or more board coordinates corresponding to possible matches. The planner also validates commands to determine if they are compatible with spatial context. It can therefore be used to constrain the search space of possible parses, as well as enabling early resolution of attachment ambiguity during parsing.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Robotic simulator:</head><p>The simulated environment consists of an 8 x 8 board that can hold prisms and cubes which occur in eight different colors. The robot's gripper can move to any discrete position within an 8 x 8 x 8 space above the board. The planner uses the simulator to enforce physical laws within the game. For example, a block cannot remain unsupported in empty space due to gravity. Similarly, prisms cannot lie below other block types. In the integrated system, the parser uses the planner for context, then provides the final RCL statement to the simulator which executes the command by moving the robot arm to update the board.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Collection</head><p>For the shared task, 3,409 sentences were selected from the treebank. This data size compares with related corpora used for semantic parsing such as the ATIS <ref type="bibr" target="#b33">(Zettlemoyer and Collins, 2007)</ref>, GeoQuery <ref type="bibr" target="#b15">(Kate et al., 2005)</ref>, Jobs <ref type="bibr" target="#b29">(Tang and Mooney, 2001)</ref> and RoboCup <ref type="bibr" target="#b19">(Kuhlmann et al., 2004)</ref> datasets, consisting of 4,978; 880; 640 and 300 sentences respectively.</p><p>The treebank was developed via a game with a purpose (www.TrainRobots.com), in which players were shown before and after configurations and asked to give a corresponding command to a hypothetical robot arm. To make the game more competitive and to promote data quality, players rated each other's sentences and were rewarded with points for accurate entries <ref type="bibr" target="#b8">(Dukes, 2013b)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Annotation</head><p>In total, over 10,000 commands were collected through the game. During an offline annotation phase, sentences were manually mapped to RCL. However, due to the nature of the game, players were free to enter arbitrarily complex sentences to describe moves, not all of which could be represented by RCL. In addition, some commands were syntactically well-formed, but not compatible with the corresponding scenes. The 3,409 commands selected for the task had RCL statements that were both understood by the planner and when given to the robotic simulator resulted in the expected move being made between before and after board configurations. Due to this extra validation step, all RCL statements provided for the task were contextually well-formed.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Robot Control Language</head><p>RCL is a novel linguistically-oriented semantic representation. An RCL statement is a semantic tree (Figure <ref type="figure" target="#fig_2">3</ref>) where leaf nodes generally align to words in the corresponding sentence, and nonleaves are tagged using a pre-defined set of categories. RCL is designed to annotate rich linguistic structure, including ellipsis (such as 'place [it] on'), anaphoric references ('it' and 'one'), multiword spatial expressions ('on top of') and lexical disambiguation ('one' and 'place'). Due to ellipsis, unaligned words and multi-word expressions, a leaf node may align to zero, one or more words in a sentence. Figure <ref type="figure">4</ref> shows the RCL syntax for the tree in Figure <ref type="figure" target="#fig_2">3</ref>, as accepted by the spatial planner and the simulator. As these components do not require NL word alignment data, this additional information was made available to task participants for training via a separate Java API. The tagset used to annotate RCL nodes can be divided into general tags (that are arguably applicable to other domains) and specific tags that were customized for the domain in the task (Tables 1 and 2 overleaf, respectively). The general elements are typed entities (labelled with semantic features) that are connected using relations and events. This universal formalism is not domain-specific, and is inspired by semantic frames <ref type="bibr" target="#b12">(Fillmore and Baker, 2001)</ref>, a practical representation used for NL understanding systems <ref type="bibr" target="#b10">(Dzikovska, 2004;</ref><ref type="bibr" target="#b31">UzZaman and Allen, 2010;</ref><ref type="bibr" target="#b4">Coyne et al., 2010;</ref><ref type="bibr" target="#b6">Dukes, 2009)</ref>.</p><p>In the remainder of this section we summarize aspects of RCL that are relevant to the task; a more detailed description is provided by <ref type="bibr" target="#b7">Dukes (2013a;</ref>. In an RCL statement such as Figure <ref type="figure">4</ref>, a preterminal node together with its child leaf node correspond to a feature-value pair (such as the feature color and the constant blue). Two special features which are distinguished by the planner are id and reference-id, which are used for co-referencing such as for annotating anaphora and their antecedents. The remaining features model the simulated robotic domain. For sequence Used to specify a sequence of events or statements.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>spatial-relation</head><p>Used to specify a spatial relation between two entities or to describe a location.</p><p>type Used to specify an entity type.  example, the values of the action feature are the moves used to control the robotic arm, while values of the type and relation features are the entity and relation types understood by the spatial planner (Table <ref type="table" target="#tab_3">2</ref>). As well as qualitative relations (such as 'below' or 'above'), the planner also accepts spatial relations that include quantitative measurements, such as in 'two squares left of the red prism' (Figure <ref type="figure">5</ref>). RCL distinguishes between relations which relate entities and indicators, which are attributes of entities (such as 'left' in 'the left cube'). For the task, participants are asked to map NL sentences to well-formed RCL by identifying spatial relations and indicators, then parsing higher-level entities and events. Finally, a well-formed RCL tree with an event (or sequence of events) at toplevel is given the simulator for execution.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Metrics</head><p>Out of the 3,400 sentences annotated for the task, 2,500 sentences were provided to participants for system training. During evaluation, trained systems were presented with 909 previously unseen sentences and asked to generate corresponding RCL statements, with access to the spatial planner for additional context. To keep the evaluation process as simple as possible, each parser's output for a sentence was scored as correct if it exactly matched the expected RCL statement in the treebank. Participants were asked to calculate two metrics, P and NP, which are the proportion of exact matches with and without using the spatial planner respectively:  <ref type="table">3</ref>: System results for supervised semantic parsing of the Robot Commands Treebank (P = parsing with integrated spatial planning, NP = parsing without integrated spatial planning, NP -P = drop in performance without integrated spatial planning, N/A = performance not available).</p><p>These metrics contrast with measures for partially correct parsed structures, such as Parseval <ref type="bibr" target="#b2">(Black et al., 1991)</ref> or the leaf-ancestor metric <ref type="bibr" target="#b27">(Sampson and Babarczy, 2003)</ref>. The rationale for using a strict match is that in the integrated system, a command will only be executed if it is completely understood, as both the spatial planner and the simulator require well-formed RCL.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Systems and Results</head><p>Six teams participated in the shared task using a variety of strategies (Table <ref type="table">3</ref>). The last measure in the table gives the performance drop without spatial context. The value NP -P = -2 for the best performing system suggests this as an upper bound for the task. The different values of this measure indicate the sensitivity to (or possibly reliance on) context to guide the parsing process. In the remainder of this section we compare the approaches and results of the six systems. <ref type="bibr" target="#b24">Packard (2014)</ref> achieved the best score for parsing both with and without spatial context, at 92.5% and 90.5%, respectively, using a hybrid system that combines a rule-based grammar with the Berkeley parser <ref type="bibr" target="#b25">(Petrov et al., 2006)</ref>. The rule-based component uses the English Resource Grammar, a broad coverage handwritten HPSG grammar for English. The ERG produces a ranked list of Minimal Recursion Semantics (MRS) structures that encode predicate argument relations <ref type="bibr" target="#b3">(Copestake et al., 2005)</ref>. Approximately 80 rules were then used to convert MRS to RCL. The highest ranked result that is validated by the spatial planner was selected as the output of the rule-based system. Using this approach, Packard reports scores of P = 82.4% and NP = 80.3% for parsing the evaluation data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>UW-MRS:</head><p>To further boost performance, the Berkeley parser was used for back-off. To train the parser, the RCL treebank was converted to phrase struc-ture by removing non-aligned nodes and inserting additional nodes to ensure one-to-one alignment with words in NL sentences. Performance of the Berkeley parser alone was NP = 81.5% (no P-measure was available as spatial planning was not integrated).</p><p>To combine components, the ERG was used initially, with fall back to the Berkeley parser when no contextually compatible RCL statement was produced. The hybrid approach improved accuracy considerably, with P = 92.5% and NP = 90.5%. Interestingly, Packard also performs precision and recall analysis, and reports that the rule-based component had higher precision, while the statistical component had higher recall, with the combined system outperforming each separate component in both precision and recall.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>AT&amp;T Labs Research:</head><p>The system by <ref type="bibr" target="#b28">Stoyanchev et al. (2014)</ref> scored second best for contextual parsing and third best for parsing without using the spatial planner (P = 87.35% and NP = 60.84%). In contrast to Packard's UW-MRS submission, the AT&amp;T system is a combination of three statistical models for tagging, parsing and reference resolution. During the tagging phase, a two-stage sequence tagger first assigns a part-of-speech tag to each word in a sentence, followed by an RCL feature-value pair such as (type: cube) or (color: blue), with unaligned words tagged as 'O'. For parsing, a constituency parser was trained using non-lexical RCL trees. Finally, anaphoric references were resolved using a maximum entropy feature model. When combined, the three components generate a list of weighted RCL trees, which are filtered by the spatial planner. Without integrated planning, the most-probable parse tree is selected.</p><p>In their evaluation, Stoyanchev et al. report accuracy scores for the separate phases as well as for the combined system. For the tagger, they report an accuracy score of 95.2%, using the standard split of 2,500 sentences for training and 909 for evaluation. To separately measure the joint accuracy of the parser together with reference resolution, gold-standard tags were used resulting in a performance of P = 94.83% and NP = 67.55%. However, using predicted tags, the system's final performance dropped to P = 87.35% and NP = 60.84%. To measure the effect of less supervision, the models were additionally trained on only 500 sentences. In this scenario, the tagging model degraded significantly, while the parsing and reference resolution models performed nearly as well.</p><p>RoBox: Using Combinatory Categorial Grammar (CCG) as a semantic parsing framework has been previously shown to be suitable for translating NL into logical form. Inspired by previous work using a CCG parser in combination with a structured perceptron <ref type="bibr" target="#b33">(Zettlemoyer and Collins, 2007)</ref>, RoBox <ref type="bibr" target="#b11">(Evang and Bos, 2014)</ref> was the best performing CCG system in the shared task scoring P = 86.8% and NP = 79.21%.</p><p>Using a similar approach to UW-MRS for its statistical component, RCL trees were interpreted as phrase-structure and converted to CCG derivations for training. During decoding, RCL statements were generated directly by the CCG parser. However, in contrast to the approach used by the AT&amp;T system, RoBox interfaces with the planner during parsing instead of performing spatial validation a post-processing step. This enables early resolution of attachment ambiguity and helps constrain the search space. However, the planner is only used to validate entity elements, so that event and sequence elements were not validated. As a further difference to the AT&amp;T system, anaphora resolution was not performed using a statistical model. Instead, multiple RCL trees were generated with different candidate anaphoric references, which were filtered out contextually using the spatial planner.</p><p>RoBox suffered only a 7.59% absolute drop in performance without using spatial planning, second only to UW-MRS at 2%. Evang and Bos perform error analysis on RoBox and report that most errors relate to ellipsis, the ambiguous word one, anaphora or attachment ambiguity. They suggest that the system could be improved with better feature selection or by integrating the CCG parser more closely with the spatial planner.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Shrdlite:</head><p>The Shrdlite system by <ref type="bibr" target="#b21">Ljunglöf (2014)</ref>, inspired by the Classic SHRDLU system by <ref type="bibr" target="#b32">Winograd (1972)</ref>, is a purely rule-based sys-tem that was shown to be effective for the task. Scoring P = 86.1% and NP = 51.5%, Shrdlite ranked fourth for parsing with integrated planning, and fifth without using spatial context. However, it suffered the largest absolute drop in performance without planning (34.6 points), indicating that integration with the planner is essential for the system's reported accuracy.</p><p>Shrdlite uses a hand-written compact unification grammar for the fragment of English appearing in the training data. The grammar is small, consisting of only 25 grammatical rules and 60 lexical rules implemented as a recursive-descent parser in Prolog. The lexicon consists of 150 words (and multi-word expressions) divided into 23 lexical categories, based on the RCL preterminal nodes found in the treebank. In a postprocessing phase, the resulting parse trees are normalized to ensure that they are well-formed by using a small set of supplementary rules.</p><p>However, the grammar is highly ambiguous resulting in multiple parses for a given input sentence. These are filtered by the spatial planner. If multiple parse trees were found to be compatible with spatial context (or when not using the planner), the tree with the smallest number of nodes was selected as the parser's final output. Additionally, because both the training and evaluation data were collected via crowdsourcing, sentences occasionally contain spelling errors, which were intentionally included in the task. To handle misspelt words, Shrdlite uses Levenshtein edit distance with a penalty to reparse sentences when the parser initially fails to produce any analysis.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>KUL-Eval:</head><p>The CCG system by <ref type="bibr" target="#b22">Mattelaer et al. (2014)</ref> uses a different approach to the RoBox system described previously. KUL-Eval scored P = 71.29% and NP = 57.76% in comparison to the RoBox scores of P = 86.8% and NP = 79.21%.</p><p>During training, the RCL treebank was converted to λ-expressions. This process is fully reversible, so that no information in an RCL tree is lost during conversion. In contrast to RoBox, but in common with the AT&amp;T parser, KUL-Eval performs spatial validation as a post-processing step and does not integrate the planner directly into the parsing process. A probabilistic CCG is used for parsing, so that multiple λ-expressions are returned (each with an associated confidence measure) that are translated into RCL. Finally, in the validation step, the spatial planner is used to discard RCL statements that are incompatible with spatial context and the remaining mostprobable parse is returned as the system's output.</p><p>Mattelaer et al. note that in several cases the parser produced partially correct statements but that these outputs did not contribute to the final score, given the strictly matching measures used for the P and NP metrics. However, well-formed RCL statements are required by the spatial planner and robotic simulator for the integrated system to robustly execute the specified NL command. Partially correct structures included statements which almost matched the expected RCL tree with the exception of incorrect featurevalues, or the addition or deletion of nodes. The most common errors were feature-values with incorrect entity types (such as 'edge' and 'region') and mismatched spatial relations (such as confusing 'above <ref type="bibr">' and 'within' and confusing 'right', 'left' and 'front')</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>UWM:</head><p>The UWM system submitted by <ref type="bibr" target="#b16">Kate (2014)</ref> uses an existing semantic parser, KRISP, for the shared task. KRISP (Kernel-based Robust Interpretation for Semantic Parsing) is a trainable semantic parser <ref type="bibr" target="#b13">(Kate and Mooney, 2006</ref>) that uses Support Vector Machines (SVMs) as the machine learning method with a string subsequence kernel. As well as training data consisting of RCL paired with NL commands, KRISP required a context-free grammar for RCL, which was hand-written for UWM. During training, id nodes were removed from the RCL trees. These were recovered after parsing in a post-processing phase to resolve anaphora by matching to the nearest preceding antecedent.</p><p>In contrast to other systems submitted for the task, UWM does not interface with the spatial planner and parses purely non-contextually. Because the planner was not used, the system's accuracy was negatively impacted by simple issues that may have been easily resolved using spatial context. For example, in RCL, the verb 'place' can map to either drop or move actions, depending on whether or not a block is held in the gripper in the corresponding spatial scene. Without using spatial context, it is hard to distinguish between these cases during parsing.</p><p>The system scored a non-contextual measure of NP = 45.98%, with Kate reporting a 51.18% best F-measure (at 72.67% precision and 39.49% recall). No P-measure was reported as the spatial planner was not used. Due to memory constraints when training the SVM classifiers, only 1,500 out of 2,500 possible sentences were used from the treebank to build the parsing model. However, it may be possible to increasing the size of training data in future work through sampling.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Discussion</head><p>The six systems evaluated for the task employed a variety of semantic parsing strategies. With the exception of one submission, all systems interfaced with the spatial planner, either in a postprocessing phase, or directly during parsing to enable early disambiguation and to help constrain the search space. An open question that remains following the task is how applicable these methods would be to other domains. Systems that relied heavily on the planner to guide the parsing process could only be adapted to domains for a which a planner could conceivably exist. For example, nearly all robotic tasks such as such as navigation, object manipulation and task execution involve aspects of planning. NL question-answering interfaces to databases or knowledge stores are also good candidates for this approach, since parsing NL questions into a semantic representation within the context of a database schema or an ontology could be guided by a query planner.</p><p>However, approaches with a more attractive NP -P measure (such as UW-MRS and RoBox) are arguably more easily generalized to other domains, as they are less reliant on a planner. Additionally, the usual arguments for rule-based systems verses supervised statistical systems apply to any discussion on domain adaptation: rulebased systems require human manual effort, while supervised statistical systems required annotated data for the new domain.</p><p>In comparing the best two statistical systems (AT&amp;T and RoBox) it is interesting to note that these performed similarly with integrated planning (P = 87.35% and 86.80%, respectively), but differed considerably without planning (NP = 60.84% and 79.21%). As these two systems employed different parsers (a constituency parser and a CCG parser), it is difficult to perform a direct comparison to understand why the AT&amp;T system is more reliant on spatial context. It would also be interesting to understand, in further work, why the two CCG-based systems differed considerably in their P and NP scores.</p><p>It is also surprising that the best performing system, UW-MRS, suffered only a 2% drop in performance without using the planner, demonstrating clearly that in the majority of sentences in the evaluation data, spatial context is not actually required to perform semantic parsing. Although as shown by the NP -P scores, spatial context can dramatically boost performance of certain approaches for the task when used.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion and Future Work</head><p>This paper described a new task for SemEval: Supervised Semantic Parsing of Robotic Spatial Commands. Despite its novel nature, the task attracted high-quality submissions from six teams, using a variety of semantic parsing strategies.</p><p>It is hoped that this task will reappear at Se-mEval. Several lessons were learnt from this first version of the shared task which can be used to improve the task in future. One issue which several participants noted was the way in which the treebank was split into training and evaluation datasets. Out of the 3,409 sentences in the treebank, the first 2,500 sequential sentences were chosen for training. Because this data was not randomized, certain syntactic structures were only found during evaluation and were not present in the training data. Although this may have affected results, all participants evaluated their systems against the same datasets. Based on participant feedback, in addition to reporting P and NP-measures, it would also be illuminating to include a metric such as Parseval F1-scores to measure partial accuracy. An improved version of the task could also feature a better dataset by expanding the treebank, not only in terms of size but also in terms of linguistic structure. Many commands captured in the annotation game are not yet represented in RCL due to linguistic phenomena such as negation and conditional statements.</p><p>Looking forward, a more promising approach to improving the spatial planner could be probabilistic planning, so that semantic parsers could interface with probabilistic facts with confidence measures. This approach is particularly suitable for robotics, where sensors often supply noisy signals about the robot's environment.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Example scene with a contextual spatial command from the Robot Commands Treebank.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Integrated command understanding system.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Semantic tree from the treebank with an elliptical anaphoric node and its annotated antecedent.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig</head><label></label><figDesc>Fig.ure 5: A quantitative relation with a landmark.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Universal semantic elements in RCL.</figDesc><table><row><cell>Category</cell><cell>Values</cell></row><row><cell>Actions</cell><cell>move, take, drop</cell></row><row><cell></cell><cell>left, right, above, below,</cell></row><row><cell>Relations</cell><cell>forward, backward, adjacent, within, between, nearest, near,</cell></row><row><cell></cell><cell>furthest, far, part</cell></row><row><cell></cell><cell>left, leftmost, right, rightmost,</cell></row><row><cell>Indicators</cell><cell>top, highest, bottom, lowest, front, back, individual, furthest,</cell></row><row><cell></cell><cell>nearest, center</cell></row><row><cell></cell><cell>cube, prism, corner, board stack,</cell></row><row><cell>entity types</cell><cell>row, column, edge, tile, robot,</cell></row><row><cell></cell><cell>region, reference, type-reference</cell></row><row><cell>Colors</cell><cell>blue, cyan, red, yellow, green, magenta, gray, white</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Semantic categories customized for the task.</figDesc><table /></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>The author would like to thank the numerous volunteer annotators who helped develop the dataset used for the task using crowdsourcing, by participating in the online game-with-a-purpose.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Bootstrapping Semantic Parsers from Conversations</title>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Artzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="421" to="432" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Semantic parsing via paraphrasing</title>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Berant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference of the Association for Computational Linguistics, ACL</title>
+				<meeting>the Conference of the Association for Computational Linguistics, ACL</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1415" to="1425" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">A Procedure for Quantitatively Comparing the Syntactic Coverage of English Grammars</title>
+		<author>
+			<persName><forename type="first">Ezra</forename><surname>Black</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Abney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Flickinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claudia</forename><surname>Gdaniec</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the DARPA Speech and Natural Language Workshop</title>
+				<meeting>the DARPA Speech and Natural Language Workshop<address><addrLine>San Mateo, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1991" />
+			<biblScope unit="page" from="306" to="311" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Minimal Recursion Semantics: An Introduction</title>
+		<author>
+			<persName><forename type="first">Ann</forename><surname>Copestake</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Research on Language and Computation</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="281" to="332" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Frame Semantics in Text-to-Scene Generation. Knowledge-Based and Intelligent Information and Engineering Systems</title>
+		<author>
+			<persName><forename type="first">Bob</forename><surname>Coyne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Owen</forename><surname>Rambow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+			<publisher>Springer</publisher>
+			<biblScope unit="page" from="375" to="384" />
+			<pubPlace>Berlin</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Why Computers May Never Think Like People. Readings in the Philosophy of Technology</title>
+		<author>
+			<persName><forename type="first">Hubert</forename><surname>Dreyfus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stuart</forename><surname>Dreyfus</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">LOGICON: A System for Extracting Semantic Structure using Partial Parsing</title>
+		<author>
+			<persName><forename type="first">Kais</forename><surname>Dukes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Recent Advances in Natural Language Processing</title>
+				<meeting><address><addrLine>Borovets, Bulgaria</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="18" to="22" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Semantic Annotation of Robotic Spatial Commands</title>
+		<author>
+			<persName><forename type="first">Kais</forename><surname>Dukes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Language and Technology Conference</title>
+				<meeting>the Language and Technology Conference</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Train Robots: A Dataset for Natural Language Human-Robot Spatial Interaction through Verbal Commands</title>
+		<author>
+			<persName><forename type="first">Kais</forename><surname>Dukes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Social Robotics. Embodied Communication of Goals and Intentions Workshop</title>
+				<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<author>
+			<persName><forename type="first">Kais</forename><surname>Dukes</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1405.0145</idno>
+		<title level="m">Contextual Semantic Parsing using Crowdsourced Spatial Descriptions. Computation and Language</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>cs.CL</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">A Practical Semantic Representation For Natural Language Parsing</title>
+		<author>
+			<persName><forename type="first">Myroslava</forename><surname>Dzikovska</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+		<respStmt>
+			<orgName>University of Rochester</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">PhD Thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">RoBox: CCG with Structured Perceptron for Supervised Semantic Parsing of Robotic Spatial Commands</title>
+		<author>
+			<persName><forename type="first">Kilian</forename><surname>Evang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johan</forename><surname>Bos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Frame semantics for Text Understanding</title>
+		<author>
+			<persName><forename type="first">Charles</forename><surname>Fillmore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Collin</forename><surname>Baker</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of WordNet and Other Lexical Resources Workshop</title>
+				<meeting>WordNet and Other Lexical Resources Workshop</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Using String Kernels for Learning Semantic Parsers</title>
+		<author>
+			<persName><forename type="first">Rohit</forename><surname>Kate</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ray</forename><surname>Mooney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Computational Linguistics and Annual Meeting of the Association for Computational Linguistics, COL-ING-ACL</title>
+				<meeting>the International Conference on Computational Linguistics and Annual Meeting of the Association for Computational Linguistics, COL-ING-ACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="913" to="920" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Joint Entity and Relation Extraction using Card-Pyramid Parsing</title>
+		<author>
+			<persName><forename type="first">Rohit</forename><surname>Kate</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymond</forename><surname>Mooney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Computational Natural Language Learning, CoNLL</title>
+				<meeting>the Conference on Computational Natural Language Learning, CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="203" to="212" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Learning to Transform Natural to Formal Languages</title>
+		<author>
+			<persName><forename type="first">Rohit</forename><surname>Kate</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuk</forename><forename type="middle">Wah</forename><surname>Wong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymond</forename><surname>Mooney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the National Conference on Artificial Intelligence</title>
+				<meeting>the National Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="1062" to="1068" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">UWM: Applying an Existing Trainable Semantic Parser to Parse Robotic Spatial Commands</title>
+		<author>
+			<persName><forename type="first">Rohit</forename><surname>Kate</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Unsupervised PCFG Induction for Grounded Language Learning with Highly Ambiguous Supervision</title>
+		<author>
+			<persName><forename type="first">Joohyun</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymond</forename><surname>Mooney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</title>
+				<meeting>the Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</meeting>
+		<imprint>
+			<publisher>EMNLP-CoNLL</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="433" to="444" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Weakly Supervised Training of Semantic Parsers</title>
+		<author>
+			<persName><forename type="first">Jayant</forename><surname>Krishnamurthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Mitchell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</title>
+				<meeting>the Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</meeting>
+		<imprint>
+			<publisher>EMNLP-CoNLL</publisher>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Guiding a Reinforcement Learner with Natural Language Advice: Initial Results in RoboCup Soccer</title>
+		<author>
+			<persName><forename type="first">Gregory</forename><surname>Kuhlmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Workshop on Supervisory Control of Learning and Adaptive Systems</title>
+				<meeting>the AAAI Workshop on Supervisory Control of Learning and Adaptive Systems</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Scaling Semantic Parsers with On-the-fly Ontology Matching</title>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Kwiatkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eunsol</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Artzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<publisher>EMNLP</publisher>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Shrdlite: Semantic Parsing using a Handmade Grammar</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Ljunglöf</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">KUL-Eval: A Combinatory Categorial Grammar Approach for Improving Semantic Parsing of Robot Commands using Spatial Context</title>
+		<author>
+			<persName><forename type="first">Willem</forename><surname>Mattelaer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mathias</forename><surname>Verbeke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Davide</forename><surname>Nitti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">Anaphora Resolution: The State of the Art</title>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Mitkov</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1999" />
+		</imprint>
+		<respStmt>
+			<orgName>University of Wolverhampton</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">UW-MRS: Leveraging a Deep Grammar for Robotic Spatial Commands</title>
+		<author>
+			<persName><forename type="first">Woodley</forename><surname>Packard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Learning Accurate, Compact, and Interpretable Tree Annotation</title>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Computational Linguistics and the Annual Meeting of the Association for Computational Linguistics, COLING-ACL</title>
+				<meeting>the International Conference on Computational Linguistics and the Annual Meeting of the Association for Computational Linguistics, COLING-ACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="433" to="440" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Grounded Unsupervised Semantic Parsing</title>
+		<author>
+			<persName><forename type="first">Hoifung</forename><surname>Poon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference of the Association for Computational Linguistics, ACL</title>
+				<meeting>the Conference of the Association for Computational Linguistics, ACL</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="466" to="477" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">A Test of the Leaf-Ancestor Metric for Parse Accuracy</title>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Sampson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Babarczy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="365" to="380" />
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">AT&amp;T Labs Research: Tag&amp;Parse Approach to Semantic Parsing of Robot Spatial Commands</title>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Stoyanchev</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Using Multiple Clause Constructors in Inductive Logic Programming for Semantic Parsing</title>
+		<author>
+			<persName><forename type="first">Lappoon</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymond</forename><surname>Mooney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine Learning, ECML</title>
+				<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Approaching the Symbol Grounding Problem with Probabilistic Graphical Models</title>
+		<author>
+			<persName><forename type="first">Stefanie</forename><surname>Tellax</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011" />
+			<publisher>AI Magazine</publisher>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="64" to="76" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">TRIPS and TRIOS System for TempEval-2</title>
+		<author>
+			<persName><forename type="first">Naushad</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation, SemEval</title>
+				<meeting>the International Workshop on Semantic Evaluation, SemEval</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="276" to="283" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Understanding Natural Language</title>
+		<author>
+			<persName><forename type="first">Terry</forename><surname>Winograd</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognitive Psychology</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="191" />
+			<date type="published" when="1972" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Online Learning of Relaxed CCG Grammars for Parsing to Logical Form</title>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Collins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</title>
+				<meeting>the Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</meeting>
+		<imprint>
+			<publisher>EMNLP-CoNLL</publisher>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="878" to="887" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

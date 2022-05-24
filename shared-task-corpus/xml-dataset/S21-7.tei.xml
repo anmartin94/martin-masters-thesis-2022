@@ -1,0 +1,1471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2021 Task 7: HaHackathon, Detecting and Rating Humor and Offense</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Meaney</surname></persName>
+							<email>jameaney@ed.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Informatics</orgName>
+								<orgName type="institution">The University of Edinburgh</orgName>
+								<address>
+									<settlement>Edinburgh</settlement>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Steven</forename><forename type="middle">R</forename><surname>Wilson</surname></persName>
+							<email>steven.wilson@ed.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Informatics</orgName>
+								<orgName type="institution">The University of Edinburgh</orgName>
+								<address>
+									<settlement>Edinburgh</settlement>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Luis</forename><surname>Chiruzzo</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Universidad de la República</orgName>
+								<address>
+									<country key="UY">Uruguay</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Adam</forename><surname>Lopez</surname></persName>
+							<email>alopez@inf.ed.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Informatics</orgName>
+								<orgName type="institution">The University of Edinburgh</orgName>
+								<address>
+									<settlement>Edinburgh</settlement>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff2">
+								<address>
+									<settlement>Rasa</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Walid</forename><surname>Magdy</surname></persName>
+							<email>wmagdy@inf.ed.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Informatics</orgName>
+								<orgName type="institution">The University of Edinburgh</orgName>
+								<address>
+									<settlement>Edinburgh</settlement>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="institution">The Alan Turing Institute</orgName>
+								<address>
+									<settlement>London</settlement>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff4">
+								<address>
+									<addrLine>Mexican, Ireland, Irish, Indian, Chinese, Polish, German, France, Welsh, Vietnam, Asian, American</addrLine>
+									<settlement>Mexico</settlement>
+									<country>Pakistan, China, Russia</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2021 Task 7: HaHackathon, Detecting and Rating Humor and Offense</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>Sexism She</term>
+					<term>woman</term>
+					<term>mother</term>
+					<term>girl</term>
+					<term>b*tch</term>
+					<term>he</term>
+					<term>man</term>
+					<term>blond</term>
+					<term>p*ssy</term>
+					<term>hooker</term>
+					<term>slut</term>
+					<term>wh*re Body Fat</term>
+					<term>thin</term>
+					<term>skinny</term>
+					<term>tall</term>
+					<term>short</term>
+					<term>bald</term>
+					<term>amputee</term>
+					<term>redneck Arab</term>
+					<term>Jamaican</term>
+					<term>homeless Sexual Orientation Gay</term>
+					<term>lesbian</term>
+					<term>d*ke</term>
+					<term>f*ggot</term>
+					<term>homo</term>
+					<term>aids</term>
+					<term>LGBT</term>
+					<term>trans</term>
+					<term>tr*nny</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>SemEval 2021 Task 7, HaHackathon, was the first shared task to combine the previously separate domains of humor detection and offense detection. We collected 10,000 texts from Twitter and the Kaggle Short Jokes dataset, and had each annotated for humor and offense by 20 annotators aged 18-70. Our subtasks were binary humor detection, prediction of humor and offense ratings, and a novel controversy task: to predict if the variance in the humor ratings was higher than a specific threshold. The subtasks attracted 36-58 submissions, with most of the participants choosing to use pre-trained language models. Many of the highest performing teams also implemented additional optimization techniques, including task-adaptive training and adversarial training. The results suggest that the participating systems are well suited to humor detection, but that humor controversy is a more challenging task. We discuss which models excel in this task, which auxiliary techniques boost their performance, and analyze the errors which were not captured by the best systems.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Humor is a key component of many forms of communication, and so it is commanding an increasing amount of attention in the natural language processing (NLP) community <ref type="bibr" target="#b2">(Attardo, 2008;</ref><ref type="bibr" target="#b52">Taylor and Attardo, 2017;</ref><ref type="bibr" target="#b1">Amin and Burghardt, 2020)</ref>. However, like much of figurative language processing, humor detection requires a different perspective on several traditional NLP tasks. For example, the problem of reducing lexical or syntactic ambiguity differs when ambiguity is key to some humor mechanisms. Tackling these challenges has the potential to improve many downstream applications, such as content moderation and human-computer interaction <ref type="bibr" target="#b43">(Rayz, 2017)</ref>.</p><p>However, humor is a subjective phenomenon, which evokes varying degrees of funniness in its audience, while also provoking other reactions such as offense, in certain listeners. The perception of humor is known to vary along the lines of age, gender, personality and other factors <ref type="bibr" target="#b44">(Ruch, 2010;</ref><ref type="bibr" target="#b23">Kuipers, 2015;</ref><ref type="bibr" target="#b18">Hofmann et al., 2020)</ref>. That humor can also evoke offense may be partly due to differences in acceptability judgements across demographic groups, and may also be in part due the use of humor to mask hateful or offensive content <ref type="bibr" target="#b50">(Sue and Golash-Boza, 2013)</ref>. <ref type="bibr" target="#b28">Lockyer and Pickering (2005)</ref> expand on this by highlighting that it is common for societies to explore the link between humor and offense, free speech and respect.</p><p>HaHackathon is the first shared task to combine humor and offense detection, based on ratings from a wide variety of demographic groups. Task participants were asked to detect if a text was humorous and to predict its average ratings for both humor and offense. We also introduce a novel humor controversy detection task, which represents the extent to which annotators agreed/disagreed with each other over the humor rating of a joke. A humorous text was labelled as controversial if the variance in the humor ratings was higher than the median humor rating variance in the training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Computational humor detection is a relatively established area of research. <ref type="bibr" target="#b53">Taylor and Mazlack (2004)</ref> were one of the first to explore recognising wordplay with ngrams. <ref type="bibr" target="#b31">Mihalcea and Strapparava (2005;</ref><ref type="bibr" target="#b32">2006)</ref> experimented with 16,000 one-liners and 16,000 non-humorous texts, using a featuredriven approach. More recently, <ref type="bibr" target="#b55">Zhang and Liu (2014)</ref> turned to online domains, by detecting humor on Twitter with a view to improving downstream tasks such as sentiment analysis and opinion mining.</p><p>Workshops on humor detection have become more prominent with each shared task, and have attracted many new researchers to the field. Se-mEval 2017 <ref type="bibr" target="#b40">(Potash et al., 2017)</ref> featured Hashtag Wars, a humor task with a unique data annotation procedure. This task featured tweets that had been submitted in response to a number of comedic hashtags released by a Comedy Central program. The top-10 response tweets were selected by the show's producers and the winning tweet was selected by the show's audience. Based on these labels, (top-10, winning tweet, and other) the sub-tasks required competitors to predict the labels, and to predict which text was funnier, given a pair tweets. The winning systems were split between feature-driven support vector machines (SVMs) and recurrent neural networks (RNNs).</p><p>The first Spanish-language humor detection challenges were the HAHA tasks in 2018 <ref type="bibr" target="#b6">(Castro et al., 2018)</ref> and 2019 <ref type="bibr" target="#b7">(Chiruzzo et al., 2019)</ref>. These collected data from more than fifty different humorous Twitter accounts, representing a wide variety of humor genres. The sub-tasks asked competitors to predict if a text was humorous, and to predict the average funniness score given to the humorous texts. In the first year, the top teams used evolutionary algorithms to optimize linear models like Naive Bayes, as well as bi-directional RNNs. In the second year, the top teams started to use pre-trained language models (PLMs) like BERT <ref type="bibr" target="#b8">(Devlin et al., 2018)</ref> and ULMFit <ref type="bibr" target="#b20">(Howard and Ruder, 2018)</ref>.</p><p>Most recently, <ref type="bibr" target="#b19">Hossain et al. (2020)</ref> generated data for their task by collecting news headlines, and asking annotators to make a micro-edit to the headline to render it funny. These edited headlines were rated for funniness by other annotators. The sub-tasks were to rank the funnier of two edits, and to predict the average funniness score given by the annotators. The winning teams used ensembles of various PLMs, and RNNs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Collection</head><p>In order to examine naturally-occurring humorous and offensive content in English, we sourced 80% of our data from Twitter. The remaining 20% of texts, we selected from the Kaggle Short Jokes dataset 1 for the following reasons:  • Humor Quota: To ensure that a sample of texts in the dataset were intended to be humorous. Our annotation procedure asks raters if the intention of the text is to be humorous (as evidenced by the the setup/punchline structure, or absurd content). As the texts were sourced from the /r/jokes and /r/cleanjokes subreddits, we were confident that the intention of the text was to be humorous.</p><p>• Traditional Humor Quota: We wanted to represent jokes which have a traditional setup and punchline structure. Twitter humor is known to use a number of unique features <ref type="bibr" target="#b55">(Zhang and Liu, 2014)</ref>, which may not be equally recognisable to all annotators and so we wanted to have a selection of conventionally recognisable texts in order to gauge what the audience response was, and to use as a quality check for annotators (see below).</p><p>• Offense Quota: To ensure that a proportion of texts were likely to be considered offensive by the annotators, half of the texts selected according to the procedure below.</p><p>To select potentially offensive texts, we used some of the keywords associated with <ref type="bibr">Silva et al.'s (2016)</ref> sub-categories of hate speech in social media, and queried the Kaggle dataset for these.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Text</head><p>Keyword = Target A fat woman just served me at McDonalds and said "Sorry about the wait". I replied and said, "Don't worry, you'll lose it eventually". Yes Don't worry if a fat guy comes to kidnap you... I told Santa all I want for Christmas is you. No From these texts, we identified the target, or butt, of the joke and made the assumption that a text could be potentially offensive to our annotators if the hate speech keyword was the target of the joke. We selected 1,000 texts this way. We also assumed that the text would likely be considered not offensive if the keyword was mentioned, but was not the target and selected a further 1,000 texts like this. This was to reduce the probability that a humor/offense detection system would learn to classify texts simply based on the presence of a hate speech keyword.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.1">Selection of Twitter texts</head><p>In order to avoid introducing annotation confounds such as a lack of cultural or linguistic knowledge <ref type="bibr" target="#b30">(Meaney, 2020)</ref>, we selected the texts and the annotators from the same region -the US. When sourcing the humorous Twitter data, we selected accounts according to whether they were based in the US and posted almost exclusively humorous content (e.g. @humurous1liners, @conanobrien). For the non-humorous Twitter accounts, we elected not to use news sources, e.g. CNN due to stylistic differences between news and humor <ref type="bibr" target="#b32">(Mihalcea and Strapparava, 2006)</ref> making them easy to differentiate. The non-humorous accounts we selected centred on US celebrities (e.g. @thatonequeen, @Oprah), organisations that represent the targets of hate speech groups (e.g. @BlkMentalHealth, in order to increase the occurrences of the keywords in a non-humorous and non-offensive context), trivia accounts (e.g. @UberFacts, as the question and answer structure is similar to some types of setup and punchline) and tv/movie quotation accounts (e.g. @MovieQuotesPage, in order to resemble the dialogue-type jokes that are common on Twitter). Please see the appendix for a comprehensive list of accounts.</p><p>Using the Twitter API, we crawled up to 2,000 tweets from each account, and removed retweets and texts containing links. We also removed tweets that contained references to US Politics, the pandemic, or TV show characters as topical humor can be difficult to understand once the event it is tied to has passed <ref type="bibr" target="#b17">(Highfield, 2015)</ref>. From an initial 76,542 texts, we were left with 8,000 tweets. From these, we removed hashtags that labelled the texts as humorous, e.g. #joke, and using Ekphrasis <ref type="bibr" target="#b5">(Baziotis et al., 2017)</ref> we split up any remaining hashtags into their constituent words so as to make them less easy to differentiate from the Kaggle texts.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Annotation</head><p>We recruited annotators from the Prolific 2 platform. Participants were recruited based on their self-reported native English-speaker status, US citizenship, and membership of one of the following age groups: <ref type="bibr">18-25, 26-40, 41-55, 56-70</ref>. Each text was annotated by 5 members of each age group, giving a total of 20 annotations per text. Batches comprised 100 texts, and annotators answered the following questions:</p><p>1. Is the intention of this text to be humorous? 2. Is this text generally offensive?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Is this text personally offensive?</head><p>In the case that a user answered 'yes' to any of these questions, they were asked to rate the humor or offense from 1-5 (see figure <ref type="figure" target="#fig_0">1</ref>). For the humor rating, the user was also given the option to select 'I don't get it', meaning that they recognised by the structure or content that the text was intended to be humorous, but that they were unsure of why the text was funny. This is distinct from a rating of 1, which is a recognition of humor, with little appreciation for it.</p><p>The annotator instructions outlined that the first annotation question was intended to determine the genre of the text, and should be distinguished from funniness. Annotators were instructed to look at the structure of the joke, e.g. setup and punchline, or the content of the joke, e.g. absurdity, in order to determine if the intention was to be humorous.</p><p>In terms of offense, we posed two annotation questions in order to avoid ambiguity about which type of offense was meant. We instructed annotators to consider as generally offensive, a text which targets a person or group of people, simply for belonging to a certain group. Alternatively, they could select yes for generally offensive if they thought that a large number of people were likely to be offended by the joke. The last question asked annotators if they felt personally offended by the text, or if they felt offended on another person's behalf. We used only the generally offensive ratings in this task. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Quality Control and Data Discarded</head><p>Each batch of 100 texts comprised approximately 20% of texts from Kaggle. As the majority of these have a setup and punchline structure, or other recognisable humor traits, we used these as a quality control. If an annotator did not label at least 60% of these as humor, it was clear that they they did not follow the instructions for the first question, and annotated based on perceived humor, as opposed to observation of humorous characteristics. We therefore discarded these submissions and replaced the annotators. Of 2,364 annotation sessions (e.g. batches of 100), 301 submissions were discarded and replaced, and the ratings of the remaining 2,062 annotation sessions make up the dataset. Of these, 1,569 annotators rated one batch of texts with an additional 492 doing a second batch.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Data Statistics</head><p>Post-annotation, we classed a text as humorous if the majority of its twenty votes labelled it as such. In a small number of cases where votes were tied, we assigned the label humorous. For the texts labelled humorous, we calculated the average humor score, which was the average of the numerical votes. "No" ratings did not count towards this value, and votes of "I don't know" were counted as 0, because this was deemed to be a recognizable humor structure, but one in which the humor was not successful.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Label</head><p>Affirmative  The humor controversy label was based on whether the variance between the humor ratings was higher or lower than the median variance in the training set (median s 2 = 1.79). The offense rating was the average of all ratings given, including 'no' as 0. Table <ref type="table" target="#tab_4">3</ref> summarises the labels in the dataset, and in the case of offense, affirmative indicates that the rating is higher than 0.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Ratings</head><p>Krippendorff's α Class label 0.736 Humor rating 0.124 Offense rating 0.518 The dataset was split 80:10:10 for training, development and test sets. The texts and annotations will continue to be available on the Codalab website, and the tweet ids, and usernames will be retained for non-commercial research use, in line with the Twitter Academic Developer Policy.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Task Description and Evaluation</head><p>We divided our tasks into four subtasks.</p><p>Task 1a: Humor Detection This was a binary classification task to detect, given a text, if the majority label assigned to it was humorous or not. This was evaluated using F-score for the humorous class and overall accuracy Accuracy = C N +'213' − * 'F 1 = 2 * P recision × Recall P recision + Recall Task 1b: Humor Rating Prediction This was a humor rating regression task. Participants predicted the average rating given to texts from 0-5. Texts which had not been labelled as humorous by our annotators did not have a humor rating, and predictions for these texts were not counted towards the final score by our scoring system. The metric for this task was root mean squared error (RMSE).</p><formula xml:id="formula_0">RM SE = n i=1 y i −ŷ i N 2</formula><p>Task 1c: Humor Controversy Detection This task was also a binary classification task to predict whether the humor ratings given to the text showed it to be controversial or not. This was based on the variance in the ratings being higher or lower than the median variance in the training set humor ratings. This was also evaluated using F-score and accuracy.</p><p>Task 2: Offense Detection This was an offense rating regression task. Unlike the humorous task, this rating was not dependent on the text having been labelled as humorous. All annotator ratings were considered, and each text had a rating from 0-5. The metric was RMSE.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Benchmark Systems</head><p>We created simple, linear benchmarks using sklearn <ref type="bibr" target="#b39">(Pedregosa et al., 2011)</ref> for the classification tasks which consists of a Naive Bayes classifier with bag of words features. For the regression tasks, we used a support vector regressor with term-frequency inverse document frequency features.</p><p>We also built a BERT-base classification/regression model which was run for one epoch, with a batch size of 16 and a learning rate of 5e-5, for all sub-tasks. As this system out-performed the linear benchmarks on all sub-tasks, we refer to this as the baseline in the rest of the paper.</p><p>6 Participant Systems</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Overview</head><p>In total 63 teams submitted systems for the different tasks: 58 for task 1a, 50 for task 1b, 36 for task 1c and 48 for task 2. Tables <ref type="table" target="#tab_7">5, 6</ref>  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Highest Ranking Systems</head><p>The top-ranking teams were selected based on Fscore, in the case of a tie in accuracy score. The top-10 made extensive use of pre-trained language models such as BERT, ERNIE 2.0 <ref type="bibr" target="#b51">(Sun et al., 2020)</ref>, ALBERT <ref type="bibr" target="#b25">(Lan et al., 2019)</ref>, DeBERTa <ref type="bibr" target="#b16">(He et al., 2020)</ref> or RoBERTa <ref type="bibr" target="#b27">(Liu et al., 2019)</ref>. Ensembling these models by majority voting or averaging scores proved to be a popular and useful approach.   Similarly, many teams experimented with single and multi-task learning setups, and multi-task models tended to be more successful across sub-tasks. Further improvements were achieved with domain adaptation strategies and adversarial training. <ref type="bibr" target="#b49">(Song et al., 2021)</ref> DeepBlueAI achieved high performance in subtasks 1a and 2. This team used stacked transformer models, which used the majority vote (in the case of classification) or the average prediction (for regression) from a RoBERTa and an ALBERT model. They optimized the performance of these PLMs with a number of techniques. First, they employed task-adaptive fine-tuning (Gururangan et al.  Hackathon data. They then augmented the dataset by using pseudo-labelling to generate labels for the test set, and added these to the training data. Then, after encoding the input, they used adversarial training <ref type="bibr" target="#b33">(Miyato et al., 2016)</ref>, e.g. the addition of perturbations to the embedding layer, to improve generalization. The predictions were produced after Multi Sample Dropout was applied. This approach achieved third place in task 1a and first place in task 2. <ref type="bibr">(Pang et al., 2021)</ref> This team deployed ERNIE 2.0 in a multi-task setup with task-specific gradients and loss for each sub-task. Using a cross-validation approach, they fine-tuned their model on each fold of data and took the average, or majority decision of their bestperforming models as their predictions. Experiments demonstrated that their multi-task setup performed better than single-task learning with ERNIE 2.0, and they achieved the best score in task 1b. <ref type="bibr" target="#b14">(Gupta et al., 2021)</ref> This team also experimented with single-task and multi-task learning on pre-trained language models. They implemented two ensembling methods: in the single-task setup, they concatenated the embeddings produced by BERT, RoBERTa, ERNIE 2.0, DeBERTA and XLNET. In the multitask setup, they used vote-based classification, or a weighted aggregate of outputs for the regression tasks. They also implemented an ensemble comprising a weighted average of best single-task and multi-task models, which achieved third place on task 1b. Interestingly, this team's experiments on data augmentation, e.g. generating slightly different variations of the input sentences, disimproved performance. The team hypothesize that the impact of both humor and offense often hinges on the choice of specific words, and replacing these words with synonyms may undermine the humorous or offensive effect. <ref type="bibr" target="#b10">(Faraj and Abdullah, 2021)</ref> For tasks 1a, 1b and 2, this team used either BERT or RoBERTa models with different hyperparameters, and used an ensemble of these models to make predictions with hard (e.g. majority or average) voting. Interestingly, for task 1c, in which they placed third, they used a rule, that if the humor rating predicted for a text was greater or equal to 3, they labelled the text as controversial.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.1">DeepBlueAI</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.2">abcbpc</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.3">Humor@IITK</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.4">SarcasmDet</head><p>6.2.5 HumorHunter  This team used DeBERTa with an embedding table which took into account the relative position of each token in the sentence. In an error analysis, they noted that texts with a question and answer were more often misclassified as humorous, possibly because this mimics the structure of a setup and punchline.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.6">Others</head><p>PALI and stce, the top-ranking teams in task 1a, both used an ensemble of RoBERTa large, and ERNIE 2.0, but declined to submit a paper outlining further details. Similarly, the team named mmmm, which placed 2nd in both task 1b and 1c, did not furnish details of their approach.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3">Trends</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3.1">Domain Adaptation</head><p>Given that the majority of the data was sourced from Twitter, several teams implemented domain adaptation strategies at different stages of their pipeline. YoungSheldon <ref type="bibr" target="#b45">(Sharma et al., 2021)</ref> used the Ekphrasis <ref type="bibr" target="#b5">(Baziotis et al., 2017</ref>) toolkit, which is designed for Twitter-specific preprocessing. DLJUST <ref type="bibr" target="#b0">(Al-Omari et al., 2021)</ref> also used it in their preprocessing pipeline, and found that this achieved better results, when used in combination with some further manual spelling correction.</p><p>Domain-specific models also showed some performance improvements. UPB <ref type="bibr">(Smȃdu et al., 2021</ref><ref type="bibr">) used BERTweet (Nguyen et al., 2020</ref>, a transformer-based language model trained on tweets for their embedding layer, and DLJUST found that this model gave slightly better performance than RoBERTa on subtask 1a, but not on the regression tasks.</p><p>Amherst685 <ref type="bibr" target="#b12">(Gugnani et al., 2021)</ref> used intermediate fine-tuning to adapt a series of pre-trained models to the style of language used in humorous and offensive texts. They used two large humor datasets, and two offense datasets, to adapt a variety of transformer models to the task, however, they did not see performance gains from this. Similarly to DeepBlueAI, RoMa <ref type="bibr" target="#b24">(Labadie et al., 2021)</ref> and IIITH <ref type="bibr" target="#b41">(Raha et al., 2021)</ref> used task-adaptive pre-training, and the latter team saw performance improvements of 1-5%.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3.2">Data Augmentation/Perturbation</head><p>Similarly to DeepBlueAI, MagicPai <ref type="bibr" target="#b29">(Ma et al., 2021)</ref> experimented with pseudo-labelling in order to increase the amount of data available. MagicPai also tried adversarial training by adding perturbations to the embedding layer, and along with Grenzlinie <ref type="bibr" target="#b26">(Liu and Zhou, 2021)</ref> and UPB, found this to improve their transfer learning models' performance. Amherst685 tried backtranslation in order to generate more sample texts, however they found that this was not successful.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3.3">Contrasting Models and Task Setup</head><p>The majority of teams who contrasted RNNs with PLMs found that the latter was more suited to this task. ES-JUST (Bashabsheh and Alasal, 2021) found that RoBERTa performed better than RNNs and BERT. This finding replicates the ablation study by <ref type="bibr" target="#b36">Morishita et al. (2020)</ref> in the 2020 SemEval task, which also demonstrated that RoBERTa performed better than other PLMs. However Tsia <ref type="bibr" target="#b11">(Guan, 2021)</ref> found that RoBERTa was better suited to the regression task, and combining BERT+CNN gave better performance on the classification task. This contrasts with YoungSheldon, who achieved their best results with BERT-Base. Across all cases, we did not observe a single dominant architecture, indicating that the choice of hyperparamters and task setup played a large role in the results achieved by each team. However, teams like CS-UM6P <ref type="bibr" target="#b9">(Essefar et al., 2021)</ref>, who contrasted single and multi-task learning setups, found that the latter improved performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.4">Other notable approaches</head><p>DUTH <ref type="bibr">(Karasakalidis et al., 2021)</ref> produced a rigorous examination of different preprocessing approaches applied to data given to linear and neural models. They achieved an impressive 12th place on task 1b, with a combination of Light Gradient Boosting Machine (LGBM), XGBoost and Bayesian Ridge. They also achieved 12th place in task 1c using a combination of features such as POS-tagging, numerical features, a bigram term frequency inverse document frequency (TF-IDF) vectorizer as input to an LGBM model.</p><p>The utility of TF-IDF features was also seen in the transfer learning approaches as team hub also found that adding TF-IDF features improved the performance of their ALBERT/BERT+CNN models.</p><p>IIITH found that including lexical features such as letter and punctuation counts, named entities marking, identifying personal pronouns, wh-words and question marks, as well as a lexicon of hurtful words (Hurtlex, <ref type="bibr" target="#b4">Bassignana et al., 2018)</ref> improved the performance of their task-adaptively pre-trained RoBERTa model for detecting humor and predicting the rating, but that only the Hurtlex features improved offense detection, and neither of these improved controversy prediction.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Analysis and Discussion</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.1">Correlations between Tasks</head><p>As Table <ref type="table" target="#tab_13">9</ref> indicates, humor rating is moderately correlated with humor controversy across the dataset. There are no discernible trends in offense rating and humor controversy. Interestingly, there is a moderate negative correlation between humor and offense rating overall, but this is not significant for the Twitter data, and becomes a much stronger negative correlation when we look at just the Kaggle data. This may have be a factor in the finding that multi-task setups tended to achieve better results that single-task systems. It may also suggest that in naturally occurring data, such as the Twitter texts, the relationship between humor and offense may be more subtle, and therefore more difficult to detect.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2">Differences between Kaggle Texts and Tweets</head><p>As seen in tables 5, 6 and 7, the systems' performance for subtasks 1a, 1b and 1c seems to be consistently better for Kaggle texts than for tweets. One possible reason why systems are better at predicting humor from Kaggle texts, is that the Kaggle test set contains almost all humorous texts, while only about half of the tweets are considered humorous.</p><p>On the other hand, performance for task 2 is consistently better (lower RMSE) for tweets than for Kaggle texts, and the differences are sometimes very large. We noticed the distributions of offense ratings between Kaggle texts and tweets are very different, with tweets being more often classified as not offensive: more than 60% of the tweets have 0.1 offense rating or less (in a scale from 0 to 5), while less than 10% of the Kaggle texts do. This difference in distribution might in part come from differences in sampling methods, because some Kaggle texts were specifically selected to have certain offensive categories, while the tweets were selected at random. In order to check if the difference in scores could come from the difference in offense rating distributions, we resampled a subset of tweets from the Kaggle set and another one from the Twitter set, trying to keep a uniform offense rating distribution, and calculated task 2 scores for those subsets. The difference between scores for these new subsets was much lower for all teams, and even some of the teams got better scores for the Kaggle subset, which might be an indication that the sharp differences in score were caused by the difference in distributions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.3">Error Analysis: Humans and Machines vs Irony</head><p>Several interesting issues arise when analyzing the top-ten systems' errors. Irony continues to be a challenging problem, both at the annotation side, and the classification side. Several texts which were sourced from humorous accounts, and which had just less than a majority of annotator votes for humorous were classed as not-humorous in our dataset. In the following two examples, all of the top-10 systems classed this as humorous, and arguably, they are intended to be humorous, even though the majority of annotators technically did not class them as such.</p><p>1. What do you call a homosexual man on a wheel chair? A human being 2. It's almost like I gotta keep myself busy with random things like fluffing pillows just so I don't over eat.</p><p>The first example is an ironic subversion of a homophobic joke, using incongruity to undermine the anticipated punchline. While it is possible that the setup and punchline structure is what misled the system, similar question and answer structures were correctly classified.</p><p>The second example is arguably sarcasm, and all of the top systems classified it as humor, even though the annotators did not. However, there were several other texts which were classed as humorous by the annotators, and which demonstrate traits of irony or sarcasm, were difficult to classify for the top teams, and produced mixed results:</p><p>1. If alcohol influences short-term memory, what does alcohol do? 2. How much should I rest between sets at the gym? I've been doing anywhere between 60 to 90 days to give my muscles a good chance to recover.</p><p>In terms of tasks 1b and 2, we analyzed the texts which proved most difficult to predict the humor and offense ratings for the top-10 systems. We calculated the mean average error (MAE) between the top 10 systems' predictions and the ground truth. We then examined the 75th percentile of MAE.  Interestingly, there was a disproportionately high number of Kaggle texts among the offensive texts whose rating was difficult to predict (44.8% while the Kaggle text make up only 20% of the data). A quick examination of these texts revealed there was a large number of ironic texts which were predicted to be highly offensive, although the ground truth did not reflect this, for example: Why do black people eat fried chicken? Because it tastes good.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.4">Humor Controversy</head><p>As we were interested in the rule-based approach that team SarcasmDet took for this task, we investigated the upper-bound of success for any thresholdbased heuristic which determines whether a text was controversial given the humor score alone. Figure <ref type="figure">2</ref> shows the hypothetical F1-score and accuracy that could be achieved by such a system. Assuming a perfect score on humor rating prediction, if teams assigned a controversial label for any text with a humor rating of over 2, they could achieve first place in this task in terms of accuracy with a score of 0.580. A threshold of 1.45 given perfect knowledge of the humor labels would result f1-score accuracy Figure <ref type="figure">2</ref>: For varied values of a threshold, τ , accuracy and f1-score achieved by a hypothetical model predicting the label controversial for all texts in the test set with ground-truth humor score &gt; τ . Note that participants did not have access to these ground-truth scores for the test set, making these results an upper-bound for this type of threshold-based approach.</p><p>in a leaderboard-topping F1-score of 0.635. However, the teams that took part did not obtain the perfect humor rating scores required for this simple rule to work so effectively, yet were still able to achieve similar scores on the task. This suggests that their systems were learning something, but that ultimately the task is a difficult one.</p><p>Although we aimed to increase inter-annotator agreement in this task's annotation procedure, by matching the origin of the texts and annotators, the agreement on humor ratings was low, and indeed the task which aimed to capture this controversy proved difficult.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>We provided 10,000 texts annotated for humor and offense by a broad range of annotators. Transformer models were a dominant approach to this task, with the exception of the humor controversy task, which proved to be difficult for most teams, and in which a simple, rule-based system achieved one of the top-3 scores. As multi-task learning setups proved more effective than single-task learning demonstrates, this that there is some correlation between humor and offense detection. It was also interesting to note which model adaptations were useful and which were not. Finally, an analysis of the errors in humor analysis reveals some types of humor which may be captured inaccurately, even by the most powerful models.  </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Screenshot from the tool used to annotate the texts.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Targets and Sample Keywords</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Sample of potentially offensive and non-offensive texts</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Data Statistics</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Inter-annotator agreement (Krippendorff's α) for ratings used in subtask 1a, 1b and 2</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head></head><label></label><figDesc>, 7 and 8 show the highest results for each task, with performance broken down by subsets of texts from the Kaggle jokes dataset and from Twitter. -*/</figDesc><table><row><cell>Team</cell><cell>Acc</cell><cell>F1</cell><cell>Kaggle F1</cell><cell>Twitter F1</cell></row><row><cell>PALI</cell><cell cols="4">0.9820 0.9854 0.9949 0.9811</cell></row><row><cell>stce</cell><cell cols="4">0.9750 0.9797 0.9871 0.9764</cell></row><row><cell>DeepBlueAI</cell><cell cols="4">0.9600 0.9676 0.9949 0.9551</cell></row><row><cell>SarcasmDet</cell><cell cols="4">0.9600 0.9675 0.9949 0.9548</cell></row><row><cell cols="5">mengyuan jiayi 0.9590 0.9667 0.9871 0.9574</cell></row><row><cell>stevenhuahua</cell><cell cols="4">0.9580 0.9666 0.9949 0.9538</cell></row><row><cell>zain</cell><cell cols="4">0.9580 0.9663 0.9949 0.9534</cell></row><row><cell>EndTimes</cell><cell cols="4">0.9570 0.9655 0.9897 0.9545</cell></row><row><cell>MagicPai</cell><cell cols="4">0.9570 0.9653 0.9897 0.9542</cell></row><row><cell>Meizizi</cell><cell cols="4">0.9570 0.9653 0.9871 0.9554</cell></row><row><cell>mmmm</cell><cell cols="4">0.9560 0.9647 0.9923 0.9523</cell></row><row><cell cols="5">baseline (BERT) 0.911 0.9283 0.9949 0.8978</cell></row><row><cell cols="5">baseline (Linear) 0.8570 0.8840 0.9792 0.8410</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Results of the top performing systems for participants of task 1a (humor detection), showing F1 and accuracy for the whole test set, and F1 for Kaggle texts only and tweets only.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 6 :</head><label>6</label><figDesc>Results of the top performing systems for participants of task 1b (humor rating), showing RMSE for whole test set, for Kaggle texts only and tweets only.</figDesc><table><row><cell>Team</cell><cell>Acc</cell><cell>F1</cell><cell>Kaggle F1</cell><cell>Twitter F1</cell></row><row><cell>PALI</cell><cell cols="4">0.4943 0.6302 0.6667 0.6118</cell></row><row><cell>mmmm</cell><cell cols="4">0.4699 0.6279 0.6621 0.6109</cell></row><row><cell>SarcasmDet</cell><cell cols="4">0.4699 0.6270 0.6552 0.6130</cell></row><row><cell>EndTimes</cell><cell cols="4">0.4602 0.6261 0.6598 0.6097</cell></row><row><cell>DeepBlueAI</cell><cell cols="4">0.4650 0.6257 0.6621 0.6078</cell></row><row><cell>CS-UM6P</cell><cell cols="4">0.4537 0.6242 0.6598 0.6070</cell></row><row><cell>CHaines</cell><cell cols="4">0.4537 0.6242 0.6598 0.6070</cell></row><row><cell>Ferryman</cell><cell cols="4">0.4537 0.6242 0.6598 0.6070</cell></row><row><cell>IIITH</cell><cell cols="4">0.4537 0.6242 0.6598 0.6070</cell></row><row><cell>abcbpc</cell><cell cols="4">0.4537 0.6242 0.6598 0.6070</cell></row><row><cell>fdabek</cell><cell cols="4">0.4537 0.6233 0.6598 0.6057</cell></row><row><cell cols="5">YoungSheldon 0.4780 0.6210 0.6545 0.6049</cell></row><row><cell>Humor@IITK</cell><cell cols="4">0.4520 0.6209 0.6574 0.6033</cell></row><row><cell>RoMa</cell><cell cols="4">0.4732 0.6197 0.6503 0.6042</cell></row><row><cell cols="5">baseline (BERT) 0.4731 0.6232 0.6574 0.6060</cell></row><row><cell cols="5">baseline (SVM) 0.4374 0.4624 0.4804 0.4529</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 7 :</head><label>7</label><figDesc>Results of the top performing systems for participants of task 1c (humor controversy), showing F1 and accuracy for the whole test set, and F1 for kaggle texts only and tweets only.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 8 :</head><label>8</label><figDesc>Results of the top performing systems for participants of task 2 (offense rating), showing RMSE for whole test set, for kaggle texts only and tweets only.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 9</head><label>9</label><figDesc></figDesc><table><row><cell>: Correlations between tasks, Pearson's r and</cell></row><row><cell>p-value</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 10 :</head><label>10</label><figDesc>Percentage of texts with highest MAE from the different sources</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_17"><head>Table 12 :</head><label>12</label><figDesc>Top system for each participant for all subtasks.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://www.prolific.co/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This work was supported in part by the EPSRC Centre for Doctoral Training in Data Science, funded by the UK Engineering and Physical Sciences Research Council (grant EP/L016427/1) and the University of Edinburgh. The authors also wish to thank William J. Toner who acted as a last-minute Idea Bouncer.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Appendices</head></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">DLJUST at SemEval-2021 Task 7: Hahackathon: Linking Humor and Offense Across Different Age Groups</title>
+		<author>
+			<persName><forename type="first">Hani</forename><surname>Al-Omari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rehab</forename><surname>Isra'a Abedulnabi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Duwairi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">A survey on approaches to computational humor generation</title>
+		<author>
+			<persName><forename type="first">Miriam</forename><surname>Amin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuel</forename><surname>Burghardt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the The 4th Joint SIGHUM Workshop on Computational Linguistics for Cultural Heritage, Social Sciences, Humanities and Literature</title>
+				<meeting>the The 4th Joint SIGHUM Workshop on Computational Linguistics for Cultural Heritage, Social Sciences, Humanities and Literature</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="29" to="41" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">A Primer for the Linguistics of Humor. The Primer of Humor Research</title>
+		<author>
+			<persName><forename type="first">Salvatore</forename><surname>Attardo</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page" from="101" to="156" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">ES-JUST at SemEval-2021 Task 7: Detecting and Rating Humor and Offensive Text Using Deep Learning</title>
+		<author>
+			<persName><forename type="first">Al</forename><surname>Emran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sanaa</forename><surname>Bashabsheh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Hurtlex: A multilingual Lexicon of Words to Hurt</title>
+		<author>
+			<persName><forename type="first">Elisa</forename><surname>Bassignana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Valerio</forename><surname>Basile</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Viviana</forename><surname>Patti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">5th Italian Conference on Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">2253</biblScope>
+			<biblScope unit="page" from="1" to="6" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">DataStories at SemEval-2017 Task 4: Deep LSTM with Attention for Message-level and Topic-based Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Baziotis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikos</forename><surname>Pelekis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Doulkeridis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017)</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation (SemEval-2017)<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="747" to="754" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Overview of the HAHA Task: Humor Analysis Based on Human Annotation at IberEval</title>
+		<author>
+			<persName><forename type="first">Santiago</forename><surname>Castro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luis</forename><surname>Chiruzzo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aiala</forename><surname>Rosá</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IberEval@ SEPLN</title>
+				<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="187" to="194" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Overview of HAHA at IberLEF 2019: Humor Analysis based on Human Annotation</title>
+		<author>
+			<persName><forename type="first">Luis</forename><surname>Chiruzzo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Santiago</forename><surname>Castro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mathias</forename><surname>Etcheverry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diego</forename><surname>Garat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan José</forename><surname>Prada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aiala</forename><surname>Rosá</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IberLEF@ SE-PLN</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="132" to="144" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">CS-UM6P at SemEval-2021 Task 7: Deep Multi-Task Learning Model for Detecting and Rating Humor and Offense</title>
+		<author>
+			<persName><forename type="first">Kabil</forename><surname>Essefar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdellah</forename><forename type="middle">El</forename><surname>Mekki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdelkader</forename><forename type="middle">El</forename><surname>Mahdaouy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ismail</forename><surname>Nabil El Mamoun</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Berrada</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">SarcasmDet at SemEval-2021 Task 7: Detect Humor and Offensive based on Demographic Factors using RoBERTa Pretrained Model</title>
+		<author>
+			<persName><forename type="first">Dalya</forename><surname>Faraj</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Malak</forename><surname>Abdullah</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Detecting and Rating Humor and Offense</title>
+		<author>
+			<persName><forename type="first">Zhengyi</forename><surname>Guan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+			<biblScope unit="volume">7</biblScope>
+		</imprint>
+	</monogr>
+	<note>Tsia at SemEval-2021 Task</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Akshay</forename><surname>Gugnani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brian</forename><surname>Zylich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gabriel</forename><surname>Brookman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicholas</forename><surname>Samoray</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Amherst685 at</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Joint Modeling of Classification and Regression for Humor and Offense</title>
+		<idno>SemEval-2021 Task 7</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Humor@IITK at SemEval-2021 Task 7: Large Language Models for Quantifying Humor and Offensiveness</title>
+		<author>
+			<persName><forename type="first">Aishwarya</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Avik</forename><surname>Pal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bholeshwar</forename><surname>Khurana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lakshay</forename><surname>Tyagi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">2020. Don&apos;t stop pretraining: Adapt language models to domains and tasks</title>
+		<author>
+			<persName><forename type="first">Ana</forename><surname>Suchin Gururangan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Swabha</forename><surname>Marasović</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Swayamdipta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iz</forename><surname>Lo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Doug</forename><surname>Beltagy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Downey</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Smith</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.740</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Online. Association for Computational Linguistics</publisher>
+			<biblScope unit="page" from="8342" to="8360" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">Pengcheng</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodong</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfeng</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weizhu</forename><surname>Chen</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2006.03654</idno>
+		<title level="m">DeBERTa: Decodingenhanced BERT with Disentangled Attention</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Highfield</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Tweeted Joke Lifespans and Appropriated Punchlines: Practices around Topical Humor on Social Media</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="page">22</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Gender Differences in Humor-Related Traits, Humor Appreciation, Production, Comprehension,(Neural) Responses, Use, and Correlates: A Systematic Review</title>
+		<author>
+			<persName><forename type="first">Jennifer</forename><surname>Hofmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tracey</forename><surname>Platt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chloe</forename><surname>Lau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><surname>Torres-Marín</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Current Psychology</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="14" />
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<author>
+			<persName><forename type="first">Nabil</forename><surname>Hossain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Krumm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Gamon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henry</forename><surname>Kautz</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2008.00304</idno>
+		<title level="m">SemEval-2020 Task 7: Assessing humor in Edited News Headlines</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Universal Language Model Fine-tuning for Text Classification</title>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Howard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Ruder</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1801.06146</idno>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Alexandros</forename><surname>Karasakalidis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dimitrios</forename><surname>Effrosynidis</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+	<note>and Avi Arampatzis. 2021. DUTH at SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Is Conventional Machine Learning for Humorous and Offensive Tasks enough in 2021?</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">The Humor Divide: Class, Age and Humor Styles</title>
+		<author>
+			<persName><forename type="first">Giselinde</forename><surname>Kuipers</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Good Humor, Bad Taste</title>
+				<imprint>
+			<publisher>De Gruyter Mouton</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="71" to="101" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Dual Transformer for Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Labadie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mariano</forename><surname>Rodriguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reynier</forename><surname>Ortega</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<author>
+			<persName><forename type="first">Zhenzhong</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Goodman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Gimpel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piyush</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1909.11942</idno>
+		<title level="m">ALBERT: A Lite BERT for Self-supervised Learning of Language Representations</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Grenzlinie at SemEval-2021 Task 7: HaHackathon Detecting and Rating Humor and Offense</title>
+		<author>
+			<persName><forename type="first">Renyuan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaobing</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">RoBERTa: A robustly optimized BERT pretraining approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Beyond a Joke: The Limits of Humour</title>
+		<author>
+			<persName><forename type="first">Sharon</forename><surname>Lockyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Pickering</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+			<publisher>Springer</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">MagicPai at SemEval-2021 Task 7: Method for Detecting and Rating Humor Based on Multi Task Adversarial Training</title>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuyi</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiang</forename><surname>Lianxin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Stark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mo</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianping</forename><surname>Shen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Crossing the line: Where do demographic variables fit into humor detection?</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Meaney</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-srw.24</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop</title>
+		<title level="s">Online. Association for Computational Linguistics</title>
+		<meeting>the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="176" to="181" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Making Computers Laugh: Investigations in Automatic Humor Recognition</title>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlo</forename><surname>Strapparava</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Human Language Technology Conference and Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>Human Language Technology Conference and Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="531" to="538" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Learning to Laugh (Automatically): Computational Models for Humor Recognition</title>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlo</forename><surname>Strapparava</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="126" to="142" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Takeru</forename><surname>Miyato</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Andrew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ian</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Goodfellow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title/>
+	</analytic>
+	<monogr>
+		<title level="j">Adversarial Training Methods for</title>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<idno type="arXiv">arXiv:1605.07725</idno>
+		<title level="m">Semi-supervised Text Classification</title>
+				<imprint/>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Hitachi at SemEval-2020 task 8: Simple but effective modality ensemble for meme emotion recognition</title>
+		<author>
+			<persName><forename type="first">Terufumi</forename><surname>Morishita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gaku</forename><surname>Morio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shota</forename><surname>Horiguchi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroaki</forename><surname>Ozaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toshinori</forename><surname>Miyoshi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fourteenth Workshop on Semantic Evaluation<address><addrLine>Barcelona</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="1126" to="1134" />
+		</imprint>
+	</monogr>
+	<note>International Committee for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">BERTweet: A pre-trained language model for English Tweets</title>
+		<author>
+			<persName><forename type="first">Thanh</forename><surname>Dat Quoc Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anh</forename><forename type="middle">Tuan</forename><surname>Vu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nguyen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="9" to="14" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">2021. abcbpc at SemEval-2021 Task 7: ERNIE-based Multi-task Model for Detecting and Rating Humor and Offense</title>
+		<author>
+			<persName><forename type="first">Chao</forename><surname>Pang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaoran</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weiyue</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuyi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuohuan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiaxiang</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuan</forename><surname>Ouyang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shikun</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Sun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Scikit-learn: Machine Learning in Python</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pedregosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Varoquaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gramfort</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Michel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Thirion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Grisel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Blondel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Prettenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Weiss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Dubourg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Vanderplas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Passos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Cournapeau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Brucher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Perrot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Duchesnay</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="2825" to="2830" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">SemEval-2017 Task 6: #Hashtagwars: Learning a Sense of Humor</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Potash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Romanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Rumshisky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017)</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation (SemEval-2017)</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="49" to="57" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Tathagata</forename><surname>Raha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ishan</forename><surname>Sanjeev Upadhyay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radhika</forename><surname>Mamidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vasudeva</forename><surname>Varma</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>IIITH at</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Leveraging Transformerbased Humourous and Offensive Text Detection Architectures using Lexical and Hurtlex Features along with Task Adaptive Pretraining</title>
+		<idno>SemEval-2021 Task 7</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">In Pursuit of Human-Friendly Interaction with a Computational System: Computational Humor</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">T</forename><surname>Rayz</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/SAMI.2017.7880297</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2017 IEEE 15th International Symposium on Applied Machine Intelligence and Informatics (SAMI)</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="15" to="000020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<monogr>
+		<title level="m" type="main">The Sense of Humor: Explorations of a Personality Characteristic</title>
+		<author>
+			<persName><forename type="first">Willibald</forename><surname>Ruch</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+			<publisher>Walter de Gruyter</publisher>
+			<biblScope unit="volume">3</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">YoungSheldon at SemEval-2021 Task 7: Fine-tuning Is All You Need</title>
+		<author>
+			<persName><forename type="first">Mayukh</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kandasamy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W B</forename><surname>Vasantha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Analyzing the Targets of Hate in Online Social Media</title>
+		<author>
+			<persName><forename type="first">Leandro</forename><surname>Silva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mainack</forename><surname>Mondal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Denzil</forename><surname>Correa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabrício</forename><surname>Benevenuto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ingmar</forename><surname>Weber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International AAAI Conference on Web and Social Media</title>
+				<meeting>the International AAAI Conference on Web and Social Media</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">10</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<author>
+			<persName><forename type="first">Rȃzvan-Alexandru</forename><surname>Smȃdu</surname></persName>
+		</author>
+		<title level="m">Dumitru-Clementin Cercel, and Mihai Dascalu. 2021. UPB at SemEval-2021</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Adversarial Multi-Task Learning for Detecting and Rating Humour and Offence</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">DeepBlueAI at SemEval-2021 Task 7: Detecting and Rating Humor and Offense with Stacking Diverse Language Model-Based Methods</title>
+		<author>
+			<persName><forename type="first">Bingyan</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chunguang</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shengguang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhipeng</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">It Was Only a Joke&apos;: How Racial Humour Fuels Colour-Blind Ideologies in Mexico and Peru</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Christina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tanya</forename><surname>Sue</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Golash-Boza</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Ethnic and Racial Studies</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<biblScope unit="issue">10</biblScope>
+			<biblScope unit="page" from="1582" to="1598" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Ernie 2.0: A Continual Pre-training Framework for Language Understanding</title>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuohuan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yukun</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shikun</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Hao Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haifeng</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Conference on Artificial Intelligence</title>
+				<meeting>the AAAI Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="page" from="8968" to="8975" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">Computational Treatments of Humor. The Routledge Handbook of the Linguistics of Humor</title>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Taylor</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Attardo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Routledge</title>
+		<imprint>
+			<biblScope unit="page" from="456" to="471" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Computationally Recognizing Wordplay in Jokes</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Julia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lawrence</forename><forename type="middle">J</forename><surname>Taylor</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mazlack</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Annual Meeting of the Cognitive Science Society</title>
+				<meeting>the Annual Meeting of the Cognitive Science Society</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="volume">26</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">HumorHunter at SemEval-2021 Task 7: Humor and Offense Recognition with Disentangled Attention</title>
+		<author>
+			<persName><forename type="first">Yubo</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junze</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pearl</forename><surname>Pu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">Recognizing Humor on Twitter</title>
+		<author>
+			<persName><forename type="first">Renxian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naishi</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd ACM international conference on conference on information and knowledge management</title>
+				<meeting>the 23rd ACM international conference on conference on information and knowledge management</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="889" to="898" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

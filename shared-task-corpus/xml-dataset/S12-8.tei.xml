@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Semeval-2012 Task 8: Cross-lingual Textual Entailment for Content Synchronization</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+							<email>negri@fbk.eu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">FBK-irst Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Alessandro</forename><surname>Marchetti</surname></persName>
+							<email>amarchetti@celct.it</email>
+							<affiliation key="aff1">
+								<address>
+									<settlement>Trento</settlement>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+							<email>mehdad@fbk.eu</email>
+							<affiliation key="aff2">
+								<orgName type="department">FBK-irst Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Luisa</forename><surname>Bentivogli</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="department">FBK-irst Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Danilo</forename><surname>Giampiccolo</surname></persName>
+							<email>giampiccolo@celct.it</email>
+							<affiliation key="aff4">
+								<address>
+									<settlement>Trento</settlement>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Semeval-2012 Task 8: Cross-lingual Textual Entailment for Content Synchronization</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the first round of the task on Cross-lingual Textual Entailment for Content Synchronization, organized within SemEval-2012. The task was designed to promote research on semantic inference over texts written in different languages, targeting at the same time a real application scenario. Participants were presented with datasets for different language pairs, where multi-directional entailment relations ("forward", "backward", "bidirectional", "no entailment") had to be identified. We report on the training and test data used for evaluation, the process of their creation, the participating systems (10 teams, 92 runs), the approaches adopted and the results achieved.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The cross-lingual textual entailment task <ref type="bibr" target="#b9">(Mehdad et al., 2010)</ref> addresses textual entailment (TE) recognition <ref type="bibr" target="#b3">(Dagan and Glickman, 2004)</ref> under the new dimension of cross-linguality, and within the new challenging application scenario of content synchronization.</p><p>Cross-linguality represents a dimension of the TE recognition problem that has been so far only partially investigated. The great potential for integrating monolingual TE recognition components into NLP architectures has been reported in several areas, including question answering, information retrieval, information extraction, and document summarization. However, mainly due to the absence of cross-lingual textual entailment (CLTE) recognition components, similar improvements have not been achieved yet in any cross-lingual application. The CLTE task aims at prompting research to fill this gap. Along such direction, research can now benefit from recent advances in other fields, especially machine translation (MT), and the availability of: i) large amounts of parallel and comparable corpora in many languages, ii) open source software to compute word-alignments from parallel corpora, and iii) open source software to set up MT systems. We believe that all these resources can positively contribute to develop inference mechanisms for multilingual data.</p><p>Content synchronization represents a challenging application scenario to test the capabilities of advanced NLP systems. Given two documents about the same topic written in different languages (e.g. Wiki pages), the task consists of automatically detecting and resolving differences in the information they provide, in order to produce aligned, mutually enriched versions of the two documents. Towards this objective, a crucial requirement is to identify the information in one page that is either equivalent or novel (more informative) with respect to the content of the other. The task can be naturally cast as an entailment recognition problem, where bidirectional and unidirectional entailment judgments for two text fragments are respectively mapped into judgments about semantic equivalence and novelty. Alternatively, the task can be seen as a machine translation evaluation problem, where judgments about semantic equivalence and novelty depend on the possibility to fully or partially translate a text fragment into the other. Figure <ref type="figure">1</ref>: "bidirectional", "forward", "backward" and "no entailment" judgments for SP/EN CLTE pairs. The recent advances on monolingual TE on the one hand, and the methodologies used in Statistical Machine Translation (SMT) on the other, offer promising solutions to approach the CLTE task. In line with a number of systems that model the RTE task as a similarity problem (i.e. handling similarity scores between T and H as useful evidence to draw entailment decisions), the standard sentence and word alignment programs used in SMT offer a strong baseline for CLTE. However, although representing a solid starting point to approach the problem, similarity-based techniques are just approximations, open to significant improvements coming from semantic inference at the multilingual level (e.g. cross-lingual entailment rules such as "perro"→"animal"). Taken in isolation, similaritybased techniques clearly fall short of providing an effective solution to the problem of assigning directions to the entailment relations (especially in the complex CLTE scenario, where entailment relations are multi-directional). Thanks to the contiguity between CLTE, TE and SMT, the proposed task provides an interesting scenario to approach the issues outlined above from different perspectives, and large room for mutual improvement.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">The task</head><p>Given a pair of topically related text fragments (T1 and T2) in different languages, the CLTE task consists of automatically annotating it with one of the following entailment judgments (see Figure <ref type="figure">1</ref> for Spanish/English examples of each judgment):</p><p>• bidirectional (T1→T2 &amp; T1←T2): the two fragments entail each other (semantic equivalence);</p><p>• forward (T1→T2 &amp; T1 ←T2): unidirectional entailment from T1 to T2;</p><p>• backward (T1 →T2 &amp; T1←T2): unidirectional entailment from T2 to T1;</p><p>• no entailment (T1 →T2 &amp; T1 ←T2): there is no entailment between T1 and T2 in both directions;</p><p>In this task, both T1 and T2 are assumed to be true statements. Although contradiction is relevant from an application-oriented perspective, contradictory pairs are not present in the dataset created for the first round of the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Dataset description</head><p>Four CLTE corpora have been created for the following language combinations: Spanish/English (SP-EN), Italian/English (IT-EN), French/English (FR-EN), German/English <ref type="bibr">(DE-EN)</ref>. The datasets are released in the XML format shown in Figure <ref type="figure">1</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data collection and annotation</head><p>The dataset was created following the crowdsourcing methodology proposed in , which consists of the following steps:</p><p>1. First, English sentences were manually extracted from copyright-free sources (Wikipedia and Wikinews). The selected sentences represent one of the elements (T1) of each entailment pair;</p><p>2. Next, each T1 was modified through crowdsourcing in various ways in order to obtain a corresponding T2 (e.g. introducing meaning-preserving lexical and syntactic changes, adding and removing portions of text); 3. Each T2 was then paired to the original T1, and the resulting pairs were annotated with one of the four entailment judgments. In order to reduce the correlation between the difference in sentences' length and entailment judgments, only the pairs where the difference between the number of words in T1 and T2 (length diff ) was below a fixed threshold (10 words) were retained. <ref type="bibr">1</ref> The final result is a monolingual English dataset annotated with multi-directional entailment judgments, which are well distributed over length diff values ranging from 0 to 9; 4. In order to create the cross-lingual datasets, each English T1 was manually translated into four different languages (i.e. Spanish, German, Italian and French) by expert translators;</p><p>5. By pairing the translated T1 with the corresponding T2 in English, four cross-lingual datasets were obtained.</p><p>To ensure the good quality of the datasets, all the collected pairs were manually checked and corrected when necessary. Only pairs with agreement between two expert annotators were retained. The final result is a multilingual parallel entailment corpus, where T1s are in 5 different languages (i.e. English, Spanish, German, Italian, and French), and T2s are in English. It's worth mentioning that the monolingual English corpus, a by-product of our data collection methodology, will be publicly released as a further contribution to the research community. 2</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Dataset statistics</head><p>Each dataset consists of 1,000 pairs (500 for training and 500 for test), balanced across the four entailment judgments (bidirectional, forward, backward, and no entailment).</p><p>For each language combination, the distribution of the four entailment judgments according to length diff is shown in Figure <ref type="figure" target="#fig_0">2</ref>. Vertical bars represent, for each length diff value, the proportion of pairs belonging to the four entailment classes. As can be seen, the length diff constraint applied to the length difference in the monolingual English 1 Such constraint has been applied in order to focus as much as possible on semantic aspects of the problem, by reducing the applicability of simple association rules such as IF length(T1)&gt;length(T2) THEN T1→T2.</p><p>2 The cross-lingual datasets are already available for research purposes at http://www.celct.it/resourcesList. php. The monolingual English dataset will be publicly released to non participants in July 2012. pairs (step 3 of the creation process) is substantially reflected in the cross-lingual datasets for all language combinations. In fact, as shown in Table <ref type="table" target="#tab_1">1</ref>, the majority of the pairs is always included in the same length diff range (approximately <ref type="bibr">[-5,+5]</ref>) and, within this range, the distribution of the four classes is substantially uniform. Our assumption is that such data distribution makes entailment judgments based on mere surface features such as sentence length ineffective, thus encouraging the development of alternative, deeper processing strategies.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation metrics and baselines</head><p>Evaluation results have been automatically computed by comparing the entailment judgments returned by each system with those manually assigned by human annotators. The metric used for systems' ranking is accuracy over the whole test set, i.e. the number of correct judgments out of the total number of judgments in the test set. Additionally, we calculated precision, recall, and F1 measures for each of the four entailment judgment categories taken separately. These scores aim at giving participants the possibility to gain clearer insights into their system's behavior on the entailment phenomena relevant to the task. For each language combination, two baselines considering the length difference between T1 and T2 have been calculated (besides the trivial 0.25 accuracy score obtained by assigning each test pair in the balanced dataset to one of the four classes):</p><p>• Composition of binary judgments (Binary). To calculate this baseline an SVM classifier is trained to take binary entailment decisions ("YES", "NO"). The classifier uses length(T1)/length(T2) as a single feature to check for entailment from T1 to T2, and length(T2)/length(T1) for the opposite direction. For each test pair, the unidirectional judgments returned by the two classifiers are composed into a single multi-directional judgment ("YES-YES"="bidirectional", "YES-NO"="forward", "NO-YES"="backward", "NO-NO"="no entailment");</p><p>• Multi-class classification (Multi-class). A single SVM classifier is trained with the same features to directly assign to each pair one of the four entailment judgments.</p><p>Both the baselines have been calculated with the LIBSVM package <ref type="bibr" target="#b2">(Chang and Lin, 2011)</ref>, using a linear kernel with default parameters. Baseline results are reported in Table <ref type="table" target="#tab_3">2</ref>.</p><p>Although the four CLTE datasets are derived from the same monolingual EN-EN corpus, baseline results present slight differences due to the effect of translation into different languages.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Submitted runs and results</head><p>Participants were allowed to submit up to five runs for each language combination. A total of 17 teams registered to participate in the task and downloaded the training set. Out of them, 12 downloaded the test set and 10 (including one of the task organizers) submitted valid runs. Eight teams produced submissions for all the language combinations, while two teams participated only in the SP-EN task. In total, 92 runs have been submitted and evaluated (29 for SP-EN, and 21 for each of the other language pairs).</p><p>Despite the novelty and the difficulty of the problem, these numbers demonstrate the interest raised by the task, and the overall success of the initiative.  Accuracy results are reported in Table <ref type="table" target="#tab_5">3</ref>. As can be seen from the table, overall accuracy scores are quite different across language pairs, with the highest result on SP-EN (0.632), which is considerably higher than the highest score on DE-EN (0.558). This might be due to the fact that most of the participating systems rely on a "pivoting" approach that addresses CLTE by automatically translating T1 in the same language of T2 (see Section 6). Regarding the DE-EN dataset, pivoting methods might be penalized by the lower quality of MT output when German T1s are translated into English.</p><p>The comparison with baselines results leads to interesting observations. First of all, while all systems significantly outperform the lowest 1-class baseline (0.25), both other baselines are surprisingly hard to beat. This shows that, despite the effort in keeping the distribution of the entailment classes uniform across different length diff values, eliminating the correlation between sentences' length and correct entailment decisions is difficult. As a consequence, although disregarding semantic aspects of the problem, features considering such information are quite effective.</p><p>In general, systems performed better on the SP-EN dataset, with most results above the binary baseline (8 out of 10), and half of the systems above the multi-class baseline. For the other language pairs the results are lower, with only 3 out of 8 participants above the two baselines in all datasets. Average results reflect this situation: the average scores are always above the binary baseline, whereas only the SP-EN average result is higher than the multiclass baseline(0.44 vs. 0.43).</p><p>To better understand the behaviour of each system (also in relation to the different language combinations), Table <ref type="table" target="#tab_8">4</ref> provides separate precision, recall, and F1 scores for each entailment judgment, calculated over the best runs of each participating team. Overall, the results suggest that the "bidirectional" and "no entailment" categories are more problematic than "forward" and "backward" judgments. For most datasets, in fact, systems' performance on "bidirectional" and "no entailment" is significantly lower, typically on recall. Except for the DE-EN dataset (more problematic on "forward"), also average F1 results on these judgments are lower. This might be due to the fact that, for all datasets, the vast majority of "bidirectional" and "no entailment" judgments falls in a length diff range where the distribution of the four classes is more uniform (see Figure <ref type="figure" target="#fig_0">2</ref>).</p><p>Similar reasons can justify the fact that "backward" entailment results are consistently higher on all datasets. Compared with "forward" entailment, these judgments are in fact less scattered across the entire length diff range (i.e. less intermingled with the other classes).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Approaches</head><p>A rough classification of the approaches adopted by participants can be made along two orthogonal dimensions, namely:</p><p>• Pivoting vs. Cross-lingual. Pivoting methods rely on the automatic translation of one of the two texts (either single words or the entire sentence) into the language of the other (typically English) in order perform monolingual TE recognition. Cross-lingual methods assign entailment judgments without preliminary translation.</p><p>• Composition of binary judgments vs. Multiclass classification. Compositional approaches map unidirectional entailment decisions taken separately into single judgments (similar to the Binary baseline in Section 4). Methods based on multi-class classification directly assign one of the four entailment judgments to each test pair (similar to our Multi-class baseline).</p><p>Concerning the former dimension, most of the systems (6 out of 10) adopted a pivoting approach, relying on Google Translate (4 systems), Microsoft Bing Translator (1), or a combination of Google, Bing, and other MT systems (1) to produce English T2s. Regarding the latter dimension, the compositional approach was preferred to multi-class classification (6 out of 10). The best performing system relies on a "hybrid" approach (combining monolingual and cross-lingual alignments) and a compositional strategy. Besides the frequent recourse to MT tools, other resources used by participants include: on-line dictionaries for the translation of single words, word alignment tools, part-of-speech taggers, NP chunkers, named entity recognizers, stemmers, stopwords lists, and Wikipedia as an external multilingual corpus. More in detail: BUAP [pivoting, compositional] <ref type="bibr" target="#b22">(Vilariño et al., 2012)</ref> adopts a pivoting method based on translating T1 into the language of T2 and vice versa (Google Translate 3 and the OpenOffice Thesaurus 4 ). Similarity measures (e.g. Jaccard index) and rules are org/en/taxonomy/term/233 respectively used to annotate the two resulting sentence pairs with entailment judgments and combine them in a single decision.</p><p>CELI <ref type="bibr">[cross lingual, compositional &amp; multiclass]</ref>  <ref type="bibr" target="#b8">(Kouylekov, 2012)</ref> uses dictionaries for word matching, and a multilingual corpus extracted from Wikipedia for term weighting. Word overlap and similarity measures are then used in different approaches to the task. In one run (Run 1), they are used to train a classifier that assigns separate entailment judgments for each direction. Such judgments are finally composed into a single one for each pair. In the other runs, the same features are used for multi-class classification.</p><p>DirRelCond3 [cross lingual, compositional] (Perini, 2012) uses bilingual dictionaries (Freedict 5 and WordReference 6 ) to translate content words into English. Then, entailment decisions are taken combining directional relatedness scores between words in both directions <ref type="bibr" target="#b19">(Perini, 2011)</ref>.</p><p>FBK <ref type="bibr">[cross lingual, compositional &amp; multiclass]</ref>  <ref type="bibr" target="#b11">(Mehdad et al., 2012a)</ref> uses cross-lingual matching features extracted from lexical phrase tables, semantic phrase tables, and dependency relations <ref type="bibr" target="#b12">Mehdad et al., 2012b;</ref><ref type="bibr" target="#b13">Mehdad et al., 2012c</ref>  <ref type="bibr" target="#b7">(Kouylekov and Negri, 2010)</ref> to calculate similarity scores between monolingual English pairs. Separate unidirectional entailment judgments obtained from binary classifier are combined to return one of the four valid CLTE judgments.   <ref type="bibr" target="#b5">(Forcada et al., 2011)</ref>. <ref type="bibr">8</ref> Then, a multi-class SVM classifier is used to take entailment decisions using information about overlapping sub-segments as features.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>Despite the novelty of the problem and the difficulty to capture multi-directional entailment relations across languages, the first round of the Crosslingual Textual Entailment for Content Synchronization task organized within SemEval-2012 was a successful experience. This year a new interesting challenge has been proposed, a benchmark for four language combinations has been released, baseline results have been proposed for comparison, and a monolingual English dataset has been produced as a by-product which can be useful for monolingual TE research. The interest shown by participants was encouraging: 10 teams submitted a total of 92 runs for all the language pairs proposed. Overall, the results achieved on all datasets are encouraging, with best systems significantly outperforming the proposed baselines. It is worth observing that the nature of the task, which lies between semantics and machine translation, led to the participation of teams coming from both these communities, showing interesting opportunities for integration and mutual improvement. The proposed approaches reflect this situation, with teams traditionally working on MT now dealing with entailment, and teams traditionally participating in the RTE challenges now dealing with cross-lingual alignment techniques. Our ambition, for the future editions of the CLTE task, is to further consolidate the bridge between the semantics and MT communities.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: CLTE pairs distribution for different length diff values across all datasets.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>CLTE pairs distribution within the -5/+5 length diff range.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Baseline accuracy results.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell>: Accuracy results (92 runs) over the 4 lan-</cell></row><row><cell>guage combinations. Highest, average, median and low-</cell></row><row><cell>est scores are calculated considering the best run for each</cell></row><row><cell>team (*task organizers' system).</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>precision, recall and F1 scores, calculated for each team's best run for all the language combinations.SoftCard[pivoting, multi-class]  <ref type="bibr" target="#b6">(Jimenez et al., 2012)</ref> after automatic translation with Google Translate, uses SVMs to learn entailment decisions based on information about the cardinality of: T1, T2, their intersection and their union. Cardinalities are computed in different ways, considering tokens in T1 and T2, their IDF, and their similarity (computed with edit-distance)UAlacant[pivoting, multi-class] (Esplà-Gomis  et al., 2012)  exploits translations obtained from Google Translate, Microsoft Bing translator, and the Apertium open-source MT platform</figDesc><table><row><cell>JU-CSE-NLP [pivoting, compositional] (Neogi</cell><cell>cisions are then heuristically combined into single</cell></row><row><cell>et al., 2012) uses Microsoft Bing translator 7 to pro-</cell><cell>decisions.</cell></row><row><cell>duce monolingual English pairs. Separate lexical</cell><cell>Sagan [pivoting, multi-class] (Castillo and Car-</cell></row><row><cell>mapping scores are calculated (from T1 to T2 and</cell><cell>denas, 2012) adopts a pivoting method using Google</cell></row><row><cell>vice-versa) considering different types of informa-</cell><cell>Translate, and trains a monolingual system based on</cell></row><row><cell>tion and similarity metrics. Binary entailment de-</cell><cell>a SVM multi-class classifier. A CLTE corpus de-</cell></row><row><cell></cell><cell>rived from the RTE-3 dataset is also used as a source</cell></row><row><cell>7 http://www.microsofttranslator.com/</cell><cell>of additional training material.</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">http://translate.google.com/ 4 http://extensions.services.openoffice.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">http://www.freedict.com/ 6 http://www.wordreference.com/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="0">,456 0,379 0,327 0,672 0,440 0,538 0,056 0,101 0,444 0,192 0,268 celi ita-eng run2 0,349 0,360 0,354 0,455 0,36 0,402 0,294 0,320 0,307 0,287 0,312 0,299 DirRelCond3 ita-eng run3 0,323 0,488 0,389 0,480 0,288 0,360 0,331 0,368 0,348 0,268 0,208 0,234 HDU ita-eng run2 0,564 0,600 0,581 0,628 0,648 0,638 0,551 0,520 0,535 0,500 0,480 0,490 ICT ita-eng run1 0,661 0,296 0,409 0,554 0,368 0,442 0,427 0,448 0,438 0,383 0,704 0,496 JU-CSE-NLP ita-eng run2 0,240 0,280 0,258 0,339 0,480 0,397 0,412 0,280 0,333 0,359 0,264 0,304 Sagan ita-eng run3 0,306 0,296 0,301 0,252 0,216 0,233 0,395 0,512 0,446 0,455 0,400 0,426 SoftCard ita-eng run1 0,602 0,616 0,609 0,617 0,696 0,654 0,560 0,448 0,498 0,481 0,504 0,492 AVG. 0,421 0,424 0,410 0,457 0,466 0,446 0,439 0,369 0,376 0,397 0,383 0,376</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="0">,272 0,338 0,291 0,760 0,420 0,250 0,016 0,030 0,449 0,320 0,374 celi fra-eng run2 0,316 0,296 0,306 0,378 0,360 0,369 0,270 0,296 0,282 0,244 0,248 0,246 DirRelCond3 fra-eng run3 0,393 0,576 0,468 0,441 0,512 0,474 0,387 0,232 0,290 0,278 0,216 0,243 HDU fra-eng run2 0,564 0,672 0,613 0,582 0,736 0,650 0,676 0,384 0,490 0,500 0,488 0,494 ICT fra-eng run1 0,750 0,192 0,306 0,517 0,496 0,506 0,385 0,656 0,485 0,444 0,480 0,462 JU-CSE-NLP fra-eng run3 0,215 0,208 0,211 0,289 0,296 0,292 0,341 0,496 0,404 0,333 0,184 0,237 Sagan fra-eng run1 0,244 0,168 0,199 0,297 0,344 0,319 0,394 0,568 0,466 0,427 0,304 0,355 SoftCard fra-eng run1 0,551 0,608 0,578 0,649 0,696 0,672 0,560 0,488 0,521 0,513 0,488 0,500 AVG. 0,435 0,374 0,377 0,431 0,525 0,463 0,408 0,392 0,371 0,399 0,341 0,364 DE-EN</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="0">,120 0,184 0,248 0,224 0,235 0,344 0,688 0,459 0,364 0,288 0,321 celi deu-eng run2 0,347 0,416 0,378 0,402 0,392 0,397 0,339 0,312 0,325 0,319 0,288 0,303 DirRelCond3 deu-eng run4 0,429 0,312 0,361 0,408 0,552 0,469 0,367 0,320 0,342 0,298 0,312 0,305 HDU deu-eng run1 0,559 0,528 0,543 0,600 0,696 0,644 0,540 0,488 0,513 0,524 0,520 0,522 ICT deu-eng run1 0,718 0,224 0,341 0,493 0,552 0,521 0,390 0,512 0,443 0,439 0,552 0,489 JU-CSE-NLP deu-eng run2 0,182 0,048 0,076 0,307 0,496 0,379 0,315 0,560 0,403 0,233 0,080 0,119 Sagan deu-eng run1 0,250 0,168 0,201 0,239 0,256 0,247 0,405 0,600 0,484 0,443 0,344 0,387 SoftCard deu-eng run1 0,568 0,568 0,568 0,611 0,640 0,625 0,521 0,488 0,504 0,496 0,504 0,500 AVG. 0,431 0,298 0,332 0,414 0,476 0,440 0,403 0,496 0,434 0,390 0,361 0,368</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">http://www.apertium.org/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This work has been partially supported by the ECfunded project CoSyne (FP7- ICT-4-24853). The authors would also like to acknowledge Giovanni Moretti from CELCT for evaluation scripts and technical assistance, and the volunteer translators that contributed to the creation of the dataset: María Sol Accossato, Laura Barthélémy, Claudia Biacchi, Jane Brendler, Amandine Chantrel, Hanna Cheda Patete, Ellen Clancy, Rodrigo Damian Tejeda, Daniela Dold, Valentina Frattini, Debora Hedy Amato, Geniz Hernandez, Bénédicte Jeannequin, Beate Jones, Anne Kauffman, Marcia Laura Zanoli, Jasmin Lewis, Alicia López, Domenico Loseto, Sabrina Luján Sánchez, Julie Mailfait, Gabriele Mark, Nunzio Pruiti, Lourdes Rey Cascallar, Sylvie Martlew, Aleane Salas Velez, Monica Scalici, Andreas Schwab, Marianna Sicuranza, Chiara Sisler, Stefano Tordazzi, Yvonne.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">METEOR: An Automatic Metric for MT Evaluation with Improved Correlation with Human Judgments</title>
+		<author>
+			<persName><forename type="first">Satanjeev</forename><surname>Banerjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Lavie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL Workshop on Intrinsic and Extrinsic Evaluation Measures for Machine Translation and/or Summarization</title>
+				<meeting>the ACL Workshop on Intrinsic and Extrinsic Evaluation Measures for Machine Translation and/or Summarization</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="65" to="72" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Sagan: A Cross Lingual Textual Entailment system based on Machine Traslation</title>
+		<author>
+			<persName><forename type="first">Julio</forename><surname>Castillo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marina</forename><surname>Cardenas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Libsvm: a library for support vector machines</title>
+		<author>
+			<persName><forename type="first">Chih-Chung</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chih-Jen</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Transactions on Intelligent Systems and Technology</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page">27</biblScope>
+			<date type="published" when="2011" />
+			<publisher>TIST</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Probabilistic Textual Entailment: Generic Applied Modeling of Language Variability</title>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Glickman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the PASCAL Workshop of Learning Methods for Text Understanding and Mining</title>
+				<meeting>the PASCAL Workshop of Learning Methods for Text Understanding and Mining</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">UAlacant: Using Online Machine Translation for Cross-Lingual Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Miquel</forename><surname>Esplà-Gomis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felipe</forename><surname>Sánchez-Martínez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mikel</forename><forename type="middle">L</forename><surname>Forcada</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Apertium: a Free/Open-Source Platform for Rule-Based Machine Translation</title>
+		<author>
+			<persName><forename type="first">Mikel</forename><forename type="middle">L</forename><surname>Forcada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ginestí-Rosell</forename><surname>Mireia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nordfalk</forename><surname>Jacob</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O'regan</forename><surname>Jim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ortiz-Rojas</forename><surname>Sergio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pérez-Ortiz</forename><surname>Juan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sánchez-Martínez Felipe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramírez-Sánchez</forename><surname>Gema</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tyers</forename><surname>Francis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Machine Translation</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="127" to="144" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+	<note>Special Issue: Free/Open-Source Machine Translation</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Soft Cardinality + ML: Learning Adaptive Similarity Functions for Cross-lingual Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Jimenez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claudia</forename><surname>Becerra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Gelbukh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">An opensource package for recognizing textual entailment</title>
+		<author>
+			<persName><forename type="first">Milen</forename><surname>Kouylekov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL 2010 System Demonstrations</title>
+				<meeting>the ACL 2010 System Demonstrations</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">CELI: An Experiment with Cross Language Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Milen</forename><surname>Kouylekov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Towards Cross-Lingual Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcello</forename><surname>Federico</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th Annual Conference of the North American Chapter of the Association for Computational Linguistics (NAACL HLT 2010)</title>
+				<meeting>the 11th Annual Conference of the North American Chapter of the Association for Computational Linguistics (NAACL HLT 2010)</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Using Bilingual Parallel Corpora for Cross-Lingual Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcello</forename><surname>Federico</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies (ACL HLT</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies (ACL HLT</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">FBK: Cross-Lingual Textual Entailment Without Translation</title>
+		<author>
+			<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">José</forename><forename type="middle">G C</forename><surname>Souza</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Detecting Semantic Equivalence and Information Disparity in Cross-lingual Documents</title>
+		<author>
+			<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcello</forename><surname>Federico</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 50th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 50th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Match without a Referee: Evaluating MT Adequacy without Reference Translations</title>
+		<author>
+			<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcello</forename><surname>Federico</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th Workshop on Statistical Machine Translation</title>
+				<meeting>the 7th Workshop on Statistical Machine Translation</meeting>
+		<imprint>
+			<publisher>WMT</publisher>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">ICT: A Translation based Cross-lingual Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Fandong</forename><surname>Meng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Xiong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qun</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<author>
+			<persName><forename type="first">Matto</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luisa</forename><surname>Bentivogli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Giampiccolo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Marchetti</surname></persName>
+		</author>
+		<title level="m">Divide and Conquer: Crowdsourcing the Creation of Cross-Lingual Textual Entailment Corpora. Proceedings of the 2011 Conference on Empirical Methods in Natural Language Processing</title>
+				<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">JU-CSE-NLP: Language Independent Cross-lingual Textual Entailment System</title>
+		<author>
+			<persName><forename type="first">Snehasis</forename><surname>Neogi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Partha</forename><surname>Pakray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sivaji</forename><surname>Bandyopadhyay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Gelbukh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Improved Statistical Alignment Models</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Franz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hermann</forename><surname>Och</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 38th</title>
+				<meeting>the 38th</meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m">Annual Meeting of the Association for Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">Detecting textual entailment with conditions on directional text relatedness scores</title>
+		<author>
+			<persName><forename type="first">Alpár</forename><surname>Perini</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title/>
+	</analytic>
+	<monogr>
+		<title level="j">Studia Universitatis Babes-Bolyai Series Informatica</title>
+		<imprint>
+			<biblScope unit="volume">LVI</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="13" to="18" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">DirRelCond3: Detecting Textual Entailment Across Languages With Conditions On Directional Text Relatedness Scores</title>
+		<author>
+			<persName><forename type="first">Alpár</forename><surname>Perini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">BUAP: Lexical and Semantic Similarity for Cross-lingual Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Darnes</forename><surname>Vilariño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Pinto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mireya</forename><surname>Tovar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saul</forename><surname>León</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Esteban</forename><surname>Castillo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">HDU: Cross-lingual Textual Entailment with SMT Features</title>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Wäschle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sascha</forename><surname>Fendrich</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Workshop on Semantic Evaluation</title>
+				<meeting>the 6th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

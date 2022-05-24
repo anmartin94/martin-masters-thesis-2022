@@ -1,0 +1,1869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SIGMORPHON 2020 Shared Task 0: Typologically Diverse Morphological Inflection</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+							<email>ekaterina.vylomova@unimelb.edu.au</email>
+						</author>
+						<author>
+							<persName><forename type="first">Jennifer</forename><surname>White</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Elizabeth</forename><surname>Salesky</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Sabrina</forename><forename type="middle">J</forename><surname>Mielke</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Shijie</forename><surname>Wu</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Z</forename><forename type="middle">Edoardo</forename><surname>Ponti</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Q</forename><surname>Rowan</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Hall</forename><surname>Maudslay</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Q</forename><surname>Ran</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Josef</forename><surname>Valvoda</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Svetlana</forename><surname>Toldova</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Francis</forename><surname>Tyers</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Elena</forename><surname>Klyachko</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Ilya</forename><surname>Yegorov</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Natalia</forename><surname>Krizhanovsky</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Paula</forename><surname>Czarnowska</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Irene</forename><surname>Nikkarinen</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Andrew</forename><surname>Krizhanovsky</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Tiago</forename><surname>Pimentel</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Q</forename><surname>Lucas</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Torroba</forename><surname>Hennigen</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Facebook AI Research</orgName>
+								<orgName type="institution">Google AI á University of British Columbia F</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Garrett</forename><surname>Nicolai</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Adina</forename><surname>Williams</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Antonios</forename><surname>Anastasopoulos</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">Carnegie Mellon University I Indiana University L University of Louisville</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Hilaria</forename><surname>Cruz</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Eleanor</forename><surname>Chodroff</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="institution">University of York D ETH Zürich X University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+							<email>ryan.cotterell@ethz.inf.ch</email>
+						</author>
+						<author>
+							<persName><forename type="first">Miikka</forename><surname>Silfverberg</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Melbourne Q University of Cambridge Z Johns Hopkins University E Higher School of Economics M Moscow State University K Karelian Research Centre</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SIGMORPHON 2020 Shared Task 0: Typologically Diverse Morphological Inflection</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="DOI">10.18653/v1/P17</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>A broad goal in natural language processing (NLP) is to develop a system that has the capacity to process any natural language. Most systems, however, are developed using data from just one language such as English. The SIG-MORPHON 2020 shared task on morphological reinflection aims to investigate systems' ability to generalize across typologically distinct languages, many of which are low resource. Systems were developed using data from 45 languages and just 5 language families, fine-tuned with data from an additional 45 languages and 10 language families (13 in total), and evaluated on all 90 languages. A total of 22 systems (19 neural) from 10 teams were submitted to the task. All four winning systems were neural (two monolingual transformers and two massively multilingual RNNbased models with gated attention). Most teams demonstrate utility of data hallucination and augmentation, ensembles, and multilingual training for low-resource languages. Nonneural learners and manually designed grammars showed competitive and even superior performance on some languages (such as Ingrian, Tajik, Tagalog, Zarma, Lingala), especially with very limited data. Some language families (Afro-Asiatic, Niger-Congo, Turkic) were relatively easy for most systems and achieved over 90% mean accuracy while others were more challenging.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Human language is marked by considerable diversity around the world. Though the world's languages share many basic attributes (e.g., <ref type="bibr" target="#b72">Swadesh, 1950</ref> and more recently, <ref type="bibr" target="#b51">List et al., 2016)</ref>, grammatical features, and even abstract implications (proposed in <ref type="bibr" target="#b26">Greenberg, 1963)</ref>, each language nevertheless has a unique evolutionary trajectory that is affected by geographic, social, cultural, and other factors. As a result, the surface form of languages varies substantially. The morphology of languages can differ in many ways: Some exhibit rich grammatical case systems (e.g., 12 in Erzya and 24 in Veps) and mark possessiveness, others might have complex verbal morphology (e.g., Oto-Manguean languages; <ref type="bibr" target="#b61">Palancar and Léonard, 2016)</ref> or even "decline" nouns for tense (e.g., Tupi-Guarani languages). Linguistic typology is the discipline that studies these variations by means of a systematic comparison of languages <ref type="bibr" target="#b14">(Croft, 2002;</ref><ref type="bibr" target="#b11">Comrie, 1989)</ref>. Typologists have defined several dimensions of morphological variation to classify and quantify the degree of crosslinguistic variation. This comparison can be challenging as the categories are based on studies of known languages and are progressively refined with documentation of new languages <ref type="bibr" target="#b29">(Haspelmath, 2007)</ref>. Nevertheless, to understand the potential range of morphological variation, we take a closer look at three dimensions here: fusion, inflectional synthesis, and position of case affixes <ref type="bibr" target="#b19">(Dryer and Haspelmath, 2013)</ref>.</p><p>Fusion, our first dimension of variation, refers to the degree to which morphemes bind to one another in a phonological word <ref type="bibr" target="#b7">(Bickel and Nichols, 2013b)</ref>. Languages range from strictly isolating (i.e., each morpheme is its own phonological word) to concatenative (i.e., morphemes bind together within a phonological word); nonlinearities such as ablaut or tonal morphology can also be present. From a geographic perspective, isolating languages are found in the Sahel Belt in West Africa, Southeast Asia and the Pacific. Ablaut-concatenative morphology and tonal morphology can be found in African languages. Tonal-concatenative morphology can be found in Mesoamerican languages (e.g., Oto-Manguean). Concatenative morphology is the most common system and can be found around the world. Inflectional synthesis, the second dimension considered, refers to whether grammatical categories like tense, voice or agreement are expressed as affixes (synthetic) or individual words (analytic) <ref type="bibr" target="#b8">(Bickel and Nichols, 2013c)</ref>. Analytic expressions are common in Eurasia (except the Pacific Rim, and the Himalaya and Caucasus mountain ranges), whereas synthetic expressions are used to a high degree in the Americas. Finally, affixes can variably surface as prefixes, suffixes, infixes, or circumfixes <ref type="bibr" target="#b18">(Dryer, 2013)</ref>. Most Eurasian and Australian languages strongly favor suffixation, and the same holds true, but to a lesser extent, for South American and New Guinean languages <ref type="bibr" target="#b18">(Dryer, 2013)</ref>. In Mesoamerican languages and African languages spoken below the Sahara, prefixation is dominant instead.</p><p>These are just three dimensions of variation in morphology, and the cross-linguistic variation is already considerable. Such cross-lingual variation makes the development of natural language processing (NLP) applications challenging. As <ref type="bibr" target="#b3">Bender (2009</ref><ref type="bibr" target="#b4">Bender ( , 2016</ref> notes, many current architectures and training and tuning algorithms still present language-specific biases. The most commonly used language for developing NLP applications is English. Along the above dimensions, English is productively concatenative, a mixture of analytic and synthetic, and largely suffixing in its inflectional morphology. With respect to languages that exhibit inflectional morphology, English is relatively impoverished. 1 Importantly, English is just one morphological system among many. A larger goal of natural language processing is that the system work for any presented language. If an NLP system is trained on just one language, it could be missing important flexibility in its ability to account for cross-linguistic morphological variation.</p><p>In this year's iteration of the SIGMORPHON shared task on morphological reinflection, we specifically focus on typological diversity and aim to investigate systems' ability to generalize across typologically distinct languages many of which are low-resource. For example, if a neural network architecture works well for a sample of Indo-European languages, should the same architecture also work well for Tupi-Guarani languages (where nouns are "declined" for tense) or Austronesian languages (where verbal morphology is frequently prefixing)?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>The 2020 iteration of our task is similar to CoNLL-SIGMORPHON 2017 <ref type="bibr" target="#b13">(Cotterell et al., 2017)</ref> and 2018 <ref type="bibr" target="#b12">(Cotterell et al., 2018)</ref> in that participants are required to design a model that learns to generate inflected forms from a lemma and a set of morphosyntactic features that derive the desired target form. For each language we provide a separate training, development, and test set. More historically, all of these tasks resemble the classic "wug"-test that <ref type="bibr" target="#b5">Berko (1958)</ref> developed to test child and human knowledge of English nominal morphology.</p><p>Unlike the task from earlier years, this year's task proceeds in three phases: a Development Phase, a Generalization Phase, and an Evaluation Phase, in which each phase introduces previously unseen data. The task starts with the Development Phase, which was an elongated period of time (about two months), during which participants develop a model of morphological inflection. In this phase, we provide training and development splits for 45 languages representing the Austronesian, Niger-Congo, Oto-Manguean, Uralic and Indo-European language families. Table <ref type="table" target="#tab_2">1</ref> provides details on the languages. The Generalization Phase is a short period of time (it started about a week before the Evaluation Phase) during which participants fine-tune their models on new data. At the start of the phase, we provide training and development splits for 45 new languages where approximately half are genetically related (belong to the same family) and half are genetically unrelated (are isolates or belong to a different family) to the languages presented in the Development Phase. More specifically, we introduce (surprise) languages from Afro-Asiatic, Algic, Dravidian, Indo-European, Niger-Congo, Sino-Tibetan, Siouan, Songhay, Southern Daly, Tungusic, Turkic, Uralic, and Uto-Aztecan families. See Table <ref type="table" target="#tab_3">2</ref> for more details.</p><p>Finally, test splits for all 90 languages are released in the Evaluation Phase. During this phase, the models are evaluated on held-out forms. Importantly, the languages from both previous phases are evaluated simultaneously. This way, we evaluate the extent to which models (especially those with shared parameters) overfit to the development data: a model based on the morphological patterning of the Indo-European languages may end up with a bias towards suffixing and will struggle to learn prefixing or infixation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Meet our Languages</head><p>In the 2020 shared task we cover 15 language families: Afro-Asiatic, Algic, Austronesian, Dravidian, Indo-European, Niger-Congo, Oto-Manguean, Sino-Tibetan, Siouan, Songhay, Southern Daly, Tungusic, Turkic, Uralic, and Uto-Aztecan. 2 Five language families were used for the Development phase while ten were held out for the Generalization phase. Tab. 1 and Tab. 2 provide information on the languages, their families, and sources of data. In the following section, we provide an overview of each language family's morphological system.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Afro-Asiatic</head><p>The Afro-Asiatic language family, consisting of six branches and over 300 languages, is among the largest language families in the world. It is mainly spoken in Northern, Western and Central Africa as well as West Asia and spans large modern languages such as Arabic, in addition to ancient languages like Biblical Hebrew. Similarly, some of its languages have a long tradition of written form, while others have yet to incorporate a writing system. The six branches differ most notably in typology and syntax, with the Chadic language being the main source of differences, which has sparked discussion of the division of the family <ref type="bibr" target="#b24">(Frajzyngier, 2018)</ref>. For example, in the Egyptian and Semitic branches, the root of a verb may not contain vowels, while this is allowed in Chadic. Although only four of the six branches, excluding Chadic and Omotic, use a prefix and suffix in conjugation when adding a subject to a verb, it is con-sidered an important characteristic of the family. In addition, some of the families in the phylum use tone to encode tense, modality and number among others. However, all branches use objective and passive suffixes. Markers of tense are generally simple, whereas aspect is typically distinguished with more elaborate systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Algic</head><p>The Algic family embraces languages native to North America-more specifically the United States and Canada-and contain three branches. Of these, our sample contains Cree, the language from the largest genus, Algonquian, from which most languages are now extinct. The Algonquian genus is characterized by its concatenative morphology. Cree morphology is also concatenative and suffixing. It distinguishes between impersonal and non-impersonal verbs and presents four apparent declension classes among non-impersonal verbs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Austronesian</head><p>The Austronesian family of languages is largely comprised of languages from the Greater Central Philippine and Oceanic regions. They are characterized by limited morphology, mostly prefixing in nature. Additionally, tense-aspect affixes are predominantly seen as prefixes, though some suffixes are used. In the general case, verbs do not mark number, person, or gender. In Māori, verbs may be suffixed with a marker indicating the passive voice. This marker takes the form of one of twelve endings. These endings are difficult to predict as the language has undergone a loss of word-final consonants and there is no clear link between a stem and the passive suffix that it employs <ref type="bibr" target="#b28">(Harlow, 2007)</ref>.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Dravidian</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.5">Indo-European</head><p>Languages in the Indo-European family are native to most of Europe and a large part of Asia-with our sample including languages from the genera: Germanic, Indic, Iranian, and Romance. This is (arguably) the most well studied language family, containing a few of the highest-resource languages in the world.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Romance</head><p>The Romance genus comprises of a set of fusional languages evolved from Latin. They traditionally originated in Southern and Southeastern Europe, though they are presently spoken in other continents such Africa and the Americas. Romance languages mark tense, person, number and mood in verbs, and gender and number in nouns. Inflection is primarily achieved through suffixes, with some verbal person syncretism and suppletion for high-frequency verbs. There is some morphological variation within the genus, such as French, which exhibits comparatively less inflection, and Romanian has comparatively more-it still marks case.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Germanic</head><p>The Germanic genus comprises several languages which originated in Northern and Northwestern Europe, and today are spoken in many parts of the world. Verbs in Germanic languages mark tense and mood, in many languages person and number are also marked, predominantly through suffixation. Some Germanic languages exhibit widespread Indo-European ablaut. The gendering of nouns differs between Germanic languages: German nouns can be masculine, feminine or neuter, while English nouns are not marked for gender. In Danish and Swedish, historically masculine and feminine nouns have merged to form one common gender, so nouns are either common or neuter. Marking of case also differs between the languages: German nouns have one of four cases and this case is marked in articles and adjectives as well as nouns and pronouns, while English does not mark noun case (although Old English, which also appears in our language sample, does).   no grammatical evidentials.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Indo-Iranian</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.7">Oto-Manguean</head><p>The Oto-Manguean languages are a diverse family of tonal languages spoken in central and southern Mexico. Even though all of these languages are tonal, the tonal system within each language varies widely. Some have an inventory of two tones (e.g., Chichimec and Pame) others have ten tones (e.g., the Eastern Chatino languages of the Zapotecan branch, Palancar and Léonard (2016)).</p><p>Oto-Manguean languages are also rich in tonal morphology.</p><p>The inflectional system marks person-number and aspect in verbs and personnumber in adjectives and noun possessions, relying heavily on tonal contrasts. Other interesting as-pects of Oto-Manguean languages include the fact that pronominal inflections use a system of enclitics, and first and second person plural has a distinction between exclusive and inclusive <ref type="bibr" target="#b9">(Campbell, 2016)</ref>. Tone marking schemes in the writing systems also vary greatly. Some writing systems do not represent tone, others use diacritics, and others represent tones with numbers. In languages that use numbers, single digits represent level tones and double digits represent contour tones. For example, in San Juan Quiahije of Eastern Chatino number 1 represents high tone, number 4 represents low tone, and numbers 14 represent a descending tone contour and numbers 42 represent an ascending tone contour <ref type="bibr" target="#b15">Cruz (2014)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.8">Sino-Tibetan</head><p>The Sino-Tibetan family is represented by the Tibetan language. Tibetan uses an abugida script and contains complex syllabic components in which vowel marks can be added above and below the base consonant. Tibetan verbs are inflected for tense and mood. Previous studies on Tibetan morphology <ref type="bibr" target="#b17">(Di et al., 2019)</ref> indicate that the majority of mispredictions produced by neural models are due to allomorphy. This is followed by generation of nonce words (impossible combinations of vowel and consonant components).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.9">Siouan</head><p>The Siouan languages are located in North America, predominantly along the Mississippi and Missouri Rivers and in the Ohio Valley. The family is represented in our task by Dakota, a critically endangered language spoken in North and South Dakota, Minnesota, and Saskatchewan. The Dakota language is largely agglutinating in its derivational morphology and fusional in its inflectional morphology with a mixed affixation system <ref type="bibr" target="#b65">(Rankin et al., 2003)</ref>. The present task includes verbs, which are marked for first and second person, number, and duality. All three affixation types are found: person was generally marked by an infix, but could also appear as a prefix, and plurality was marked by a suffix. Morphophonological processes of fortition and vowel lowering are also present.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.10">Songhay</head><p>The Songhay family consists of around eleven or twelve languages spoken in Mali, Niger, Benin, Burkina Faso and Nigeria. In the shared task we use Zarma, the most widely spoken Songhay language. Most of the Songhay languages are predominantly SOV with medium-sized consonant inventories (with implosives), five phonemic vowels, vowel length distinctions, and word level tones, which also are used to distinguish nouns, verbs, and adjectives <ref type="bibr" target="#b30">(Heath, 2014)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.11">Southern Daly</head><p>The Southern Daly is a small language family of the Northern Territory in Australia that consists of two distantly related languages. In the current task we only have one of the languages, Murrinh-patha (which was initially thought to be a language isolate). Murrinh-patha is classified as polysynthetic with highly complex verbal morphology. Verbal roots are surrounded by prefixes and suffixes that indicate tense, mood, object, subject. As Mansfield ( <ref type="formula">2019</ref>) notes, Murrinh-patha verbs have 39 conjugation classes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.12">Tungusic</head><p>Tungusic languages are spoken principally in Russia, China and Mongolia. In Russia they are concentrated in north and eastern Siberia and in China in the east, in Manchuria. The largest languages in the family are Xibe, Evenki and Even; we use Evenki in the shared task. The languages are of the agglutinating morphological type with a moderate number of cases, 7 for Xibe and 13 for Evenki. In addition to case markers, Evenki marks possession in nominals (including reflexive possession) and distinguishes between alienable and inalienable possession. In terms of morphophonological processes, the languages exhibit vowel harmony, consonant alternations and phonological vowel length.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.13">Turkic</head><p>Languages of the Turkic family are primarily spoken in Central Asia. The family is morphologically concatenative, fusional, and suffixing. Turkic languages generally exhibit back vowel harmony, with the notable exception of Uzbek. In addition to harmony in backness, several languages also have labial vowel harmony (e.g., Kyrgyz, Turkmen, among others). In addition, most of the languages have dorsal consonant allophony that accompanies back vowel harmony. Additional morphophonological processes include vowel epenthesis and voicing assimilation. Selection of the inflectional allomorph can frequently be determined from the infinitive morpheme (which frequently reveals vowel backness and roundedness) and also the final segment of the stem.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.14">Uralic</head><p>The Uralic languages are spoken in Russia from the north of Siberia to Scandinavia and Hungary in Europe. They are agglutinating with some subgroups displaying fusional characteristics (e.g., the Sámi languages). Many of the languages have vowel harmony. The languages have almost complete suffixal morphology and a medium-sized case inventory, ranging from 5-6 cases to numbers in the high teens. Many of the larger case paradigms are made up of spatial cases, sometimes with distinctions for direction and position. Most of the languages have possessive suffixes, which can express possession, or agreement in non-finite clauses. The paradigms are largely regular, with few, if any, irregular forms. Many exhibit complex patterns of consonant gradation-consonant mutations that occur in specific morphological forms in some stems. Which gradation category a stem belongs to in often unpredictable. The languages spoken in Russia are typically SOV, while those in Europe have SVO order.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.15">Uto-Aztecan</head><p>The Uto-Aztecan family is represented by the Tohono O'odham (Papago-Pima) language spoken along the US-Mexico border in southern Arizona and northern Sonora. O'odham is agglutinative with a mixed prefixing and suffixing system. Nominal and verbal pluralization is frequently realized by partial reduplication of the initial consonant and/or vowel, and occasionally by final consonant deletion or null affixation. Processes targeting vowel length (shortening or lengthening) are also present. A small number of verbs exhibit suppletion in the past tense.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data Preparation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Data Format</head><p>Similar to previous years, training and development sets contain triples consisting of a lemma, a target form, and morphosyntactic descriptions (MSDs, or morphological tags). <ref type="bibr">3</ref> Test sets only contain two fields, i.e., target forms are omitted. All data follows UTF-8 encoding.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Conversion and Canonicalization</head><p>A significant amount of data for this task was extracted from corresponding (language-specific) grammars. In order to allow cross-lingual comparison, we manually converted their features (tags) into the UniMorph format <ref type="bibr" target="#b73">(Sylak-Glassman, 2016)</ref>. We then canonicalized the converted language data 4 to make sure all tags are consistently ordered and no category (e.g., "Number") is assigned two tags (e.g., singular and plural). 5</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Splitting</head><p>We use only noun, verb, and adjective forms to construct training, development, and evaluation sets. We de-duplicate annotations such that there are no multiple examples of exact lemma-formtag matches. To create splits, we randomly sample 70%, 10%, and 20% for train, development, and test, respectively. We cap the training set size to 100k examples for each language; where languages exceed this (e.g., Finnish), we subsample to this point, balancing lemmas such that all forms for a given lemma are either included or discarded. Some languages such as Zarma (dje), Tajik (tgk), Lingala (lin), Ludian* (lud), Māori (mao), Sotho (sot), Võro (vro), Anglo-Norman (xno), and Zulu (zul) contain less than 400 training samples and are extremely low-resource. <ref type="bibr">6</ref> Tab. 6 and Tab. 7 in the Appendix provide the number of samples for every language in each split, the number of samples per lemma, and statistics on inconsistencies in the data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Baseline Systems</head><p>The organizers provided two types of pre-trained baselines. Their use was optional.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Non-neural</head><p>The first baseline was a non-neural system that had been used as a baseline in earlier shared tasks on morphological reinflection <ref type="bibr" target="#b13">(Cotterell et al., 2017</ref><ref type="bibr" target="#b12">(Cotterell et al., , 2018</ref>. The system first heuristically extracts lemma-to-form transformations; it assumes that these transformations are suffix-or prefix-based. <ref type="bibr">4</ref> Using the UniMorph schema canonicalization script https://github.com/unimorph/umcanonicalize 5 Conversion schemes and canonicalization scripts are available at https://github.com/ sigmorphon2020/task0-data A simple majority classifier is used to apply the most frequent suitable transformation to an input lemma, given the morphological tag, yielding the output form. See <ref type="bibr" target="#b13">Cotterell et al. (2017)</ref> for further details.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Neural</head><p>Neural baselines were based on a neural transducer <ref type="bibr" target="#b78">(Wu and Cotterell, 2019)</ref>, which is essentially a hard monotonic attention model (mono-*). The second baseline is a transformer <ref type="bibr" target="#b77">(Vaswani et al., 2017)</ref> adopted for character-level tasks that currently holds the state-of-the-art on the 2017 SIG-MORPHON shared task data <ref type="bibr" target="#b79">(Wu et al., 2020,</ref> trm-*). Both models take the lemma and morphological tags as input and output the target inflection. The baseline is further expanded to include the data augmentation technique used by Anastasopoulos and Neubig (2019, -aug-) (conceptually similar to the one proposed by Silfverberg et al. ( <ref type="formula">2017</ref>)). Relying on a simple characterlevel alignment between lemma and form, this technique replaces shared substrings of length &gt; 3 with random characters from the language's alphabet, producing hallucinated lemma-tag-form triples. Both neural baselines were trained in mono-(*-single) and multilingual (shared parameters among the same family, *-shared) settings.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Competing Systems</head><p>As Tab. 3 shows, 10 teams submitted 22 systems in total, out of which 19 were neural. Some teams such as ETH Zurich and UIUC built their models on top of the proposed baselines. In particular, ETH Zurich enriched each of the (multilingual) neural baseline models with exact decoding strategy that uses Dijkstra's search algorithm. UIUC enriched the transformer model with synchronous bidirectional decoding technique <ref type="bibr" target="#b83">(Zhou et al., 2019)</ref> in order to condition the prediction of an affix character on its environment from both sides. (The authors demonstrate positive effects in Oto-Manguean, Turkic, and some Austronesian languages.)</p><p>A few teams further improved models that were among top performers in previous shared tasks. IMS and Flexica re-used the hard monotonic attention model from <ref type="bibr">(Aharoni and Goldberg, 2017)</ref>. IMS developed an ensemble of two models (with left-to-right and right-to-left generation or-der) with a genetic algorithm for ensemble search <ref type="bibr" target="#b27">(Haque et al., 2016)</ref> and iteratively provided hallucinated data. Flexica submitted two neural systems. The first model (flexica-02-1) was multilingual (family-wise) hard monotonic attention model with improved alignment strategy. This model is further improved (flexica-03-1) by introducing a data hallucination technique which is based on phonotactic modelling of extremely low-resource languages <ref type="bibr" target="#b69">(Shcherbakov et al., 2016)</ref>. LTI focused on their earlier model (Anastasopoulos and Neubig, 2019), a neural multi-source encoder-decoder with two-step attention architecture, training it with hallucinated data, cross-lingual transfer, and romanization of scripts to improve performance on low-resource languages. DeepSpin reimplemented gated sparse two-headed attention model from Peters and Martins ( <ref type="formula">2019</ref>) and trained it on all languages at once (massively multilingual). The team experimented with two modifications of the softmax function: sparsemax <ref type="bibr" target="#b54">(Martins and Astudillo, 2016,</ref> deepspin-02-1) and 1.5-entmax , deepspin-01-1).</p><p>Many teams based their models on the transformer architecture.</p><p>NYU-CUBoulder experimented with a vanilla transformer model (NYU-CUBoulder-04-0), a pointer-generator transformer that allows for a copy mechanism (NYU-CUBoulder-02-0), and ensembles of three (NYU-CUBoulder-01-0) and five (NYU-CUBoulder-03-0) pointer-generator transformers. For languages with less than 1,000 training samples, they also generate hallucinated data. CULing developed an ensemble of three (monolingual) transformers with identical architecture but different input data format. The first model was trained on the initial data format (lemma, target tags, target form). For the other two models the team used the idea of lexeme's principal parts <ref type="bibr" target="#b22">(Finkel and Stump, 2007)</ref>    were neural, some teams experimented with nonneural approaches showing that in certain scenarios they might surpass neural systems. A large group of researchers from CU7565 manually developed finite-state grammars for 25 languages (CU7565-01-0). They additionally developed a non-neural learner for all languages (CU7565-02-0) that uses hierarchical paradigm clustering (based on similarity of string transformation rules between inflectional slots). Another team, Flexica, proposed a model (flexica-01-0) conceptually similar to <ref type="bibr" target="#b31">Hulden et al. (2014)</ref>, although they did not attempt to reconstruct the paradigm itself and treated transformation rules independently assigning each of them a score based on its frequency and specificity as well as diversity of the characters surrounding the pattern. 7</p><formula xml:id="formula_0">cmu_tartan_00-0 cmu_tartan_00-1 cmu_tartan_01-0 cmu_tartan_01-1 cmu_tartan_02-1<label>CU7565</label></formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Evaluation</head><p>This year, we instituted a slightly different evaluation regimen than in previous years, which takes into account the statistical significance of differences between systems and allows for an informed comparison across languages and families better than a simple macro-average.</p><p>The process works as follows:</p><p>1. For each language, we rank the systems according to their accuracy (or Levenshtein distance). To do so, we use paired bootstrap resampling <ref type="bibr">(Koehn, 2004) 8</ref> to only take statistically significant differences into account. That way, any system which is the same (as assessed via statistical significance) as the best performing one is also ranked 1 st for that language.  re-rank them based on the amount of times they ranked 1 st , 2 nd , 3 rd , etc. Table <ref type="table" target="#tab_7">4</ref> illustrates an example of this process using four Zapotecan languages and six systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Results</head><p>This year we had four winning systems (i.e., ones that outperform the best baseline): CULing-01-0, deepspin-02-1, uiuc-01-0, and deepspin-01-1, all neural. As Tab. 5 shows, they achieve over 90% accuracy. Although CULing-01-0 and uiuc-01-0 are both monolingual transformers that do not use any hallucinated data, they follow different strategies to improve performance. The strategy proposed by CULing-01-0 of enriching the input data with extra entries that included non-lemma forms and their tags as a source form, enabled their system to be among top performers on all language families; uiuc-01-0, on the other hand, did not modify the data but rather changed the decoder to be bidirectional and made family-wise fine-tuning of each (monolingual) model. The system is also among the top performers on all language families except Iranian. The third team, DeepSpin, trained and fine-tuned their models on all language data. Both models are ranked high (although the sparsemax model, deepspin-02-1, performs better overall) on most language groups with exception of Algic. Sparsemax was also found useful by CMU-Tartan. The neural ensemble model with data augmentation from IMS team shows superior performance on languages with smaller data sizes (under 10,000 samples). LTI and Flexica teams also observed positive effects of multilingual training and data hallucination on low-resource languages. The latter was also found useful in the ablation study made by NYU-CUBoulder team. Several teams aimed to address particular research questions; we will further summarize their results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>System</head><p>Rank Acc    Has morphological inflection become a solved problem in certain scenarios? The results shown in Fig. <ref type="figure" target="#fig_2">2</ref> suggest that for some of the development language families, such as Austronesian and Niger-Congo, the task was relatively easy, with most systems achieving high accuracy, whereas the task was more difficult for Uralic and Oto-Manguean languages, which showed greater variability in level of performance across submitted systems. Languages such as Ludic (lud), Norwegian Nynorsk (nno), Middle Low German 1 3 6 7 1 5 0 9 2 3 3 9 1 0 8 1 3 4 6 4 5 9 0 1 5 8 5 7 3 9 9 8 8 7 0 1 6 5 1 1 7 9 9 1 9 6 2 4 8 2 3 8 9 5 3 9 7 4 5 4 4 4 2 9 3 3 3 1 3 5 9 6 2 1 1 5 2 0 2 2 6 0 2 7 0 1 7 5 8 4 6 6 3 1 1 3 4 9 1 2 3 5 0 9 8 0 2 4 8 4 4 7 1 6 7 0 4 1 4 9 1 6 3 7 2 1 3 3 9 7 0.00  (gml), Evenki (evn), and O'odham (ood) seem to be the most challenging languages based on simple accuracy. For a more fine-grained study, we have classified test examples into four categories: "very easy", "easy", "hard", and "very hard". "Very easy" examples are ones that all submitted systems got correct, while "very hard" examples are ones that no submitted system got correct. "Easy" examples were predicted correctly for 80% of systems, and "hard" were only correct in 20% of systems. Fig. <ref type="figure">3</ref>, Fig. <ref type="figure">4</ref>, and Fig. <ref type="figure" target="#fig_4">5</ref> represent percentage of noun, verb, and adjective samples that fall into each category and illustrate that most language samples are correctly predicted by majority of the systems. For noun declension, Old English (ang), Middle Low German (gml), Evenki (evn), O'odham (ood), Võro (vro) are the most difficult (some of this difficulty comes from language data inconsistency, as described in the following section). For adjective declension, Classic Syriac presents the highest difficulty (likely due to its limited data). </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Error Analysis</head><p>In our error analysis we follow the error type taxonomy proposed in <ref type="bibr" target="#b25">Gorman et al. (2019)</ref>. First, we evaluate systematic errors due to inconsistencies in the data, followed by an analysis of whether having seen the language or its family improved accuracy. We then proceed with an overview of accuracy for each of the language families. For a select number of families, we provide a more detailed analysis of the error patterns. Tab. 6 and Tab. 7 provide the number of samples in the training, development, and test sets, percentage of inconsistent entries (the same lemma-tag pair has multiple infected forms) in them, percentage of contradicting entries (same lemma-tag pair occurring in train and development or test sets but assigned to different inflected forms), and percentage of entries in the development or test sets containing a lemma observed in the training set. The train, development and test sets contain 2%, 0.3%, and 0.6% inconsistent entries, respectively. Azerbaijani (aze), Old English (ang), Cree (cre), Danish (dan), Middle Low German (gml), Kannada (kan), Norwegian Bokmål (nob), Chichimec (pei), and Veps (vep) had the highest rates of inconsistency. These languages also exhibit the highest percentage of contradicting entries. The inconsistencies in some Finno-Ugric languages (such as Veps and Ludic) are due to dialectal variations.</p><p>The overall accuracy of system and language pairings appeared to improve with an increase in the size of the dataset (Fig. <ref type="figure" target="#fig_5">6</ref>; see also Fig. <ref type="figure">7</ref> for accuracy trends by language family and Fig. <ref type="figure">8</ref> for accuracy trends by system). Overall, the variance was considerable regardless of whether the language family or even the language itself had been observed during the Development Phase. A linear mixed-effects regression was used to assess variation in accuracy using fixed effects of language category, the size of the training dataset (log count), and their interactions, as well as random intercepts for system and language family accuracy. <ref type="bibr">10</ref> Language category was sum-coded with three levels: development language-development family, surprise language-development family, or surprise language-surprise family.</p><p>A significant effect of dataset size was observed, such that a one unit increase in log count corresponded to a 2% increase in accuracy (β = 0.019, p &lt; 0.001). Language category type also significantly influenced accuracy: both development languages and surprise languages from development families were less accurate on average (β dev−dev = -0.145, β sur−dev = -0.167, each p &lt; 0.001). These main effects were, however, significantly modulated by interactions with dataset size: on top of the main effect of dataset size, accuracy for development languages increased an additional ≈ 1.7% (β dev−dev×size = 0.017, p &lt; 0.001) and accuracy for surprise languages from development families increased an additional ≈ 2.9% (β sur−dev×size = 0.029, p &lt; 0.001).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Afro-Asiatic:</head><p>This family was represented by three languages. Mean accuracy across systems was above average at 91.7%. Relative to other families, variance in accuracy was low, but nevertheless ranged from 41.1% to 99.0%. Algic: This family was represented by one language, Cree. Mean accuracy across systems was below average at 65.1%. Relative to other families, variance in accuracy was low, ranging from 41.5% to 73%. All systems appeared to struggle with the choice of preverbal auxiliary. Some auxiliaries were overloaded: 'kitta' could refer to future, imperfective, or imperative. The morphological features for mood and tense were also frequently combined, such as SBJV+OPT (subjunctive plus optative mood). While the paradigms were very large, there were very few lemmas (28 impersonal verbs and 14 transitive verbs), which may have contributed to the lower accuracy. Interestingly, the inflections could largely be generated by <ref type="bibr">rules. 11</ref> Austronesian: This family was represented by five languages. Mean accuracy across systems was around average at 80.5%. Relative to other families, variance in accuracy was high, with accuracy ranging from 39.5% to 100%. One may notice a discrepancy among the difficulty in processing different Austronesian languages. For instance, we see a difference of over 10% in the baseline performance of Cebuano (84%) and Hiligaynon (96%). 12 This could come from the fact that Cebuano only has partial reduplication while Hiligaynon has full reduplication. Furthermore, the prefix choice for Cebuano is more irregular, making it more difficult to predict the correct conjugation of the verb.</p><p>Dravidian: This family was represented by two languages: Kannada and Telugu. Mean accuracy across systems was around average at 82.2%. Relative to other families, variance in accuracy was high: system accuracy ranged from 44.6% to 96.0%. Accuracy for Telugu was systematically higher than accuracy for Kannada.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Indo-European:</head><p>This family was represented by 29 languages and four main branches. Mean accuracy across systems was slightly above average at 86.9%. Relative to other families, variance in accuracy was very high: system accuracy ranged from 0.02% to 100%. For Indo-Aryan, mean accuracy was high (96.0%) with low variance; for Germanic, mean accuracy was slightly below average (79.0%) but with very high variance (ranging from 0.02% to 99.5%), for Romance, mean accuracy was high (93.4%) but also had a high variance (ranging from 23.5% to 99.8%), and for Iranian, mean accuracy was high (89.2%), but again with a high variance (ranging from 25.0% to 100%). Languages from the Germanic branch of the Indo-European family were included in the Development Phase.</p><p>Niger-Congo: This family was represented by ten languages. Mean accuracy across systems was very good at 96.4%. Relative to other families, variance in accuracy was low, with accuracy ranging from 62.8% to 100%. Most languages in this family are considered low resource, and the resources used for data gathering may have been biased towards the languages' regular forms, as such this high accuracy may not be representative of the "easiness" of the task in this family. Languages from the Niger-Congo family was included in the Development Phase.</p><p>Oto-Manguean: This family was represented by nine languages. Mean accuracy across systems was slightly below average at 78.5%. Relative to other families, variance in accuracy was high, with accuracy ranging from 18.7% to 99.1%. Languages from the Oto-Manguean family were included in the Development Phase.</p><p>Sino-Tibetan: This family was represented by one language, Bodic. Mean accuracy across systems was average at 82.1%, and variance across systems was also very low. Accuracy ranged from 67.9% to 85.1%. The results are similar to those in <ref type="bibr" target="#b17">Di et al. (2019)</ref> where majority of errors relate to allomorphy and impossible combinations of Tibetan unit components. above average at 89.4%, and variance across systems was also low, despite the range from 0% to 95.7%. Dakota presented variable prefixing and infixing of person morphemes, along some complexities related to fortition processes. Determining the factor(s) that governed variation in affix position was difficult from a linguist's perspective, though many systems were largely successful. Success varied in the choice of the first or second person singular allomorphs which had increasing degrees of consonant strengthening (e.g., /wa/, /ma/, /mi/ /bde/, /bdu/ for the first person singular and /ya/, /na/, /ni/, /de/, or /du/ for the second person singular). In some cases, these fortition processes were overapplied, and in some cases, entirely missed.</p><p>Songhay: This family was represented by one language, Zarma. Mean accuracy across systems was above average at 88.6%, and variance across systems was relatively high. Accuracy ranged from 0% to 100%.</p><p>Southern Daly: This family was represented by one language, Murrinh-Patha. Mean accuracy across systems was below average at 73.2%, and variance across systems was relatively high. Accuracy ranged from 21.2% to 91.9%.</p><p>Tungusic: This family was represented by one language, Evenki. The overall accuracy was the lowest across families. Mean accuracy was 53.8% with very low variance across systems. Accuracy ranged from 43.5% to 59.0%. The low accuracy is due to several factors. Firstly and primarily, the dataset was created from oral speech samples in various dialects of the language. The Evenki language is known to have rich dialectal variation. Moreover, there was little attempt at any standardization in the oral speech transcription. These peculiarities led to a high number of errors. For instance, some of the systems synthesized a wrong plural form for a noun ending in /-n/. Depending on the dialect, it can be /-r/ or /-l/, and there is a trend to have /-hVl/ for borrowed nouns. Deducing such a rule as well as the fact that the noun is a loanword is a hard task. Other suffixes may also have variable forms (such as /-kVllu/ vs /-kVldu/ depending on the dialect for the 2PL imperative. Some verbs have irregular past tense forms depending on the dialect and the meaning of the verb (e. g. /o:-/ 'to make' and 'to become'). Next, various dialects exhibit various vowel and consonant changes in suffixes. For example, some dialects (but not all of them) change /w/ to /b/ after /l/, and the systems sometimes synthesized a wrong form. The vowel harmony is complex: not all suffixes obey it, and it is also dialect-dependent. Some suffixes have variants (e. g., /-sin/ and /-s/ for SEMEL (semelfactive)), and the choice between them might be hard to understand. Finally, some of the mistakes are due to the markup scheme scarcity. For example, various past tense forms are all annotated as PST, or there are several comitative suffixes all annotated as COM. Moreover, some features are present in the word form but they receive no annotation at all. It is worth mentioning that some of the predictions could theoretically be possible. To sum up, the Evenki case presents the chal-lenges of oral non-standardized speech.</p><p>Turkic: This family was represented by nine languages. Mean accuracy across systems was relatively high at 93%, and relative to other families, variance across systems was low. Accuracy ranged from 51.5% to 100%. Accuracy was lower for Azerbaijani and Turkmen, which after closer inspection revealed some slight contamination in the 'gold' files. There was very marginal variation in the accuracy for these languages across systems. Besides these two, accuracies were predominantly above 98%. A few systems struggled with the choice and inflection of the postverbal auxiliary in various languages (e.g., Kyrgyz, Kazakh, and Uzbek).</p><p>Uralic: This family was represented by 16 languages. Mean accuracy across systems was average at 81.5%, but the variance across systems and languages was very high. Accuracy ranged from 0% to 99.8%. Languages from the Uralic family were included in the Development Phase.</p><p>Uto-Aztecan: This family was represented by one language, O'odham. Mean accuracy across systems was slightly below average at 76.4%, but the variance across systems and languages was fairly low. Accuracy ranged from 54.8% to 82.5%.</p><p>The systems with higher accuracy may have benefited from better recall of suppletive forms relative to lower accuracy systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="10">Conclusion</head><p>This years's shared task on morphological reinflection focused on building models that could generalize across an extremely typologically diverse set of languages, many from understudied language families and with limited available text resources. As in previous years, neural models performed well, even in relatively low-resource cases. Submissions were able to make productive use of multilingual training to take advantage of commonalities across languages in the dataset.</p><p>Data augmentation techniques such as hallucination helped fill in the gaps and allowed networks to generalize to unseen inputs. These techniques, combined with architecture tweaks like sparsemax, resulted in excellent overall performance on many languages (over 90% accuracy on average). However, the task's focus on typological diversity revealed that some morphology types and language families (Tungusic, Oto-Manguean, South-ern Daly) remain a challenge for even the best systems. These families are extremely low-resource, represented in this dataset by few or a single language. This makes cross-linguistic transfer of similarities by multilanguage training less viable. They may also have morphological properties and rules (e.g., Evenki is agglutinating with many possible forms for each lemma) that are particularly difficult for machine learners to induce automatically from sparse data. For some languages (Ingrian, Tajik, Tagalog, Zarma, and Lingala), optimal performance was only achieved in this shared task by hand-encoding linguist knowledge in finite state grammars. It is up to future research to imbue models with the right kinds of linguistic inductive biases to overcome these challenges.                     </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>System</head></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Languages in our sample colored by family.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Accuracy by language averaged across all the final submitted systems with their standard deviations. Language families are demarcated by color, with accuracy on development languages (top), and generalization languages (bottom).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 3 :Figure 4 :</head><label>34</label><figDesc>Figure 3: Difficulty of Nouns: Percentage of test samples falling into each category. The total number of test samples for each language is outlined on the top of the plot.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 5 :</head><label>5</label><figDesc>Figure 5: Difficulty of Adjectives: Percentage of test samples falling into each category. The total number of test samples for each language is outlined on the top of the plot.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Siouan:Figure 6 :</head><label>6</label><figDesc>Figure6: Accuracy for each system and language by the log size of the dataset. Points are color-coded according to language type: development language -development family, surprise language -development family, surprise language -surprise family.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>Figure 7 :ETHZFigure 8 :</head><label>78</label><figDesc>Figure7: Accuracy for each system and language by the log size of the dataset, grouped by language family. Points are color-coded according to language family, and shape-coded according to language type: development language -development family, surprise language -development family, surprise language -surprise family.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_11"><head></head><label></label><figDesc>on the Sino-Tibetan family (1 language)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_14"><head></head><label></label><figDesc>on the Kwa genus (2 languages)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>The family of Dravidian languages comprises several languages which are primarily spoken across Southern India and Northern Sri Lanka, with over 200 million speakers. The shared task includes Kannada and Telugu. Dravidian languages primarily use the SOV word order. They are agglutinative, and primarily use suffixes. A Dravidian verb indicates voice, number, tense, aspect, mood and person, through the affixation of multiple suffixes. Nouns indicate number, gender and case.</figDesc><table><row><cell>Family</cell><cell>Afro−Asiatic Algic Austronesian</cell><cell>Dravidian Indo−European Niger−Congo</cell><cell>Oto−Manguean Sino−Tibetan Siouan</cell><cell>Songhay Southern Daly Tungusic</cell><cell>Turkic Uralic Uto−Aztecan</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head></head><label></label><figDesc>The Indo-Iranian genus contains languages spoken in Iran and across the Indian subcontinent. Over 1.5 billion people worldwide speak an Indo-Iranian language. Within the Indo-European family, Indo-Iranian languages belong to the Satem group of languages. Verbs in Indo-Iranian languages indicate tense, aspect, mood, number and person. In languages such as Hindi verbs can also express levels of formality. Noun gender is present in some Indo-Iranian languages, such as Hindi, but absent in languages such as Persian. Nouns generally are marked for case.</figDesc><table><row><cell>Development</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Family</cell><cell>Genus</cell><cell cols="2">ISO 639-3 Language</cell><cell>Source of Data</cell></row><row><cell>Austronesian</cell><cell>Barito</cell><cell>mlg (plt)</cell><cell>Malagasy</cell><cell>Kasahorow (2015a)</cell></row><row><cell></cell><cell cols="2">Greater Central Philippine ceb</cell><cell>Cebuano</cell><cell>Reyes (2015)</cell></row><row><cell></cell><cell cols="2">Greater Central Philippine hil</cell><cell>Hiligaynon</cell><cell>Santos (2018)</cell></row><row><cell></cell><cell cols="2">Greater Central Philippine tgl</cell><cell>Tagalog</cell><cell>NIU (2017)</cell></row><row><cell></cell><cell>Oceanic</cell><cell>mao (mri)</cell><cell>Māori</cell><cell>Moorfield (2019)</cell></row><row><cell cols="2">Indo-European Germanic</cell><cell>ang</cell><cell>Old English</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>dan</cell><cell>Danish</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>deu</cell><cell>German</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>eng</cell><cell>English</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>frr</cell><cell>North Frisian</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>gmh</cell><cell>Middle High German</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>isl</cell><cell>Icelandic</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>nld</cell><cell>Dutch</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>nob</cell><cell>Norwegian Bokmål</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Germanic</cell><cell>swe</cell><cell>Swedish</cell><cell>UniMorph</cell></row><row><cell>Niger-Congo</cell><cell>Bantoid</cell><cell>kon (kng)</cell><cell>Kongo</cell><cell>Kasahorow (2016)</cell></row><row><cell></cell><cell>Bantoid</cell><cell>lin</cell><cell>Lingala</cell><cell>Kasahorow (2014a)</cell></row><row><cell></cell><cell>Bantoid</cell><cell>lug</cell><cell>Luganda</cell><cell>Namono (2018)</cell></row><row><cell></cell><cell>Bantoid</cell><cell>nya</cell><cell>Chewa</cell><cell>Kasahorow (2019a)</cell></row><row><cell></cell><cell>Bantoid</cell><cell>sot</cell><cell>Sotho</cell><cell>Kasahorow (2020)</cell></row><row><cell></cell><cell>Bantoid</cell><cell cols="2">swa (swh) Swahili</cell><cell>Kasahorow (2012b)</cell></row><row><cell></cell><cell>Bantoid</cell><cell>zul</cell><cell>Zulu</cell><cell>Kasahorow (2015b)</cell></row><row><cell></cell><cell>Kwa</cell><cell>aka</cell><cell>Akan</cell><cell>Imbeah (2012)</cell></row><row><cell></cell><cell>Kwa</cell><cell>gaa</cell><cell>Gã</cell><cell>Kasahorow (2012a)</cell></row><row><cell cols="2">Oto-Manguean Amuzgoan</cell><cell>azg</cell><cell>San Pedro Amuzgos Amuzgo</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Chichimec</cell><cell>pei</cell><cell>Chichimeca-Jonaz</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Chinantecan</cell><cell>cpa</cell><cell>Tlatepuzco Chinantec</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Mixtecan</cell><cell>xty</cell><cell>Yoloxóchitl Mixtec</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Otomian</cell><cell>ote</cell><cell>Mezquital Otomi</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Otomian</cell><cell>otm</cell><cell>Sierra Otomi</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Zapotecan</cell><cell>cly</cell><cell cols="2">Eastern Chatino of San Juan Quiahije Cruz et al. (2020)</cell></row><row><cell></cell><cell>Zapotecan</cell><cell>ctp</cell><cell>Eastern Chatino of Yaitepec</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Zapotecan</cell><cell>czn</cell><cell>Zenzontepec Chatino</cell><cell>Feist and Palancar (2015)</cell></row><row><cell></cell><cell>Zapotecan</cell><cell>zpv</cell><cell>Chichicapan Zapotec</cell><cell>Feist and Palancar (2015)</cell></row><row><cell>Uralic</cell><cell>Finnic</cell><cell>est</cell><cell>Estonian</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Finnic</cell><cell>fin</cell><cell>Finnish</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Finnic</cell><cell>izh</cell><cell>Ingrian</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Finnic</cell><cell>krl</cell><cell>Karelian</cell><cell>Zaytseva et al. (2017)</cell></row><row><cell></cell><cell>Finnic</cell><cell>liv</cell><cell>Livonian</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Finnic</cell><cell>vep</cell><cell>Veps</cell><cell>Zaytseva et al. (2017)</cell></row><row><cell></cell><cell>Finnic</cell><cell>vot</cell><cell>Votic</cell><cell>UniMorph</cell></row><row><cell></cell><cell>Mari</cell><cell>mhr</cell><cell>Meadow Mari</cell><cell>Arkhangelskiy et al. (2012)</cell></row><row><cell></cell><cell>Mordvin</cell><cell>mdf</cell><cell>Moksha</cell><cell>Arkhangelskiy et al. (2012)</cell></row><row><cell></cell><cell>Mordvin</cell><cell>myv</cell><cell>Erzya</cell><cell>Arkhangelskiy et al. (2012)</cell></row><row><cell></cell><cell>Saami</cell><cell>sme</cell><cell>Northern Sami</cell><cell>UniMorph</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Development languages used in the shared task.</figDesc><table><row><cell>3.6 Niger-Congo</cell><cell>characterized by a large amount of grammatical</cell></row><row><cell>Our language sample includes two genera from the Niger-Congo family, namely Bantoid and Kwa languages. These have mostly exclusively con-catenative fusion, and single exponence in verbal tense-aspect-mood. The inflectional synthesis of verbs is moderately high, e.g. with 4-5 classes per word in Swahili and Zulu. The locus of marking is inconsistent (it falls on both heads and depen-dents), and most languages are are predominantly prefixing. Full and partial reduplication is attested in most languages. Verbal person-number markers tend to be syncretic. As for nominal classes, Bantoid languages are</cell><cell>genders (often more than 5) assigned based on both semantic and formal rules, whereas some Akan lan-guages (like Ewe) lack a gender system. Plural tends to be always expressed by affixes or other morphological means. Case marking is generally absent or minimal. As for verbal classes, aspect is grammaticalized in Akhan (Kwa) and Zulu (Ban-toid), but not in Luganda and Swahili (Bantoid). Both past and future tenses are inflectional in Ban-toid languages. 2-3 degrees of remoteness can be distinguished in Zulu and Luganda, but not in Swahili. On the other hand, Akan (Kwa) has no opposition between past and non-past. There are</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Surprise languages used in the shared task.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>and augmented the initial input (that only used the lemma as a source form) with entries corresponding to other (non-lemma) slots available for the lexeme. The CMU Tartan team compared performance of models with transformer-based and LSTM-based encoders and decoders. The team also compared monolingual to multilingual training in which they used several (related and unrelated) high-resource languages for low-resource language training.</figDesc><table><row><cell>Team</cell><cell>Description</cell><cell>System</cell><cell>Model Features</cell></row><row><cell></cell><cell></cell><cell></cell><cell>Neural Ensemble Multilingual Hallucination</cell></row><row><cell></cell><cell></cell><cell>mono-single</cell><cell></cell></row><row><cell>Baseline</cell><cell>Wu and Cotterell (2019)</cell><cell>mono-aug-single mono-shared</cell><cell></cell></row><row><cell></cell><cell></cell><cell>mono-aug-shared</cell><cell></cell></row><row><cell></cell><cell></cell><cell>trm-single</cell><cell></cell></row><row><cell></cell><cell>Wu et al. (2020)</cell><cell>trm-aug-single trm-shared</cell><cell></cell></row><row><cell></cell><cell></cell><cell>trm-aug-shared</cell><cell></cell></row><row><cell>CMU Tartan</cell><cell>Jayarao et al. (2020)</cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell cols="2">Although the majority of submitted systems</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>The list of systems submitted to the shared task.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>Illustration of our ranking method, over the four Zapotecan languages. Note: The final ranking is based on the actual counts (#1,#2, etc), not on the system's average rank.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 :</head><label>5</label><figDesc>Aggregate results on all languages. Bolded results are the ones which beat the best baseline.</figDesc><table /><note>* and italics denote systems that did not submit outputs in all languages (their accuracy is a partial average).</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>What is the best training strategy for low- resource languages? Teams</head><label></label><figDesc>that generated hallucinated data highlighted its utility for lowresource languages. Augmenting the data with tuples where lemmas are replaced with nonlemma forms and their tags is another technique that was found useful. In addition, multilingual training and ensembles yield extra gain in terms of accuracy.</figDesc><table><row><cell>Are the systems complementary? To address</cell></row><row><cell>this question, we evaluate oracle scores for</cell></row><row><cell>baseline systems, submitted systems, and all of</cell></row><row><cell>them together. Typically, as Tables 8-21 in the</cell></row></table><note>Is developing morphological grammars manually worthwhile? This was the main question asked by CU7565 who manually designed finitestate grammars for 25 languages. Paradigms of some languages were relatively easy to describe but neural networks also performed quite well on them even with a limited amount of data. For lowresource languages such as Ingrian and Tagalog the grammars demonstrate superior performance but this comes at the expense of a significant amount of person-hours. Appendix demonstrate, the baselines and the submissions are complementary -adding them together increases the oracle score. Furthermore, while the full systems tend to dominate the partial systems (that were designed for a subset of languages, such as CU7565-01-0), there are a number of cases where the partial systems find the solution when the full systems don't -and these languages often then get even bigger gains when combined with the baselines. This even happens when the accuracy of the baseline is very high -Finnish has baseline oracle of 99.89; full systems oracle of 99.91; submission oracle of 99.94 and complete oracle of 99.96, so an ensemble might be able to improve on the results. The largest gaps in oracle systems are observed in Algic, Oto-Manguean, Sino-Tibetan, Southern Daly, Tungusic, and Uto-Aztecan families.9    </note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 6 :</head><label>6</label><figDesc>Number of samples in training, development, test sets, as well as statistics on systematic errors (inconsistency) and percentage of samples with lemmata observed in the training set.</figDesc><table><row><cell>Lang</cell><cell></cell><cell>Total</cell><cell></cell><cell cols="3">Inconsistency (%)</cell><cell cols="4">Contradiction (%) In Vocabulary (%)</cell></row><row><cell></cell><cell>Train</cell><cell>Dev</cell><cell cols="4">Test Train Dev Test</cell><cell>Dev</cell><cell>Test</cell><cell>Dev</cell><cell>Test</cell></row><row><cell>lld</cell><cell>5073</cell><cell>725</cell><cell>1450</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>24.3</cell><cell>12.3</cell></row><row><cell>lud</cell><cell>294</cell><cell>41</cell><cell>82</cell><cell>7.8</cell><cell>0.0</cell><cell>3.7</cell><cell>9.8</cell><cell>11.0</cell><cell>31.7</cell><cell>20.7</cell></row><row><cell>lug</cell><cell>3420</cell><cell>489</cell><cell>977</cell><cell>4.0</cell><cell>0.6</cell><cell>0.8</cell><cell>5.1</cell><cell>7.6</cell><cell>18.2</cell><cell>9.1</cell></row><row><cell>mao</cell><cell>145</cell><cell>21</cell><cell>42</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>61.9</cell><cell>81.0</cell></row><row><cell>mdf</cell><cell>46362</cell><cell>6633</cell><cell>13255</cell><cell>1.6</cell><cell>0.2</cell><cell>0.5</cell><cell>3.1</cell><cell>3.3</cell><cell>49.0</cell><cell>35.1</cell></row><row><cell>mhr</cell><cell>71143</cell><cell>10081</cell><cell>20233</cell><cell>0.3</cell><cell>0.0</cell><cell>0.0</cell><cell>0.4</cell><cell>0.5</cell><cell>48.8</cell><cell>34.3</cell></row><row><cell>mlg</cell><cell>447</cell><cell>62</cell><cell>127</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>90.3</cell><cell>74.0</cell></row><row><cell>mlt</cell><cell>1233</cell><cell>176</cell><cell>353</cell><cell>0.1</cell><cell>0.0</cell><cell>0.0</cell><cell>0.6</cell><cell>0.0</cell><cell>52.3</cell><cell>30.6</cell></row><row><cell>mwf</cell><cell>777</cell><cell>111</cell><cell>222</cell><cell>2.6</cell><cell>0.0</cell><cell>0.9</cell><cell>2.7</cell><cell>4.5</cell><cell>25.2</cell><cell>13.1</cell></row><row><cell>myv</cell><cell>74928</cell><cell>10738</cell><cell>21498</cell><cell>1.7</cell><cell>0.3</cell><cell>0.5</cell><cell>3.1</cell><cell>3.1</cell><cell>45.5</cell><cell>32.7</cell></row><row><cell>nld</cell><cell>38826</cell><cell>5547</cell><cell>11094</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>58.2</cell><cell>38.4</cell></row><row><cell>nno</cell><cell>10101</cell><cell>1443</cell><cell>2887</cell><cell>3.4</cell><cell>0.4</cell><cell>1.0</cell><cell>6.0</cell><cell>6.8</cell><cell>80.0</cell><cell>70.2</cell></row><row><cell>nob</cell><cell>13263</cell><cell>1929</cell><cell>3830</cell><cell>10.5</cell><cell>1.8</cell><cell>3.1</cell><cell>18.5</cell><cell>19.7</cell><cell>80.5</cell><cell>70.5</cell></row><row><cell>nya</cell><cell>3031</cell><cell>429</cell><cell>853</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>0.0</cell><cell>46.4</cell><cell>26.5</cell></row><row><cell>olo</cell><cell>43936</cell><cell>6260</cell><cell>12515</cell><cell>1.4</cell><cell>0.3</cell><cell>0.5</cell><cell>3.3</cell><cell>2.9</cell><cell>83.0</cell><cell>70.8</cell></row><row><cell>ood</cell><cell>1123</cell><cell>160</cell><cell>314</cell><cell>0.4</cell><cell>0.0</cell><cell>0.0</cell><cell>1.9</cell><cell>1.0</cell><cell>70.0</cell><cell>58.0</cell></row><row><cell>orm</cell><cell>1424</cell><cell>203</cell><cell>405</cell><cell>0.2</cell><cell>0.0</cell><cell>0.2</cell><cell>0.5</cell><cell>0.7</cell><cell>41.9</cell><cell>22.7</cell></row><row><cell>ote</cell><cell>22962</cell><cell>3231</cell><cell>6437</cell><cell>0.4</cell><cell>0.1</cell><cell>0.1</cell><cell>0.5</cell><cell>0.8</cell><cell>48.4</cell><cell>29.5</cell></row><row><cell>otm</cell><cell>21533</cell><cell>3020</cell><cell>5997</cell><cell>0.9</cell><cell>0.1</cell><cell>0.3</cell><cell>1.8</cell><cell>1.7</cell><cell>49.4</cell><cell>29.4</cell></row><row><cell>pei</cell><cell>10017</cell><cell>1349</cell><cell>2636</cell><cell>15.8</cell><cell>2.6</cell><cell>4.9</cell><cell>21.5</cell><cell>21.4</cell><cell>9.1</cell><cell>4.7</cell></row><row><cell>pus</cell><cell>4861</cell><cell>695</cell><cell>1389</cell><cell>3.9</cell><cell>0.6</cell><cell>1.6</cell><cell>9.9</cell><cell>7.7</cell><cell>34.2</cell><cell>23.0</cell></row><row><cell>san</cell><cell>22968</cell><cell>3188</cell><cell>6272</cell><cell>3.1</cell><cell>0.5</cell><cell>0.</cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 8 : Results per Language Family: Afro-Asiatic and Algic</head><label>8</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>uiuc-01-0</cell><cell>1.0</cell><cell>96.4</cell></row><row><cell>CULing-01-0</cell><cell>1.0</cell><cell>96.3</cell></row><row><cell>deepspin-02-1</cell><cell cols="2">3.7 94.4</cell></row><row><cell>NYU-CUBoulder-04-0</cell><cell>9.7</cell><cell>94.3</cell></row><row><cell>BASE: mono-single</cell><cell>6.3</cell><cell>92.8</cell></row><row><cell>cmu_tartan_00-0</cell><cell>6.3</cell><cell>92.7</cell></row><row><cell>cmu_tartan_01-0</cell><cell>9.3</cell><cell>89.6</cell></row><row><cell>cmu_tartan_01-1</cell><cell>9.3</cell><cell>89.4</cell></row><row><cell>cmu_tartan_02-1</cell><cell cols="2">10.0 80.9</cell></row><row><cell>ETHZ-00-1</cell><cell>6.7</cell><cell>94.7</cell></row><row><cell>BASE: trm-shared</cell><cell>6.7</cell><cell>94.2</cell></row><row><cell>BASE: trm-aug-shared</cell><cell>6.7</cell><cell>94.0</cell></row><row><cell>IMS-00-0</cell><cell>6.7</cell><cell>93.6</cell></row><row><cell>BASE: mono-aug-single</cell><cell>6.7</cell><cell>93.5</cell></row><row><cell>NYU-CUBoulder-03-0</cell><cell cols="2">12.3 93.7</cell></row><row><cell>flexica-02-1</cell><cell>9.3</cell><cell>92.9</cell></row><row><cell>ETHZ-02-1</cell><cell>9.3</cell><cell>92.3</cell></row><row><cell>flexica-03-1</cell><cell>9.3</cell><cell>92.1</cell></row><row><cell>BASE: mono-shared</cell><cell>9.3</cell><cell>91.5</cell></row><row><cell>*CU7565-01-0</cell><cell cols="2">19.3 93.7</cell></row><row><cell cols="3">BASE: mono-aug-shared 16.0 89.8</cell></row><row><cell>CU7565-02-0</cell><cell cols="2">15.0 91.6</cell></row><row><cell>cmu_tartan_00-1</cell><cell cols="2">17.7 91.7</cell></row><row><cell>LTI-00-1</cell><cell cols="2">17.7 91.3</cell></row><row><cell>flexica-01-1</cell><cell cols="2">28.3 73.4</cell></row><row><cell>Oracle (Baselines)</cell><cell></cell><cell>98.7</cell></row><row><cell>Oracle (Submissions)</cell><cell></cell><cell>99.7</cell></row><row><cell>Oracle (All)</cell><cell></cell><cell>99.8</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_16"><head>Table 9 : Results per Language Family: Austronesian and Dravidian</head><label>9</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>CULing-01-0</cell><cell>1.0</cell><cell>84.4</cell></row><row><cell>IMS-00-0</cell><cell>1.6</cell><cell>85.1</cell></row><row><cell>NYU-CUBoulder-03-0</cell><cell>1.6</cell><cell>83.6</cell></row><row><cell>ETHZ-00-1</cell><cell>1.6</cell><cell>83.4</cell></row><row><cell>NYU-CUBoulder-01-0</cell><cell>1.6</cell><cell>82.9</cell></row><row><cell>NYU-CUBoulder-04-0</cell><cell>1.6</cell><cell>82.9</cell></row><row><cell>BASE: trm-shared</cell><cell>1.6</cell><cell>82.8</cell></row><row><cell>NYU-CUBoulder-02-0</cell><cell>1.6</cell><cell>82.7</cell></row><row><cell>deepspin-02-1</cell><cell>3.2</cell><cell>82.4</cell></row><row><cell>BASE: trm-aug-single</cell><cell>3.2</cell><cell>81.6</cell></row><row><cell>*CU7565-01-0</cell><cell>6.8</cell><cell>82.7</cell></row><row><cell>uiuc-01-0</cell><cell>5.4</cell><cell>82.3</cell></row><row><cell>BASE: trm-single</cell><cell>6.0</cell><cell>81.2</cell></row><row><cell>BASE: mono-aug-shared</cell><cell>6.0</cell><cell>82.9</cell></row><row><cell>LTI-00-1</cell><cell>6.0</cell><cell>82.0</cell></row><row><cell>BASE: mono-aug-single</cell><cell>7.8</cell><cell>81.3</cell></row><row><cell>deepspin-01-1</cell><cell>7.6</cell><cell>81.0</cell></row><row><cell>BASE: trm-aug-shared</cell><cell>7.6</cell><cell>79.8</cell></row><row><cell>flexica-03-1</cell><cell>7.6</cell><cell>79.3</cell></row><row><cell>cmu_tartan_00-0</cell><cell>8.2</cell><cell>79.1</cell></row><row><cell>BASE: mono-shared</cell><cell cols="2">10.4 79.2</cell></row><row><cell>BASE: mono-single</cell><cell cols="2">10.4 77.6</cell></row><row><cell>cmu_tartan_00-1</cell><cell cols="2">12.8 80.3</cell></row><row><cell>cmu_tartan_02-1</cell><cell cols="2">12.8 78.9</cell></row><row><cell>cmu_tartan_01-0</cell><cell cols="2">12.8 78.6</cell></row><row><cell>flexica-02-1</cell><cell cols="2">12.8 78.3</cell></row><row><cell>cmu_tartan_01-1</cell><cell cols="2">12.8 78.2</cell></row><row><cell>ETHZ-02-1</cell><cell cols="2">12.0 77.4</cell></row><row><cell>*CU7565-02-0</cell><cell cols="2">22.4 73.7</cell></row><row><cell>flexica-01-1</cell><cell cols="2">21.2 69.7</cell></row><row><cell>Oracle (Baselines)</cell><cell></cell><cell>89.1</cell></row><row><cell>Oracle (Submissions)</cell><cell></cell><cell>93.5</cell></row><row><cell>Oracle (All)</cell><cell></cell><cell>93.7</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_17"><head>Table 10 : Results per Language Family: Indo-European and Niger-Congo</head><label>10</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>deepspin-02-1</cell><cell>2.3</cell><cell>92.9</cell><cell>IMS-00-0</cell><cell>1.0</cell><cell>98.1</cell></row><row><cell>uiuc-01-0</cell><cell>3.1</cell><cell>91.6</cell><cell>uiuc-01-0</cell><cell>1.0</cell><cell>97.9</cell></row><row><cell>deepspin-01-1</cell><cell>2.9</cell><cell>92.9</cell><cell>NYU-CUBoulder-01-0</cell><cell>1.3</cell><cell>98.1</cell></row><row><cell>BASE: trm-single</cell><cell>2.9</cell><cell>91.7</cell><cell>NYU-CUBoulder-02-0</cell><cell>1.3</cell><cell>98.1</cell></row><row><cell>CULing-01-0</cell><cell>3.9</cell><cell>93.5</cell><cell>deepspin-02-1</cell><cell>1.3</cell><cell>98.0</cell></row><row><cell>BASE: trm-aug-single</cell><cell>3.4</cell><cell>92.9</cell><cell>NYU-CUBoulder-03-0</cell><cell>1.3</cell><cell>98.0</cell></row><row><cell>NYU-CUBoulder-04-0</cell><cell>7.3</cell><cell>90.7</cell><cell>BASE: mono-aug-single</cell><cell>1.3</cell><cell>97.9</cell></row><row><cell>BASE: trm-shared</cell><cell cols="2">12.0 86.9</cell><cell>deepspin-01-1</cell><cell>1.3</cell><cell>97.9</cell></row><row><cell>cmu_tartan_00-1</cell><cell>8.1</cell><cell>88.6</cell><cell>NYU-CUBoulder-04-0</cell><cell>1.3</cell><cell>97.8</cell></row><row><cell>BASE: mono-shared</cell><cell>8.9</cell><cell>90.3</cell><cell>LTI-00-1</cell><cell>1.3</cell><cell>97.7</cell></row><row><cell>NYU-CUBoulder-03-0</cell><cell cols="2">10.0 91.2</cell><cell>BASE: trm-shared</cell><cell>1.3</cell><cell>97.7</cell></row><row><cell>cmu_tartan_00-0</cell><cell>8.9</cell><cell>88.5</cell><cell>BASE: trm-single</cell><cell>1.3</cell><cell>97.7</cell></row><row><cell>NYU-CUBoulder-02-0</cell><cell cols="2">11.4 90.6</cell><cell>BASE: mono-single</cell><cell>1.3</cell><cell>97.7</cell></row><row><cell cols="3">BASE: mono-aug-shared 12.9 90.5</cell><cell>BASE: mono-shared</cell><cell>1.3</cell><cell>97.6</cell></row><row><cell>NYU-CUBoulder-01-0</cell><cell cols="2">12.4 90.4</cell><cell>BASE: trm-aug-single</cell><cell>1.3</cell><cell>97.5</cell></row><row><cell>BASE: mono-single</cell><cell>8.1</cell><cell>88.0</cell><cell>BASE: trm-aug-shared</cell><cell>1.3</cell><cell>97.4</cell></row><row><cell>BASE: mono-aug-single</cell><cell>7.9</cell><cell>91.9</cell><cell>BASE: mono-aug-shared</cell><cell>1.3</cell><cell>97.2</cell></row><row><cell>cmu_tartan_01-0</cell><cell cols="2">10.5 88.6</cell><cell>*CU7565-01-0</cell><cell>3.9</cell><cell>98.0</cell></row><row><cell>cmu_tartan_01-1</cell><cell>9.9</cell><cell>88.5</cell><cell>CULing-01-0</cell><cell>3.4</cell><cell>97.1</cell></row><row><cell>IMS-00-0</cell><cell cols="2">15.9 90.4</cell><cell>flexica-03-1</cell><cell>3.1</cell><cell>96.9</cell></row><row><cell>cmu_tartan_02-1</cell><cell cols="2">10.7 88.4</cell><cell>flexica-02-1</cell><cell>3.1</cell><cell>96.9</cell></row><row><cell>BASE: trm-aug-shared</cell><cell cols="2">15.0 88.6</cell><cell>cmu_tartan_01-1</cell><cell>3.6</cell><cell>96.4</cell></row><row><cell>LTI-00-1</cell><cell cols="2">15.8 87.5</cell><cell>cmu_tartan_00-0</cell><cell>3.6</cell><cell>96.3</cell></row><row><cell>CU7565-02-0</cell><cell cols="2">20.3 86.3</cell><cell>cmu_tartan_01-0</cell><cell>3.6</cell><cell>96.3</cell></row><row><cell>flexica-03-1</cell><cell cols="2">19.4 80.7</cell><cell>CU7565-02-0</cell><cell>6.5</cell><cell>95.6</cell></row><row><cell>ETHZ-02-1</cell><cell cols="2">18.1 83.8</cell><cell>cmu_tartan_00-1</cell><cell>7.8</cell><cell>95.4</cell></row><row><cell>ETHZ-00-1</cell><cell cols="2">23.5 73.7</cell><cell>flexica-01-1</cell><cell>9.2</cell><cell>94.2</cell></row><row><cell>flexica-02-1</cell><cell cols="2">21.8 77.5</cell><cell>cmu_tartan_02-1</cell><cell cols="2">11.2 94.4</cell></row><row><cell>*CU7565-01-0</cell><cell cols="2">28.8 91.4</cell><cell>ETHZ-02-1</cell><cell cols="2">18.9 91.7</cell></row><row><cell>flexica-01-1</cell><cell cols="2">26.0 76.7</cell><cell>ETHZ-00-1</cell><cell cols="2">20.3 89.3</cell></row><row><cell>Oracle (Baselines)</cell><cell></cell><cell>98.0</cell><cell>Oracle (Baselines)</cell><cell></cell><cell>99.2</cell></row><row><cell>Oracle (Submissions)</cell><cell></cell><cell>98.8</cell><cell>Oracle (Submissions)</cell><cell></cell><cell>99.4</cell></row><row><cell>Oracle (All)</cell><cell></cell><cell>99.1</cell><cell>Oracle (All)</cell><cell></cell><cell>99.6</cell></row><row><cell cols="3">(a) Results on the Indo-European family (28 languages)</cell><cell cols="3">(b) Results on the Niger-Congo family (10 languages)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_18"><head>Table 11 : Results per Language Family: Oto-Manguean and Sino-Tibetan</head><label>11</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>uiuc-01-0</cell><cell>1.0</cell><cell>87.5</cell></row><row><cell>BASE: trm-single</cell><cell>2.0</cell><cell>86.2</cell></row><row><cell>CULing-01-0</cell><cell>3.1</cell><cell>86.7</cell></row><row><cell>deepspin-02-1</cell><cell>3.4</cell><cell>85.4</cell></row><row><cell>deepspin-01-1</cell><cell>3.4</cell><cell>85.3</cell></row><row><cell>NYU-CUBoulder-04-0</cell><cell>6.4</cell><cell>84.2</cell></row><row><cell>BASE: mono-single</cell><cell>7.9</cell><cell>82.4</cell></row><row><cell>NYU-CUBoulder-03-0</cell><cell>8.4</cell><cell>83.5</cell></row><row><cell>BASE: mono-aug-single</cell><cell>6.1</cell><cell>83.5</cell></row><row><cell>BASE: mono-shared</cell><cell>8.2</cell><cell>82.9</cell></row><row><cell>NYU-CUBoulder-02-0</cell><cell>9.1</cell><cell>83.5</cell></row><row><cell>IMS-00-0</cell><cell cols="2">10.3 83.3</cell></row><row><cell>LTI-00-1</cell><cell>9.4</cell><cell>82.4</cell></row><row><cell>NYU-CUBoulder-01-0</cell><cell>9.4</cell><cell>83.6</cell></row><row><cell>BASE: mono-aug-shared</cell><cell>9.8</cell><cell>82.0</cell></row><row><cell>cmu_tartan_00-0</cell><cell cols="2">13.9 78.5</cell></row><row><cell>cmu_tartan_01-1</cell><cell cols="2">14.9 78.5</cell></row><row><cell>cmu_tartan_02-1</cell><cell cols="2">15.2 78.2</cell></row><row><cell>BASE: trm-shared</cell><cell cols="2">14.5 80.2</cell></row><row><cell>BASE: trm-aug-shared</cell><cell cols="2">20.3 73.8</cell></row><row><cell>flexica-01-1</cell><cell cols="2">26.3 47.2</cell></row><row><cell>BASE: trm-aug-single</cell><cell>7.4</cell><cell>84.3</cell></row><row><cell>cmu_tartan_00-1</cell><cell cols="2">14.1 79.0</cell></row><row><cell>ETHZ-02-1</cell><cell cols="2">14.0 81.4</cell></row><row><cell>CU7565-02-0</cell><cell cols="2">20.9 75.1</cell></row><row><cell>cmu_tartan_01-0</cell><cell cols="2">18.3 76.5</cell></row><row><cell>*CU7565-01-0</cell><cell cols="2">27.8 81.0</cell></row><row><cell>ETHZ-00-1</cell><cell cols="2">25.4 70.5</cell></row><row><cell>flexica-02-1</cell><cell cols="2">25.6 67.0</cell></row><row><cell>flexica-03-1</cell><cell cols="2">26.1 64.2</cell></row><row><cell>Oracle (Baselines)</cell><cell></cell><cell>94.1</cell></row><row><cell>Oracle (Submissions)</cell><cell></cell><cell>96.2</cell></row><row><cell>Oracle (All)</cell><cell></cell><cell>96.7</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_19"><head>Table 13 : Results per Language Family: Southern Daly and Tungusic</head><label>13</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>CULing-01-0</cell><cell>1.0</cell><cell>91.9</cell></row><row><cell>BASE: trm-single</cell><cell>1.0</cell><cell>89.6</cell></row><row><cell>BASE: trm-shared</cell><cell>1.0</cell><cell>89.6</cell></row><row><cell>ETHZ-00-1</cell><cell>1.0</cell><cell>88.7</cell></row><row><cell>uiuc-01-0</cell><cell>1.0</cell><cell>87.8</cell></row><row><cell>BASE: trm-aug-single</cell><cell>1.0</cell><cell>86.9</cell></row><row><cell>BASE: trm-aug-shared</cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_20"><head>Table 14 : Results per Language Family: Turkic and Uralic</head><label>14</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>BASE: trm-single</cell><cell>1.0</cell><cell>91.8</cell><cell>deepspin-02-1</cell><cell>1.8</cell><cell>90.7</cell></row><row><cell>BASE: trm-aug-single</cell><cell>1.0</cell><cell>91.8</cell><cell>deepspin-01-1</cell><cell>3.1</cell><cell>89.7</cell></row><row><cell>uiuc-01-0</cell><cell>1.8</cell><cell>92.0</cell><cell>uiuc-01-0</cell><cell>2.8</cell><cell>88.2</cell></row><row><cell>CULing-01-0</cell><cell>3.5</cell><cell>91.9</cell><cell>CULing-01-0</cell><cell>3.9</cell><cell>88.9</cell></row><row><cell>deepspin-02-1</cell><cell>6.7</cell><cell>91.3</cell><cell>BASE: trm-single</cell><cell>3.8</cell><cell>88.1</cell></row><row><cell>deepspin-01-1</cell><cell>6.7</cell><cell>91.1</cell><cell>BASE: trm-aug-single</cell><cell>4.3</cell><cell>88.5</cell></row><row><cell>NYU-CUBoulder-04-0</cell><cell>5.5</cell><cell>90.4</cell><cell>NYU-CUBoulder-04-0</cell><cell cols="2">10.6 86.8</cell></row><row><cell>BASE: mono-single</cell><cell>5.1</cell><cell>90.9</cell><cell>NYU-CUBoulder-02-0</cell><cell cols="2">13.4 86.4</cell></row><row><cell>NYU-CUBoulder-02-0</cell><cell>6.8</cell><cell>90.6</cell><cell>NYU-CUBoulder-03-0</cell><cell cols="2">13.4 86.0</cell></row><row><cell>NYU-CUBoulder-03-0</cell><cell>6.8</cell><cell>90.5</cell><cell>IMS-00-0</cell><cell cols="2">14.8 86.1</cell></row><row><cell>cmu_tartan_01-1</cell><cell>7.2</cell><cell>91.0</cell><cell>NYU-CUBoulder-01-0</cell><cell cols="2">15.4 85.9</cell></row><row><cell>cmu_tartan_00-1</cell><cell>6.6</cell><cell>90.8</cell><cell>cmu_tartan_00-1</cell><cell>7.7</cell><cell>85.8</cell></row><row><cell>BASE: mono-aug-single</cell><cell>7.3</cell><cell>90.7</cell><cell>cmu_tartan_02-1</cell><cell>9.8</cell><cell>84.8</cell></row><row><cell>BASE: trm-shared</cell><cell>7.7</cell><cell>91.3</cell><cell>LTI-00-1</cell><cell cols="2">12.3 86.7</cell></row><row><cell>cmu_tartan_02-1</cell><cell>7.4</cell><cell>90.8</cell><cell>cmu_tartan_01-1</cell><cell>7.6</cell><cell>86.0</cell></row><row><cell>NYU-CUBoulder-01-0</cell><cell>8.9</cell><cell>90.5</cell><cell>cmu_tartan_00-0</cell><cell>8.7</cell><cell>86.2</cell></row><row><cell>BASE: trm-aug-shared</cell><cell>9.3</cell><cell>91.1</cell><cell>BASE: trm-aug-shared</cell><cell cols="2">18.8 82.6</cell></row><row><cell>cmu_tartan_00-0</cell><cell>9.7</cell><cell>90.9</cell><cell>*CU7565-02-0</cell><cell cols="2">22.2 79.4</cell></row><row><cell>cmu_tartan_01-0</cell><cell cols="2">11.8 90.7</cell><cell>*CU7565-01-0</cell><cell cols="2">28.2 92.9</cell></row><row><cell>ETHZ-00-1</cell><cell cols="2">16.6 88.9</cell><cell>BASE: mono-single</cell><cell cols="2">10.8 83.0</cell></row><row><cell>IMS-00-0</cell><cell cols="2">11.2 91.0</cell><cell>cmu_tartan_01-0</cell><cell cols="2">10.6 84.8</cell></row><row><cell>BASE: mono-shared</cell><cell cols="2">15.1 88.9</cell><cell>BASE: mono-shared</cell><cell cols="2">17.6 81.1</cell></row><row><cell>flexica-02-1</cell><cell cols="2">13.1 89.7</cell><cell cols="3">BASE: mono-aug-shared 19.4 81.9</cell></row><row><cell>LTI-00-1</cell><cell cols="2">17.1 83.3</cell><cell>BASE: trm-shared</cell><cell cols="2">19.5 76.8</cell></row><row><cell>flexica-03-1</cell><cell cols="2">17.0 88.6</cell><cell>ETHZ-02-1</cell><cell cols="2">22.6 67.9</cell></row><row><cell cols="3">BASE: mono-aug-shared 19.5 86.3</cell><cell cols="3">BASE: mono-aug-single 11.4 85.9</cell></row><row><cell>CU7565-02-0</cell><cell cols="2">21.6 85.9</cell><cell>flexica-02-1</cell><cell cols="2">19.5 70.7</cell></row><row><cell>ETHZ-02-1</cell><cell cols="2">17.5 88.6</cell><cell>flexica-03-1</cell><cell cols="2">20.5 67.8</cell></row><row><cell>*CU7565-01-0</cell><cell cols="2">29.1 96.4</cell><cell>flexica-01-1</cell><cell cols="2">26.8 66.0</cell></row><row><cell>flexica-01-1</cell><cell cols="2">28.9 72.4</cell><cell>ETHZ-00-1</cell><cell cols="2">28.3 54.9</cell></row><row><cell>Oracle (Baselines)</cell><cell></cell><cell>95.8</cell><cell>Oracle (Baselines)</cell><cell></cell><cell>95.5</cell></row><row><cell>Oracle (Submissions)</cell><cell></cell><cell>97.4</cell><cell>Oracle (Submissions)</cell><cell></cell><cell>96.8</cell></row><row><cell>Oracle (All)</cell><cell></cell><cell>97.5</cell><cell>Oracle (All)</cell><cell></cell><cell>97.2</cell></row><row><cell cols="3">(a) Results on the Turkic family (10 languages)</cell><cell cols="3">(b) Results on the Uralic family (16 languages)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_21"><head>Table 15 : Results per Language Family (Uto-Aztecan) and Semitic Genus (Afro-Asiatic Family)</head><label>15</label><figDesc></figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_22"><head>Table 16 : Results per Language Genus (in Indo-European family)</head><label>16</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>deepspin-02-1</cell><cell>3.4</cell><cell>87.1</cell><cell>uiuc-01-0</cell><cell>1.0</cell><cell>98.2</cell></row><row><cell>deepspin-01-1</cell><cell>4.6</cell><cell>87.0</cell><cell>deepspin-02-1</cell><cell>1.5</cell><cell>98.1</cell></row><row><cell>uiuc-01-0</cell><cell>3.5</cell><cell>87.4</cell><cell>deepspin-01-1</cell><cell>1.5</cell><cell>98.0</cell></row><row><cell>BASE: trm-single</cell><cell>3.1</cell><cell>87.5</cell><cell>BASE: trm-single</cell><cell>1.5</cell><cell>97.9</cell></row><row><cell>CULing-01-0</cell><cell>3.5</cell><cell>88.3</cell><cell>BASE: trm-aug-single</cell><cell>1.5</cell><cell>97.8</cell></row><row><cell>BASE: trm-aug-single</cell><cell>4.9</cell><cell>87.4</cell><cell>BASE: trm-shared</cell><cell>2.8</cell><cell>97.9</cell></row><row><cell>IMS-00-0</cell><cell cols="2">15.1 83.1</cell><cell>CULing-01-0</cell><cell>7.5</cell><cell>98.0</cell></row><row><cell>BASE: mono-single</cell><cell>5.3</cell><cell>86.3</cell><cell>BASE: mono-single</cell><cell>6.0</cell><cell>97.6</cell></row><row><cell>BASE: mono-aug-single</cell><cell>6.8</cell><cell>86.3</cell><cell>NYU-CUBoulder-04-0</cell><cell>5.0</cell><cell>97.7</cell></row><row><cell>NYU-CUBoulder-04-0</cell><cell cols="2">10.2 85.2</cell><cell>cmu_tartan_02-1</cell><cell>7.8</cell><cell>97.4</cell></row><row><cell>NYU-CUBoulder-02-0</cell><cell cols="2">13.1 83.3</cell><cell>cmu_tartan_00-1</cell><cell>7.0</cell><cell>97.4</cell></row><row><cell>NYU-CUBoulder-03-0</cell><cell cols="2">12.0 84.4</cell><cell>BASE: mono-shared</cell><cell>7.0</cell><cell>97.3</cell></row><row><cell>LTI-00-1</cell><cell cols="2">11.1 84.3</cell><cell>cmu_tartan_01-1</cell><cell>7.8</cell><cell>97.3</cell></row><row><cell>cmu_tartan_00-1</cell><cell>9.8</cell><cell>79.5</cell><cell>cmu_tartan_00-0</cell><cell>8.8</cell><cell>97.1</cell></row><row><cell>NYU-CUBoulder-01-0</cell><cell cols="2">14.5 83.0</cell><cell>NYU-CUBoulder-03-0</cell><cell>8.5</cell><cell>97.4</cell></row><row><cell cols="3">BASE: mono-aug-shared 13.2 84.4</cell><cell>NYU-CUBoulder-02-0</cell><cell>9.2</cell><cell>97.4</cell></row><row><cell>cmu_tartan_01-0</cell><cell cols="2">11.1 78.9</cell><cell>NYU-CUBoulder-01-0</cell><cell>9.2</cell><cell>97.3</cell></row><row><cell>cmu_tartan_01-1</cell><cell cols="2">11.1 78.8</cell><cell>BASE: trm-aug-shared</cell><cell cols="2">11.0 97.7</cell></row><row><cell>cmu_tartan_00-0</cell><cell cols="2">10.8 79.3</cell><cell>BASE: mono-aug-single</cell><cell>9.5</cell><cell>97.2</cell></row><row><cell>BASE: trm-shared</cell><cell cols="2">19.5 77.7</cell><cell>flexica-03-1</cell><cell>9.5</cell><cell>97.1</cell></row><row><cell>BASE: trm-aug-shared</cell><cell cols="2">19.5 79.1</cell><cell>flexica-02-1</cell><cell cols="2">11.0 96.8</cell></row><row><cell>BASE: mono-shared</cell><cell cols="2">11.7 83.7</cell><cell>ETHZ-02-1</cell><cell cols="2">11.5 97.4</cell></row><row><cell>cmu_tartan_02-1</cell><cell cols="2">13.2 78.5</cell><cell>ETHZ-00-1</cell><cell cols="2">13.8 96.4</cell></row><row><cell>CU7565-02-0</cell><cell cols="2">19.4 78.6</cell><cell cols="3">BASE: mono-aug-shared 15.8 94.2</cell></row><row><cell>ETHZ-02-1</cell><cell cols="2">18.9 76.4</cell><cell>cmu_tartan_01-0</cell><cell cols="2">17.2 96.9</cell></row><row><cell>flexica-01-1</cell><cell cols="2">26.2 66.6</cell><cell>IMS-00-0</cell><cell cols="2">17.0 96.6</cell></row><row><cell>flexica-03-1</cell><cell cols="2">25.5 66.5</cell><cell>CU7565-02-0</cell><cell cols="2">19.8 94.8</cell></row><row><cell>flexica-02-1</cell><cell cols="2">25.9 64.2</cell><cell>LTI-00-1</cell><cell cols="2">19.8 81.5</cell></row><row><cell>ETHZ-00-1</cell><cell cols="2">27.1 60.1</cell><cell>*CU7565-01-0</cell><cell cols="2">29.0 89.0</cell></row><row><cell>*CU7565-01-0</cell><cell>30.0</cell><cell>0.0</cell><cell>flexica-01-1</cell><cell cols="2">28.8 88.1</cell></row><row><cell>Oracle (Baselines)</cell><cell></cell><cell>97.0</cell><cell>Oracle (Baselines)</cell><cell></cell><cell>99.2</cell></row><row><cell>Oracle (Submissions)</cell><cell></cell><cell>98.4</cell><cell>Oracle (Submissions)</cell><cell></cell><cell>99.6</cell></row><row><cell>Oracle (All)</cell><cell></cell><cell>98.9</cell><cell>Oracle (All)</cell><cell></cell><cell>99.7</cell></row><row><cell cols="3">(a) Results on the Germanic genus (13 languages)</cell><cell cols="3">(b) Results on the Indic genus (4 languages)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_23"><head>Table 18 : Results per Language Genus (in Niger-Congo family)</head><label>18</label><figDesc></figDesc><table><row><cell>System</cell><cell cols="2">Rank Acc</cell></row><row><cell>uiuc-01-0</cell><cell>1.0</cell><cell>97.7</cell></row><row><cell>IMS-00-0</cell><cell>1.0</cell><cell>97.6</cell></row><row><cell>CULing-01-0</cell><cell>1.0</cell><cell>96.9</cell></row><row><cell>NYU-CUBoulder-01-0</cell><cell>1.4</cell><cell>97.9</cell></row><row><cell>NYU-CUBoulder-02-0</cell><cell>1.4</cell><cell>97.9</cell></row><row><cell>NYU-CUBoulder-03-0</cell><cell>1.4</cell><cell>97.9</cell></row><row><cell>deepspin-02-1</cell><cell>1.4</cell><cell>97.6</cell></row><row><cell>BASE: mono-aug-single</cell><cell>1.4</cell><cell>97.5</cell></row><row><cell>BASE: trm-single</cell><cell>1.4</cell><cell>97.4</cell></row><row><cell>deepspin-01-1</cell><cell>1.4</cell><cell>97.3</cell></row><row><cell>NYU-CUBoulder-04-0</cell><cell>1.4</cell><cell>97.3</cell></row><row><cell>LTI-00-1</cell><cell>1.4</cell><cell>97.3</cell></row><row><cell>BASE: trm-shared</cell><cell>1.4</cell><cell>97.2</cell></row><row><cell>BASE: mono-single</cell><cell>1.4</cell><cell>97.1</cell></row><row><cell>BASE: trm-aug-single</cell><cell>1.4</cell><cell>97.0</cell></row><row><cell>BASE: mono-shared</cell><cell>1.4</cell><cell>97.0</cell></row><row><cell>BASE: trm-aug-shared</cell><cell>1.4</cell><cell>96.7</cell></row><row><cell>BASE: mono-aug-shared</cell><cell>1.4</cell><cell>96.6</cell></row><row><cell>*CU7565-01-0</cell><cell>4.6</cell><cell>97.4</cell></row><row><cell>flexica-02-1</cell><cell>3.6</cell><cell>96.2</cell></row><row><cell>flexica-03-1</cell><cell>3.6</cell><cell>96.2</cell></row><row><cell>CU7565-02-0</cell><cell>4.2</cell><cell>95.8</cell></row><row><cell>cmu_tartan_01-1</cell><cell>4.2</cell><cell>95.6</cell></row><row><cell>cmu_tartan_01-0</cell><cell>4.2</cell><cell>95.5</cell></row><row><cell>cmu_tartan_00-0</cell><cell>4.2</cell><cell>95.5</cell></row><row><cell>cmu_tartan_00-1</cell><cell>6.5</cell><cell>94.9</cell></row><row><cell>flexica-01-1</cell><cell>7.9</cell><cell>93.4</cell></row><row><cell>cmu_tartan_02-1</cell><cell cols="2">13.8 93.3</cell></row><row><cell>ETHZ-02-1</cell><cell cols="2">16.9 92.0</cell></row><row><cell>ETHZ-00-1</cell><cell cols="2">18.2 89.6</cell></row><row><cell>Oracle (Baselines)</cell><cell></cell><cell>98.9</cell></row><row><cell>Oracle (Submissions)</cell><cell></cell><cell>99.3</cell></row><row><cell>Oracle (All)</cell><cell></cell><cell>99.5</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Note that many languages exhibit no inflectional morphology e.g., Mandarin Chinese, Yoruba, etc.:<ref type="bibr" target="#b6">Bickel and Nichols (2013a)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">The data splits are available at https://github.com/ sigmorphon2020/task0-data/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">Each MSD is a set of features separated by semicolons.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">We also note that Ludian contained inconsistencies in data due to merge of various dialects.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">English plural noun formation rule "* → *s" has high diversity whereas past tense rule such as "*a* → *oo*" as in(understand, understood)  has low diversity.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">. For the set of languages where we want collective results (e.g. languages within a linguistic genus), we aggregate the systems' ranks and8  We use 10,000 samples with 50% ratio, and p &lt; 0.005.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">Please see the results per language here: https://docs.google.com/spreadsheets/ d/1ODFRnHuwN-mvGtzXA1sNdCi-jNqZjiE-i9jRxZCK0kg/edit?usp=sharing</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10">Accuracy should ideally be assessed at the trial level using a logistic regression as opposed to a linear regression. Bytrial accuracy was however not available at analysis time.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">Minor issues with the encoding of diacritics were identified, and will be corrected for release.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"> 12  <p>We also note that some Hiligaynon entries contained multiple lemma forms ("bati/batian/pamatian") for a single entry. We decided to leave it since we could not find any more information on which of the lemmas should be selected as the main. A similar issue was observed in Chichicapan Zapotec.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We would like to thank each of the participants for their time and effort in developing their task systems. We also thank Jason Eisner for organization and guidance. We thank Vitalij Chernyavskij for his help with Võro and Umida Boltaeva and Bahriddin Abdiev for their contribution in Uzbek data annotation.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>System</head></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Turkmen Verbs: 100 Turkmen Verbs Conjugated in All Tenses</title>
+		<author>
+			<persName><surname>Murat Abdulin</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Kyrgyz Language: 100 Kyrgyz Verbs Fully Conjugated in All Tenses</title>
+		<author>
+			<persName><forename type="first">Alima</forename><surname>Aytnatova</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Changbing Yang, and Mans Hulden. 2020. Linguist vs. machine: Rapid development of finite-state morphological grammars</title>
+		<author>
+			<persName><forename type="first">Sarah</forename><surname>Beemer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zak</forename><surname>Boston</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">April</forename><surname>Bukoski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Princess</forename><surname>Dickens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Gerlach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Torin</forename><surname>Hopkins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Parth Anand Jawale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Akanksha</forename><surname>Koski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piyush</forename><surname>Malhotra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saliha</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lan</forename><surname>Muradoğlu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tyler</forename><surname>Sang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sagarika</forename><surname>Short</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><surname>Shreevastava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tetsumichi</forename><surname>Spaulding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Beilei</forename><surname>Umada</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Xiang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Linguistically naïve!= language independent: Why NLP needs linguistic typology</title>
+		<author>
+			<persName><forename type="first">Emily</forename><forename type="middle">M</forename><surname>Bender</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the EACL 2009 Workshop on the Interaction between Linguistics and Computational Linguistics: Virtuous, Vicious or Vacuous?</title>
+				<meeting>the EACL 2009 Workshop on the Interaction between Linguistics and Computational Linguistics: Virtuous, Vicious or Vacuous?</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="26" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Linguistic typology in natural language processing</title>
+		<author>
+			<persName><forename type="first">Emily</forename><forename type="middle">M</forename><surname>Bender</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Linguistic Typology</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="645" to="660" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">The child&apos;s learning of english morphology</title>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Berko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Word</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="issue">2-3</biblScope>
+			<biblScope unit="page" from="150" to="177" />
+			<date type="published" when="1958" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Exponence of selected inflectional formatives</title>
+		<author>
+			<persName><forename type="first">Balthasar</forename><surname>Bickel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johanna</forename><surname>Nichols</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The World Atlas of Language Structures Online</title>
+				<editor>
+			<persName><forename type="first">Matthew</forename><forename type="middle">S</forename><surname>Dryer</surname></persName>
+			<persName><forename type="first">Martin</forename><surname>Haspelmath</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">The World Atlas of Language Structures Online</title>
+		<author>
+			<persName><forename type="first">Balthasar</forename><surname>Bickel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johanna</forename><surname>Nichols</surname></persName>
+		</author>
+		<editor>Matthew S. Dryer and Martin Haspelmath</editor>
+		<imprint>
+			<date type="published" when="2013" />
+			<pubPlace>Leipzig</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Max Planck Institute for Evolutionary Anthropology</orgName>
+		</respStmt>
+	</monogr>
+	<note>Fusion of selected inflectional formatives</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">The World Atlas of Language Structures Online</title>
+		<author>
+			<persName><forename type="first">Balthasar</forename><surname>Bickel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johanna</forename><surname>Nichols</surname></persName>
+		</author>
+		<editor>Matthew S. Dryer and Martin Haspelmath</editor>
+		<imprint>
+			<date type="published" when="2013" />
+			<pubPlace>Leipzig</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Max Planck Institute for Evolutionary Anthropology</orgName>
+		</respStmt>
+	</monogr>
+	<note>Inflectional synthesis of the verb</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Tone and inflection in zenzontepec chatino. Tone and inflection</title>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Campbell</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="141" to="162" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">University of illinois submission to the SIGMORPHON 2020 shared task 0: Typologically diverse morphological inflection</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Canby</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aidana</forename><surname>Karipbayeva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bryan</forename><surname>Lunt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sahand</forename><surname>Mozaffari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charlotte</forename><surname>Yoder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Hockenmaier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">Language Universals and Linguistic Typology: Syntax and Morphology</title>
+		<author>
+			<persName><forename type="first">Bernard</forename><surname>Comrie</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1989" />
+			<publisher>University of Chicago Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">The conllsigmorphon 2018 shared task: Universal morphological reinflection</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Mc-Carthy</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sebastian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Mielke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Nicolai</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Silfverberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection</title>
+				<meeting>the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1" to="27" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">CoNLL-SIGMORPHON 2017 shared task: Universal morphological reinflection in 52 languages</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Eisner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/K17-2001</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL SIGMORPHON 2017 Shared Task: Universal Morphological Reinflection</title>
+				<meeting>the CoNLL SIGMORPHON 2017 Shared Task: Universal Morphological Reinflection<address><addrLine>Vancouver</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1" to="30" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">William</forename><surname>Croft</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2002" />
+		</imprint>
+		<respStmt>
+			<orgName>Typology and Universals. Cambridge University Press</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Linguistic Poetic and Rhetoric of Eastern Chatino of San Juan Quiahije</title>
+		<author>
+			<persName><forename type="first">Hilaria</forename><surname>Cruz</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">A resource for studying chatino verbal morphology</title>
+		<author>
+			<persName><forename type="first">Hilaria</forename><surname>Cruz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonios</forename><surname>Anastasopoulos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gregory</forename><surname>Stump</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th Language Resources and Evaluation Conference</title>
+				<meeting>The 12th Language Resources and Evaluation Conference<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Language Resources Association</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="2820" to="2824" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Modelling Tibetan verbal morphology</title>
+		<author>
+			<persName><forename type="first">Qianji</forename><surname>Di</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the The 17th Annual Workshop of the Australasian Language Technology Association</title>
+				<meeting>the The 17th Annual Workshop of the Australasian Language Technology Association</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="35" to="40" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Position of case affixes</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><forename type="middle">S</forename><surname>Dryer</surname></persName>
+		</author>
+		<editor>Matthew S. Dryer and Martin Haspelmath, editors</editor>
+		<imprint>
+			<date type="published" when="2013" />
+			<pubPlace>The World Atlas of Language Structures Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">WALS Online. Max Planck Institute for Evolutionary Anthropology</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><forename type="middle">S</forename><surname>Dryer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Haspelmath</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+			<pubPlace>Leipzig</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Züritüütsch verstaa -Züritüütsch rede</title>
+		<author>
+			<persName><forename type="first">Renate</forename><surname>Egli-Wildi</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007" />
+			<pubPlace>Küsnacht</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Oto-Manguean Inflectional Class Database</title>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Feist</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Enrique</forename><forename type="middle">L</forename><surname>Palancar</surname></persName>
+		</author>
+		<idno type="DOI">10.15126/SMG.28/1</idno>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+		<respStmt>
+			<orgName>University of Surrey, Online</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Principal parts and morphological typology</title>
+		<author>
+			<persName><forename type="first">Raphael</forename><surname>Finkel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gregory</forename><surname>Stump</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Morphology</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="39" to="75" />
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">SIGMOR-PHON 2020 task 0 system description: ETH Zürich team</title>
+		<author>
+			<persName><forename type="first">Martina</forename><surname>Forster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Clara</forename><surname>Meister</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Afroasiatic Languages</title>
+		<author>
+			<persName><forename type="first">Zygmunt</forename><surname>Frajzyngier</surname></persName>
+		</author>
+		<idno type="DOI">10.1093/acrefore/9780199384655.013.15</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Oxford Research Encyclopedia of Linguistics</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Weird inflects but ok: Making sense of morphological generation errors</title>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Gorman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Magdalena</forename><surname>Markowska</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd Conference on Computational Natural Language Learning (CoNLL)</title>
+				<meeting>the 23rd Conference on Computational Natural Language Learning (CoNLL)</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="140" to="151" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">Universals of language</title>
+		<author>
+			<persName><forename type="first">Joseph</forename><forename type="middle">Harold</forename><surname>Greenberg</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1963" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Heterogeneous ensemble combination search using genetic algorithm for class imbalanced data classification</title>
+		<author>
+			<persName><forename type="first">Nasimul</forename><surname>Mohammad Nazmul Haque</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Regina</forename><surname>Noman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pablo</forename><surname>Berretta</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Moscato</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">PloS one</title>
+		<imprint>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">11</biblScope>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Maori: A Linguistic Introduction</title>
+		<author>
+			<persName><forename type="first">Ray</forename><surname>Harlow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007" />
+			<publisher>Cambridge University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Pre-established categories don&apos;t exist: Consequences for language description and typology</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Haspelmath</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Linguistic Typology</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="119" to="132" />
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Grammar of humburi senni (songhay of hombori, mali)</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Heath</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Semi-supervised learning of morphological paradigms and lexicons</title>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Markus</forename><surname>Forsberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Malin</forename><surname>Ahlberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th Conference of the European Chapter of the Association for Computational Linguistics</title>
+				<meeting>the 14th Conference of the European Chapter of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="569" to="578" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">A Lecture on the Grammatical Construction of the Cree Language. Also Paradigms of the Cree Verb (Original work published 1875. The Society for Promoting Christian Knowledge</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Hunter</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1923" />
+			<pubPlace>London</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">102 Akan Verbs. CreateSpace Independent Publishing Platform</title>
+		<author>
+			<persName><surname>Paa Kwesi Imbeah</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<title level="m" type="main">Võru kirjakeele sõnamuutmissüsteem</title>
+		<author>
+			<persName><forename type="first">Sulev</forename><surname>Iva</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Exploring neural architectures and techniques for typologically diverse morphological inflection</title>
+		<author>
+			<persName><forename type="first">Pratik</forename><surname>Jayarao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siddhanth</forename><surname>Pillay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Thombre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aditi</forename><surname>Chaudhary</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<title level="m" type="main">Uyghur language: 94 Uyghur verbs in common tenses</title>
+		<author>
+			<persName><forename type="first">Alim</forename><surname>Kadeer</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<monogr>
+		<title level="m" type="main">102 Ga Verbs. CreateSpace Independent Publishing Platform</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<title level="m" type="main">102 Swahili Verbs</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<title level="m" type="main">102 Lingala Verbs: Master the Simple Tenses of the Lingala</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<title level="m" type="main">102 Shona Verbs: Master the simple tenses of the Shona language</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<title level="m" type="main">Modern Malagasy Verbs: Master the Simple Tenses of the Malagasy Language</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+			<publisher>Cre-ateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<monogr>
+		<title level="m" type="main">Modern Zulu Verbs: Master the simple tenses of the Zulu language</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title level="m" type="main">Modern Kongo Verbs: Master the Simple Tenses of the Kongo Language</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<monogr>
+		<title level="m" type="main">Modern Oromo Dictionary: Oromo-English, English-Oromo</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<monogr>
+		<title level="m" type="main">Modern Chewa Verbs: Master the basic tenses of Chewa</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<monogr>
+		<title level="m" type="main">Modern Zarma Verbs: Master the basic tenses of Zarma</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<title level="m" type="main">Modern Sotho Verbs: Master the basic tenses of Sotho (Sotho dictionary</title>
+		<author>
+			<persName><surname>Kasahorow</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<monogr>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Klyachko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Sorokin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Krizhanovskaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Krizhanovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Galina</forename><surname>Ryazanskaya</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2001.11285</idno>
+		<title level="m">LowResourceEval-2019: a shared task on morphological analysis for low-resource languages</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Statistical significance tests for machine translation evaluation</title>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2004 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2004 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="388" to="395" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<monogr>
+		<title level="m" type="main">550 Dakota Verbs</title>
+		<author>
+			<persName><forename type="first">Harlan</forename><surname>Lafontaine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Neil</forename><surname>Mckay</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+			<publisher>Minnesota Historical Society Press</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Concepticon: A resource for the linking of concept lists</title>
+		<author>
+			<persName><forename type="first">Johann-Mattis</forename><surname>List</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Cysouw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Forkel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2393" to="2400" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">Leveraging principal parts for morphological inflection</title>
+		<author>
+			<persName><forename type="first">Ling</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<monogr>
+		<title level="m" type="main">Murrinhpatha Morphology and Phonology</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Mansfield</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<publisher>Walter de Gruyter</publisher>
+			<biblScope unit="volume">653</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">From softmax to sparsemax: A sparse model of attention and multi-label classification</title>
+		<author>
+			<persName><forename type="first">André</forename><surname>Martins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramon</forename><surname>Astudillo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning</title>
+				<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1614" to="1623" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<monogr>
+		<title level="m" type="main">Te Aka Online Māori Dictionary</title>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">C</forename><surname>Moorfield</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<publisher>Online</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">2020. The CMU-LTI submission to the SIGMORPHON 2020 shared task 0: Language-specific cross-lingual transfer</title>
+		<author>
+			<persName><forename type="first">Nikitha</forename><surname>Murikinati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonios</forename><surname>Anastasopoulos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<monogr>
+		<title level="m" type="main">Kazakh Language: 101 Kazakh Verbs. Preceptor Language Guides</title>
+		<author>
+			<persName><forename type="first">Temir</forename><surname>Nabiyev</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<monogr>
+		<title level="m" type="main">Luganda Language: 101 Luganda Verbs</title>
+		<author>
+			<persName><forename type="first">Mirembe</forename><surname>Namono</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<monogr>
+		<title level="m" type="main">Shona Language: 101 Shona Verbs</title>
+		<author>
+			<persName><forename type="first">Idai</forename><surname>Nandoro</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<monogr>
+		<title level="m" type="main">Table of Tagalog Verbs</title>
+		<imprint>
+			<date type="published" when="2017" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Center for Southeast Asian Studies NIU</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<monogr>
+		<author>
+			<persName><forename type="first">L</forename><surname>Enrique</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Palancar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Léo Léonard</surname></persName>
+		</author>
+		<title level="m">Tone and inflection: New facts and new perspectives</title>
+				<imprint>
+			<publisher>Walter de Gruyter GmbH &amp; Co KG</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">296</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">One-sizefits-all multilingual models</title>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>André</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Martins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">It-ist at the sigmorphon 2019 shared task: Sparse two-headed models for inflection</title>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">T</forename><surname>André</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Martins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 16th Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 16th Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="50" to="56" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">Sparse sequence-to-sequence models</title>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vlad</forename><surname>Niculae</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">André Ft</forename><surname>Martins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1504" to="1519" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<monogr>
+		<title level="m" type="main">Synchronic and diachronic perspective on&apos;word&apos;in siouan. Word: a crosslinguistic typology</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Robert L Rankin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Randolph</forename><surname>Boyle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">E</forename><surname>Graczyk</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Koontz</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="180" to="204" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<monogr>
+		<title level="m" type="main">Cebuano Language: 101 Cebuano Verbs</title>
+		<author>
+			<persName><forename type="first">Dakila</forename><surname>Reyes</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<monogr>
+		<title level="m" type="main">Hiligaynon Language. 101 Hiligaynon Verbs</title>
+		<author>
+			<persName><forename type="first">Anj</forename><surname>Santos</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<analytic>
+		<title level="a" type="main">The UniMelb submission to the SIGMORPHON 2020 shared task 0: Typologically diverse morphological inflection</title>
+		<author>
+			<persName><forename type="first">Andei</forename><surname>Scherbakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<analytic>
+		<title level="a" type="main">Phonotactic modeling of extremely low resource languages</title>
+		<author>
+			<persName><forename type="first">Andrei</forename><surname>Shcherbakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nick</forename><surname>Thieberger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Australasian Language Technology Association Workshop</title>
+				<meeting>the Australasian Language Technology Association Workshop</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="84" to="93" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<analytic>
+		<title level="a" type="main">Data augmentation for morphological reinflection</title>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Wiemerslage</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ling</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lingshuang Jack</forename><surname>Mao</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/K17-2010</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL SIGMORPHON 2017 Shared Task: Universal Morphological Reinflection</title>
+				<meeting>the CoNLL SIGMORPHON 2017 Shared Task: Universal Morphological Reinflection</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="90" to="99" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<analytic>
+		<title level="a" type="main">2020. The NYU-CUBoulder systems for SIGMORPHON 2020 task 0 and task 2</title>
+		<author>
+			<persName><forename type="first">Assaf</forename><surname>Singer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIG-MORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIG-MORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<analytic>
+		<title level="a" type="main">Salish internal relationships</title>
+		<author>
+			<persName><forename type="first">Morris</forename><surname>Swadesh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of American Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="157" to="167" />
+			<date type="published" when="1950" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<monogr>
+		<title level="m" type="main">The composition and use of the universal morphological feature schema (unimorph schema)</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>Johns Hopkins University</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<monogr>
+		<title level="m" type="main">The Kazakh Verbs: Review Guide. Preceptor Language Guides</title>
+		<author>
+			<persName><surname>Turkicum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<monogr>
+		<title level="m" type="main">The Uzbek Verbs: Review Guide</title>
+		<author>
+			<persName><surname>Turkicum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<publisher>CreateSpace Independent Publishing Platform</publisher>
+		</imprint>
+	</monogr>
+	<note>Online</note>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<monogr>
+		<title level="m" type="main">501 Turkmen verbs</title>
+		<author>
+			<persName><forename type="first">U</forename><forename type="middle">S</forename><surname>Turkmenistan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Embassy</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<pubPlace>Peace Corps, Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<analytic>
+		<title level="a" type="main">Attention is all you need</title>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Vaswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niki</forename><surname>Parmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aidan</forename><forename type="middle">N</forename><surname>Gomez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Łukasz</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="5998" to="6008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<analytic>
+		<title level="a" type="main">Exact hard monotonic attention for character-level transduction</title>
+		<author>
+			<persName><forename type="first">Shijie</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1530" to="1537" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<monogr>
+		<title level="m" type="main">Applying the transformer to character-level transduction</title>
+		<author>
+			<persName><forename type="first">Shijie</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<analytic>
+		<title level="a" type="main">Ensemble self-training for low-resource languages:grapheme-to-phoneme conversion and morphological inflection</title>
+		<author>
+			<persName><forename type="first">Xiang</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ngoc</forename><forename type="middle">Thang</forename><surname>Vu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonas</forename><surname>Kuhns</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<analytic>
+		<title level="a" type="main">Open corpus of Veps and Karelian languages (VepKar): preliminary data collection and dictionaries</title>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Zaytseva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Krizhanovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Krizhanovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Pellinen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aleksndra</forename><surname>Rodionova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Corpus Linguistics-2017</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="172" to="177" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<monogr>
+		<title level="m" type="main">A Tohono O&apos;odham grammar (Original work published 1983)</title>
+		<author>
+			<persName><forename type="first">Ofelia</forename><surname>Zepeda</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2003" />
+			<publisher>University of Arizona Press</publisher>
+			<pubPlace>Online</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<analytic>
+		<title level="a" type="main">Synchronous bidirectional neural machine translation</title>
+		<author>
+			<persName><forename type="first">Long</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiajun</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chengqing</forename><surname>Zong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page" from="91" to="105" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<analytic>
+		<title level="a" type="main">Results per Language Genus (in Oto-Manguean and Uralic Families) System Rank Acc BASE: mono-shared</title>
+	</analytic>
+	<monogr>
+		<title level="j">Table</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b85">
+	<analytic>
+		<title/>
+	</analytic>
+	<monogr>
+		<title level="j">Results on the Finnic genus</title>
+		<imprint/>
+	</monogr>
+	<note>10 languages</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

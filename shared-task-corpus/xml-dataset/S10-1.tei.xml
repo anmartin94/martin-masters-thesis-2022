@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2010 Task 1: Coreference Resolution in Multiple Languages</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Marta</forename><surname>Recasens</surname></persName>
+							<email>mrecasens@ub.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+							<email>lluism@lsi.upc.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Emili</forename><surname>Sapena</surname></persName>
+							<email>esapena@lsi.upc.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">M</forename><surname>Antònia Martí</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Mariona</forename><surname>Taulé</surname></persName>
+							<email>mtaule@ub.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+							<email>veronique.hoste@hogent.be</email>
+						</author>
+						<author>
+							<persName><forename type="first">Massimo</forename><surname>Poesio</surname></persName>
+							<email>poesio@essex.ac.uk</email>
+						</author>
+						<author>
+							<persName><forename type="first">Yannick</forename><surname>Versley</surname></persName>
+							<email>versley@sfs.uni-tuebingen.de</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">CLiC</orgName>
+								<orgName type="institution" key="instit2">University of Barcelona</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">University of Essex/University of Trento</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2010 Task 1: Coreference Resolution in Multiple Languages</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the SemEval-2010 task on Coreference Resolution in Multiple Languages. The goal was to evaluate and compare automatic coreference resolution systems for six different languages (Catalan, Dutch, English, German, Italian, and Spanish) in four evaluation settings and using four different metrics. Such a rich scenario had the potential to provide insight into key issues concerning coreference resolution: (i) the portability of systems across languages, (ii) the relevance of different levels of linguistic information, and (iii) the behavior of scoring metrics.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The task of coreference resolution, defined as the identification of the expressions in a text that refer to the same discourse entity (1), has attracted considerable attention within the NLP community.</p><p>(1)</p><p>Major League Baseball sent its head of security to Chicago to review the second incident of an on-field fan attack in the last seven months. The league is reviewing security at all ballparks to crack down on spectator violence.</p><p>Using coreference information has been shown to be beneficial in a number of NLP applications including Information Extraction <ref type="bibr" target="#b13">(McCarthy and Lehnert, 1995)</ref>, Text Summarization <ref type="bibr" target="#b23">(Steinberger et al., 2007)</ref>, Question Answering <ref type="bibr" target="#b14">(Morton, 1999)</ref>, and Machine Translation. There have been a few evaluation campaigns on coreference resolution in the past, namely MUC <ref type="bibr" target="#b8">(Hirschman and Chinchor, 1997)</ref>, ACE <ref type="bibr" target="#b4">(Doddington et al., 2004)</ref>, and ARE <ref type="bibr" target="#b15">(Orasan et al., 2008</ref>), yet many questions remain open:</p><p>• To what extent is it possible to implement a general coreference resolution system portable to different languages? How much language-specific tuning is necessary?</p><p>• How helpful are morphology, syntax and semantics for solving coreference relations? How much preprocessing is needed? Does its quality (perfect linguistic input versus noisy automatic input) really matter?</p><p>• How (dis)similar are different coreference evaluation metrics-MUC, B-CUBED, CEAF and BLANC? Do they all provide the same ranking? Are they correlated?</p><p>Our goal was to address these questions in a shared task. Given six datasets in Catalan, Dutch, English, German, Italian, and Spanish, the task we present involved automatically detecting full coreference chains-composed of named entities (NEs), pronouns, and full noun phrases-in four different scenarios. For more information, the reader is referred to the task website. <ref type="bibr">1</ref> The rest of the paper is organized as follows. Section 2 presents the corpora from which the task datasets were extracted, and the automatic tools used to preprocess them. In Section 3, we describe the task by providing information about the data format, evaluation settings, and evaluation metrics. Participating systems are described in Section 4, and their results are analyzed and compared in Section 5. Finally, Section 6 concludes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Linguistic Resources</head><p>In this section, we first present the sources of the data used in the task. We then describe the automatic tools that predicted input annotations for the coreference resolution systems.  The datasets that were used in the task were extracted from the above-mentioned corpora. Table 1 summarizes the number of documents (docs), sentences (sents), and tokens in the training, development and test sets. 3</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Preprocessing Systems</head><p>Catalan, Spanish, English Predicted lemmas and PoS were generated using FreeLing 4 for Catalan/Spanish and SVMTagger 5 for English. Dependency information and predicate semantic roles were generated with JointParser, a syntacticsemantic parser. <ref type="bibr">6</ref> Dutch Lemmas, PoS and NEs were automatically provided by the memory-based shallow parser for Dutch <ref type="bibr" target="#b3">(Daelemans et al., 1999)</ref>, and dependency information by the Alpino parser <ref type="bibr" target="#b25">(van Noord et al., 2006)</ref>.</p><p>German Lemmas were predicted by TreeTagger <ref type="bibr" target="#b22">(Schmid, 1995)</ref>, PoS and morphology by RFTagger <ref type="bibr" target="#b21">(Schmid and Laws, 2008)</ref>, and dependency information by MaltParser <ref type="bibr" target="#b6">(Hall and Nivre, 2008)</ref>.</p><p>Italian Lemmas and PoS were provided by TextPro, 7 and dependency information by  3 Task Description</p><p>Participants were asked to develop an automatic system capable of assigning a discourse entity to every mention, 9 thus identifying all the NP mentions of every discourse entity. As there is no standard annotation scheme for coreference and the source corpora differed in certain aspects, the coreference information of the task datasets was produced according to three criteria:</p><p>• Only NP constituents and possessive determiners can be mentions.</p><p>• Mentions must be referential expressions, thus ruling out nominal predicates, appositives, expletive NPs, attributive NPs, NPs within idioms, etc.</p><p>• Singletons are also considered as entities (i.e., entities with a single mention).</p><p>To help participants build their systems, the task datasets also contained both gold-standard and automatically predicted linguistic annotations at the morphological, syntactic and semantic levels. Considerable effort was devoted to provide participants with a common and relatively simple data representation for the six languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Format</head><p>The task datasets as well as the participants' answers were displayed in a uniform columnbased format, similar to the style used in previous CoNLL shared tasks on syntactic and semantic <ref type="bibr">dependencies (2008/2009</ref>). 10 Each dataset was provided as a single file per language. Since coreference is a linguistic relation at the discourse level, documents constitute the basic unit, and are delimited by "#begin document ID" and "#end document ID" comment lines. Within a document, the information of each sentence is organized vertically with one token per line, and a blank line after the last token of each sentence. The information associated with each token is described in several columns (separated by "\t" characters) representing the following layers of linguistic annotation.</p><p>ID (column 1). Token identifiers in the sentence. Token (column 2). Word forms.  The above-mentioned columns are "goldstandard columns," whereas columns 4, 6, 8, 10, 12, 14, 16 and the penultimate contain the same information as the respective previous column but automatically predicted-using the preprocessing systems listed in Section 2.2. Neither all layers of linguistic annotation nor all gold-standard and predicted columns were available for all six languages (underscore characters indicate missing information).</p><p>The coreference column follows an open-close notation with an entity number in parentheses (see Table <ref type="table" target="#tab_3">2</ref>). Every entity has an ID number, and every mention is marked with the ID of the entity it refers to: an opening parenthesis shows the beginning of the mention (first token), while a closing parenthesis shows the end of the mention (last token). For tokens belonging to more than one mention, a pipe character is used to separate multiple entity IDs. The resulting annotation is a wellformed nested structure (CF language).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Evaluation Settings</head><p>In order to address our goal of studying the effect of different levels of linguistic information (preprocessing) on solving coreference relations, the test was divided into four evaluation settings that differed along two dimensions.</p><p>Gold-standard versus Regular setting. Only in the gold-standard setting were participants allowed to use the gold-standard columns, including the last one (of the test dataset) with true mention boundaries. In the regular setting, they were allowed to use only the automatically predicted columns. Obtaining better results in the gold setting would provide evidence for the relevance of using high-quality preprocessing information. Since not all columns were available for all six languages, the gold setting was only possible for Catalan, English, German, and Spanish.</p><p>Closed versus Open setting. In the closed setting, systems had to be built strictly with the information provided in the task datasets. In contrast, there was no restriction on the resources that participants could utilize in the open setting: systems could be developed using any external tools and resources to predict the preprocessing information, e.g., WordNet, Wikipedia, etc. The only requirement was to use tools that had not been developed with the annotations of the test set. This setting provided an open door into tools or resources that improve performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Evaluation Metrics</head><p>Since there is no agreement at present on a standard measure for coreference resolution evaluation, one of our goals was to compare the rankings produced by four different measures. The task scorer provides results in the two mentionbased metrics B 3 <ref type="bibr" target="#b1">(Bagga and Baldwin, 1998)</ref> and CEAF-φ 3 <ref type="bibr" target="#b12">(Luo, 2005)</ref>, and the two link-based metrics MUC <ref type="bibr">(Vilain et al., 1995)</ref> and BLANC <ref type="bibr">(Recasens and Hovy, in prep)</ref>. The first three measures have been widely used, while BLANC is a proposal of a new measure interesting to test.</p><p>The mention detection subtask is measured with recall, precision, and F 1 . Mentions are rewarded with 1 point if their boundaries coincide with those of the gold NP, with 0.5 points if their boundaries are within the gold NP including its head, and with 0 otherwise.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participating Systems</head><p>A total of twenty-two participants registered for the task and downloaded the training materials. From these, sixteen downloaded the test set but only six (out of which two task organizers) submitted valid results (corresponding to nine system runs or variants). These numbers show that the task raised considerable interest but that the final participation rate was comparatively low (slightly below 30%).</p><p>The participating systems differed in terms of architecture, machine learning method, etc. Table 3 summarizes their main properties. Systems like BART and Corry support several machine learners, but Table <ref type="table" target="#tab_5">3</ref> indicates the one used for the SemEval run. The last column indicates the external resources that were employed in the open setting, thus it is empty for systems that participated only in the closed setting. For more specific details we address the reader to the system description papers in Erk and Strapparava (2010).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results and Evaluation</head><p>Table <ref type="table" target="#tab_7">4</ref> shows the results obtained by two naive baseline systems: (i) SINGLETONS considers each mention as a separate entity, and (ii) ALL-IN-ONE groups all the mentions in a document into a single entity. These simple baselines reveal limitations of the evaluation metrics, like the high scores of CEAF and B 3 for SINGLETONS. Interestingly enough, the naive baseline scores turn out to be hard to beat by the participating systems, as Table <ref type="table" target="#tab_9">5</ref> shows. Similarly, ALL-IN-ONE obtains high scores in terms of MUC. Table <ref type="table" target="#tab_7">4</ref> also reveals differences between the distribution of entities in the datasets. Dutch is clearly the most divergent corpus mainly due to the fact that it only contains singletons for NEs.</p><p>Table <ref type="table" target="#tab_9">5</ref> displays the results of all systems for all languages and settings in the four evaluation metrics (the best scores in each setting are highlighted in bold). Results are presented sequentially by language and setting, and participating systems are ordered alphabetically. The participation of systems across languages and settings is rather irregular, 11 thus making it difficult to draw firm conclu-  sions about the aims initially pursued by the task.</p><note type="other">System Architecture ML Methods External Resources BART</note><p>In the following, we summarize the most relevant outcomes of the evaluation.</p><p>Regarding languages, English concentrates the most participants (fifteen entries), followed by German (eight), Catalan and Spanish (seven each), Italian (five), and Dutch (three). The number of languages addressed by each system ranges from one (Corry) to six (UBIU and SUCRE); BART and RelaxCor addressed three languages, and TANL-1 five. The best overall results are obtained for English followed by German, then Catalan, Spanish and Italian, and finally Dutch. Apart from differences between corpora, there are other factors that might explain this ranking: (i) the fact that most of the systems were originally developed for English, and (ii) differences in corpus size (German having the largest corpus, and Dutch the smallest).</p><p>Regarding systems, there are no clear "winners." Note that no language-setting was addressed by all six systems. The BART system, for instance, is either on its own or competing against a single system. It emerges from partial comparisons that SUCRE performs the best in closed×regular for English, German, and Italian, although it never outperforms the CEAF or B 3 singleton baseline. While SUCRE always obtains the best scores according to MUC and BLANC, Re-laxCor and TANL-1 usually win based on CEAF and B 3 . The Corry system presents three variants optimized for CEAF (Corry-C), MUC (Corry-M), and BLANC (Corry-B). Their results are consistent with the bias introduced in the optimization (see English:open×gold).</p><p>Depending on the evaluation metric then, the rankings of systems vary with considerable score differences. There is a significant positive correlation between CEAF and B 3 (Pearson's r = 0.91, p &lt; 0.01), and a significant lack of correlation between CEAF and MUC in terms of recall (Pearson's r = 0.44, p &lt; 0.01). This fact stresses the importance of defining appropriate metrics (or a combination of them) for coreference evaluation.</p><p>Finally, regarding evaluation settings, the results in the gold setting are significantly better than those in the regular. However, this might be a direct effect of the mention recognition task. Mention recognition in the regular setting falls more than 20 F 1 points with respect to the gold setting (where correct mention boundaries were given).</p><p>As for the open versus closed setting, there is only one system, RelaxCor for English, that addressed the two. As expected, results show a slight improvement from closed×gold to open×gold.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusions</head><p>This paper has introduced the main features of the SemEval-2010 task on coreference resolution.  The goal of the task was to evaluate and compare automatic coreference resolution systems for six different languages in four evaluation settings and using four different metrics. This complex scenario aimed at providing insight into several aspects of coreference resolution, including portability across languages, relevance of linguistic information at different levels, and behavior of alternative scoring metrics.</p><p>The task attracted considerable attention from a number of researchers, but only six teams submitted their final results. Participating systems did not run their systems for all the languages and evaluation settings, thus making direct comparisons between them very difficult. Nonetheless, we were able to observe some interesting aspects from the empirical evaluation.</p><p>An important conclusion was the confirmation that different evaluation metrics provide different system rankings and the scores are not commensurate. Attention thus needs to be paid to coreference evaluation. The behavior and applicability of the scoring metrics requires further investigation in order to guarantee a fair evaluation when comparing systems in the future. We hope to have the opportunity to thoroughly discuss this and the rest of interesting questions raised by the task during the SemEval workshop at ACL 2010.</p><p>An additional valuable benefit is the set of resources developed throughout the task. As task organizers, we intend to facilitate the sharing of datasets, scorers, and documentation by keeping them available for future research use. We believe that these resources will help to set future bench-marks for the research community and will contribute positively to the progress of the state of the art in coreference resolution. We will maintain and update the task website with post-SemEval contributions.  </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Size of the task datasets.</figDesc><table><row><cell>2.1 Source Corpora</cell><cell>(MapTask). They are being annotated according</cell></row><row><cell>Catalan and Spanish The AnCora corpora (Re-casens and Martí, 2009) consist of a Catalan and a Spanish treebank of 500k words each, mainly from newspapers and news agencies (El Periódico,</cell><cell>to the ARRAU annotation scheme with coref-erence, agreement, and NE information on top of automatically parsed data. The task dataset included Wikipedia texts already annotated.</cell></row><row><cell>EFE, ACN). Manual annotation exists for ar-</cell><cell></cell></row><row><cell>guments and thematic roles, predicate semantic</cell><cell></cell></row><row><cell>classes, NEs, WordNet nominal senses, and coref-</cell><cell></cell></row><row><cell>erence relations. AnCora are freely available for</cell><cell></cell></row><row><cell>research purposes.</cell><cell></cell></row><row><cell>English The OntoNotes Release 2.0 corpus</cell><cell></cell></row><row><cell>(Pradhan et al., 2007) covers newswire and broad-</cell><cell></cell></row><row><cell>cast news data: 300k words from The Wall Street</cell><cell></cell></row><row><cell>Journal, and 200k words from the TDT-4 col-</cell><cell></cell></row><row><cell>lection, respectively. OntoNotes builds on the</cell><cell></cell></row><row><cell>Penn Treebank for syntactic annotation and on the</cell><cell></cell></row><row><cell>Penn PropBank for predicate argument structures.</cell><cell></cell></row><row><cell>Semantic annotations include NEs, words senses</cell><cell></cell></row><row><cell>(linked to an ontology), and coreference informa-</cell><cell></cell></row><row><cell>tion. The OntoNotes corpus is distributed by the</cell><cell></cell></row><row><cell>Linguistic Data Consortium. 2</cell><cell></cell></row><row><cell>German The TüBa-D/Z corpus (Hinrichs et al.,</cell><cell></cell></row><row><cell>2005) is a newspaper treebank based on data taken</cell><cell></cell></row><row><cell>from the daily issues of "die tageszeitung" (taz). It</cell><cell></cell></row><row><cell>currently comprises 794k words manually anno-</cell><cell></cell></row><row><cell>tated with semantic and coreference information.</cell><cell></cell></row><row><cell>Due to licensing restrictions of the original texts, a</cell><cell></cell></row><row><cell>taz-DVD must be purchased to obtain a license. 2</cell><cell></cell></row><row><cell>Italian The LiveMemories corpus (Rodríguez</cell><cell></cell></row><row><cell>et al., 2010) will include texts from the Italian</cell><cell></cell></row><row><cell>Wikipedia, blogs, news articles, and dialogues</cell><cell></cell></row></table><note>Dutch The KNACK-2002 corpus<ref type="bibr" target="#b10">(Hoste and De Pauw, 2006)</ref> contains 267 documents from the Flemish weekly magazine Knack. They were manually annotated with coreference information on top of semi-automatically annotated PoS tags, phrase chunks, and NEs.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Format of the coreference annotations (corresponding to example (1) in Section 1). Head (column 9). ID of the syntactic head ("0" if the token is the tree root). DepRel (column 11). Dependency relations corresponding to the dependencies described in the Head column ("sentence" if the token is the tree root). NE (column 13). NE types in open-close notation. Pred (column 15). Predicate semantic class. APreds (column 17 and subsequent ones). For each predicate in the Pred column, its semantic roles/dependencies. Coref (last column). Coreference relations in open-close notation.</figDesc><table /><note>Lemma (column 3). Token lemmas. PoS (column 5). Coarse PoS. Feat (column 7). Morphological features (PoS type, number, gender, case, tense, aspect, etc.) separated by a pipe character.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Main characteristics of the participating systems.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>Baseline scores.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 :</head><label>5</label><figDesc>Official results of the participating systems for all languages, settings, and metrics.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://stel.ub.edu/semeval2010-coref</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">Free user license agreements for the English and German task datasets were issued to the task participants.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">The German and Dutch training datasets were not completely stable during the competition period due to a few errors. Revised versions were released on March 2 and 20, respectively. As to the test datasets, the Dutch and Italian documents with formatting errors were corrected after the evaluation period, with no variations in the ranking order of systems.4 http://www.lsi.upc.es/ nlp/freeling 5 http://www.lsi.upc.edu/ nlp/SVMTool 6 http://www.lsi.upc.edu// xlluis/?x=cat:5 7 http://textpro.fbk.eu 8 http://maltparser.org</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">Following the terminology of the ACE program, a mention is defined as an instance of reference to an object, and an entity is the collection of mentions referring to the same object in a document.10 http://www.cnts.ua.ac.be/conll2008</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">Only 45 entries in Table 5 from 192 potential cases.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We would like to thank the following people who contributed to the preparation of the task datasets: Manuel Bertran (UB), Oriol Borrega (UB), Orphée De Clercq (U. Ghent), Francesca Delogu (U. Trento), Jesús Giménez (UPC), Eduard Hovy (ISI-USC), Richard Johansson (U. Trento), Xavier Lluís (UPC), Montse Nofre (UB), Lluís Padró (UPC), Kepa Joseba Rodríguez (U. Trento), Mihai Surdeanu (Stanford), Olga Uryupina (U. Trento), Lente Van Leuven (UB), and Rita Zaragoza (UB). We would also like to thank LDC and die tageszeitung for distributing freely the English and German datasets. </p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">TANL-1: coreference resolution by parse analysis and similarity clustering</title>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Attardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><forename type="middle">Dei</forename><surname>Rossi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Simi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval-2</title>
+				<meeting>SemEval-2</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Algorithms for scoring coreference chains</title>
+		<author>
+			<persName><forename type="first">Amit</forename><surname>Bagga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Breck</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the LREC Workshop on Linguistic Coreference</title>
+				<meeting>the LREC Workshop on Linguistic Coreference</meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="563" to="566" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">BART: A multilingual anaphora resolution system</title>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Broscheit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Massimo</forename><surname>Poesio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kepa Joseba</forename><surname>Rodríguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lorenza</forename><surname>Romano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Uryupina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannick</forename><surname>Versley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Zanoli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval-2</title>
+				<meeting>SemEval-2</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Memory-based shallow parsing</title>
+		<author>
+			<persName><forename type="first">Walter</forename><surname>Daelemans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Buchholz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorn</forename><surname>Veenstra</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of CoNLL</title>
+				<meeting>CoNLL</meeting>
+		<imprint>
+			<date type="published" when="1999" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">The Automatic Content Extraction (ACE) program -Tasks, data, and evaluation</title>
+		<author>
+			<persName><forename type="first">George</forename><surname>Doddington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Mitchell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Przybocki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lance</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephanie</forename><surname>Strassel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralph</forename><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC 2004</title>
+				<meeting>LREC 2004</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="837" to="840" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Proceedings of SemEval-2</title>
+		<editor>Katrin Erk and Carlo Strapparava</editor>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A dependencydriven parser for German dependency and constituency representations</title>
+		<author>
+			<persName><forename type="first">Johan</forename><surname>Hall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL Workshop on Parsing German</title>
+				<meeting>the ACL Workshop on Parsing German</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="47" to="54" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">A unified representation for morphological, syntactic, semantic, and referential annotations</title>
+		<author>
+			<persName><forename type="first">Erhard</forename><forename type="middle">W</forename><surname>Hinrichs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karin</forename><surname>Naumann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL Workshop on Frontiers in Corpus Annotation II: Pie in the Sky</title>
+				<meeting>the ACL Workshop on Frontiers in Corpus Annotation II: Pie in the Sky</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="13" to="20" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Lynette</forename><surname>Hirschman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nancy</forename><surname>Chinchor</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">MUC-7 Coreference Task Definition -Version 3.0</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of MUC-7</title>
+				<meeting>MUC-7</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">KNACK-2002: A richly annotated corpus of Dutch written text</title>
+		<author>
+			<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guy</forename><surname>De Pauw</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC 2006</title>
+				<meeting>LREC 2006</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="1432" to="1437" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">SU-CRE: A modular system for coreference resolution</title>
+		<author>
+			<persName><forename type="first">Hamidreza</forename><surname>Kobdani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval-2</title>
+				<meeting>SemEval-2</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">On coreference resolution performance metrics</title>
+		<author>
+			<persName><forename type="first">Xiaoqiang</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of HLT-EMNLP 2005</title>
+				<meeting>HLT-EMNLP 2005</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="25" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Using decision trees for coreference resolution</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Joseph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wendy</forename><forename type="middle">G</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lehnert</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of IJCAI 1995</title>
+				<meeting>IJCAI 1995</meeting>
+		<imprint>
+			<date type="published" when="1995" />
+			<biblScope unit="page" from="1050" to="1055" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Using coreference in question answering</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><forename type="middle">S</forename><surname>Morton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of TREC-8</title>
+				<meeting>TREC-8</meeting>
+		<imprint>
+			<date type="published" when="1999" />
+			<biblScope unit="page" from="85" to="89" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Anaphora Resolution Exercise: An overview</title>
+		<author>
+			<persName><forename type="first">Constantin</forename><surname>Orasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Cristea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Mitkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">António</forename><surname>Branco</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC</title>
+				<meeting>LREC</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Ontonotes: A unified relational semantic representation</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sameer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitch</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lance</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralph</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Semantic Computing (ICSC 2007)</title>
+				<meeting>the International Conference on Semantic Computing (ICSC 2007)</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="517" to="526" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">BLANC: Implementing the Rand Index for Coreference Evaluation</title>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Recasens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+	<note>in prep</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">AnCora-CO: Coreferentially annotated corpora for Spanish and Catalan. Language Resources and Evaluation</title>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Recasens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M. Antònia</forename><surname>Martí</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s10579-009-9108-x</idno>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Anaphoric annotation of Wikipedia and blogs in the Live Memories Corpus</title>
+		<author>
+			<persName><forename type="first">Francesca</forename><surname>Kepa Joseba Rodríguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannick</forename><surname>Delogu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Egon</forename><surname>Versley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Massimo</forename><surname>Stemle</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Poesio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC 2010</title>
+				<meeting>LREC 2010</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="157" to="163" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">RelaxCor: A global relaxation labeling approach to coreference resolution for the SemEval-2 Coreference Task</title>
+		<author>
+			<persName><forename type="first">Emili</forename><surname>Sapena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Padró</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jordi</forename><surname>Turmo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval-2</title>
+				<meeting>SemEval-2</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Estimation of conditional probabilities with decision trees and an application to fine-grained POS tagging</title>
+		<author>
+			<persName><forename type="first">Helmut</forename><surname>Schmid</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Florian</forename><surname>Laws</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2008</title>
+				<meeting>COLING 2008</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="777" to="784" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Improvements in part-ofspeech tagging with an application to German</title>
+		<author>
+			<persName><forename type="first">Helmut</forename><surname>Schmid</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL SIGDAT Workshop</title>
+				<meeting>the ACL SIGDAT Workshop</meeting>
+		<imprint>
+			<date type="published" when="1995" />
+			<biblScope unit="page" from="47" to="50" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Two uses of anaphora resolution in summarization. Information Processing and Management: an</title>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Steinberger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Massimo</forename><surname>Poesio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Mijail</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karel</forename><surname>Kabadjov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Jeek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="1663" to="1680" />
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Corry: A system for coreference resolution</title>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Uryupina</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval-2</title>
+				<meeting>SemEval-2</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Syntactic annotation of large corpora in STEVIN</title>
+		<author>
+			<persName><forename type="first">Ineke</forename><surname>Gertjan Van Noord</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Schuurman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Vandeghinste</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC</title>
+				<meeting>LREC</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Dennis Connolly, and Lynette Hirschman. 1995. A modeltheoretic coreference scoring scheme</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Vilain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Burger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Aberdeen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of MUC-6</title>
+				<meeting>MUC-6</meeting>
+		<imprint>
+			<biblScope unit="page" from="45" to="52" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">UBIU: A language-independent system for coreference resolution</title>
+		<author>
+			<persName><forename type="first">Desislava</forename><surname>Zhekova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval-2</title>
+				<meeting>SemEval-2</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

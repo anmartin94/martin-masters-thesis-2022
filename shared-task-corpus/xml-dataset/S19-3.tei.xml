@@ -1,0 +1,1259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2019 Task 3: EmoContext Contextual Emotion Detection in Text</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Ankush</forename><surname>Chatterjee</surname></persName>
+							<affiliation key="aff0">
+								<address>
+									<settlement>Microsoft</settlement>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Kedhar</forename><surname>Nath</surname></persName>
+							<email>kedharn@microsoft.com</email>
+							<affiliation key="aff0">
+								<address>
+									<settlement>Microsoft</settlement>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Meghana</forename><surname>Joshi</surname></persName>
+							<email>mejoshi@microsoft.com</email>
+							<affiliation key="aff0">
+								<address>
+									<settlement>Microsoft</settlement>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Puneet</forename><surname>Agrawal</surname></persName>
+							<affiliation key="aff0">
+								<address>
+									<settlement>Microsoft</settlement>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2019 Task 3: EmoContext Contextual Emotion Detection in Text</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this paper, we present the SemEval-2019 Task 3 -EmoContext: Contextual Emotion Detection in Text. Lack of facial expressions and voice modulations make detecting emotions in text a challenging problem. For instance, as humans, on reading "Why don't you ever text me!" we can either interpret it as a sad or angry emotion and the same ambiguity exists for machines. However, the context of dialogue can prove helpful in detection of the emotion. In this task, given a textual dialogue i.e. an utterance along with two previous turns of context, the goal was to infer the underlying emotion of the utterance by choosing from four emotion classes -Happy, Sad, Angry and Others. To facilitate the participation in this task, textual dialogues from user interaction with a conversational agent were taken and annotated for emotion classes after several data processing steps. A training data set of 30160 dialogues, and two evaluation data sets, Test1 and Test2, containing 2755 and 5509 dialogues respectively were released to the participants. A total of 311 teams made submissions to this task. The final leader-board was evaluated on Test2 data set, and the highest ranked submission achieved 79.59 micro-averaged F1 score. Our analysis of systems submitted to the task indicate that Bi-directional LSTM was the most common choice of neural architecture used, and most of the systems had the best performance for the Sad emotion class, and the worst for the Happy emotion class.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Emotions are basic human traits and have been studied by researchers in the fields of psychology, sociology, medicine, computer science etc. for several years. Some of the prominent work in understanding and categorizing emotions include Ekman's six class categorization <ref type="bibr" target="#b14">(Ekman, 1992)</ref> and Plutchik's "Wheel of Emotion" <ref type="bibr" target="#b33">(Plutchik and Kellerman, 1986)</ref> which suggested eight primary bipolar emotions . In recent times, several Artificial Intelligence (AI) agents like Siri, Cortana, Alexa have emerged and they primarily focus on providing users with assistance on specific tasks such as booking tickets or scheduling meetings etc. However, we believe that for machines and humans to develop a deeper partnership, an Intelligence Quotient (IQ) is not enough. These agents need to also possess an Emotional Quotient (EQ). Social conversational agents like Mitsuku 1 or Ruuh 2 <ref type="bibr" target="#b10">(Damani et al., 2018)</ref> are experimental agents designed to have human-like persona, and possess a deeper sense of EQ; understanding and expressing emotions is an inherent aspect of these agents. Detecting emotions in textual dialogues is a challenging problem in absence of facial expressions and voice modulations. Moreover, we observed that context of ongoing dialogue can completely change the emotion for an utterance as compared to perceived emotion when the utterance is evaluated standalone. Table <ref type="table" target="#tab_1">1</ref> presents few such examples. Note that, in the first example "I started crying" will be perceived as 'Sad' by a majority, however considering it in context, it turns out to be a 'Happy' emotion. Similarly, in the second example, the last turn "Try to do that once" is very likely to be perceived as 'Others', however again, a majority will judge it as 'Angry' with the given context.</p><p>Naturally, considering context to estimate emotion of a text utterance becomes even more important for aforementioned scenarios of digital assistants and conversational agents, because of their text-based conversational interface. This task was  designed to invite research interest in the area of emotion detection in text. More details about the task can be found on our web page 3 . The evaluation data set served as a benchmark to compare various techniques and the task received attention from a wide range of researchers from industry as well as academia. We believe continued interest in this field will be beneficial towards making the AI-agents more human-like.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Researchers have achieved good results on image based emotion recognition <ref type="bibr" target="#b41">(Wang et al., 2018)</ref>, <ref type="bibr" target="#b45">(Zhang et al., 2016)</ref> as well as voice based emotion recognition <ref type="bibr" target="#b32">(Pierre-Yves, 2003)</ref>. Techniques have been proposed to detect emotions in spoken dialog systems <ref type="bibr" target="#b27">(Liscombe et al., 2005)</ref>. However, classifying textual dialogues based on emotions is relatively new research area. Emotion-detection algorithms for text can be largely bucketized into following two categories:</p><p>(a) Hand-crafted Feature Engineering Based Approaches: -Many methods exploit the usage of keywords in a sentence with explicit emotional/affect value <ref type="bibr" target="#b3">(Balahur et al., 2011</ref><ref type="bibr" target="#b37">), (Strapparava and Mihalcea, 2008</ref><ref type="bibr" target="#b40">), (Sykora et al., 2013</ref>. To that end, several lexical resources have been created, such as WordNet-Affect <ref type="bibr" target="#b38">(Strapparava et al., 2004)</ref> and SentiWordNet <ref type="bibr" target="#b15">(Esuli and Sebastiani, 2007)</ref>. Part-of-Speech taggers like the Stanford POS tagger are also used to exploit the structure of keywords in a sentence. These pattern/dictionary based approaches, although attaining high precision scores, suffer from low recall. <ref type="bibr" target="#b18">Hasan et al. (2014)</ref>, <ref type="bibr" target="#b34">Purver and Battersby (2012)</ref>, <ref type="bibr" target="#b39">Suttles and Ide (2013)</ref> and <ref type="bibr" target="#b42">Wang et al. (2012)</ref> have also harnessed cues from emoticons and hashtags. Other methods rely on extracting statistical features such as presence of frequent ngrams, negation, punctuation, emoticons, hashtags to form representations of sentences which are 3 Task webpage: humanizing-ai.com/emocontext.html then used as input by classifiers such as Decision Trees, SVMs among others to predict the output <ref type="bibr" target="#b1">(Alm et al., 2005)</ref>, <ref type="bibr" target="#b2">(Balabantaray et al., 2012)</ref>, <ref type="bibr" target="#b11">(Davidov et al., 2010)</ref>, <ref type="bibr" target="#b25">(Kunneman et al., 2014)</ref>, <ref type="bibr" target="#b43">(Yan and Turtle, 2016)</ref>. However, all of these methods require extensive feature engineering and they often do not achieve high recall due to diverse ways of representing emotions. For example, the following utterance, "Trust me! I am never gonna order again", contains no affective words despite conveying an emotion of anger or frustration perhaps.  <ref type="bibr" target="#b19">(Hochreiter and Schmidhuber, 1997)</ref> and Bidirectional LSTM (BiLSTM) (Schuster and Paliwal, 1997) have been effective in modeling sequential information. Also, Convolutional Neural Networks (CNN) <ref type="bibr" target="#b24">(Krizhevsky et al., 2012)</ref> have been a popular choice in the image domain. Their introduction to the text domain has proven their ability to decipher abstract concepts from raw signals <ref type="bibr" target="#b22">(Kim, 2014)</ref>. Recently, approaches which employ Deep Learning for emotion detection in text have been proposed. Zahiri and Choi (2017) predicts emotion in a TV show transcript. <ref type="bibr" target="#b0">Abdul-Mageed and Ungar (2017)</ref> and <ref type="bibr" target="#b23">Köper et al. (2017)</ref> tries to understand emotions of tweets. <ref type="bibr" target="#b26">Li et al. (2017)</ref> learns to detect emotions on user comments in Chinese language. <ref type="bibr" target="#b16">Felbo et al. (2017)</ref> learns representation based on emoticons, and uses it for emotion detection. A further detailed analysis of various approaches have been provided by <ref type="bibr" target="#b7">Chatterjee et al. (2019)</ref>. It is worth noting that textual dialogues are informal and laden with misspellings which pose serious challenges for automatic emotion detection approaches. Prior to this task, to the best of our knowledge, the methods proposed by <ref type="bibr" target="#b28">Mundra et al. (2017)</ref> and <ref type="bibr" target="#b7">Chatterjee et al. (2019)</ref> are some of the few methods that tackled the problem of emotion detection in English textual dialogues.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Details</head><p>Problem Definition: In a textual dialogue, given an utterance along with its two previous turns of context, classify the emotion of the utterance as one of the following classes: Happy, Sad, Angry or Others.</p><p>The motivation for restricting the number of emotion classes stems from the popularity of these emotions in conversational data. The task proceeded in two phases. A training corpus, Train, of 30160 dialogues was provided at the beginning of Phase 1. The evaluation in this phase was done on an evaluation data set, Test1, comprising of 2755 dialogues. The labels for Test1 were made public five weeks before the end of Phase 1, allowing participants time and data to improve their models. The final evaluation was carried out in Phase 2 on a evaluation data set, Test2, which comprised of 5509 dialogues. It is important to note that while the maximum number of submissions a participant could make in Phase 1 was 20 per day, it was reduced to 10 per day during Phase 2.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data Collection</head><p>A data set of textual dialogues was released to facilitate participation in this task. Several data processing steps were performed to create the final set of textual dialogues which are further explained in this section.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Dialogue Collection and Processing</head><p>A dialogue mined from the user's interaction with agent is defined as a tuple of 3 values -User Turn-1 (Utterance of the user), Conversational Agent Turn-1 (Response by the agent), User Turn-2 (User utterance as response to agent). To begin with, user interactions with the agent over a period of one year were considered and over 2 million dialogues were randomly sampled. These dialogues further went through the processing and data cleaning as described in further subsections.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.1">Offensive filtering</head><p>All the dialogues were passed through a filtering layer to remove offensive and sensitive content   such as adult information, politically sensitive topics, or ethnic-religious content, or other potentially contentious material, such as inappropriate references to violence, crime and illegal substances etc. Several lexicons and human judgments were used to achieve this filtering.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.2">PII filtering</head><p>Personally Identifiable Information (PII) identifies the unique identity of a given user. This includes personal data like names, phone numbers, email Ids, among others. Dialogues containing any PII content were removed using hand crafted rules and via human judgments.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.3">Language filtering</head><p>Given that the agent was available for users across geographies, the dialogues contained multiple languages and users employed code-mixed language as well. We used language detectors as well as user modeling to identify the language in the dialogues and filter non-English dialogues from the data set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Training Data Set Creation</head><p>In the collected textual dialogues the emotion classes were not frequently expressed and hence directly annotating a random sample of textual dialogues results in very low volume of textual dialogues with emotion class. This problem was tackled by <ref type="bibr" target="#b17">Gupta et al. (2017)</ref> and we used similar heuristics and strategies to ensure a higher ratio of textual dialogues with emotion classes. This exercise was primarily conducted to reduce the cost of human judgments and is further explained below. We started with a small set (approximately 300) of annotated dialogues per emotion class obtained by showing a randomly selected sample to human judges. Using a variation of the model described by <ref type="bibr" target="#b29">Palangi et al. (2016)</ref>, we created embedding for these annotated dialogues. Potentially similar dialogues were further identified from the entire pool of dialogues using a threshold-based cosine similarity and these dialogues form our candidate set for each emotion class. Various heuristics like presence of opposite emoticons (example ":'(" in a potential candidate set for Happy emotion class), sentiment analysis, length of utterances etc. are used to further prune the candidate set in certain cases. The candidate set is then shown to human judges to determine if they belong to an emotion class. Using this method, we cut down the amount of human judgments required by five times as compared to showing a random sample of dialogues and then choosing dialogues with emotion class from them. Data belonging to class "Others" is collected by randomly selecting dialogues from our pool of dialogues and were human labelled to discard any dialogues with emotion class such as Happy, Sad or Angry.</p><p>Figure <ref type="figure" target="#fig_0">1</ref> shows the distribution of different classes in training data set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Evaluation Data Set Creation</head><p>Unlike training data set where we intentionally over sampled dialogues from emotion classes to help participants with a larger volume of data with emotion classes, we maintained the natural distribution of emotion classes in evaluation data sets. We randomly sampled and annotated two evaluation sets, Test1 and Test2, of size 2755 and 5509 respectively. Detailed distribution of emotion classes in these sets is described in Table <ref type="table" target="#tab_4">2</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Emotion Class Labeling</head><p>For this specific task of emotion class labelling, 50 human judges were trained. Given a dialogue, i.e an utterance with two previous turns as context, a judge was asked to annotate the utterance as belonging to one of the following four classes: Happy, Angry, Sad or Others. All dialogues were judged by 7 human judges and a majority consensus was taken as the final class label. Fleiss' Kappa score (Shrout and Fleiss, 1979) of 0.58 was observed on training data set and of 0.59 on evaluation data set. Such a Kappa score indicates the existence of multiple perspectives about the underlying emotion of a conversation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Data Analysis</head><p>In this section we analyze the utterance in the dialogue that was judged by human judges for emotion classes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Word Count</head><p>Figure <ref type="figure" target="#fig_1">2</ref> shows the distribution of the word count of utterances per emotion class. We observed that users tend to repeat emoticons several times. Hence emoticons were removed from utterances for this calculation, as a result of which the utterances which had only emoticons are clubbed in the leftmost bin with utterance of length 0. It can be observed that happiness is often expressed through emoticons and hence happy emotion class has highest count under the bin of 0 word count. Also, happiness is often expressed in fewer words as compared to other emotions can be observed from the graph. Another point to note is that angry emotion class is often expressed using more words as compared to other emotion classes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Top Unigrams</head><p>Figure <ref type="figure" target="#fig_2">3</ref> shows the most frequent unigrams per emotion class in our data set. Note that emoticons are not considered as unigrams for this analysis. The length of the radius in the spiral graph denotes the frequency of the unigram in all the utterances belonging to that particular emotion class. In order  to avoid neutral words like "my", "what", "sure" from showing up in the analysis, we consider only those unigrams which are not in the top 500 list of most frequent unigrams of the "Others" class.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Top Emoticons</head><p>Emoticons are frequently used in textual dialogues, as was observed by <ref type="bibr" target="#b17">Gupta et al. (2017)</ref>, who found 21% of textual dialogues to contain emoticons. Table <ref type="table" target="#tab_5">3</ref> shows the top emoticons observed in utterances per emotion class. While most emoticons align with our expectations of the most frequent emoticons, it is interesting to note the frequent use of broken-heart emoticon to express sad emotion.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation Metric</head><p>Evaluation was carried out using the microaveraged F1 score (F 1 µ ) for the three emotion classes -Happy, Sad and Angry on the submissions made with predicted class of each sample in the evaluation data set. To be precise, we define the metric as following:</p><formula xml:id="formula_0">P µ = ΣT P i Σ(T P i + F P i ) ∀i {Happy, Sad, Angry} R µ = ΣT P i Σ(T P i + F N i ) ∀i {Happy, Sad, Angry} F 1 µ = 2 • P µ • R µ P µ + R µ</formula><p>where T P i is the number of samples of class i which are correctly predicted, F N i and F P i are the counts of Type-I and Type-II errors 4 respectively for the samples of class i.</p><p>Our final metric F 1 µ is calculated as the harmonic mean of P µ and R µ .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Baseline Model</head><p>To encourage and assist participants in making their first submission, we provided a starter kit, which consisted of scripts for training a naive baseline model. The script also enabled participants to cross-validate their model and create a submission file. This section explains the baseline model in detail.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.1">Data Processing</head><p>Minimal data pre-processing steps were provided. These included replacing certain repeated punctuation marks with their single instances, lower casing, removing extra space and tokenization. For example, "I am so happy!!" was converted to "i am so happy !".</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2">Model Architecture</head><p>We modeled the task of detecting emotions as a multi-class classification problem where given a dialogue, the model outputs probabilities of it belonging to four output classes -Happy, Sad, Angry and Others. The three turns are concatenated using a special &lt;eos&gt; token. The concatenated input is passed into a pre-trained word embedding  layer, which projects the words into continuous vector representations. We used 100 dimensional GloVe embeddings <ref type="bibr" target="#b30">(Pennington et al., 2014)</ref> for this purpose. The embeddings are processed by an LSTM layer, which produces a 128 dimensional representation of the sentence. This representation is then mapped to a 4 dimensional output vector which outputs probabilities per emotion class using a fully connected neural network. The architecture of the model was kept deliberately simple and was intended to serve as a starting point for participants. The baseline model achieved a F 1 µ score of 0.5861 on the final leader board and most teams were able to beat the baseline model. Further details on the model and its comparison with other systems can be seen in Table <ref type="table" target="#tab_9">5</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Systems and Results</head><p>As mentioned earlier in section 3, the task was conducted in two phases. The first phase saw a participation from 311 teams and 164 teams participated in the second phase. In this section, we briefly describe the top systems 5 , followed by observations across systems regarding the techniques used and their performance across different emotion classes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.1">Top Systems</head><p>Due to the overwhelming number of participants, we cannot describe all systems. We describe the main features of the top few systems ranked according to their final performance.</p><p>• NELEC uses a combination of lexical features such as word and character grams, along with additional signals like emotional intensity, valence-arousal-dominance scores.</p><p>In addition, they use adult, offensive and sentiment classifiers' scores from neural models. Using these features, the authors trained a Light-GBM tree <ref type="bibr" target="#b21">(Ke et al., 2017)</ref>, which achieves better performance than their deeplearning based architecture.</p><p>• SymantoResearch explores different deeplearning based architectures, some of them employing multi-task learning to better classify Others class vs. emotion classes. By ensembling such architectures with fine-tuned BERT <ref type="bibr" target="#b12">(Devlin et al., 2018)</ref> and USE <ref type="bibr" target="#b6">(Cer et al., 2018)</ref> models, the authors are able to distinguish three emotions (Sad, Happy, Angry) and separate them from the rest (Others) more accurately.</p><p>• ANA uses an ensemble of fine tuned BERT model and Hierarchical LSTMs, where the semantic and emotional content of text is encoded via GloVe, ELMo <ref type="bibr" target="#b31">(Peters et al., 2018)</ref>    <ref type="bibr" target="#b8">(Chen and Guestrin, 2016)</ref>. For the end-to-end neural models, the authors found the performance of hierarchical models, which take sequential nature of dialogue into account, to be better.</p><p>• SNU IDS proposes several methods for alleviating the problems caused by difference in class distributions between training data and test data. The authors also present a semi-hierarchical neural architecture combining character and word embeddings that effectively encodes an utterance in context of the previous utterances.</p><p>• THU-HCSI is composed of three CNNbased neural network models trained for different base tasks -four-emotion classification, Angry-Happy-Sad classification and Others-or-not classification respectively. The authors use multiple steps of voting to combine the predictions of these base classifiers, resulting in a more accurate and robust model performance.</p><p>• Figure Eight uses an ensemble of transfer learning models for capturing the representations of the utterances. Using sophisticated fine-tuning techniques described in ULMFiT <ref type="bibr" target="#b20">(Howard and Ruder, 2018)</ref>, the authors observe that transfer learning using pre-trained language models outperforms models trained from scratch.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.2">Miscellaneous Observations</head><p>From the system description papers of the top 15 teams, we observed that BiLSTMs/LSTMs were the most frequently used neural models. GRU <ref type="bibr" target="#b9">(Chung et al., 2014)</ref> and CNN models were used by a few teams, and some variations of attention mechanism were employed by most of the teams to enhance performance of their models. Transfer learning using BERT, ELMo, ULMFit was a popular choice among top teams, and almost all the teams used an ensemble of their best models to create the final model.  Table <ref type="table" target="#tab_7">4</ref> shows the embeddings used by the top 5 teams. It can be observed that GloVe was used most frequently. BERT and ELMo were the most popular choice for transfer learning. NTUA-SLP embeddings <ref type="bibr" target="#b4">(Baziotis et al., 2018)</ref> were used as well to leverage its affective information. Participant teams tried various ways to encode the emotional content expressed by emoticons, and Deepmoji and Emoji2Vec <ref type="bibr" target="#b13">(Eisner et al., 2016)</ref> were utilized in this regard. A good number of teams used the "ekphrasis" package <ref type="bibr" target="#b5">(Baziotis et al., 2017)</ref> for tokenization, word normalization and word segmentation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.3">Performance across Emotion Classes</head><p>Table <ref type="table" target="#tab_9">5</ref> displays the detailed performance of the top 15 6 participant teams. Upon inspection, it can be observed that the performance of the systems on the Happy class was not as good as the other emotion classes for the evaluation set. We believe, this is largely due to the natural ambiguity existing between neutral and happy utterances. For example, a greeting like "Happy Morning" can be thought of as expressing a happy emotion by some, while being judged to be neutral by others. We also observed that most systems performed best for the Sad emotion class. Table <ref type="table" target="#tab_11">6</ref> provides some basic statistics on the results obtained by the whole set of participants.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Conclusion</head><p>A total of 311 teams made submissions to the task. The final leader-board was evaluated on Test2 data set, and the highest ranked submission achieved 79.59 F 1 µ score. Our analysis of systems submit-</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Comparison of class distribution in Training vs Evaluation data sets.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Comparison of word count of utterances per emotion class. Emoticons were removed for this calculation, as a result of which the leftmost bin of 0 word count can be seen as well.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Most frequent unigrams per emotion class in our data set. The length of the radius in the spiral graph denotes the frequency of the unigram in all the utterances for a emotion class. Only those unigrams which are not in the top 500 list of most frequent unigrams of the "Others" class have been considered.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Examples showing influence of context in determining emotion of last utterance.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>Emotion label count across classes in Train, Test1 and Test2 data sets.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Top five emoticons per emotion class.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>Input representations used by top systems.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 :</head><label>5</label><figDesc>Performance comparison of top 15 teams on leaderboard.</figDesc><table><row><cell>and DeepMoji (Felbo et al., 2017) embed-</cell></row><row><cell>dings, following which a contextual LSTM</cell></row><row><cell>encodes the entire dialogue for prediction.</cell></row><row><cell>• CAiRE HKUST experiments with combina-</cell></row><row><cell>tions of feature based models and end-to-end</cell></row><row><cell>neural models. The feature based models</cell></row><row><cell>use various pre-trained word embeddings and</cell></row><row><cell>emotional embeddings, combining them with</cell></row><row><cell>Logistic Regression and XGBoost</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 6 :</head><label>6</label><figDesc>Performance statistics of all participants.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">www.pandorabots.com/mitsuku 2 www.ruuh.ai</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">http://en.wikipedia.org/wiki/Type_I_ and_type_II_errors</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">The top 2 systems -Leo1020 and Mfzszgs did not submit system description papers, and hence have been omitted from discussion in this Section.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">Final rankings of all participating systems can be consulted via the CodaLab website of our task: https://competitions.codalab.org/competitions/19790 ted to the task indicate that Bi-directional LSTM was the most common choice of network architecture used by participants, and most systems had best performance for Sad emotion class, and worst for Happy emotion class. A large number of teams have participated in the task but only 46 teams submitted their final system description papers; in fact, the top 2 teams in Phase 2 did not submit their system description paper. It was also observed that the ranking of various systems across both the phases varied significantly. In this task, we released the evaluation set without labels to participants, in future tasks it might be useful to also experiment with system submissions such that the entire evaluation set is never seen, with or without labels to the participants during the evaluation phase in a bid to have completely blind evaluation.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Emonet: Fine-grained emotion detection with gated recurrent neural networks</title>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Abdul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">-Mageed</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lyle</forename><surname>Ungar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="718" to="728" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Emotions from text: machine learning for text-based emotion prediction</title>
+		<author>
+			<persName><forename type="first">Cecilia</forename><surname>Ovesdotter Alm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Sproat</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the conference on human language technology and empirical methods in natural language processing</title>
+				<meeting>the conference on human language technology and empirical methods in natural language processing</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="579" to="586" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Multi-class twitter emotion classification: A new approach</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Rakesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mudasir</forename><surname>Balabantaray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nibha</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sharma</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Applied Information Systems</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="page" from="48" to="53" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Detecting implicit expressions of sentiment in text based on commonsense knowledge</title>
+		<author>
+			<persName><forename type="first">Alexandra</forename><surname>Balahur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Jesús</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrés</forename><surname>Hermida</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Montoyo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Computational Approaches to Subjectivity and Sentiment Analysis</title>
+				<meeting>the 2nd Workshop on Computational Approaches to Subjectivity and Sentiment Analysis</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="53" to="60" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Georgios Paraskevopoulos, Nikolaos Ellinas, Shrikanth Narayanan, and Alexandros Potamianos</title>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Baziotis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikos</forename><surname>Athanasiou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandra</forename><surname>Chronopoulou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Athanasia</forename><surname>Kolovou</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1804.06658</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Ntua-slp at semeval-2018 task 1: predicting affective content in tweets with deep attentive rnns and transfer learning</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Datastories at semeval-2017 task 4: Deep lstm with attention for message-level and topic-based sentiment analysis</title>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Baziotis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikos</forename><surname>Pelekis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Doulkeridis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="747" to="754" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Cer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yinfei</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sheng-Yi</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nan</forename><surname>Hua</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicole</forename><surname>Limtiaco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rhomni</forename><surname>St John</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><surname>Constant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mario</forename><surname>Guajardo-Cespedes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steve</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Tar</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.11175</idno>
+		<title level="m">Universal sentence encoder</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Understanding emotions in text using deep learning and big data</title>
+		<author>
+			<persName><forename type="first">Ankush</forename><surname>Chatterjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Umang</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manoj</forename><surname>Kumar Chinnakotla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radhakrishnan</forename><surname>Srikanth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Michel Galley, and Puneet Agrawal</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">93</biblScope>
+			<biblScope unit="page" from="309" to="317" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Xgboost: A scalable tree boosting system</title>
+		<author>
+			<persName><forename type="first">Tianqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Guestrin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining</title>
+				<meeting>the 22nd acm sigkdd international conference on knowledge discovery and data mining</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="785" to="794" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<author>
+			<persName><forename type="first">Junyoung</forename><surname>Chung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Caglar</forename><surname>Gulcehre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1412.3555</idno>
+		<title level="m">Empirical evaluation of gated recurrent neural networks on sequence modeling</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Ruuh: A deep learning based conversational social agent</title>
+		<author>
+			<persName><forename type="first">Sonam</forename><surname>Damani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nitya</forename><surname>Raviprakash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Umang</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankush</forename><surname>Chatterjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Meghana</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Khyatti</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kedhar</forename><surname>Nath Narahari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Puneet</forename><surname>Agrawal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manoj</forename><surname>Kumar Chinnakotla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sneha</forename><surname>Magapu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abhishek</forename><surname>Mathur</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">32nd Conference on Neural Information Processing Systems (NIPS 2018)</title>
+				<meeting><address><addrLine>Montral, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Enhanced sentiment learning using twitter hashtags and smileys</title>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Davidov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Tsur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ari</forename><surname>Rappoport</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd international conference on computational linguistics: posters</title>
+				<meeting>the 23rd international conference on computational linguistics: posters</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="241" to="249" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">Bert: Pre-training of deep bidirectional transformers for language understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Eisner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Rocktäschel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isabelle</forename><surname>Augenstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matko</forename><surname>Bošnjak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1609.08359</idno>
+		<title level="m">emoji2vec: Learning emoji representations from their description</title>
+				<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">An argument for basic emotions</title>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Ekman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognition &amp; emotion</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="169" to="200" />
+			<date type="published" when="1992" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Sentiwordnet: A high-coverage lexical resource for opinion mining</title>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Esuli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabrizio</forename><surname>Sebastiani</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Evaluation</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="26" />
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">Using millions of emoji occurrences to learn any-domain representations for detecting sentiment, emotion and sarcasm</title>
+		<author>
+			<persName><forename type="first">Bjarke</forename><surname>Felbo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Mislove</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anders</forename><surname>Søgaard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iyad</forename><surname>Rahwan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sune</forename><surname>Lehmann</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1708.00524</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">A sentimentand-semantics-based approach for emotion detection in textual conversations</title>
+		<author>
+			<persName><forename type="first">Umang</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankush</forename><surname>Chatterjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radhakrishnan</forename><surname>Srikanth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Puneet</forename><surname>Agrawal</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1707.06996</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Using hashtags as labels for supervised learning of emotions in twitter messages</title>
+		<author>
+			<persName><forename type="first">Maryam</forename><surname>Hasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emmanuel</forename><surname>Agu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elke</forename><surname>Rundensteiner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACM SIGKDD Workshop on Health Informatics</title>
+				<meeting><address><addrLine>New York, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Long short-term memory</title>
+		<author>
+			<persName><forename type="first">Sepp</forename><surname>Hochreiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jürgen</forename><surname>Schmidhuber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neural computation</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="page" from="1735" to="1780" />
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Universal language model fine-tuning for text classification</title>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Howard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Ruder</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1801.06146</idno>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Lightgbm: A highly efficient gradient boosting decision tree</title>
+		<author>
+			<persName><forename type="first">Guolin</forename><surname>Ke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qi</forename><surname>Meng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Finley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Taifeng</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weidong</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiwei</forename><surname>Ye</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tie-Yan</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="3146" to="3154" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yoon</forename><surname>Kim</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1408.5882</idno>
+		<title level="m">Convolutional neural networks for sentence classification</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Ims at emoint-2017: emotion intensity prediction with affective norms, automatically extended resources and deep learning</title>
+		<author>
+			<persName><forename type="first">Maximilian</forename><surname>Köper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Evgeny</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roman</forename><surname>Klinger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">WASSA</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="50" to="57" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Imagenet classification with deep convolutional neural networks</title>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Krizhevsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><forename type="middle">E</forename><surname>Hin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="1097" to="1105" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">The (un) predictability of emotional hashtags in twitter</title>
+		<author>
+			<persName><forename type="first">Florian</forename><surname>Kunneman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christine</forename><surname>Liebrecht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antal</forename><surname>Van Den</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bosch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">European Chapter of the Association for Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="26" to="34" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Short text emotion analysis based on recurrent neural network</title>
+		<author>
+			<persName><forename type="first">Panpan</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Feiqiang</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Conference on Information Engineering</title>
+				<meeting>the 6th International Conference on Information Engineering</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<title level="m" type="main">Using context to improve emotion detection in spoken dialog systems</title>
+		<author>
+			<persName><forename type="first">Jackson</forename><surname>Liscombe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Riccardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dilek</forename><surname>Hakkani-Tur</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Fine-grained emotion detection in contact center chat utterances</title>
+		<author>
+			<persName><forename type="first">Shreshtha</forename><surname>Mundra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anirban</forename><surname>Sen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manjira</forename><surname>Sinha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandya</forename><surname>Mannarswamy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandipan</forename><surname>Dandapat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shourya</forename><surname>Roy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Pacific-Asia Conference on Knowledge Discovery and Data Mining</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="337" to="349" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Deep sentence embedding using long short-term memory networks: Analysis and application to information retrieval</title>
+		<author>
+			<persName><forename type="first">Hamid</forename><surname>Palangi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yelong</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfeng</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodong</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianshu</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xinying</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rabab</forename><surname>Ward</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE/ACM Transactions on Audio, Speech and Language Processing</title>
+		<imprint>
+			<biblScope unit="volume">24</biblScope>
+			<biblScope unit="page" from="694" to="707" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">EMNLP</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<author>
+			<persName><forename type="first">E</forename><surname>Matthew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Gardner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zettlemoyer</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1802.05365</idno>
+		<title level="m">Deep contextualized word representations</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">The production and recognition of emotions in speech: features and algorithms</title>
+		<author>
+			<persName><forename type="first">Oudeyer</forename><surname>Pierre-Yves</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Human-Computer Studies</title>
+		<imprint>
+			<biblScope unit="volume">59</biblScope>
+			<biblScope unit="issue">1-2</biblScope>
+			<biblScope unit="page" from="157" to="183" />
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">Emotion: theory, research and experience</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Plutchik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henry</forename><surname>Kellerman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1986" />
+			<publisher>Academic press</publisher>
+			<pubPlace>New York</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Experimenting with distant supervision for emotion classification</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Purver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stuart</forename><surname>Battersby</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th Conference of the European Chapter of the Association for Computational Linguistics</title>
+				<meeting>the 13th Conference of the European Chapter of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="482" to="491" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Bidirectional recurrent neural networks</title>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Schuster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Kuldip</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Paliwal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Signal Processing</title>
+		<imprint>
+			<biblScope unit="volume">45</biblScope>
+			<biblScope unit="page" from="2673" to="2681" />
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<author>
+			<persName><forename type="first">E</forename><surname>Patrick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joseph</forename><forename type="middle">L</forename><surname>Shrout</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Fleiss</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Intraclass correlations: uses in assessing rater reliability</title>
+				<imprint>
+			<date type="published" when="1979" />
+			<biblScope unit="volume">86</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Learning to identify emotions in text</title>
+		<author>
+			<persName><forename type="first">Carlo</forename><surname>Strapparava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM symposium on Applied computing</title>
+		<imprint>
+			<biblScope unit="page" from="1556" to="1560" />
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Wordnet affect: an affective extension of wordnet</title>
+		<author>
+			<persName><forename type="first">Carlo</forename><surname>Strapparava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Valitutti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The 4th International Conference on Language Resources and Evaluation</title>
+				<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="page" from="1083" to="1086" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Distant supervision for emotion classification with discrete binary values</title>
+		<author>
+			<persName><forename type="first">Jared</forename><surname>Suttles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nancy</forename><surname>Ide</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Intelligent Text Processing and Computational Linguistics</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="121" to="136" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Emotive ontology: Extracting fine-grained emotions from terse, informal messages</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Martin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Sykora</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ann O'</forename><surname>Jackson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suzanne</forename><surname>Brien</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Elayan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IADIS International Journal on Computer Science and Information Systems</title>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Intelligent facial emotion recognition based on stationary wavelet entropy and jaya algorithm</title>
+		<author>
+			<persName><forename type="first">Shui-Hua</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preetha</forename><surname>Phillips</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zheng-Chao</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu-Dong</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neurocomputing</title>
+		<imprint>
+			<biblScope unit="volume">272</biblScope>
+			<biblScope unit="page" from="668" to="676" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Harnessing twitter &quot;big data&quot; for automatic emotion identification</title>
+		<author>
+			<persName><forename type="first">Wenbo</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lu</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Krishnaprasad</forename><surname>Thirunarayan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amit P</forename><surname>Sheth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Privacy, Security, Risk and Trust, 2012 International Conference on Social Computing</title>
+				<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="587" to="592" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Exploring fine-grained emotion detection in tweets</title>
+		<author>
+			<persName><forename type="first">Jasy</forename><surname>Liew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suet</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Howard R Turtle</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="73" to="80" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<monogr>
+		<title level="m" type="main">Emotion detection on tv show transcripts with sequencebased convolutional neural networks</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sayyed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinho D</forename><surname>Zahiri</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Choi</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1708.04299</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Facial emotion recognition based on biorthogonal wavelet entropy, fuzzy support vector machine, and stratified cross validation</title>
+		<author>
+			<persName><forename type="first">Yu-Dong</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhang-Jing</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hui-Min</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xing-Xing</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preetha</forename><surname>Phillips</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qing-Ming</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shui-Hua</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Access</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="page" from="8375" to="8385" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

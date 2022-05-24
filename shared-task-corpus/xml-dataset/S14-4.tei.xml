@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2014 Task 4: Aspect Based Sentiment Analysis</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Maria</forename><surname>Pontiki</surname></persName>
+							<email>mpontiki@ilsp.gr</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Institute for Language and Speech Processing, &quot;Athena&quot; Research Center</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Haris</forename><surname>Papageorgiou</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Institute for Language and Speech Processing, &quot;Athena&quot; Research Center</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Dimitrios</forename><surname>Galanis</surname></persName>
+							<email>galanisd@ilsp.gr</email>
+							<affiliation key="aff2">
+								<orgName type="department">Institute for Language and Speech Processing, &quot;Athena&quot; Research Center</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ion</forename><surname>Androutsopoulos</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="department">Dept. of Informatics Athens</orgName>
+								<orgName type="institution">University of Economics</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">John</forename><surname>Pavlopoulos</surname></persName>
+							<affiliation key="aff4">
+								<orgName type="department">Dept. of Informatics</orgName>
+								<orgName type="institution">Athens University of Economics</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Suresh</forename><surname>Manandhar</surname></persName>
+							<email>suresh@cs.york.ac.uk</email>
+							<affiliation key="aff5">
+								<orgName type="department">Dept. of Computer Science</orgName>
+								<orgName type="institution">University of York</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2014 Task 4: Aspect Based Sentiment Analysis</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Sentiment analysis is increasingly viewed as a vital task both from an academic and a commercial standpoint. The majority of current approaches, however, attempt to detect the overall polarity of a sentence, paragraph, or text span, irrespective of the entities mentioned (e.g., laptops) and their aspects (e.g., battery, screen). SemEval-2014 Task 4 aimed to foster research in the field of aspect-based sentiment analysis, where the goal is to identify the aspects of given target entities and the sentiment expressed for each aspect. The task provided datasets containing manually annotated reviews of restaurants and laptops, as well as a common evaluation procedure. It attracted 163 submissions from 32 teams.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>With the proliferation of user-generated content on the web, interest in mining sentiment and opinions in text has grown rapidly, both in academia and business. Early work in sentiment analysis mainly aimed to detect the overall polarity (e.g., positive or negative) of a given text or text span <ref type="bibr" target="#b7">(Pang et al., 2002;</ref><ref type="bibr" target="#b15">Turney, 2002)</ref>. However, the need for a more fine-grained approach, such as aspect-based (or 'feature-based') sentiment analysis (ABSA), soon became apparent <ref type="bibr" target="#b5">(Liu, 2012)</ref>. For example, laptop reviews not only express the overall sentiment about a specific model (e.g., "This is a great This work is licensed under a Creative Commons Attribution 4.0 International Licence. Page numbers and proceedings footer are added by the organisers. Licence details: http://creativecommons.org/licenses/by/4.0/ laptop"), but also sentiments relating to its specific aspects, such as the hardware, software, price, etc. Subsequently, a review may convey opposing sentiments (e.g., "Its performance is ideal, I wish I could say the same about the price") or objective information (e.g., "This one still has the CD slot") for different aspects of an entity.</p><p>ABSA is critical in mining and summarizing opinions from on-line reviews <ref type="bibr" target="#b1">(Gamon et al., 2005;</ref><ref type="bibr" target="#b14">Titov and McDonald, 2008;</ref><ref type="bibr" target="#b3">Hu and Liu, 2004a;</ref><ref type="bibr" target="#b11">Popescu and Etzioni, 2005)</ref>. In this setting, ABSA aims to identify the aspects of the entities being reviewed and to determine the sentiment the reviewers express for each aspect. Within the last decade, several ABSA systems of this kind have been developed for movie reviews <ref type="bibr" target="#b13">(Thet et al., 2010)</ref>, customer reviews of electronic products like digital cameras <ref type="bibr" target="#b3">(Hu and Liu, 2004a)</ref> or netbook computers <ref type="bibr" target="#b0">(Brody and Elhadad, 2010)</ref>, services <ref type="bibr" target="#b6">(Long et al., 2010)</ref>, and restaurants <ref type="bibr" target="#b2">(Ganu et al., 2009;</ref><ref type="bibr" target="#b0">Brody and Elhadad, 2010)</ref>.</p><p>Previous publicly available ABSA benchmark datasets adopt different annotation schemes within different tasks. The restaurant reviews dataset of <ref type="bibr" target="#b2">Ganu et al. (2009)</ref> uses six coarse-grained aspects (e.g., FOOD, PRICE, SERVICE) and four overall sentence polarity labels (positive, negative, conflict, neutral). Each sentence is assigned one or more aspects together with a polarity label for each aspect; for example, "The restaurant was expensive, but the menu was great." would be assigned the aspect PRICE with negative polarity and FOOD with positive polarity. In the product reviews dataset of <ref type="bibr" target="#b3">Hu and Liu (2004a;</ref><ref type="bibr" target="#b4">2004b)</ref>, aspect terms, i.e., terms naming aspects (e.g., 'radio', 'voice dialing') together with strength scores (e.g., 'radio': +2, 'voice dialing': −3) are pro-vided. No predefined inventory of aspects is provided, unlike the dataset of Ganu et al.</p><p>The SemEval-2014 ABSA Task is based on laptop and restaurant reviews and consists of four subtasks (see Section 2). Participants were free to participate in a subset of subtasks and the domains (laptops or restaurants) of their choice.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>For the first two subtasks (SB1, SB2), datasets on both domains (restaurants, laptops) were provided. For the last two subtasks (SB3, SB4), datasets only for the restaurant reviews were provided.</p><p>Aspect term extraction (SB1): Given a set of review sentences, the task is to identify all aspect terms present in each sentence (e.g., 'wine <ref type="bibr">', 'waiter', 'appetizer', 'price', 'food')</ref>. We require all the aspect terms to be identified, including aspect terms for which no sentiment is expressed (neutral polarity). These will be useful for constructing an ontology of aspect terms and to identify frequently discussed aspects.</p><p>Aspect term polarity (SB2): In this subtask, we assume that the aspect terms are given (as described in SB1) and the task is to determine the polarity of each aspect term (positive, negative, conflict, or neutral). The conflict label applies when both positive and negative sentiment is expressed about an aspect term (e.g., "Certainly not the best sushi in New York, however, it is always fresh"). An alternative would have been to tag the aspect term in these cases with the dominant polarity, but this in turn would be difficult to agree on.</p><p>Aspect category detection (SB3): Given a predefined set of aspect categories (e.g., <ref type="bibr">PRICE, FOOD)</ref> and a set of review sentences (but without any annotations of aspect terms and their polarities), the task is to identify the aspect categories discussed in each sentence. Aspect categories are typically coarser than the aspect terms as defined in SB1, and they do not necessarily occur as terms in the sentences. For example, in "Delicious but expensive", the aspect categories FOOD and PRICE are not instantiated through specific aspect terms, but are only inferred through the adjectives 'delicious' and 'expensive'. SB1 and SB3 were treated as separate subtasks, thus no information linking aspect terms to aspect categories was provided.</p><p>Aspect category polarity (SB4): For this subtask, aspect categories for each review sentence are provided. The goal is to determine the polar-ity (positive, negative, conflict, or neutral) of each aspect category discussed in each sentence.</p><p>Subtasks SB1 and SB2 are useful in cases where no predefined inventory of aspect categories is available. In these cases, frequently discussed aspect terms of the entity can be identified together with their overall sentiment polarities. We hope to include an additional aspect term aggregation subtask in future <ref type="bibr" target="#b9">(Pavlopoulos and Androutsopoulos, 2014b)</ref> to cluster near-synonymous (e.g., 'money', 'price', 'cost') or related aspect terms (e.g., 'design', 'color', 'feeling') together with their averaged sentiment scores as shown in Fig. <ref type="figure" target="#fig_0">1</ref>. Subtasks SB3 and SB4 are useful when a predefined inventory of (coarse) aspect categories is available. A table like the one of Fig. <ref type="figure" target="#fig_0">1</ref> can then also be generated, but this time using the most frequent aspect categories to label the rows, with stars showing the proportion of reviews expressing positive vs. negative opinions for each aspect category.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Datasets</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Collection</head><p>The training and test data sizes are provided in Table 1. The restaurants training data, consisting of 3041 English sentences, is a subset of the dataset from <ref type="bibr" target="#b2">Ganu et al. (2009)</ref>, which included annotations for coarse aspect categories (as in SB3) and overall sentence polarities. We added annotations for aspect terms occurring in the sentences (SB1), aspect term polarities (SB2), and aspect category polarities (SB4). Additional restaurant reviews were collected and annotated (from scratch) in the same manner and used as test data (800 sentences). The laptops dataset contains 3845 English sentences extracted from laptop custumer reviews. Human annotators tagged the aspect terms (SB1) and their polarities (SB2); 3045 sentences were used for training and 800 for testing (evaluation).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Domain</head><p>Train Test Total Restaurants 3041 800 3841 Laptops 3045 800 3845 Total 6086 1600 7686 Table <ref type="table">1</ref>: Sizes (sentences) of the datasets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Annotation Process</head><p>For a given target entity (a restaurant or a laptop) being reviewed, the annotators were asked to provide two types of information: aspect terms (SB1) and aspect term polarities (SB2). For the restaurants dataset, two additional annotation layers were added: aspect category (SB3) and aspect category polarity (SB4). The annotators used BRAT <ref type="bibr" target="#b12">(Stenetorp et al., 2012)</ref>, a web-based annotation tool, which was configured appropriately for the needs of the ABSA task. 1 Figure <ref type="figure">2</ref> shows an annotated sentence in BRAT, as viewed by the annotators.</p><p>Stage 1: Aspect terms and polarities. During a first annotation stage, the annotators tagged all the single or multiword terms that named particular aspects of the target entity (e.g., "I liked the service and the staff, but not the food" → {'service', 'staff', 'food'}, "The hard disk is very noisy" → {'hard disk'}). They were asked to tag only aspect terms explicitly naming particular aspects (e.g., "everything about it" or "it's expensive" do not name particular aspects). The aspect terms were annotated as they appeared, even if misspelled (e.g., 'warrenty' instead of 'warranty'). Each identified aspect term also had to be assigned a polarity label (positive, negative, neutral, conflict). For example, "I hated their fajitas, but their salads were great" → {'fajitas': negative, 'salads': positive}, "The hard disk is very noisy" → {'hard disk': negative}.</p><p>Each sentence of the two datasets was annotated by two annotators, a graduate student (annotator A) and an expert linguist (annotator B). Initially, two subsets of sentences (300 from each dataset) were tagged by annotator A and the annotations were inspected and validated by annotator B. The disagreements between the two annotators were confined to borderline cases. Taking into account the types of these disagreements (discussed below), annotator A was provided with additional guidelines and tagged the remainder of the sentences in both datasets. 2 When A was not confident, a decision was made collaboratively with B. When A and B disagreed, a decision was made collaboratively by them and a third expert annotator. Most disagreements fall into one of the following three types: Polarity ambiguity: In several sentences, it was unclear if the reviewer expressed positive or negative opinion, or no opinion at all (just reporting a fact), due to lack of context. For example, in "12.44 seconds boot time" it is unclear if the reviewer expresses a positive, negative, or no opinion about the aspect term 'boot time'. In future challenges, it would be better to allow the annotators (and the participating systems) to consider the entire review instead of each sentence in isolation. Multi-word aspect term boundaries: In several cases, the annotators disagreed on the exact boundaries of multi-word aspect terms when they appeared in conjunctions or disjunctions (e.g., "selection of meats and seafoods", "noodle and rices dishes", "school or office use"). In such cases, we asked the annotators to tag as a single aspect term the maximal noun phrase (the entire conjunction or disjunction). Other disagreements concerned the extent of the aspect terms when adjectives that may or may not have a subjective meaning were also present. For example, if 'large' in "large whole shrimp" is part of the dish name, then the guidelines require the adjective to be included in the aspect term; otherwise (e.g., in "large portions") 'large' is a subjectivity indicator not to be included in the aspect term. Despite the guidelines, in some cases it was difficult to isolate and tag the exact aspect term, because of intervening words, punctuation, or long-term dependencies. Aspect term vs. reference to target entity: In some cases, it was unclear if a noun or noun phrase was used as the aspect term or if it referred to the entity being reviewed as whole. In "This place is awesome", for example, 'place' most probably refers to the restaurant as a whole (hence, it should not be tagged as an aspect term), but in "Cozy Figure <ref type="figure">2</ref>: A sentence in the BRAT tool, annotated with four aspect terms ('appetizers', 'salads', 'steak', 'pasta') and one aspect category (FOOD). For aspect categories, the whole sentence is tagged.</p><p>place and good pizza" it probably refers to the ambience of the restaurant. A broader context would again help in some of these cases.</p><p>We note that laptop reviews often evaluate each laptop as a whole, rather than expressing opinions about particular aspects. Furthermore, when they express opinions about particular aspects, they often do so by using adjectives that refer implicitly to aspects (e.g., 'expensive', 'heavy'), rather than using explicit aspect terms (e.g., 'cost', 'weight'); the annotators were instructed to tag only explicit aspect terms, not adjectives implicitly referring to aspects. By contrast, restaurant reviews contain many more aspect terms (  Another difference between the two datasets is that the neutral class is much more frequent in (the aspect terms of) laptops, since laptop reviews often mention features without expressing any (clear) sentiment (e.g., "the latest version does not have a disc drive"). Nevertheless, the positive class is the majority in both datasets, but it is much more frequent in restaurants (Table <ref type="table" target="#tab_0">2</ref>). The majority of the aspect terms are single-words in both datasets (2148 in laptops, 4827 in restaurants, out of 3012 and 4827 total aspect terms, respectively).</p><p>Stage 2: Aspect categories and polarities. In this task, each sentence needs to be tagged with the aspect categories discussed in the sentence. The aspect categories are FOOD, SERVICE, PRICE, AMBIENCE (the atmosphere and environment of <ref type="bibr">3</ref> We count aspect term occurrences, not distinct terms. a restaurant), and ANECDOTES/MISCELLANEOUS (sentences not belonging in any of the previous aspect categories). <ref type="bibr">4</ref> For example, "The restaurant was expensive, but the menu was great" is assigned the aspect categories PRICE and FOOD. Additionally, a polarity (positive, negative, conflict, neutral) for each aspect category should be provided (e.g., "The restaurant was expensive, but the menu was great" → {PRICE: negative, FOOD: positive}.</p><p>One annotator validated the existing aspect category annotations of the corpus of <ref type="bibr" target="#b2">Ganu et al. (2009)</ref>. The agreement with the existing annotations was 92% measured as average F 1 . Most disagreements concerned additions of missing aspect category annotations. Furthermore, the same annotator validated and corrected (if needed) the existing polarity labels per aspect category annotation. The agreement for the polarity labels was 87% in terms of accuracy and it was measured only on the common aspect category annotations. The additional 800 sentences (not present in Ganu et al.'s dataset) were used for testing and were annotated from scratch in the same manner. The distribution of the polarity classes per category is presented in Table <ref type="table" target="#tab_3">3</ref>. Again, 'positive' is the majority polarity class while the dominant aspect category is FOOD in both the training and test restaurant sentences.</p><p>Determining the aspect categories of the sentences and their polarities (Stage 2) was an easier task compared to detecting aspect terms and their polarities (Stage 1). The annotators needed less time in Stage 2 and it was easier to reach agreement. Exceptions were some sentences where it was difficult to decide if the categories AMBIENCE or ANECDOTES/MISCELLANEOUS applied (e.g., "One of my Fav spots in the city"). We instructed the annotators to classify those sentences only in ANECDOTES/MISCELLANEOUS, if they conveyed  general views about a restaurant, without explicitly referring to its atmosphere or environment.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Format and Availability of the Datasets</head><p>The datasets of the ABSA task were provided in an XML format (see Fig. <ref type="figure">3</ref>). They are available with a non commercial, no redistribution license through META-SHARE, a repository devoted to the sharing and dissemination of language resources <ref type="bibr" target="#b10">(Piperidis, 2012)</ref>. 5</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Measures and Baselines</head><p>The evaluation of the ABSA task ran in two phases. In Phase A, the participants were asked to return the aspect terms (SB1) and aspect categories (SB3) for the provided test datasets. Subsequently, in Phase B, the participants were given the gold aspect terms and aspect categories (as in Fig. <ref type="figure">3</ref>) for the sentences of Phase A and they were asked to return the polarities of the aspect terms (SB2) and the polarities of the aspect categories of each sentence (SB4). 6 Each participating team was allowed to submit up to two runs per subtask and domain (restaurants, laptops) in each phase; one constrained (C), where only the provided training data and other resources (e.g., publicly available lexica) excluding additional annotated sentences could be used, and one unconstrained (U), where additional data of any kind could be used for training. In the latter case, the teams had to report the resources they used.</p><p>To evaluate aspect term extraction (SB1) and aspect category detection (SB3) in Phase A, we used <ref type="bibr">5</ref> The datasets can be downloaded from http:// metashare.ilsp.gr:8080/. META-SHARE (http: //www.meta-share.org/) was implemented in the framework of the META-NET Network of Excellence (http://www.meta-net.eu/).</p><p>6 Phase A ran from 9:00 GMT, March 24 to 21:00 GMT, March 25, 2014. Phase B ran from 9:00 GMT, March 27 to 17:00 GMT, March 29, 2014.</p><p>the F 1 measure, defined as usually:</p><formula xml:id="formula_0">F 1 = 2 • P • R P + R (1)</formula><p>where precision (P ) and recall (R) are defined as:</p><formula xml:id="formula_1">P = |S ∩ G| |S| , R = |S ∩ G| |G| (2)</formula><p>Here S is the set of aspect term or aspect category annotations (in SB1 and SB3, respectively) that a system returned for all the test sentences (of a domain), and G is the set of the gold (correct) aspect term or aspect category annotations.</p><p>To evaluate aspect term polarity (SB2) and aspect category polarity (SB4) detection in Phase B, we calculated the accuracy of each system, defined as the number of correctly predicted aspect term or aspect category polarity labels, respectively, divided by the total number of aspect term or aspect category annotations. Recall that we used the gold aspect term and category annotations in Phase B.</p><p>We provided four baselines, one per subtask: 7 Aspect term extraction (SB1) baseline: A sequence of tokens is tagged as an aspect term in a test sentence (of a domain), if it is listed in a dictionary that contains all the aspect terms of the training sentences (of the same domain). Aspect term polarity (SB2) baseline: For each aspect term t in a test sentence s (of a particular domain), this baseline checks if t had been encountered in the training sentences (of the domain). If so, it retrieves the k most similar to s training sentences (of the domain), and assigns to the aspect term t the most frequent polarity it had in the k sentences. Otherwise, if t had not been encountered in the training sentences, it is assigned the most frequent aspect term polarity label of the &lt;sentence id="11351725#582163#9"&gt; &lt;text&gt;Our waiter was friendly and it is a shame that he didnt have a supportive staff to work with.&lt;/text&gt; &lt;aspectTerms&gt; &lt;aspectTerm term="waiter" polarity="positive" from="4" to="10"/&gt; &lt;aspectTerm term="staff" polarity="negative" from="74" to="79"/&gt; &lt;/aspectTerms&gt; &lt;aspectCategories&gt; &lt;aspectCategory category="service" polarity="conflict"/&gt; &lt;/aspectCategories&gt; &lt;/sentence&gt; Figure <ref type="figure">3</ref>: An XML snippet that corresponds to the annotated sentence of Fig. <ref type="figure">2</ref>. training set. The similarity between two sentences is measured as the Dice coefficient of the sets of (distinct) words of the two sentences. For example, the similarity between "this is a demo" and "that is yet another demo" is 2•2 4+5 = 0.44. Aspect category extraction (SB3) baseline: For every test sentence s, the k most similar to s training sentences are retrieved (as in the SB2 baseline). Then, s is assigned the m most frequent aspect category labels of the k retrieved sentences; m is the most frequent number of aspect category labels per sentence among the k sentences. Aspect category polarity (SB4): This baseline assigns to each aspect category c of a test sentence s the most frequent polarity label that c had in the k most similar to s training sentences (of the same domain), considering only training sentences that have the aspect category label c. Sentence similarity is computed as in the SB2 baseline.</p><p>For subtasks SB2 and SB4, we also use a majority baseline that assigns the most frequent polarity (in the training data) to all the aspect terms and aspect categories. The scores of all the baselines and systems are presented in Tables <ref type="table" target="#tab_4">4-6</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation Results</head><p>The ABSA task attracted 32 teams in total and 165 submissions (systems), 76 for phase A and 89 for phase B. Based on the human-annotation experience, the expectations were that systems would perform better in Phase B (SB3, SB4, involving aspect categories) than in Phase A (SB1, SB2, involving aspect terms). The evaluation results confirmed our expectations (Tables <ref type="table" target="#tab_4">4-6</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Results of Phase A</head><p>The aspect term extraction subtask (SB1) attracted 24 teams for the laptops dataset and 24 teams for the restaurants dataset; consult   Overall, the systems achieved significantly higher scores (+10%) in the restaurants domain, compared to laptops. The best F 1 score (74.55%) for laptops was achieved by the IHS RD. team, which relied on Conditional Random Fields (CRF) with features extracted using named entity recognition, POS tagging, parsing, and semantic analysis. The IHS RD. team used additional reviews from Amazon and Epinions (without annotated terms) to learn the sentiment orientation of words and they trained their CRF on the union of the restaurant and laptop training data that we provided; the same trained CRF classifier was then used in both domains.</p><p>The second system, the unconstrained system of DLIREC, also uses a CRF, along with POS and dependency tree based features. It also uses features derived from the aspect terms of the training data and clusters created from additional re-views from YELP and Amazon. In the restaurants domain, the unconstrained system of DLIREC ranked first with an F 1 of 84.01%, but the best unconstrained system, that of XRCE, was very close (83.98%). The XRCE system relies on a parser to extract syntactic/semantic dependencies (e.g., 'dissapointed'-'food'). For aspect term extraction, the parser's vocabulary was enriched with the aspect terms of the training data and a term list extracted from Wikipedia and Wordnet. A set of grammar rules was also added to detect multiword terms and associate them with the corresponding aspect category (e.g., <ref type="bibr">FOOD, PRICE)</ref>.</p><p>The aspect category extraction subtask (SB3) attracted 18 teams. As shown in Table <ref type="table" target="#tab_6">5</ref>, the best score was achieved by the system of NRC-Canada (88.57%), which relied on five binary (one-vs-all) SVMs, one for each aspect category. The SVMs used features based on various types of n-grams (e.g., stemmed) and information from a lexicon learnt from YELP data, which associates aspect terms with aspect categories. The latter lexicon significantly improved F 1 . The constrained UN-ITOR system uses five SVMs with bag-of-words (BoW) features, which in the unconstrained submission are generalized using distributional vectors learnt from Opinosis and TripAdvisor data. Similarly, UWB uses a binary MaxEnt classifier for each aspect category with BoW and TF-IDF features. The unconstrained submission of UWB also uses word clusters learnt using various methods (e.g., LDA); additional features indicate which clusters the words of the sentence being classified come from. XRCE uses information identified by its syntactic parser as well as BoW features to train a logistic regression model that assigns to the sentence probabilities of belonging to each aspect category. A probability threshold, tuned on the training data, is then used to determine which categories will be assigned to the sentence.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Results of Phase B</head><p>The aspect term polarity detection subtask (SB2) attracted 26 teams for the laptops dataset and 26 teams for the restaurants dataset. DCU and NRC-Canada had the best systems in both domains (Table 6). Their scores on the laptops dataset were identical (70.48%). On the laptops dataset, the DCU system performed slightly better (80.95% vs. 80.15%). For SB2, both NRC-Canada and DCU relied on an SVM classifier with features mainly based on n-grams, parse trees, and several out-of-domain, publicly available sentiment lexica (e.g., MPQA, SentiWordnet and Bing Liu's Opinion Lexicon). NRC-Canada also used two automatically compiled polarity lexica for restaurants and laptops, obtained from YELP and Amazon data, respectively. Furthermore, NRC-Canada showed by ablation experiments that the most useful features are those derived from the sentiment lexica. On the other hand, DCU used only publicly available lexica, which were manually adapted by filtering words that do not express sentiment in laptop and restaurant reviews (e.g., 'really') and by adding others that were missing and do express sentiment (e.g., 'mouthwatering').</p><p>The aspect category polarity detection subtask (SB4) attracted 20 teams. NRC-Canada again had the best score (82.92%) using an SVM classifier. The same feature set as in SB2 was used, but it was further enriched to capture information related to each specific aspect category. The second team, XRCE, used information from its syntactic parser, BoW features, and an out-of-domain sentiment lexicon to train an SVM model that predicts the polarity of each given aspect category.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusions and Future Work</head><p>We provided an overview of Task 4 of SemEval-2014. The task aimed to foster research in aspectbased sentiment analysis (ABSA). We constructed and released ABSA benchmark datasets containing manually annotated reviews from two domains (restaurants, laptops). The task attracted 163 submissions from 32 teams that were evaluated in four subtasks centered around aspect terms (detecting aspect terms and their polarities) and coarser aspect categories (assigning aspect categories and aspect category polarities to sentences). The task will be repeated in SemEval-2015 with additional datasets and a domain-adaptation subtask. <ref type="bibr">8</ref> In the future, we hope to add an aspect term aggregation subtask <ref type="bibr" target="#b8">(Pavlopoulos and Androutsopoulos, 2014a)</ref>.  </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Aggregated aspect terms and average sentiment polarities for a target entity.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="2">, last column). 3</cell></row><row><cell>Dataset</cell><cell cols="5">Pos. Neg. Con. Neu. Tot.</cell></row><row><cell cols="2">LPT-TR 987</cell><cell>866</cell><cell>45</cell><cell cols="2">460 2358</cell></row><row><cell cols="2">LPT-TE 341</cell><cell>128</cell><cell>16</cell><cell>169</cell><cell>654</cell></row><row><cell cols="3">RST-TR 2164 805</cell><cell>91</cell><cell cols="2">633 3693</cell></row><row><cell cols="2">RST-TE 728</cell><cell>196</cell><cell>14</cell><cell cols="2">196 1134</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>Aspect terms and their polarities per domain. LPT and RST indicate laptop and restaurant reviews, respectively. TR and TE indicate the training and test set.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Aspect categories distribution per sentiment class.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 .</head><label>4</label><figDesc></figDesc><table><row><cell cols="2">Laptops</cell><cell cols="2">Restaurants</cell></row><row><cell>Team</cell><cell>F 1</cell><cell>Team</cell><cell>F 1</cell></row><row><cell>IHS RD.</cell><cell cols="2">74.55 † DLIREC</cell><cell>84.01*</cell></row><row><cell>DLIREC</cell><cell cols="2">73.78* XRCE</cell><cell>83.98</cell></row><row><cell>DLIREC</cell><cell>70.4</cell><cell cols="2">NRC-Can. 80.18</cell></row><row><cell cols="2">NRC-Can. 68.56</cell><cell>UNITOR</cell><cell>80.09</cell></row><row><cell>UNITOR</cell><cell cols="2">67.95* UNITOR</cell><cell>79.96*</cell></row><row><cell>XRCE</cell><cell>67.24</cell><cell>IHS RD.</cell><cell>79.62 †</cell></row><row><cell>SAP RI</cell><cell>66.6</cell><cell>UWB</cell><cell>79.35*</cell></row><row><cell>IITP</cell><cell>66.55</cell><cell>SeemGo</cell><cell>78.61</cell></row><row><cell>UNITOR</cell><cell>66.08</cell><cell>DLIREC</cell><cell>78.34</cell></row><row><cell>SeemGo</cell><cell>65.99</cell><cell>ECNU</cell><cell>78.24</cell></row><row><cell>ECNU</cell><cell>65.88</cell><cell>SAP RI</cell><cell>77.88</cell></row><row><cell>SNAP</cell><cell>62.4</cell><cell>UWB</cell><cell>76.23</cell></row><row><cell>DMIS</cell><cell>60.59</cell><cell>IITP</cell><cell>74.94</cell></row><row><cell>UWB</cell><cell>60.39</cell><cell>DMIS</cell><cell>72.73</cell></row><row><cell>JU CSE.</cell><cell>59.37</cell><cell>JU CSE.</cell><cell>72.34</cell></row><row><cell>lsis lif</cell><cell>56.97</cell><cell>Blinov</cell><cell>71.21*</cell></row><row><cell>USF</cell><cell>52.58</cell><cell>lsis lif</cell><cell>71.09</cell></row><row><cell>Blinov</cell><cell cols="2">52.07* USF</cell><cell>70.69</cell></row><row><cell>UFAL</cell><cell>48.98</cell><cell>EBDG</cell><cell>69.28*</cell></row><row><cell>UBham</cell><cell>47.49</cell><cell>UBham</cell><cell>68.63*</cell></row><row><cell>UBham</cell><cell cols="2">47.26* UBham</cell><cell>68.51</cell></row><row><cell>SINAI</cell><cell>45.28</cell><cell>SINAI</cell><cell>65.41</cell></row><row><cell>EBDG</cell><cell cols="2">41.52* V3</cell><cell>60.43*</cell></row><row><cell>V3</cell><cell cols="2">36.62* UFAL</cell><cell>58.88</cell></row><row><cell cols="2">COMMIT. 25.19</cell><cell cols="2">COMMIT. 54.38</cell></row><row><cell cols="2">NILCUSP 25.19</cell><cell cols="2">NILCUSP 49.04</cell></row><row><cell>iTac</cell><cell>23.92</cell><cell>SNAP</cell><cell>46.46</cell></row><row><cell></cell><cell></cell><cell>iTac</cell><cell>38.29</cell></row><row><cell>Baseline</cell><cell>35.64</cell><cell>Baseline</cell><cell>47.15</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Results for aspect term extraction (SB1).</figDesc><table><row><cell>Stars indicate unconstrained systems. The  † indi-</cell></row><row><cell>cates a constrained system that was not trained on</cell></row><row><cell>the in-domain training dataset (unlike the rest of</cell></row><row><cell>the constrained systems), but on the union of the</cell></row><row><cell>two training datasets (laptops, restaurants).</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 5</head><label>5</label><figDesc></figDesc><table><row><cell>: Results for aspect category detection</cell></row><row><cell>(SB3) and aspect category polarity (SB4). Stars</cell></row><row><cell>indicate unconstrained systems.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6 :</head><label>6</label><figDesc>Results for the aspect term polarity subtask (SB2). Stars indicate unconstrained systems. The † indicates a constrained system that was not trained on the in-domain training dataset (unlike the rest of the constrained systems), but on the union of the two training datasets. IITP's original submission files were corrupted; they were resent and scored after the end of the evaluation period. annotation process, and Juli Bakagianni, who supported our use of the META-SHARE platform. We are also very grateful to the participants for their feedback. Maria Pontiki and Haris Papageorgiou were supported by the IS-HELLEANA (09-72-922) and the POLYTROPON (KRIPIS-GSRT, MIS: 448306) projects.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Consult http://brat.nlplab.org/ for more information about BRAT.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">The guidelines are available at: http://alt.qcri. org/semeval2014/task4/data/uploads/.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">In the original dataset of<ref type="bibr" target="#b2">Ganu et al. (2009)</ref>, ANECDOTES and MISCELLANEOUS were separate categories, but in practice they were difficult to distinguish and we merged them.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">Implementations of the baselines and further information about the baselines are available at: http://alt.qcri. org/semeval2014/task4/data/uploads/.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">Consult http://alt.qcri.org/semeval2015/ task12/.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We thank Ioanna Lazari, who provided an initial version of the laptops dataset, Konstantina Papanikolaou, who carried out a critical part of the</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">An unsupervised aspect-sentiment model for online reviews</title>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Brody</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noemie</forename><surname>Elhadad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL</title>
+				<meeting>NAACL<address><addrLine>California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="804" to="812" />
+		</imprint>
+	</monogr>
+	<note>Los Angeles</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Pulse: Mining customer opinions from free text</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Gamon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Aue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Corston-Oliver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><forename type="middle">K</forename><surname>Ringger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IDA</title>
+				<meeting><address><addrLine>Madrid, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="121" to="132" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Beyond the stars: Improving rating predictions using review text content</title>
+		<author>
+			<persName><forename type="first">Gayatree</forename><surname>Ganu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noemie</forename><surname>Elhadad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amélie</forename><surname>Marian</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of WebDB</title>
+				<meeting>WebDB<address><addrLine>Providence, Rhode Island, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Mining and summarizing customer reviews</title>
+		<author>
+			<persName><forename type="first">Minqing</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of KDD</title>
+				<meeting>KDD<address><addrLine>Seattle, WA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="168" to="177" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Mining opinion features in customer reviews</title>
+		<author>
+			<persName><forename type="first">Minqing</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of AAAI</title>
+				<meeting>AAAI<address><addrLine>San Jose, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="755" to="760" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Sentiment Analysis and Opinion Mining. Synthesis Lectures on Human Language Technologies</title>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<publisher>Morgan &amp; Claypool Publishers</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A review selection approach for accurate feature rating estimation</title>
+		<author>
+			<persName><forename type="first">Chong</forename><surname>Long</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jie</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaoyan</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING (Posters)</title>
+				<meeting>COLING (Posters)<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="766" to="774" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Thumbs up? sentiment classification using machine learning techniques</title>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Pang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lillian</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shivakumar</forename><surname>Vaithyanathan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP<address><addrLine>Philadelphia, Pennsylvania, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="79" to="86" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Aspect term extraction for sentiment analysis: New datasets, new evaluation measures and an improved unsupervised method</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Pavlopoulos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ion</forename><surname>Androutsopoulos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LASM-EACL</title>
+				<meeting>LASM-EACL<address><addrLine>Gothenburg, Sweden</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="44" to="52" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Multi-granular aspect aggregation in aspect-based sentiment analysis</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Pavlopoulos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ion</forename><surname>Androutsopoulos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL<address><addrLine>Gothenburg, Sweden</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="78" to="87" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The META-SHARE language resources sharing infrastructure: Principles, challenges, solutions</title>
+		<author>
+			<persName><forename type="first">Stelios</forename><surname>Piperidis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC-2012</title>
+				<meeting>LREC-2012<address><addrLine>Istanbul, Turkey</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="36" to="42" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Extracting product features and opinions from reviews</title>
+		<author>
+			<persName><forename type="first">Ana-Maria</forename><surname>Popescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Etzioni</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of HLT/EMNLP</title>
+				<meeting>HLT/EMNLP<address><addrLine>British Columbia, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Vancouver</publisher>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="339" to="346" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">BRAT: a web-based tool for NLP-assisted text annotation</title>
+		<author>
+			<persName><forename type="first">Pontus</forename><surname>Stenetorp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Topić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoko</forename><surname>Ohta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sophia</forename><surname>Ananiadou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL<address><addrLine>Avignon, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="102" to="107" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Aspect-based sentiment analysis of movie reviews on discussion boards</title>
+		<author>
+			<persName><forename type="first">Jin-Cheon</forename><surname>Tun Thura Thet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">S G</forename><surname>Na</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Khoo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Information Science</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="823" to="848" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">A joint model of text and aspect ratings for sentiment summarization</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Titov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><forename type="middle">T</forename><surname>Mcdonald</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL<address><addrLine>Columbus, Ohio, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="308" to="316" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Thumbs up or thumbs down? semantic orientation applied to unsupervised classification of reviews</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Turney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL<address><addrLine>Philadelphia, Pennsylvania, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="417" to="424" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

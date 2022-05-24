@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">The CoNLL-2014 Shared Task on Grammatical Error Correction</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Hwee</forename><forename type="middle">Tou</forename><surname>Ng</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">National University of Singapore</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Siew</forename><forename type="middle">Mei</forename><surname>Wu</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Centre for English Language Communication</orgName>
+								<orgName type="institution">National University of Singapore</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ted</forename><surname>Briscoe</surname></persName>
+							<email>ted.briscoe@cl.cam.ac.uk</email>
+							<affiliation key="aff2">
+								<orgName type="department">Computer Laboratory</orgName>
+								<orgName type="institution">University of Cambridge</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Christian</forename><surname>Hadiwinoto</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">National University of Singapore</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Raymond</forename><forename type="middle">Hendy</forename><surname>Susanto</surname></persName>
+							<email>raymondhs@comp.nus.edu.sg</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">National University of Singapore</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Christopher</forename><surname>Bryant</surname></persName>
+							<email>bryant@comp.nus.edu.sg</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">National University of Singapore</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">The CoNLL-2014 Shared Task on Grammatical Error Correction</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The CoNLL-2014 shared task was devoted to grammatical error correction of all error types. In this paper, we give the task definition, present the data sets, and describe the evaluation metric and scorer used in the shared task. We also give an overview of the various approaches adopted by the participating teams, and present the evaluation results. Compared to the CoNLL-2013 shared task, we have introduced the following changes in CoNLL-2014: (1) A participating system is expected to detect and correct grammatical errors of all types, instead of just the five error types in CoNLL-2013;  (2) The evaluation metric was changed from F 1 to F 0.5 , to emphasize precision over recall; and (3) We have two human annotators who independently annotated the test essays, compared to just one human annotator in CoNLL-2013.   </p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Grammatical error correction is the shared task of the Eighteenth Conference on Computational <ref type="bibr">Natural Language Learning in 2014</ref><ref type="bibr">(CoNLL-2014</ref>. In this task, given an English essay written by a learner of English as a second language, the goal is to detect and correct the grammatical errors of all error types present in the essay, and return the corrected essay.</p><p>This task has attracted much recent research interest, with two shared tasks Helping Our Own (HOO) organized in 2011 and 2012 <ref type="bibr" target="#b8">(Dale and Kilgarriff, 2011;</ref><ref type="bibr" target="#b9">Dale et al., 2012)</ref>, and a CoNLL shared task on grammatical error correction organized in 2013 . In contrast to previous CoNLL shared tasks which focused on particular subtasks of natural language processing, such as named entity recognition, semantic role labeling, dependency parsing, or coreference resolution, grammatical error correction aims at building a complete end-to-end application. This task is challenging since for many error types, current grammatical error correction systems do not achieve high performance and much research is still needed. Also, tackling this task has farreaching impact, since it is estimated that hundreds of millions of people worldwide are learning English and they benefit directly from an automated grammar checker.</p><p>The CoNLL-2014 shared task provides a forum for participating teams to work on the same grammatical error correction task, with evaluation on the same blind test set using the same evaluation metric and scorer. This overview paper contains a detailed description of the shared task, and is organized as follows. Section 2 provides the task definition. Section 3 describes the annotated training data provided and the blind test data. Section 4 describes the evaluation metric and the scorer. Section 5 lists the participating teams and outlines the approaches to grammatical error correction used by the teams. Section 6 presents the results of the shared task, including a discussion on cross annotator comparison. Section 7 concludes the paper.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Definition</head><p>The goal of the CoNLL-2014 shared task is to evaluate algorithms and systems for automatically detecting and correcting grammatical errors present in English essays written by second language learners of English. Each participating team is given training data manually annotated with corrections of grammatical errors. The test data consists of new, blind test essays. Preprocessed test essays, which have been sentencesegmented and tokenized, are also made available to the participating teams. Each team is to submit its system output consisting of the automatically corrected essays, in sentence-segmented and tokenized form.</p><p>Grammatical errors consist of many different types, including articles or determiners, prepositions, noun form, verb form, subject-verb agreement, pronouns, word choice, sentence structure, punctuation, capitalization, etc. However, most prior published research on grammatical error correction only focuses on a small number of frequently occurring error types, such as article and preposition errors <ref type="bibr" target="#b13">(Han et al., 2006;</ref><ref type="bibr" target="#b12">Gamon, 2010;</ref><ref type="bibr" target="#b21">Rozovskaya and Roth, 2010;</ref><ref type="bibr" target="#b4">Dahlmeier and Ng, 2011b)</ref>. Article and preposition errors were also the only error types featured in the HOO 2012 shared task. Likewise, although all error types were included in the HOO 2011 shared task, almost all participating teams dealt with article and preposition errors only (besides spelling and punctuation errors). In the CoNLL-2013 shared task, the error types were extended to include five error types, comprising article or determiner, preposition, noun number, verb form, and subject-verb agreement. Other error types such as word choice errors <ref type="bibr" target="#b3">(Dahlmeier and Ng, 2011a)</ref> were not dealt with.</p><p>In the CoNLL-2014 shared task, it was felt that the community is now ready to deal with all error types. Table <ref type="table" target="#tab_1">1</ref> shows examples of the 28 error types in the CoNLL-2014 shared task.</p><p>Since there are 28 error types in our shared task compared to two in HOO 2012 and five in CoNLL-2013, there is a greater chance of encountering multiple, interacting errors in a sentence in our shared task. This increases the complexity of our shared task. To illustrate, consider the following sentence: Social network plays a role in providing and also filtering information.</p><p>The noun number error networks needs to be corrected (network → networks). This necessitates the correction of a subject-verb agreement error (plays → play). A pipeline system in which corrections for subject-verb agreement errors occur strictly before corrections for noun number errors would not be able to arrive at a fully corrected sentence for this example. The ability to correct multiple, interacting errors is thus necessary in our shared task. The recent work of <ref type="bibr" target="#b5">Dahlmeier and Ng (2012a)</ref> and , for example, is designed to deal with multiple, interacting errors.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data</head><p>This section describes the training and test data released to each participating team in our shared task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Training Data</head><p>The training data provided in our shared task is the NUCLE corpus, the NUS Corpus of Learner English <ref type="bibr" target="#b7">(Dahlmeier et al., 2013)</ref>. As noted by <ref type="bibr" target="#b18">(Leacock et al., 2010)</ref>, the lack of a manually annotated and corrected corpus of English learner texts has been an impediment to progress in grammatical error correction, since it prevents comparative evaluations on a common benchmark test data set. NUCLE was created precisely to fill this void. It is a collection of 1,414 essays written by students at the National University of Singapore (NUS) who are non-native speakers of English. The essays were written in response to some prompts, and they cover a wide range of topics, such as environmental pollution, health care, etc. The grammatical errors in these essays have been hand-corrected by professional English instructors at NUS. For each grammatical error instance, the start and end character offsets of the erroneous text span are marked, and the error type and the correction string are provided. Manual annotation is carried out using a graphical user interface specifically built for this purpose. The error annotations are saved as stand-off annotations, in SGML format.</p><p>To illustrate, consider the following sentence at the start of the sixth paragraph of an essay: Nothing is absolute right or wrong.</p><p>There is a word form error (absolute → absolutely) in this sentence. The error annotation, also called correction or edit, in SGML format is shown in Figure <ref type="figure">1</ref>. start par (end par) denotes the paragraph ID of the start (end) of the erroneous  text span (paragraph ID starts from 0 by convention). start off (end off) denotes the character offset of the start (end) of the erroneous text span (again, character offset starts from 0 by convention). The error tag is Wform, and the correction string is absolutely.</p><p>The NUCLE corpus was first used in <ref type="bibr" target="#b4">(Dahlmeier and Ng, 2011b)</ref>, and has been publicly available for research purposes since June 2011 1 . All instances of grammatical errors are annotated in NUCLE.</p><p>To help participating teams in their preparation for the shared task, we also performed automatic preprocessing of the NUCLE corpus and released the preprocessed form of NUCLE. The preprocessing operations performed on the NU-CLE essays include sentence segmentation and word tokenization using the NLTK toolkit <ref type="bibr" target="#b0">(Bird et al., 2009)</ref>, and part-of-speech (POS) tagging, constituency and dependency tree parsing using the Stanford parser <ref type="bibr" target="#b16">(Klein and Manning, 2003;</ref><ref type="bibr" target="#b10">de Marneffe et al., 2006)</ref>. The error annotations, which are originally at the character level, are then mapped to error annotations at the word token level. Error annotations at the word token level also facilitate scoring, as we will see in Section 4, since our scorer operates by matching tokens. Note that although we released our own preprocessed version of NUCLE, the participating teams were however free to perform their own preprocessing if they so preferred.</p><p>NUCLE release version 3.2 was used in the CoNLL-2014 shared task. In this version, 17 essays were removed from the first release of NU-CLE since these essays were duplicates with multiple annotations. In addition, in order to facilitate the detection and correction of article/determiner errors and preposition errors, we performed some automatic mapping of error types in the original NUCLE corpus to arrive at release version 3.2.  gives more details of how the mapping was carried out.</p><p>The statistics of the NUCLE corpus (release 3.2 version) are shown in Table <ref type="table" target="#tab_3">2</ref>. The distribution of errors among all error types is shown in Table <ref type="table" target="#tab_5">3</ref>.</p><p>While the NUCLE corpus is provided in our shared task, participating teams are free to not use NUCLE, or to use additional resources and tools in building their grammatical error correction systems, as long as these resources and tools are pub-  Error annotation on the test essays was carried out independently by two native speakers of English. One of them is a lecturer at the NUS Centre for English Language Communication, and the other is a freelance English linguist with extensive prior experience in error annotation of English learners' essays. The distribution of errors in the test essays among the error types is shown in Table 3. The test essays were then preprocessed in the same manner as the NUCLE corpus. The preprocessed test essays were released to the participating teams. Similar to CoNLL-2013, the test essays and their error annotations in the CoNLL-2014 shared task will be made freely available after the shared task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Metric and Scorer</head><p>A grammatical error correction system is evaluated by how well its proposed corrections or edits match the gold-standard edits. An essay is first sentence-segmented and tokenized before evaluation is carried out on the essay. To illustrate, consider the following tokenized sentence S written by an English learner: &lt;MISTAKE start par="5" start off="11" end par="5" end off="19"&gt; &lt;TYPE&gt;Wform&lt;/TYPE&gt; &lt;CORRECTION&gt;absolutely&lt;/CORRECTION&gt; &lt;/MISTAKE&gt;  ID Prompt 1 "The decision to undergo genetic testing can only be made by the individual at risk for a disorder. Once a test has been conducted and the results are known, however, a new, family-related ethical dilemma is born: Should a carrier of a known genetic risk be obligated to tell his or her relatives?" Respond to the question above, supporting your argument with concrete examples. 2 While social media sites such as Twitter and Facebook can connect us closely to people in many parts of the world, some argue that the reduction in face-to-face human contact affects interpersonal skills. Explain the advantages and disadvantages of using social media in your daily life/society. There is no a doubt , tracking system has brought many benefits in this information age .</p><p>The set of gold-standard edits of a human annotator is g = {a doubt → doubt, system → systems, has → have}. Suppose the tokenized output sentence H of a grammatical error correction system given the above sentence is:</p><p>There is no doubt , tracking system has brought many benefits in this information age .</p><p>That is, the set of system edits is e = {a doubt → doubt}. The performance of the grammatical error correction system is measured by how well the two sets g and e match, in the form of recall R, precision P , and F 0.5 measure: R = 1/3, P = 1/1, F 0.5 = (1 + 0.5 2 ) × RP/(R + 0.5 2 × P ) = 5/7. More generally, given a set of n sentences, where g i is the set of gold-standard edits for sentence i, and e i is the set of system edits for sentence i, recall, precision, and F 0.5 are defined as follows:</p><formula xml:id="formula_0">R = n i=1 |g i ∩ e i | n i=1 |g i | (1) P = n i=1 |g i ∩ e i | n i=1 |e i | (2) F 0.5 = (1 + 0.5 2 ) × R × P R + 0.5 2 × P (3)</formula><p>where the intersection between g i and e i for sentence i is defined as</p><formula xml:id="formula_1">g i ∩ e i = {e ∈ e i |∃g ∈ g i , match(g, e)} (4)</formula><p>Note that we have adopted F 0.5 as the evaluation metric in the CoNLL-2014 shared task instead of the standard F 1 used in CoNLL-2013. F 0.5 emphasizes precision twice as much as recall, while F 1 weighs precision and recall equally. When a grammar checker is put into actual use, it is important that its proposed corrections are highly accurate in order to gain user acceptance. Neglecting to propose a correction is not as bad as proposing an erroneous correction.</p><p>Similar to CoNLL-2013, we use the MaxMatch (M 2 ) scorer 2 <ref type="bibr" target="#b6">(Dahlmeier and Ng, 2012b)</ref> as the official scorer in CoNLL-2014. The M 2 scorer 3 efficiently searches for a set of system edits that maximally matches the set of gold-standard edits specified by an annotator. It overcomes a limitation of the scorer used in HOO shared tasks, which can return an erroneous score since the system edits are computed deterministically by the HOO scorer without regard to the gold-standard edits.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Approaches</head><p>45 teams registered to participate in the shared task, out of which 13 teams submitted the output of their grammatical error correction systems. These teams are listed in Table <ref type="table" target="#tab_7">5</ref>. Each team is assigned a 3 to 4-letter team ID. In the remainder of this paper, we will use the assigned team ID to refer to a participating team. Every team submitted a system description paper (the only exception is the NARA team). Four of the 13 teams submitted their system output only after the deadline (they were given up to one week of extension). These four teams (IITB, IPN, PKU, and UFC) have an asterisk affixed after their team names in  team's approach can be found in Table <ref type="table" target="#tab_11">6</ref>. While machine-learnt classifiers for specific error types proved popular in last year's CoNLL-2013 shared task, since this year's task required the correction of all 28 error types, teams tended to prefer methods that could deal with all error types simultaneously. In fact, most teams built hybrid systems that made use of a combination of different approaches to identify and correct errors.</p><p>One of the most popular approaches to nonspecific error type correction, incorporated to various extents in many teams' systems, was the Language Model (LM) based approach. Specifically, the probability of a learner n-gram is compared with the probability of a candidate corrected ngram, and if the difference is greater than some threshold, an error was perceived to have been detected and a higher scoring replacement n-gram could be suggested. Some teams used this approach only to detect errors, e.g., <ref type="bibr">IPN (Hernandez and Calvo, 2014)</ref>, which could then be corrected by other methods, whilst other teams used other methods to detect errors first, and then made corrections based on the alternative highest n-gram probability score, e.g., RAC <ref type="bibr" target="#b1">(Boroş et al., 2014)</ref>. No single team used a uniquely LM-based solution and the LM approach was always a component in a hybrid system.</p><p>An alternative solution to correcting all errors was to use a phrase-based statistical machine translation (MT) system to "translate" learner English into correct English. Teams that followed the MT approach mainly differed in terms of their attitude toward tuning; CAMB <ref type="bibr" target="#b11">(Felice et al., 2014)</ref> performed no tuning at all, IITB (Kunchukuttan et al., 2014) and UMC <ref type="bibr" target="#b26">(Wang et al., 2014b</ref>) tuned F 0.5 using MERT, while AMU (Junczys-Dowmunt and Grundkiewicz, 2014) explored a variety of tuning options, ultimately tuning F 0.5 using a combination of kb-MIRA and MERT. No team used a syntax-based translation model, although UMC did include POS tags and morphology in a factored translation model.</p><p>With regard to correcting single error types, rule-based (RB) approaches were also common in most teams' systems. A possible reason for this is that some error types are more regular than others, and so in order to boost accuracy, simple rules can be written to make sure that, for example, the number of a subject agrees with the number of a verb. In contrast, it is a lot harder to write a rule to consistently correct Wci (wrong collocation/idiom) errors. As such, RB methods were often, but not always, used as a preliminary or supplementary stage in a larger hybrid system.</p><p>Finally, although there were fewer machinelearnt classifier (ML) approaches than last year, some teams still used various classifiers to correct specific error types. In fact, CUUI <ref type="bibr" target="#b22">(Rozovskaya et al., 2014)</ref> only built classifiers for specific error types and did not attempt to tackle the whole range of errors. SJTU <ref type="bibr" target="#b25">(Wang et al., 2014a</ref>) also preprocessed the training data into more precise error categories using rules (e.g., verb tense (Vt) errors might be subcategorized into present, past, or future tense etc.) and then built a single maximum entropy classifier to correct all error types. See Table <ref type="table" target="#tab_11">6</ref> to find out which teams tackled which error types.</p><p>While every effort has been made to make clear which team used which approach to correct which set of error types, as there were more error types than last year, it was sometimes impractical to fit all this information into Table <ref type="table" target="#tab_11">6</ref>. For more information on the specific methods used to correct a specific error type, we must refer the reader to that team's CoNLL-2014 system description paper.</p><p>Table <ref type="table" target="#tab_11">6</ref> also shows the linguistic features used by the participating teams, which include lexical features (i.e., words, collocations, n-grams), partsof-speech (POS), constituency parses, and dependency parses.</p><p>While all teams in the shared task used the NU-CLE corpus, they were also allowed to use additional external resources (both corpora and tools) so long as they were publicly available and not proprietary. Three teams also used last year's CoNLL-2013 test set as a development set in this year's CoNLL-2014 shared task. The external resources used by the teams are also listed in Table 6.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Results</head><p>All submitted system output was evaluated using the M 2 scorer, based on the error annotations provided by our annotators. The recall (R), precision (P ), and F 0.5 measure of all teams are shown in Table <ref type="table">7</ref>. The performance of the teams varies greatly, from little more than five per cent to 37.33% for the top team.</p><p>The nature of grammatical error correction is such that multiple, different corrections are often acceptable. In order to allow the participating teams to raise their disagreement with the original gold-standard annotations provided by the annotators, and not understate the performance of the teams, we allow the teams to submit their proposed alternative answers. This was also the practice adopted in <ref type="bibr">HOO 2011</ref><ref type="bibr">, HOO 2012</ref><ref type="bibr">, and CoNLL-2013</ref>. Specifically, after the teams submitted their system output and the error annotations on the test essays were released, we allowed the teams to propose alternative answers (goldstandard edits), to be submitted within four days after the initial error annotations were released. Table <ref type="table">7</ref>: Scores (in %) without alternative answers. The teams that submitted their system output after the deadline have an asterisk affixed after their team names.</p><p>The same annotators who provided the error annotations on the test essays also judged the alternative answers proposed by the teams, to ensure consistency. In all, three teams (CAMB, CUUI, UMC) submitted alternative answers. The same submitted system output was then evaluated using the M 2 scorer, with the original annotations augmented with the alternative answers. Table <ref type="table" target="#tab_15">8</ref> shows the recall (R), precision (P ), and F 0.5 measure of all teams under this new evaluation setting.</p><p>The F 0.5 measure of every team improves when evaluated with alternative answers. Not surprisingly, the teams which submitted alternative answers tend to show the greatest improvements in their F 0.5 measure. Overall, the CUUI team <ref type="bibr" target="#b22">(Rozovskaya et al., 2014)</ref> achieves the best F 0.5 measure when evaluated with alternative answers, and the CAMB team <ref type="bibr" target="#b11">(Felice et al., 2014)</ref> achieves the best F 0.5 measure when evaluated without alternative answers.</p><p>For future research which uses the test data of the CoNLL-2014 shared task, we recommend that evaluation be carried out in the setting that does not use alternative answers, to ensure a fairer evaluation. This is because the scores of the teams which submitted alternative answers tend to be higher in a biased way when evaluated with alternative answers.</p><p>We are also interested in the analysis of the system performance for each of the error types.  The RAC team uses rules to correct error types that differ from the 28 official error types. They include: "the correction of the verb tense especially in time clauses, the use of the short infinitive after modals, the position of frequency adverbs in a sentence, subject-verb agreement, word order in interrogative sentences, punctuation accompanying certain lexical elements, the use of articles, of correlatives, etc."    The teams that submitted their system output after the deadline have an asterisk affixed after their team names.</p><p>Computing the recall of an error type is straightforward as the error type of each gold-standard edit is provided. Conversely, computing the precision of each of the 28 error types is difficult as the error type of each system edit is not available since the submitted system output only contains corrected sentences with no indication of the error type of the system edits. Predicting the error type out of the 28 types for a particular system edit not found in gold-standard annotation can be tricky and error-prone. Therefore, we decided to compute the per-type performance based on recall. The recall scores when distinguished by error type are shown in Tables <ref type="table" target="#tab_1">9 and 10</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Cross Annotator Comparison</head><p>To measure the agreement between our two annotators, we computed Cohen's Kappa coefficient <ref type="bibr" target="#b2">(Cohen, 1960)</ref> for identification, which measures the extent to which annotators agreed which words needed correction and which did not, regardless of the error type or correction. We obtained a Kappa coefficient value of 0.43, indicating moderate agreement (since it falls between 0.40 and 0.60). While this may seem low, it is worth pointing out that the Kappa coefficient does not take into account the fact that there is often more than one valid way to correct a sentence. In addition to computing the performance of each team against the gold standard annotations of both annotators with and without alternative anno-tations, we also had an opportunity to compare the performance of each team's system against each annotator individually.</p><p>A recent concern is that there can be a high degree of variability between individual annotators which can dramatically affect a system's output score. For example, in a much simplified error correction task concerning only the correction of prepositions, <ref type="bibr" target="#b23">Tetreault and Chodorow (2008)</ref> showed an actual difference of 10% precision and 5% recall between two annotators. Table <ref type="table" target="#tab_1">11</ref> hence shows the precision (P ), recall (R), and F 0.5 scores for all error types against the gold standard annotations of each CoNLL-2014 annotator individually.</p><p>The results show that there can indeed be a high amount of disagreement between two annotators, the most noticeable being precision in the UFC system: precision was 70% for Annotator 2 but only 28% for Annotator 1. This 42% difference is, however, likely to be an extreme case, and most teams show little more than 10% variation in precision and 5% variation in F 0.5 . Recall remained fairly constant between annotators. 10% is still a large margin however, and these results reinforce the idea that error correction systems should be judged against the gold-standard annotations of multiple annotators.</p><p>Table <ref type="table" target="#tab_1">12</ref> additionally shows how each annotator compares against each other; i.e., what score Annotator 1 gets if Annotator 2 was the gold standard (part (a) of Table <ref type="table" target="#tab_1">12</ref>) and vice versa (part (b)).</p><p>The low F 0.5 scores of 45.36% and 38.54% represent an upper bound for system performance on this data set and again emphasize the difficulty of the task. The low human F 0.5 scores imply that there are many ways to correct a sentence.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusions</head><p>The CoNLL-2014 shared task saw the participation of 13 teams worldwide to evaluate their grammatical error correction systems on a common test set, using a common evaluation metric and scorer. The best systems in the shared task achieve an F 0.5 score of 37.33% when it is scored without alternative answers, and 45.57% with alternative answers. There is still much room for improvement in the accuracy of grammatical error correction systems. The evaluation data sets and scorer used in our shared task serve as a benchmark for   </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>The 28 error types in the shared task.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Statistics of training and test data.</figDesc><table><row><cell>licly available and not proprietary. For example,</cell></row><row><cell>participating teams are free to use the Cambridge</cell></row><row><cell>FCE corpus (Yannakoudakis et al., 2011; Nicholls,</cell></row><row><cell>2003) (the training data provided in HOO 2012</cell></row><row><cell>(Dale et al., 2012)) as additional training data.</cell></row></table><note>3.2 Test DataSimilar toCoNLL-2013, 25  NUS students, who are non-native speakers of English, were recruited to write new essays to be used as blind test data in the shared task. Each student wrote two essays in response to the two prompts shown in Table4, one essay per prompt. The first prompt was also used in the NUCLE training data, but the second prompt is entirely new and not used previously. As a result, 50 new test essays were collected. The statistics of the test essays are also shown in Table 2.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>Figure 1: An example error annotation.</figDesc><table><row><cell cols="2">Error type Training</cell><cell>%</cell><cell>Test</cell><cell>%</cell><cell>Test</cell><cell>%</cell></row><row><cell></cell><cell>data</cell><cell></cell><cell>data</cell><cell></cell><cell>data</cell></row><row><cell></cell><cell>(NUCLE)</cell><cell></cell><cell>(Annotator 1)</cell><cell></cell><cell>(Annotator 2)</cell></row><row><cell>Vt</cell><cell>3,204</cell><cell>7.1%</cell><cell>133</cell><cell>5.5%</cell><cell></cell><cell>4.5%</cell></row><row><cell>Vm</cell><cell>431</cell><cell>1.0%</cell><cell>49</cell><cell>2.0%</cell><cell></cell><cell>1.1%</cell></row><row><cell>V0</cell><cell>414</cell><cell>0.9%</cell><cell>31</cell><cell>1.3%</cell><cell></cell><cell>1.1%</cell></row><row><cell>Vform</cell><cell>1,443</cell><cell>3.2%</cell><cell>132</cell><cell>5.5%</cell><cell></cell><cell>2.7%</cell></row><row><cell>SVA</cell><cell>1,524</cell><cell>3.4%</cell><cell>105</cell><cell>4.4%</cell><cell></cell><cell>4.6%</cell></row><row><cell>ArtOrDet</cell><cell>6,640</cell><cell>14.8%</cell><cell>332</cell><cell>13.9%</cell><cell></cell><cell>13.3%</cell></row><row><cell>Nn</cell><cell>3,768</cell><cell>8.4%</cell><cell>215</cell><cell>9.0%</cell><cell></cell><cell>6.8%</cell></row><row><cell>Npos</cell><cell>239</cell><cell>0.5%</cell><cell>19</cell><cell>0.8%</cell><cell></cell><cell>0.5%</cell></row><row><cell>Pform</cell><cell>186</cell><cell>0.4%</cell><cell>47</cell><cell>2.0%</cell><cell></cell><cell>0.5%</cell></row><row><cell>Pref</cell><cell>927</cell><cell>2.1%</cell><cell>96</cell><cell>4.0%</cell><cell></cell><cell>4.6%</cell></row><row><cell>Prep</cell><cell>2,413</cell><cell>5.4%</cell><cell>211</cell><cell>8.8%</cell><cell></cell><cell>11.7%</cell></row><row><cell>Wci</cell><cell>5,305</cell><cell>11.8%</cell><cell>340</cell><cell>14.2%</cell><cell></cell><cell>14.4%</cell></row><row><cell>Wa</cell><cell>50</cell><cell>0.1%</cell><cell>0</cell><cell>0.0%</cell><cell></cell><cell>0.0%</cell></row><row><cell>Wform</cell><cell>2,161</cell><cell>4.8%</cell><cell>77</cell><cell>3.2%</cell><cell></cell><cell>3.1%</cell></row><row><cell>Wtone</cell><cell>593</cell><cell>1.3%</cell><cell>9</cell><cell>0.4%</cell><cell></cell><cell>0.5%</cell></row><row><cell>Srun</cell><cell>873</cell><cell>1.9%</cell><cell>7</cell><cell>0.3%</cell><cell></cell><cell>0.8%</cell></row><row><cell>Smod</cell><cell>51</cell><cell>0.1%</cell><cell>0</cell><cell>0.0%</cell><cell></cell><cell>0.2%</cell></row><row><cell>Spar</cell><cell>519</cell><cell>1.2%</cell><cell>3</cell><cell>0.1%</cell><cell></cell><cell>0.7%</cell></row><row><cell>Sfrag</cell><cell>250</cell><cell>0.6%</cell><cell>13</cell><cell>0.5%</cell><cell></cell><cell>0.2%</cell></row><row><cell>Ssub</cell><cell>362</cell><cell>0.8%</cell><cell>68</cell><cell>2.8%</cell><cell></cell><cell>0.3%</cell></row><row><cell>WOinc</cell><cell>698</cell><cell>1.6%</cell><cell>22</cell><cell>0.9%</cell><cell></cell><cell>1.6%</cell></row><row><cell>WOadv</cell><cell>347</cell><cell>0.8%</cell><cell>12</cell><cell>0.5%</cell><cell></cell><cell>0.8%</cell></row><row><cell>Trans</cell><cell>1,377</cell><cell>3.1%</cell><cell>94</cell><cell>3.9%</cell><cell></cell><cell>2.4%</cell></row><row><cell>Mec</cell><cell>3,145</cell><cell>7.0%</cell><cell>231</cell><cell>9.6%</cell><cell></cell><cell>14.9%</cell></row><row><cell>Rloc−</cell><cell>4,703</cell><cell>10.5%</cell><cell>95</cell><cell>4.0%</cell><cell></cell><cell>6.0%</cell></row><row><cell>Cit</cell><cell>658</cell><cell>1.5%</cell><cell>0</cell><cell>0.0%</cell><cell></cell><cell>0.0%</cell></row><row><cell>Others</cell><cell>1,467</cell><cell>3.3%</cell><cell>44</cell><cell>1.8%</cell><cell></cell><cell>1.5%</cell></row><row><cell>Um</cell><cell>1,164</cell><cell>2.6%</cell><cell>12</cell><cell>0.5%</cell><cell></cell><cell>1.3%</cell></row><row><cell>All types</cell><cell cols="2">44,912 100.0%</cell><cell cols="2">2,397 100.0%</cell><cell cols="2">3,331 100.0%</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Error type distribution of the training and test data. The test data were annotated independently by two annotators.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>The two prompts used for the test essays.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 .</head><label>5</label><figDesc>Each participating team in the CoNLL-2014 shared task tackled the error correction problem in a different way. A full list summarizing each</figDesc><table><row><cell cols="2">Team ID Affiliation</cell></row><row><cell>AMU</cell><cell>Adam Mickiewicz University</cell></row><row><cell>CAMB</cell><cell>University of Cambridge</cell></row><row><cell>CUUI</cell><cell>Columbia University and the University of Illinois at Urbana-Champaign</cell></row><row><cell>IITB  *</cell><cell>Indian Institute of Technology, Bombay</cell></row><row><cell>IPN  *</cell><cell>Instituto Politécnico Nacional</cell></row><row><cell>NARA</cell><cell>Nara Institute of Science and Technology</cell></row><row><cell>NTHU</cell><cell>National Tsing Hua University</cell></row><row><cell>PKU  *</cell><cell>Peking University</cell></row><row><cell>POST</cell><cell>Pohang University of Science and Technology</cell></row><row><cell>RAC</cell><cell>Research Institute for Artificial Intelligence, Romanian Academy</cell></row><row><cell>SJTU</cell><cell>Shanghai Jiao Tong University</cell></row><row><cell>UFC  *</cell><cell>University of Franche-Comté</cell></row><row><cell>UMC</cell><cell>University of Macau</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc>The list of 13 participating teams. The teams that submitted their system output after the deadline have an asterisk affixed after their team names. NARA did not submit any system description paper.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 6 :</head><label>6</label><figDesc>Profile of the participating teams. The Error column lists the error types tackled by a team if not all were corrected. The Approach column lists the type of approach used, where LM denotes a Language Modeling based approach, ML a Machine Learning classifier based approach, MT a statistical Machine Translation approach, and RB a Rule-Based approach.</figDesc><table /><note>a</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head></head><label></label><figDesc>Type AMU CAMB CUUI IITB IPN NARA NTHU PKU POST RAC SJTU UFC UMC</figDesc><table><row><cell>10.61 12.30 3.76 26.19 4.17 0.00 14.84</cell><cell>0.00 3.23 0.00 35.90 0.00 0.00 6.45</cell><cell>0.00 0.00 0.00 0.00 0.00 0.00 25.93</cell><cell>24.30 25.64 1.89 27.35 3.67 0.95 14.68</cell><cell>62.67 17.31 20.56 30.36 14.85 28.70 14.41</cell><cell>33.63 8.20 54.45 0.63 12.54 0.00 24.05</cell><cell>46.76 41.78 55.60 36.45 10.11 0.00 17.03</cell><cell>0.00 0.00 0.00 4.76 4.55 0.00 5.26</cell><cell>16.13 12.00 0.00 3.70 0.00 0.00 17.24</cell><cell>1.20 1.35 1.32 0.00 0.00 0.00 12.05</cell><cell>19.42 0.00 2.28 0.00 7.92 0.00 14.55</cell><cell>0.63 1.65 1.27 0.34 0.00 0.00 3.23</cell><cell>0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>14.81 25.88 6.49 11.25 1.39 1.30 16.46</cell><cell>0.00 0.00 28.57 0.00 16.67 0.00 44.44</cell><cell>0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 50.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 0.00 25.00 0.00 25.00</cell><cell>0.00 0.00 9.52 2.38 2.27 0.00 6.98</cell><cell>0.00 0.00 0.00 0.00 0.00 0.00 6.67</cell><cell>0.00 0.00 0.00 0.00 0.00 0.00 44.44</cell><cell>1.41 1.52 2.67 0.00 0.00 0.00 12.16</cell><cell>6.67 30.28 36.61 43.51 0.51 0.00 16.80</cell><cell>9.68 10.48 9.26 9.09 2.50 0.00 15.84</cell><cell>0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 3.12 0.00 0.00 0.00</cell><cell>0.00 15.79 8.70 8.33 0.00 0.00 0.00</cell></row><row><cell>14.18</cell><cell>29.03</cell><cell>36.67</cell><cell>27.62</cell><cell>27.50</cell><cell>50.89</cell><cell>57.32</cell><cell>20.00</cell><cell>14.81</cell><cell>10.00</cell><cell>29.72</cell><cell>7.55</cell><cell>0.00</cell><cell>39.08</cell><cell>14.29</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>20.00</cell><cell>15.38</cell><cell>3.03</cell><cell>43.75</cell><cell>11.25</cell><cell>36.69</cell><cell>18.64</cell><cell>0.00</cell><cell>0.00</cell><cell>4.00</cell></row><row><cell>19.12 3.79 1.74 0.88</cell><cell>22.58 0.00 0.00 0.00</cell><cell>25.00 0.00 0.00 0.00</cell><cell>24.37 21.43 1.85 4.63</cell><cell>31.36 70.34 1.06 14.14</cell><cell>49.48 58.85 0.68 0.33</cell><cell>54.11 56.10 4.49 10.36</cell><cell>7.69 4.76 0.00 0.00</cell><cell>22.58 7.14 0.00 0.00</cell><cell>19.35 1.32 0.00 0.00</cell><cell>38.26 15.45 2.12 0.00</cell><cell>9.17 0.94 0.36 0.35</cell><cell>0.00 0.00 0.00 0.00</cell><cell>45.05 17.24 4.05 2.60</cell><cell>36.36 36.36 0.00 0.00</cell><cell>0.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 0.00</cell><cell>14.63 0.00 0.00 2.27</cell><cell>3.03 0.00 3.57 0.00</cell><cell>47.62 0.00 12.50 0.00</cell><cell>21.43 2.86 1.43 0.00</cell><cell>28.75 15.79 1.02 4.33</cell><cell>20.16 7.76 0.00 5.56</cell><cell>0.00 0.00 0.00 0.00</cell><cell>0.00 0.00 0.00 0.00</cell><cell>9.09 0.00 0.00 0.00</cell></row><row><cell>Vt 10.66</cell><cell>Vm 10.81</cell><cell>V0 17.86</cell><cell>Vform 22.76</cell><cell>SVA 24.30</cell><cell>ArtOrDet 15.52</cell><cell>Nn 58.74</cell><cell>Npos 14.29</cell><cell>Pform 22.22</cell><cell>Pref 9.33</cell><cell>Prep 18.41</cell><cell>Wci 12.00</cell><cell>Wa 0.00</cell><cell>Wform 45.56</cell><cell>Wtone 81.82</cell><cell>Srun 0.00</cell><cell>Smod 0.00</cell><cell>Spar 0.00</cell><cell>Sfrag 0.00</cell><cell>Ssub 7.89</cell><cell>WOinc 0.00</cell><cell>WOadv 0.00</cell><cell>Trans 13.43</cell><cell>Mec 29.35</cell><cell>Rloc− 5.41</cell><cell>Cit 0.00</cell><cell>Others 0.00</cell><cell>Um 7.69</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 9 :</head><label>9</label><figDesc>Recall (in %) for each error type without alternative answers, indicating how well each team performs against a particular error type.</figDesc><table><row><cell>Type AMU CAMB CUUI IITB IPN NARA NTHU PKU POST RAC SJTU UFC UMC</cell><cell>Vt 11.61 20.00 5.79 1.90 0.98 16.18 12.90 14.16 3.31 29.17 4.59 0.00 17.60</cell><cell>Vm 11.11 23.33 0.00 0.00 0.00 29.03 0.00 3.33 0.00 39.47 0.00 0.00 7.69</cell><cell>V0 19.23 29.63 0.00 0.00 0.00 38.71 0.00 0.00 0.00 0.00 0.00 0.00 30.77</cell><cell>Vform 23.93 27.42 21.05 1.92 4.85 29.09 24.07 26.79 2.83 26.96 3.77 0.98 15.32</cell><cell>SVA 25.00 33.90 72.41 1.11 14.74 28.57 63.76 17.82 22.86 32.43 15.46 30.09 14.95</cell><cell>ArtOrDet 18.75 54.74 67.38 1.81 0.36 54.42 37.96 9.65 59.41 0.66 14.63 0.00 33.42</cell><cell>Nn 62.14 62.03 65.53 4.91 12.29 62.69 52.89 51.01 64.14 42.67 11.93 0.00 22.22</cell><cell>Npos 23.33 40.00 4.35 0.00 0.00 29.17 0.00 0.00 0.00 9.52 4.55 0.00 13.64</cell><cell>Pform 22.22 23.33 7.69 0.00 0.00 14.81 17.86 12.50 0.00 4.00 0.00 0.00 22.22</cell><cell>Pref 9.59 18.56 1.32 0.00 0.00 9.80 1.25 1.33 1.37 0.00 0.00 0.00 11.11</cell><cell>Prep 18.41 38.63 18.22 2.21 0.00 30.28 20.42 0.00 2.25 0.00 8.95 0.00 16.98</cell><cell>Wci 15.26 15.18 0.96 0.79 0.38 8.05 1.33 3.17 1.94 0.36 0.00 0.00 9.57</cell><cell>Wa 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>Wform 45.45 46.59 21.11 2.90 2.67 40.91 15.58 27.38 6.49 12.50 1.47 1.37 17.11</cell><cell>Wtone 88.24 38.46 52.63 0.00 0.00 12.50 0.00 0.00 50.00 0.00 33.33 0.00 55.56</cell><cell>Srun 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>Smod 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>Spar 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 50.00 0.00 0.00 0.00</cell><cell>Sfrag 0.00 0.00 0.00 0.00 0.00 16.67 0.00 0.00 0.00 0.00 25.00 0.00 20.00</cell><cell>Ssub 7.89 14.29 0.00 0.00 2.33 15.38 0.00 0.00 9.76 2.44 2.33 0.00 6.98</cell><cell>WOinc 0.00 3.45 0.00 4.00 0.00 3.33 0.00 0.00 0.00 0.00 0.00 0.00 7.14</cell><cell>WOadv 0.00 50.00 0.00 16.67 0.00 44.44 0.00 0.00 0.00 0.00 0.00 0.00 50.00</cell><cell>Trans 14.52 22.39 3.08 1.67 0.00 11.84 1.56 1.64 2.82 0.00 0.00 0.00 20.78</cell><cell>Mec 31.56 30.67 17.47 1.13 4.79 37.28 7.17 31.69 37.88 45.82 1.10 0.00 22.31</cell><cell>Rloc− 5.45 26.47 7.38 0.00 5.62 21.43 11.34 12.38 11.82 10.00 3.66 0.00 29.66</cell><cell>Cit 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>Others 0.00 3.03 0.00 0.00 0.00 0.00 0.00 0.00 0.00 3.33 0.00 0.00 0.00</cell><cell>Um 7.69 9.09 0.00 0.00 0.00 4.35 0.00 15.00 4.55 8.70 0.00 0.00 0.00</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 10 :</head><label>10</label><figDesc>Recall (in %) for each error type with alternative answers, indicating how well each team performs against a particular error type.</figDesc><table><row><cell cols="4">Team ID Precision Recall F 0.5</cell></row><row><cell>CUUI</cell><cell>52.44</cell><cell cols="2">29.89 45.57</cell></row><row><cell>CAMB</cell><cell>46.70</cell><cell cols="2">34.30 43.55</cell></row><row><cell>AMU</cell><cell>45.68</cell><cell cols="2">23.78 38.58</cell></row><row><cell>POST</cell><cell>41.28</cell><cell cols="2">25.59 36.77</cell></row><row><cell>UMC</cell><cell>43.17</cell><cell cols="2">19.72 34.88</cell></row><row><cell>NTHU</cell><cell>38.34</cell><cell cols="2">21.12 32.97</cell></row><row><cell>PKU  *</cell><cell>36.64</cell><cell cols="2">15.96 29.10</cell></row><row><cell>RAC</cell><cell>35.63</cell><cell cols="2">16.73 29.06</cell></row><row><cell>NARA</cell><cell>23.83</cell><cell cols="2">31.95 25.11</cell></row><row><cell>SJTU</cell><cell>32.95</cell><cell>5.95</cell><cell>17.28</cell></row><row><cell>UFC  *</cell><cell>72.00</cell><cell>1.90</cell><cell>8.60</cell></row><row><cell>IPN  *</cell><cell>11.66</cell><cell>3.17</cell><cell>7.59</cell></row><row><cell>IITB  *</cell><cell>34.07</cell><cell>1.66</cell><cell>6.94</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 8 :</head><label>8</label><figDesc>Scores (in %) with alternative answers.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_16"><head></head><label></label><figDesc>AMU 27.30 13.55 22.69 35.49 12.90 26.29 CAMB 24.96 19.62 23.67 35.22 20.29 30.70 CUUI 26.05 15.60 22.97 36.91 16.37 29.51</figDesc><table><row><cell>Team ID</cell><cell cols="3">Annotator 1</cell><cell cols="3">Annotator 2</cell></row><row><cell></cell><cell>P</cell><cell>R</cell><cell>F 0.5</cell><cell>P</cell><cell>R</cell><cell>F 0.5</cell></row><row><cell>IITB</cell><cell>23.33</cell><cell>0.88</cell><cell cols="2">3.82 24.18</cell><cell>0.66</cell><cell>2.99</cell></row><row><cell>IPN</cell><cell>5.80</cell><cell>1.25</cell><cell>3.36</cell><cell>9.62</cell><cell>1.51</cell><cell>4.63</cell></row><row><cell>NARA</cell><cell cols="6">13.54 19.20 14.38 18.74 19.69 18.92</cell></row><row><cell>NTHU</cell><cell cols="6">22.19 11.38 18.64 31.48 11.79 23.60</cell></row><row><cell>PKU</cell><cell>21.53</cell><cell cols="3">8.36 16.37 27.47</cell><cell cols="2">7.72 18.17</cell></row><row><cell>POST</cell><cell cols="6">22.39 13.89 19.94 29.53 13.42 23.81</cell></row><row><cell>RAC</cell><cell>19.68</cell><cell cols="3">8.28 15.43 28.52</cell><cell cols="2">8.80 19.70</cell></row><row><cell>SJTU</cell><cell>21.08</cell><cell>3.09</cell><cell cols="2">9.75 24.64</cell><cell>2.59</cell><cell>9.12</cell></row><row><cell>UFC</cell><cell>28.00</cell><cell>0.59</cell><cell cols="2">2.70 70.00</cell><cell>1.06</cell><cell>4.98</cell></row><row><cell>UMC</cell><cell>20.41</cell><cell cols="3">8.78 16.14 26.63</cell><cell cols="2">8.38 18.55</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_17"><head>Table 11 :</head><label>11</label><figDesc>Performance (in %) for each team's output scored against the annotations of a single annotator.</figDesc><table><row><cell>P</cell><cell>R</cell><cell>F 0.5</cell><cell>P</cell><cell>R</cell><cell>F 0.5</cell></row><row><cell cols="3">50.47 32.29 45.36</cell><cell cols="3">37.14 45.38 38.54</cell></row><row><cell></cell><cell>(a)</cell><cell></cell><cell></cell><cell>(b)</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_18"><head>Table 12 :</head><label>12</label><figDesc>Performance (in %) for output of one gold standard annotation scored against the other gold standard annotation: (a) The score of Annotator 1 if Annotator 2 was the gold standard, (b) The score of Annotator 2 if Annotator 1 was the gold standard. future research on grammatical error correction 4 .</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">http://www.comp.nus.edu.sg/∼nlp/software.html 3 A few minor bugs were fixed in the M 2 scorer before it was used in the CoNLL-2014 shared task.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This research is supported by the Singapore National Research Foundation under its International Research Centre @ Singapore Funding Initiative and administered by the IDM Programme Office. We thank our two annotators Mark Brooke and Diane Nicholls who provided the gold-standard annotations.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Natural Language Processing with Python</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bird</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ewan</forename><surname>Klein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Loper</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+			<pubPlace>O&apos;Reilly Media</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">RACAI GEC -a hybrid approach to grammatical error correction</title>
+		<author>
+			<persName><forename type="first">Tiberiu</forename><surname>Boroş</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><forename type="middle">Daniel</forename><surname>Dumitrescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adrian</forename><surname>Zafiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Tufiş</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mititelu</forename><surname>Verginica</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul Ionuţ</forename><surname>Barbu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Vȃduva</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">A coefficient of agreement for nominal scales</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Cohen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Educational and Psychological Measurement</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="37" to="46" />
+			<date type="published" when="1960" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Correcting semantic collocation errors with L1-induced paraphrases</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Dahlmeier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hwee Tou</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2011 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2011 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="107" to="117" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Grammatical error correction with alternating structure optimization</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Dahlmeier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hwee Tou</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="915" to="923" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">A beamsearch decoder for grammatical error correction</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Dahlmeier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hwee Tou</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2012 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</title>
+				<meeting>the 2012 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="568" to="578" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Better evaluation for grammatical error correction</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Dahlmeier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hwee Tou</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2012 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2012 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="568" to="572" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Building a large annotated corpus of learner English: The NUS Corpus of Learner English</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Dahlmeier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siew Mei</forename><surname>Hwee Tou Ng</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth Workshop on Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the Eighth Workshop on Innovative Use of NLP for Building Educational Applications</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="22" to="31" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Helping Our Own: The HOO 2011 pilot shared task</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Dale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Kilgarriff</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th European Workshop on Natural Language Generation</title>
+				<meeting>the 13th European Workshop on Natural Language Generation</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="242" to="249" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">HOO 2012: A report on the preposition and determiner error correction shared task</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Dale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Anisimoff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><surname>Narroway</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th Workshop on the Innovative Use of NLP for Building Educational Applications</title>
+				<meeting>the 7th Workshop on the Innovative Use of NLP for Building Educational Applications</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="54" to="62" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Generating typed dependency parses from phrase structure parses</title>
+		<author>
+			<persName><forename type="first">Marie-Catherine</forename><surname>De Marneffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bill</forename><surname>Maccartney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth Conference on Language Resources and Evaluation</title>
+				<meeting>the Fifth Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="449" to="454" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Grammatical error correction using hybrid systems and type filtering</title>
+		<author>
+			<persName><forename type="first">Mariano</forename><surname>Felice</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zheng</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Øistein</forename><forename type="middle">E</forename><surname>Andersen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>Helen Yannakoudakis, and Ekaterina Kochmar</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Using mostly native data to correct errors in learners&apos; writing: A meta-classifier approach</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Gamon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Annual Meeting of the North American Chapter of the Association for Computational Linguistics</title>
+				<meeting>the Annual Meeting of the North American Chapter of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="163" to="171" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Detecting errors in English article usage by non-native speakers</title>
+		<author>
+			<persName><forename type="first">Na-Rae</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Chodorow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claudia</forename><surname>Leacock</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="115" to="129" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">CoNLL 2014 shared task: Grammatical error correction with a syntactic n-gram language model from a big corpora</title>
+		<author>
+			<persName><forename type="first">S</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Hernandez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiram</forename><surname>Calvo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">The AMU system in the CoNLL-2014 shared task: Grammatical error correction by dataintensive and feature-rich statistical machine translation</title>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Junczys</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">-</forename><surname>Dowmunt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roman</forename><surname>Grundkiewicz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Accurate unlexicalized parsing</title>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Klein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 41st Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 41st Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="423" to="430" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Tuning a grammar correction system for increased precision</title>
+		<author>
+			<persName><forename type="first">Anoop</forename><surname>Kunchukuttan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sriram</forename><surname>Chaudhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpak</forename><surname>Bhattacharyya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Automated Grammatical Error Detection for Language Learners</title>
+		<author>
+			<persName><forename type="first">Claudia</forename><surname>Leacock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Chodorow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Gamon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joel</forename><surname>Tetreault</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+			<publisher>Morgan &amp; Claypool Publishers</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">The CoNLL-2013 shared task on grammatical error correction</title>
+		<author>
+			<persName><surname>Hwee Tou Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mei</forename><surname>Siew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuanbin</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joel</forename><surname>Hadiwinoto</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Tetreault</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventeenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Seventeenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1" to="12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">The Cambridge Learner Corpus: Error coding and analysis for lexicography and ELT</title>
+		<author>
+			<persName><forename type="first">Diane</forename><surname>Nicholls</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Corpus Linguistics 2003 Conference</title>
+				<meeting>the Corpus Linguistics 2003 Conference</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="572" to="581" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Generating confusion sets for context-sensitive error correction</title>
+		<author>
+			<persName><forename type="first">Alla</forename><surname>Rozovskaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Roth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2010 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2010 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="961" to="970" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">The Illinois-Columbia system in the CoNLL-2014 shared task</title>
+		<author>
+			<persName><forename type="first">Alla</forename><surname>Rozovskaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Sammons</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nizar</forename><surname>Habash</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Native judgments of non-native usage: Experiments in preposition error detection</title>
+		<author>
+			<persName><forename type="first">Joel</forename><forename type="middle">R</forename><surname>Tetreault</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Chodorow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">COLING Workshop on Human Judgments in Computational Linguistics</title>
+				<meeting><address><addrLine>Manchester, UK</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Using parse features for preposition selection and error detection</title>
+		<author>
+			<persName><forename type="first">Joel</forename><surname>Tetreault</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennifer</forename><surname>Foster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Chodorow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL 2010 Conference Short Papers</title>
+				<meeting>the ACL 2010 Conference Short Papers</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="353" to="358" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Grammatical error detection and correction using a single maximum entropy model</title>
+		<author>
+			<persName><forename type="first">Peilu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhongye</forename><surname>Jia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hai</forename><surname>Zhao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Factored statistical machine translation for grammatical error correction</title>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Longyue</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Derek</forename><forename type="middle">F</forename><surname>Wong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lidia</forename><forename type="middle">S</forename><surname>Chao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodong</forename><surname>Zeng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Lu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Eighteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Grammatical error correction using integer linear programming</title>
+		<author>
+			<persName><forename type="first">Yuanbin</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hwee Tou</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 51st Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 51st Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1456" to="1465" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">A new dataset and method for automatically grading ESOL texts</title>
+		<author>
+			<persName><forename type="first">Helen</forename><surname>Yannakoudakis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ted</forename><surname>Briscoe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Medlock</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="180" to="189" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,1220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Commonsense Inference in Natural Language Processing (COIN) -Shared Task Report</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Simon</forename><surname>Ostermann</surname></persName>
+							<email>simono@coli.uni-saarland.de</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Saarland University / Nuance Communications</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sheng</forename><surname>Zhang</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Johns Hopkins University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Michael</forename><surname>Roth</surname></persName>
+							<email>rothml@ims.uni-stuttgart.de</email>
+							<affiliation key="aff2">
+								<orgName type="institution">Stuttgart University/ Saarland University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+							<email>peterc@allenai.org</email>
+							<affiliation key="aff3">
+								<orgName type="department">Allen Institute for Artificial Intelligence</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Commonsense Inference in Natural Language Processing (COIN) -Shared Task Report</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper reports on the results of the shared tasks of the COIN workshop at EMNLP-IJCNLP 2019. The tasks consisted of two machine comprehension evaluations, each of which tested a system's ability to answer questions/queries about a text. Both evaluations were designed such that systems need to exploit commonsense knowledge, for example, in the form of inferences over information that is available in the common ground but not necessarily mentioned in the text. A total of five participating teams submitted systems for the shared tasks, with the best submitted system achieving 90.6% accuracy and 83.7% F1-score on task 1 and task 2, respectively.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Due to the rise of powerful pre-trained word and sentence representations, automated text processing has come a long way in recent years, with systems that perform even better than humans on some datasets <ref type="bibr" target="#b21">(Rajpurkar et al., 2016a)</ref>. However, natural language understanding also involves complex challenges. One important difference between human and machine text understanding lies in the fact that humans can access commonsense knowledge while processing text, which helps them to draw inferences about facts that are not mentioned in a text, but that are assumed to be common ground.</p><p>(1) Max: "It's 1 pm already, I think we should get lunch." Dustin: "Let me get my wallet."</p><p>Consider the conversation in Example 1: Max will not be surprised that Dustin needs to get his wallet, since she knows that paying is a part of getting lunch. Also, she knows that a wallet is needed for paying, so Dustin needs to get a wallet for lunch. This is part of the commonsense knowledge about getting lunch and should be known by both persons. For a computer system, inferring such unmentioned facts is a non-trivial challenge. The workshop on Commonsense Inference in NLP (COIN) is focused on such phenomena, looking at models, data, and evaluation methods for commonsense inference.</p><p>This report summarizes the results of the COIN shared tasks, an unofficial extension of the Sem-Eval 2018 shared task 11, Machine Comprehension using Commonsense Knowledge <ref type="bibr" target="#b18">(Ostermann et al., 2018b)</ref>. The tasks aim to evaluate the commonsense inference capabilities of text understanding systems in two settings: Commonsense inference in everyday narrations (task 1) and commonsense inference in news texts (task 2). Framed as machine comprehension evaluations, the datasets used for both tasks contain challenging reading comprehension questions asking for facts that are not explicitly mentioned in the given reading texts.</p><p>Several teams participated in the shared tasks and submitted system description papers. All systems are based on Transformer architectures <ref type="bibr" target="#b32">(Vaswani et al., 2017)</ref>, some of them explicitly incorporating commonsense knowledge resources, whereas others only use pretraining on other machine comprehension data sets. The best submitted system achieves 90.6% accuracy and 83.7% F1-score on task 1 and task 2, respectively. Still, there are cases that remain elusive: Humans outperform this system by a margin of 7% (task 1) and 8% (task 2). Our results indicate that while Transformer models are able to perform extremely well on the data used in our shared task, there are still some remaining cases demonstrating that human level is not achieved yet. Still, we believe that our results also imply the need for more challenging data sets. In particular, we need data sets that make it harder to benefit from redundancy in the training data or large-scale pretraining on similar domains.</p><p>In the following, we briefly describe the data sets ( §2), baselines and evaluation metrics of the shared tasks ( §3) and we present a summary of the participating systems ( §4), their results ( §5) as well as a discussion thereof ( §6).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data and Tasks</head><p>Text understanding systems are often evaluated by means of a reading comprehension task, which is also referred to as machine (reading) comprehension (MC). The central idea is that a system has to process a text and then find a correct answer to a question that is asked on the text. Our shared tasks follow this paradigm and use machine comprehension settings to evaluate a model's capability to perform commonsense inferences. In contrast to most existing MC datasets, the two datasets that are used for our shared tasks, MCScript2.0 <ref type="bibr" target="#b19">(Ostermann et al., 2019)</ref> and ReCoRD <ref type="bibr" target="#b39">(Zhang et al., 2018)</ref>, are focused on questions that cannot be answered from the text alone, but that require a model to draw inference over unmentioned facts.</p><p>(2) Text: Camping is one of my favorite summer vacations. (...) Once I have all my gear and clothing I'll pack it into my car, making sure to leave room for myself, my dog and anything my friends want to bring. And then we are ready for our camping vacation. Question: What do they put the drinks in? a. Cooler b. Sleeping bag Example 2 illustrates the main idea of the shared tasks. It shows a reading text from MC-Script2.0, together with a question and two candidate answers. For a human, it is trivial to find that the drinks are put into a cooler rather than the sleeping bag. This information is however not mentioned in the text, so a machine needs to have the capability to infer this fact from commonsense knowledge.</p><p>The reading texts of MCScript2.0 are narrations about everyday activities (task 1). Due to its domain, MCScript2.0 has a focus on evaluating script knowledge, i.e. knowledge about the events and participants of such everyday activities <ref type="bibr" target="#b24">(Schank and Abelson, 1975)</ref>. Task 2 utilizes the ReCoRD corpus <ref type="bibr" target="#b39">(Zhang et al., 2018)</ref>, which contains news texts, a more open domain. The inferences that are required for finding answers to the questions in ReCoRD are thus of a more general type.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Task 1: Commonsense Inference in Everyday Narrations</head><p>MCScript2.0 is a reading comprehension data set comprising 19,821 questions on 3,487 texts. Each of the questions has two answer candidates, one of which is correct. Questions in the data were annotated for reasoning types, i.e. according to whether the answer to a question can be found in the text or needs to be inferred from commonsense knowledge. Roughly half of the questions do require inferences over commonsense knowledge.</p><p>The texts in MCScript2.0 are short narrations (164.4 tokens on average) on a total of 200 different everyday activities. All texts were crowdsourced on Amazon Mechanical Turk 1 , by asking crowd workers to tell a story about one of the 200 scenarios as if talking to a child <ref type="bibr" target="#b15">(Modi et al., 2016;</ref><ref type="bibr" target="#b17">Ostermann et al., 2018a)</ref>, resulting in simple texts which explicitly mention many details of a scenario. In the question collection, which was also conducted via crowdsourcing, turkers were then asked to write questions about noun or verb phrases that were highlighted in the texts. After collecting questions, the sentences containing the noun or verb phrases were deleted from the texts. During the answer collection, crowd workers thus had to infer the information required for finding an answer from background knowledge. Five turkers wrote correct and incorrect answer candidates for each question, and the most difficult incorrect candidates were selected via adversarial filtering <ref type="bibr" target="#b37">(Zellers et al., 2018)</ref>.</p><p>For our shared task, we use the same data split as <ref type="bibr" target="#b19">Ostermann et al. (2019)</ref>: 14,191 questions on 2,500 texts for the training set, 2,020 questions on 355 texts for the development set and 3,610 questions on 632 texts for the test set. All texts for five scenarios were reserved for the test set only to increase difficulty.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Task 2: Commonsense Inference in News Articles</head><p>ReCoRD is a large-scale dataset for reading comprehension, which consists of over 120,000 ex-  amples, most of which require commonsense reasoning. ReCoRD was collected in a fourstage process (Figure <ref type="figure">1</ref>): (1) curating CNN/Daily Mail news articles, (2) generating passage-queryanswers triples based on the news articles, (3) filtering out the queries that can be easily answered by state-of-the-art machine comprehension (MC) models, and (4) filtering out the queries ambiguous to human readers. All named entities in the passages are possible answers to the queries. Table <ref type="table" target="#tab_1">1</ref> summarizes the data statistics.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Shared Task Setup</head><p>The baselines for our shared tasks were adapted from <ref type="bibr" target="#b19">Ostermann et al. (2019)</ref> and <ref type="bibr" target="#b39">Zhang et al. (2018)</ref>, respectively.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Task 1 Baselines</head><p>Following <ref type="bibr" target="#b19">Ostermann et al. (2019)</ref>, we present results of three baseline models.</p><p>Logistic Regression Model. <ref type="bibr" target="#b14">Merkhofer et al. (2018)</ref> presented a logistic regression classifier for the SemEval 2018 shared task 11, which used simple overlap features and word patterns on MC-Script, a predecessor of the dataset used for this task. Their model outperformed many neural networks in spite of its simplicity.</p><p>Attentive Reader. The second baseline model is an attentive reader network <ref type="bibr" target="#b5">(Hermann et al., 2015)</ref>. GRU units <ref type="bibr" target="#b1">(Cho et al., 2014)</ref> are used to process text, question and answer. A questionaware text representation is computed based on a bilinear attention function, which is then combined with a GRU-based answer representation for prediction. For details, we refer to <ref type="bibr" target="#b19">Ostermann et al. (2019)</ref>, <ref type="bibr" target="#b17">Ostermann et al. (2018a)</ref> and <ref type="bibr" target="#b0">Chen et al. (2016)</ref> TriAN. As last model, we use the three-way attentive network (TriAN) <ref type="bibr" target="#b33">(Wang et al., 2018)</ref>, a recurrent neural network that scored the first place in the SemEval 2018 task. They use LSTM units <ref type="bibr" target="#b6">(Hochreiter and Schmidhuber, 1997)</ref>, several attention functions, and self attention to compute representations for text, question and answer. ConceptNet <ref type="bibr" target="#b28">(Speer et al., 2017)</ref>, a large commonsense knowledge base containing thousands of entities and commonsense relations between them, is used to enhance text representations with commonsense information, by computing relation embeddings and appending them to the text representations. For more information we refer to <ref type="bibr" target="#b33">Wang et al. (2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Task 2 Baselines</head><p>We present five baselines for ReCoRD:</p><p>BERT <ref type="bibr" target="#b4">(Devlin et al., 2019)</ref> is a new language representation model. Recently fine-tuning the pre-trained BERT with an additional output layer has created state-of-the-art models on a wide range of NLP tasks. We formalized ReCoRD as an extractive QA task like SQuAD, and then reused the fine-tuning script for SQuAD to fine-tune BERT for ReCoRD.</p><p>KT-NET <ref type="bibr" target="#b34">(Yang et al., 2019a</ref>) employs an attention mechanism to adaptively select desired knowledge from knowledge bases, and then fuses selected knowledge with BERT to enable contextand knowledge-aware predictions for machine reading comprehension.  <ref type="bibr" target="#b25">(Seo et al., 2016)</ref> and self-attention, both of which are widely used in MC models. We also evaluated a variant of DocQA with ELMo <ref type="bibr" target="#b20">(Peters et al., 2018)</ref> to analyze the impact of ELMo on this task.</p><p>Random Guess acts as the lower bound of the evaluated models, which randomly picks a named entity from the passage as the answer. The reported results are averaged over 5 runs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Evaluation</head><p>Task 1. The evaluation measure for task 1 is accuracy, computed as the number of correctly answered questions divided by the number of all questions. We also report accuracy values on questions that crowd workers explicitly annotated as requiring commonsense as well as performance on the five held-out scenarios.</p><p>Task 2. We use two evaluation metrics, EM and F1, similar to those used by SQuAD <ref type="bibr" target="#b22">(Rajpurkar et al., 2016b)</ref>. Exact Match (EM) measures the percentage of predictions that match a reference answer exactly. (Macro-averaged) F 1 measures the average overlap between model predictions and reference answers. For computing F 1 , we treat prediction and reference answers as bags of tokens. We take the maximum F 1 over all reference answers for a given query, and then average over all queries.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participants</head><p>In total, five teams submitted systems in task 1, and one team participated in task 2. All submitted models were neural networks, and all made use of pretrained Transformer language models such as BERT <ref type="bibr" target="#b4">(Devlin et al., 2019)</ref>. The participants used a wide range of external corpora and resources to augment their models, ranging from other machine comprehension data sets such as RACE <ref type="bibr" target="#b10">(Lai et al., 2017)</ref> or MCScript <ref type="bibr" target="#b17">(Ostermann et al., 2018a)</ref>, up to commonsense knowledge databases such as ConceptNet <ref type="bibr" target="#b28">(Speer et al., 2017)</ref>, WebChild <ref type="bibr" target="#b30">(Tandon et al., 2017)</ref> or ATOMIC <ref type="bibr" target="#b23">(Sap et al., 2019)</ref>. Table <ref type="table">2</ref> gives a summary of the participating systems.</p><p>• PSH-SJTU  participated in both tasks with a Transformer model based on XLNet <ref type="bibr" target="#b35">(Yang et al., 2019b)</ref>. For task 1, they pretrain the model in several steps, first on the RACE data <ref type="bibr" target="#b10">(Lai et al., 2017)</ref> and then on SWAG <ref type="bibr" target="#b37">(Zellers et al., 2018)</ref>. For task 2, they do not conduct specific pretraining steps, but implement a range of simple rulebased answer verification strategies to verify the output of the model.</p><p>• IIT-KGP <ref type="bibr" target="#b26">(Sharma and Roychowdhury, 2019)</ref> present an ensemble of different pretrained language models, namely BERT and XLNet. Both models are pretrained on the RACE data <ref type="bibr" target="#b10">(Lai et al., 2017)</ref>, and their output is averaged for a final prediction.</p><p>• BLCU-NLP <ref type="bibr" target="#b12">(Liu et al., 2019</ref>) use a Transformer model based on BERT, which is finetuned in two stages: they first tune the BERTbased language model on the RACE and ReCoRD datasets and then (further) train the model for the actual machine comprehension task.</p><p>• JDA (Da, 2019) use three different knowledge bases, namely ConceptNet <ref type="bibr" target="#b28">(Speer et al., 2017)</ref>, ATOMIC <ref type="bibr" target="#b23">(Sap et al., 2019)</ref> and Web-Child <ref type="bibr" target="#b30">(Tandon et al., 2017)</ref>. They extract relevant edges from the knowledge bases and compute relation embeddings, which are combined with BERT-based word representations with a diadic multiplication operation.</p><p>• KARNA <ref type="bibr" target="#b7">(Jain and Singh, 2019</ref>) use a BERT model, but they enhance the text representation with edges that are extracted from Con-ceptNet. Following <ref type="bibr" target="#b33">Wang et al. (2018)</ref>, they extract relations between words in the text and the question/answer, and append them to the text representation. Instead of computing relational embeddings, they append a specific string that describes the relation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results</head><p>Table <ref type="table" target="#tab_4">3</ref> shows the performance of the participating systems and the baselines on the task 1 data. We tested for significance using a pairwise approximate randomization test <ref type="bibr" target="#b36">(Yeh, 2000)</ref> over questions. Except for the two top scoring systems, each system performs significantly better than the next in rank. All systems significantly outperform the baselines. All systems show a lower performance on commonsense-based questions as compared to the average on all questions, with the difference for the two top-scoring systems being smallest. Surprisingly, all models are able to perform better on the questions from held-out scenarios as compared to their performance on all questions. This indicates that all models are able to generalize well from the training material.</p><p>Table <ref type="table" target="#tab_7">5</ref> shows the systems' performance on single question types for task 1. Question types are determined automatically, as described in <ref type="bibr" target="#b19">(Ostermann et al., 2019)</ref>. As can be seen, both topscoring systems perform well over all different question types, indicating that both systems are able to model a wide range of phenomena. Interestingly, when questions seem to be the most challenging question type for all systems, indicating difficulties when it comes to model event ordering information. Also, where questions seem to be challenging, at least for some systems.</p><p>Table <ref type="table" target="#tab_5">4</ref> shows EM (%) and F 1 (%) of human performance, the PSH-SJTU system as well as baselines on the development and test sets of task 2. Compared with the best baseline, KT-NET <ref type="bibr" target="#b34">(Yang et al., 2019a)</ref>, PSH-SJTU achieves significantly better scores. On the hidden test set, they improve EM by 10.08%, and F 1 by 8.98%.   Consequently, PSH-SJTU has reduced the gap between human and machine performance, with human performance being only 8% higher than PSH-SJTU.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Discussion</head><p>Pretrained Transformer language models. A main finding of our shared tasks is that large pretrained Transformer language models such as BERT or XLNet perform well even on challenging commonsense inference data. Strikingly, all models generalize well, as can be seen from the good performance on held-out scenarios. On task 1, XLNet-based systems perform best. The difference to the models purely based on BERT  can mostly be attributed to the performance on commonsense-based questions: While the performance of XLNet-based models on such questions is almost on par with their average performance, models based on BERT underperform on commonsense questions. An interesting observation was made by , who found that including WordNet into a BERT model boosts performance, while there is no such boost for an XL-Net model. This seems to indicate that XLNet is able to cover (at least partially) some form of lexical background knowledge, as encoded in Word-Net, without explicitly requiring access to such a resource. Still, when inspecting questions that were not answered correctly by the best scoring model, we found a large number of commonsense-based when questions that ask for the typical order of events. This indicates that XLNet-based models are only to a certain extent able to model complex phenomena such as temporal order.</p><p>Commonsense knowledge databases. Only two participants made use of commonsense knowledge, in the form of knowledge graphs such as ConceptNet. Both participants conducted ablation tests indicating the importance of including commonsense knowledge. In comparison to ATOMIC and WebChild, <ref type="bibr" target="#b3">Da (2019)</ref> report that ConceptNet is most beneficial for performance on the task 1 data, which can be explained with its domain: The OMCS <ref type="bibr" target="#b27">(Singh et al., 2002)</ref> data are part of the ConceptNet database, and OMCS scenarios were also used to collect texts for the task 1 data.</p><p>All in all, powerful pretrained models such as XLNet still outperform approaches that make use of structured knowledge bases, which indicates that they are (at least to some extent) capable of performing commonsense inference without explicit representations of commonsense knowledge.</p><p>Pretraining and finetuning on other data. Several participants reported effects of pretraining/finetuning their models on related tasks. For instance, <ref type="bibr" target="#b12">Liu et al. (2019)</ref> experimented with different pretraining corpora and found results to be best when pretraining the encoder of their BERT model on RACE and ReCoRD. Similarly,  report improved results when using larger data sets from other reading comprehension (RACE) and commonsense inference tasks (SWAG) for training before fine-tuning the model with the actual training data from the shared task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Related Work</head><p>Evaluating commonsense inference via machine comprehension has recently moved into the focus of interest. Existing datasets cover various domains:</p><p>Web texts. TriviaQA <ref type="bibr" target="#b8">(Joshi et al., 2017</ref>) is a corpus of webcrawled trivia and quiz-league websites together with evidence documents from the web. A large part of questions requires a system to make use of factual commonsense knowledge for finding an answer. CommonsenseQA <ref type="bibr" target="#b29">(Talmor et al., 2018)</ref> consists of 9,000 crowdsourced multiplechoice questions with a focus on relations between entities that appear in ConceptNet <ref type="bibr" target="#b28">(Speer et al., 2017)</ref>. Evidence documents were webcrawled based on the question and added after the crowdsourcing step.</p><p>Fictive texts. NarrativeQA <ref type="bibr" target="#b9">(Kočiský et al., 2018)</ref> provides full novels and other long texts as evidence documents and contains approx. 30 crowdsourced questions per text. The questions require a system to understand the whole plot of the text and to conduct many successive complicated inference steps, under the use of various types of background knowledge.</p><p>News texts. NewsQA <ref type="bibr" target="#b31">(Trischler et al., 2017)</ref> provides news texts with crowdsourced questions and answers, which are spans of the evidence documents. The question collection procedure for NewsQA resulted in a large number of questions that require factual commonsense knowledge for finding an answer.</p><p>Other tasks. There have been other attempts at evaluating commonsense inference apart from machine comprehension. One example is the Story cloze test and the ROC dataset <ref type="bibr" target="#b16">(Mostafazadeh et al., 2016)</ref>, where systems have to find the correct ending to a 5-sentence story, using different types of commonsense knowledge. SWAG <ref type="bibr" target="#b37">(Zellers et al., 2018</ref>) is a natural language inference dataset with a focus on difficult commonsense inferences.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>This report presented the results of the shared tasks at the Workshop for Commonsense Inference in NLP (COIN). The tasks aimed at evaluating the capability of systems to make use of commonsense knowledge for challenging inference questions in a machine comprehension setting, on everyday narrations (task 1) and news texts (task 2). In total, 5 systems participated in task 1, and one system participated in task 2. All submitted models were Transformer models, pretrained with a language modeling objective on large amounts of textual data. The best system achieved 90.6% accuracy and 83.7% F1-score on task 1 and 2, respectively, leaving a gap of 7% and 8% to human performance.</p><p>The results of our shared tasks suggest that existing models cover a large part of the commonsense knowledge required for our data sets in the domains of narrations and news texts. This does however not mean that commonsense inference is solved: We found a range of examples in our data that are not successfully covered. Furthermore, data sets such as HellaSWAG <ref type="bibr" target="#b38">(Zellers et al., 2019)</ref> show that commonsense inference tasks can be specifically tailored to be hard for Transformer models. We believe that modeling true language understanding requires a shift towards text types and tasks that test commonsense knowledge go-ing beyond information that can be obtained by exploiting the redundancy of large-scale corpora and/or pretraining on related tasks.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>ReCoRD data collection procedure.</figDesc><table><row><cell></cell><cell cols="2">ReCoRD Co</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="2">Human Filtering</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="2">(120k triples)</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="2">Machine Filtering</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="2">(244k triples)</cell><cell></cell><cell></cell></row><row><cell cols="4">Passage-Query-Answers Generation</cell><cell></cell></row><row><cell></cell><cell cols="2">(770k triples)</cell><cell></cell><cell></cell></row><row><cell cols="4">CNN/Daily Mail News Article Curation</cell><cell></cell></row><row><cell></cell><cell cols="2">(170k news articles)</cell><cell></cell><cell></cell></row><row><cell cols="2">Figure 1: Train</cell><cell>Dev.</cell><cell>Test</cell><cell>Overall</cell></row><row><cell>queries</cell><cell cols="3">100,730 10,000 10,000</cell><cell>120,730</cell></row><row><cell>unique passages</cell><cell>65,709</cell><cell>7,133</cell><cell>7,279</cell><cell>80,121</cell></row><row><cell>passage vocab.</cell><cell cols="3">352,491 93,171 94,386</cell><cell>395,356</cell></row><row><cell>query vocab.</cell><cell cols="3">119,069 30,844 31,028</cell><cell>134,397</cell></row><row><cell>tokens / passage</cell><cell>169.5</cell><cell>168.6</cell><cell>168.1</cell><cell>169.3</cell></row><row><cell>entities / passage</cell><cell>17.8</cell><cell>17.5</cell><cell>17.3</cell><cell>17.8</cell></row><row><cell>tokens / query</cell><cell>21.3</cell><cell>22.1</cell><cell>22.2</cell><cell>21.4</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Statistics of ReCoRD</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head></head><label></label><figDesc>SAN() is a top-ranked MC model. It shares many components with other MC models, and employs a stochastic answer module. As we used SAN to filter out queries in the data collection, it is necessary to verify that the collected queries are hard for not only SAN but also other MC architectures.</figDesc><table><row><cell cols="3">Rank Team Name Architecture</cell><cell>Commonsense</cell><cell>Other Resources</cell><cell>Tasks</cell></row><row><cell>1</cell><cell>PSH-SJTU</cell><cell cols="2">Transformer (XLNet) -</cell><cell>RACE, SWAG</cell><cell>1, 2</cell></row><row><cell>2</cell><cell>IIT-KGP</cell><cell>Transformer (BERT</cell><cell>-</cell><cell>RACE</cell><cell>1</cell></row><row><cell></cell><cell></cell><cell>+ XLNet)</cell><cell></cell><cell></cell><cell></cell></row><row><cell>3</cell><cell cols="3">BLCU-NLP Transformer (BERT) -</cell><cell>ReCoRD, RACE</cell><cell>1</cell></row><row><cell>4</cell><cell>JDA</cell><cell cols="2">Transformer (BERT) ConceptNet,</cell><cell>Wikipedia</cell><cell>1</cell></row><row><cell></cell><cell></cell><cell></cell><cell>Atomic, Webchild</cell><cell></cell><cell></cell></row><row><cell>5</cell><cell>KARNA</cell><cell cols="2">Transformer (BERT) ConceptNet</cell><cell>-</cell><cell>1</cell></row><row><cell></cell><cell></cell><cell cols="2">Table 2: Overview of participating systems</cell><cell></cell><cell></cell></row><row><cell cols="4">DocQA (Clark and Gardner, 2018) is a strong</cell><cell></cell><cell></cell></row><row><cell cols="4">baseline model for extractive QA. It consists</cell><cell></cell><cell></cell></row><row><cell cols="4">of components such as bi-directional attention</cell><cell></cell><cell></cell></row><row><cell>flow</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell cols="3">: Performance of participating systems and</cell></row><row><cell cols="3">baselines for task 1, in total (acc), on commonsense-</cell></row><row><cell cols="3">based questions (acc cs ), and on out-of-domain ques-</cell></row><row><cell cols="3">tions that belong to the five held-out scenarios</cell></row><row><cell cols="3">(acc OOD ). Significant differences in results between</cell></row><row><cell cols="3">two adjacent lines are marked by an asterisk (* p&lt;0.05)</cell></row><row><cell cols="3">in the upper line. The best model performance per col-</cell></row><row><cell cols="2">umn is marked in bold print.</cell><cell></cell></row><row><cell></cell><cell>Dev.</cell><cell>Test</cell></row><row><cell></cell><cell cols="2">EM(%) F 1 (%) EM(%) F 1 (%)</cell></row><row><cell>Human</cell><cell>91.28 91.64</cell><cell>91.31 91.69</cell></row><row><cell>PSH-SJTU</cell><cell>82.72 83.38</cell><cell>83.09 83.74</cell></row><row><cell>KT-NET</cell><cell>71.60 73.61</cell><cell>73.01 74.76</cell></row><row><cell cols="2">BERT-Large 66.11 68.49</cell><cell>67.61 70.01</cell></row><row><cell>SAN</cell><cell>48.86 50.08</cell><cell>50.43 51.41</cell></row><row><cell>DocQA</cell><cell>44.13 45.39</cell><cell>45.44 46.65</cell></row><row><cell>Random</cell><cell>18.41 19.06</cell><cell>18.55 19.12</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Performance (EM and F 1 ) of human, participating systems and baselines for task 2.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Performance of participating systems and baselines for task 1 on the 5 most common question types.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://www.mturk.com/</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">A Thorough Examination of the CNN/Daily Mail Reading Comprehension Task</title>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Bolton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="2358" to="2367" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Learning phrase representations using rnn encoder-decoder for statistical machine translation</title>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bart</forename><surname>Van Merriënboer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Caglar</forename><surname>Gulcehre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dzmitry</forename><surname>Bahdanau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fethi</forename><surname>Bougares</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Holger</forename><surname>Schwenk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1406.1078</idno>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Simple and effective multi-paragraph reading comprehension</title>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Gardner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="845" to="855" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Jeff Da at COIN -Shared Task</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Da</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</title>
+				<meeting>the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Bert: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Teaching machines to read and comprehend</title>
+		<author>
+			<persName><forename type="first">Karl</forename><surname>Moritz Hermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomáš</forename><surname>Kočiský</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Grefenstette</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lasse</forename><surname>Espeholt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Will</forename><surname>Kay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mustafa</forename><surname>Suleyman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Phil</forename><surname>Blunsom</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1693" to="1701" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Long short-term memory</title>
+		<author>
+			<persName><forename type="first">Sepp</forename><surname>Hochreiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jürgen</forename><surname>Schmidhuber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neural computation</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="1735" to="1780" />
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">KARNA at COIN -Shared Task: Bidirectional Encoder Representations from Transformers with relational knowledge for machine comprehension with common sense</title>
+		<author>
+			<persName><forename type="first">Yash</forename><surname>Jain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chinmay</forename><surname>Singh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</title>
+				<meeting>the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension</title>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eunsol</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><forename type="middle">S</forename><surname>Weld</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1601" to="1611" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">The NarrativeQA Reading Comprehension Challenge</title>
+		<author>
+			<persName><forename type="first">Tomáš</forename><surname>Kočiský</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Schwarz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Phil</forename><surname>Blunsom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karl</forename><forename type="middle">Moritz</forename><surname>Hermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gáabor</forename><surname>Melis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Grefenstette</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association of Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="317" to="328" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">RACE: Large-scale ReAding Comprehension Dataset From Examinations</title>
+		<author>
+			<persName><forename type="first">Guokun</forename><surname>Lai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qizhe</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hanxiao</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="785" to="794" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Pingan Smart Health and SJTU at COIN -Shared Task: Utilizing Pre-trained Language Models and Commonsense Knowledge in Machine Reading Tasks</title>
+		<author>
+			<persName><forename type="first">Xiepeng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhexi</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuan</forename><surname>Ni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junchi</forename><surname>Yan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guotong</forename><surname>Xie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</title>
+				<meeting>the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">BLCU-NLP at COIN -Shared Task: Stagewise Fine-tuning BERT for Commonsense Inference in Everyday Narrations</title>
+		<author>
+			<persName><forename type="first">Chunhua</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shike</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bohan</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dong</forename><surname>Yu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</title>
+				<meeting>the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Stochastic answer networks for machine reading comprehension</title>
+		<author>
+			<persName><forename type="first">Xiaodong</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yelong</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Duh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfeng</forename><surname>Gao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1694" to="1704" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">MITRE at SemEval-2018 Task 11: Commonsense Reasoning without Commonsense Knowledge</title>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><forename type="middle">M</forename><surname>Merkhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Henderson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Bloom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Strickhart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guido</forename><surname>Zarrella</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluations (SemEval-2018)</title>
+				<meeting>the 12th International Workshop on Semantic Evaluations (SemEval-2018)</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1078" to="1082" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">InScript: Narrative texts annotated with script information</title>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tatjana</forename><surname>Anikina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Ostermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manfred</forename><surname>Pinkal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC 2016)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC 2016)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="3485" to="3493" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">A corpus and cloze evaluation for deeper understanding of commonsense stories</title>
+		<author>
+			<persName><forename type="first">Nasrin</forename><surname>Mostafazadeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathanael</forename><surname>Chambers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodong</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Devi</forename><surname>Parikh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dhruv</forename><surname>Batra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucy</forename><surname>Vanderwende</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushmeet</forename><surname>Kohli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="839" to="849" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">MCScript: A Novel Dataset for Assessing Machine Comprehension Using Script Knowledge</title>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Ostermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Thater</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manfred</forename><surname>Pinkal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Conference on Language Resources and Evaluation (LREC 2018)</title>
+				<meeting>the 11th International Conference on Language Resources and Evaluation (LREC 2018)</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="3567" to="3574" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">SemEval-2018 Task 11: Machine Comprehension using Commonsense Knowledge</title>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Ostermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Thater</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manfred</forename><surname>Pinkal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="747" to="757" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">MCScript2.0: A Machine Comprehension Corpus Focused on Script Events and Participants</title>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Ostermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manfred</forename><surname>Pinkal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth Joint Conference on Lexical and Computational Semantics (* SEM 2019)</title>
+				<meeting>the Eighth Joint Conference on Lexical and Computational Semantics (* SEM 2019)</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="103" to="117" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Deep contextualized word representations</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Gardner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="2227" to="2237" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">SQuAD: 100,000+ Questions for Machine Comprehension of Text</title>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Rajpurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Konstantin</forename><surname>Lopyrev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2383" to="2392" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Squad: 100,000+ questions for machine comprehension of text</title>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Rajpurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Konstantin</forename><surname>Lopyrev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Austin, Texas</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2383" to="2392" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Atomic: an atlas of machine commonsense for ifthen reasoning</title>
+		<author>
+			<persName><forename type="first">Maarten</forename><surname>Sap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emily</forename><surname>Ronan Le Bras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chandra</forename><surname>Allaway</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicholas</forename><surname>Bhagavatula</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hannah</forename><surname>Lourie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brendan</forename><surname>Rashkin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Roof</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Noah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yejin</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Conference on Artificial Intelligence</title>
+				<meeting>the AAAI Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">33</biblScope>
+			<biblScope unit="page" from="3027" to="3035" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Scripts, Plans, and Knowledge</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Roger</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Schank</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Robert P Abelson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th international joint conference on Artificial intelligence-Volume</title>
+				<meeting>the 4th international joint conference on Artificial intelligence-Volume</meeting>
+		<imprint>
+			<publisher>Morgan Kaufmann Publishers Inc</publisher>
+			<date type="published" when="1975" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="151" to="157" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<title level="m" type="main">Bidirectional attention flow for machine comprehension</title>
+		<author>
+			<persName><forename type="first">Minjoon</forename><surname>Seo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aniruddha</forename><surname>Kembhavi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ali</forename><surname>Farhadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hannaneh</forename><surname>Hajishirzi</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1611.01603</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">IIT-KGP at COIN -Shared Task: Using pre-trained Language Models for modeling Machine Comprehension</title>
+		<author>
+			<persName><forename type="first">Prakhar</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sumegh</forename><surname>Roychowdhury</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</title>
+				<meeting>the 2019 EMNLP Workshop COIN: Commonsense Inference in NLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Open Mind Common Sense: Knowledge Acquisition from the General Public</title>
+		<author>
+			<persName><forename type="first">Push</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erik</forename><forename type="middle">T</forename><surname>Mueller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Grace</forename><surname>Lim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Travell</forename><surname>Perkins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wan</forename><forename type="middle">Li</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">On the move to Meaningful Internet Systems 2002: CoopIS, DOA, and ODBASE</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="1223" to="1237" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Conceptnet 5.5: An open multilingual graph of general knowledge</title>
+		<author>
+			<persName><forename type="first">Robyn</forename><surname>Speer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joshua</forename><surname>Chin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Catherine</forename><surname>Havasi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirty-First AAAI Conference on Artificial Intelligence (AAAI-17)</title>
+				<meeting>the Thirty-First AAAI Conference on Artificial Intelligence (AAAI-17)</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="4444" to="4451" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Talmor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Herzig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicholas</forename><surname>Lourie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Berant</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1811.00937</idno>
+		<title level="m">CommonsenseQA: A Question Answering Challenge Targeting Commonsense Knowledge</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Webchild 2.0: Fine-grained commonsense knowledge distillation</title>
+		<author>
+			<persName><forename type="first">Niket</forename><surname>Tandon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerard</forename><surname>De Melo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Weikum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="115" to="120" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">NewsQA: A Machine Comprehension Dataset</title>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Trischler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tong</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xingdi</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Justin</forename><surname>Harris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Sordoni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philip</forename><surname>Bachman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kaheer</forename><surname>Suleman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Representation Learning for NLP</title>
+				<meeting>the 2nd Workshop on Representation Learning for NLP</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="191" to="200" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Attention is all you need</title>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Vaswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niki</forename><surname>Parmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aidan</forename><forename type="middle">N</forename><surname>Gomez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Łukasz</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="5998" to="6008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Yuanfudao at SemEval-2018 Task 11: Three-way Attention and Relational Knowledge for Commonsense Machine Comprehension</title>
+		<author>
+			<persName><forename type="first">Liang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Meng</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kewei</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingming</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluations (SemEval-2018)</title>
+				<meeting>the 12th International Workshop on Semantic Evaluations (SemEval-2018)</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="758" to="762" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Enhancing pre-trained language representations with rich knowledge for machine reading comprehension</title>
+		<author>
+			<persName><forename type="first">An</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jing</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yajuan</forename><surname>Lyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiaoqiao</forename><surname>She</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sujian</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="2346" to="2357" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc V</forename><surname>Le</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.08237</idno>
+		<title level="m">Xlnet: Generalized autoregressive pretraining for language understanding</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">More accurate tests for the statistical significance of the result differences</title>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Yeh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. 17th International Conf. on Computational Linguistics</title>
+				<meeting>17th International Conf. on Computational Linguistics<address><addrLine>Saarbruken, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+			<biblScope unit="page" from="947" to="953" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">SWAG: A Large-Scale Adversarial Dataset for Grounded Commonsense Inference</title>
+		<author>
+			<persName><forename type="first">Rowan</forename><surname>Zellers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonatan</forename><surname>Bisk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roy</forename><surname>Schwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yejin</forename><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="93" to="104" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Hellaswag: Can a machine really finish your sentence?</title>
+		<author>
+			<persName><forename type="first">Rowan</forename><surname>Zellers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ari</forename><surname>Holtzman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonatan</forename><surname>Bisk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ali</forename><surname>Farhadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yejin</forename><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<author>
+			<persName><forename type="first">Sheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodong</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingjing</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfeng</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Duh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Van Durme</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.12885</idno>
+		<title level="m">ReCoRD: Bridging the Gap between Human and Machine Commonsense Reading Comprehension</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

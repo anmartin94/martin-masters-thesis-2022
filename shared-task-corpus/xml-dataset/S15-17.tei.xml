@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2015 Task 17: Taxonomy Extraction Evaluation (TExEval)</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Georgeta</forename><surname>Bordea</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Insight Centre for Data Analytics</orgName>
+								<orgName type="institution">National University of Ireland</orgName>
+								<address>
+									<settlement>Galway</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Paul</forename><surname>Buitelaar</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Insight Centre for Data Analytics</orgName>
+								<orgName type="institution">National University of Ireland</orgName>
+								<address>
+									<settlement>Galway</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Stefano</forename><surname>Faralli</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Dipartimento di Informatica</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Dipartimento di Informatica</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2015 Task 17: Taxonomy Extraction Evaluation (TExEval)</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the first shared task on Taxonomy Extraction Evaluation organised as part of SemEval-2015. Participants were asked to find hypernym-hyponym relations between given terms. For each of the four selected target domains the participants were provided with two lists of domainspecific terms: a WordNet collection of terms and a well-known terminology extracted from an online publicly available taxonomy. A total of 45 taxonomies submitted by 6 participating teams were evaluated using standard structural measures, the structural similarity with a gold standard taxonomy, and through manual quality assessment of sampled novel relations.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>SemEval-2015 Task 17 is concerned with the automatic extraction of hierarchical relations from text and subsequent taxonomy construction. A taxonomy is a hierarchy of concepts that expresses parentchild or broader-narrower relationships. Because of their many applications in search, retrieval, website navigation, and records management, taxonomies are valuable resources for libraries, publishing companies, online databases, and e-commerce companies. Taxonomies are most often manually created resources that are expensive to construct and maintain, and therefore there is a need for automatic methods for taxonomy enrichment and construction. Recently, the task of taxonomy learning from text, also called taxonomy induction, has received an increased interest in the natural language processing community, as taxonomical information is a valuable input to many semantically intensive tasks including inference, question answering <ref type="bibr" target="#b4">(Harabagiu et al., 2003)</ref> and textual entailment <ref type="bibr" target="#b3">(Geffet and Dagan, 2005)</ref>.</p><p>Taxonomy learning can be divided into three main subtasks: term extraction, relation discovery, and taxonomy construction. Term extraction is a relatively well-known task, hence we decided to abstract from this stage and provide a common ground for the next steps by making available the list of terms beforehand. Most approaches for relation discovery from text rely on lexico-syntactic patterns <ref type="bibr" target="#b5">(Hearst, 1992;</ref><ref type="bibr" target="#b9">Kozareva et al., 2008)</ref>, co-occurrence information <ref type="bibr" target="#b15">(Sanderson and Croft, 1999)</ref>, substring inclusion <ref type="bibr" target="#b14">(Nevill-Manning et al., 1999)</ref>, or exploit semantic relations provided in textual definitions <ref type="bibr" target="#b12">(Navigli and Velardi, 2010)</ref>. Any asymmetrical relation that indicates subordination between two terms can be considered, but here the focus is mainly on hyponym-hypernym relations. Depending on the approach selected, the task may or may not require large amounts of text to extract relations between terms, therefore no corpus is provided as part of the shared dataset.</p><p>This stage usually produces a large number of noisy, inconsistent relations, that assign multiple parents to a node and that contain cycles, i.e., sequences of vertices that start and end at the same vertex. Hence, the third stage of taxonomy learning, taxonomy construction, focuses on the overall structure of the resulting graph and aims to organise terms into a hierarchical structure, more specifically a directed acyclic graph <ref type="bibr">(Kozareva and Hovy,</ref><ref type="bibr">902</ref>  2010; <ref type="bibr" target="#b13">Navigli et al., 2011;</ref><ref type="bibr" target="#b20">Wang et al., 2013)</ref>. To address the inherent complexity of evaluating taxonomy quality, several methods have been considered in the past including manual evaluation by domain experts, structural evaluation, and automatic evaluation against a gold standard <ref type="bibr" target="#b17">(Velardi et al., 2012)</ref>. In this task, all these existing evaluation approaches are considered, using a voting scheme to aggregate the results for the final ranking of the systems. We introduce four new domains that have not previously been considered for this task, covering general knowledge domains such as food and equipment and technical domains such as chemicals and science. For each domain, we provide a gold standard taxonomy gathered exclusively from WordNet <ref type="bibr" target="#b1">(Fellbaum, 2005)</ref>, as well as a gold standard taxonomy that combines terms and relations gathered from other domain-specific sources.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task workflow</head><p>In this section we present the task workflow, the considered dataset, and the evaluation method used in this task.</p><p>Competition setup: In order to provide a common ground to all the competing teams, we applied the task workflow described in Figure <ref type="figure" target="#fig_0">1</ref>, as follows: 1) select and announce a set of target domains (see Section 2.1 for more details); 2) define and collect gold standard taxonomies that will be used for evaluation and extract and release the set of terms that they cover; 3) select and produce baseline taxonomies using naive baselines to be compared against the team outputs in the competition. Competition and evaluation flow: As described in Figure <ref type="figure" target="#fig_0">1</ref>, the next steps of the workflow concern the participation of the competing teams and the evaluation of the resulting outputs as follows: 4) in this stage participants produce and submit the output taxonomies. For each domain, test data consists of a list of domain terms that participants have to structure into a taxonomy, with the possibility of adding further intermediate terms. Each system will return a list of pairs (term, hypernym). In this way, taxonomy learning is limited to finding relations between pairs of terms and organising them into a hierarchical structure. Participants are encouraged to consider polyhierarchies when organising terms. In this setting, nodes can have more than one parent and the final structure of the taxonomy is not necessarily a tree; 5) compare system outputs (4) and baseline taxonomies (3) with taxonomies produced as gold standards (2); 6) manually annotate a sample of system outputs to estimate the quality of hypernymhyponym relationships that are not in the gold standards; 7) create a combined rank of the teams based on the individual rank that each team reached on different aspects of the evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Data</head><p>We selected four target domains with a rich, deep, hierarchical structure (i.e. Chemicals, Equipment, Food and Science) with four root concepts (i.e. chemical, equipment, food and science, respectively). Then, for each domain we produced two kinds of gold standard taxonomies.</p><p>WordNet taxonomy Concepts and relationships in the WordNet hypernym-hyponym hierarchy rooted on the corresponding root concept.</p><p>Combined taxonomy Domain-specific terms and relations from well-known, publicly available, tax-onomies other than WordNet: CheBI 1 for Chemicals, "The Google product taxonomy" 2 for Foods, the "Material Handling Equipment" 3 taxonomy for Equipment, and the "Taxonomy of Fields and their Subfields" 4 for Science. Hypernym-hyponym relationships were also gathered from a general purpose resource, the Wikipedia Bitaxonomy (WiBi) <ref type="bibr" target="#b2">(Flati et al., 2014)</ref>, using a semi-automatic approach. For each domain we first manually identified domain sub-hierarchies from WiBi (W ); Second we automatically searched for the terms of W in common with the corresponding gold standard G. For each common term t we added in G the taxonomy rooted on t from W .</p><p>Table <ref type="table" target="#tab_0">1</ref> shows the resulting number of vertices |V |, i.e., the number of terms given to the participants, and the number of edges |E| of the produced gold standard taxonomies for the four target domains. Finally, test data consists of eight lists of domain concepts, for which participants were asked to output a set of hypernym-hyponym relationships.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Evaluation method</head><p>Let S = (V S , E S ) be an output taxonomy produced by a system for a given domain, where V S includes the set of domain concepts initially provided by the task organisers and E S is the set of taxonomy edges extracted by the system. To broadly analyze the quality of the produced set of hypernymy relationships E S , these results are benchmarked against two naive baselines, described in Section 2.2.1, using the following evaluation approaches: i) analyse the graph structure and check if the produced taxonomy is a Directed Acyclic Graph (DAG); ii) compare the edges E S , against the set of relations from each type of gold standard; iii) manually validate a sample of novel relationships produced by the system that are not contained in the gold standard.</p><p>The final ranking of the systems takes into consideration these three types of evaluation by aggregating the achieved ranks using a voting scheme. First, the output taxonomies are ranked on the basis of the average performance obtained for each evaluated aspect and for each domain. The resulting ranks are simply summed up, favouring systems at the top of the ranked list and penalising systems at the lower end.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.1">Baselines</head><p>The main purpose of introducing the baselines described in this section is to check the performance of a system that relies mainly on the fact that the root of the domain is known and implements simple string-based approaches. In this task, the following two naive approaches for taxonomy construction are implemented and used for benchmarking systems:</p><p>Baseline 1 Simply connect all the nodes to the root concept:</p><formula xml:id="formula_0">B 1 = (V B 1 , E B 1 ) where E B 1 = {(root, a), a ∈ V B 1 \ {root}};</formula><p>Baseline 2 A basic string inclusion approach that covers relations between compound terms such as (science, network science):</p><formula xml:id="formula_1">B 2 = (V B 2 , E B 2 )</formula><p>where E B 2 = {(a, b), b starts with a or ends with a and |b| &gt; |a|}, and where a is a term and b is a compound term that includes a as a substring.</p><p>Both approaches require only the root of the taxonomy and the list of terms and do not require any external corpora or other structured information.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.2">Structural analysis</head><p>The main goal of the structural evaluation of a taxonomy is to quantify the size of the taxonomy under investigation in terms of nodes and edges. A second objective is to evaluate whether the overall structure connects all the nodes in the graph with the root and whether it is consistent with the semantics of the ISA relation. Hierarchical relations are generally inconsistent with the presence of cycles. Also, we highlight the number of nodes located on higher levels of a taxonomy, called intermediate nodes. These nodes are considered more important than leaves, to favour taxonomies with a deep, rich structure.</p><p>Based on these considerations, structural evaluation is performed by computing the cardinality of |V S | and |E S |. A topological sorting-based algorithm <ref type="bibr" target="#b7">(Kahn, 1962)</ref> is used to establish if the taxonomy S contains simple directed cycles (self loop included). We then use an approach based on the Tarjan algorithm <ref type="bibr" target="#b16">(Tarjan, 1972)</ref> to calculate the number of connected components in S. Finally, we compute the number of intermediate nodes as the number of nodes |V S | − |L S | where L S is the set of leaf nodes in S. A leaf node is a node with out-degree = 0.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.3">Comparison against Gold Standard</head><p>Previous datasets for evaluating taxonomy extraction <ref type="bibr" target="#b9">(Kozareva et al., 2008)</ref> mainly rely on Word-Net to gather gold standards from several general knowledge domains, such as animals, plants, and vehicles. The datasets proposed in <ref type="bibr" target="#b18">(Velardi et al., 2013)</ref> enrich this experimental setting by including two specialized domains, Virus and Artificial Intelligence, that have low coverage in WordNet. A limitation of these datasets is that currently there is no gold standard taxonomy for these domains, therefore only a manual evaluation is possible. The dataset introduced here, instead, covers four new domains, providing two separate gold standards for each domain: one collected from WordNet, a general purpose resource, and a second one that combines relations from domain-specific resources and from a collaborative resource, Wikipedia, for a higher coverage of the domain. This dataset allows us to investigate how a system performs when taxonomising frequently used terms in comparison with more specialised, rarely used terms.</p><p>Given a gold standard taxonomy G = (V G , E G ), the comparison between a target taxonomy and a gold standard taxonomy is quantified using the following measures:</p><formula xml:id="formula_2">• common nodes: |V S ∩ V G | • vertex coverage: |V S ∩ V G |/|V G | • number of common edges: |E S ∩ E G | • edge coverage: |E S ∩ E G |/|E G | • ratio of novel edges: (|E S | − |E S ∩ E G |)/|E G | • edge precision: P = |E S ∩ E G |/|E S | • edge recall: R = |E S ∩ E G |/|E G | • F-score: F = 2(P * R)/(P + R)</formula><p>Additionally, we consider the Cumulative Fowlkes&amp;Mallows (Cumulative F&amp;M) measure <ref type="bibr" target="#b18">(Velardi et al., 2013)</ref>: the value B S,G between 0.0 and 1.0 which measures level by level how well a target taxonomy S clusters similar nodes compared to a gold standard taxonomy G. B S,G is calculated as follows: let k be the maximum depth of both S and G, and H ij a cut of the hierarchy, where i ∈ {0, ..., k} is the cut level and j ∈ {G, S} selects the clustering of interest. Then, for each cut i, the two hierarchies can be seen as two flat clusterings C iS and C iG of the n concepts. When i = 0 the cut is a single cluster incorporating all the objects, and when i = k we obtain n singleton clusters. Now let: n 11 be the number of object pairs that are in the same cluster in both C iS and C iG ; n 00 be the number of object pairs that are in different clusters in both C iS and C iG ; n 10 be the number of object pairs that are in the same cluster in C iS but not in C iG ; n 01 be the number of object pairs that are in the same cluster in C iG but not in C iS .</p><p>The generalized Fowlkes&amp;Mallows measure of cluster similarity for the cut i (i ∈ {0, ..., k}), as reformulated in <ref type="bibr" target="#b19">(Wagner and Wagner, 2007)</ref>, is defined as:</p><formula xml:id="formula_3">B i S,G = n i 11 (n i 11 + n i 10 ) • (n i 11 + n i 01 )</formula><p>.</p><p>(</p><formula xml:id="formula_4">)<label>1</label></formula><p>And the cumulative Fowlkes&amp;Mallows Measure:</p><formula xml:id="formula_5">B S,G = k−1 i=0 i+1 k B i S,G k−1 i=0 i+1 k = k−1 i=0 i+1 k B i S,G k+1 2 .</formula><p>(2)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.4">Manual quality assessments</head><p>The gold standard taxonomies are not complete, therefore it is possible for systems to identify correct relations that are not covered by the gold standard. Normally these relations are considered incorrect using a simple comparison with the gold standard taxonomy. For this reason we manually evaluate a subset of new relations proposed by each system to estimate the number of relations in E S that do not belong to E G . A random sample is extracted from all the taxonomies submitted by the participants and then manually annotated to compute the precision P as: |correctISA|/|sample|. A total of 100 term pairs were evaluated by three different annotators for each system and each domain, for a total of 800 pairs per system.</p><p>The chemical domain is not considered for this evaluation because it requires a considerable amount of domain knowledge and we did not have access to experts in the chemical domain. Two of the authors of this paper independently annotated each sample relation, while the third assessment was done by a group of five annotators who have a background in Computational Linguistics, with the exception of one annotator who focused on the food domain. Annotators were provided with a list of term pairs organised by domain and were asked if the relation was a correct ISA relation, if the relation and the terms were domain specific, and if the relation was too generic. In our evaluation, a relation is considered correct only if it is a correct hypernymhyponym relation, if it is relevant for the given domain and not over-generic. Take for example the following edges from the food domain: (linguine, pasta) and (lemon, food). Both edges are correct ISA relations and are domain specific, but the second edge is over-generic because lemons are also fruits. The agreement for identifying correct edges is measured using the Fleiss kappa statistic and is overall substantial (Fleiss kappa 0.65). The easiest domain is Food (Fleiss kappa 0.69), followed by Equipment (Fleiss kappa 0.63). Not surprisingly, the Science domain is the most challenging (Fleiss kappa 0.60), as this is a rapidly changing domain and there is in general less consensus about the relations between fields.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Submitted runs</head><p>Overall, 6 teams participated in the task. Participants were allowed to submit two runs for each of the four domains, one for each type of gold standard, for a total of 8 different runs. Most teams submitted a run for each domain and type of gold standard, with the exception of the LT3 team, which did not submit a system for the Chemical domain and the QASSIT team, which submitted only one run for the WordNet Chemical taxonomy. Next, we will provide a short description of each approach in alphabetical order, discussing corpora collection and the approaches adopted for relation discovery and taxonomy construction.</p><p>INRIASAC (supervised) Corpus: Wikipedia search using terms; Relation discovery: substring inclusion, lexico-syntactic patterns, co-occurrence information based on sentences and documents; Taxonomy construction: none. LT3 (unsupervised) Corpus: web corpus constructed using BootCat <ref type="bibr" target="#b0">(Baroni and Bernardini, 2004)</ref> using the provided terms as seed terms; Re-lation discovery: lexico-syntactic patterns, morphological structure of compound terms, WordNet lookup <ref type="bibr" target="#b10">(Lefever et al., 2014)</ref>; Taxonomy construction: none. ntnu (unsupervised) Corpus: Wikipedia and WordNet definitions; Relation discovery: hypernym extraction from definitions, WordNet lookup, Wikipedia categories, similarity between keywords; Taxonomy construction: none.</p><p>QASIT (semi-supervised) Corpus: Wikipedia, DBpedia; Relation discovery: lexico-syntactic patterns, co-occurrence information; Taxonomy construction: Learning Pretopological Spaces (LPS) method that learns a Parameterized Space by using an evolutionary strategy.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>TALN-UPF</head><p>(semi-supervised) Corpus: Wikipedia definitions retrieved using BabelNet <ref type="bibr" target="#b11">(Navigli and Ponzetto, 2012)</ref>; Relation discovery: based on <ref type="bibr" target="#b12">(Navigli and Velardi, 2010)</ref>, CRF model trained with the WCL dataset, linguistic rules added to traverse the dependency tree, missing nodes connected to root; Taxonomy construction: none. USAAR (semi-supervised) Corpus: Wikipedia documents; Relation discovery: lexico-syntactic patterns, co-occurrence information used to construct a vector space model using the word2vec tool; 5 Taxonomy construction: none.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Results</head><p>Table <ref type="table" target="#tab_1">2</ref> presents the results of the structural analysis (see Section 2.2.2) for all the system outputs and for the two baselines. Only 20 out of 45 submitted taxonomies consist of one weakly connected component (c.c. = 1), and 18 out of 45 are directed acyclic graphs (Cycles=N). Overall, only 10 taxonomies comply with the ideal structural requirements of a taxonomy and are directed acyclic graphs consisting of one connected component. 6 of these were submitted by the only system that addressed the taxonomy construction subtask, QASSIT. Table <ref type="table" target="#tab_2">3</ref> shows the average edge precision, recall and Fscore of the six systems compared to the baselines (see Sections 2.2.3 and 2.2.4). LT3 outperforms the other systems on all the measures. It is worth noting that our string-based baseline (B 2 ) achieves the highest precision, which leads to high F-score, second only to the best system. This is an indication that the test dataset can be improved by removing relations that do not require more sophisticated approaches. The first baseline (B 1 ) is not competitive, because the gold standard taxonomies are specifically selected to have a rich, deep structure. A large number of novel relations produced by the USAAR system are too generic because they apply a similar strategy. The results of the manual analysis of previously unknown edges are shown in the last line of   lead. This difference is explained by the fact that LT3 makes use of a WordNet lookup of hypernymhyponym relations, which is similar to the method used to collect the WordNet gold standard. More detailed statistics and charts are available on the task website 6 . Finally, in order to obtain an overall rank of the system outputs we first assigned a penalty score (from 1 to 6) for six cue aspects of the evaluation: presence of Cycles, Cumulative F&amp;M measure, number of Intermediate Nodes, F-score from Gold Standard Evaluation, number of Submitted Domains and estimated precision from Manual Evaluation. Then, the total number of penalty points was computed and, following the inverse order of the total penalty scores, we finally ranked the teams (see Table <ref type="table" target="#tab_5">5</ref>).</p><p>At the end of the evaluation it emerged that the INRIASAC team had outperformed the other teams in the production of taxonomies for the selected target domains. Although the LT3 team achieved better performance for quantitative approaches (precision, F-score, Cumulative F&amp;M), it was penalised in the final ranking because the constructed tax- onomies were generally smaller than the taxonomies produced by INRIASAC, the LT3 team did not submit a taxonomy for Chemicals, and they submitted a larger number of taxonomies with cycles.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Discussion</head><p>A main limitation of this shared task is that participants were allowed to use the same resources as those used to create the gold standards, and were able to apply simple lookups to retrieve the relations.</p><p>No recall was computed on the basis of the manual evaluation because of the relatively small number of evaluated relations. A possible solution for this problem would be to use result pooling from all the systems to estimate recall. But this solu-  tion would be more appropriate when there was a larger number of systems. Most participants decided not to address the taxonomy construction subtask, focusing mainly on relation discovery. This could be because the subtask is less well-known and more recently introduced, but also because existing approaches for taxonomy construction are complex and difficult to reimplement. None of the systems was able to address this subtask for the combined Chemicals taxonomy, which is the largest in our dataset. This points to the computational limits of existing algorithms for taxonomy construction. The choice of corpora shows a trend towards using Wikipedia-based corpora instead of web-based corpora <ref type="bibr" target="#b6">(Hovy et al., 2013)</ref>. Only one participant team relied on web-based corpora. Another lesson that can be drawn from this shared task is that lexico-syntactic patterns, known to have high precision but low recall, can benefit from co-occurrence based approaches, even if these tend to be less reliable. A visualisation of the top levels of the taxonomy constructed by the QASSIT system is presented in Figure <ref type="figure" target="#fig_1">2</ref>. The relative size of the nodes within a graph is proportional to the degree of the node. Compared to the gold standard taxonomy for the same domain presented in Figure <ref type="figure" target="#fig_2">3</ref>, the QAS-SIT taxonomy connects a larger number of leaves directly to the Science root, introducing a large number of over-generic relations. There are three times more relations between intermediate nodes and the root node than in the gold standard taxonomy. The QASSIT hierarchy is more shallow than the gold standard, and contains a smaller number of intermediate nodes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>This paper provides an overview of the SemEval 2015 task on Taxonomy Extraction. The task aimed to foster research in hierarchical relation extraction from text and taxonomy construction. We constructed and released benchmark datasets for four domains (chemicals, equipment, foods, science). The task attracted 45 submissions from six teams that were automatically evaluated against gold standards collected from WordNet, as well as other well known sources. This evaluation was complemented by a structural analysis of the submitted taxonomies and a manual evaluation of previously unknown edges. Most systems focused on the relation extraction subtask, with the exception of the QASSIT team who addressed the taxonomy construction subtask as well. In future, the datasets can be improved by removing relations that can be identified through string-based inclusion.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: The task workflow.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Intermediate nodes of the QASSIT taxonomy on Science.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Intermediate nodes of the gold standard taxonomy on Science.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>Structural measures of Combined and WordNet gold standard taxonomies.</figDesc><table><row><cell></cell><cell></cell><cell cols="2">Combined</cell><cell cols="2">WordNet</cell></row><row><cell></cell><cell></cell><cell cols="2">taxonomies</cell><cell cols="2">taxonomies</cell></row><row><cell>Domain</cell><cell>Root concept</cell><cell>|V|</cell><cell>|E|</cell><cell>|V|</cell><cell>|E|</cell></row><row><cell cols="2">Chemicals chemical</cell><cell cols="4">17584 24817 1351 1387</cell></row><row><cell cols="2">Equipment equipment</cell><cell>612</cell><cell>615</cell><cell>475</cell><cell>485</cell></row><row><cell>Food</cell><cell>food</cell><cell>1156</cell><cell cols="3">1587 1486 1533</cell></row><row><cell>Science</cell><cell>science</cell><cell>452</cell><cell>465</cell><cell>429</cell><cell>441</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>Structural analysis of the submitted taxonomies and of the baseline taxonomies, including the number of: nodes (|V |), edges (|E|), connected components (c.c.), and intermediate nodes (i.n.).</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell cols="4">Combined gold standard taxonomies</cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell cols="6">INRIASAC LT3 ntnu QASSIT TALN-UPF USAAR</cell><cell>B 1</cell><cell>B 2</cell></row><row><cell>Chemicals</cell><cell>|V|</cell><cell>12432</cell><cell cols="2">n.a. 1114</cell><cell>n.a.</cell><cell>17584</cell><cell>13785</cell><cell cols="2">17584 10120</cell></row><row><cell></cell><cell>|E|</cell><cell>28444</cell><cell></cell><cell>1563</cell><cell></cell><cell>17606</cell><cell>30392</cell><cell cols="2">17583 12672</cell></row><row><cell></cell><cell>c.c.</cell><cell>293</cell><cell></cell><cell>116</cell><cell></cell><cell>1</cell><cell>302</cell><cell>1</cell><cell>991</cell></row><row><cell></cell><cell>Cycles</cell><cell>Y</cell><cell></cell><cell>N</cell><cell></cell><cell>N</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>5808</cell><cell></cell><cell>1052</cell><cell></cell><cell>34</cell><cell>13766</cell><cell>1</cell><cell>10117</cell></row><row><cell>Equipment</cell><cell>|V|</cell><cell>520</cell><cell>260</cell><cell>251</cell><cell>610</cell><cell>612</cell><cell>337</cell><cell>612</cell><cell>248</cell></row><row><cell></cell><cell>|E|</cell><cell>1168</cell><cell>282</cell><cell>247</cell><cell>614</cell><cell>665</cell><cell>548</cell><cell>611</cell><cell>244</cell></row><row><cell></cell><cell>c.c.</cell><cell>6</cell><cell>10</cell><cell>35</cell><cell>1</cell><cell>1</cell><cell>28</cell><cell>1</cell><cell>17</cell></row><row><cell></cell><cell>Cycles</cell><cell>N</cell><cell>Y</cell><cell>N</cell><cell>N</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>164</cell><cell>174</cell><cell>251</cell><cell>70</cell><cell>20</cell><cell>320</cell><cell>1</cell><cell>229</cell></row><row><cell>Food</cell><cell>|V|</cell><cell>1518</cell><cell>819</cell><cell>834</cell><cell>1550</cell><cell>1549</cell><cell>1118</cell><cell>1549</cell><cell>636</cell></row><row><cell></cell><cell>|E|</cell><cell>4363</cell><cell cols="2">1632 1227</cell><cell>1560</cell><cell>1569</cell><cell>2692</cell><cell>1548</cell><cell>627</cell></row><row><cell></cell><cell>c.c.</cell><cell>2</cell><cell>6</cell><cell>27</cell><cell>1</cell><cell>1</cell><cell>23</cell><cell>1</cell><cell>47</cell></row><row><cell></cell><cell>Cycles</cell><cell>Y</cell><cell>N</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>397</cell><cell>159</cell><cell>810</cell><cell>72</cell><cell>18</cell><cell>1105</cell><cell>1</cell><cell>631</cell></row><row><cell>Science</cell><cell>|V|</cell><cell>417</cell><cell>187</cell><cell>338</cell><cell>453</cell><cell>1280</cell><cell>355</cell><cell>452</cell><cell>232</cell></row><row><cell></cell><cell>|E|</cell><cell>1164</cell><cell>441</cell><cell>386</cell><cell>511</cell><cell>1623</cell><cell>952</cell><cell>451</cell><cell>214</cell></row><row><cell></cell><cell>c.c.</cell><cell>3</cell><cell>8</cell><cell>23</cell><cell>1</cell><cell>1</cell><cell>14</cell><cell>1</cell><cell>28</cell></row><row><cell></cell><cell>Cycles</cell><cell>N</cell><cell>Y</cell><cell>N</cell><cell>N</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>151</cell><cell>88</cell><cell>329</cell><cell>80</cell><cell>422</cell><cell>261</cell><cell>1</cell><cell>207</cell></row><row><cell></cell><cell></cell><cell></cell><cell cols="4">WordNet gold standard taxonomies</cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell cols="6">INRIASAC LT3 ntnu QASSIT TALN-UPF USAAR</cell><cell>B 1</cell><cell>B 2</cell></row><row><cell>Chemicals</cell><cell>|V|</cell><cell>1913</cell><cell cols="2">n.a. 1475</cell><cell>1351</cell><cell>1347</cell><cell>1173</cell><cell>1351</cell><cell>820</cell></row><row><cell></cell><cell>|E|</cell><cell>4611</cell><cell></cell><cell>1855</cell><cell>1380</cell><cell>1451</cell><cell>3107</cell><cell>1350</cell><cell>808</cell></row><row><cell></cell><cell>c.c.</cell><cell>2</cell><cell></cell><cell>28</cell><cell>1</cell><cell>1</cell><cell>31</cell><cell>1</cell><cell>129</cell></row><row><cell></cell><cell>Cycles</cell><cell>Y</cell><cell></cell><cell>Y</cell><cell>N</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>1262</cell><cell></cell><cell>1272</cell><cell>56</cell><cell>63</cell><cell>920</cell><cell>1</cell><cell>819</cell></row><row><cell>Equipment</cell><cell>|V|</cell><cell>468</cell><cell cols="2">462 1081</cell><cell>476</cell><cell>2574</cell><cell>354</cell><cell>475</cell><cell>232</cell></row><row><cell></cell><cell>|E|</cell><cell>1369</cell><cell cols="2">1452 1333</cell><cell>490</cell><cell>3370</cell><cell>547</cell><cell>474</cell><cell>188</cell></row><row><cell></cell><cell>c.c.</cell><cell>1</cell><cell>1</cell><cell>12</cell><cell>1</cell><cell>1</cell><cell>43</cell><cell>1</cell><cell>46</cell></row><row><cell></cell><cell>Cycles</cell><cell>Y</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>371</cell><cell cols="2">142 1036</cell><cell>65</cell><cell>1025</cell><cell>339</cell><cell>1</cell><cell>213</cell></row><row><cell>Food</cell><cell>|V|</cell><cell>1458</cell><cell cols="2">1471 1843</cell><cell>1487</cell><cell>1486</cell><cell>1200</cell><cell>1486</cell><cell>826</cell></row><row><cell></cell><cell>|E|</cell><cell>4238</cell><cell cols="2">6913 2760</cell><cell>1539</cell><cell>1548</cell><cell>3465</cell><cell>1485</cell><cell>812</cell></row><row><cell></cell><cell>c.c.</cell><cell>2</cell><cell>1</cell><cell>35</cell><cell>1</cell><cell>1</cell><cell>23</cell><cell>1</cell><cell>79</cell></row><row><cell></cell><cell>Cycles</cell><cell>N</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>N</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>478</cell><cell cols="2">374 1386</cell><cell>60</cell><cell>53</cell><cell>1189</cell><cell>1</cell><cell>813</cell></row><row><cell>Science</cell><cell>|V|</cell><cell>366</cell><cell>370</cell><cell>524</cell><cell>371</cell><cell>370</cell><cell>307</cell><cell>370</cell><cell>217</cell></row><row><cell></cell><cell>|E|</cell><cell>1102</cell><cell cols="2">1573 681</cell><cell>436</cell><cell>393</cell><cell>892</cell><cell>369</cell><cell>174</cell></row><row><cell></cell><cell>c.c.</cell><cell>1</cell><cell>1</cell><cell>11</cell><cell>1</cell><cell>1</cell><cell>8</cell><cell>1</cell><cell>48</cell></row><row><cell></cell><cell>Cycles</cell><cell>Y</cell><cell>Y</cell><cell>N</cell><cell>N</cell><cell>N</cell><cell>Y</cell><cell>N</cell><cell>N</cell></row><row><cell></cell><cell>i.n.</cell><cell>135</cell><cell>114</cell><cell>505</cell><cell>74</cell><cell>25</cell><cell>255</cell><cell>1</cell><cell>208</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell></cell><cell>ber of novel edges compared to other systems on</cell></row><row><cell></cell><cell>the WordNet Science taxonomy. In this case, LT3</cell></row><row><cell></cell><cell>discovers a larger number of new edges than other</cell></row><row><cell></cell><cell>participants on Combined taxonomies. In Table 4</cell></row><row><cell></cell><cell>we report the Cumulative F&amp;M measure (see Sec-</cell></row><row><cell></cell><cell>tion 2.2.3) for the 45 systems and for the 16 base-</cell></row><row><cell></cell><cell>line taxonomies. Results are grouped on the basis</cell></row><row><cell></cell><cell>of the source of the gold standard, that is, combined</cell></row><row><cell></cell><cell>taxonomies and WordNet taxonomies. LT3 outper-</cell></row><row><cell></cell><cell>forms the other systems on all three submitted Word-</cell></row><row><cell></cell><cell>Net taxonomies by a wide margin (there is no sub-</cell></row><row><cell>. Again, LT3 and INRIASAC systems take</cell><cell>mission for the Chemicals domain), but for the com-</cell></row><row><cell>the lead. The ntnu system discovers the largest num-</cell><cell>bined taxonomies the INRIASAC system holds the</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Average Precision, Recall and F-score of ISA relationships across gold standards and Average Precision of novel relations based on human judgement.</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell cols="4">Comparison against gold standards</cell></row><row><cell></cell><cell>INRIASAC</cell><cell>LT3</cell><cell>ntnu</cell><cell cols="3">QASSIT TALN-UPF USAAR</cell><cell>B 1</cell><cell>B 2</cell></row><row><cell>Average Precision</cell><cell>0.1725</cell><cell cols="3">0.3612 0.1754 0.1564</cell><cell>0.0720</cell><cell cols="2">0.2015 0.0226 0.5432</cell></row><row><cell>Average Recall</cell><cell>0.4279</cell><cell cols="3">0.6307 0.2756 0.1589</cell><cell>0.1165</cell><cell cols="2">0.3139 0.0212 0.2413</cell></row><row><cell>Average F-score</cell><cell>0.2427</cell><cell cols="3">0.3886 0.2076 0.1575</cell><cell>0.0799</cell><cell cols="2">0.2377 0.0219 0.3326</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="2">Manual evaluation</cell><cell></cell></row><row><cell>Average Precision</cell><cell>0.4800</cell><cell cols="3">0.5967 0.4200 0.3533</cell><cell>0.2467</cell><cell>0.1017</cell><cell>-</cell><cell>-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Cumulative Fowlkes&amp;Mallows measure for 45 system runs and for 16 baselines.</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell cols="4">Combined gold standard taxonomies</cell><cell></cell></row><row><cell></cell><cell>INRIASAC</cell><cell>LT3</cell><cell>ntnu</cell><cell cols="3">QASSIT TALN-UPF USAAR</cell><cell>B 1</cell><cell>B 2</cell></row><row><cell>Chemicals</cell><cell>0.2353</cell><cell>n.a</cell><cell>0.0009</cell><cell>n.a</cell><cell>0.2225</cell><cell cols="2">0.00001 0.2281</cell><cell>0.0</cell></row><row><cell>Equipment</cell><cell>0.4905</cell><cell cols="3">0.1137 0.0000 0.4881</cell><cell>0.4482</cell><cell cols="3">0.0000 0.3970 0.0012</cell></row><row><cell>Food</cell><cell>0.4522</cell><cell cols="3">0.2163 0.0076 0.3405</cell><cell>0.3267</cell><cell cols="3">0.0037 0.3162 0.0007</cell></row><row><cell>Science</cell><cell>0.4706</cell><cell cols="3">0.3303 0.0088 0.5232</cell><cell>0.2202</cell><cell cols="3">0.2249 0.4214 0.0108</cell></row><row><cell></cell><cell></cell><cell></cell><cell cols="4">WordNet gold standard taxonomies</cell><cell></cell></row><row><cell>Chemicals</cell><cell>0.0084</cell><cell>n.a</cell><cell cols="2">0.0719 0.3947</cell><cell>0.2787</cell><cell cols="2">0.2103 0.2683</cell><cell>0.0</cell></row><row><cell>Equipment</cell><cell>0.0700</cell><cell cols="3">0.6892 0.0935 0.3637</cell><cell>0.0901</cell><cell cols="3">0.0015 0.2969 0.0007</cell></row><row><cell>Food</cell><cell>0.4804</cell><cell cols="3">0.5899 0.2673 0.3153</cell><cell>0.3091</cell><cell cols="3">0.0036 0.2933 0.0022</cell></row><row><cell>Science</cell><cell>0.4153</cell><cell cols="3">0.5391 0.0158 0.2921</cell><cell>0.2126</cell><cell cols="3">0.1721 0.1963 0.0016</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 5 :</head><label>5</label><figDesc>Overall ranking of submitted systems: IN-RIASAC (INR), LT3, ntnu, QASSIT (QA), TALN-UPF (TA), USAAR (US).</figDesc><table><row><cell></cell><cell cols="6">INR LT3 ntnu QA TA US</cell></row><row><cell>Cycles</cell><cell>3</cell><cell>4</cell><cell>2</cell><cell>1</cell><cell>3</cell><cell>4</cell></row><row><cell>Cumulative F&amp;M</cell><cell>2</cell><cell>1</cell><cell>6</cell><cell>3</cell><cell>4</cell><cell>5</cell></row><row><cell>Intermediate Nodes</cell><cell>2</cell><cell>5</cell><cell>3</cell><cell>6</cell><cell>4</cell><cell>1</cell></row><row><cell>Gold Standard Evaluation</cell><cell>2</cell><cell>1</cell><cell>4</cell><cell>5</cell><cell>6</cell><cell>3</cell></row><row><cell>Submitted Domains</cell><cell>1</cell><cell>3</cell><cell>1</cell><cell>2</cell><cell>1</cell><cell>1</cell></row><row><cell>Manual Evaluation</cell><cell>2</cell><cell>1</cell><cell>4</cell><cell>5</cell><cell>6</cell><cell>3</cell></row><row><cell>Total</cell><cell>12</cell><cell>15</cell><cell>20</cell><cell cols="3">22 24 17</cell></row><row><cell>Final Ranking</cell><cell>1</cell><cell>2</cell><cell>4</cell><cell>5</cell><cell>6</cell><cell>3</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://www.ebi.ac.uk/chebi/init.do 2 http://www.google.com/basepages/ producttype/taxonomy.en-US.txt 3 http://www.ise.ncsu.edu/kay/mhetax/ index.htm 4 http://sites.nationalacademies.org/PGA/ Resdoc/PGA_044522</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">https://code.google.com/p/word2vec/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">http://alt.qcri.org/semeval2015/task17/ index.php?id=evaluation</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Bootcat: Bootstrapping corpora and terms from the web</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silvia</forename><surname>Bernardini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">4th Edition of Language Resources and Evaluation Conference (LREC2004)</title>
+				<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Wordnet and wordnets</title>
+		<author>
+			<persName><forename type="first">Christiane</forename><surname>Fellbaum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Encyclopedia of Language and Linguistics</title>
+				<editor>
+			<persName><forename type="first">Keith</forename><surname>Brown</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Oxford</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="665" to="670" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Two Is Bigger (and Better) Than One: the Wikipedia Bitaxonomy Project</title>
+		<author>
+			<persName><forename type="first">Tiziano</forename><surname>Flati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Vannella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Pasini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics (ACL 2014)</title>
+				<meeting>the 52nd Annual Meeting of the Association for Computational Linguistics (ACL 2014)<address><addrLine>Baltimore, Maryland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="945" to="955" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">The distributional inclusion hypotheses and lexical entailment</title>
+		<author>
+			<persName><forename type="first">Maayan</forename><surname>Geffet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 43rd Annual Meeting on Association for Computational Linguistics, ACL &apos;05</title>
+				<meeting>the 43rd Annual Meeting on Association for Computational Linguistics, ACL &apos;05<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="107" to="114" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Open-domain textual question answering techniques</title>
+		<author>
+			<persName><forename type="first">Sanda</forename><forename type="middle">M</forename><surname>Harabagiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><forename type="middle">J</forename><surname>Maiorano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marius</forename><surname>Pasca</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="231" to="267" />
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Automatic acquisition of hyponyms from large text corpora</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Marti</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hearst</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Conference on Computational Linguistics</title>
+				<meeting>the 14th International Conference on Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="1992" />
+			<biblScope unit="page" from="539" to="545" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Collaboratively built semi-structured content and Artificial Intelligence: The story so far</title>
+		<author>
+			<persName><forename type="first">Eduard</forename><forename type="middle">H</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">194</biblScope>
+			<biblScope unit="page" from="2" to="27" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Topological sorting of large networks</title>
+		<author>
+			<persName><forename type="first">Arthur</forename><forename type="middle">B</forename><surname>Kahn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Commun. ACM</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="558" to="562" />
+			<date type="published" when="1962" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">A semisupervised method to learn and construct taxonomies using the web</title>
+		<author>
+			<persName><forename type="first">Zornitsa</forename><surname>Kozareva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2010 Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;10</title>
+				<meeting>the 2010 Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;10<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1110" to="1118" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Semantic class learning from the web with hyponym pattern linkage graphs</title>
+		<author>
+			<persName><forename type="first">Zornitsa</forename><surname>Kozareva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ellen</forename><surname>Riloff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><forename type="middle">H</forename><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 46th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 46th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page" from="1048" to="1056" />
+		</imprint>
+	</monogr>
+	<note>Citeseer</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Hypoterm: Detection of hypernym relations between domain-specific terms in dutch and english</title>
+		<author>
+			<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marjan</forename><surname>Van De Kauter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Terminology</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="250" to="278" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Ba-belNet: The automatic construction, evaluation and application of a wide-coverage multilingual semantic network</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">193</biblScope>
+			<biblScope unit="page" from="217" to="250" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Learning word-class lattices for definition and hypernym extraction</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paola</forename><surname>Velardi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 48th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 48th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Uppsala, Sweden</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010-07" />
+			<biblScope unit="page" from="1318" to="1327" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">A graph-based algorithm for inducing lexical taxonomies from scratch</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paola</forename><surname>Velardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Faralli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 22 nd International Joint Conference on Artificial Intelligence</title>
+				<meeting>the 22 nd International Joint Conference on Artificial Intelligence<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1872" to="1877" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Lexically-generated subject hierarchies for browsing large collections</title>
+		<author>
+			<persName><forename type="first">Craig</forename><surname>Nevill-Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ian</forename><surname>Witten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gordon</forename><forename type="middle">W</forename><surname>Paynter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal on Digital Libraries</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="111" to="123" />
+			<date type="published" when="1999" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Deriving concept hierarchies from text</title>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Sanderson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bruce</forename><surname>Croft</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 22nd annual international ACM SIGIR conference on Research and Development in Information Retrieval</title>
+				<meeting>the 22nd annual international ACM SIGIR conference on Research and Development in Information Retrieval</meeting>
+		<imprint>
+			<date type="published" when="1999" />
+			<biblScope unit="page" from="206" to="213" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Depth-first search and linear graph algorithms</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Tarjan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">SIAM Journal on Computing</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="146" to="160" />
+			<date type="published" when="1972" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">A new method for evaluating automatically learned terminological taxonomies</title>
+		<author>
+			<persName><forename type="first">Paola</forename><surname>Velardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Faralli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juana</forename><forename type="middle">Maria</forename><surname>Ruiz-Martinez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eight International Conference on Language Resources and Evaluation (LREC&apos;12)</title>
+				<meeting>the Eight International Conference on Language Resources and Evaluation (LREC&apos;12)<address><addrLine>Istanbul, Turkey</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">OntoLearn Reloaded: A Graph-Based Algorithm for Taxonomy Induction</title>
+		<author>
+			<persName><forename type="first">Paola</forename><surname>Velardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Faralli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">39</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="665" to="707" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">Comparing clusterings an overview</title>
+		<author>
+			<persName><forename type="first">Silke</forename><surname>Wagner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dorothea</forename><surname>Wagner</surname></persName>
+		</author>
+		<idno>2006-04</idno>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+		<respStmt>
+			<orgName>Faculty of Informatics, Universität Karlsruhe (TH</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Boosting cross-lingual knowledge linking via concept annotation</title>
+		<author>
+			<persName><forename type="first">Zhichun</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juanzi</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jie</forename><surname>Tang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twenty-Third International Joint Conference on Artificial Intelligence, IJCAI &apos;13</title>
+				<meeting>the Twenty-Third International Joint Conference on Artificial Intelligence, IJCAI &apos;13</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="2733" to="2739" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

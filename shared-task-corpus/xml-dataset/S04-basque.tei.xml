@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">The Basque lexical-sample task</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">IxA NLP group</orgName>
+								<orgName type="institution">Basque Country University</orgName>
+								<address>
+									<addrLine>649 pk. 20.080 Donostia</addrLine>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Itziar</forename><surname>Aldabe</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">IxA NLP group</orgName>
+								<orgName type="institution">Basque Country University</orgName>
+								<address>
+									<addrLine>649 pk. 20.080 Donostia</addrLine>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mikel</forename><surname>Lersundi</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">IxA NLP group</orgName>
+								<orgName type="institution">Basque Country University</orgName>
+								<address>
+									<addrLine>649 pk. 20.080 Donostia</addrLine>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">David</forename><surname>Martinez</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">IxA NLP group</orgName>
+								<orgName type="institution">Basque Country University</orgName>
+								<address>
+									<addrLine>649 pk. 20.080 Donostia</addrLine>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Eli</forename><surname>Pociello</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">IxA NLP group</orgName>
+								<orgName type="institution">Basque Country University</orgName>
+								<address>
+									<addrLine>649 pk. 20.080 Donostia</addrLine>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Larraitz</forename><surname>Uria</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">IxA NLP group</orgName>
+								<orgName type="institution">Basque Country University</orgName>
+								<address>
+									<addrLine>649 pk. 20.080 Donostia</addrLine>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">The Basque lexical-sample task</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:25+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this paper we describe the Senseval 3 Basque lexical sample task. The task comprised 40 words (15 nouns, 15 verbs and 10 adjectives) selected from the Basque WordNet. 10 of the words were chosen in coordination with other lexical-sample tasks. The examples were taken from newspapers, an in-house balanced corpus and Internet texts. We additionally included a large set of untagged examples, and a lemmatised version of the data including lemma, PoS and case information. The method used to hand-tag the examples produced an inter-tagger agreement of 78.2% before arbitration. The eight competing systems attained results well above the most frequent baseline and the best system from Swarthmore College scored 70.4% recall.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>This paper reviews the Basque lexical-sample task organized for Senseval 3. Each participant was provided with a relatively small set of labelled examples (2/3 of 75+15*senses+7*multiwords) and a comparatively large set of unlabelled examples (roughly ten times more when possible) for around 40 words. The larger number of unlabelled data was released with the purpose to enable the exploration of semi-supervised systems. The test set comprised 1/3 of the tagged examples. The sense inventory was taken from the Basque WordNet, which is linked to WordNet version 1.6 <ref type="bibr" target="#b3">(Fellbaum, 1998)</ref>. The examples came mainly from newspaper texts, although we also used a balanced in-house corpus and texts from Internet. The words selected for this task were coordinated with other lexical-sample tasks (such as Catalan, English, Italian, Romanian and Spanish) in order to share around 10 of the target words.</p><p>The following steps were taken in order to carry out the task:</p><p>(*) Authors listed in alphabetic order. The following section presents the setting of the exercise. Section 3 reviews the hand-tagging, and Section 4 the details of the final release. Section 5 shows the results of the participant systems. Section 6 discusses some main issues and finally, Section 7 draws the conclusions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Setting of the exercise</head><p>In this section we present the setting of the Basque lexical-sample exercise.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Basque</head><p>As Basque is an agglutinative language, the dictionary entry takes each of the elements necessary to form the different functions. More specifically, the affixes corresponding to the determinant, number and declension case are taken in this order and independently of each other (deep morphological structure). For instance, 'etxekoari emaiozu' can be roughly translated as '[to the one in the house] [give it]' where the underlined sequence of suffixes in Basque corresponds to 'to the one in the'.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Sense inventory</head><p>We chose the Basque WordNet, linked to WordNet 1.6, for the sense inventory. This way, the hand tagging enabled us to check the sense coverage and overall quality of the Basque WordNet, which is under construction. The Basque WordNet is available at http://ixa3.si.ehu.es/ wei3.html.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Corpora used</head><p>Being Basque a minority language it is not easy to find the required number of occurrences for each word. We wanted to have both balanced and newspaper examples, but we also had to include texts extracted from the web, specially for the untagged corpus. The procedure to find examples from the web was the following: for each target word all possible morphological declensions were automatically generated, searched in a searchengine, documents retrieved, automatically lemmatized <ref type="bibr" target="#b0">(Aduriz et al. 2000)</ref>, filtered using some heuristics to ensure quality of context, and finally filtered for PoS mismatches. Table <ref type="table" target="#tab_1">1</ref> shows the number of examples from each source.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Words chosen</head><p>Basically, the words employed in this task are the same words used in Senseval 2 (40 words, 15 nouns, 15 verbs and 10 adjectives), only the sense inventory changed. Besides, in Senseval 3 we replaced 5 verbs with new ones. The reason for this is that in the context of the MEANING project 1 we are exploring multilingual lexical acquisition, and there are ongoing experiments that focus on those verbs. <ref type="bibr" target="#b2">Atserias et al. 2004)</ref>.</p><p>In fact, 10 words in the English lexical-sample have translations in the Basque, Catalan, Italian, Romanian and Spanish lexical tasks: channel, crown, letter, program, party (nouns), simple (adjective), play, win, lose, decide (verbs).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.5">Selection of examples from corpora</head><p>The minimum number of examples for each word according to the task specifications was calculated as follows: N=75+15*senses+7*multiwords As the number of senses in WordNet is very high, we decided to first estimate the number of senses and multiwords that really occur in the corpus. The taggers were provided with a sufficient number of examples, but they did not have to tag all. After they had tagged around 100 examples, they would count the number of senses and multiwords that had occurred and computed the N according to those counts.</p><p>The context is constituted of 5 sentences, including the sentence with the target word appearing in the middle. Links were kept to the source corpus, document, and to the newspaper section when applicable.</p><p>The occurrences were split at random in training set (2/3 of all occurrences) and test set (1/3).  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Hand tagging</head><p>Three persons, graduate linguistics students, took part in the tagging. They are familiar with word senses, as they are involved in the development of the Basque WordNet. The following procedure was defined in the tagging of each word.</p><p>• Before tagging, one of the linguists (the editor) revised the 40 words in the Basque WordNet. She had to delete and add senses to the words, specially for adjectives and verbs, and was allowed to check the examples in the corpus. • The three taggers would meet, read the glosses and examples given in the Basque WordNet and discuss the meaning of each synset. They tried to agree and clarify the meaning differences among the synsets. For each word two hand-taggers and a referee is assigned by chance. • The number of senses of a word in the Basque WordNet might change during this meeting; that is, linguists could agree that one of the word's senses was missing, or that a synset did not fit with a word. This was done prior to looking at the corpus. Then, the editor would update the Basque WordNet according to those decisions before giving the taggers the final synset list. Overall (including first bullet above), 143 senses were deleted and 92 senses added, leaving a total of 316 senses. This reflects the current situation of the Basque WordNet, which is still under construction.</p><p>• Two taggers independently tagged all examples for the word. No communication was allowed while tagging the word.</p><p>• Multiple synset tags were allowed, as well as the following tags: the lemma (in the case of multiword terms), U (unassignable), P (proper noun), and X (incorrectly lemmatized). Those with an X were removed from the final release.</p><p>In the case of proper nouns and multiword terms no synset tag was assigned. Sometimes the U tag was used for word senses which are not in the Basque WordNet. For instance, the sense of kanal corresponding to TV channel, which is the most frequent sense in the examples, is not present in the Basque WordNet (it was not included in WordNet 1.6). • A program was used to compute agreement rates and to output those occurrences where there was disagreement. Those occurrences were grouped by the senses assigned. • A third tagger, the referee, reviewed the disagreements and decided which one was the correct sense (or senses). The taggers were allowed to return more than one sense, and they returned 9887 tags (1.34 per occurrence). Overall, the two taggers agreed in at least one tag 78.2% of the time. Some words attained an agreement rate above 95% (e.g. nouns kanal or tentsio), but others like herritown/people/nation-attained only 52% agreement. On average, the whole tagging task took 54 seconds per occurrence for the tagger, and 20 seconds for the referee. However, this average does not include the time the taggers and the referee spent in the meetings they did to understand the meaning of each synset. The comprehension of a word with all its synsets required 45.5 minutes on average.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Final release</head><p>Table <ref type="table" target="#tab_1">1</ref> includes the total amount of hand-tagged and untagged examples that were released. In addition to the usual release, the training and testing data were also provided in a lemmatized version <ref type="bibr" target="#b0">(Aduriz et al. 2000)</ref> which included lemma, PoS and case information. The motivation was twofold:</p><p>• to make participation of the teams easier, considering the deep inflection of Basque. • to factor out the impact of different lemmatizers and PoS taggers in the system comparison.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participants and Results</head><p>5 teams took part in this task: Swarthmore College (swat), Basque Country University (BCU), Instituto per la Ricerca Scientifica e Tecnologica (IRST), University of Minnesota Duluth (Duluth) and University of Maryland (UMD). All the teams presented supervised systems which only used the tagged training data, and no other external resource. In particular, no system used the pointers to the full texts, or the additional untagged texts. All the systems used the lemma, PoS and case information provided, except the BCU team, which had additional access to number, determiner and ellipsis information directly from the analyzer. This extra information was not provided publicly because of representation issues.  We want to note that due to a bug, a few examples were provided without lemmas.</p><p>The results for the fine-grained scoring are shown in Table <ref type="table" target="#tab_3">2</ref>, including the Most Frequent Sense baseline (MFS). We will briefly describe each of the systems presented by each team in order of best recall.</p><p>• Swat presented three systems based in the same set of features: the best one was based on Adaboost, the second on a combination of five learners (Adaboost, maximum entropy, clustering system based on cosine similarity, decision lists, and naïve bayes, combined by majority voting), and the third on a combination of three systems (the last three). • BCU presented two systems: the first one based on Support Vector Machines (SVM) and the second on a majority-voting combination of SVM, cosine based vectors and naïve bayes. • IRST participated with a kernel-based method.</p><p>• Duluth participated with a system that votes among three bagged decision trees. • UMD presented a system based on SVM.</p><p>The winning system is the one using Adaboost from Swat, followed closely by the BCU system using SVM.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Discussion</head><p>These are the main issues we think are interesting for further discussion.</p><p>Sense inventory. Using the Basque WordNet presented some difficulties to the taggers. The Basque WordNet has been built using the translation approach, that is, the English synsets have been 'translated' into Basque. The taggers had some difficulties to comprehend synsets, and especially, to realize what makes a synset different from another. In some cases the taggers decided to group some of the senses, for instance, in herritown/people/nation-they grouped 6 senses. This explains the relatively high number of tags per occurrence (1.34). The taggers think that the tagging would be much more satisfactory if they had defined the word senses directly from the corpus.</p><p>Basque WordNet quality. There was a mismatch between the Basque WordNet and the corpus: most of the examples were linked to a specific genre, and this resulted in i) having a handful of senses in the Basque WordNet that did not appear in our corpus and ii) having some senses that were not included in the Basque WordNet. Fortunately, we already predicted this and we had a preparation phase where the editor enriched WordNet accordingly. Most of the deletions in the preliminary part were due to the semi-automatic method to construct the Basque WordNet. All in all, we think that tagging corpora is the best way to ensure the quality of the WordNets and we plan to pursue this extensively for the improvement of the Basque WordNet.</p><p>7 Conclusions and future work 5 teams participated in the Basque lexicalsample task with 8 systems. All of the participants presented supervised systems which used lemma, PoS and case information provided, but none used the large amount of untagged senses provided by the organizers. The winning system attained 70.4 recall. Regarding the organization of the task, we found that the taggers were more comfortable grouping some of the senses in the Basque WordNet. We also found that tagging word senses is essential for enriching and quality checking of the Basque WordNet.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>1. set the exercise a. choose sense inventory from a pre-existing resource b. choose target corpora c. choose target words d. lemmatize the corpus automatically e. select examples from the corpus 2. hand-tagging a. define the procedure b. revise the sense inventory c. tag d. analyze the inter-tagger agreement e. arbitrate This paper is organized as follows:</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>http://www.lsi.upc.es/~nlp/meaning/meaning.html</figDesc><table><row><cell></cell><cell>Total</cell><cell>(N)</cell><cell>(B)</cell><cell>(I)</cell></row><row><cell># words</cell><cell>40</cell><cell></cell><cell></cell></row><row><cell># senses</cell><cell>316</cell><cell></cell><cell></cell></row><row><cell># number of tagged examples</cell><cell cols="2">7362 5695</cell><cell>924</cell><cell>743</cell></row><row><cell cols="2"># number of untagged examples 62498</cell><cell>-</cell><cell cols="2">-62498</cell></row><row><cell># tags</cell><cell>9887</cell><cell></cell><cell></cell></row></table><note>1</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Some figures regarding the task. N, B and I correspond to the source of the examples: newspaper, balanced corpus and Internet respectively.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Results of systems and MFS baseline, ordered according to Recall.</figDesc><table /></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>The work has been partially funded by the European Commission (MEANING project IST-2001-34460). Eli Pociello has a PhD grant from the Basque Government.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">A Word-grammar Based Morphological Analyzer for Agglutinative Languages</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Aduriz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Aldezabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Alegria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Arregi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Arriola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Artola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Gojenola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Maritxalar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Sarasola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Urkia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Computational Linguistics (COLING)</title>
+				<meeting>the International Conference on Computational Linguistics (COLING)<address><addrLine>Saarbrucken, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Exploring portability of syntactic information from English to Basque</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Atutxa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Gojenola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Sarasola</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4rd International Conference on Languages Resources and Evaluations (LREC)</title>
+				<meeting>the 4rd International Conference on Languages Resources and Evaluations (LREC)<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Cross-Language Acquisition of Semantic Models for Verbal Predicates</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Atserias</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Magnini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Popescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Atutxa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Rigau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Carroll</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Koeling</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4rd International Conference on Languages Resources and Evaluations (LREC)</title>
+				<meeting>the 4rd International Conference on Languages Resources and Evaluations (LREC)<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">WordNet: An electronic Lexical Database</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>The MIT Press</publisher>
+			<pubPlace>Cambridge, Massachusetts</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

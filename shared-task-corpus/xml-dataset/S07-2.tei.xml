@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Semeval-2007 Task 02: Evaluating Word Sense Induction and Discrimination Systems</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+							<email>e.agirre@ehu.es</email>
+							<affiliation key="aff0">
+								<orgName type="laboratory">IXA NLP Group Univ. of the Basque Country Donostia</orgName>
+								<address>
+									<settlement>Basque Country</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Aitor</forename><surname>Soroa</surname></persName>
+							<email>a.soroa@ehu.es</email>
+							<affiliation key="aff1">
+								<orgName type="laboratory">IXA NLP Group Univ. of the Basque Country Donostia, Basque Country</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Semeval-2007 Task 02: Evaluating Word Sense Induction and Discrimination Systems</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The goal of this task is to allow for comparison across sense-induction and discrimination systems, and also to compare these systems to other supervised and knowledgebased systems. In total there were 6 participating systems. We reused the SemEval-2007 English lexical sample subtask of task 17, and set up both clustering-style unsupervised evaluation (using OntoNotes senses as gold-standard) and a supervised evaluation (using the part of the dataset for mapping). We provide a comparison to the results of the systems participating in the lexical sample subtask of task 17.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Word Sense Disambiguation (WSD) is a key enabling-technology. Supervised WSD techniques are the best performing in public evaluations, but need large amounts of hand-tagging data. Existing hand-annotated corpora like SemCor <ref type="bibr" target="#b6">(Miller et al., 1993)</ref>, which is annotated with WordNet senses <ref type="bibr" target="#b2">(Fellbaum, 1998)</ref> allow for a small improvement over the simple most frequent sense heuristic, as attested in the all-words track of the last Senseval competition <ref type="bibr" target="#b11">(Snyder and Palmer, 2004)</ref>. In theory, larger amounts of training data (SemCor has approx. 500M words) would improve the performance of supervised WSD, but no current project exists to provide such an expensive resource. Another problem of the supervised approach is that the inventory and distribution of senses changes dramatically from one domain to the other, requiring additional hand-tagging of corpora <ref type="bibr" target="#b5">(Martínez and Agirre, 2000;</ref><ref type="bibr" target="#b4">Koeling et al., 2005)</ref>.</p><p>Supervised WSD is based on the "fixed-list of senses" paradigm, where the senses for a target word are a closed list coming from a dictionary or lexicon. Lexicographers and semanticists have long warned about the problems of such an approach, where senses are listed separately as discrete entities, and have argued in favor of more complex representations, where, for instance, senses are dense regions in a continuum <ref type="bibr" target="#b1">(Cruse, 2000)</ref>.</p><p>Unsupervised Word Sense Induction and Discrimination (WSID, also known as corpus-based unsupervised systems) has followed this line of thinking, and tries to induce word senses directly from the corpus. Typical WSID systems involve clustering techniques, which group together similar examples. Given a set of induced clusters (which represent word uses or senses 1 ), each new occurrence of the target word will be compared to the clusters and the most similar cluster will be selected as its sense.</p><p>One of the problems of unsupervised systems is that of managing to do a fair evaluation. Most of current unsupervised systems are evaluated in-house, with a brief comparison to a re-implementation of a former system, leading to a proliferation of unsupervised systems with little ground to compare among them. The goal of this task is to allow for comparison across sense-induction and discrimination systems, and also to compare these systems to other supervised and knowledge-based systems.</p><p>The paper is organized as follows. Section 2 presents the evaluation framework used in this task. Section 3 presents the systems that participated in the task, and the official results. Finally, Section 5 draws the conclusions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Evaluating WSID systems</head><p>All WSID algorithms need some addition in order to be evaluated. One alternative is to manually decide the correctness of the clusters assigned to each occurrence of the words. This approach has two main disadvantages. First, it is expensive to manually verify each occurrence of the word, and different runs of the algorithm need to be evaluated in turn. Second, it is not an easy task to manually decide if an occurrence of a word effectively corresponds with the use of the word the assigned cluster refers to, especially considering that the person is given a short list of words linked to the cluster. We also think that instead of judging whether the cluster returned by the algorithm is correct, the person should have independently tagged the occurrence with his own senses, which should have been then compared to the cluster returned by the system. This is paramount to compare a corpus which has been hand-tagged with some reference senses (also known as the gold-standard) with the clustering result. The gold standard tags are taken to be the definition of the classes, and standard measures from the clustering literature can be used to evaluate the clusters against the classes.</p><p>A second alternative would be to devise a method to map the clusters returned by the systems to the senses in a lexicon. <ref type="bibr" target="#b8">Pantel and Lin (2002)</ref> automatically map the senses to WordNet, and then measure the quality of the mapping. More recently, the mapping has been used to test the system on publicly available benchmarks <ref type="bibr" target="#b9">(Purandare and Pedersen, 2004;</ref><ref type="bibr" target="#b7">Niu et al., 2005)</ref>.</p><p>A third alternative is to evaluate the systems according to some performance in an application, e.g. information retrieval <ref type="bibr" target="#b10">(Schütze, 1998)</ref>. This is a very attractive idea, but requires expensive system development and it is sometimes difficult to separate the reasons for the good (or bad) performance.</p><p>In this task we decided to adopt the first two alternatives, since they allow for comparison over publicly available systems of any kind. With this goal on mind we gave all the participants an unlabeled corpus, and asked them to induce the senses and create a clustering solution on it. We evaluate the results according to the following types of evaluation:</p><p>1. Evaluate the induced senses as clusters of examples. The induced clusters are compared to the sets of examples tagged with the given gold standard word senses (classes), and evaluated using the FScore measure for clusters. We will call this evaluation unsupervised. 2. Map the induced senses to gold standard senses, and use the mapping to tag the test corpus with gold standard tags. The mapping is automatically produced by the organizers, and the resulting results evaluated according to the usual precision and recall measures for supervised word sense disambiguation systems. We call this evaluation supervised.</p><p>We will see each of them in turn.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Unsupervised evaluation</head><p>In this setting the results of the systems are treated as clusters of examples and gold standard senses are classes. In order to compare the clusters with the classes, hand annotated corpora is needed. The test set is first tagged with the induced senses. A perfect clustering solution will be the one where each cluster has exactly the same examples as one of the classes, and vice versa. Following standard cluster evaluation practice <ref type="bibr" target="#b12">(Zhao and Karypis, 2005)</ref>, we consider the FScore measure for measuring the performance of the systems. The FScore is used in a similar fashion to Information Retrieval exercises, with precision and recall defined as the percentage of correctly "retrieved" examples for a cluster (divided by total cluster size), and recall as the percentage of correctly "retrieved" examples for a cluster (divided by total class size).</p><p>Given a particular class s r of size n r and a cluster h i of size n i , suppose n i r examples in the class s r belong to h i . The F value of this class and cluster is defined to be:</p><formula xml:id="formula_0">f (s r , h i ) = 2P (s r , h i )R(s r , h i ) P (s r , h i ) + R(s r , h i )</formula><p>where P (s r , h i ) = n i r nr is the precision value and R(s r , h i ) = n i r n i is the recall value defined for class s r and cluster h i . The FScore of class s r is the maximum F value attained at any cluster, that is,</p><formula xml:id="formula_1">F (s r ) = max h i f (s r , h i )</formula><p>and the FScore of the entire clustering solution is:</p><formula xml:id="formula_2">FScore = c r=1 n r n F (s r )</formula><p>where q is the number of classes and n is the size of the clustering solution. If the clustering is the identical to the original classes in the datasets, FScore will be equal to one which means that the higher the FScore, the better the clustering is.</p><p>For the sake of completeness we also include the standard entropy and purity measures in the unsupervised evaluation. The entropy measure considers how the various classes of objects are distributed within each cluster. In general, the smaller the entropy value, the better the clustering algorithm performs. The purity measure considers the extent to which each cluster contained objects from primarily one class. The larger the values of purity, the better the clustering algorithm performs. For a formal definition refer to <ref type="bibr" target="#b12">(Zhao and Karypis, 2005)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Supervised evaluation</head><p>We have followed the supervised evaluation framework for evaluating WSID systems as described in <ref type="bibr" target="#b0">(Agirre et al., 2006)</ref>. First, we split the corpus into a train/test part. Using the hand-annotated sense information in the train part, we compute a mapping matrix M that relates clusters and senses in the following way. Suppose there are m clusters and n senses for the target word. Then, M = {m ij } 1 ≤ i ≤ m, 1 ≤ j ≤ n, and each m ij = P (s j |h i ), that is, m ij is the probability of a word having sense j given that it has been assigned cluster i. This probability can be computed counting the times an occurrence with sense s j has been assigned cluster h i in the train corpus.</p><p>The mapping matrix is used to transform any cluster score vectorh = (h 1 , . . . , h m ) returned by the WSID algorithm into a sense score vectors = (s 1 , . . . , s n ). It suffices to multiply the score vector by M , i.e.,s =hM .</p><p>We use the M mapping matrix in order to convert the cluster score vector of each test corpus instance into a sense score vector, and assign the sense with  maximum score to that instance. Finally, the resulting test corpus is evaluated according to the usual precision and recall measures for supervised word sense disambiguation systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Results</head><p>In this section we will introduce the gold standard and corpus used, the description of the systems and the results obtained. Finally we provide some material for discussion.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Gold Standard</head><p>The data used for the actual evaluation was borrowed from the SemEval-2007 "English lexical sample subtask" of task 17. The texts come from the Wall Street Journal corpus, and were hand-annotated with OntoNotes senses <ref type="bibr" target="#b3">(Hovy et al., 2006)</ref>. Note that OntoNotes senses are coarser than WordNet senses, and thus the number of senses to be induced is smaller in this case.</p><p>Participants were provided with information about 100 target words (65 verbs and 35 nouns), each target word having a set of contexts where the word appears. After removing the sense tags from the train corpus, the train and test parts were joined into the official corpus and given to the participants. Participants had to tag with the induced senses all the examples in this corpus. Table <ref type="table" target="#tab_1">1</ref> summarizes the size of the corpus.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Participant systems</head><p>In total there were 6 participant systems. One of them (UoFL) was not a sense induction system, but rather a knowledge-based WSD system. We include their data in the results section below for coherence with the official results submitted to participants, but we will not mention it here.</p><p>I2R: This team used a cluster validation method to estimate the number of senses of a target word in untagged data, and then grouped the instances of this target word into the estimated number of clusters using the sequential Information Bottleneck algorithm.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>UBC-AS:</head><p>A two stage graph-based clustering where a co-occurrence graph is used to compute similarities against contexts. The context similarity matrix is pruned and the resulting associated graph is clustered by means of a random-walk type algorithm. The parameters of the system are tuned against the Senseval-3 lexical sample dataset, and some manual tuning is performed in order to reduce the overall number of induced senses. Note that this system was submitted by the organizers. The organizers took great care in order to participate under the same conditions as the rest of participants. UMND2: A system which clusters the second order co-occurrence vectors associated with each word in a context. Clustering is done using k-means and the number of clusters was automatically discovered using the Adapted Gap Statistic. No parameter tuning is performed.</p><p>upv si: A self-term expansion method based on co-ocurrence, where the terms of the corpus are expanded by its best co-ocurrence terms in the same corpus. The clustering is done using one implementation of the KStar method where the stop criterion has been modified. The trial data was used for determining the corpus structure. No further tuning is performed.</p><p>UOY: A graph based system which creates a cooccurrence hypergraph model. The hypergraph is filtered and weighted according to some association rules. The clustering is performed by selecting the nodes of higher degree until a stop criterion is reached. WSD is performed by assigning to each induced cluster a score equal to the sum of weights of hyperedges found in the local context of the target word. The system was tested and tuned on 10 nouns of Senseval-3 lexical-sample.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Official Results</head><p>Participants were required to induce the senses of the target words and cluster all target word contexts accordingly 2 . Table <ref type="table" target="#tab_3">2</ref> summarizes the average number of induced senses as well as the real senses in the gold standard.</p><p>2 They were allowed to label each context with a weighted score vector, assigning a weight to each induced sense. In the unsupervised evaluation only the sense with maximum weight was considered, but for the supervised one the whole score vector was used. However, none of the participating systems labeled any instance with more than one sense.    Table <ref type="table" target="#tab_4">3</ref> shows the unsupervised evaluation of the systems on the test corpus. We also include three baselines: the "one cluster per word" baseline (1c1word), which groups all instances of a word into a single cluster, the "one cluster per instance" baseline (1c1inst), where each instance is a distinct cluster, and a random baseline, where the induced word senses and their associated weights have been randomly produced. The random baseline figures in this paper are averages over 10 runs.</p><p>As shown in Table <ref type="table" target="#tab_4">3</ref>, no system outperforms the 1c1word baseline, which indicates that this baseline is quite strong, perhaps due the relatively small number of classes in the gold standard. However, all systems outperform by far the random and 1c1inst baselines, meaning that the systems are able to induce correct senses. Note that the purity and entropy measures are not very indicative in this setting. For completeness, we also computed the FScore using the complete corpus (both train and test). The results are similar and the ranking is the same. We omit them for brevity.</p><p>The results of the supervised evaluation can be seen in Table <ref type="table" target="#tab_5">4</ref>. The evaluation is also performed over the test corpus. Apart from participants, we also show the most frequent sense (MFS), which tags every test instance with the sense that occurred most often in the training part. Note that the supervised evaluation combines the information in the clustering solution implicitly with the MFS information via the mapping in the training part. Previous Senseval evaluation exercises have shown that the MFS baseline is very hard to beat by unsupervised systems. In fact, only three of the participant systems are above the MFS baseline, which shows that the clustering information carries over the mapping successfully for these systems. Note that the 1c1word baseline is equivalent to MFS in this setting. We will review the random baseline in the discussion section below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Further Results</head><p>Table <ref type="table" target="#tab_7">5</ref> shows the results of the best systems from the lexical sample subtask of task 17. The best sense induction system is only 6.9 percentage points below the best supervised, and 3.5 percentage points below the best (and only) semi-supervised system. If the sense induction system had participated, it would be deemed as semi-supervised, as it uses, albeit in a shallow way, the training data for mapping the clusters into senses. In this sense, our supervised evaluation does not seek to optimize the available training data.</p><p>After the official evaluation, we realized that contrary to previous lexical sample evaluation exercises task 17 organizers did not follow a random train/test split. We decided to produce a random train/test split following the same 82/18 proportion as the official split, and re-evaluated the systems. The results are presented in   participants are above the MFS baseline, showing that all of them learned useful clustering information. Note that UOY was specially affected by the original split. The distribution of senses in this split did not vary (cf. Table <ref type="table" target="#tab_3">2</ref>). Finally, we also studied the supervised evaluation of several random clustering algorithms, which can attain performances close to MFS, thanks to the mapping information. This is due to the fact that the random clusters would be mapped to the most frequent senses. Table <ref type="table" target="#tab_9">7</ref> shows the results of random solutions using varying numbers of clusters (e.g. random2 is a random choice between two clusters). Random2 is only 0.1 below MFS, but as the number of clusters increases some clusters don't get mapped, and the recall of the random baselines decrease.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Discussion</head><p>The evaluation of clustering solutions is not straightforward. All measures have some bias towards certain clustering strategy, and this is one of the reasons of adding the supervised evaluation as a complementary information to the more standard unsupervised evaluation.</p><p>In our case, we noticed that the FScore penalized the systems with a high number of clusters, and favored those that induce less senses. Given the fact that FScore tries to balance precision (higher for large numbers of clusters) and recall (higher for small numbers of clusters), this was not expected. We were also surprised to see that no system could System Supervised evaluation random2 78.6 random10 77.6 ramdom100 64.2 random1000 31.8 beat the "one cluster one word" baseline. An explanation might lay in that the gold-standard was based on the coarse-grained OntoNotes senses. We also noticed that some words had hundreds of instances and only a single sense. We suspect that the participating systems would have beaten all baselines if a fine-grained sense inventory like WordNet had been used, as was customary in previous WSD evaluation exercises.</p><p>Supervised evaluation seems to be more neutral regarding the number of clusters, as the ranking of systems according to this measure include diverse cluster averages. Each of the induced clusters is mapped into a weighted vector of senses, and thus inducing a number of clusters similar to the number of senses is not a requirement for good results. With this measure some of the systems 3 are able to beat all baselines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusions</head><p>We have presented the design and results of the SemEval-2007 task 02 on evaluating word sense induction and discrimination systems. 6 systems participated, but one of them was not a sense induction system. We reused the data from the SemEval-2007 English lexical sample subtask of task 17, and set up both clustering-style unsupervised evaluation (using OntoNotes senses as gold-standard) and a supervised evaluation (using the training part of the dataset for mapping). We also provide a comparison to the results of the systems participating in the lexical sample subtask of task 17.</p><p>Evaluating clustering solutions is not straightforward. The unsupervised evaluation seems to be sensitive to the number of senses in the gold standard, and the coarse grained sense inventory used in the gold standard had a great impact in the results. The supervised evaluation introduces a mapping step which interacts with the clustering solution. In fact, the ranking of the participating systems <ref type="bibr">3</ref> All systems in the case of a random train/test split varies according to the evaluation method used. We think the two evaluation results should be taken to be complementary regarding the information learned by the clustering systems, and that the evaluation of word sense induction and discrimination systems needs further developments, perhaps linked to a certain application or purpose.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Number of occurrences for the 100 target words in the corpus following the train/test split.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Average number of clusters as returned by the participants, and number of classes in the gold standard. Note that UBC-AS * is the system submitted by the organizers of the task.</figDesc><table><row><cell>System</cell><cell>R.</cell><cell></cell><cell>All</cell><cell></cell><cell cols="2">Nouns Verbs</cell></row><row><cell></cell><cell></cell><cell cols="3">FSc. Pur. Entr.</cell><cell>FSc.</cell><cell>FSc.</cell></row><row><cell>1c1word</cell><cell>1</cell><cell cols="3">78.9 79.8 45.4</cell><cell>80.7</cell><cell>76.8</cell></row><row><cell>UBC-AS  *</cell><cell>2</cell><cell cols="3">78.7 80.5 43.8</cell><cell>80.8</cell><cell>76.3</cell></row><row><cell>upv si</cell><cell>3</cell><cell cols="3">66.3 83.8 33.2</cell><cell>69.9</cell><cell>62.2</cell></row><row><cell>UMND2</cell><cell>4</cell><cell cols="3">66.1 81.7 40.5</cell><cell>67.1</cell><cell>65.0</cell></row><row><cell>I2R</cell><cell>5</cell><cell cols="3">63.9 84.0 32.8</cell><cell>68.0</cell><cell>59.3</cell></row><row><cell>UofL  *  *</cell><cell>6</cell><cell cols="3">61.5 82.2 37.8</cell><cell>62.3</cell><cell>60.5</cell></row><row><cell>UOY</cell><cell>7</cell><cell cols="3">56.1 86.1 27.1</cell><cell>65.8</cell><cell>45.1</cell></row><row><cell>Random</cell><cell>8</cell><cell cols="3">37.9 86.1 27.7</cell><cell>38.1</cell><cell>37.7</cell></row><row><cell>1c1inst</cell><cell>9</cell><cell>9.5</cell><cell>100</cell><cell>0</cell><cell>6.6</cell><cell>12.7</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Unsupervised evaluation on the test corpus (FScore), including 3 baselines. Purity and entropy are also provided. UBC-AS * was submitted by the organizers. UofL * * is not a sense induction system.</figDesc><table><row><cell>System</cell><cell>Rank</cell><cell cols="3">Supervised evaluation</cell></row><row><cell></cell><cell></cell><cell>All</cell><cell cols="2">Nouns Verbs</cell></row><row><cell>I2R</cell><cell>1</cell><cell>81.6</cell><cell>86.8</cell><cell>75.7</cell></row><row><cell>UMND2</cell><cell>2</cell><cell>80.6</cell><cell>84.5</cell><cell>76.2</cell></row><row><cell>upv si</cell><cell>3</cell><cell>79.1</cell><cell>82.5</cell><cell>75.3</cell></row><row><cell>MFS</cell><cell>4</cell><cell>78.7</cell><cell>80.9</cell><cell>76.2</cell></row><row><cell>UBC-AS  *</cell><cell>5</cell><cell>78.5</cell><cell>80.7</cell><cell>76.0</cell></row><row><cell>UOY</cell><cell>6</cell><cell>77.7</cell><cell>81.6</cell><cell>73.3</cell></row><row><cell>UofL  *  *</cell><cell>7</cell><cell>77.1</cell><cell>80.5</cell><cell>73.3</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Supervised evaluation as recall. UBC-AS * was submitted by the organizers. UofL * * is not a sense induction system.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 6</head><label>6</label><figDesc>, where we can see that all</figDesc><table><row><cell>System</cell><cell>Supervised evaluation</cell></row><row><cell>best supervised</cell><cell>88.7</cell></row><row><cell>best semi-supervised</cell><cell>85.1</cell></row><row><cell>best induction (semi-sup.)</cell><cell>81.6</cell></row><row><cell>MFS</cell><cell>78.7</cell></row><row><cell>best unsupervised</cell><cell>53.8</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Comparing the best induction system in this task with those of task 17.</figDesc><table><row><cell>System</cell><cell>Supervised evaluation</cell></row><row><cell>I2R</cell><cell>82.2</cell></row><row><cell>UOY</cell><cell>81.3</cell></row><row><cell>UMND2</cell><cell>80.1</cell></row><row><cell>upv si</cell><cell>79.9</cell></row><row><cell>UBC-AS</cell><cell>79.0</cell></row><row><cell>MFS</cell><cell>78.4</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6</head><label>6</label><figDesc></figDesc><table><row><cell>: Supervised evaluation as recall using a random</cell></row><row><cell>train/test split.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 7 :</head><label>7</label><figDesc>Supervised evaluation of several random baselines.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">WSID approaches prefer the term 'word uses' to 'word senses'. In this paper we use them interchangeably to refer to both the induced clusters, and to the word senses from some reference lexicon.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We want too thank the organizers of SemEval-2007 task 17 for kindly letting us use their corpus. We are also grateful to Ted Pedersen for his comments on the evaluation results. This work has been partially funded by the Spanish education ministry (project KNOW) and by the regional government of Gipuzkoa (project DAHAD).</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Evaluating and optimizing the parameters of an unsupervised graph-based wsd algorithm</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Martínez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>López De Lacalle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Soroa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL TextGraphs workshop</title>
+				<meeting>the NAACL TextGraphs workshop<address><addrLine>New York City</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006-06" />
+			<biblScope unit="page" from="89" to="96" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Polysemy: Theoretical and Computational Approaches, chapter Aspects of the Microstructure of Word Meanings</title>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">A</forename><surname>Cruse</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2000" />
+			<publisher>OUP</publisher>
+			<biblScope unit="page" from="31" to="51" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">WordNet: An Electronic Lexical Database</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>MIT Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Ontonotes: The 90% solution</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of HLT/NAACL</title>
+				<meeting>HLT/NAACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Domain-specific sense distributions and predominant sense acquisition</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Koeling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">D</forename><surname>Carroll</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">One sense per collocation and genre/topic variations</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Martínez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Agirre</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A semantic concordance</title>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">A</forename><surname>Miller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Leacock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Tengi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Bunker</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the ARPA HLT workshop</title>
+				<meeting>of the ARPA HLT workshop</meeting>
+		<imprint>
+			<date type="published" when="1993" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Word independent context pair classification model for word sense disambiguation</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Niu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">K</forename><surname>Srihari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of CoNLL-2005</title>
+				<meeting>of CoNLL-2005</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Discovering word senses from text</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Pantel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of KDD02</title>
+				<meeting>of KDD02</meeting>
+		<imprint>
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Word sense discrimination by clustering contexts in vector and similarity spaces</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Purandare</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Pedersen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of CoNLL-2004</title>
+				<meeting>of CoNLL-2004</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="41" to="48" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Automatic word sense discrimination</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Schütze</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">24</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="97" to="123" />
+			<date type="published" when="1998" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">The english all-words task</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Snyder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of SENSEVAL</title>
+				<meeting>of SENSEVAL</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Hierarchical clustering algorithms for document datasets</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Karypis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Data Mining and Knowledge Discovery</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="141" to="168" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,70 @@
+title
+SENSEVAL-2 Japanese Dictionary Task
+abstract
+This paper reports an overview of the SENSEVAL-2 Japanese dictionary task. It was a lexical sample task, and word senses are defined according to a Japanese dictionary, the Iwanami Kokugo Jiten. The Iwanami Kokugo Jiten and a training corpus were distributed to all participants. The number of target words was 100, 50 nouns and 50 verbs. One hundred instances of each target word were provided, making for a total of 10,000 instances for evaluation. Seven systems of three organizations participated in this task.
+
+Introduction
+In SENSEVAL-2, there are two Japanese tasks, a translation task and a dictionary task. This paper describes the details of the dictionary task.
+First of all, let me introduce an overview of the Japanese dictionary task. This task is a lexical sample task. Word senses were defined according to the Iwanami Kokugo Jiten (Nishio et aL, 1994), a Japanese dictionary published by Iwanami Shoten. It was distributed to all participants as a sense inventory. Training data, a corpus consisting of 3,000 newspaper articles and manually annotated with sense IDs, was also distributed to participants. For evaluation, we distributed newspaper articles with marked target words as test documents. Participants were required to <TASK>assign one or more sense IDs to each target word, optionally with associated probabilities</TASK>. The number of target words was 100, 50 nouns and 50 verbs. One hundred instances of each target word were provided, making for a total of 10,000 instances.
+In what follows, Section 2 describes details of data used in the Japanese dictionary task. Section 3 describes the process to construct the 33 gold standard data, including the analysis of inter-tagger agreement. Section 4 briefly introduces participating systems and their results. Finally, Section 5 concludes this paper.
+
+Data
+In the Japanese dictionary task, three data were distributed to all participants: sense inventory, training data and evaluation data.
+
+Sense Inventory
+As described in Section 1, word senses are defined according to a Japanese dictionary, the Iwanami Kokugo Jiten. The number of headwords and word senses in the I wanami Kokugo Jiten is 60,321 and 85,870, respectively. Figure 1 shows an example of word sense descriptions in the Iwanami Kokugo Jiten, the sense set of the Japanese noun "MURI  As shown in Figure 1, there are hierarchical structures in word sense descriptions. For example, word sense 1 subsumes 1-a and 1-b. The number of layers of hierarchy in the I wanami Kokugo Jiten is at most 3. Word sense distinctions in the lowest level are rather fine or subtle. Furthermore, a word sense description sometimes contains example sentences including a headword, indicated by italics in Figure 1.
+The Iwanami Kokugo Jiten was provided to all participants. For each sense description, a corresponding sense ID and morphological information were supplied. All morphological information, which included word segmentation, part-of-speech (POS) tag, base form and reading, was manually post-edited.
+
+Training Data
+An annotated corpus was distributed as the training data. It was made up of 3,000 newspaper articles extracted from the 1994 Mainichi Shimbun, consisting of 888,000 words. The annotated information in the training corpus was as follows:
+
+• Morphological information
+The text was annotated with morphological information (word segmentation, POS tag, base form and reading) for all words. All morphological information was manually post-edited.
+• UDC code Each article was assigned a code representing the text class. The classification code system was the third version (INFOSTA, 1994) of Universal Decimal Classification (UDC) code (Organization, 1993).
+• Word sense IDs Only 148,558 words in the text were annotated for sense. Words assigned with sense IDs satisfied the following conditions:
+1. Their FOSs were noun, verb or adjective.
+2. The Iwanami Kokugo Jiten gave sense descriptions for them.
+3. They were ambiguous, i.e. there are more than two word senses in the dictionary.
+Word sense IDs were manually annotated. However, only one annotator assigned a sen~e ID for each word.
+
+Evaluation Data
+The evaluation data was made up of 2,130 newspaper articles extracted from the 1994 Mainichi Shimbun. The articles used for the training and evaluation data were mutually exclusive. The annotated information in the evaluation data was as follows:
+• Morphological information The text was annotated with morphological information (word segmentation, POE tag, base form and reading) for all words Note that morphological information in thE training data was manually post-edited: but not in the evaluation data. So participants might ignore morphological information in the evaluation data.
+• 
+
+Gold Standard Data
+Except for the gold standard data, the data described in Section 2 have been developed by Real World Computing Partnership (Hasida et al., 1998;Shirai et al., 2001) and already released to public domain 2 . On the other hand, the gold standard data was newly developed for the SENSEVAL-2. This section presents the process of preparing the gold standard data, and the analysis of inter-tagger agreement.
+
+Sampling Target Words
+When we chose target words, we considered the following:
+• POSs of target words were either nouns or verbs.
+• Words were chosen which occurred more than 50 times in the training data. • The relative "difficulty" in disambiguating the sense of words was considered. Difficulty of the word w was defined by the entropy of the word sense distribution E(w) in the training data. Obviously, the higher E(w) was, the more difficult the WSD for w was. We set up three word classes, Da (E(w) ~ 1), Db (0.5 ~ E(w) &lt; 1) and De (E(w) &lt; 0.5), and chose target words evenly from them.
+Table 1 reveals details of numbers of target words. Average polysemy (i.e. average number of word senses per headword) and average entropy are also indicated.
+One hundred instances of each target word were selected from newspaper articles, making for a total of 10,000 instances.
+
+Manual Annotation
+Six annotators assigned the correct word sense IDs for 10,000 instances. They were not experts, but had knowledge of linguistics or lexicography to some degree. The process of manual annotating was as follows:
+Step 1. Two annotators chose a sense ID for each instance separately in accordance with the following guidelines:
+• Only one sense ID was to be chosen for each instance.
+• Sense IDs at any layers in hierarchical structures could be assignable.
+• The "UNASSIGNABLE" tag was to be chosen only when all sense IDs weren't absolutely applicable. Otherwise, choose one of sense IDs in the dictionary.
+35 Step 2. If the sense IDs selected by 2 annotators agreed, we considered it to be a correct sense ID for an instance.
+Step 3. If they did not agree, the third annotator chose the correct sense ID between them. If the third annotator judged both of them to be wrong and chose another sense ID as correct, we considered that all 3 word sense IDs were correct.
+According to Step 3., the number of words for which 3 annotators assigned different sense IDs from one another was a quite few, 28 (0.3%).
+Table 2 indicates the inter-tagger agreement of two annotators in Step 1. Agreement ratio for all 10,000 instances was 86.3%.
+
+Results for Participating Systems
+In the Japanese dictionary task, the following 7 systems of 3 organizations submitted answers. Notice that all systems used supervised learning techniques.
+• Communications Research Laboratory and New York University (CRL1 "" CRL4)
+The learning schemes were simple Bayes and support vector machine (SVM), and two kinds of hybrid models of simple Bayes and SVM.
+• Tokyo Institute of Technology (Titech1, Titech2) Decision lists were learned from the training data. The features used in the decision lists were content words and POS tags in a window, and content words in example sentences contained in word sense descriptions in the Iwanami Kokugo Jiten.
+• Nara Institute of Science and Technology (Naist)
+The learning algorithm was SVM. The feature space was reconstructed using Principle Component Analysis(PCA) and Independent Component Analysis(ICA). The results of all systems are shown in Figure 2. "Baseline" indicates the system which always selects the most frequent word sense ID, while "Agreement" indicates the agreement ratio between two annotators. All systems outperformed the baseline, and there was no remarkable difference between their scores (differences were 3 % at most).
+Figure 3 indicates the mixed-grained scores for nouns and verbs. Comparing baseline system scores, the score for verbs was greater than that for nouns, even though the average entropy of verbs was higher than that of nouns (Table 1).
+The situation was the same in CRL systems, bt not in Titech and Naist. The reason why them erage entropy was not coincident with the scor of the baseline was that the entropy of som verbs was so great that it raised the average er tropy disproportionately. Actually, the entrop of 7 verbs was greater than the maximum er tropy of nouns.
+Figure 4 indicates the mixed-grained score for each word class. For word class De, ther was hardly any difference among scores of a: systems, including Baseline system and Agree ment. On the other hand, appreciable differenc was found for Da and Db.
+
+Conclusion
+This paper reports an overview of th SENSEVAL-2 Japanese dictionary task. Th data used in this task are available on th SENSEVAL-2 web site. I hope this valuabl, data helps all researchers to improve their WSI systems.
+Acknowledgment I wish to express my gratitude to Mainich Newspapers for providing articles. I would als&lt; like to thank Prof. Takenobu Tokunaga (Toky&lt; Institute of Technology) and Prof. Sadao Kuro hashi (University of Tokyo) for valuable advisi about task organization, the annotators for con• structing gold standard data, and all partici• pants.
+

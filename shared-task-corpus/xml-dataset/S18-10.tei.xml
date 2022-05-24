@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2018 Task 10: Capturing Discriminative Attributes</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Alicia</forename><surname>Krebs</surname></persName>
+							<email>krebs@textkernel.nl</email>
+						</author>
+						<author>
+							<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+							<email>alessandro.lenci@unipi.it</email>
+						</author>
+						<author>
+							<persName><forename type="first">Denis</forename><surname>Paperno</surname></persName>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Pisa</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">CNRS</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2018 Task 10: Capturing Discriminative Attributes</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the SemEval 2018 Task 10 on Capturing Discriminative Attributes.</p><p>Participants were asked to identify whether an attribute could help discriminate between two concepts. For example, a successful system should determine that urine is a discriminating feature in the word pair kidney,bone. The aim of the task is to better evaluate the capabilities of state of the art semantic models, beyond pure semantic similarity. The task attracted submissions from 21 teams, and the best system achieved a 0.75 F1 score.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>State of the art semantic models do an excellent job at detecting semantic similarity, a traditional semantic task; for example, they can tell us that cappuccino, espresso and americano are similar to each other. It is obvious, however, that no model can claim to capture semantic competence if it does not, in addition to similarity, predict semantic differences between words. If one can tell that americano is similar to cappuccino and espresso but cannot tell the difference between them, one only has a very approximate idea of the meaning of these words. As a step beyond similarity, one should at the very least recognize that americano is bigger than espresso, and that capuccino contains milk foam. In this spirit, we present Semeval 2018 Task 10 (Capturing Discriminative Attributes) as a new challenge for lexical semantic models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.1">Task description</head><p>A semantic model that has only been evaluated on similarity detection may very well fail to be of practical use for specific applications. For example, word sense disambiguation could benefit greatly from representations that can model complex semantic relations. This means that the evaluation of word representation models should not only be centered on semantic similarity and relatedness, and should include different, complementary tasks. To fill this gap, we proposed a novel task of semantic difference detection as Task 10 of the SemEval 2018 workshop. The goal of the systems in this case was to predict whether a word is a discriminative attribute between two other words. For example, given the words apple and banana, is the word red a discriminative attribute?</p><p>Semantic difference is a ternary relation between two concepts (apple, banana) and a discriminative attribute (red) that characterizes the first concept but not the other. By its nature, semantic difference detection is a binary classification task: given a triple apple,banana,red, the task is to determine whether it exemplifies a semantic difference or not.</p><p>In practice, when preparing the task, we started out with defining potential discriminative attributes as semantic features in the sense of <ref type="bibr" target="#b21">(McRae et al., 2005)</ref>: properties that people tend to think are important for a given concept. McRae et al.'s features are expressed as phrases, but these phrases can usually be reconstructed from a single word (e.g. red as a feature of apple stands for the phrase is red, carpentry as a feature of hammer can be used as a shorthand of used for carpentry, etc.) Given this general reconstructability, we have for simplicity used single words rather than phrases to represent features. The same solution was also adopted in the feature norming studies by <ref type="bibr" target="#b28">(Vinson and Vigliocco, 2008)</ref> and <ref type="bibr" target="#b17">(Lenci et al., 2013)</ref>.</p><p>Following McRae et al., we did not define discriminative features in purely logical but rather in psychological terms. Accordingly, features are prototypical properties that subjects tend to associate to a certain concept. For example, not all apples are red and some bananas are, but red tends to be judged as an important feature of apples and not of bananas. We therefore fully trust human anno-tators in deciding what counts as a distinguishing attribute and what does not.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.2">Motivation</head><p>Exploring semantic differences between words can allow us to grasp subtle aspects of meaning: while it is relatively easy to train a model to recognize that apple and banana are somewhat similar, it is less straightforward to learn that, contrary to an apple, a typical banana is not red. This task is therefore more challenging than, and complementary to, the traditional similarity task, and we expect it to contribute to the progress in computational modeling of meaning.</p><p>While semantic similarity and relatedness measures have been used extensively to evaluate semantic representations, they may not be sufficient as a method for evaluating lexical semantic models <ref type="bibr" target="#b7">(Faruqui et al., 2016;</ref><ref type="bibr" target="#b3">Batchkarov et al., 2016)</ref>. Firstly, it has been noted that the relevant notions of similarity and relatedness can vary depending on the linguistic context, on the downstream application, etc. The difference task resolves this concern by effectively providing a context. In our example, comparison with bananas determines the relevance of the redness attribute for apples, which, out of context, might not necessarily be a salient attribute of apples.</p><p>Existing similarity and relatedness datasets have also been criticized for low inter-annotator agreement. The semantic difference detection task alleviates this issue, too. Binary choice is easier for human annotators than rating on a continuous scale, and produces more consistent patterns of answers. In our pilot study, the agreement between annotators was over 0.80. To further ensure the quality of our data, we discarded any items that caused disagreement.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.3">Expected impact</head><p>The semantic difference task can enable further progress in the field of word representation learning. Indeed, state of art models have reached ceiling performance in the tasks of semantic similarity and relatedness (in part because the ceiling, as determined by the agreement of human subjects, is relatively low). Another commonly employed task, analogy, has its own issues <ref type="bibr" target="#b19">(Linzen, 2016)</ref> and effectivey boils down to similarity optimization <ref type="bibr" target="#b18">(Levy and Goldberg, 2014)</ref>. A new general evaluation task for lexical semantics is long due, and we hope that the semantic difference task is capable of filling this gap.</p><p>In the future, solving the discriminative attributes task could help in a range of applications, from conversational agents (choosing lexical items with contextually relevant differential features can help create more pragmatically appropriate, human-like dialogues), to coreference resolution (differentiating features of concepts mentioned or alluded to in text could help in reference disambiguation), to machine translation and text generation, where explicitly taking into account semantic differences between competing translation variants can improve the quality of the output.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data and resources 2.1 Overview</head><p>One can express semantic differences between concepts by referring to attributes of those concepts. A difference can usually be expressed as presence or absence of a specific attribute. For instance, one of the differences between a narwhal and a dolphin is the presence of a tusk.</p><p>The task dataset includes 5062 manually verified triples of the form &lt;word1,word2,attribute&gt;. The set is built in such a way that the attribute in each positive example characterizes the first word of the triple. For example, in Table <ref type="table">1</ref>, wings is an attribute of airplane. The word pair [airplane,helicopter] is included in the order <ref type="bibr">[helicopter,airplane]</ref> if helicopter has a feature that airplane does not have. We thereby assume, in contrast to the standard formalization of similarity, that semantic difference is not symmetric: the triple apple,banana,red is a semantic difference but banana,apple,red is not since red is not an attribute of bananas. <ref type="bibr">1</ref> We supplemented positive data <ref type="bibr">(</ref>  Approximately half of the manually checked triples was given to participants as a validation set for parameter tuning of their systems, the rest was used for testing (cf. Section 2.4 for detailed statistics about the dataset composition). A larger training set of almost 18K examples (automatically constructed by the procedure described below, without manual filtering) was provided for training parameter-rich systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Data collection and annotation</head><p>When creating the dataset, we started from the approach that <ref type="bibr" target="#b16">Lazaridou et al. (2016)</ref> used for visual discriminating attribute identification, followed by manual filtering for the test and validation data. Dataset creation consisted of three phases:</p><p>1. Semi-automatically created triples (section 2.2.1) 2. Manually created triples (section 2.2.2)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Automatically created triples (section 2.2.3)</head><p>As an initial source of data, we used the feature norms collected by <ref type="bibr" target="#b21">McRae et al. (2005)</ref> and created a pilot dataset <ref type="bibr" target="#b13">(Krebs and Paperno, 2016)</ref>. This set was then reverified and manually extended to improve the quality and the variety of the data. Finally, a large number of triples were automatically generated for training purposes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.1">Triples from Mcrae norms</head><p>The first part of the dataset was created semiautomatically by identifying discriminative attributes of the concepts in the McRae norms, which consist of a list of features for 541 concepts (living and non-living entities), collected by asking 725 participants to produce features for each concept. Production frequencies of these attributes indicate how salient they are. Concepts that have different meanings had been disambiguated before being shown to participants. For example, there are two entries for bow, bow (weapon) and bow (ribbon).</p><p>Because our task is not intended to test word sense models, we did not differentiate between entries that have multiple senses and ignored the disambiguating phrase. In our dataset, the concept bow has the attributes of both the weapon and the ribbon. This is not problematic because we do not refer to more than one attribute at a time, so senses of a word do not mix. <ref type="bibr">2</ref> The McRae dataset uses the brain region taxonomy <ref type="bibr" target="#b5">(Cree and McRae, 2003)</ref> to classify attributes into different types, such as function, sound or taxonomic. For the construction of our dataset, we decided to only work with visual attributes, which exist for all concrete concepts, while attributes such as sound or taste are only relevant for some classes of concepts.</p><p>Any one word concept that has at least one visual attribute was considered a candidate. Each candidate concept was paired with another candidate concept from the list of its 100 closest neighbours in a PPMI-based distributional vector space (using the best settings from <ref type="bibr" target="#b2">Baroni et al. (2014)</ref>). The motivation for this step is that finding nontrivial semantic differences only makes sense in the context of related words; detecting the difference between two unrelated concepts, such as a narwhal and a tractor, is rather trivial and would not constitute a very interesting task.</p><p>For each word pair, if there was an attribute in McRae feature norms that the first word has but the second doesn't, the word pair -attribute triple was added to the list of candidate positive examples. For simplicity, multi-word attributes were processed so that only the last word is taken into account (e.g. has wings becomes wings). At this point, we had 512 unique concepts, 1645 unique attributes, 6355 unique word pairs, and 41723 triples (word pair-concept combinations). A random sample of triples was selected for manual annotation.</p><p>For </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.2">Manual triples</head><p>In the second phase, we extended the dataset by adding new concepts and attributes. Our intention was to make the dataset more diverse and more representative of the noun lexicon by including words and features that are not part of the McRae feature norms (e.g., human nouns such as doctor or student).</p><p>To select new nouns, we used SimLex-999 <ref type="bibr" target="#b11">(Hill et al., 2015)</ref>, one of the largest and most popular datasets for semantic similarity. We extracted from SimLex all the nouns with a concreteness rating above the median, and identified 204 candidate items that were not included in the McRae Norms. Each selected noun was paired with candidate concepts from the list of its 20 closest neighbours in the distributional vector space. We then filtered the neighbors by frequency, keeping the neighbors that belong to the frequency range of the original McRae and SimLex vocabulary. We also made sure at this step that candidate word pairs belong to the same WordNet supersense. This latter constraint was added because distributional models often return neighbors that are only loosely related to the target, while finding non-trivial semantic differences makes sense only for words that are taxonomically similar. We also discarded grammatical number pairs like seed/seeds and hypernym/hyponym pairs like doctor/surgeon, since by definition there is no feature that a hypernym has but its hyponym does not have.</p><p>Each of the three task organizers was given a third of the resulting 1851 candidate noun pairs to annotate, generating discriminative and nondiscriminative attributes for each pair. The suggested triples were then manually filtered by the other two authors.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.3">Random triples</head><p>Finally, to further ensure the diversity of examples and to alleviate any biases unintentionally introduced in the annotation pipeline, we generated 500 additional triples by randomly matching words and features produced at earlier stages. Each of the three authors annotated these random triples, which contained mainly negative (motorbike,rifle,liquor) and some positive examples (e.g. maid,evening,help). Again, only those examples for which a full consensus of the three authors existed were kept.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Training, test and validation partitions</head><p>The manually validated dataset of semantic differences consists of examples from three sources described above: combinations of nouns with McRae features, triples with manually suggested attributes, and random triples. All of these examples have been verified by the three authors and were then randomly split into a validation partition and a test partition, making sure that no feature occurs in both.  To enable development of systems that require more training data, we also created a distinct, bigger training set that was not manually curated. The training set was derived from McRae feature norms using automatically matched examples as described in 2.1.1, but without manual validation. We have to note that this training partition is very noisy, its main advantage being its size. In fact, the best performing system in our task was trained directly on validation data.</p><p>We further filtered the training set to minimize lexical overlap between partitions, making sure that no attribute present in the test set or the validation set is also present in the training set. For example, if the attribute "red" appears in some triple in the test partition, you will not find it anywhere in the training set. This was done to ensure that models cannot rely on attribute memorization from training data but are forced to transfer lexical knowledge from other sources.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Dataset composition</head><p>The final dataset consists of 22884 items, divided into:  All data used in this task can be accessed from the competition's github repository. 3</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Metrics</head><p>The submitted systems were evaluated on F1 measure, as is standard in binary classification tasks. The evaluation script can be found in the competition's github repository. The competition results can be seen at the corresponding Codalab page. <ref type="bibr">4</ref> Participants were allowed to make up to 2 submissions, resulting in 47 total submissions from 28 different teams (but only 21 teams submitted papers). Only the better of the two submissions of each team is included in final results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Baselines</head><p>Since our task is formalized as binary classification, the random baseline has 0.50 accuracy. As our test set is not perfectly balanced, a most frequent class baseline would get 0.517 F1.</p><p>We also computed an unsupervised distributional vector cosine baseline based on the idea that a discriminative attribute is close to the word it characterizes and further away from the other member of the pair. In the cosine method, each item is classified as a semantic difference if the cosine similarity of word 1 and the attribute is greater than the cosine similarity of word 2 and the attribute. To compute the cosine baseline, we used a PPMI-based vector space with the best settings from <ref type="bibr" target="#b2">Baroni et al. (2014)</ref>.</p><p>The cosine baseline correctly classifies 0.691 of positive items and 0.539 of negative items in the test data, which corresponds to an average F1 measure of 0.607.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Human upper bound</head><p>In order to obtain a performance upper bound for our task, we measured how complex it is for expert human annotators to identify discriminative attributes. We asked three PhD and post-doc computational linguists to classify a batch of 100 items randomly sampled from the test set. The annotators received two rounds of training on the task by classifying a batch of 100 triples from the validation and test sets. The triples used at annotator training and testing stages were all distinct. Various questions and doubts about the annotation were clarified before passing to the test annotation phase. The agreement between aggregated human judgments (majority vote) and the gold standard was very high, with an accuracy of 0.9, an F1 of 0.89 for the positive class, and an F1 of 0.91 for the negative class.    </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Systems Overview</head><p>Table <ref type="table" target="#tab_8">6</ref> shows the best performing system submitted by each participating team which submitted descriptions of their systems. Many participants created custom rules to tackle the task, using for example cosine similar-   Participants made use of a large number of resources. Such resources can be divided into word embeddings (e.g., Word2Vec, GloVe, fastText) and knowledge base type resources (e.g., Word-Net, ConceptNet, Probase). Participants' analyses of their results indicate that although using knowledge bases can yield high precision results, they cannot easily cover all cases. When employing pre-trained word embeddings, participants noted that out-of-vocabulary items become a challenge. But most importantly, a shortcoming of word embeddings with regard to our task is their inability to distinguish between different types of semantic relatedness. As noted by the GHH team <ref type="bibr">(Attia et al.)</ref>, garlic is related to wings not because garlic has the ability to fly but because garlic chicken wings are a popular dish choice; a shallow cooccurence-based model will fail to recognize that wings characterize chicken but not garlic.</p><p>On average, systems which combined word embeddings and knowledge bases outperformed systems that only used word embeddings (Table <ref type="table" target="#tab_11">8</ref>).  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results analysis</head><p>We have carried out an in-depth exploration of the systems results in order to get a better insight on the relationship between their performance and the dataset structure and complexity. We ranked all the test triples by the number of systems that annotated them correctly and we selected the 50 top triples that were scored correctly by the most systems and the 50 top triples that were failed by most systems. We called these two subsets the Easy and the Hard data, respectively. Then, we focused on the results produced by the top 5 systems in Table <ref type="table" target="#tab_8">6</ref>, with an overall performance greater than 70%. Out of the 1340 triples that were failed by at least one of these top systems, we selected the 112 triples (8.3%) that were failed by all 5 systems. We called this subset the Hardest data. These datasets were annotated by the same three expert annotators used to compute the human upper bound (cf. Section 3.3). The accuracy and F1 of the aggregated human judgments (majority vote) with respect to the gold standard are reported in Table <ref type="table" target="#tab_13">9</ref>.</p><p>The annotation results show an interesting correlation between the system and human performances. The "easy" triples for the systems are easy for humans too, and conversely the harder a triple is for a system the harder it is for humans. The lowest annotation accuracy is on the Hardest subset, less than 40%. However, since this set contains the triples that were failed by all top systems, the human accuracy also proves that theres is still plenty of room for improvement even for the best performing models.</p><p>Table <ref type="table" target="#tab_13">9</ref> shows that the F1 on the negative class is usually higher than the one on the positive class. This is again similar to systems behavior. In fact, 70% of the top 100 triples scored correctly by most systems are negative cases, while 67% of the top 100 triples failed by most systems are positive cases. The 112 triples failed by all top file systems contain 54% positive cases. This suggests that for systems and humans alike it is usually harder to  Lastly, it is an important issue to understand the causes of the low human performance on the Hard and especially on the Hardest subset. By looking at the wrongly annotated triples in this dataset, we can identify various possible reasons. The first one are mistakes in the gold standard annotation. For instance, peel was marked as a discriminative attribute of banana from onion, but actually peeling is a possible action for both entities. Other cases are instead related to the inherent vagueness of the notion of prototypical attribute. For example, the feature acts was marked as non-discriminative of actress from artist, because any artist can in principle act. Conversely, humans annotators have identified acting as a truly specific attribute for ac-tress, but not for artist. The former type of problems prompt for a further revision of the gold standard, while the latter type reveals the complexity of the notion of discriminative attribute and its difficult applications in some cases, which will require a deeper specification of annotation guidelines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>Discriminative attribute detection is an intuitively simple and appealing yet challenging new task for lexical semantic systems. For the SemEval competition, we created a high quality dataset of semantic differences, with estimated ceiling performance of human annotators of 0.90. While the task is far from being solved, participating systems showed promising results, most of them beating the cosine baseline.</p><p>It is clear that learning to discriminate differentiating features is not trivial and requires training, both for human annotators and for computational systems; all of the top performing systems used machine learning techniques of some kind.</p><p>While different teams employed different linguistic resources, the results of the competition do not allow us to conclude that a particular resource gives one's system an edge. On the one hand, exploiting information from knowledge base resources like WordNet does improve the performance on average. On the other hand, traditional machine learning systems that entered our competition were much more likely to make use of knowledge bases. Therefore, combining neural approaches with knowledge bases may very well lead to improved performances.</p><p>As we mentioned above, ceiling performance has already been achieved in traditional tasks such as word similarity, causing a stagnation of lexical semantic modeling. As the best systems in our competition showed very promising results, we hope to see novel semantic models demonstrate their full potential on our task.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>3 https://github.com/dpaperno/DiscriminAtt/</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head></head><label></label><figDesc>ity or co-occurrence frequency thresholds (Meaning Space, Sommerauer et al.; ELiRF-UPV, Gonzlez et al.; CitiusNLP Gamallo; UNAM Arroyo-Fernndez et al.; Discriminator, Kulmizev et al.; UNBNLP, King et al.; ABDN, Mao et al.; Igevorse, Grishin). Some of the most successful systems employed traditional machine learning algorithms such as SVMs (SUNNYNLP, Lai et al.; ALB, Dumitru et al.; Wolves, Taslimipoor et al.; ECNU, Zhou et al.; UMD, Zhang and Carpuat), SVC (Luminoso, Speer and Lowry-Duda) and Maximum Entropy Classifiers (UWB, Brychcn et al.). Other teams chose to build their systems using deep learning systems such as neural networks (GHH, Attia et al.; Shiue et al.), CNNs (THU NGN, Wu et al.; AmritaNLP, Vinayan et al.) and XGB classifiers (BomJi, Santus et al.; ECNU, Zhou et al.).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>as described above) with negative examples. Two types of negative examples were added: examples where the attribute is shared between word 1 and word 2 (both concepts have the attribute in question), and examples where the attribute is neither an attribute of word 1 nor word 2 (both concepts lack the attribute). For that last type of attributes, since their</figDesc><table><row><cell>word 1</cell><cell>word 2</cell><cell>attribute</cell></row><row><cell cols="3">airplane helicopter wings</cell></row><row><cell cols="3">bagpipe accordion pipes</cell></row><row><cell cols="2">dolphin seal</cell><cell>fins</cell></row><row><cell>gorilla</cell><cell cols="2">crocodile bananas</cell></row><row><cell>oak</cell><cell>pine</cell><cell>leaves</cell></row><row><cell cols="2">octopus lobster</cell><cell>tentacles</cell></row><row><cell cols="2">pajamas necklace</cell><cell>silk</cell></row><row><cell>skirt</cell><cell>jacket</cell><cell>pleats</cell></row><row><cell cols="2">subway train</cell><cell>dirty</cell></row><row><cell cols="3">Table 1: Sample data: Word pairs and their distinguish-ing features (positive examples)</cell></row><row><cell cols="3">number is potentially huge, the examples were se-</cell></row><row><cell cols="3">lected randomly so that the number of negative ex-</cell></row><row><cell cols="3">amples matches the number of positive examples.</cell></row><row><cell>word 1</cell><cell>word 2</cell><cell>attribute</cell></row><row><cell>tractor</cell><cell>scooter</cell><cell>wheels</cell></row><row><cell>crow</cell><cell>owl</cell><cell>black</cell></row><row><cell cols="2">squirrel leopard</cell><cell>fur</cell></row><row><cell>pillow</cell><cell>jacket</cell><cell>white</cell></row><row><cell cols="3">dresser cupboard large</cell></row><row><cell>spider</cell><cell cols="2">elephant legs</cell></row><row><cell>gloves</cell><cell>pants</cell><cell>wool</cell></row><row><cell>gorilla</cell><cell>panther</cell><cell>long</cell></row><row><cell>scarf</cell><cell>slippers</cell><cell>colours</cell></row><row><cell>lion</cell><cell>zebra</cell><cell>large</cell></row></table><note>Presence of both positive and negative examples makes it possible to train a binary classifier that, for a given triple, predicts whether the attribute is a difference between word 1 and word 2 .</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Sample data: Word pairs and nondistinguishing features (negative examples)</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head></head><label></label><figDesc>candidate positive examples, two annotators agreed to keep 45.2% of items, agreed to discard 33% of items, and disagreed on 21.8% of items. A total of 54.8% of candidate positive examples were discarded. Among the negative examples, 12.5% of items were discarded. Annotators agreed to keep 87.5% of items, agreed to discard 0.8% of items, and disagreed on 11.6% of items. The examples that both annotators agreed to discard from the positive examples were added to the negative examples. Finally, the third author manually filtered the data removing dubious examples.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Composition of the manually validated part of the dataset</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Total size of the final dataset.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Number of correct and incorrect classifications for the test set using the cosine baseline.</figDesc><table><row><cell>Rank</cell><cell>Team</cell><cell>Score</cell></row><row><cell>1</cell><cell>SUNNYNLP</cell><cell>0.75</cell></row><row><cell>2</cell><cell>Luminoso</cell><cell>0.74</cell></row><row><cell>3</cell><cell>BomJi</cell><cell>0.73</cell></row><row><cell>3</cell><cell>NTU NLP</cell><cell>0.73</cell></row><row><cell>4</cell><cell>UWB</cell><cell>0.72</cell></row><row><cell>5</cell><cell>ELiRF-UPV</cell><cell>0.69</cell></row><row><cell>5</cell><cell cols="2">Meaning Space 0.69</cell></row><row><cell>5</cell><cell>Wolves</cell><cell>0.69</cell></row><row><cell>6</cell><cell>Discriminator</cell><cell>0.67</cell></row><row><cell>6</cell><cell>ECNU</cell><cell>0.67</cell></row><row><cell>5</cell><cell>AmritaNLP</cell><cell>0.66</cell></row><row><cell>6</cell><cell>GHH</cell><cell>0.65</cell></row><row><cell>7</cell><cell>ALB</cell><cell>0.63</cell></row><row><cell>7</cell><cell>CitiusNLP</cell><cell>0.63</cell></row><row><cell>7</cell><cell>THU NGN</cell><cell>0.63</cell></row><row><cell>8</cell><cell>UNBNLP</cell><cell>0.61</cell></row><row><cell>9</cell><cell>UNAM</cell><cell>0.60</cell></row><row><cell>10</cell><cell>UMD</cell><cell>0.60</cell></row><row><cell>11</cell><cell>ABDN</cell><cell>0.52</cell></row><row><cell>12</cell><cell>Igevorse</cell><cell>0.51</cell></row><row><cell>13</cell><cell>bicici</cell><cell>0.47</cell></row><row><cell>ceiling</cell><cell>human</cell><cell>0.90</cell></row><row><cell cols="3">baselines (strong) cosine 0.607</cell></row><row><cell></cell><cell cols="2">(weak) random 0.517</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6 :</head><label>6</label><figDesc>Codalab competition results, compared to baselines and the human-based performance ceiling.</figDesc><table><row><cell cols="4">System type Count Average F1 Best F1</cell></row><row><cell>NN</cell><cell>4</cell><cell>0.66</cell><cell>0.73</cell></row><row><cell>Rule-based</cell><cell>7</cell><cell>0.63</cell><cell>0.69</cell></row><row><cell>SVM / SVC</cell><cell>6</cell><cell>0.68</cell><cell>0.75</cell></row><row><cell>XGB</cell><cell>2</cell><cell>0.70</cell><cell>0.73</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 7 :</head><label>7</label><figDesc>Average and best F1 score per system type.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8 :</head><label>8</label><figDesc>Average F1 score per resource type (KB = Knowledge Base, WE = Word Embeddings).</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 9 :</head><label>9</label><figDesc>Results of human annotation of the Easy, Hard and Hardest subsets of the test data.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 10 :</head><label>10</label><figDesc>Example label and source distribution for the Easy and Hard subsets of the test data. differentiate in the context of our task. For example, attributes that stand in the whole-part relation with the word, as in door,gate,handle, lean on the hard side (9 examples in the Hard sample vs. 2 in the Easy one). Attributes that are adjectives, as in rods,wire,hard, also tend to be hard (25 examples in the Hard sample vs. 13 in the Easy one), presumably because of the gradient and context-dependent meaning of adjectives; indeed, 9 of the 13 "easy" examples with adjective attributes involve colours, which are relatively context-independent (as opposed to 4 colour out of the 25 "hard" adjective examples). Further analysis reveals an unequal distribution of positive and negative examples in the Easy and Hard subsets across different types of data, as shown in Table 10. While overall easy examples tend to be the positive ones and hard examples tend to be negative, among the examples derived from McRae feature norms the pattern is reversed.</figDesc><table><row><cell>identify a discriminative attribute, rather than a</cell></row><row><cell>non-discriminative one. Finally, out of the 1340</cell></row><row><cell>triples that were failed by at least one of the top 5</cell></row><row><cell>systems, 502 (37%) were failed by just one model.</cell></row><row><cell>This shows that a great variance exists in the be-</cell></row><row><cell>havior and in the weaknesses of these systems, de-</cell></row><row><cell>spite their very close performance.</cell></row><row><cell>Types of attributes seem to vary in how difficult</cell></row><row><cell>they are to</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">This is a somewhat arbitrary choice. One could experiment with a symmetric notion of a discriminative attribute, whereby both apple,banana,red and banana,apple,red are considered examples of semantic difference, but in our opinion such an approach would only make the task more challenging.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">An anonymous reviewer points out that the presence or absence of a feature in w1 can be influenced by the context of w2: e.g. tail could be considered a distinguishing feature for the pair mouse,cheese but not for mouse, keyboard, because keyboard primes the device sense of the word mouse as opposed to the animal sense. Such strong contextualization effects could make our task even more interesting, but we believe that these cases are too rare to strongly influence the outcomes.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We thank Marco Baroni, Roberto Zamparelli, and three anonymous reviewers for their helpful comments. We thank Giulia Cappelli, Patrick Jeunieaux, and Marco Senaldi for their valued support in the data analysis. This work was supported by the CNRS PEPS I3A project ReSeRVe.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Unam at semeval-2018 task 10: Unsupervised semantic discriminative attribute identification in neural word embedding cones</title>
+		<author>
+			<persName><forename type="first">Ignacio</forename><surname>Arroyo-Fernndez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlos-Francisco</forename><surname>Mendez-Cruz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Meza</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Ghh at semeval-2018 task 10: Discovering discriminative attributes in distributional semantics</title>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Attia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Younes</forename><surname>Samih</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wolfgang</forename><surname>Maier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Don&apos;t count, predict! a systematic comparison of context-counting vs. context-predicting semantic vectors</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgiana</forename><surname>Dinu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Germán</forename><surname>Kruszewski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACL (1)</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="238" to="247" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">A critique of word similarity as a method for evaluating distributional semantic models</title>
+		<author>
+			<persName><forename type="first">Miroslav</forename><surname>Batchkarov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Kober</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Reffin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julie</forename><surname>Weeds</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Weir</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">First Workshop on Evaluating Vector Space Representations for NLP</title>
+				<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Uwb at semeval-2018 task 10: Capturing discriminative attributes from word distributions</title>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Brychcn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Hercig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Steinberger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michal</forename><surname>Konkol</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Analyzing the factors underlying the structure and computation of the meaning of chipmunk, cherry, chisel, cheese, and cello (and many other such concrete nouns)</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>George</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ken</forename><surname>Cree</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mcrae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Experimental Psychology: General</title>
+		<imprint>
+			<biblScope unit="volume">132</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">163</biblScope>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Alb at semeval-2018 task 10: A system for capturing discriminative attributes</title>
+		<author>
+			<persName><forename type="first">Bogdan</forename><surname>Dumitru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alina</forename><forename type="middle">Maria</forename><surname>Ciobanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Dinu Liviu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Problems with evaluation of word embeddings using word similarity tasks</title>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yulia</forename><surname>Tsvetkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpendre</forename><surname>Rastogi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">First Workshop on Evaluating Vector Space Representations for NLP</title>
+				<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Citiusnlp at semeval-2018 task 10: The use of transparent distributional models and salient contexts to discriminate word</title>
+		<author>
+			<persName><forename type="first">Pablo</forename><surname>Gamallo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Elirf-upv at semeval-2018 task 10: Capturing discriminative attributes</title>
+		<author>
+			<persName><surname>Jos-Ngel Gonzlez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">-</forename><forename type="middle">F</forename><surname>Llus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Encarna</forename><surname>Hurtado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ferran</forename><surname>Segarra</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pla</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Igevorse at semeval-2018 task 10: Exploring an impact of word embeddings concatenation for capturing discriminative attributes</title>
+		<author>
+			<persName><forename type="first">Maxim</forename><surname>Grishin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Simlex-999: Evaluating semantic models with (genuine) similarity estimation</title>
+		<author>
+			<persName><forename type="first">Felix</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="665" to="695" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Unbnlp at semeval-2018 task 10: Evaluating unsupervised approaches to capturing discriminative attributes</title>
+		<author>
+			<persName><forename type="first">Milton</forename><surname>King</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ali</forename><surname>Hakimi Parizi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Cook</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Capturing discriminative attributes in a distributional space: Task proposal</title>
+		<author>
+			<persName><forename type="first">Alicia</forename><surname>Krebs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Denis</forename><surname>Paperno</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of RepEval 2016: The First Workshop on Evaluating Vector Space Representations for NLP</title>
+				<meeting>RepEval 2016: The First Workshop on Evaluating Vector Space Representations for NLP</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Discriminator at semeval-2018 task ten: Zero-shot discrimination</title>
+		<author>
+			<persName><forename type="first">Artur</forename><surname>Kulmizev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mostafa</forename><surname>Abdou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vinit</forename><surname>Ravishankar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Malvina</forename><surname>Nissim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Sunnynlp at semeval-2018 task 10: A supportvector-machine-based method for detecting semantic difference using taxonomy and word embedding features</title>
+		<author>
+			<persName><forename type="first">Sunny</forename><surname>Lai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yee</forename><surname>Kwong Sak Leung</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Leung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">Angeliki</forename><surname>Lazaridou</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nghia The</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Pham</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Baroni</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1603.02618</idno>
+		<title level="m">The red one!: On learning to refer to things based on their discriminative properties</title>
+				<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">BLIND: a set of semantic feature norms from the congenitally blind</title>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giulia</forename><surname>Cazzolli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanna</forename><surname>Marotta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Behavior Research Methods</title>
+		<imprint>
+			<biblScope unit="volume">45</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="1218" to="1233" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Linguistic regularities in sparse and explicit word representations</title>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the eighteenth conference on computational natural language learning</title>
+				<meeting>the eighteenth conference on computational natural language learning</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="171" to="180" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">Issues in evaluating semantic spaces using word analogies</title>
+		<author>
+			<persName><forename type="first">Tal</forename><surname>Linzen</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1606.07736</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Abdn at semeval-2018 task 10: Recognising discriminative attributes using context embeddings and wordnet</title>
+		<author>
+			<persName><forename type="first">Rui</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guanyi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruizhe</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chenghua</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Semantic feature production norms for a large set of living and nonliving things</title>
+		<author>
+			<persName><forename type="first">Ken</forename><surname>Mcrae</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>George</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cree</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Seidenberg</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mcnorgan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Behavior research methods</title>
+		<imprint>
+			<biblScope unit="volume">37</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="547" to="559" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Bomji at semeval-2018 task 10: Combining vector-, pattern-and graph-based information to identify discriminative attributes</title>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emmanuele</forename><surname>Chersoni</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<publisher>SemEval</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Ntu nlp lab system at semeval-2018 task 10: Verifying semantic differences by integrating distributional information and expert knowledge</title>
+		<author>
+			<persName><forename type="first">Yow-Ting</forename><surname>Shiue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hen-Hsen</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hsin-Hsi</forename><surname>Chen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Meaning space at semeval-2018 task 10: Combining explicitly encoded knowledge with information extracted from word embeddings</title>
+		<author>
+			<persName><forename type="first">Pia</forename><surname>Sommerauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antske</forename><surname>Fokkens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piek</forename><surname>Vossen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Luminoso at semeval-2018 task 10: Distinguishing attributes using text corpora and relational knowledge</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Speer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joanna</forename><surname>Lowry-Duda</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Wolves at semeval-2018 task 10: Semantic discrimination based on knowledge and association</title>
+		<author>
+			<persName><forename type="first">Shiva</forename><surname>Taslimipoor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omid</forename><surname>Rohanian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Le</forename><forename type="middle">An</forename><surname>Ha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Amritanlp@semeval-2018 task 10: Capturing discriminative attributes using convolution neural network over global vector representation</title>
+		<author>
+			<persName><forename type="first">Vivek</forename><surname>Vinayan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anand</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K P</forename><surname>Soman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Semantic feature production norms for a large set of objects and events</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>David</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gabriella</forename><surname>Vinson</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Vigliocco</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Behavior Research Methods</title>
+		<imprint>
+			<biblScope unit="volume">40</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="183" to="190" />
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Thu ngn at semeval-2018 task 10: Capturing discriminative attributes with mlp-cnn model</title>
+		<author>
+			<persName><forename type="first">Chuhan</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fangzhao</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sixing</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhigang</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yongfeng</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation<address><addrLine>Se-</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Umd at semeval-2018 task 10: Can word embeddings capture discriminative attributes?</title>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marine</forename><surname>Carpuat</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Ecnu at semeval-2018 task 10: Evaluating simple but effective features on machine learning methods for semantic difference detection</title>
+		<author>
+			<persName><forename type="first">Yunxiao</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Man</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuanbin</forename><surname>Wu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th international workshop on semantic evaluation</title>
+				<meeting>the 12th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

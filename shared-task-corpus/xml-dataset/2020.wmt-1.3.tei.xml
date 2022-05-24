@@ -1,0 +1,1333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Findings of the WMT 2020 Shared Task on Chat Translation</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">M</forename><surname>Amin Farajian</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">Unbabel</orgName>
+								<address>
+									<addrLine>Rua Castilho 52</addrLine>
+									<postCode>1250-069</postCode>
+									<settlement>Lisbon</settlement>
+									<country key="PT">Portugal</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">António</forename><forename type="middle">V</forename><surname>Lopes</surname></persName>
+							<email>antonio.lopes@unbabel.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Unbabel</orgName>
+								<address>
+									<addrLine>Rua Castilho 52</addrLine>
+									<postCode>1250-069</postCode>
+									<settlement>Lisbon</settlement>
+									<country key="PT">Portugal</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">André</forename><forename type="middle">F T</forename><surname>Martins</surname></persName>
+							<email>andre.martins@unbabel.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Unbabel</orgName>
+								<address>
+									<addrLine>Rua Castilho 52</addrLine>
+									<postCode>1250-069</postCode>
+									<settlement>Lisbon</settlement>
+									<country key="PT">Portugal</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="department">Instituto de Telecomunicações</orgName>
+								<orgName type="institution">Instituto Superior Técnico</orgName>
+								<address>
+									<settlement>Lisbon</settlement>
+									<country key="PT">Portugal</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sameen</forename><surname>Maruf</surname></persName>
+							<email>sameen.maruf@monash.edu</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Monash University</orgName>
+								<address>
+									<settlement>VIC</settlement>
+									<country key="AU">Australia</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Gholamreza</forename><surname>Haffari</surname></persName>
+							<email>gholamreza.haffari@monash.edu</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Monash University</orgName>
+								<address>
+									<settlement>VIC</settlement>
+									<country key="AU">Australia</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Findings of the WMT 2020 Shared Task on Chat Translation</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We report the results of the first edition of the WMT shared task on Chat Translation. The task consisted of translating bilingual conversational text, in particular customer support chats for the English-German language pair (English agent, German customer). This task varies from the other translation shared tasks, i.e. news and biomedical, mainly due to the fact that the conversations are bilingual, less planned, more informal, and often ungrammatical. Furthermore, such conversations are usually characterized by shorter and simpler sentences and contain more pronouns.</p><p>We received 14 submissions from 6 participating teams, all of them covering both directions, i.e. En→De for agent utterances and De→En for customer messages. We used automatic metrics (BLEU and TER) for evaluating the translations of both agent and customer messages and human document-level direct assessments to evaluate the agent translations.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Despite the significant progress in Neural Machine Translation (NMT) in the last years <ref type="bibr" target="#b39">(Vaswani et al., 2017;</ref><ref type="bibr" target="#b11">Hassan et al., 2018)</ref>, most systems still operate at sentence-level, disregarding the context of previous sentences. It has been pointed out that ignoring the context may degrade the quality of translations, leading to incorrect choice of pronouns, lexical inconsistency, and incoherence <ref type="bibr" target="#b21">(Läubli et al., 2018;</ref><ref type="bibr" target="#b37">Toral et al., 2018)</ref>. This is particularly relevant in the context of bilingual chat translation, which normally consists of short messages, referencing each other, and where the correct lexical choice to translate a speaker might have been uttered in a previous turn by the other speaker.</p><p>Numerous systems have been proposed recently to address document-level translation (Tiedemann * These authors contributed equally. <ref type="bibr" target="#b36">and Scherrer, 2017;</ref><ref type="bibr" target="#b26">Maruf et al., 2019;</ref><ref type="bibr" target="#b28">Miculicich et al., 2018;</ref><ref type="bibr" target="#b41">Voita et al., 2019b;</ref><ref type="bibr" target="#b38">Tu et al., 2018;</ref><ref type="bibr" target="#b27">Maruf et al., 2018;</ref><ref type="bibr" target="#b13">Jean et al., 2017;</ref><ref type="bibr" target="#b42">Voita et al., 2018</ref><ref type="bibr" target="#b40">Voita et al., , 2019a</ref><ref type="bibr" target="#b14">Junczys-Dowmunt, 2019;</ref><ref type="bibr" target="#b23">Lopes et al., 2020)</ref>, focusing on extending both Long Short-Term Memory (LSTM) <ref type="bibr" target="#b12">(Hochreiter and Schmidhuber, 1997)</ref> and Transformer <ref type="bibr" target="#b39">(Vaswani et al., 2017)</ref> with additional encoders or decoders to incorporate previous sentences context. However, often, the approaches are developed for single speaker and document-like tasks. By contrast, in this shared task, we focus on the online multispeaker and multi-lingual setting, where each participant in the conversation speaks in their native language. This task has been first considered by <ref type="bibr" target="#b27">Maruf et al. (2018)</ref>.</p><p>In the first round of the Chat Translation shared task, we propose translating dialogues with two speakers, where the first speaker is speaking in the German→English direction and the second is speaking in the English→German. Moreover, we tailor this task for a specific use case: translating conversational text of the customer support chats. In this setting the utterances of the German speaking customer are translated using a machine translation system into English. Then, the replies of the English speaking agent are translated into German and sent to the customer.</p><p>Translating conversational text, in particular customer support chats, is an important and challenging application task for machine translation technology. This type of content has so far not been extensively explored in prior MT research, largely due to the lack of publicly available data sets. Prior related work has mostly focused on movie subtitles and European Parliament speeches. To alleviate this problem, we created a corpus for this shared task, BConTrasT( §2), which is translated from English into German and is based on the monolingual Taskmaster-1 corpus <ref type="bibr" target="#b4">(Byrne et al., 2019)</ref>.</p><p>The main motivation of this shared task is to analyze the challenges posed by conversational data as a content type, which has a broad application in industry-level services. In this content type, the text is usually not carefully well formatted, frequently contains typos, abbreviations, and inconsistent casing, usually with shorter sentences, often informal and ungrammatical. Since chat sessions are interactive, the task of translating conversations can be seen as a two-in-one task, modelling both dialogue and document-level translation at the same time.</p><p>In order to evaluate the translation quality of the participating systems we use both automatic metrics (BLEU <ref type="bibr" target="#b33">(Papineni et al., 2002)</ref> and TER <ref type="bibr" target="#b35">(Snover et al., 2006)</ref>), and human evaluation, consisting of Direct Assessment (DA). For DA, we define the evaluation process similarly to last year's WMT News Translation task <ref type="bibr" target="#b2">(Barrault et al., 2019)</ref> with document-level context and following the set of recommendations of <ref type="bibr" target="#b20">Läubli et al. (2020)</ref>. However, differently than the News task, here we rely on professional translators instead of a crowd. This is mainly based on the observations of <ref type="bibr" target="#b20">Läubli et al. (2020)</ref>, which provides evidence of the professional translators having better judgment and ability to detect fine-grained phenomena.</p><p>Six teams participated in this first campaign of the Chat Translation shared task, with 14 runs in total. All teams submitted both English→German and German→English directions. In §4, we describe each system in more details.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Bilingual Conversational Data</head><p>One of the main challenges of bilingual conversation translation is the lack of publicly available data sets targeted for the task. The most commonly used datasets are movie subtitles <ref type="bibr" target="#b22">(Lison and Tiedemann, 2016)</ref>, European Parliament speeches <ref type="bibr" target="#b18">(Koehn, 2005)</ref>, and conversations extracted from the public forums such as Ubuntu Dialogue corpus <ref type="bibr" target="#b24">(Lowe et al., 2015)</ref>. These corpora, however, usually involve more than two speakers, contain a significant amount of noise (e.g. speakers information missing in the case of movie subtitles), and usually cover very broad domains.</p><p>For the Chat Translation task, we aim to develop a common ground for MT researchers to train and test their solutions by providing common training, validation, and test sets, as well as a common shared task definition. Unfortunately, due to the General Data Protection Regulation (GDPR), most commercial enterprises cannot distribute publicly their proprietary data. Therefore, we opted for using the Taskmaster-1 corpus <ref type="bibr" target="#b4">(Byrne et al., 2019)</ref>, which includes monolingual (English) taskbased dialogues in six domains: (i) ordering pizza, (ii) creating auto repair appointments, (iii) setting up ride service, (iv) ordering movie tickets, (v) ordering coffee drinks, and (vi) making restaurant reservations. We used this corpus for creating the data of our shared task.</p><p>Since the main goal of this task is to enable multilingual speakers communicate with each other in their native language, we used the Unbabel translation service 1 to translate the utterances of both speakers into the target language (German). In this process, the conversations (originally in English) were first automatically translated into German and then manually post-edited by Unbabel editors, who are native German speakers. Having the conversations in both languages allows us to simulate bilingual conversations in which one speaker, the customer, speaks in German and the other speaker, the agent, answers in English. Table <ref type="table" target="#tab_1">1</ref> shows the first few sentences of a bilingual conversation, along with their corresponding translations. In order to provide a realistic environment in which the amount of in-domain parallel data is scarce, we translated only a small set of the Taskmaster-1 corpus. Since pronouns are one of the main challenges in translating conversational data, we selected the conversations that contain at least one English anaphoric pronoun it. For this we used NEURALCOREF 2 and selected around 18k sentence pairs and then divided them into train, development, and test sets (see Table <ref type="table" target="#tab_2">2</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>A critical challenge faced by international companies today is delivering customer support in several different languages. One solution to this challenge is centralizing support with English speaking agents and having a translation layer in the middle to translate from the customer's language into the agent's (English) and vice versa. The ideal solution for this environment needs to consider the context of both sides which are in different languages, and also needs to be robust to the noisy input since the text here represents a higher degree of noise com-   pared to the cases like news, biomedical, etc. In the first edition of this shared task we focused on this environment and asked the participants to translate the customer's utterances from German into English and the agent's from English into German. Although participants were encouraged to submit both directions (i.e. modelling both speakers was desired), in this first round of the task, we emphasized on the agent side (English→German) and performed human evaluation in that direction exclusively. This decision is not entrenched and, thus, for future tasks we will aim at evaluating both translation directions. We decided to pursue this direction because the customer side (German→English) suffers from "translationese": English was the original source, and it was recently shown that translationese has a significant impact in evaluation both in automatic metrics <ref type="bibr" target="#b10">(Freitag et al., 2020)</ref> and human evaluation <ref type="bibr" target="#b20">(Läubli et al., 2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data</head><p>The main data source for this shared task is BCon-TrasT. As mentioned in §2, the translated conversations are sampled from the original Taskmaster-1 corpus, and in theory the other monolingual data could be leveraged by the participants either for back-translation or training in-domain language models. However, due to the high degree of sentence similarity within the Taskmaster-1 monolingual corpus, participants were not allowed to use this additional data to train their systems.</p><p>In addition to the provided in-domain training data, the participants were allowed to use all the training data provided by the News shared task organizers. Moreover, they were allowed to use existing pre-trained models, such as BERT <ref type="bibr" target="#b8">(Devlin et al., 2018)</ref>, Transformer-XL <ref type="bibr" target="#b6">(Dai et al., 2019)</ref>, Reformer <ref type="bibr" target="#b17">(Kitaev et al., 2020)</ref>, among others.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Baseline</head><p>To define our non-human baseline, we use Facebook's last year submissions to the document-level translation task for both directions  as the terms of comparison. Even though these models are not domain adapted for the Chat Translation task, we find them to have a reasonable quality for this domain. However, it is worth mentioning that we solely report the results of these models with the automatic metrics and we do not perform any type of direct assessment on these models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participants</head><p>Six participants submitted their systems to the Chat Translation shared task. Although the German→English direction (i.e. customer side) was optional, all participants submitted their systems for both directions. In total, 14 runs were submitted (although only primary submissions were considered for human evaluation). Table <ref type="table" target="#tab_4">3</ref>   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Systems</head><p>Here we briefly detail each participant's systems as described by the authors and refer the reader to the participant's submission for further details.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.1">Naver Labs</head><p>Naver Labs Europe (NLE) uses a document-level model trained on both the parallel and backtranslated data. The authors developed a multidomain system using the task-specific adapter layers and used it to participate in all the following tasks: chat translation, robustness, and biomedical. These systems are designed to translate both German and English text, or even mixed-language documents. Furthermore, in order to improve the robustness of these systems to noise, the authors applied the following pre-processing solutions: special handling of case with inline casing, a copy placeholder for rare characters, synthetic noise generation, and BPE dropout. Their primary submission is an ensemble of three instances of this model, which was used to decode the full bilingual dialogues at once using the entire dialogue's context. The first contrastive submission is a single model with these settings. The second submission is an ensemble of four sentence-level bidirectional models (one of them with masked language model pretraining). For more details see <ref type="bibr">Bérard et al. (2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.2">Universities of Edinburgh and Uppsala</head><p>The joint submissions of University of Edinburgh and Uppsala University are based on the transformer-big architecture <ref type="bibr" target="#b39">(Vaswani et al., 2017)</ref> and rely on fine-tuning pre-existing systems from the WMT 2019 News Translation Task (experiment with both UEdin's submission based on Marian (Junczys-Dowmunt et al., 2018) and Facebook's submission based on Fairseq ).</p><p>They are fine-tuned on pseudo-in-domain web crawled data and in-domain task data. The authors also experiment with (i) domain and speaker-level adaptation by automatically tagging the source and target sentences with domain and speaker tags respectively, and (ii) contextual NMT by exploiting the previous context, varying the type and number of previous utterances used. The final submission is an ensemble of four models trained with domain tags and using noisy-channel re-ranking. For more details see <ref type="bibr">(Moghe et al., 2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.3">Tao Wang (individual participant)</head><p>Individual participant Tao Wang uses a sentencelevel system trained on all the WMT20 En-De parallel data. The author uses the Fairseq codebase to train a transformer-big model with the default settings of a base model. Then, the models are fine-tuned with the in-domain training set provided for the Chat Translation shared task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.4">Tencent</head><p>Tencent systems are based on self-attention networks including document-level multi-encoder and sentence-level Transformer. In order to get more in-domain data the authors use a multi-feature data selection method (e.g. FDA, n-gram LM, Transformer LM and BERT) to select data from news corpus. Furthermore, the systems have different fine-tuning strategies, ranging from sentence-level to document-level. Finally, these systems use large scale pre-trained language models including monolingual BERT <ref type="bibr" target="#b8">(Devlin et al., 2018)</ref> and bilingual XLM <ref type="bibr" target="#b19">(Lample and Conneau, 2019)</ref>. For more details see <ref type="bibr" target="#b43">(Wang et al., 2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.5">University of Maryland</head><p>The University of Maryland systems are both sentence and document-level systems, with two distinct architectures for this task: (i) standard transformer pre-trained on WMT17 News and finetuned on the WMT20 Chat data, and (ii) modified transformer by including additional encoder to process one previous utterance in tandem with the current utterance, also pre-trained on WMT17 News and fine-tuned on a mix of WMT20 Chat data and a subset of WMT19 News data. The primary system is based on the first architecture while the second architecture is used for the two contrastive submissions. The contrastive submissions differ in the manner and timing in which training data was processed. For more details see <ref type="bibr" target="#b1">(Bao et al., 2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.6">Jordan University of Science and Technology</head><p>Mohammed et al. (2020) train separate models for the agent and customer sides after combining the training and development datasets for each side. They use bidirectional RNN (LSTM) with pretrained BERT <ref type="bibr" target="#b8">(Devlin et al., 2018)</ref> embeddings for each of the translation directions. In addition, the authors report using different parameters for training, resulting in different models which then are used for ensemble decoding. For more details see <ref type="bibr" target="#b30">(Mohammed et al., 2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Submission Summary</head><p>The submissions for this year's shared task cover different approaches from simple sentence-level to more complex document-level models with extra encoders and decoders to summarize the context (i.e. previous sentences), and from single direction to bi-directional translations (i.e. jointly modelling both En→De and De→En directions). Moreover, they report different approaches for training their systems ranging from fine-tuning the existing models and using embeddings of the large pre-trained models such as BERT <ref type="bibr" target="#b8">(Devlin et al., 2018)</ref> to training the models from scratch. Not only the submissions are different in their architectures, but they also differ in the data they use during the training. Some use all the available WMT parallel data in addition to the in-domain training data provided for the Chat task, and some apply data selection methods to get more in-domain data to leverage for training their systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation Procedures</head><p>For the first round of the Chat Translation shared task we follow the standard procedure of WMT shared tasks and evaluate both on automatic metrics and human evaluation with context. Even though automatic metrics provide a cheap mechanism to evaluate Machine Translation (MT) systems outputs, they do not tell the whole story for highperforming systems <ref type="bibr" target="#b25">(Ma et al., 2019)</ref>. For example, recent "sentence-level human parity" claims do not seem to hold when the context of the document is considered <ref type="bibr" target="#b21">(Läubli et al., 2018)</ref>, and metrics such as BLEU <ref type="bibr" target="#b33">(Papineni et al., 2002)</ref> fail to correlate properly with human assessment <ref type="bibr" target="#b5">(Callison-Burch et al., 2006)</ref>. In this edition of the shared task, we aim for both automatic and manual evaluations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Automatic Evaluation</head><p>For the automatic evaluation, we use both BLEU <ref type="bibr" target="#b33">(Papineni et al., 2002)</ref> and TER <ref type="bibr" target="#b35">(Snover et al., 2006)</ref> metrics. For the former, we use SacreBLEU 3 <ref type="bibr" target="#b34">(Post, 2018)</ref>, while for TER we use v0.7.25 4 and report case-sensitive scores. The automatic metrics are used to measure the quality of the translations of both sides, i.e. customer and agent.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Human Evaluation</head><p>For the human evaluation we follow a similar procedure to last year's WMT News shared task <ref type="bibr" target="#b2">(Barrault et al., 2019)</ref> but take into account the set of recommendations defined by <ref type="bibr" target="#b20">Läubli et al. (2020)</ref>.  Specifically, we build HITs (following the Mechanical Turk's term human intelligence task) for the Segment Rating + Document Context (SR+DC) configuration with approximately 100 tasks similarly to WMT News, where both the source and target context is available to the evaluator when rating the actual source and target sentence for evaluation. We use an internal tool at Unbabel which provides the necessary visualization to evaluate a SR+DC configuration. Despite WMT News <ref type="bibr" target="#b2">(Barrault et al., 2019)</ref> use Appraise <ref type="bibr" target="#b9">(Federmann, 2012)</ref> for the human evaluation as it's tailored for document like text, the tool used for this task was built with chat evaluation in mind and outlines boundaries between each speaker. Figure <ref type="figure" target="#fig_1">1</ref> illustrates the tool used for evaluation. Following <ref type="bibr" target="#b20">Läubli et al. (2020)</ref> guidelines, we use trusted professional translators from the Unbabel community to evaluate the adequacy of the translation on a scale of 0 to 100. The guidelines to the translators were as simple as possible to avoid any type of bias, asking them to rate each sentence taking the context into account and penalizing when there is a context error, as they would for a noncontextual error.</p><p>For the first edition of this shared task, we per-  formed human assessment on the agent side exclusively. Our decision is due to a limitation in the process of data creation, the customer direction is from professionally translated German (yet translated nonetheless) to the noisy original English (e.g. typos). Therefore, if we proceed with the evaluation as it stands we would induce two biases, 1) assessing a softer version of translationese as the source would be a translation, and 2) the noisy reference could bias the evaluators to rank the systems higher due to the noise and not quality. Both biases could be misleading and impacting their evaluations as professional translators are more sensitive to fine-grained phenomena <ref type="bibr" target="#b20">(Läubli et al., 2020;</ref><ref type="bibr" target="#b2">Barrault et al., 2019)</ref>. Moreover, in the proposed setting the impact of the noisy context for the agent is negligible for them to have a gist of the message; however there is an extra responsibility in translating the agent since the application of these systems in industry carries an additional factor: it has the company brand associated. Therefore, we preferred to focus more on evaluating the agent translations more rigorously than to spend resources in evaluating the customer.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.1">Protocol for building HITs</head><p>We follow a hybrid between WMT News and <ref type="bibr" target="#b20">Läubli et al. (2020)</ref> to build HITs. Specifically, as we resorted to professional translators there are fewer control tasks in every 100 HITs (i.e. 5% of the tasks being control tasks). To create a control task, we take inspiration from both the aforementioned resources and perform the following, assuming there is a vocabulary containing all the target words of the conversation: For the very short sentences containing one or two words we replace their words with some random words from the conversation's vocabulary. In the case of sentences with three words we replace the second and third words as before while keeping the first word. Finally, for longer sentences we preserve the first and last 10% of the words while randomly reordering the remaining 80% of the middle words. It is also worth mentioning that the corruption is only employed in the current sentence for evaluation and the context is preserved with no change.</p><p>When building the HIT bundle, among different options, we followed the same approach as WMT19 New's <ref type="bibr" target="#b2">(Barrault et al., 2019)</ref> procedure for SR+DC: in order to save time of our annotators, we built the HITs such that a sentence belonging to a given document is displayed and rated before the next sentence of the same document for the same participant MT system output. This is specially suited for our task as the conversations have larger contexts via numerous interactions. Similarly to WMT19 News <ref type="bibr" target="#b2">(Barrault et al., 2019)</ref>, we randomly picked documents from the pool of documents and for each participant retrieved their translations of that document. Next, we randomly picked documents from the pool until the sum of all their sentences was approximately 95 and added the remaining control tasks. For each document in the HIT, we sliced the translated conversation so that the order of the sentences was preserved when presented to the annotator for the SR+DC evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.2">Evaluated Dialogs</head><p>Due to constraints with the annotators, we evaluated a subsample of the full test set. Therefore, we followed the procedure in § 5.2.1 with a budget constraint, where we specified the number of desired sentences and randomly sampled dialogues until the threshold is met (number of sentences). In the end, we evaluated 40% of the agent side, as noted in §5.2 we evaluated only this direction.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Discussion</head><p>The results of the automatic scores of both agent and customer side of all the submitted systems are reported in Table <ref type="table" target="#tab_6">4</ref>. Comparing these scores with our baselines (i.e. FAIR WMT'19 models) shows that in the agent side (En→De) there is a significant difference (i.e. between +3.0 to +17.0 BLEU scores) in the performance of the submitted systems and the baseline. However, comparing the differences between their TER scores reveals that there is a smaller gap between the systems, ranging from +0.2 to -12.9.</p><p>On the customer side we observe different behaviours and more diverse scores. In fact, the differences of the BLEU scores of the baseline and the submissions vary from -7.2 up to +12.7. This means that in a few cases our submitted systems fall behind the baseline by -7.2 BLEU scores. The TER scores show a similar behaviour and the differences of the scores of the submitted systems with the baseline varies from +8.2 (in the worst case) to -9.2 (in the case of best performing system). Given the fact that our references for this direction (i.e  De→En) contain a higher degree of noise (eg. typos, wrong casings, etc) it is difficult to make a final and strong conclusion for this direction. We plan to investigate this aspect further. Table <ref type="table" target="#tab_8">5</ref> depicts the human evaluation scores (Avg.) and the normalized z-scores (Avg. z) of the agent side of the primary submissions. Human performance estimates are analogous to <ref type="bibr" target="#b2">Barrault et al. (2019)</ref>, evaluation of human-produced reference translations are denoted by "HUMAN" in all tables. There are three main clusters of scores, very high scores near human baseline levels (Naver-Labs, UEdinUppsala, and IndTaoWang), significant scores (UniMaryland and Tencent), and lower scores (UJordan). Focusing on the high performing systems, we see that NaverLabs is the clear winner of the task, followed closely by UEdinUppsala, and IndTaoWang.</p><p>In addition to the overall DA scores of the submissions one might ask how they perform on the more detailed aspects such as sentences with different lengths or sentences containing pronouns. In order to address the first question, we analyzed the human scores for each system with respect to different intervals of lengths (i.e., different bins), namely 1-5 words, 6-10 words, 11-15 words, and, finally, 16+ words. To this end we can condition either (i) on the source sentence, or (ii) on the reference sentence, or (iii) on the generated translations of each system. Among these, we focused on (i) which provides more insights and is fairer comparison for all the systems.</p><p>Table <ref type="table">6</ref> presents the human evaluation scores (Avg.) and the normalized z-scores (Avg. z) of the evaluated submissions in each length range. As we see, all the systems perform similarly in this range, all of them very close to the human reference. It is intersting to note that the submission of UJordan outperforms the human reference by +2.5  and +0.111 points on the average and normalized z-score, respectively. The differences increase by moving to the longer source sentences which is expected. The only unusual observation in these scores is the higher scores of the NaverLabs in the last range (i.e. sentences with 16+ words) in which it outperforms the human reference by +5.0 and +0.222 points on the average and normalized z-score, respectively. This can be due to the evaluators preferences, but still needs further analysis before making any final conclusion.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Agent</head><p>The English sentences containing pronouns is another aspect that we analyzed further and compared the performances of the submitted systems when there is a pronoun in the sentence. Specifically, we compute the scores for sentences which contain at least one instance of pronoun it. Table <ref type="table" target="#tab_9">7</ref> shows the human scores and the normalized zscores. As the results show, there is a big difference in the scores obtained by human translators and the submitted systems. In fact, it varies from -10.0 to -50.0 in the case of average score and from -0.486 to -1.567 for the normalized z-scores. Even though the number of tasks is not large, these preliminary results suggest current document-level systems still fall behind humans in challenging linguistic phenomena such as translating pronouns, and require further research for these phenomena.</p><p>Finally, we note that three of the submitted primary systems do not leverage the document-level context and use only the sentence-level information. Due to the data size and content proposed for the first edition of the Chat Translation shared task, this is to be expected as there is some level of repetition and similarity among different conversations. However, by looking at the results, we notice that approaches with document-level context seem to benefit from human evaluation when compared to the automatic metrics.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusions</head><p>We presented the results of the first edition of the WMT20 Chat Translation shared task. For the purpose of this task, we created a bilingual English-German dialogue corpus, BConTrasT, which is publicly available on the website of the task. It is based on the monolingual Taskmaster-1 corpus <ref type="bibr" target="#b4">(Byrne et al., 2019)</ref> which was originally created in English. We translated around 18k of conversations of this corpus into German using the professional translators and used it as the in-domain corpus of the shared task.</p><p>This year we received 14 submissions from 6 different teams, all of them covering both directions (i.e. customer and agent). In addition to the automatic metrics (i.e. BLEU and TER) we performed an extensive Direct Assessment with document-level context using professional translators and used the results of these manual evalua-tions to rank the participating systems. The previous sentences of each conversion provide the annotators with more context to have a more reliable assessment of the translations. Due to the constraints posed by our data, this year we were able to perform the manual evaluation only on the agent side (i.e. En→De). However, we aim at assessing both sides in the futures tasks.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>(a) First sentence of the conversation. (b) Second sentence of the conversation. (c) Third sentence of the agent in the conversation. (d) Fifth sentence of the agent in the conversation.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 1 :</head><label>1</label><figDesc>Figure1: Screenshots of a segment-rating with document-level context using the direct assessment tool. Multiple screenshots are presented to illustrate the iterative nature of the evaluation and how the agent and customer directions are presented as the conversation flows. Note that only the agent side is assessed and the scores are just illustrative.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>Hey, ich muss mein Auto zum Mechaniker bringen und ich würde gerne Intelligent Auto Imports besuchen. tgt: Hey there, I need to take my car to mechanic and I would like to see Intelligent Auto imports.</figDesc><table><row><cell>agent</cell><cell>src: Hi there! How can I help? tgt: Hallo! Wie kann ich helfen?</cell></row><row><cell>customer</cell><cell>src:</cell></row></table><note>agent src: Sure! what type of car is it? tgt: Sicher! Was für ein Auto ist das?</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>An example of a conversation between a customer and an agent.</figDesc><table><row><cell></cell><cell cols="2">Customer</cell><cell cols="2">Agent</cell></row><row><cell></cell><cell cols="4">lines words lines words</cell></row><row><cell cols="5">Training 6,216 41,492 7,629 70,193</cell></row><row><cell>Dev</cell><cell>862</cell><cell cols="2">5,805 1,040</cell><cell>9,569</cell></row><row><cell>Test</cell><cell>967</cell><cell cols="3">6,464 1,133 10,187</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Statistics of the English side of the training, dev, and test sets.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>summarizes the participants and their affiliations.</figDesc><table><row><cell>Team</cell><cell>Institution</cell></row><row><cell>NaverLabs</cell><cell>Naver Labs Europe</cell></row><row><cell cols="2">UEdinUppsala Univ. of Edinburgh, Uppsala Univ.</cell></row><row><cell>IndTaoWang</cell><cell>Individual participant (Tao Wang)</cell></row><row><cell>Tencent</cell><cell>Tencent</cell></row><row><cell>UMaryland</cell><cell>University of Maryland</cell></row><row><cell>UJordan</cell><cell>Jordan U. of Science and Technology</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>The participating teams and their affiliations.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc></figDesc><table /><note>Automatic evaluation scores for the agent (En→De) and customer (De→En).</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc>Human evaluation scores of the agent side.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 7 :</head><label>7</label><figDesc>Human evaluation scores for the agent side when there is a pronoun it in the source sentence.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">www.unbabel.com 2 https://github.com/huggingface/ neuralcoref</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">BLEU+case.mixed+lang.en-de+numrefs.1+smooth.exp+tok.13a+version.1.4.13, BLEU+case.mixed+lang.de-en+numrefs.1+smooth.exp+tok.13a+version.1.4.13 4 http://www.cs.umd.edu/˜snover/tercom/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We would also like to thank Mathieu Giquel and Ulisses Ferreira for all their help and support during the human evaluation phase, as well as Courtney Stankey for helping in coordinating with the evaluators. This work was supported by the P2020 programs MAIA (contract 045909) and Unbabel4EU (contract 042671), by the European Research Council (ERC StG DeepSPIN 758969), and by the Fundação para a Ciência e Tecnologia through contract UID/50008/2019.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Human evaluation scores of the agent side in each length range, based on the source sentences. The systems are ordered based on their general rankings</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">The university of maryland&apos;s submissions to the wmt20 chat translation task: Searching for more data to adapt discourseaware neural machine translation</title>
+		<author>
+			<persName><forename type="first">Yow-Ting</forename><surname>References Calvin Bao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chujun</forename><surname>Shiue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jie</forename><forename type="middle">S</forename><surname>Song</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marine</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Carpuat</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth Conference on Machine Translation</title>
+				<meeting>the Fifth Conference on Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Findings of the 2019 conference on machine translation (wmt19)</title>
+		<author>
+			<persName><forename type="first">Loïc</forename><surname>Barrault</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ondřej</forename><surname>Bojar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><forename type="middle">R</forename><surname>Costa-Jussà</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Federmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Fishel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yvette</forename><surname>Graham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barry</forename><surname>Haddow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Huck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shervin</forename><surname>Malmasi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Conference on Machine Translation</title>
+				<meeting>the Fourth Conference on Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="1" to="61" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Ioan Calapodescu, and Jerin Philip. 2020. Naver labs europe&apos;s participation in the robustness, chat, and biomedical tasks at wmt 2020</title>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Bérard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vassilina</forename><surname>Nikoulina</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth Conference on Machine Translation</title>
+				<meeting>the Fifth Conference on Machine Translation</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Taskmaster-1: Toward a realistic and diverse dialog dataset</title>
+		<author>
+			<persName><forename type="first">Bill</forename><surname>Byrne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karthik</forename><surname>Krishnamoorthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chinnadhurai</forename><surname>Sankar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arvind</forename><surname>Neelakantan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Goodrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Duckworth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Semih</forename><surname>Yavuz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amit</forename><surname>Dubey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyu-Young</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andy</forename><surname>Cedilnik</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</title>
+				<meeting>the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="4506" to="4517" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Re-evaluation the role of bleu in machine translation research</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Callison</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">-</forename><surname>Burch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miles</forename><surname>Osborne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">11th Conference of the European Chapter of the Association for Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Transformer-XL: Attentive language models beyond a fixed-length context</title>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P19-1285</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th</title>
+				<meeting>the 57th</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m">Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting><address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<biblScope unit="page" from="2978" to="2988" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">Bert: Pre-training of deep bidirectional transformers for language understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Appraise: An open-source toolkit for manual evaluation of machine translation output</title>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Federmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Prague Bulletin of Mathematical Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">98</biblScope>
+			<biblScope unit="page" from="25" to="35" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<author>
+			<persName><forename type="first">Markus</forename><surname>Freitag</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Grangier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isaac</forename><surname>Caswell</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2004.06063</idno>
+		<title level="m">Bleu might be guilty but references are not innocent</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">Hany</forename><surname>Hassan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Aue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chang</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vishal</forename><surname>Chowdhary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Federmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuedong</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Junczys-Dowmunt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mu</forename><surname>Li</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.05567</idno>
+		<title level="m">Achieving human parity on automatic chinese to english news translation</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Long short-term memory</title>
+		<author>
+			<persName><forename type="first">Sepp</forename><surname>Hochreiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jürgen</forename><surname>Schmidhuber</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/neco.1997.9.8.1735</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Neural Computation</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="1735" to="1780" />
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<author>
+			<persName><forename type="first">Sebastien</forename><surname>Jean</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stanislas</forename><surname>Lauly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Orhan</forename><surname>Firat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1704.05135</idno>
+		<title level="m">Does neural machine translation benefit from larger context? arXiv preprint</title>
+				<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Microsoft translator at wmt 2019: Towards large-scale document-level neural machine translation</title>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Junczys-Dowmunt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Conference on Machine Translation</title>
+				<meeting>the Fourth Conference on Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Junczys-Dowmunt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roman</forename><surname>Grundkiewicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomasz</forename><surname>Dwojak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hieu</forename><surname>Hoang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenneth</forename><surname>Heafield</surname></persName>
+		</author>
+		<editor>Alham Fikri Aji, Nikolay Bogoychev, André F. T</editor>
+		<imprint>
+			<pubPlace>Tom Neckermann, Frank Seide, Ulrich Germann</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Marian: Fast neural machine translation in C++</title>
+		<author>
+			<persName><forename type="first">Alexandra</forename><surname>Martins</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Birch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL 2018, System Demonstrations</title>
+				<meeting>ACL 2018, System Demonstrations<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="116" to="121" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Reformer: The efficient transformer</title>
+		<author>
+			<persName><forename type="first">Nikita</forename><surname>Kitaev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lukasz</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anselm</forename><surname>Levskaya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Europarl: A parallel corpus for statistical machine translation</title>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">MT Summit. Citeseer</title>
+				<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Crosslingual language model pretraining</title>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Lample</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Conneau</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems (NeurIPS)</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">A set of recommendations for assessing humanmachine parity in language translation</title>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Läubli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sheila</forename><surname>Castilho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Neubig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rico</forename><surname>Sennrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qinlan</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Toral</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">67</biblScope>
+			<biblScope unit="page" from="653" to="672" />
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Has machine translation achieved human parity? a case for document-level evaluation</title>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Läubli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rico</forename><surname>Sennrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Volk</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1512</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="4791" to="4796" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Opensub-titles2016: Extracting large parallel corpora from movie and tv subtitles</title>
+		<author>
+			<persName><forename type="first">Pierre</forename><surname>Lison</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jörg</forename><surname>Tiedemann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="923" to="929" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Document-level Neural MT: A Systematic Comparison</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>António</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lopes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Amin Farajian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Bawden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">André F T</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Martins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">22nd Annual Conference of the European Association for Machine Translation</title>
+				<meeting><address><addrLine>Lisboa, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="225" to="234" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">The ubuntu dialogue corpus: A large dataset for research in unstructured multi-turn dialogue systems</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Lowe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nissan</forename><surname>Pow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iulian</forename><surname>Vlad Serban</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joelle</forename><surname>Pineau</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 16th Annual Meeting of the Special Interest Group on Discourse and Dialogue</title>
+				<meeting>the 16th Annual Meeting of the Special Interest Group on Discourse and Dialogue</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="285" to="294" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Results of the WMT19 metrics shared task: Segment-level and strong MT systems pose big challenges</title>
+		<author>
+			<persName><forename type="first">Qingsong</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johnny</forename><surname>Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ondřej</forename><surname>Bojar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yvette</forename><surname>Graham</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W19-5302</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Conference on Machine Translation</title>
+				<meeting>the Fourth Conference on Machine Translation<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="62" to="90" />
+		</imprint>
+	</monogr>
+	<note>Shared Task Papers, Day 1). Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Selective attention for context-aware neural machine translation</title>
+		<author>
+			<persName><forename type="first">Sameen</forename><surname>Maruf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">T</forename><surname>André</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gholamreza</forename><surname>Martins</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Haffari</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-1313</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="3092" to="3102" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Contextual neural model for translating bilingual multi-speaker conversations</title>
+		<author>
+			<persName><forename type="first">Sameen</forename><surname>Maruf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">T</forename><surname>André</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gholamreza</forename><surname>Martins</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Haffari</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Conference on Machine Translation: Research Papers</title>
+				<meeting>the Third Conference on Machine Translation: Research Papers</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="101" to="112" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Document-level neural machine translation with hierarchical attention networks</title>
+		<author>
+			<persName><forename type="first">Lesly</forename><surname>Miculicich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dhananjay</forename><surname>Ram</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolaos</forename><surname>Pappas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Henderson</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1325</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2947" to="2954" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">and Rachel Bawden. 2020. The university of edinburgh-uppsala university&apos;s submission to the wmt 2020 chat translation task</title>
+		<author>
+			<persName><forename type="first">Nikita</forename><surname>Moghe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Hardmeier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth Conference on Machine Translation</title>
+				<meeting>the Fifth Conference on Machine Translation</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Just system for wmt20 chat translation task</title>
+		<author>
+			<persName><forename type="first">Roweida</forename><surname>Mohammed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mahmoud</forename><surname>Al-Ayyoub</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Malak</forename><surname>Abdullah</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth Conference on Machine Translation</title>
+				<meeting>the Fifth Conference on Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Facebook fair&apos;s wmt19 news translation task submission</title>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyra</forename><surname>Yee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexei</forename><surname>Baevski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Auli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Edunov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Conference on Machine Translation</title>
+				<meeting>the Fourth Conference on Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">2</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">fairseq: A fast, extensible toolkit for sequence modeling</title>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Edunov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexei</forename><surname>Baevski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Angela</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Gross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Grangier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Auli</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-4009</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics (Demonstrations)</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics (Demonstrations)<address><addrLine>Minneapolis</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="48" to="53" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Bleu: a method for automatic evaluation of machine translation</title>
+		<author>
+			<persName><forename type="first">Kishore</forename><surname>Papineni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Salim</forename><surname>Roukos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Todd</forename><surname>Ward</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei-Jing</forename><surname>Zhu</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/1073083.1073135</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 40th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Philadelphia, Pennsylvania, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="311" to="318" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">A call for clarity in reporting BLEU scores</title>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Post</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W18-6319</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Conference on Machine Translation: Research Papers</title>
+				<meeting>the Third Conference on Machine Translation: Research Papers<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="186" to="191" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">A study of translation error rate with targeted human annotation</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Snover</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bonnie</forename><surname>Dorr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Schwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Linnea</forename><surname>Micciulla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralph</forename><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Association for Machine Transaltion in the Americas</title>
+				<meeting>the Association for Machine Transaltion in the Americas</meeting>
+		<imprint>
+			<publisher>AMTA</publisher>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Neural machine translation with extended context</title>
+		<author>
+			<persName><forename type="first">Jörg</forename><surname>Tiedemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yves</forename><surname>Scherrer</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W17-4811</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Discourse in Machine Translation</title>
+				<meeting>the Third Workshop on Discourse in Machine Translation<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="82" to="92" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Attaining the unattainable? reassessing claims of human parity in neural machine translation</title>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Toral</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sheila</forename><surname>Castilho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ke</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andy</forename><surname>Way</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/w18-6312</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Conference on Machine Translation: Research Papers</title>
+				<meeting>the Third Conference on Machine Translation: Research Papers<address><addrLine>Belgium, Brussels</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018-10-31" />
+			<biblScope unit="page" from="113" to="123" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Learning to remember translation history with a continuous cache</title>
+		<author>
+			<persName><forename type="first">Zhaopeng</forename><surname>Tu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuming</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tong</forename><surname>Zhang</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00029</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="407" to="420" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Attention is all you need</title>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Vaswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niki</forename><surname>Parmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aidan</forename><forename type="middle">N</forename><surname>Gomez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Polosukhin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">I</forename><surname>Guyon</surname></persName>
+			<persName><forename type="first">U</forename><forename type="middle">V</forename><surname>Luxburg</surname></persName>
+			<persName><forename type="first">S</forename><surname>Bengio</surname></persName>
+			<persName><forename type="first">H</forename><surname>Wallach</surname></persName>
+			<persName><forename type="first">R</forename><surname>Fergus</surname></persName>
+			<persName><forename type="first">S</forename><surname>Vishwanathan</surname></persName>
+			<persName><forename type="first">R</forename><surname>Garnett</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page" from="5998" to="6008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Context-aware monolingual repair for neural machine translation</title>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Voita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rico</forename><surname>Sennrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Titov</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D19-1081</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</title>
+				<meeting>the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)<address><addrLine>Hong Kong, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="877" to="886" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">When a good translation is wrong in context: Context-aware machine translation improves on deixis, ellipsis, and lexical cohesion</title>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Voita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rico</forename><surname>Sennrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Titov</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P19-1116</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1198" to="1212" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Context-aware neural machine translation learns anaphora resolution</title>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Voita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pavel</forename><surname>Serdyukov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rico</forename><surname>Sennrich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Titov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Tencent AI Lab machine translation systems for the WMT20 chat translation task</title>
+		<author>
+			<persName><forename type="first">Longyue</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhaopeng</forename><surname>Tu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xing</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liang</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuming</forename><surname>Shi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth Conference on Machine Translation</title>
+				<meeting>the Fifth Conference on Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Improving the transformer translation model with document-level context</title>
+		<author>
+			<persName><forename type="first">Jiacheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huanbo</forename><surname>Luan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maosong</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Feifei</forename><surname>Zhai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfang</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Min</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Liu</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1049</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="533" to="542" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

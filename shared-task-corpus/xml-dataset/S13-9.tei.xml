@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2013 Task 9 : Extraction of Drug-Drug Interactions from Biomedical Texts (DDIExtraction 2013)</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Isabel</forename><surname>Segura-Bedmar</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">Universidad Carlos III de Madrid Av. Universidad</orgName>
+								<address>
+									<addrLine>30</addrLine>
+									<postCode>28911</postCode>
+									<region>Leganés</region>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Paloma</forename><surname>Martínez</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">Universidad Carlos III de Madrid Av. Universidad</orgName>
+								<address>
+									<addrLine>30</addrLine>
+									<postCode>28911</postCode>
+									<region>Leganés</region>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">María</forename><surname>Herrero-Zazo</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">Universidad Carlos III de Madrid Av. Universidad</orgName>
+								<address>
+									<addrLine>30</addrLine>
+									<postCode>28911</postCode>
+									<region>Leganés</region>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2013 Task 9 : Extraction of Drug-Drug Interactions from Biomedical Texts (DDIExtraction 2013)</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The DDIExtraction 2013 task concerns the recognition of drugs and extraction of drugdrug interactions that appear in biomedical literature. We propose two subtasks for the DDIExtraction 2013 Shared Task challenge: 1) the recognition and classification of drug names and 2) the extraction and classification of their interactions. Both subtasks have been very successful in participation and results. There were 14 teams who submitted a total of 38 runs. The best result reported for the first subtask was F1 of 71.5% and 65.1% for the second one.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The definition of drug-drug interaction (DDI) is broadly described as a change in the effects of one drug by the presence of another drug <ref type="bibr" target="#b2">(Baxter and Stockely, 2010)</ref>. The detection of DDIs is an important research area in patient safety since these interactions can become very dangerous and increase health care costs. Drug interactions are frequently reported in journals, making medical literature the most effective source for their detection <ref type="bibr" target="#b1">(Aronson, 2007)</ref>. Therefore, Information Extraction (IE) can be of great benefit in the pharmaceutical industry allowing identification and extraction of relevant information on DDIs and providing an interesting way of reducing the time spent by health care professionals on reviewing the literature.</p><p>The DDIExtraction 2013 follows up on a first event organized in <ref type="bibr" target="#b3">2011</ref><ref type="bibr">, DDIExtraction 2011</ref><ref type="bibr" target="#b26">(Segura-Bedmar et al., 2011b</ref> whose main goal was the detection of drug-drug interactions from biomedical texts. The new edition includes in addition to DDI extraction also a supporting task, the recognition and classification of pharmacological substances. DDIExtraction 2013 is designed to address the extraction of DDIs as a whole, but divided into two subtasks to allow separate evaluation of the performance for different aspects of the problem. The shared task includes two challenges:</p><p>• Task 9.1: Recognition and classification of pharmacological substances.</p><p>• Task 9.2: Extraction of drug-drug interactions.</p><p>Additionally, while the datasets used for the DDIExtraction 2011 task were composed by texts describing DDIs from the DrugBank database <ref type="bibr" target="#b29">(Wishart et al., 2006)</ref>, the new datasets for DDIExtraction 2013 also include MedLine abstracts in order to deal with different types of texts and language styles. This shared task has been conceived with a dual objective: advancing the state-of-the-art of textmining techniques applied to the pharmacological domain, and providing a common framework for evaluation of the participating systems and other researchers interested in the task.</p><p>In the next section we describe the DDI corpus used in this task. Sections 3 and 4 focus on the description of the task 9.1 and 9.2 respectively. Finally, Section 5 draws the conclusions and future work.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">The DDI Corpus</head><p>The DDIExtraction 2013 task relies on the DDI corpus, which is a semantically annotated corpus of documents describing drug-drug interactions from the DrugBank database and MedLine abstracts on the subject of drug-drug interactions.</p><p>The DDI corpus consists of 1,017 texts (784 DrugBank texts and 233 MedLine abstracts) and was manually annotated with a total of 18,491 pharmacological substances and 5,021 drug-drug interactions (see Table <ref type="table" target="#tab_1">1</ref>). A detailed description of the method used to collect and process documents can be found in <ref type="bibr" target="#b25">(Segura-Bedmar et al., 2011a)</ref>. The corpus is distributed in XML documents following the unified format for PPI corpora proposed by  (see Figure <ref type="figure" target="#fig_0">1</ref>). A detailed description and analysis of the DDI corpus and its methodology are included in an article currently under review by BioInformatics journal. <ref type="bibr">1</ref> The corpus was split in order to build the datasets for the training and evaluation of the different participating systems. Approximately 77% of the DDI corpus documents were randomly selected for the training dataset and the remaining (142 DrugBank texts and 91 MedLine abstracts) was used for the test dataset. The training dataset is the same for both subtasks since it contains entity and DDI annotations. The test dataset for the task 9.1 was formed by discarding documents which contained DDI annotations. Entity annotations were removed from this dataset to be used by participants. The remaining documents (that is, those containing some interaction) were used to create the test dataset for task 9.2. Since entity annotations are not removed from these documents, the test dataset for the task 9.2 can also be used as additional training data for the task 9.1.</p><p>3 Task 9.1: Recognition and classification of pharmacological substances.</p><p>This task concerns the named entity extraction of pharmacological substances in text. This named entity task is a crucial first step for information extraction of drug-drug interactions. In this task, four types of pharmacological substances are defined: drug (generic drug names), brand (branded drug names), group (drug group names) and drug-n (active substances not approved for human use).  more detailed description, the reader is directed to our annotation guidelines. 2 For evaluation, a part of the DDI corpus consisting of 52 documents from DrugBank and 58 Med-Line abstracts, is provided with the gold annotation hidden. The goal for participating systems is to recreate the gold annotation. Each participant system must output an ASCII list of reported entities, one per line, and formatted as:</p><p>IdSentence|startOffset-endOffset|text|type Thus, for each recognized entity, each line must contain the id of the sentence where this entity appears, the position of the first character and the one of the last character of the entity in the sentence, the text of the entity, and its type. When the entity is a discontinuous name (eg. aluminum and magnesium hydroxide), this second field must contain the start and end positions of all parts of the entity separated by semicolon. Multiple mentions from the same sentence should appear on separate lines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Evaluation Metrics</head><p>This section describes the methodology that is used to evaluate the performance of the participating systems in task 9.1.</p><p>The major forums of the Named Entity Recognition and Classification (NERC) research community (such as MUC-7 <ref type="bibr" target="#b8">(Chinchor and Robinson, 1997</ref><ref type="bibr">), CoNLL 2003</ref><ref type="bibr" target="#b28">(Tjong Kim Sang and De Meulder, 2003</ref> or ACE07 have proposed several techniques to assess the performance of NERC systems. While   <ref type="bibr" target="#b14">(Collazo et al., 2013)</ref> Matanzas University, Cuba j48 classifier UTurku <ref type="bibr" target="#b4">(Björne et al., 2013)</ref> University of Turku, Finland SVM classifier (TEES system) WBI NER  Humboldt University of Berlin, Germany Conditional random fields Task 9.2 FBK-irst (Chowdhury and Lavelli, 2013c) FBK-irst, Italy hybrid kernel + scope of negations and semantic roles NIL UCM <ref type="bibr" target="#b6">(Bokharaeian, 2013)</ref> Complutense University of Madrid, Spain SVM classifier (Weka SMO) SCAI <ref type="bibr" target="#b5">(Bobić et al., 2013)</ref> Fraunhofer SCAI, Germany SVM classifier (LibLINEAR) UC3M <ref type="bibr" target="#b24">(Sanchez-Cisneros, 2013)</ref> Carlos III University of Madrid, Spain Shallow Linguistic Kernel UCOLORADO SOM <ref type="bibr" target="#b17">(Hailu et al., 2013)</ref> University of Colorado School of Medicine, USA SVM classifier (LIBSVM) UTurku <ref type="bibr" target="#b4">(Björne et al., 2013)</ref> University of Turku, Finland SVM classifier (TEES system) UWM-TRIADS <ref type="bibr" target="#b20">(Rastegar-Mojarad et al., 2013)</ref> University of Wisconsin-Milwaukee, USA Two-stage SVM WBI DDI <ref type="bibr" target="#b27">(Thomas et al., 2013)</ref> Humboldt University of Berlin, Germany Ensemble of SVMs ACE evaluation is very complex because its scores are not intuitive, MUC and CoNLL 2003 used the standard precision/recall/f-score metrics to compare their participating systems. The main shared tasks in the biomedical domain have continued using these metrics to evaluate the outputs of their participant teams.</p><p>System performance should be scored automatically by how well the generated pharmacological substance list corresponds to the gold-standard annotations. In our task, we evaluate the results of the participating systems according to several evaluation criteria. Firstly, we propose a strict evaluation, which does not only demand exact boundary match, but also requires that both mentions have the same entity type. We are aware that this strict criterion may be too restrictive for our overall goal (extraction of drug interactions) because it misses partial matches, which can provide useful information for a DDI extraction system. Our evaluation metrics should score if a system is able to identify the exact span of an entity (regardless of the type) and if it is able to assign the correct entity type (regardless of the boundaries). Thus, our evaluation script will output four sets of scores according to:</p><p>1. Strict evaluation (exact-boundary and type matching).</p><p>2. Exact boundary matching (regardless to the type).</p><p>3. Partial boundary matching (regardless to the type).</p><p>4. Type matching (some overlap between the tagged entity and the gold entitity is required).</p><p>Evaluation results are reported using the standard precision/recall/f-score metrics. We refer the reader to <ref type="bibr" target="#b9">(Chinchor and Sundheim, 1993</ref>) for a more detailed description of these metrics.</p><p>These metrics are calculated over all entities and on both axes (type and span) in order to evaluate the performance of each axe separately. The final score is the micro-averaged F-measure, which is calculated over all entity types without distinction. The main advantage of the micro-average F1 is that it takes into account all possible types of errors made by a NERC system.</p><p>Additionally, we calculate precision, recall and fmeasure for each entity type and then their macroaverage measures are provided. Calculating these metrics for each entity type allows us to evaluate the level of difficulty of recognizing each entity type. In addition to this, since not all entity types have the same frequency, we can better assess the performance of the algorithms proposed by the participating systems. This is mainly because the results achieved on the most frequent entity type have a much greater impact on overall performance than those obtained on the entity types with few instances.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Results and Discussion</head><p>Participants could send a maximum of three system runs. After downloading the test datasets, they had a maximum of two weeks to upload the results. A total of 6 teams participated, submitting 16 system runs. Table <ref type="table" target="#tab_3">2</ref> lists the teams, their affiliations and a brief description of their approaches. Due to the lack of space we cannot describe them in this paper. Tables <ref type="table" target="#tab_4">3, 4</ref> and 5 show the F1 scores for each run in alphabetic order. The reader can find the full ranking information on the SemEval-2013 Task 9 website 3 .</p><p>The best results were achieved by the WBI team with a conditional random field. They employed a domain-independent feature set along with features generated from the output of ChemSpot <ref type="bibr" target="#b21">(Rocktäschel et al., 2012)</ref>, an existing chemical named entity recognition tool, as well as a collection of domain-specific resources. Its model was trained on the training dataset as well as on entities of the test dataset for task 9.2. The second top best performing team developed a dictionarybased approach combining biomedical resources such as DrugBank, the ATC classification system, 4 or MeSH, 5 among others. Regarding the classification of each entity type, we observed that brand drugs were easier to recognize than the other types. This could be due to the fact that when a drug is marketed by a pharmaceutical company, its brand name is carefully selected to be short, unique and easy to remember <ref type="bibr" target="#b7">(Boring, 1997)</ref>. On the other hand, substances not approved for human use (drug-n) were more difficult, due to the greater variation and complexity in their naming. In fact, the UEM UC3M team was the only team who obtained an F1 measure greater than 0 on the DDI-DrugBank dataset. Also, this may indicate that this type is less clearly defined than the others in the annotation guidelines. Another possible reason is that the presence of such substances in this dataset is very scarce (less than 1%). It is interesting that almost every participating system was better in detecting and classifying entities of a particular class compared to all other systems. For instance, on the whole dataset the dictionary-based system from NLM LHC had it strengths at drug entities, UEM UC3M at drug N entities, UTurku at brand entities and WBI NER at group entities.</p><p>Finally, the results on the DDI-DrugBank dataset are much better than those obtained on the DDI-MedLine dataset. While DDI-DrugBank texts focus on the description of drugs and their interactions, the main topic of DDI-MedLine texts would not necessarily be on DDIs. Coupled with this, it is not always trivial to distinguish between substances that should be classified as pharmacological substances and those who should not. This is due to the ambiguity of some pharmacological terms. For example, insulin is a hormone produced by the pancreas, but can also be synthesized in the laboratory and used as drug to treat insulin-dependent diabetes mellitus. The participating systems should be able to determine if the text is describing a substance originated within the organism or, on the contrary, it describes a process in which the substance is used for a specific purpose and thus should be identified as pharmacological substance.      types can be found in our annotation guidelines 6 . Gold standard annotations (correct, humancreated annotations) of pharmacological substances are provided to participants both for training and test data. The test data for this subtask consists of 158 DrugBank documents and 33 MedLine abstracts. Each participant system must output an ASCII list including all pairs of drugs in each sentence, one per line (multiple DDIs from the same sentence should appear on separate lines), its prediction (1 if the pair is a DDI and 0 otherwise) and its type (label null when the prediction value is 0), and formatted as: IdSentence|IdDrug1|IdDrug2|prediction|type</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Evaluation Metrics</head><p>Evaluation is relation-oriented and based on the standard precision, recall and F-score metrics. A DDI is correctly detected only if the system is able to assign the correct prediction label and the correct type to it. In other words, a pair is correct only if both prediction and type are correct. The performance of systems to identify those pairs of drugs interacting (regardless of the type) is also evaluated. This allows us to assess the progress made with regard to the previous edition, which only dealt with the detection of DDIs.</p><p>Additionally, we are interested in assessing which drug interaction types are most difficult to detect. Thus, we calculate precision, recall and F1 for each DDI type and then their macro-average measures are provided. While micro-averaged F1 is calculated by constructing a global contingency table and then calculating precision and recall, macro-averaged Fscore is calculated by first calculating precision and recall for each type and then taking the average of these results.</p><p>Evaluating each DDI type separately allows us to assess the level of difficulty of detecting and classifying each type of interaction. Additionally, it is important to note that the scores achieved on the most frequent DDI type have a much greater impact on overall performance than those achieved on the DDI types with few instances. Therefore, by calculating scores for each type of DDI, we can better assess the performance of the algorithms proposed by the participating systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Results and Discussion</head><p>The task of extracting drug-drug interactions from biomedical texts has attracted the participation of 8 teams (see Table <ref type="table" target="#tab_3">2</ref>) who submitted 22 runs. Tables <ref type="table" target="#tab_8">6,  7</ref> and 8 show the results for each run in alphabetic order. Due to the lack of space, the performance information is only shown in terms of F1 score. The reader can find the full ranking information on the SemEval-2013 Task 9 website 7 .</p><p>Most of the participating systems were built on support vector machines. In general, approaches based on non-linear kernels methods achieved better results than linear SVMs. As in the previous edition of DDIExtraction, most systems have used primarily syntactic information. However, semantic information has been poorly used.</p><p>The best results were submitted by the team from FBK-irst. They applied a novel hybrid kernel based RE approach described in <ref type="bibr" target="#b13">Chowdhury (2013a)</ref>. They also exploited the scope of negations and semantic roles for negative instance filtering as proposed in <ref type="bibr" target="#b11">(Chowdhury and Lavelli, 2013b)</ref> and <ref type="bibr" target="#b10">(Chowdhury and Lavelli, 2012)</ref>. The second best results were obtained by the WBI team from the Humboldt University of Berlin. Its system combines several kernel methods (APG  and Shallow Linguistic Kernel (SL) <ref type="bibr" target="#b15">(Giuliano et al., 2006)</ref> among others), the Turku Event Extraction system (TEES) <ref type="bibr" target="#b3">(Björne et al., 2011)</ref> 8 and the Moara system <ref type="bibr" target="#b18">(Neves et al., 2009)</ref>. These two teams were also the top two ranked teams in DDIExtraction 2011. For a more detailed description, the reader is encouraged to read the papers of the participants in the proceedings book.</p><p>While the DDIExtraction 2011 shared task concentrated efforts on the detection of DDIs, this new DDIExtraction 2013 task involved not only the detection of DDIs, but also their classification. Although the results of DDIExtraction 2011 are not directly comparable with the ones reported in DDIExtraction 2013 due to the use of different training and test datasets in each edition, it should be noted that there has been a significant improvement in the de-    tection of DDIs: F1 has a remarkable increase from 65.74% (the best F1-score in DDIExtraction 2011) to 80% (see DEC column of Table <ref type="table" target="#tab_8">6</ref>). The increase of the size of the corpus made for DDIExtraction 2013 and of the quality of their annotations may have contributed significantly to this improvement. However, the results for the detection and classification for DDIs did not exceed an F1 of 65.1%. Table 6 suggests that some type of DDIs are more difficult to classify than others. The best F1 ranges from 69.2% for advice to 54.7% for int. One possible explanation for this could be that recommendations or advice regarding a drug interaction are typically described by very similar text patterns such as DRUG should not be used in combination with DRUG or Caution should be observed when DRUG is administered with DRUG.</p><p>Regarding results for the int relationship, it should be noted that the proportion of instances of this relationship (5.6%) in the DDI corpus is much smaller than those of the rest of the relations (41.1% for effect, 32.3% for mechanism and 20.9% for advice).</p><p>As stated earlier, one of the differences from the previous edition is that the corpus developed for DDIExtraction 2013 is made up of texts from two different sources: MedLine and the DrugBank database. Thus, the different approaches can be evaluated on two different styles of biomedical texts. While MedLine abstracts are usually written in extremely scientific language, texts from DrugBank are written in a less technical form of the language (similar to the language used in package inserts). Indeed, this may be the reason why the results on the DDI-DrugBank dataset are much better than those obtained on the DDI-MedLine dataset (see Tables <ref type="table" target="#tab_9">7  and 8</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusions</head><p>The DDIExtraction 2011 task concentrated efforts on the novel aspects of the DDI extraction task, the drug recognition was assumed and the annotations for drugs were provided to the participants. This new DDIExtraction 2013 task pursues the detection and classification of drug interactions as well as the recognition and classification of pharmacological substances. The task attracted broad interest from the community. A total of 14 teams from 7 dif-ferent countries participated, submitted a total of 38 runs, exceeding the participation of DDIExtraction 2011 (10 teams). The participating systems demonstrated substantial progress at the established DDI extraction task on DrugBank texts and showed that their methods also obtain good results for MedLine abstracts.</p><p>The results that the participating systems have reported show successful approaches to this difficult task, and the advantages of non-linear kernel-based methods over linear SVMs for extraction of DDIs. In the named entity task, the participating systems perform well in recognizing generic drugs, brand drugs and groups of drugs, but they fail in recognizing active substances not approved for human use. Although the results are positive, there is still much room to improve in both subtasks. We have accomplished our goal of providing a framework and a benchmark data set to allow for comparisons of methods for the recognition of pharmacological substances and detection and classification of drug-drug interactions from biomedical texts.</p><p>We would like that our test dataset can still serve as the basis for fair and stable evaluation after the task. Thus, we have decided that the full gold annotations for the test data are not available for the moment. We plan to make available a web service where researchers can test their methods on the test dataset and compare their results with the DDIExtraction 2013 task participants.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Example of an annotated document of the DDI corpus.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Basic statistics on the DDI corpus.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Short description of the teams.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>F1 scores for task 9.1 on the whole test dataset (DDI-MedLine + DDI-DrugBank). (MAVG for macroaverage). Each run is ranked by STRICT performance.</figDesc><table><row><cell>Team</cell><cell>Run</cell><cell>Rank</cell><cell>STRICT</cell><cell>EXACT</cell><cell>PARTIAL</cell><cell>TYPE</cell><cell>DRUG</cell><cell>BRAND</cell><cell>GROUP</cell><cell>DRUG N</cell><cell>MAVG</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>F1 scores for task 9.1 on the DDI-DrugBank test data. (MAVG for macro-average). Each run is ranked by STRICT performance.</figDesc><table><row><cell>Team</cell><cell>Run</cell><cell>Rank</cell><cell>STRICT</cell><cell>EXACT</cell><cell>PARTIAL</cell><cell>TYPE</cell><cell>DRUG</cell><cell>BRAND</cell><cell>GROUP</cell><cell>DRUG N</cell><cell>MAVG</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 5 :</head><label>5</label><figDesc>F1 scores for task 9.1 on the DDI-MedLine test data. (MAVG for macro-average). Each run is ranked by STRICT performance.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6 :</head><label>6</label><figDesc>F1 scores for Task 9.2 on the whole test dataset (DDI-MedLine + DDI-DrugBank). DEC for Detection, CLA for detection and classification, MEC for mechanism type, EFF for effect type, ADV for advice type, INT for int type and MAVG for macro-average. Each run is ranked by CLA performance.</figDesc><table><row><cell>Team</cell><cell>Run</cell><cell>Rank</cell><cell>CLA</cell><cell>DEC</cell><cell>MEC</cell><cell>EFF</cell><cell>ADV</cell><cell>INT</cell><cell>MAVG</cell></row><row><cell></cell><cell>1</cell><cell>3</cell><cell>0.663</cell><cell>0.827</cell><cell>0.705</cell><cell>0.699</cell><cell>0.705</cell><cell>0.376</cell><cell>0.624</cell></row><row><cell>FBK-irst</cell><cell>2</cell><cell>1</cell><cell>0.676</cell><cell>0.827</cell><cell>0.705</cell><cell>0.664</cell><cell>0.705</cell><cell>0.545</cell><cell>0.672</cell></row><row><cell></cell><cell>3</cell><cell>2</cell><cell>0.673</cell><cell>0.827</cell><cell>0.655</cell><cell>0.699</cell><cell>0.705</cell><cell>0.545</cell><cell>0.667</cell></row><row><cell>NIL UCM</cell><cell>1 2</cell><cell>12 10</cell><cell>0.54 0.573</cell><cell>0.615 0.68</cell><cell>0.527 0.552</cell><cell>0.525 0.597</cell><cell>0.625 0.619</cell><cell>0.444 0.408</cell><cell>0.565 0.55</cell></row><row><cell></cell><cell>1</cell><cell>15</cell><cell>0.464</cell><cell>0.711</cell><cell>0.449</cell><cell>0.459</cell><cell>0.57</cell><cell>0.021</cell><cell>0.461</cell></row><row><cell>SCAI</cell><cell>2</cell><cell>16</cell><cell>0.463</cell><cell>0.71</cell><cell>0.445</cell><cell>0.458</cell><cell>0.569</cell><cell>0.021</cell><cell>0.46</cell></row><row><cell></cell><cell>3</cell><cell>14</cell><cell>0.473</cell><cell>0.734</cell><cell>0.468</cell><cell>0.482</cell><cell>0.551</cell><cell>0.021</cell><cell>0.439</cell></row><row><cell>UC3M</cell><cell>1 2</cell><cell>11 21</cell><cell>0.555 0.306</cell><cell>0.703 0.549</cell><cell>0.493 0.274</cell><cell>0.593 0.302</cell><cell>0.59 0.334</cell><cell>0.51 0.426</cell><cell>0.561 0.352</cell></row><row><cell></cell><cell>1</cell><cell>22</cell><cell>0.218</cell><cell>0.508</cell><cell>0.115</cell><cell>0.251</cell><cell>0.24</cell><cell>0.098</cell><cell>0.228</cell></row><row><cell>UCOLORADO SOM</cell><cell>2</cell><cell>20</cell><cell>0.341</cell><cell>0.518</cell><cell>0.373</cell><cell>0.313</cell><cell>0.398</cell><cell>0.344</cell><cell>0.425</cell></row><row><cell></cell><cell>3</cell><cell>19</cell><cell>0.349</cell><cell>0.511</cell><cell>0.353</cell><cell>0.324</cell><cell>0.429</cell><cell>0.327</cell><cell>0.394</cell></row><row><cell></cell><cell>1</cell><cell>8</cell><cell>0.608</cell><cell>0.712</cell><cell>0.6</cell><cell>0.63</cell><cell>0.617</cell><cell>0.522</cell><cell>0.6</cell></row><row><cell>UTurku</cell><cell>2</cell><cell>7</cell><cell>0.62</cell><cell>0.724</cell><cell>0.605</cell><cell>0.644</cell><cell>0.638</cell><cell>0.522</cell><cell>0.614</cell></row><row><cell></cell><cell>3</cell><cell>9</cell><cell>0.608</cell><cell>0.726</cell><cell>0.591</cell><cell>0.635</cell><cell>0.617</cell><cell>0.522</cell><cell>0.601</cell></row><row><cell></cell><cell>1</cell><cell>17</cell><cell>0.462</cell><cell>0.596</cell><cell>0.43</cell><cell>0.459</cell><cell>0.509</cell><cell>0.405</cell><cell>0.463</cell></row><row><cell>UWM-TRIADS</cell><cell>2</cell><cell>13</cell><cell>0.485</cell><cell>0.616</cell><cell>0.467</cell><cell>0.466</cell><cell>0.536</cell><cell>0.425</cell><cell>0.486</cell></row><row><cell></cell><cell>3</cell><cell>18</cell><cell>0.445</cell><cell>0.573</cell><cell>0.469</cell><cell>0.39</cell><cell>0.544</cell><cell>0.29</cell><cell>0.46</cell></row><row><cell></cell><cell>1</cell><cell>6</cell><cell>0.624</cell><cell>0.762</cell><cell>0.621</cell><cell>0.645</cell><cell>0.634</cell><cell>0.52</cell><cell>0.61</cell></row><row><cell>WBI</cell><cell>2</cell><cell>5</cell><cell>0.627</cell><cell>0.775</cell><cell>0.636</cell><cell>0.636</cell><cell>0.652</cell><cell>0.5</cell><cell>0.611</cell></row><row><cell></cell><cell>3</cell><cell>4</cell><cell>0.632</cell><cell>0.783</cell><cell>0.629</cell><cell>0.652</cell><cell>0.65</cell><cell>0.513</cell><cell>0.617</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 7 :</head><label>7</label><figDesc>F1 scores for task 9.2 on the DDI-DrugBank test dataset. Each run is ranked by CLA performance.</figDesc><table><row><cell>Team</cell><cell>Run</cell><cell>Rank</cell><cell>CLA</cell><cell>DEC</cell><cell>MEC</cell><cell>EFF</cell><cell>ADV</cell><cell>INT</cell><cell>MAVG</cell></row><row><cell></cell><cell>1</cell><cell>4</cell><cell>0.387</cell><cell>0.53</cell><cell>0.383</cell><cell>0.436</cell><cell>0.286</cell><cell>0.211</cell><cell>0.406</cell></row><row><cell>FBK-irst</cell><cell>2</cell><cell>3</cell><cell>0.398</cell><cell>0.53</cell><cell>0.383</cell><cell>0.407</cell><cell>0.286</cell><cell>0.571</cell><cell>0.436</cell></row><row><cell></cell><cell>3</cell><cell>2</cell><cell>0.398</cell><cell>0.53</cell><cell>0.339</cell><cell>0.436</cell><cell>0.286</cell><cell>0.571</cell><cell>0.44</cell></row><row><cell>NIL UCM</cell><cell>1 2</cell><cell>20 19</cell><cell>0.19 0.219</cell><cell>0.206 0.336</cell><cell>0.286 0.143</cell><cell>0.186 0.271</cell><cell>0 0</cell><cell>0 0</cell><cell>0.121 0.11</cell></row><row><cell></cell><cell>1</cell><cell>1</cell><cell>0.42</cell><cell>0.462</cell><cell>0.412</cell><cell>0.458</cell><cell>0.2</cell><cell>0</cell><cell>0.269</cell></row><row><cell>SCAI</cell><cell>2</cell><cell>8</cell><cell>0.323</cell><cell>0.369</cell><cell>0.389</cell><cell>0.333</cell><cell>0</cell><cell>0</cell><cell>0.182</cell></row><row><cell></cell><cell>3</cell><cell>6</cell><cell>0.341</cell><cell>0.474</cell><cell>0.31</cell><cell>0.379</cell><cell>0.222</cell><cell>0</cell><cell>0.229</cell></row><row><cell>UC3M</cell><cell>1 2</cell><cell>15 22</cell><cell>0.274 0.186</cell><cell>0.406 0.421</cell><cell>0.333 0.222</cell><cell>0.267 0.171</cell><cell>0 0.143</cell><cell>0.364 0</cell><cell>0.268 0.149</cell></row><row><cell></cell><cell>1</cell><cell>21</cell><cell>0.188</cell><cell>0.37</cell><cell>0.042</cell><cell>0.241</cell><cell>0</cell><cell>0</cell><cell>0.073</cell></row><row><cell>UCOLORADO SOM</cell><cell>2</cell><cell>14</cell><cell>0.275</cell><cell>0.394</cell><cell>0.258</cell><cell>0.302</cell><cell>0.138</cell><cell>0</cell><cell>0.177</cell></row><row><cell></cell><cell>3</cell><cell>17</cell><cell>0.244</cell><cell>0.356</cell><cell>0.194</cell><cell>0.255</cell><cell>0.222</cell><cell>0.4</cell><cell>0.272</cell></row><row><cell></cell><cell>1</cell><cell>18</cell><cell>0.242</cell><cell>0.339</cell><cell>0.258</cell><cell>0.256</cell><cell>0.2</cell><cell>0</cell><cell>0.18</cell></row><row><cell>UTurku</cell><cell>2</cell><cell>16</cell><cell>0.262</cell><cell>0.344</cell><cell>0.214</cell><cell>0.278</cell><cell>0.364</cell><cell>0</cell><cell>0.224</cell></row><row><cell></cell><cell>3</cell><cell>13</cell><cell>0.286</cell><cell>0.376</cell><cell>0.286</cell><cell>0.289</cell><cell>0.333</cell><cell>0</cell><cell>0.232</cell></row><row><cell></cell><cell>1</cell><cell>10</cell><cell>0.312</cell><cell>0.419</cell><cell>0.233</cell><cell>0.36</cell><cell>0.267</cell><cell>0</cell><cell>0.219</cell></row><row><cell>UWM-TRIADS</cell><cell>2</cell><cell>9</cell><cell>0.319</cell><cell>0.436</cell><cell>0.233</cell><cell>0.34</cell><cell>0.421</cell><cell>0.333</cell><cell>0.345</cell></row><row><cell></cell><cell>3</cell><cell>11</cell><cell>0.306</cell><cell>0.479</cell><cell>0.247</cell><cell>0.326</cell><cell>0.381</cell><cell>0.333</cell><cell>0.33</cell></row><row><cell></cell><cell>1</cell><cell>7</cell><cell>0.336</cell><cell>0.456</cell><cell>0.368</cell><cell>0.344</cell><cell>0.154</cell><cell>0.4</cell><cell>0.334</cell></row><row><cell>WBI</cell><cell>2</cell><cell>12</cell><cell>0.304</cell><cell>0.406</cell><cell>0.343</cell><cell>0.318</cell><cell>0.167</cell><cell>0</cell><cell>0.209</cell></row><row><cell></cell><cell>3</cell><cell>5</cell><cell>0.365</cell><cell>0.503</cell><cell>0.476</cell><cell>0.347</cell><cell>0.143</cell><cell>0.4</cell><cell>0.353</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 8 :</head><label>8</label><figDesc>F1 scores for task 9.2 on the DDI-MedLine test dataset. Each run is ranked by CLA performance.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">http://www.cs.york.ac.uk/semeval-2013/task9/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">http://www.cs.york.ac.uk/semeval-2013/task9/ http://www.whocc.no/atc ddd index/ 5 http://www.ncbi.nlm.nih.gov/mesh</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">Task 9.2: Extraction of drug-drug interactions.The goal of this subtask is the extraction of drugdrug interactions from biomedical texts. However, while the previous DDIExtraction 2011 task focused on the identification of all possible pairs of interacting drugs, DDIExtraction 2013 also pursues the classification of each drug-drug interaction according to one of the following four types: advice, effect, mechanism, int. A detailed description of these</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">http://www.cs.york.ac.uk/semeval-2013/task9/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">http://www.cs.york.ac.uk/semeval-2013/task9/ http://jbjorne.github.io/TEES/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This research work has been supported by the Regional Government of Madrid under the Research Network MA2VICMR (S2009/TIC-1542), by the Spanish Ministry of Education under the project MULTIMEDICA (TIN2010-20644-C03-01). Additionally, we would like to thank all participants for their efforts and to congratulate them to their interesting work.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">All-paths graph kernel for protein-protein interaction extraction with evaluation of cross-corpus learning</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Airola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bjorne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Pahikkala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Salakoski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">BMC bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page">S2</biblScope>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+	<note>Suppl</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Communicating information about drug interactions</title>
+		<author>
+			<persName><surname>Jk</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Aronson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">British Journal of Clinical Pharmacology</title>
+		<imprint>
+			<biblScope unit="volume">63</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="637" to="639" />
+			<date type="published" when="2007-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">Stockley&apos;s drug interactions</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Baxter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><forename type="middle">H</forename><surname>Stockely</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+			<publisher>Pharmaceutical Press</publisher>
+			<pubPlace>London</pubPlace>
+		</imprint>
+	</monogr>
+	<note>8th ed</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Extracting contextualized complex biological events with graph-based feature sets</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Björne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Heimonen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Airola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Pahikkala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Salakoski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="541" to="557" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">UTurku: Drug Named Entity Detection and Drug-drug Interaction Extraction Using SVM Classification and Domain Knowledge</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Björne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kaewphan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Salakoski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">SCAI: Extracting drug-drug interactions using a rich feature vector</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Bobić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Fluck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hofmann-Apitius</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">NIL UCM: Extracting Drug-Drug interactions from text through combination of sequence and tree kernels</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Bokharaeian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Díaz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">The development and adoption of nonproprietary, established, and proprietary names for pharmaceuticals</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Boring</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Drug information journal</title>
+		<imprint>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="621" to="634" />
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Muc-7 named entity task definition</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Chinchor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Robinson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th Conference on Message Understanding</title>
+				<meeting>the 7th Conference on Message Understanding</meeting>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Muc-5 evaluation metrics</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Chinchor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Sundheim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th conference on Message understanding</title>
+				<meeting>the 5th conference on Message understanding</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="1993" />
+			<biblScope unit="page" from="69" to="78" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Impact of less skewed distributions on efficiency and effectiveness of biomedical relation extraction</title>
+		<author>
+			<persName><forename type="first">Mfm</forename><surname>Chowdhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lavelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING</title>
+				<meeting>COLING</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Exploiting the scope of negations and heterogeneous features for relation extraction: Case study drug-drug interaction extraction</title>
+		<author>
+			<persName><forename type="first">Mfm</forename><surname>Chowdhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lavelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL</title>
+				<meeting>NAACL</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">FBK-irst : A Multi-Phase Kernel Based Approach for Drug-Drug Interaction Detection and Classification that Exploits Linguistic Information</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">F M</forename><surname>Chowdhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lavelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">Improving the Effectiveness of Information Extraction from Biomedical Text</title>
+		<author>
+			<persName><surname>Mfm</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Chowdhury</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+		<respStmt>
+			<orgName>University of Trento</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.d. dissertation</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">UMCC DLSI-(DDI): Semantic and Lexical features for detection and classification Drugs in biomedical texts</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Collazo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ceballo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Puig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Gutiérrez</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Abreu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Pérez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Fernández-Orquín</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Montoyo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Muñoz</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Camara</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Exploiting shallow linguistic information for relation extraction from biomedical literature</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Giuliano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lavelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Romano</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eleventh Conference of the European Chapter of the Association for Computational Linguistics (EACL-2006)</title>
+				<meeting>the Eleventh Conference of the European Chapter of the Association for Computational Linguistics (EACL-2006)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="401" to="408" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">LASIGE: using Conditional Random Fields and ChEBI ontology</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Grego</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">M</forename><surname>Pinto</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Couto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">UColorado SOM: Extraction of Drug-Drug Interactions from Biomedical Text using Knowledge-rich and Knowledge-poor Features</title>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">D</forename><surname>Hailu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">E</forename><surname>Hunter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">B</forename><surname>Cohen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Extraction of biomedical events using case-based reasoning</title>
+		<author>
+			<persName><surname>Ml</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Neves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Carazo</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pascual-Montano</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on BioNLP: Shared Task</title>
+				<meeting>the Workshop on BioNLP: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="68" to="76" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Comparative analysis of five protein-protein interaction corpora</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Airola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Heimonen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bjorne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Salakoski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">BMC bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="page">S6</biblScope>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+	<note>Suppl 3</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<author>
+			<persName><forename type="first">M</forename><surname>Rastegar-Mojarad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">D</forename><surname>Boyce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Prasad</surname></persName>
+		</author>
+		<title level="m">UWM-TRIADS: Classifying Drug-Drug Interactions with Two-Stage SVM and Post-Processing</title>
+				<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the 7th International Workshop on Semantic Evaluation</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Chemspot: a hybrid system for chemical named entity recognition</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Rocktäschel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Weidlich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">U</forename><surname>Leser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="1633" to="1640" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">WBI-NER: The impact of domain-specific features on the performance of identifying and classifying mentions of drugs</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Rocktäschel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Huber</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Weidlich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">U</forename><surname>Leser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">UEM-UC3M: An Ontology-based named entity recognition system for biomedical texts</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sanchez-Cisneros</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Aparicio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation<address><addrLine>Se-mEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">UC3M: A kernel-based approach for identify and classify DDIs in biomedical texts</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sanchez-Cisneros</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Using a shallow linguistic kernel for drug-drug interaction extraction</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Segura-Bedmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Martínez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>De Pablo-Sánchez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Biomedical Informatics</title>
+		<imprint>
+			<biblScope unit="volume">44</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="789" to="804" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">The 1st ddiextraction-2011 challenge task: Extraction of drug-drug interactions from biomedical texts</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Segura-Bedmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Martınez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sánchez-Cisneros</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of DDIExtraction-2011 challenge task</title>
+				<meeting>DDIExtraction-2011 challenge task</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">WBI-DDI: Drug-Drug Interaction Extraction using Majority Voting</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Thomas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Neves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Rocktäschel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">U</forename><surname>Leser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Workshop on Semantic Evaluation</title>
+				<meeting>the 7th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Introduction to the CoNLL-2003 shared task: Languageindependent named entity recognition</title>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">F</forename><surname>Tjong Kim Sang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F. De</forename><surname>Meulder</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the seventh conference on Natural language learning at HLT-NAACL 2003</title>
+				<meeting>the seventh conference on Natural language learning at HLT-NAACL 2003</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2003" />
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="page" from="142" to="147" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">Drugbank: a comprehensive resource for in silico drug discovery and exploration. Nucleic acids research</title>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">S</forename><surname>Wishart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Knox</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">C</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Shrivastava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hassanali</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Stothard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Woolsey</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="page" from="D668" to="D672" />
+		</imprint>
+	</monogr>
+	<note>suppl 1</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

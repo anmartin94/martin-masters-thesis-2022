@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval 2016 Task 11: Complex Word Identification</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Gustavo</forename><forename type="middle">Henrique</forename><surname>Paetzold</surname></persName>
+							<email>ghpaetzold1@sheffield.ac.uk</email>
+						</author>
+						<author>
+							<persName><forename type="first">Lucia</forename><surname>Specia</surname></persName>
+							<email>l.specia@sheffield.ac.uk</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<address>
+									<addrLine>June 16-17</addrLine>
+									<postCode>2016</postCode>
+									<settlement>San Diego</settlement>
+									<region>California</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Sheffield</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval 2016 Task 11: Complex Word Identification</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We report the findings of the Complex Word Identification task of SemEval 2016. To create a dataset, we conduct a user study with 400 non-native English speakers, and find that complex words tend to be rarer, less ambiguous and shorter. A total of 42 systems were submitted from 21 distinct teams, and nine baselines were provided. The results highlight the effectiveness of Decision Trees and Ensemble methods for the task, but ultimately reveal that word frequencies remain the most reliable predictor of word complexity.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Complex Word Identification (CWI) is the task of deciding which words should be simplified in a given text. It is commonly connected with the task of Lexical Simplification (LS), which has as goal to replace complex words and expressions with simpler alternatives. In the usual LS pipeline, which was first introduced by <ref type="bibr" target="#b13">(Shardlow, 2014)</ref>, CWI is the first step. An effective CWI strategy can prevent LS approaches from replacing simple words, and hence prevent them from making grammatical and/or semantic errors. Early LS approaches <ref type="bibr" target="#b3">(Devlin and Tait, 1998;</ref><ref type="bibr" target="#b0">Carroll et al., 1999)</ref> do not include CWI. As shown in <ref type="bibr" target="#b9">(Paetzold and Specia, 2013;</ref><ref type="bibr" target="#b13">Shardlow, 2014)</ref>, ignoring this step can considerably decrease the quality of the output produced by a simplifier.</p><p>CWI has been gaining popularity in recent research. The LS approach in <ref type="bibr" target="#b6">(Horn et al., 2014)</ref> employs an implicit CWI strategy in which a target word is only deemed complex if the LS model can find a candidate substitution which is simpler. Their results, however, show that the approach is unable to find simplifications for one third of the complex words in the dataset. <ref type="bibr" target="#b12">(Shardlow, 2013b)</ref> presents the CW corpus: the first dataset for CWI. Although a relevant contribution, this dataset contains only 731 instances extracted automatically from the Simple English Wikipedia edits, which raises concerns about its reliability and applicability.</p><p>The results obtained by <ref type="bibr" target="#b11">Shardlow (2013a)</ref> highlight some of the issues of the dataset. They use the CW corpus to compare the performance of three solutions to CWI: a Threshold-Based approach, a Support Vector Machine (SVM), and a "Simplify Everything" approach. In their experiments, the "Simplify Everything" approach achieves higher Accuracy, Recall and F-scores than all other systems, suggesting that simplifying all words in a sentence is the most effective approach for CWI. These results are clearly counter intuitive and conflicting with the conclusions drawn in <ref type="bibr" target="#b9">(Paetzold and Specia, 2013;</ref><ref type="bibr" target="#b10">Paetzold, 2013;</ref><ref type="bibr" target="#b13">Shardlow, 2014)</ref>.</p><p>In this paper we describe the first edition of the Complex Word Identification task, organized at Se-mEval 2016. This is an initiative that aims to provide reliable resources and new insights for CWI, as well as to establish the state of the art performance in CWI for English texts, and bring more visibility to the area of Text Simplification.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>The Complex Word Identification task of SemEval 2016 invited participants to create systems that, given a sentence and a target word within it, can predict whether or not a non-native English speaker would be able to understand the meaning of the target word. We chose non-native speakers as a target audience because, unlike second language learners and those with low literacy levels or conditions such as Aphasia and Dyslexia, non-native speakers of English have not yet been explicitly assessed with respect to their simplification needs. In addition, the broad availability of such an audience makes data collection more feasible.</p><p>We have established main goals for the task:</p><p>1. To learn which words challenge non-native English speakers and to understand what their traits are.</p><p>2. To investigate how well one's individual vocabulary limitations can be predicted from the overall vocabulary limitations of others in the same category.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">To introduce a new corpus to be used in Text</head><p>Simplification and other tasks related to Topic Modelling and Semantics.</p><p>4. To evaluate the reliability of various resources commonly used in the creation of Lexical Simplification approaches.</p><p>5. To establish the state of the art performance in CWI for English texts.</p><p>6. To investigate and establish evaluation metrics for the task of CWI.</p><p>In order to achieve these objectives for the shared task, we started by creating a manually annotated dataset through a user study.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">User Study</head><p>In the study, volunteers were asked to judge whether or not they could understand the meaning of each word in a given sentence. In the following we provide more details on the sentences used and the annotation process.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Sources</head><p>We selected 9,200 sentences to be annotated, after filtering out cases with spurious characters, HTML or CSS markup, or outside the 20-40 word-length range. These sentences were taken from three sources: CW Corpus <ref type="bibr" target="#b12">(Shardlow, 2013b)</ref>: composed of 731 sentences from the Simple English Wikipedia in which exactly one word had been simplified by Wikipedia editors from the standard English Wikipedia. Commonly used for the training and evaluation of Complex Word Identification systems. 231 sentences that conformed to our criteria were extracted.</p><p>LexMTurk Corpus <ref type="bibr" target="#b6">(Horn et al., 2014)</ref>: composed of 500 sentences from the Simple English Wikipedia containing one target word that had been simplified from the standard English Wikipedia. Commonly used for the training and evaluation of Lexical Simplification systems. 269 sentences that conformed to our criteria were extracted.</p><p>Simple Wikipedia <ref type="bibr" target="#b7">(Kauchak, 2013)</ref>: composed of 167,689 sentences from the Simple English Wikipedia, each aligned to an equivalent sentence in the standard English Wikipedia. We selected a set of 8,700 sentences from the Simple Wikipedia version that conformed to our criteria and were aligned to an identical sentence in Wikipedia. The goal was to evaluate the ability of the Wikipedia (human) editors in identifying complex words for readers of the Simple Wikipedia.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Annotation Process</head><p>400 non-native speakers of English participated in the experiment, mostly university students or staff. Volunteers provided anonymous information about their native language, age, education level and English proficiency level according to CEFR (Common European Framework of Reference for Languages). They were asked to judge whether or not they could understand the meaning of each content word (nouns, verbs, adjectives and adverbs, as tagged by Freeling <ref type="bibr" target="#b8">(Padr and Stanilovsky, 2012)</ref>) in a set of sentences, each of which was judged independently. Volunteers were instructed to annotate all words that they could not understand individually, even if they could comprehend the meaning of the sentence as a whole.</p><p>A subset of 200 sentences was split into 20 subsets of 10 sentences, and each subset was annotated by a total of 20 volunteers. The remaining 9,000 sentences were split into 300 subsets of 30 sentences, each of which was annotated by a single volunteer.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Analysis</head><p>A total of 35,958 distinct words were annotated <ref type="bibr">(232,481 in total)</ref>. Out of these, 3,854 distinct words (6,388 in total) were deemed as complex by at least one annotator. In the following sections, we discuss details of the data collected.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Profile of Annotators</head><p>Annotators are speakers of 45 languages. The most predominant languages were Portuguese (15.3%), Chinese (13%) and Spanish (11.3%). Annotators are between 18 and 66 years old (average 28.2). 63.7% of the volunteers were Postgraduate students, 32.3% Undergraduate, and 4% were in High School. 36.8% claimed to have Advanced (C2) English proficiency skills, 37.7% Pre-Advanced (C1), 16.6% Upper-Intermediate (B2), 6.4% Intermediate (B1), 2% Pre-Intermediate (A2) and 0.5% Elementary (A1).</p><p>By inspecting the data, we found interesting correlations between the number of complex words annotated and volunteers' age or English proficiency level. Figures <ref type="figure" target="#fig_0">1 and 2</ref> illustrate average and standard deviation values using 10-year age bands and proficiency levels, respectively. Both graphs show that, although the average number of complex words drops as age and proficiency level increase, the variance within each group is very high, suggesting that such groups may not be significantly distinct from each other. By performing Ftests with p = 0.05, we found a significant difference between the band of 40+ years of age and the bands of 10+, 20+ and 30+ years of age, which suggests that one's English knowledge peaks at such age. We also found significant differences between almost all English proficiency levels above A2, except between B2 and C1. We did not find significant differences among education levels.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Analysis of Data Sources</head><p>Evaluating the data, we found that the words deemed complex by Wikipedia editors were marked as complex by our annotators in only 0.8% of the CW instances, and 19.7% of the LexMTurk instances. In contrast, 51.9% of the edited words in the CW corpus and 40.8% of those in the LexMTurk corpus were deemed complex by at least one of our annotators. As for the remaining Simple Wikipedia instances, we found that at least one word in 27.3% of the instances was deemed complex by an annotator, which shows that the simplified version of Wikipedia may still be challenging to non-native speakers.</p><p>We also inspected these and other datasets for the purposes of LS. In addition to the aforementioned CW and LeXMturk corpora, we took the dataset used in the English Lexical Simplification task of SemEval 2012, composed of 2,010 instances total, and LSeval, the LS evaluation dataset introduced by (De <ref type="bibr" target="#b2">Belder and Moens, 2012)</ref>, composed by 430 instances. Each instance in all these datasets contains a sentence and a target complex word. Table <ref type="table" target="#tab_1">1</ref> shows the number of target words included in each dataset, how many of them appear in at least one of our 9,200 sentences, and the proportion of the latter that was deemed complex by at least one of our annotators.</p><p>The figures suggest that the aforementioned resources may not be ideal for the training or evaluation of CWI or LS approaches targeting non-native speakers, since they do not necessarily capture their  needs with respect to simplification.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Features of Complex Words</head><p>We collected statistics that highlight the differences between simple words and those deemed complex by at least one annotator. We consider words' logprobability in a trigram language model built from the Simple Wikipedia corpus <ref type="bibr" target="#b7">(Kauchak, 2013)</ref>, their length, number of syllables, and number of senses, synonyms, hypernyms and hyponyms registered in Wordnet <ref type="bibr" target="#b4">(Fellbaum, 1998)</ref>.  We also noticed that the words most frequently deemed complex by annotators were nouns of technical nature, such as "undercroft", "malleus" and "chalybeatus".</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Agreement Analysis</head><p>We calculated the Krippendorff's Alpha agreement coefficient <ref type="bibr" target="#b5">(Hayes and Krippendorff, 2007)</ref> for each set of 10 sentences that were annotated by 20 volunteers. The Cohen's Kappa coefficient <ref type="bibr" target="#b1">(Cohen, 1968)</ref> was not used due to the large disparity between the number of complex and simple words, which causes the likelihood of annotators agreeing by chance to be higher than the relative observed agreement. The sets have an average agreement coefficient of 0.244, and a standard deviation of 0.1. The relatively low agreement value highlights the expected heterogeneity among non-native speakers with different language backgrounds and proficiency levels.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Datasets</head><p>We have created two training datasets for the task: joint and decomposed. Both contain all instances which were annotated by 20 non-native speakers. The joint dataset contains a single label for each instance, which is 1 if at least one of the 20 annotators has deemed it complex, and 0 otherwise. Differently, the decomposed dataset contains one label for each of the 20 annotators, which is 1 if they have judged it to be complex, and 0 otherwise. Along with the labels, the dataset instances also include the sentence, target word and its position. Participants were allowed to use any additional external resources to build their models. A participant could, for an example, use other (not necessarily publicly available) datasets to complement the one provided.</p><p>The test set is composed by all the instances annotated by only one non-native speaker. While the training sets contain the data pertaining to the same 2,237 instances, the test set contains 88,221 instances. Using this setup, we are able to replicate a realistic scenario in Text Simplification, where the needs of many readers must be predicted based on the needs of a sample of the reader population.</p><p>Table <ref type="table" target="#tab_5">3</ref> shows some examples of instances from our joint training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Systems</head><p>Each team was allowed to submit at most two systems. In total, 42 systems were submitted by 21 teams: AI-KU Introduces two SVM classifiers trained with a Radial Basis Function over the joint dataset. While one of their systems use as features the word embeddings of the target word itself and its substrings (native), the other uses the embeddings of the surrounding words as well (native1). AKTSKI Presents two SVM classifiers: one that weighs labels according to the annotators' judgements (wsys), and another that does not (svmbasic). Their systems use various semantic and morphological features, and were trained over the joint dataset. If the growth rate is known, the maximum lichen size will give a minimum age for when this rock was deposited. growth 2 0</p><p>If the growth rate is known, the maximum lichen size will give a minimum age for when this rock was deposited. lichen 9 1 LTG Uses a very simple setup of Decision Trees trained over the decomposed dataset. Both of their systems learn a Threshold Based on the number of complex judgments in the decomposed dataset. While one of them learns only one threshold (Sys-tem1), the other combines various (System2).</p><p>MACSAAR Introduces a Random Forest (RFC) and an SVM (NNC) classifier. They use Zipfian features, such as the percentile ranking of the target word, and character n-gram features, such as the probability sum of all character n-grams in the sentence. For training, they use the joint dataset.</p><p>MAZA Employs ensemble methods over the joint dataset. They train a context-independent system (A) that uses various word frequency features, and a context-aware system (B) that also includes frequency of the previous and following words.</p><p>Melbourne Uses weighted Random Forest classifiers along with various lexical and semantic features. While one of their systems attributes weight 1.5 to the complex class (runw15), the other attributes weight 3 (runw3).</p><p>PLUJAGH Presents two Threshold-Based solutions to CWI. Their first system (SEWDF) judges a word to be complex if its frequency in Simple Wikipedia is lower than 147. Their other system learns the frequency threshold from the joint dataset that maximises the F-Score (SEWDFF).</p><p>Pomona Uses Threshold-Based bagged classifiers with bootstrap re-sampling. The thresholds of their classifiers are determined through brute-force over the target words' frequencies in a given corpus. They use bag sizes of 10 re-samplings selected through 10-fold cross validation, repeated 20 times. The corpora used are Wikipedia (NormalBag) and the Google Web Corpus (GoogleBag). Their systems are trained over the joint dataset.</p><p>Sensible Provides a solution that combines Recurrent Neural Networks and Ensemble Methods. Their Neural Networks are composed of Long Short-Term Memory layers leading to a single activation node. They predict that a word is only complex if the activation node outputs a value equal or bigger than 0.5. The architecture of their networks is determined through cross-validation over the joint dataset. While one of their systems consist of the best performing Neural Network architecture found (Baseline), the other combines the five best architectures using an eXtreme gradient boosted ensemble (Combined). </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Baselines</head><p>Along with the submitted systems, we include eleven baselines:</p><p>• All Complex: Predicts that all words are complex.</p><p>• All Simple: Predicts that all words are simple.</p><p>• (TB) Simple Wiki: Threshold-Based approach that exploits the word's language model probabilities from the Simple Wikipedia.</p><p>• (TB) Wikipedia: Threshold-Based approach that exploits the word's language model probabilities from Wikipedia.</p><p>• (TB) Length: Threshold-Based approach that exploits the word's length.</p><p>• (TB) Senses: Threshold-Based approach that exploits the word's number of senses.</p><p>• (LB) Ogden: Lexicon-Based approach that classifies as simple words which are in the Ogden's vocabulary 1 .</p><p>• (LB) Simple Wiki: Lexicon-Based approach that classifies as simple words which are in the Simple Wikipedia.</p><p>• (LB) Wikipedia: Lexicon-Based approach that classifies as simple words which are in Wikipedia.</p><p>We train 3-gram language models with SRILM <ref type="bibr" target="#b14">(Stolcke, 2002)</ref>.</p><p>The Wikipedia and Simple Wikipedia corpora are the ones made available by <ref type="bibr" target="#b7">(Kauchak, 2013)</ref>. Sense counts were extracted from WordNet <ref type="bibr" target="#b4">(Fellbaum, 1998)</ref>.</p><p>For completion, we also assess the performance of two ensemble methods:</p><p>• (HV) All Systems: Ensemble approach that combines all systems submitted, including the aforementioned baselines, through Hard Voting, in which the final label of each instance is the one that was most frequently predicted by the systems.</p><p>• (HV) No Baselines: Identical to the previous baseline, except it does not include our baselines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Evaluation</head><p>To assess the systems' performance, we choose to complement the typical F-score, which is the harmonic mean between Precision and Recall. Even though F-score is arguably the most frequently used evaluation metric to compare the performance of classifiers, we feel that, as far as the relationship between Complex Word Identification and Lexical 1 http://ogden.basic-english.org/words.html</p><p>Simplification are concerned, it does not accurately capture the effectiveness of a solution for the task.</p><p>To motivate our decision, we must first outline the characteristics of a great lexical simplifier. In order to be both effective and reliable, it must accomplish two things simultaneously:</p><p>1. Not to make any replacements that compromise the sentences' grammaticality and/or meaning.</p><p>2. To make a text as simple as possible.</p><p>In order to help a simplifier achieve these goals, a complex word identifier must consequently:</p><p>1. Avoid labeling complex words as simple, and hence impede them from being simplified.</p><p>2. Avoid labeling simple words as complex, and hence allow for unnecessary, possibly erroneous simplifications.</p><p>3. To capture as many complex words as possible, and hence maximise the simplicity of a sentence.</p><p>Now that we have outlined what the ideal identifier must do, we can translate these objectives into typical evaluation expressions used in the context of classification problems. In this context, "positive" and "negative" decisions refer to labeling words as complex and simple, respectively.</p><p>While objectives number one and two state that the identifier must minimise the number of false negatives and false positives, item three states that it must maximise the number of true positives. One way to measure the proficiency of a classifier in achieving these goals is through Accuracy and Recall, respectively. In order to balance these two metrics, we have conceived the G-score, which measures the harmonic mean between Accuracy and Recall. For completion, we also report the systems' ranking according to F-score.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Results</head><p>The official G and F-score ranks obtained by each system are reported in the first two columns of Table 4 (G and F). The systems that have achieved the highest G-scores are the ones submitted by the  One of the most clearly highlighted phenomena in our results is the recurring effectiveness of Decision Trees and Random Forests in CWI: out of the systems with the 10 best G-scores, only three do not employ them. Their reliability is also highlighted by the variety of distinct feature sets used to train them, which range from morphological to syntactic. In contrast, the scores obtained by the BHASHA-DECISIONTREE and GARUDA-HSVM&amp;DT systems reveal that these techniques can be much less effective when incorporated in more elaborate setups.</p><p>When it comes to F-score, Decision Trees and Random Forests remain dominant among the top 10 systems, but ultimately lose to a much more minimalistic Threshold-Based strategy. The PLUJAGH-SEWDFF system, which obtained the highest Fscore, simply learns the threshold of word frequencies in Wikipedia that maximises the F-score over the joint dataset. Similarly, the LTG systems, which achieved the second and third highest F-scores, use Decision Trees to learn a threshold over the number of annotators that judged a word to be complex.</p><p>Another interesting finding refers to the difference between raw word frequencies and single-word language model probabilities. The systems submitted by the PLUJAGH team, which learn thresholds over raw word frequencies from Simple Wikipedia, have consistently outperformed the "(TB) Simple Wiki" baseline, which uses language model probabilities, in both G and F-scores.</p><p>Perhaps the biggest surprise from our results comes from to the overall performance of systems which employ Neural Networks and/or word embedding models: systems that do so -the ones submitted by AI-KU, AmritaCEN, CoastalCPH and Sensible -ranked no better than 20th in G-score and 31th in F-score. This comes as a surprise, given that these techniques have been employed in state of the art solutions to a range of tasks in recent years. We hypothesize that the small amount of training data available is the main cause for their unsatisfactory performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="10">Conclusions</head><p>In this paper we have described the findings of the Complex Word Identification task of SemEval 2016. The task was framed as a simple, accessible and yet interesting challenge, such that researchers with any background can participate. It attracted a very large number of participants, particularly given that this was its first edition.</p><p>To create the task's dataset, we conducted a user study with 400 non-native English speakers, which resulted in a total of 158,624 individual annotations. By analyzing the data obtained we were able to confirm that, according to non-native speakers of English, there is a statistically significant difference between complex and simple words. We have also found a noticeable correlation between the number of complex words annotated and English proficiency level, which is positive evidence that our CWI datasets do, at least to some extent, capture the CWI needs of non-natives. In contrast, we have found that other available resources, such as the CW, LexMTurk and LSeval datasets, may not necessarily do so.</p><p>A total of 42 systems were submitted to the task. They reach upwards of impressive 77% in G-score, suggesting that predicting one's individual simplification needs based on the profile of a more diverse audience is feasible. The strategies used range from very simple Threshold-Based approaches to elaborate Ensemble methods that combine various Deep Recurrent Neural Networks and word embeddings. We have ranked systems according to two metrics: F-score and G-score. We found that, likely due to the nature of the task and the reduced number of training instances available, Decision Trees and Ensemble methods perform better than Neural Networks and word embedding models. Additionally, it remains very clear that the most effective way to determine a word's complexity is by searching for its frequency in corpora. The quality of the corpora plays an im-portant role.</p><p>In the future, we plan to propose more SemEval tasks in the Text Simplification domain, so that we can continue to learn about word complexity, and hopefully further increase this topic's reach and popularity.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Age bands over number of complex words</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Proficiency levels over number of complex words</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Results of dataset analysis</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell>Feature</cell><cell>Complex</cell><cell>Simple</cell></row><row><cell>Length Syllables -Probability Senses Synonyms Hypernyms Hyponyms</cell><cell cols="2">7.490 ± 2.683 2.313 ± 1.101 5.974 ± 5.956 4.169 ± 5.945 10.501 ± 15.663 11.893 ± 14.889 7.966 ± 2.724 2.557 ± 1.163 5.599 ± 3.784 4.739 ± 5.649 3.141 ± 4.732 3.586 ± 4.612 10.389 ± 28.687 12.253 ± 30.989</cell></row></table><note>shows average values for these features. According to F-tests with p = 0.01, for all features considered, complex and simple words are significantly different. On average, complex words are less ambiguous, shorter, and occur less in Simple Wikipedia.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Mean and standard deviation for word features</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>December 23, took an oath of purgation concerning the charges brought against him, and his opponents were exiled. took 6 0 Leo, on December 23, took an oath of purgation concerning the charges brought against him, and his opponents were exiled. oath 8 1 It resembles five deep spoons with the handles linked, or, alternately, the hammocks resemble five fig halves.</figDesc><table><row><cell cols="2">Sentence Leo, on deep Word</cell><cell>Position 3</cell><cell>Label 0</cell></row><row><cell>It resembles five deep spoons with the handles linked, or, alternately, the ham-mocks resemble five fig halves.</cell><cell>halves</cell><cell>19</cell><cell>1</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Dataset instances</figDesc><table><row><cell>Amrita-CEN Introduces two SVM classifiers trained over the joint dataset. While one of them</cell><cell>whether the predictions are correct. The validated predictions are then combined into a final label.</cell></row><row><cell>uses word embeddings as well as various semantic</cell><cell>SVMPP trains a single SVM classifier for each of</cell></row><row><cell>and morphological features (w2vecSim), the other</cell><cell>the 20 annotators of the decomposed dataset, then</cell></row><row><cell>also includes POS tag information (w2vecSimPos).</cell><cell>uses a weighted average to combine their predic-</cell></row><row><cell></cell><cell>tions.</cell></row><row><cell></cell><cell>HMC Performs CWI through a Decision and a Regression Tree, both with a maximum depth of</cell></row><row><cell></cell><cell>four. During training, their systems deem complex</cell></row><row><cell></cell><cell>those words which were judged so by at least 25%</cell></row><row><cell></cell><cell>(DecisionTree25) and 5% (RegressionTree05) of the</cell></row><row><cell></cell><cell>first 19 annotators in the decomposed dataset. Their</cell></row><row><cell></cell><cell>systems are then tuned based on the judgment of the</cell></row><row><cell></cell><cell>20th annotator.</cell></row><row><cell></cell><cell>IIIT Resorts to Nearest Centroid Classification to perform CWI. While one of their classifiers uses the</cell></row><row><cell></cell><cell>Manhattan distance during training (NCC), the other</cell></row><row><cell></cell><cell>uses the Euclidean distance (NCC2). As features,</cell></row><row><cell>CoastalCPH Introduces a Neural Networks and a Logistic Regression solution. Their Neural Net-</cell><cell>they use semantic and morphological features. Their systems are trained over the joint dataset.</cell></row><row><cell>works system (NeuralNet) is trained over the joint dataset, and uses two hidden layers leading to a sin-gle activation node. Their Logistic Regression sys-tem (Concatenation) is trained over the decomposed dataset. Both systems use the same set of features, which include word frequency measures and word</cell><cell>JUNLP Presents a Random Forest (RandomFor-est) and a Naive Bayes (NaiveBayes) classifier trained over the joint dataset. Among the semantic, Lexicon-Based and morphological features used are the words' POS tag and Named Entity information.</cell></row><row><cell>embedding values.</cell><cell></cell></row><row><cell>GARUDA Presents two solutions: a hybrid model (HSVM&amp;DT) and an SVM classifier ensemble</cell><cell></cell></row><row><cell>(SVMPP). HSVM&amp;DT obtains predictions from</cell><cell></cell></row><row><cell>various SVM models, which are then validated by</cell><cell></cell></row><row><cell>Decision Tree classifiers trained specifically to judge</cell><cell></cell></row></table><note>BHASHA Presents two systems: an SVM (SVM) classifier and a Decision Tree (DECISIONTREE) classifier. The instances in the dataset are first preprocessed, then classified according to various lexical and morphological features. Finally, the results are post-processed with hand-crafted rules. Both systems are trained over the joint dataset.ClacEDLK Uses Random Forests to train two classifiers over the joint dataset with semantic, morphological, lexical and psycholinguistic features. While one classifier uses a class-assignment threshold of 0.5 (RandomForest-0.5), the other uses a threshold of 0.6 (RandomForest-0.6).</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head></head><label></label><figDesc>SV000gg Employs two System Voting techniques that combine various Lexicon-Based, Threshold-Based and Machine Learning voter sub-systems into one. Their first system (Hard) uses Hard Voting: it increases the prediction likelihood of a label by one for each voter that has predicted it for</figDesc><table><row><cell>a given instance. Their second system (Soft) uses</cell></row><row><cell>Performance-Oriented Soft Voting: instead of in-</cell></row><row><cell>creasing it by one, they increase it by the systems'</cell></row><row><cell>G-Score over a held-out portion of the joint dataset.</cell></row><row><cell>Their voters use a total of 69 morphological, lexical,</cell></row><row><cell>collocational and semantic features.</cell></row><row><cell>TALN Uses Random Forests to perform CWI. While one of their systems is trained over the joint</cell></row><row><cell>dataset (RandomForest SIM), the other is trained</cell></row><row><cell>over the decomposed dataset (RandomForest WEI),</cell></row><row><cell>and includes the number of annotators that deemed</cell></row><row><cell>the word to be complex as a feature. Both systems</cell></row><row><cell>also include various lexical, morphological, seman-</cell></row><row><cell>tic and syntactic features.</cell></row><row><cell>USAAR Presents two Bayesian Ridge classifiers. Their first system (Entropy) is trained based solely</cell></row><row><cell>on a hand-crafted Word Sense Entropy metric,</cell></row><row><cell>which is calculated for each target word in the joint</cell></row><row><cell>dataset. Their other system (Entroplexity) combines</cell></row><row><cell>Word Sense Entropy with perplexity measures cal-</cell></row><row><cell>culated with a language model.</cell></row><row><cell>UWB Performs CWI with the help of Maxi-mum Entropy classifiers. Both classifiers use only</cell></row><row><cell>one feature: document frequencies of words in</cell></row><row><cell>Wikipedia. While one of them is trained over the</cell></row><row><cell>joint dataset (All), the other is trained over the de-</cell></row><row><cell>composed dataset (Agg).</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>Final system ranks and scores. Baselines are in boldface.SV000gg team, which combine various Threshold-Based, Lexicon-Based and Machine Learning approaches with minimalistic voting techniques. Similarly, the system from the TALN team, which has the third highest G-score, uses an ensemble method that combines various Decision Tree classifiers. Interestingly, the (HV) All Systems and (HV) No Baselines systems, which combine the submitted systems using the same Hard Voting strategy employed by the runner up SV000gg-Hard, did not manage to outperform it.</figDesc><table /></figure>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Simplifying text for language-impaired readers</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Carroll</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guido</forename><surname>Minnen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Darren</forename><surname>Pearce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yvonne</forename><surname>Canning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siobhan</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Tait</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th EACL</title>
+				<meeting>the 9th EACL</meeting>
+		<imprint>
+			<date type="published" when="1999" />
+			<biblScope unit="page" from="269" to="270" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Weighted kappa: Nominal scale agreement provision for scaled disagreement or partial credit</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Cohen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Psychological bulletin</title>
+		<imprint>
+			<biblScope unit="volume">70</biblScope>
+			<biblScope unit="page">213</biblScope>
+			<date type="published" when="1968" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">A dataset for the evaluation of lexical simplification</title>
+		<author>
+			<persName><forename type="first">Jan</forename><forename type="middle">De</forename><surname>Belder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Francine</forename><surname>Moens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th CICLING</title>
+				<meeting>the 13th CICLING</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">The use of a psycholinguistic database in the simplification of text for aphasic readers. Linguistic Databases</title>
+		<author>
+			<persName><forename type="first">Siobhan</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Tait</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="161" to="173" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">WordNet: An Electronic Lexical Database</title>
+		<author>
+			<persName><forename type="first">Christiane</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>Bradford Books</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Answering the call for a standard reliability measure for coding data</title>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">F</forename><surname>Hayes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Klaus</forename><surname>Krippendorff</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Communication Methods and Measures</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Learning a lexical simplifier using wikipedia</title>
+		<author>
+			<persName><forename type="first">Colby</forename><surname>Horn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cathryn</forename><surname>Manduca</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Kauchak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 52nd ACL</title>
+				<meeting>the 52nd ACL</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="458" to="463" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Improving text simplification language modeling using unsimplified text data</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Kauchak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 51st ACL</title>
+				<meeting>the 51st ACL</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1537" to="1546" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Freeling 3.0: Towards wider multilinguality</title>
+		<author>
+			<persName><forename type="first">Llus</forename><surname>Padr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Evgeny</forename><surname>Stanilovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2012 LREC</title>
+				<meeting>the 2012 LREC</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Text simplification as tree transduction</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><forename type="middle">H</forename><surname>Paetzold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucia</forename><surname>Specia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th STIL</title>
+				<meeting>the 9th STIL</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">Um sistema de simplificação automática de textos escritos em inglês por meio de transduçao deárvores</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><forename type="middle">H</forename><surname>Paetzold</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+		<respStmt>
+			<orgName>State University of Western Paraná</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">A comparison of techniques to automatically identify complex words</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Shardlow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 51st ACL Student Research Workshop</title>
+				<meeting>the 51st ACL Student Research Workshop</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="103" to="109" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">The cw corpus: A new resource for evaluating the identification of complex words</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Shardlow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Predicting and Improving Text Readability for Target Reader Populations</title>
+				<meeting>the 2nd Workshop on Predicting and Improving Text Readability for Target Reader Populations</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="69" to="77" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Out in the open: Finding and categorising errors in the lexical simplification pipeline</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Shardlow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th LREC</title>
+				<meeting>the 9th LREC</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Srilm-an extensible language modeling toolkit</title>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Stolcke</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Spoken Language Processing</title>
+				<meeting>the International Conference on Spoken Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="257" to="286" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

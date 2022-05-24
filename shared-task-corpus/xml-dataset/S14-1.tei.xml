@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2014 Task 1: Evaluation of Compositional Distributional Semantic Models on Full Sentences through Semantic Relatedness and Textual Entailment</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Marco</forename><surname>Marelli</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Luisa</forename><surname>Bentivogli</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Raffaella</forename><surname>Bernardi</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author role="corresp">
+							<persName><forename type="first">Stefano</forename><surname>Menini</surname></persName>
+							<email>menini@fbk.eu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Roberto</forename><surname>Zamparelli</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Trento</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">Fondazione Bruno Kessler</orgName>
+								<address>
+									<settlement>Trento</settlement>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2014 Task 1: Evaluation of Compositional Distributional Semantic Models on Full Sentences through Semantic Relatedness and Textual Entailment</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the task on the evaluation of Compositional Distributional Semantics Models on full sentences organized for the first time within SemEval-2014. Participation was open to systems based on any approach. Systems were presented with pairs of sentences and were evaluated on their ability to predict human judgments on (i) semantic relatedness and (ii) entailment. The task attracted 21 teams, most of which participated in both subtasks. We received 17 submissions in the relatedness subtask (for a total of 66 runs) and 18 in the entailment subtask (65 runs).</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Distributional Semantic Models (DSMs) approximate the meaning of words with vectors summarizing their patterns of co-occurrence in corpora. Recently, several compositional extensions of DSMs (CDSMs) have been proposed, with the purpose of representing the meaning of phrases and sentences by composing the distributional representations of the words they contain <ref type="bibr" target="#b2">(Baroni and Zamparelli, 2010;</ref><ref type="bibr" target="#b10">Grefenstette and Sadrzadeh, 2011;</ref><ref type="bibr" target="#b18">Mitchell and Lapata, 2010;</ref><ref type="bibr" target="#b20">Socher et al., 2012)</ref>. Despite the ever increasing interest in the field, the development of adequate benchmarks for CDSMs, especially at the sentence level, is still lagging. Existing data sets, such as those introduced by <ref type="bibr" target="#b17">Mitchell and Lapata (2008)</ref> and <ref type="bibr" target="#b10">Grefenstette and Sadrzadeh (2011)</ref>, are limited to a few hundred instances of very short sentences with a fixed structure. In the last ten years, several large This work is licensed under a Creative Commons Attribution 4.0 International Licence. Page numbers and proceedings footer are added by the organisers. Licence details: http://creativecommons.org/licenses/by/4.0/ data sets have been developed for various computational semantics tasks, such as Semantic Text Similarity (STS) <ref type="bibr" target="#b0">(Agirre et al., 2012)</ref> or Recognizing Textual Entailment (RTE) <ref type="bibr" target="#b8">(Dagan et al., 2006)</ref>. Working with such data sets, however, requires dealing with issues, such as identifying multiword expressions, recognizing named entities or accessing encyclopedic knowledge, which have little to do with compositionality per se. CDSMs should instead be evaluated on data that are challenging for reasons due to semantic compositionality (e.g. context-cued synonymy resolution and other lexical variation phenomena, active/passive and other syntactic alternations, impact of negation at various levels, operator scope, and other effects linked to the functional lexicon). These issues do not occur frequently in, e.g., the STS and RTE data sets.</p><p>With these considerations in mind, we developed SICK (Sentences Involving Compositional Knowledge), a data set aimed at filling the void, including a large number of sentence pairs that are rich in the lexical, syntactic and semantic phenomena that CDSMs are expected to account for, but do not require dealing with other aspects of existing sentential data sets that are not within the scope of compositional distributional semantics. Moreover, we distinguished between generic semantic knowledge about general concept categories (such as knowledge that a couple is formed by a bride and a groom) and encyclopedic knowledge about specific instances of concepts (e.g., knowing the fact that the current president of the US is Barack Obama). The SICK data set contains many examples of the former, but none of the latter.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">The Task</head><p>The Task involved two subtasks. (i) Relatedness: predicting the degree of semantic similarity between two sentences, and (ii) Entailment: detecting the entailment relation holding between them (see below for the exact definition). Sentence relatedness scores provide a direct way to evaluate CDSMs, insofar as their outputs are able to quantify the degree of semantic similarity between sentences. On the other hand, starting from the assumption that understanding a sentence means knowing when it is true, being able to verify whether an entailment is valid is a crucial challenge for semantic systems.</p><p>In the semantic relatedness subtask, given two sentences, systems were required to produce a relatedness score (on a continuous scale) indicating the extent to which the sentences were expressing a related meaning. Table <ref type="table">1</ref> shows examples of sentence pairs with different degrees of semantic relatedness; gold relatedness scores are expressed on a 5-point rating scale.</p><p>In the entailment subtask, given two sentences A and B, systems had to determine whether the meaning of B was entailed by A. In particular, systems were required to assign to each pair either the ENTAILMENT label (when A entails B, viz., B cannot be false when A is true), the CONTRA-DICTION label (when A contradicted B, viz. B is false whenever A is true), or the NEUTRAL label (when the truth of B could not be determined on the basis of A). Table <ref type="table" target="#tab_0">2</ref> shows examples of sentence pairs holding different entailment relations.</p><p>Participants were invited to submit up to five system runs for one or both subtasks. Developers of CDSMs were especially encouraged to participate, but developers of other systems that could tackle sentence relatedness or entailment tasks were also welcome. Besides being of intrinsic interest, the latter systems' performance will serve to situate CDSM performance within the broader landscape of computational semantics.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">The SICK Data Set</head><p>The SICK data set, consisting of about 10,000 English sentence pairs annotated for relatedness in meaning and entailment, was used to evaluate the systems participating in the task. The data set creation methodology is outlined in the following subsections, while all the details about data generation and annotation, quality control, and interannotator agreement can be found in <ref type="bibr" target="#b16">Marelli et al. (2014)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Set Creation</head><p>SICK was built starting from two existing data sets: the 8K ImageFlickr data set 1 and the SemEval-2012 STS MSR-Video Descriptions data set. <ref type="bibr">2</ref> The 8K ImageFlickr dataset is a dataset of images, where each image is associated with five descriptions. To derive SICK sentence pairs we randomly chose 750 images and we sampled two descriptions from each of them. The SemEval-2012 STS MSR-Video Descriptions data set is a collection of sentence pairs sampled from the short video snippets which compose the Microsoft Research Video Description Corpus. A subset of 750 sentence pairs were randomly chosen from this data set to be used in SICK.</p><p>In order to generate SICK data from the 1,500 sentence pairs taken from the source data sets, a 3step process was applied to each sentence composing the pair, namely (i) normalization, (ii) expansion and (iii) pairing. Table <ref type="table" target="#tab_1">3</ref> presents an example of the output of each step in the process.</p><p>The normalization step was carried out on the original sentences (S0) to exclude or simplify instances that contained lexical, syntactic or semantic phenomena (e.g., named entities, dates, numbers, multiword expressions) that CDSMs are currently not expected to account for.</p><p>The expansion step was applied to each of the normalized sentences (S1) in order to create up to three new sentences with specific characteristics suitable to CDSM evaluation. In this step syntactic and lexical transformations with predictable effects were applied to each normalized sentence, in order to obtain (i) a sentence with a similar meaning (S2), (ii) a sentence with a logically contradictory or at least highly contrasting meaning (S3), and (iii) a sentence that contains most of the same lexical items, but has a different meaning (S4) (this last step was carried out only where it could yield a meaningful sentence; as a result, not all normalized sentences have an (S4) expansion).</p><p>Finally, in the pairing step each normalized sentence in the pair was combined with all the sentences resulting from the expansion phase and with the other normalized sentence in the pair.</p><p>Considering the example in Table <ref type="table" target="#tab_1">3, S1a and S1b</ref> were paired. Then, S1a and S1b were each combined with S2a, S2b,S3a, S3b, S4a, and S4b, lead-Relatedness score Example 1.6 A: "A man is jumping into an empty pool" B: "There is no biker jumping in the air" 2.9 A: "Two children are lying in the snow and are making snow angels" B: "Two angels are making snow on the lying children"</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>3.6</head><p>A: "The young boys are playing outdoors and the man is smiling nearby" B: "There is no boy playing outdoors and there is no man smiling" 4.9 A: "A person in a black jacket is doing tricks on a motorbike" B: "A man in a black jacket is doing tricks on a motorbike" Table <ref type="table">1</ref>: Examples of sentence pairs with their gold relatedness scores (on a 5-point rating scale).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Entailment label Example</head><p>ENTAILMENT A: "Two teams are competing in a football match" B: "Two groups of people are playing football" CONTRADICTION A: "The brown horse is near a red barrel at the rodeo" B: "The brown horse is far from a red barrel at the rodeo" NEUTRAL A: "A man in a black jacket is doing tricks on a motorbike" B: "A person is riding the bicycle on one wheel" ing to a total of 13 different sentence pairs. Furthermore, a number of pairs composed of completely unrelated sentences were added to the data set by randomly taking two sentences from two different pairs. The result is a set of about 10,000 new sentence pairs, in which each sentence is contrasted with either a (near) paraphrase, a contradictory or strongly contrasting statement, another sentence with very high lexical overlap but different meaning, or a completely unrelated sentence. The rationale behind this approach was that of building a data set which encouraged the use of a compositional semantics step in understanding when two sentences have close meanings or entail each other, hindering methods based on individual lexical items, on the syntactic complexity of the two sentences or on pure world knowledge.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Relatedness and Entailment Annotation</head><p>Each pair in the SICK dataset was annotated to mark (i) the degree to which the two sentence meanings are related (on a 5-point scale), and (ii) whether one entails or contradicts the other (con-sidering both directions). The ratings were collected through a large crowdsourcing study, where each pair was evaluated by 10 different subjects, and the order of presentation of the sentences was counterbalanced (i.e., 5 judgments were collected for each presentation order). Swapping the order of the sentences within each pair served a twofold purpose: (i) evaluating the entailment relation in both directions and (ii) controlling possible bias due to priming effects in the relatedness task. Once all the annotations were collected, the relatedness gold score was computed for each pair as the average of the ten ratings assigned by participants, whereas a majority vote scheme was adopted for the entailment gold labels.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Data Set Statistics</head><p>For the purpose of the task, the data set was randomly split into training and test set (50% and 50%), ensuring that each relatedness range and entailment category was equally represented in both sets. Table <ref type="table" target="#tab_2">4</ref> shows the distribution of sentence pairs considering the combination of relatedness ranges and entailment labels. The "total" column Original pair S0a: A sea turtle is hunting for fish S0b: The turtle followed the fish Normalized pair S1a: A sea turtle is hunting for fish S1b: The turtle is following the fish Expanded pairs S2a: A sea turtle is hunting for food S2b: The turtle is following the red fish S3a: A sea turtle is not hunting for fish S3b: The turtle isn't following the fish S4a: A fish is hunting for a turtle in the sea S4b: The fish is following the turtle  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Metrics and Baselines</head><p>Both subtasks were evaluated using standard metrics. In particular, the results on entailment were evaluated using accuracy, whereas the outputs on relatedness were evaluated using Pearson correlation, Spearman correlation, and Mean Squared Error (MSE). Pearson correlation was chosen as the official measure to rank the participating systems.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Submitted Runs and Results</head><p>Overall, 21 teams participated in the task. Participants were allowed to submit up to 5 runs for each subtask and had to choose the primary run to be included in the comparative evaluation. We received 17 submissions to the relatedness subtask (for a total of 66 runs) and 18 for the entailment subtask (65 runs).</p><p>We asked participants to pre-specify a primary run to encourage commitment to a theoretically-motivated approach, rather than post-hoc performance-based assessment. Interestingly, some participants used the non-primary runs to explore the performance one could reach by exploiting weaknesses in the data that are not likely to hold in future tasks of the same kind (for instance, run 3 submitted by The Meaning Factory exploited sentence ID ordering information, but it was not presented as a primary run). Participants could also use non-primary runs to test smart baselines. In the relatedness subtask six non-primary runs slightly outperformed the official winning primary entry, 3 while in the entailment task all ECNU's runs but run 4 were better than ECNU's primary run. Interestingly, the differences between the ECNU's runs were due to the learning methods used.</p><p>We present the results achieved by primary runs against the Entailment and Relatedness subtasks in Table <ref type="table" target="#tab_6">6 and Table 7</ref>, respectively. <ref type="bibr">4</ref> We witnessed a very close finish in both subtasks, with 4 more systems within 3 percentage points of the winner in both cases. 4 of these 5 top systems were the same across the two subtasks. Most systems performed well above the best baselines from Table <ref type="table" target="#tab_3">5</ref>.</p><p>The overall performance pattern suggests that, owing perhaps to the more controlled nature of the sentences, as well as to the purely linguistic nature of the challenges it presents, SICK entailment is "easier" than RTE. Considering the first five RTE challenges <ref type="bibr" target="#b4">(Bentivogli et al., 2009)</ref>, the median values ranged from 56.20% to 61.75%, whereas the average values ranged from 56.45% to 61.97%. The entailment scores obtained on the SICK data set are considerably higher, being 77.06% for the median system and 75.36% for the average system. On the other hand, the relatedness task is more challenging than the one run on MSRvid (one of our data sources) at STS 2012, where the top Pearson correlation was 0.88 <ref type="bibr" target="#b0">(Agirre et al., 2012)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Approaches</head><p>A summary of the approaches used by the systems to address the task is presented in Table <ref type="table">8</ref>. In the table, systems in bold are those for which the authors submitted a paper <ref type="bibr" target="#b9">(Ferrone and Zanzotto, 2014;</ref><ref type="bibr" target="#b7">Bjerva et al., 2014;</ref><ref type="bibr" target="#b3">Beltagy et al., 2014;</ref><ref type="bibr" target="#b13">Lai and Hockenmaier, 2014;</ref><ref type="bibr" target="#b1">Alves et al., 2014;</ref><ref type="bibr" target="#b14">León et al., 2014;</ref><ref type="bibr" target="#b5">Bestgen, 2014;</ref><ref type="bibr" target="#b22">Zhao et al., 2014;</ref><ref type="bibr" target="#b21">Vo et al., 2014;</ref><ref type="bibr" target="#b6">Biçici and Way, 2014;</ref><ref type="bibr" target="#b15">Lien and Kouylekov, 2014;</ref><ref type="bibr" target="#b12">Jimenez et al., 2014;</ref><ref type="bibr" target="#b19">Proisl and Evert, 2014;</ref><ref type="bibr" target="#b11">Gupta et al., 2014)</ref>. For the others, we used the brief description sent with the system's results, double-checking the information with the authors. In the table, "E" and "R" refer to the entailment and relatedness task respectively, and "B" to both.</p><p>Almost all systems combine several kinds of features. To highlight the role played by composition, we draw a distinction between compositional and non-compositional features, and divide the former into 'fully compositional' (sys-4 ITTK's primary run could not be evaluated due to technical problems with the submission. The best ITTK's nonprimary run scored 78,2% accuracy in the entailment task and 0.76 r in the relatedness task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>ID</head><p>Compose ACCURACY   purely non-compositional system (UNAL-NLP) which reaches the 4th position (0.80 r UNAL-NLP vs. 0.82 r obtained by the best system). UNAL-NLP however exploits an ad-hoc "negation" feature discussed below.</p><p>In the entailment task, the best noncompositional model (again UNAL-NLP) reaches the 3rd position, within close reach of the best system (83% UNAL-NLP vs. 84.5% obtained by the best system). Again, purely compositional models have lower performance. haLF CDSM reaches 69.42% accuracy, Illinois-LH Word Overlap combined with a compositional feature reaches 71.8%. The fine-grained analysis reported by Illinois-LH <ref type="bibr" target="#b13">(Lai and Hockenmaier, 2014)</ref> shows that a full compositional system (based on point-wise multiplication) fails to capture contradiction. It is better than partial phrase-based compositional models in recognizing entailment pairs, but worse than them on recognizing neutral pairs.</p><p>Given our more general interest in the distributional approaches, in Table <ref type="table">8</ref> we also classify the different DSMs used as 'Vector Space Mod-els', 'Topic Models' and 'Neural Language Models'. Due to the impact shown by learning methods (see ECNU's results), we also report the different learning approaches used.</p><p>Several participating systems deliberately exploit ad-hoc features that, while not helping a true understanding of sentence meaning, exploit some systematic characteristics of SICK that should be controlled for in future releases of the data set. In particular, the Textual Entailment subtask has been shown to rely too much on negative words and antonyms. The Illinois-LH team reports that, just by checking the presence of negative words (the Negation Feature in the table), one can detect 86.4% of the contradiction pairs, and by combining Word Overlap and antonyms one can detect 83.6% of neutral pairs and 82.6% of entailment pairs. This approach, however, is obviously very brittle (it would not have been successful, for instance, if negation had been optionally combined with word-rearranging in the creation of S4 sentences, see Section 3.1 above).</p><p>Finally, Table <ref type="table">8</ref> reports about the use of external resources in the task. One of the reasons we created SICK was to have a compositional semantics benchmark that would not require too many external tools and resources (e.g., named-entity recognizers, gazetteers, ontologies). By looking at what the participants chose to use, we think we succeeded, as only standard NLP pre-processing tools (tokenizers, PoS taggers and parsers) and relatively few knowledge resources (mostly, Word-Net and paraphrase corpora) were used.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>We presented the results of the first task on the evaluation of compositional distributional semantic models and other semantic systems on full sentences, organized within SemEval-2014. Two subtasks were offered: (i) predicting the degree of relatedness between two sentences, and (ii) detecting the entailment relation holding between them. The task has raised noticeable attention in the community: 17 and 18 submissions for the relatedness and entailment subtasks, respectively, for a total of 21 participating teams. Participation was not limited to compositional models but the majority of systems (13/21) used composition in at least one of the subtasks. Moreover, the top-ranking systems in both tasks use compositional features. However, it must be noted that all systems also ex-</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 2 :</head><label>2</label><figDesc>Examples of sentence pairs with their gold entailment labels.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 3 :</head><label>3</label><figDesc>Data set creation process.indicates the total number of pairs in each range of relatedness, while the "total" row contains the total number of pairs in each entailment class.</figDesc><table><row><cell></cell><cell cols="2">SICK Training Set</cell><cell></cell><cell></cell></row><row><cell cols="2">relatedness CONTRADICT</cell><cell>ENTAIL</cell><cell cols="2">NEUTRAL TOTAL</cell></row><row><cell>1-2 range</cell><cell>0 (0%)</cell><cell>0 (0%)</cell><cell>471 (10%)</cell><cell></cell></row><row><cell>2-3 range</cell><cell>59 (1%)</cell><cell>2 (0%)</cell><cell>638 (13%)</cell><cell>699</cell></row><row><cell>3-4 range</cell><cell>498 (10%)</cell><cell>71 (1%)</cell><cell>1344 (27%)</cell><cell>1913</cell></row><row><cell>4-5 range</cell><cell>155 (3%)</cell><cell>1344 (27%)</cell><cell>352 (7%)</cell><cell>1851</cell></row><row><cell>TOTAL</cell><cell>712</cell><cell>1417</cell><cell>2805</cell><cell>4934</cell></row><row><cell></cell><cell cols="2">SICK Test Set</cell><cell></cell><cell></cell></row><row><cell cols="2">relatedness CONTRADICT</cell><cell>ENTAIL</cell><cell cols="2">NEUTRAL TOTAL</cell></row><row><cell>1-2 range</cell><cell>0 (0%)</cell><cell>1 (0%)</cell><cell>451 (9%)</cell><cell>452</cell></row><row><cell>2-3 range</cell><cell>59 (1%)</cell><cell>0 (0%)</cell><cell>615(13%)</cell><cell>674</cell></row><row><cell>3-4 range</cell><cell>496 (10%)</cell><cell>65 (1%)</cell><cell>1398 (28%)</cell><cell>1959</cell></row><row><cell>4-5 range</cell><cell>157 (3%)</cell><cell>1338 (27%)</cell><cell>326 (7%)</cell><cell>1821</cell></row><row><cell>TOTAL</cell><cell>712</cell><cell>1404</cell><cell>2790</cell><cell>4906</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 4 :</head><label>4</label><figDesc>Distribution of sentence pairs across the Training and Test Sets.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 5</head><label>5</label><figDesc></figDesc><table><row><cell>presents the performance of 4 base-</cell></row><row><cell>lines. The Majority baseline always assigns</cell></row><row><cell>the most common label in the training data</cell></row><row><cell>(NEUTRAL), whereas the Probability baseline</cell></row><row><cell>assigns labels randomly according to their rela-</cell></row><row><cell>tive frequency in the training set. The Overlap</cell></row><row><cell>baseline measures word overlap, again with</cell></row><row><cell>parameters (number of stop words and EN-</cell></row><row><cell>TAILMENT/NEUTRAL/CONTRADICTION</cell></row><row><cell>thresholds) estimated on the training part of the</cell></row><row><cell>data.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 5 :</head><label>5</label><figDesc></figDesc><table /><note>Performance of baselines. Figure of merit is Pearson correlation for relatedness and accuracy for entailment. NA = Not Applicable</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 6</head><label>6</label><figDesc></figDesc><table><row><cell>: Primary run results for the entailment</cell></row><row><cell>subtask. The table also shows whether a sys-</cell></row><row><cell>tem exploits composition information at either the</cell></row><row><cell>phrase (P) or sentence (S) level.</cell></row><row><cell>tems that compositionally computed the meaning</cell></row><row><cell>of the full sentences, though not necessarily by as-</cell></row><row><cell>signing meanings to intermediate syntactic con-</cell></row><row><cell>stituents) and 'partially compositional' (systems</cell></row><row><cell>that stop the composition at the level of phrases).</cell></row><row><cell>As the table shows, thirteen systems used compo-</cell></row><row><cell>sition in at least one of the tasks; ten used compo-</cell></row><row><cell>sition for full sentences and six for phrases, only.</cell></row><row><cell>The best systems are among these thirteen sys-</cell></row><row><cell>tems.</cell></row><row><cell>Let us focus on such compositional methods.</cell></row><row><cell>Concerning the relatedness task, the fine-grained</cell></row><row><cell>analyses reported for several systems (Illinois-</cell></row><row><cell>LH, The Meaning Factory and ECNU) shows that</cell></row><row><cell>purely compositional systems currently reach per-</cell></row><row><cell>formance above 0.7 r. In particular, ECNU's</cell></row><row><cell>compositional feature gives 0.75 r, The Meaning</cell></row><row><cell>Factory's logic-based composition model 0.73 r,</cell></row><row><cell>and Illinois-LH compositional features combined</cell></row><row><cell>with Word Overlap 0.75 r. While competitive,</cell></row><row><cell>these scores are lower than the one of the best</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 7 :</head><label>7</label><figDesc>Primary run results for the relatedness subtask (r for Pearson and ρ for Spearman correlation). The table also shows whether a system exploits composition information at either the phrase (P) or sentence (S) level.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://nlp.cs.illinois.edu/HockenmaierGroup/data.html 2 http://www.cs.york.ac.uk/semeval-2012/task6/index.php?id=data</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">They were: The Meaning Factory's run3 (Pearson 0.84170) ECNU's runs2 (0.83893) run5 (0.83500) and Stan-fordNLP's run4 (0.83462) and run2 (0.83103).</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We thank the creators of the ImageFlickr, MSR-Video, and SemEval-2012 STS data sets for granting us permission to use their data for the task. The University of Trento authors were supported by ERC 2011 Starting Independent Research Grant n. 283554 (COMPOSES).</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The Meaning Factory</p><p>Table <ref type="table">8</ref>: Summary of the main characteristics of the participating systems on R(elatedness), E(ntailment) or B(oth) ploit non-compositional features and most of them use external resources, especially WordNet. Almost all the participating systems outperformed the proposed baselines in both tasks. Further analyses carried out by some participants in the task show that purely compositional approaches reach accuracy above 70% in entailment and 0.70 r for relatedness. These scores are comparable with the average results obtained in the task.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Semeval-2012 task 6: A pilot on semantic textual similarity</title>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Cer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Gonzalez-Agirre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Sixth International Workshop on Semantic Evaluation</title>
+				<meeting>the Sixth International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="volume">2</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">ASAP: Automatica semantic alignment for phrases</title>
+		<author>
+			<persName><forename type="first">Ana</forename><forename type="middle">O</forename><surname>Alves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adirana</forename><surname>Ferrugento</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mariana</forename><surname>Lorenço</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filipe</forename><surname>Rodrigues</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Se-mEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>Se-mEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Nouns are vectors, adjectives are matrices: Representing adjective-noun constructions in semantic space</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Zamparelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP<address><addrLine>Boston, MA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1183" to="1193" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">UTexas: Natural language semantics using distributional semantics and probablisitc logic</title>
+		<author>
+			<persName><forename type="first">Islam</forename><surname>Beltagy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Roller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gemma</forename><surname>Boleda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katrin</forename><surname>Erk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymon</forename><forename type="middle">J</forename><surname>Mooney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Se-mEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>Se-mEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">The fifth PASCAL recognizing textual entailment challenge</title>
+		<author>
+			<persName><forename type="first">Luisa</forename><surname>Bentivogli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hoa</forename><forename type="middle">T</forename><surname>Dang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Giampiccolo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernardo</forename><surname>Magnini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The Text Analysis Conference</title>
+				<imprint>
+			<publisher>TAC</publisher>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">CECL: a new baseline and a noncompositional approach for the Sick benchmark</title>
+		<author>
+			<persName><forename type="first">Yves</forename><surname>Bestgen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">RTM-DCU: Referential translation machines for semantic similarity</title>
+		<author>
+			<persName><forename type="first">Ergun</forename><surname>Biçici</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andy</forename><surname>Way</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">The Meaning Factory: Formal Semantics for Recognizing Textual Entailment and Determining Semantic Similarity</title>
+		<author>
+			<persName><forename type="first">Johannes</forename><surname>Bjerva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johan</forename><surname>Bos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>Rob van der Goot, and Malvina Nissim</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">The PASCAL recognising textual entailment challenge</title>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Ido Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernardo</forename><surname>Glickman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Magnini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine learning challenges. Evaluating predictive uncertainty, visual object classification, and recognising textual entailment</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="177" to="190" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">haLF:comparing a pure CDSM approach and a standard ML system for RTE</title>
+		<author>
+			<persName><forename type="first">Lorenzo</forename><surname>Ferrone</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabio</forename><forename type="middle">Massimo</forename><surname>Zanzotto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Se-mEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>Se-mEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Experimental support for a categorical compositional distributional model of meaning</title>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Grefenstette</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mehrnoosh</forename><surname>Sadrzadeh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP<address><addrLine>Edinburgh, UK</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1394" to="1404" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">UoW: NLP techniques developed at the University of Wolverhampton for Semantic Similarity and Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Rohit</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ismail</forename><forename type="middle">El</forename><surname>Maarouf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hannah</forename><surname>Bechara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Costantin</forename><surname>Orasǎn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">UNAL-NLP: Combining soft cardinality features for semantic textual similarity, relatedness and entailment</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Jimenez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><surname>Duenas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Baquero</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Gelbukh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Illinois-lh: A denotational and distributional approach to semantics</title>
+		<author>
+			<persName><forename type="first">Alice</forename><surname>Lai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Hockenmaier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">BUAP:evaluating compositional distributional semantic models on full sentences through semantic relatedness and textual entailment</title>
+		<author>
+			<persName><forename type="first">Darnes</forename><surname>Saúl León</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Vilarino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mireya</forename><surname>Pinto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Beatrice</forename><surname>Tovar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Beltrán</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">UIO-Lien: Entailment recognition using minimal recursion semantics</title>
+		<author>
+			<persName><forename type="first">Elisabeth</forename><surname>Lien</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Milen</forename><surname>Kouylekov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">A SICK cure for the evaluation of compositional distributional semantic models</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Marelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Menini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luisa</forename><surname>Bentivogli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raffaella</forename><surname>Bernardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Zamparelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC</title>
+				<meeting>LREC<address><addrLine>Reykjavik</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Vector-based models of semantic composition</title>
+		<author>
+			<persName><forename type="first">Jeff</forename><surname>Mitchell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mirella</forename><surname>Lapata</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL<address><addrLine>Columbus, OH</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="236" to="244" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Composition in distributional models of semantics</title>
+		<author>
+			<persName><forename type="first">Jeff</forename><surname>Mitchell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mirella</forename><surname>Lapata</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognitive Science</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="1388" to="1429" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">SemantiK-LUE: Robust semantic similarity at multiple levels using maximum weight matching</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Proisl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Evert</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Semantic compositionality through recursive matrix-vector spaces</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brody</forename><surname>Huval</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP<address><addrLine>Jeju Island, Korea</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="1201" to="1211" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">FBK-TR: SVM for Semantic Relatedness and Corpus Patterns for RTE</title>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">P</forename><surname>An</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Octavian</forename><surname>Vo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Popescu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Caselli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Se-mEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>Se-mEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">ECNU: One Stone Two Birds: Ensemble of Heterogenous Measures for Semantic Relatedness and Textual Entailment</title>
+		<author>
+			<persName><forename type="first">Jiang</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Man</forename><surname>Tian Tian Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval 2014: International Workshop on Semantic Evaluation</title>
+				<meeting>SemEval 2014: International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Introduction to the CoNLL-2000 Shared Task: Chunking</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Erik</forename><forename type="middle">F</forename><surname>Tjong</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">CNTS -Language Technology Group University of Antwerp</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Kim</forename><surname>Sang</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">CNTS -Language Technology Group University of Antwerp</orgName>
+							</affiliation>
+						</author>
+						<author role="corresp">
+							<persName><forename type="first">Sabine</forename><surname>Buchholz</surname></persName>
+							<email>s.buchholz@kub@nl</email>
+							<affiliation key="aff1">
+								<orgName type="department">ILK, Computational Linguistics</orgName>
+								<orgName type="institution">Tilburg University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Introduction to the CoNLL-2000 Shared Task: Chunking</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We describe the CoNLL-2000 shared task: dividing text into syntactically related nonoverlapping groups of words, so-called text chunking. We give background information on the data sets, present a general overview of the systems that have taken part in the shared task and briefly discuss their performance.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Text chunking is a useful preprocessing step for parsing. There has been a large interest in recognizing non-overlapping noun phrases (Ramshaw and <ref type="bibr" target="#b13">Marcus (1995)</ref> and follow-up papers) but relatively little has been written about identifying phrases of other syntactic categories. The CoNLL-2000 shared task attempts to fill this gap.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task description</head><p>Text chunking consists of dividing a text into phrases in such a way that syntactically related words become member of the same phrase. These phrases are non-overlapping which means that one word can only be a member of one chunk. Here is an example sentence: As far as we know, there are no annotated corpora available which contain specific information about dividing sentences into chunks of words of arbitrary types. We have chosen to work with a corpus with parse information, the Wall Street Journal WSJ part of the Penn Treebank II corpus <ref type="bibr" target="#b10">(Marcus et al., 1993)</ref>, and to extract chunk information from the parse trees in this corpus. We will give a global description of the various chunk types in the next section.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Chunk Types</head><p>The chunk types are based on the syntactic category part (i.e. without function tag) of the bracket label in the Treebank (cf. <ref type="bibr" target="#b1">Bies (1995)</ref> p.35). Roughly, a chunk contains everything to the left of and including the syntactic head of the constituent of the same name. Some Treebank constituents do not have related chunks. The head of S (simple declarative clause) for example is normally thought to be the verb, but as the verb is already part of the VP chunk, no S chunk exists in our example sentence. Besides the head, a chunk also contains premodifiers (like determiners and adjectives in NPs), but no postmodifiers or arguments. This is why the PP chunk only contains the preposition, and not the argument NP, and the SBAR chunk consists of only the complementizer.</p><p>There are several difficulties when converting trees into chunks. In the most simple case, a chunk is just a syntactic constituent without any further embedded constituents, like the NPs in our examples. In some cases, the chunk contains only what is left after other chunks have been removed from the constituent, cf. "(VP loves (NP Mary))" above, or ADJPs and PPs below. We will discuss some special cases during the following description of the individual chunk types.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">NP</head><p>Our NP chunks are very similar to the ones of <ref type="bibr" target="#b13">Ramshaw and Marcus (1995)</ref> It would be interesting to see how changing these decisions (as can be done in the Treebank-to-chunk conversion script 2) infiuences the chunking task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">PP and SBAR</head><p>Most PP chunks just consist of one word (the preposition) with the part-of-speech tag IN. This does not mean, though, that finding PP chunks is completely trivial. INs can also constitute an SBAR chunk (see below) and some PP chunks contain more than one word. This is the case with fixed multi-word prepositions such as such as, because of, due to, with prepositions preceded by a modifier: well above, just after, even in, particularly among or with coordinated prepositions: inside and outside. We think that PPs behave sufficiently differently from NPs in a sentence for not wanting to group them into one class (as Ramshaw and Marcus did in their N-type chunks), and that on the other hand tagging all NP chunks inside a PP as I-PP would only confuse the chunker. We therefore chose not to handle the recognition of true PPs (prep.+NP) during this first chunking step.</p><p>~The Treebank-to-chunk conversion script is available from http://ilk.kub.nl/-sabine/chunklink/ SBAR Chunks mostly consist of one word (the complementizer) with the part-of-speech tag IN, but like multi-word prepositions, there are also multi-word complementizers: even though, so that, just as, even if, as if, only if.</p><p>3.5 CONJP, PRT, INTJ, LST, UCP Conjunctions can consist of more than one word as well: as well as, instead of, rather than, not only, but also. One-word conjunctions (like and, or) are not annotated as CONJP in the Treebank, and are consequently no CONJP chunks in our data.</p><p>The Treebank uses the PRT constituent to annotate verb particles, and our PRT chunk does the same. The only multi-word particle is on and off. This chunk type should be easy to recognize as it should coincide with the partof-speech tag RP, but through tagging errors it is sometimes also assigned IN (preposition) or RB (adverb).</p><p>INTJ is an interjection phrase/chunk like no, oh, hello, alas, good grief!. It is quite rare.</p><p>The list marker LST is even rarer. Examples are 1., 2, 3., .first, second, a, b, c. It might consist of two words: the number and the period.</p><p>The UCP chunk is reminiscent of the UCP (unlike coordinated phrase) constituent in the Treebank. Arguably, the conjunction is the head of the UCP, so most UCP chunks consist of conjunctions like and and or. UCPs are the rarest chunks and are probably not very useful for other NLP tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.6">Tokens outside</head><p>Tokens outside any chunk are mostly punctuation signs and the conjunctions in ordinary coordinated phrases. The word not may also be outside of any chunk. This happens in two cases: Either not is not inside the VP constituent in the Treebank annotation e.g. in ... (VP have (VP told (NP-1 clients) (S (NP-SBJ *-1) not (VP to (VP ship (NP anything)))))) or not is not followed by another verb (because the main verb is a form of to be). As the right chunk boundary is defined by the chunk's head, i.e. the main verb in this case, not is thenin fact a postmodifier and as such not included in the chunk: "... [SBAR that ] [NP there ] [vP were ] n't [NP any major problems ] ."</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.7">Problems</head><p>All chunks were automatically extracted from the parsed version of the Treebank, guided by the tree structure, the syntactic constituent labels, the part-of-speech tags and by knowledge about which tags can be heads of which constituents. However, some trees are very complex and some annotations are inconsistent. What to think about a VP in which the main verb is tagged as NN (common noun)? Either we allow NNs as heads of VPs (not very elegant but which is what we did) or we have a VP without a head. The first solution might also introduce errors elsewhere... As Ramshaw and Marcus (1995) already noted: "While this automatic derivation process introduced a small percentage of errors on its own, it was the only practical way both to provide the amount of training data required and to allow for fully-automatic testing."</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data and Evaluation</head><p>For the CoNLL shared task, we have chosen to work with the same sections of the Penn Treebank as the widely used data set for base noun phrase recognition (Ramshaw and Marcus, 1995): WSJ sections 15-18 of the Penn Treebank as training material and section 20 as test material 3. The chunks in the data were selected to match the descriptions in the previous section. An overview of the chunk types in the training data can be found in table 1. De data sets contain tokens (words and punctuation marks), information about the location of sentence boundaries and information about chunk boundaries. Additionally, a partof-speech (POS) tag was assigned to each token by a standard POS tagger <ref type="bibr" target="#b2">(Brill (1994)</ref> trained on the Penn Treebank). We used these POS tags rather than the Treebank ones in order to make sure that the performance rates obtained for this data are realistic estimates for data for which no treebank POS tags are available.</p><p>In our example sentence in section 2, we have used brackets for encoding text chunks. In the data sets we have represented chunks with three types of tags:   <ref type="bibr">(1995)</ref> for noun phrase chunks. The three tag groups are sufficient for encoding the chunks in the data since these are non-overlapping. Using these chunk tags makes it possible to approach the chunking task as a word classification task. We can use chunk tags for representing our example sentence in the following way: The output of a chunk recognizer may contain inconsistencies in the chunk tags in case a word tagged I-X follows a word tagged O or I-Y, with X and Y being different. These inconsistencies can be resolved by assuming that such I-X tags start a new chunk. The performance on this task is measured with three rates.</p><p>First, the percentage of detected phrases that are correct (precision). Second, the percentage of phrases in the data that were found by the chunker (recall). And third, the FZ=i rate which is equal to (f12 + 1)*precision*recall / (~2,precision+recall) with ~=1 <ref type="bibr" target="#b16">(van Rijsbergen, 1975</ref>). The latter rate has been used as the target for optimization 4.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results</head><p>The eleven systems that have been applied to the CoNLL-2000 shared task can be divided in four groups:  <ref type="bibr">2000)</ref> has applied the theory refinement system ALLiS to the shared task. In order to obtain a system which could process XML formatted data while using context information, he has used three extra tools. <ref type="bibr" target="#b17">Veenstra and Van den Bosch (2000)</ref> examined different parameter settings of a memory-based learning algorithm. They found that modified value difference metric applied to POS information only worked best.</p><p>A large number of the systems applied to the CoNLL-2000 shared task uses statistical methods. <ref type="bibr" target="#b12">Pla, Molina and Prieto (2000)</ref> use a finite-state version of Markov Models. They started with using POS information only and obtained a better performance when lexical information was used. <ref type="bibr" target="#b20">Zhou, Tey and Su (2000)</ref> implemented a chunk tagger based on HMMs. The initial performance of the tagger was improved by a post-process correction method based on error driven learning and by 4In the literature about related tasks sometimes the tagging accuracy is mentioned as well. However, since the relation between tag accuracy and chunk precision and recall is not very strict, tagging accuracy is not a good evaluation measure for this task. incorporating chunk probabilities generated by a memory-based learning process. The two other statistical systems use maximum-entropy based methods. <ref type="bibr" target="#b11">Osborne (2000)</ref> trained Ratnaparkhi's maximum-entropy POS tagger to output chunk tags. <ref type="bibr" target="#b8">Koeling (2000)</ref> used a standard maximum-entropy learner for generating chunk tags from words and POS tags. Both have tested different feature combinations before finding an optimal one and their final results are close to each other. Three systems use system combination. Tjong Kim <ref type="bibr" target="#b15">Sang (2000)</ref> trained and tested five memory-based learning systems to produce different representations of the chunk tags. A combination of the five by majority voting performed better than the individual parts. Van Halteren (2000) used Weighted Probability Distribution Voting (WPDV) for combining the results of four WPDV chunk taggers and a memory-based chunk tagger. Again the combination outperformed the individual systems. <ref type="bibr" target="#b9">Kudoh and Matsumoto (2000)</ref> created 231 support vector machine classifiers to predict the unique pairs of chunk tags. The results of the classifiers were combined by a dynamic programming algorithm.</p><p>The performance of the systems can be found in Table <ref type="table" target="#tab_3">2</ref>. A baseline performance was obtained by selecting the chunk tag most frequently associated with a POS tag. All systems outperform the baseline. The majority of the systems reached an F~=i score between 91.50 and 92.50. Two approaches performed a lot better: the combination system WPDV used by Van Halteren and the Support Vector Machines used by Kudoh and Matsumoto.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Related Work</head><p>In the early nineties, <ref type="bibr" target="#b0">Abney (1991)</ref> proposed to approach parsing by starting with finding related chunks of words. By then, <ref type="bibr" target="#b5">Church (1988)</ref> had already reported on recognition of base noun phrases with statistical methods. Ramshaw and <ref type="bibr" target="#b13">Marcus (1995)</ref> approached chunking by using a machine learning method. Their work has inspired many others to study the application of learning methods to noun phrase chunking 5. Other chunk types have not received the same attention as NP chunks. The most complete work is <ref type="bibr" target="#b3">Buchholz et al. (1999)</ref>, which presents results for NP, VP, PP, ADJP and ADVP chunks. <ref type="bibr" target="#b18">Veenstra (1999)</ref> works with NP, VP and PP chunks. Both he and Buchholz et al. use data generated by the script that produced the CoNLL-2000 shared task data sets. Ratnaparkhi (1998) has recognized arbitrary chunks as part of a parsing task but did not report on the chunking performance. Part of the Sparkle project has concentrated on finding various sorts of chunks for the different languages ~An elaborate overview of the work done on noun phrase chunking can be found on http://lcg-www.uia. ac.be/-erikt/reseaxch/np-chunking.html <ref type="bibr" target="#b4">(Carroll et al., 1997)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>'7 Concluding Remarks</head><p>We have presented an introduction to the CoNLL-2000 shared task: dividing text into syntactically related non-overlapping groups of words, so-called text chunking. For this task we have generated training and test data from the Penn Treebank. This data has been processed by eleven systems. The best performing system was a combination of Support Vector Machines submitted by Taku Kudoh and Yuji Matsumoto. It obtained an FZ=i score of 93.48 on this task.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>[</head><label></label><figDesc>NP He ] [vP reckons ] [NP the current account deficit ] [vP will narrow ] [pp to ] [NP only £ 1.8 billion ] [pp in ][NP September ]. Chunks have been represented as groups of words between square brackets. A tag next to the open bracket denotes the type of the chunk.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>He/B-NP reckons/B-VP the/B-NP current/I-NP account/I-NP deficit/I-NP will/B-VP narrow/I-VP to/B-PP only/B-NP #/I-NP 1.8/I-NP billion/B-NP in/B-PP September/B-NP ./O</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head></head><label></label><figDesc>1. Rule-based systems: Villain and Day; Johansson; D6jean. 2. Memory-based systems: Veenstra and Van den Bosch. 3. Statistical systems: Pla, Molina and Prieto; Osborne; Koeling; Zhou, Tey and Su. 4. Combined systems: Tjong Kim Sang; Van Halteren; Kudoh and Matsumoto. Vilain and Day (2000) approached the shared task in three different ways. The most successful was an application of the Alembic parser which uses transformation-based rules. Johansson (2000) uses context-sensitive and contextfree rules for transforming part-of-speech (POS) tag sequences to chunk tag sequences. D6jean</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>NP England ] [NP governor ] whereas Ramshaw and Marcus state that ' "governor" is not included in any baseNP chunk'. (NP-SBJ *-1) (VP to (VP be (ADJP-PRD excellent)))))) , but ... [CONJP Not only ] does [NP your product ] [vP have to be ] [ADJP excellent ] , but ... 3.3 ADVP and ADJP ADVP chunks mostly correspond to ADVP constituents in the Treebank. However, ADVPs inside ADJPs or inside VPs if in front of the main verb are assimilated into the ADJP respectively VP chunk. On the other hand, ADVPs that contain an NP make two chunks:</figDesc><table><row><cell cols="2">ordinated NPs follows the Treebank annotators.</cell></row><row><cell cols="2">However, as Ramshaw and Marcus do not de-</cell></row><row><cell cols="2">scribe the details of their conversion algorithm,</cell></row><row><cell cols="2">results may differ in difficult cases, e.g. involv-</cell></row><row><cell cols="2">ing NAC and NX. 1</cell></row><row><cell cols="2">An ADJP constituent inside an NP con-</cell></row><row><cell cols="2">stituent becomes part of the NP chunk:</cell></row><row><cell></cell><cell>(NP The (ADJP most volatile) form)</cell></row><row><cell></cell><cell>[NP the most volatile form ]</cell></row><row><cell>3.2</cell><cell>VP</cell></row><row><cell cols="2">In the Treebank, verb phrases are highly embed-</cell></row><row><cell cols="2">ded; see e.g. the following sentence which con-</cell></row><row><cell cols="2">. Specifically, pos-sessive NP constructions are split in front of the possessive marker (e.g. [NP Eastern Air-tains four VP constituents. Following Ramshaw and Marcus' V-type chunks, this sentence will only contain one VP chunk: ((S (NP-SBJ-3 Mr. Icahn) (VP may not (VP want (S (NP-SBJ *-3) (VP to (VP sell ...))))) . )) [NP Mr. Icahn ] [vP may not want to sell ] ... It is still possible however to have one VP chunk directly follow another: [NP The impression ] [NP I] [VP have got ] [vP is ] [NP they] [vP 'd love to do ] [PRT away ] [pp with ] [NP it ]. In this case the two VP constituents did not overlap in the Treebank. Adverbs/adverbial phrases becorae part of the VP chunk (as long as they are in front of the main verb): (VP could (ADVP very well) (VP show ... )) "-+ [ve could very well show ] ... In contrast to Ramshaw and Marcus (1995), predicative adjectives of the verb are not part of the VP chunk, e.g. in "[NP they ] [vP are ] [ADJP unhappy ]'. In inverted sentences, the auxiliary verb is not part of any verb phrase in the Treebank. Con-sequently it does not belong to any VP chunk: ((S (SINV (CONJP Not only) does (NP-SBJ-1 your product) (VP have (S IE.g. (NP-SBJ (NP Robin Leigh-Pemberton) , (NP (NAC Bank (PP of (NP England))) governor) ,) which we convert to [NP Robin Leigh-Pemberton ] , Bank -+ [NP a year ] [ADVP earlier ] ADJPs inside NPs are assimilated into the NP. And parallel to ADVPs, ADJPs that contain an NP make two chunks: (ADJP-PRD (NP 68 years) old) [pp of ] [(ADVP-TMP (NP a year) earlier) [NP 68 years ] [ADJP old ]</cell></row><row><cell></cell><cell>lines ] [NP ' creditors ]) and the handling of co-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1</head><label>1</label><figDesc></figDesc><table><row><cell cols="2">: Number of chunks per phrase type</cell></row><row><cell cols="2">in the training data (211727 tokens, 106978</cell></row><row><cell>chunks).</cell><cell></cell></row><row><cell>B-X</cell><cell>first word of a chunk of type X</cell></row><row><cell>I-X</cell><cell>non-initial word in an X chunk</cell></row><row><cell>0</cell><cell>word outside of any chunk</cell></row><row><cell cols="2">This representation type is based on a repre-</cell></row><row><cell cols="2">sentation proposed by Ramshaw and Marcus</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Performance of the eleven systems on the test data. The baseline results have been obtained by selecting the most frequent chunk tag for each part-of-speech tag.</figDesc><table><row><cell>test data</cell><cell>precision</cell><cell>recall</cell><cell>F~=i</cell></row><row><cell>Kudoh and Matsumoto</cell><cell>93.45%</cell><cell>93.51%</cell><cell>93.48</cell></row><row><cell>Van Halteren</cell><cell>93.13%</cell><cell>93.51%</cell><cell>93.32</cell></row><row><cell>Tjong Kim Sang</cell><cell>94.04%</cell><cell>91.00%</cell><cell>92.50</cell></row><row><cell>Zhou, Tey and Su</cell><cell>91.99%</cell><cell>92.25%</cell><cell>92.12</cell></row><row><cell>D@jean</cell><cell>91.87%</cell><cell>91.31%</cell><cell>92.09</cell></row><row><cell>Koeling</cell><cell>92.08%</cell><cell>91.86%</cell><cell>91.97</cell></row><row><cell>Osborne</cell><cell>91.65%</cell><cell>92.23%</cell><cell>91.94</cell></row><row><cell>Veenstra and Van den Bosch</cell><cell>91.05%</cell><cell>92.03%</cell><cell>91.54</cell></row><row><cell>Pla, Molina and Prieto</cell><cell>90.63%</cell><cell>89.65%</cell><cell>90.14</cell></row><row><cell>Johansson</cell><cell>86.24%</cell><cell>88.25%</cell><cell>87.23</cell></row><row><cell>Vilain and Day</cell><cell>88.82%</cell><cell>82.91%</cell><cell>85.76</cell></row><row><cell>baseline</cell><cell>72.58%</cell><cell>82.14%</cell><cell>77.07</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">3The text chunking data set is available at http://lcgwww.uia.ac.be/conll2000/chunking/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We would like to thank the members of the CNTS -Language Technology Group in Antwerp, Belgium and the members of the ILK group in Tilburg, The Netherlands for valuable discussions and comments. Tjong Kim Sang is funded by the European TMR network Learning Computational Grammars. Buchholz is supported by the Netherlands Organization for Scientific Research (NWO).</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Parsing by chunks. In Principle-Based Parsing</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Abney</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1991" />
+			<publisher>Kluwer Academic Publishers</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Bracket Guidelines /or Treebank H Style Penn Treebank Project. Penn Treebank II cdrom</title>
+		<author>
+			<persName><forename type="first">Ann</forename><surname>Bies</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Ferguson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karen</forename><surname>Katz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Macintyre</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Some advances in rule-based part of speech tagging</title>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Brill</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o] the Twelfth National Con/erence on Artificial Intelligence (AAAI-9~)</title>
+				<meeting>o] the Twelfth National Con/erence on Artificial Intelligence (AAAI-9~)<address><addrLine>Seattle, Washington</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1994" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Cascaded grammatical :relation assignment</title>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Buchholz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o] EMNLP/VLC-99</title>
+				<meeting>o] EMNLP/VLC-99</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="1999" />
+		</imprint>
+	</monogr>
+	<note>Jorn Veenstra, and Walter Daelemans</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<author>
+			<persName><forename type="first">John</forename><surname>Carroll</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ted</forename><surname>Briscoe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Glenn</forename><surname>Carroll</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Light</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dethleff</forename><surname>Prescher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mats</forename><surname>Rooth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Federici</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simonetta</forename><surname>Montemagni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vito</forename><surname>Pirrelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Irina</forename><surname>Prodanof</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Massimo</forename><surname>Vanocchi</surname></persName>
+		</author>
+		<title level="m">Phrasal Parsing Software</title>
+				<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+	<note>Sparkle Work Package 3, Deliverable D3.2</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">A stochastic parts program and noun phrase parser for unrestricted text</title>
+		<author>
+			<persName><forename type="first">Kenneth</forename><forename type="middle">Ward</forename><surname>Church</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Second Con]erence on Applied Natural Language Processing</title>
+				<meeting><address><addrLine>Austin, Texas</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1988" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Learning syntactic structures with xml</title>
+		<author>
+			<persName><surname>H@rve D@jean</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o/ CoN~LL-2000 and LLL-2000</title>
+				<meeting>o/ CoN~LL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">A context sensitive maximum likelihood approach to chunking</title>
+		<author>
+			<persName><surname>Christer Johansson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o] CoNLL-2000 and LLL-2000</title>
+				<meeting>o] CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Chunking with maximum entropy models</title>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Koeling</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o/ CoNLL-2000 and LLL-2000</title>
+				<meeting>o/ CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Use of support vector learning for chunk identification</title>
+		<author>
+			<persName><forename type="first">Taku</forename><surname>Kudoh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuji</forename><surname>Matsumoto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o~ CoNLL-2000 and LLL-2000</title>
+				<meeting>o~ CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Building a large annotated corpus of english: the penn treebank</title>
+		<author>
+			<persName><forename type="first">Mitchell</forename><forename type="middle">P</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Beatrice</forename><surname>Santorini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mary</forename><forename type="middle">Ann</forename><surname>Marcinkiewicz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<date type="published" when="1993" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Shallow parsing as part-ofspeech tagging</title>
+		<author>
+			<persName><forename type="first">Miles</forename><surname>Osborne</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o] CoNLL-2000 and LLL-2000</title>
+				<meeting>o] CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Improving chunking by means of lexical-contextual information in statistical language models</title>
+		<author>
+			<persName><forename type="first">Ferran</forename><surname>Pla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Molina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natividad</forename><surname>Prieto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o] CoNLL-2000 and LLL-2000</title>
+				<meeting>o] CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Text chunking using transformation-based learning</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lance</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitchell</forename><forename type="middle">P</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Marcus</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o] the Third A CL Workshop on Very Large Corpora. Association for Computational Linguistics</title>
+				<meeting>o] the Third A CL Workshop on Very Large Corpora. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Maximum Entropy Models ]or Natural Language Ambiguity Resolution</title>
+		<author>
+			<persName><forename type="first">Adwait</forename><surname>Ratnaparkhi</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+		</imprint>
+		<respStmt>
+			<orgName>Computer and Information Science, University of Pennsylvania</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">PhD thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Text chunking by system combination</title>
+		<author>
+			<persName><forename type="first">Erik</forename><forename type="middle">F</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tjong Kim</forename><surname>Sang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of CoNLL-2000 and LLL-2000</title>
+				<meeting>CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal. Hans van Halteren; Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+	<note>Proceedings o/ CoNLL-2000 and LLL-2000</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">J</forename><surname>Van Rijsbergen</surname></persName>
+		</author>
+		<title level="m">/ormation Retrieval. Buttersworth</title>
+				<imprint>
+			<date type="published" when="1975" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Single-classifier memory-based phrase chunking</title>
+		<author>
+			<persName><forename type="first">Jorn</forename><surname>Veenstra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antal</forename><surname>Van Den</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bosch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o] CoNLL-2000 and LLL-2000</title>
+				<meeting>o] CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Memory-based text chunking</title>
+		<author>
+			<persName><forename type="first">Jorn</forename><surname>Veenstra</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine learning in human language technology, workshop at ACAI 99</title>
+				<editor>
+			<persName><forename type="first">Nikos</forename><surname>Fakotakis</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="1999" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Phrase parsing with rule sequence processors: an application to the shared conll task</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Vilain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Day</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o/CoNLL-2000 and LLL-2000</title>
+				<meeting>o/CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Hybrid text chunking</title>
+		<author>
+			<persName><forename type="first">Guodong</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tongguan</forename><surname>Tey</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings o/CoNLL-2000 and LLL-2000</title>
+				<meeting>o/CoNLL-2000 and LLL-2000<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

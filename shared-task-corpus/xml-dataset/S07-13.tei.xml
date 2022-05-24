@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">The SemEval-2007 WePS Evaluation: Establishing a benchmark for the Web People Search Task</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Javier</forename><surname>Artiles</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">UNED NLP &amp; IR group Madrid</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Julio</forename><surname>Gonzalo</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">UNED NLP &amp; IR group Madrid</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author role="corresp">
+							<persName><forename type="first">Satoshi</forename><surname>Sekine</surname></persName>
+							<email>sekine@cs.nyu.edu</email>
+							<affiliation key="aff2">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">New York University</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">The SemEval-2007 WePS Evaluation: Establishing a benchmark for the Web People Search Task</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the task definition, resources, participation, and comparative results for the Web People Search task, which was organized as part of the SemEval-2007 evaluation exercise. This task consists of clustering a set of documents that mention an ambiguous person name according to the actual entities referred to using that name.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Finding information about people in the World Wide Web is one of the most common activities of Internet users. Person names, however, are highly ambiguous. In most cases, the results for a person name search are a mix of pages about different people sharing the same name. The user is then forced either to add terms to the query (probably losing recall and focusing on one single aspect of the person), or to browse every document in order to filter the information about the person he is actually looking for.</p><p>In an ideal system the user would simply type a person name, and receive search results clustered according to the different people sharing that name. And this is, in essence, the WePS (Web People Search) task we have proposed to <ref type="bibr">SemEval-2007</ref> participants: systems receive a set of web pages (which are the result of a web search for a person name), and they have to cluster them in as many sets as entities sharing the name. This task has close links with Word Sense Disambiguation (WSD), which is generally formulated as the task of deciding which sense a word has in a given con-text. In both cases, the problem addressed is the resolution of the ambiguity in a natural language expression. A couple of differences make our problem different. WSD is usually focused on openclass words (common nouns, adjectives, verbs and adverbs). The first difference is that boundaries between word senses in a dictionary are often subtle or even conflicting, making binary decisions harder and sometimes even useless depending on the application. In contrast, distinctions between people should be easier to establish. The second difference is that WSD usually operates with a dictionary containing a relatively small number of senses that can be assigned to each word. Our task is rather a case of Word Sense Discrimination, because the number of "senses" (actual people) is unknown a priori, and it is in average much higher than in the WSD task (there are 90,000 different names shared by 100 million people according to the U.S. Census Bureau).</p><p>There is also a strong relation of our proposed task with the Co-reference Resolution problem, focused on linking mentions (including pronouns) in a text. Our task can be seen as a co-reference resolution problem where the focus is on solving interdocument co-reference, disregarding the linking of all the mentions of an entity inside each document.</p><p>An early work in name disambiguation <ref type="bibr" target="#b1">(Bagga and Baldwin, 1998)</ref> uses the similarity between documents in a Vector Space using a "bag of words" representation. An alternative approach by <ref type="bibr" target="#b4">Mann and Yarowsky (2003)</ref> is based on a rich feature space of automatically extracted biographic information. <ref type="bibr" target="#b2">Fleischman and Hovy (2004)</ref> propose a Maximum Entropy model trained to give the probability that two names refer to the same individual 1 .</p><p>The paper is organized as follows. Section 2 provides a description of the experimental methodology, the training and test data provided to the participants, the evaluation measures, baseline systems and the campaign design. Section 3 gives a description of the participant systems and provides the evaluation results. Finally, Section 4 presents some conclusions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Experimental Methodology</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Data</head><p>Following the general SemEval guidelines, we have prepared trial, training and test data sets for the task, which are described below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.1">Trial data</head><p>For this evaluation campaign we initially delivered a trial corpus for the potential participants. The trial data consisted of an adapted version of the WePS corpus described in <ref type="bibr">(Artiles et al., 2006)</ref>. The predominant feature of this corpus is a high number of entities in each document set, due to the fact that the ambiguous names were extracted from the most common names in the US Census. This corpus did not completely match task specifications because it did not consider documents with internal ambiguity, nor it did consider non-person entities; but it was, however, a cost-effective way of releasing data to play around with. During the first weeks after releasing this trial data to potential participants, some annotation mistakes were noticed. We preferred, however, to leave the corpus "as is" and concentrate our efforts in producing clean training and test datasets, rather than investing time in improving trial data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.2">Training data</head><p>In order to provide different ambiguity scenarios, we selected person names from different sources:</p><p>US Census. We reused the Web03 corpus <ref type="bibr" target="#b3">(Mann, 2006)</ref>, which contains 32 names randomly picked from the US Census, and was well suited for the task.</p><p>Wikipedia. Another seven names were sampled from a list of ambiguous person names in the English Wikipedia. These were expected to have a few predominant entities (popular or historical), and therefore a lower ambiguity than the previous set.</p><p>ECDL. Finally, ten additional names were randomly selected from the Program Committee listing of a Computer Science conference <ref type="bibr">(ECDL 2006)</ref>. This set offers a scenario of potentially low ambiguity (computer science scholars usually have a stronger Internet presence than other professional fields) with the added value of the a priori knowledge of a domain specific type of entity (scholar) present in the data.</p><p>All datasets consist of collections of web pages obtained from the 100 top results for a person name query to an Internet search engine 2 . Note that 100 is an upper bound, because in some occasions the URL returned by the search engine no longer exists.</p><p>The second and third datasets (developed explicitly for our task) consist of 17 person names and 1685 associated documents in total (99 documents per name in average). Each web page was downloaded and stored for off-line processing. We also stored the basic metadata associated to each search result, including the original URL, title, position in the results ranking and the corresponding snippet generated by the search engine.</p><p>In the process of generating the corpus, the selection of the names plays an important role, potentially conditioning the degree of ambiguity that will be found later in the Web search results. The reasons for this variability in the ambiguity of names are diverse and do not always correlate with the straightforward census frequency. A much more decisive feature is, for instance, the presence of famous entities sharing the ambiguous name with less popular people. As we are considering top search results, these can easily be monopolized by a single entity that is popular in the Internet.</p><p>After the annotation of this data (see section 2.1.4.) we found our predictions about the average ambiguity of each dataset not to be completely accurate. In Table <ref type="table" target="#tab_1">1</ref> we see that the ECDL-06 average ambiguity is indeed relatively low (except for the documents for "Thomas Baker" standing as the most ambiguous name in the whole training). Wikipedia names have an average ambiguity of 23,14 entities  The WEB03 Corpus has the lowest ambiguity (5,9 entities per name), for two reasons: first, randomly picked names belong predominantly to the long tail of unfrequent person names which, per se, have low ambiguity. Being rare names implies that in average there are fewer documents returned by the search engine (47,20 per name), which also reduces the possibilities to find ambiguity.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.3">Test data</head><p>For the test data we followed the same process described for the training. In the name selection we tried to maintain a similar distribution of ambiguity degrees and scenario. For that reason we randomly extracted 10 person names from the English Wikipedia and another 10 names from participants in the ACL-06 conference. In the case of the US census names, we decided to focus on relatively common names, to avoid the problems explained above.</p><p>Unfortunately, after the annotation was finished (once the submission deadline had expired), we found a major increase in the ambiguity degrees (Table 2) of all data sets. While we expected a raise in the case of the US census names, the other two cases just show that there is a high (and unpredictable) variability, which would require much larger data sets to have reliable population samples.</p><p>This has made the task particularly challenging for participants, because naive learning strategies (such as empirical adjustment of distance thresholds to optimize standard clustering algorithms) might be misleaded by the training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.4">Annotation</head><p>The annotation of the data was performed separately in each set of documents related to an ambiguous name. Given this set of approximately 100 documents that mention the ambiguous name, the annotation consisted in the manual clustering of each document according to the actual entity that is referred on it.</p><p>When non person entities were found (for instance, organization or places named after a person) the annotation was performed without any special rule. Generally, the annotator browses documents following the original ranking in the search results; after reading a document he will decide whether the mentions of the ambiguous name refer to a new entity or to a entity previously identified. We asked the annotators to concentrate first on mentions that strictly contained the search string, and then to pay attention to the co-referent variations of the name. For instance "John Edward Fox" or "Edward Fox Smith" would be valid mentions. "Edward J. Fox", however, breaks the original search string, and we do not get into name variation detection, so it will be considered valid only if it is co-referent to a valid  In order to perform the clustering, the annotator was asked to pay attention to objective facts (biographical dates, related names, occupations, etc.) and to be conservative when making decisions. The final result is a complete clustering of the documents, where each cluster contains the documents that refer to a particular entity. Following the previous example, in documents for the name "Edward Fox" the annotator found 16 different entities with that name. Note that there is no a priori knowledge about the number of entities that will be discovered in a document set. This makes the task specially difficult when there are many different entities and a high volume of scattered biographical information to take into account.</p><p>In cases where the document does not offer enough information to decide whether it belongs to a cluster or is a new entity, it is discarded from the evaluation process (not from the dataset). Another common reason for discarding documents was the absence of the person name in the document, usu-ally due to a mismatch between the search engine cache and the downloaded URL.</p><p>We found that, in many cases, different entities were mentioned using the ambiguous name within a single document. This was the case when a document mentions relatives with names that contain the ambiguous string (for instance "Edward Fox" and "Edward Fox Jr."). Another common case of intra-document ambiguity is that of pages containing database search results, such as book lists from Amazon, actors from IMDB, etc. A similar case is that of pages that explicitly analyze the ambiguity of a person name (Wikipedia "disambiguation" pages). The way this situation was handled, in terms of the annotation, was to assign each document to as many clusters as entities were referred to on it with the ambiguous name.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Evaluation measures</head><p>Evaluation was performed in each document set (web pages mentioning an ambiguous person name) of the data distributed as test. The human annotation was used as the gold standard for the evaluation.</p><p>Each system was evaluated using the standard purity and inverse purity clustering measures Purity is related to the precision measure, well known in Information Retrieval. This measure focuses on the frequency of the most common category in each cluster, and rewards the clustering solutions that introduce less noise in each cluster. Being C the set of clusters to be evaluated, L the set of categories (manually annotated) and n the number of clustered elements, purity is computed by taking the weighted average of maximal precision values:</p><formula xml:id="formula_0">Purity = i |C i | n max Precision(C i , L j )</formula><p>where the precision of a cluster C i for a given category L j is defined as:</p><formula xml:id="formula_1">Precision(C i , L j ) = |C i L j | |C i |</formula><p>Inverse Purity focuses on the cluster with maximum recall for each category, rewarding the clustering solutions that gathers more elements of each category in a corresponding single cluster. Inverse Purity is defined as:</p><formula xml:id="formula_2">Inverse Purity = i |L i | n max Precision(L i , C j )</formula><p>For the final ranking of systems we used the harmonic mean of purity and inverse purity F α= 0,5 . The F measure is defined as follows:</p><formula xml:id="formula_3">F = 1 α 1 Purity + (1 − α) 1</formula><p>Inverse Purity F α= 0,2 is included as an additional measure giving more importance to the inverse purity aspect. The rationale is that, for a search engine user, it should be easier to discard a few incorrect web pages in a cluster containing all the information needed, than having to collect the relevant information across many different clusters. Therefore, achieving a high inverse purity should be rewarded more than having high purity.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Baselines</head><p>Two simple baseline approaches were applied to the test data. The ALL-IN-ONE baseline provides a clustering solution where all the documents are assigned to a single cluster. This has the effect of always achieving the highest score in the inverse purity measure, because all classes have their documents in a single cluster. On the other hand, the purity measure will be equal to the precision of the predominant class in that single cluster. The ONE-IN-ONE baseline gives another extreme clustering solution, where every document is assigned to a different cluster. In this case purity always gives its maximum value, while inverse purity will decrease with larger classes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Campaign design</head><p>The schedule for the evaluation campaign was set by the SemEval organisation as follows: (i) release task description and trial data set; (ii) release of training and test; (iii) participants send their answers to the task organizers; (iv) the task organizers evaluate the answers and send the results.</p><p>The task description and the initial trial data set were publicly released before the start of the official evaluation.</p><p>The official evaluation period started with the simultaneous release of both training and test data, together with a scoring script with the main evaluation measures to be used. This period spanned five weeks in which teams were allowed to register and download the data. During that period, results for a given task had to be submitted no later than 21 days after downloading the training data and no later than 7 days after downloading the test data. Only one submission per team was allowed.</p><p>Training data included the downloaded web pages, their associated metadata and the human clustering of each document set, providing a development test-bed for the participant's systems. We also specified the source of each ambiguous name in the training data (Wikipedia, ECDL conference and US Census). Test data only included the downloaded web pages and their metadata. This section of the corpus was used for the systems evaluation. Participants were required to send a clustering for each test document set.</p><p>Finally, after the evaluation period was finished and all the participants sent their data, the task organizers sent the evaluation for the test data.</p><p>3 Results of the evaluation campaign 29 teams expressed their interest in the task; this number exceeded our expectations for this pilot experience, and confirms the potential interest of the research community in this highly practical problem. Out of them, 16 teams submitted results within the deadline; their results are reported below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Results and discussion</head><p>Table <ref type="table" target="#tab_5">3</ref> presents the macro-averaged results obtained by the sixteen systems plus the two baselines on the test data. We found macro-average 3 preferable to micro-average 4 because it has a clear interpretation: if the evaluation measure is F, then we should calculate F for every test case (person name) and then average over all trials. The interpretation of micro-average F is less clear.</p><p>The systems are ranked according to the scores obtained with the harmonic mean measure F α= 0,5 of  purity and inverse purity. Considering only the participant systems, the average value for the ranking measure was 0, 60 and its standard deviation 0, 11.</p><p>Results with F α= 0,2 are not substantially different (except for the two baselines, which roughly swap positions). There are some ranking swaps, but generally only within close pairs.</p><p>The good performance of the ONE-IN-ONE baseline system is indicative of the abundance of singleton entities (entities represented by only one document). This situation increases the inverse purity score for this system giving a harmonic measure higher than the expected.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Conclusions</head><p>The WEPS task ended with considerable success in terms of participation, and we believe that a careful analysis of the contributions made by participants (which is not possible at the time of writing this report) will be an interesting reference for future research. In addition, all the collected and annotated dataset will be publicly available 5 as a benchmark for Web People Search systems.</p><p>At the same time, it is clear that building a reliable test-bed for the task is not simple. First of all, the variability across test cases is large and unpredictable, and a system that works well with the 5 http://nlp.uned.es/weps names in our test bed may not be reliable in practical, open search situations. Partly because of that, our test-bed happened to be unintentionally challenging for systems, with a large difference between the average ambiguity in the training and test datasets. Secondly, it is probably necessary to think about specific evaluation measures beyond standard clustering metrics such as purity and inverse purity, which are not tailored to the task and do not behave well when multiple classification is allowed. We hope to address these problems in a forthcoming edition of the WEPS task.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Training Data per name, which is higher than for the ECDL set.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Test Data mention.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Team ranking</note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">For a comprehensive bibliography on person name disambiguation refer to http://nlp.uned.es/weps</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">We used the Yahoo! API from Yahoo! Search Web Services (http://developer.yahoo.com/search/web/).</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">Macro-average F consists of computing F for every test set (person name) and then averaging over all test sets.4  Micro-average F consists of computing the average P and IP (over all test sets) and then calculating F with these figures.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Acknowledgements</head><p>This research was supported in part by the National Science Foundation of United States under Grant IIS-00325657 and by a grant from the Spanish government under project Text-Mess (TIN2006-15265-C06). This paper does not necessarily reflect the position of the U.S. Government.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">A Testbed for People Searching Strategies in the WWW</title>
+		<author>
+			<persName><forename type="first">Javier</forename><surname>Artiles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julio</forename><surname>Gonzalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felisa</forename><surname>Verdejo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 28th annual International ACM SIGIR conference on Research and Development in Information Retrieval (SIGIR&apos;05)</title>
+				<meeting>the 28th annual International ACM SIGIR conference on Research and Development in Information Retrieval (SIGIR&apos;05)</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="569" to="570" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Entity-Based Cross-Document Coreferencing Using the Vector Space Model</title>
+		<author>
+			<persName><forename type="first">Amit</forename><surname>Bagga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Breck</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 36th Annual Meeting of the Association for Computational Linguistics and the 17th International Conference on Computational Linguistics (COLING-ACL&apos;98)</title>
+				<meeting>the 36th Annual Meeting of the Association for Computational Linguistics and the 17th International Conference on Computational Linguistics (COLING-ACL&apos;98)</meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="79" to="85" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Multidocument person name resolution</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Fleischman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL-42, Reference Resolution Workshop</title>
+				<meeting>ACL-42, Reference Resolution Workshop</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Multi-Document Statistical Fact Extraction and Fusion Ph</title>
+		<author>
+			<persName><forename type="first">Gideon</forename><forename type="middle">S</forename><surname>Mann</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+	<note type="report_type">D. Thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Unsupervised Personal Name Disambiguation</title>
+		<author>
+			<persName><forename type="first">Gideon</forename><forename type="middle">S</forename><surname>Mann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the seventh conference on Natural language learning at HLT-NAACL</title>
+				<meeting>the seventh conference on Natural language learning at HLT-NAACL</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="33" to="40" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

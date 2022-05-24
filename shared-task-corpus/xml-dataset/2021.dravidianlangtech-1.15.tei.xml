@@ -1,0 +1,1228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Findings of the Shared Task on Machine Translation in Dravidian languages</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Bharathi</forename><forename type="middle">Raja</forename><surname>Chakravarthi</surname></persName>
+							<email>bharathi.raja@insight-centre.org</email>
+							<affiliation key="aff0">
+								<orgName type="institution">National University of Ireland Galway</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ruba</forename><surname>Priyadharshini</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Madurai Kamaraj University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Shubhanker</forename><surname>Banerjee</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">National University of Ireland Galway</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Richard</forename><surname>Saldanha</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">National Institute of Technology Karnataka Surathkal</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Mccrae</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">National University of Ireland Galway</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Anand</forename><surname>Kumar</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">National Institute of Technology Karnataka Surathkal</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Parameshwari</forename><surname>Krishnamurthy</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="institution">University of Hyderabad</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Melvin</forename><surname>Johnson</surname></persName>
+							<affiliation key="aff4">
+								<orgName type="institution">Google Research</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Findings of the Shared Task on Machine Translation in Dravidian languages</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents an overview of the shared task on machine translation of Dravidian languages. We presented the shared task results at the EACL 2021 workshop on Speech and Language Technologies for Dravidian Languages. This paper describes the datasets used, the methodology used for the evaluation of participants, and the experiments' overall results. As a part of this shared task, we organized four sub-tasks corresponding to machine translation of the following language pairs: English to Tamil, English to Malayalam, English to Telugu and Tamil to Telugu which are available at https://competitions.codalab. org/competitions/27650. We provided the participants with training and development datasets to perform experiments, and the results were evaluated on unseen test data. In total, 46 research groups participated in the shared task and 7 experimental runs were submitted for evaluation. We used BLEU scores for assessment of the translations.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In this paper, we present the results of the shared task on machine translation of Dravidian languages of the Workshop on Speech and Language Technologies for Dravidian Languages held at EACL 2021. The shared task features four sub-tasks: a translation task from English to Tamil, English to Telugu, English to Malayalam and Tamil to Telugu. They all closely related languages and are underresourced now. They are mutually intelligible since speakers of Dravidian (Tamil) languages can readily understand each other without prior familiarity or special effort <ref type="bibr" target="#b24">(Krishnamurti, 2016;</ref><ref type="bibr" target="#b41">Thavareesan and Mahesan, 2019)</ref>.</p><p>The performance of our tasks was evaluated using automatic measures BLEU <ref type="bibr" target="#b32">(Papineni et al., 2002)</ref>. This shared task's primary objectives are to further state of the art in machine translation of low resource languages belonging to the Dravidian (Tamil) language family. The training data, development data and test data, and results are available publicly 1 . We hope the datasets released as a part of this task will contribute positively towards forwarding research in the machine translation of under-resourced languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Machine translation of under resource languages is an open and an active research area. In this day and age when translation systems are increasingly being built upon neural network-based architectures <ref type="bibr" target="#b28">Luong et al., 2015;</ref><ref type="bibr" target="#b44">Wu et al., 2016)</ref>, the development of such systems for under-resourced languages is a challenging task due to the lack of availability of resources. Multilingual extensions to these architectures have been proposed <ref type="bibr" target="#b15">(Firat et al., 2016;</ref><ref type="bibr" target="#b17">Ha et al.;</ref><ref type="bibr" target="#b20">Johnson et al., 2017)</ref> which have been shown to improve on low-resource languages. Recent studies have also extended this to a massively multilingual setting <ref type="bibr" target="#b0">(Aharoni et al., 2019)</ref>. <ref type="bibr" target="#b16">Gu et al. (2018)</ref> demonstrated a transfer learning-based approach by utilizing shared lexical and sentence level representations across multiple source languages, thereby developing a system that performs well in low resource scenarios. <ref type="bibr" target="#b45">Xia et al. (2019)</ref> propose a general framework for data augmentation in low-resource machine translation that not only uses target-side monolingual data but also pivots through a related high-resource language HRL. <ref type="bibr" target="#b47">Zoph et al. (2016)</ref>'s key idea is first to train a high-resource language pair (the parent model), then transfer some of the learned parameters to the low-resource pair (the child model) to initialize and constrain training. <ref type="bibr" target="#b21">Kocmi and Bojar (2018)</ref> propose a transfer learning-based method, wherein they train a "parent" model with a high-resource language pair followed by which they train on a "child" model on a corpus of a low-resource language pair. It was observed that this model is better than the models trained on just the low-resource languages. <ref type="bibr" target="#b47">Zoph et al. (2016)</ref> propose a transfer learning-based method, wherein they train a parent model trained on a high-resource language pair, followed by which they transfer some of parameters to a child model that they subsequently train on the low-resource language pair. <ref type="bibr" target="#b27">Lakew et al. (2017)</ref> leverage the use of duality of translations generated by the system for zero-shot; these translations are used along with the parallel data to train the neural network. <ref type="bibr" target="#b31">Ojha et al. (2020)</ref> show the results of the LoResMT 2020 shared task. This workshop was held along with AACL and reported good BLEU scores in case of the low-resource Bhojpuri-Hindi language pair. <ref type="bibr" target="#b22">Koehn et al. (2019)</ref> focussed on the translation of the low resource language pairs Nepali-English and Sinhala-English. They reported the results of these translation tasks for statistical as well as phrase-based methods. Chakravarthi et al. (2019c) created a multimodal corpora for Dravidian languages. M (2013) developed a statistical machine translation system for English-Tamil using transfer based on computational linguistics. <ref type="bibr" target="#b25">Kumar et al. (2014)</ref> proposed a factored statistical machine translation system for English to the Tamil language. <ref type="bibr" target="#b26">Kumar et al. (2019)</ref> conducted the Machine Translation for Indian Languages shared task in 2017. As a part of this shared task, organizers have released the parallel corpora for English-Tamil and English-Malayalam.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>For</head><p>Dravidian language translation, Chakravarthi et al. <ref type="bibr">(2018, 2019b, 2020a</ref>) created a machine translation to improve WordNet entries. <ref type="bibr" target="#b23">Krishnamurthy (2019)</ref> demonstrate a transfer learning based translation system and a divergence index to calculate the success rate of the system. <ref type="bibr" target="#b13">Chandramma et al. (2017)</ref> propose a multi-layer neural network based approach wherein they use n-grams extracting from connecting phrases of the phrase table for the task of machine translation on Kannada-Telugu language pair. <ref type="bibr" target="#b8">Chakravarthi et al. (2019a</ref><ref type="bibr" target="#b12">Chakravarthi et al. ( , 2020b</ref>; Chakravarthi (2020) studied the utilisation of orthographic information to improve the machine translation for Dravidian languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Dravidian Languages</head><p>Tamil is an official language in Tamil Nadu, Puducherry, Sri Lanka and Singapore <ref type="bibr">(Thavareesan and Mahesan, 2020a,b)</ref>. Tamil was the first to be listed as a classical language of India, one of 22 scheduled languages in India's Constitution, and is one of the world's longest-surviving classical languages. In Jain Samavayanga Sutta (3rd-4th century BCE) and Pannavana Sutta, a script called Damili (Tamili) is listed as the seventeenth of eighteen scripts in India, an early mention of a script for writing the Tamil language <ref type="bibr" target="#b36">(Salomon, 1998)</ref>. Similarly, Lipisala Samdarshana Parivarta, the tenth chapter of the Lalitavistara Sutta (3rd century CE) a Sanskrit text, mentions Siddhartha (later Gautam Buddha) learning Dravida-script (Tamil Script) and Dakshinya-script (Southern Tamil Script) along with other sixty two scripts. Tamil was called Damil in Jain Prakrit, Dramil in Buddhist Pali, and Dravida in Sanskrit <ref type="bibr">(Caldwell, 1875;</ref><ref type="bibr" target="#b30">Oberlies, 2011)</ref>. The Tamil scripts are first attested in the 580 BCE as Tamili 2 script inscribed 3 on the pottery of Keezhadi, Sivagangai and Madurai district of Tamil Nadu, India <ref type="bibr">(Sivanantham and Seran, 2019) 4</ref> by Tamil Nadu State Department of Archaeology and Archaeological Survey of India. The writing systems of Tamili was explained in the old grammar text Tolkappiyam dates between 8000 BCE to 580BCE <ref type="bibr" target="#b40">(Takahashi, 1995;</ref><ref type="bibr" target="#b33">Pillai, 1904;</ref><ref type="bibr" target="#b39">Swamy, 1975;</ref><ref type="bibr" target="#b1">Albert et al., 1985;</ref><ref type="bibr" target="#b35">Rajendran, 2004)</ref>.</p><p>Malayalam was Tamil's west coast dialect until about the 15th-century CE <ref type="bibr" target="#b4">(Blackburn, 2006)</ref>. The dialect gradually developed into a different language in the 16th century <ref type="bibr" target="#b37">(Sekhar, 1951)</ref>   <ref type="bibr">(Rawlinson, 1930;</ref><ref type="bibr" target="#b18">Hande et al., 2020)</ref>. Dravidian is the name for the Tamil languages or Tamil people in Sanskrit, and all the current Dravidian languages were called a branch of Tamil in old Jain, Bhraminic, and Buddhist literature <ref type="bibr">(Caldwell, 1875)</ref>.</p><p>4 Task Description and Dataset</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Task</head><p>The shared task was hosted on Codalab. Four translation sub-tasks were organized as a part of this task: English to Tamil, English to Malayalam, English to Telugu and Tamil to Telugu. Participants were given a choice to participate in the sub-tasks they wanted to. Training, development and test datasets of parallel sentences for each language pair were provided to all the participants. The task was to train/develop machine translation systems for the given languages. For evaluation, the participants translated the test data using the translation systems and the results were submitted to the organizers of the workshop. The submissions were evaluated by comparing them with the gold standard test set translations available, for which BLEU scores were used as the metric to rank the participants and subsequently the results were returned to the participants.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Dataset</head><p>The datasets were collected from the repository of Opensubtitles released in 2018 and available at Opus 5 and consisted of bilingual parallel corpora for each of the four language pairs. We created the training, development and test datasets in the following way: each of the bilingual corpora were divided into three sub-corpora according to the following criterion: the first 2,000 sentence pairs were compiled as the test corpora while the next 2,000 sentence pairs were used for the development set and the remaining data was compiled as the training dataset. The English-Malayalam training data had 382,868 sentence pairs, the one for English-Tamil had 28,417 sentence pairs, the English-Telugu training set had 23,222 sentence pairs whereas the Tamil-Telugu dataset had 17,155 sentence pairs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">System Description</head><p>A summary of the results of the shared task can be found in Tables 1. To evaluate the performance of the submitted systems, we calculated BLEU scores for each of these systems. We have listed out the short description of participants systems, for more details please refer their paper.</p><p>• Xie (2021) adopted two methods to improve the overall performance: (1) multilingual translation, they used a shared encoderdecoder multilingual translation model han-</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Language Pairs Team Name Rank</head><p>English -Telugu GX (Xie, 2021) 1 IRLAB-DAIICT <ref type="bibr" target="#b34">(Prajapati et al., 2021)</ref> 2 MUCS Shared Task <ref type="bibr" target="#b19">(Hegde et al., 2021)</ref> 3</p><p>English -Tamil GX (Xie, 2021) 1 Spartans 2 IRLAB-DAIICT <ref type="bibr" target="#b34">(Prajapati et al., 2021)</ref> 3</p><p>English -Malayalam GX (Xie, 2021) 1 Spartans 2 IRLAB-DAIICT <ref type="bibr" target="#b34">(Prajapati et al., 2021)</ref> 3</p><p>Tamil -Telugu GX (Xie, 2021) 1 MUCS Shared Task <ref type="bibr" target="#b19">(Hegde et al., 2021)</ref> 2 IRLAB-DAIICT <ref type="bibr" target="#b34">(Prajapati et al., 2021)</ref> 3 • <ref type="bibr" target="#b34">Prajapati et al. (2021)</ref> propose a neural machine translation model that tries to learn the parameters θ by maximizing the conditional probability P (a|b; θ) (a = target language, b = source language). The encoder learns a hidden representation for each input sentence which is further decoded by the decoder and translations are generated. They propose that the individual units in the encoder/decoder architecture can be GRUs or LSTMs alongside as self attention mechanism. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Results and Discussion</head><p>Based on the results reported for the test sets by the top 3 teams in each language translation sub-task as shown in Table <ref type="table">1</ref> the submitted systems are ranked for each translation language pair, as shown in Table <ref type="table" target="#tab_1">2</ref>.</p><p>Using the System descriptions along with information from Tables <ref type="table" target="#tab_1">1 and 2</ref>, the system rankings can be summarized as follows:</p><p>• In the English-Telugu translation, the system submitted by <ref type="bibr" target="#b46">(Xie, 2021)</ref> is ranked number 1, with a BLEU score of 38.86, followed by <ref type="bibr" target="#b34">(Prajapati et al., 2021)</ref> with a score of 6.25 and <ref type="bibr" target="#b19">(Hegde et al., 2021)</ref> with a score of 0.29.</p><p>• For the English-Tamil and English-Malayalam translation, <ref type="bibr" target="#b46">(Xie, 2021)</ref>'s is again ranked number 1 with BLEU scores of 36.66 and 19.84 respectively, followed by Spartans with scores of 28.27 and 15.31. <ref type="bibr" target="#b19">(Hegde et al., 2021)</ref> is ranked number 3 with scores of 1.66 and 19.84 respectively.</p><p>• Finally, in the Tamil-Telugu translation, the system submitted by <ref type="bibr" target="#b46">(Xie, 2021)</ref> is again ranked number 1, with a BLEU score of 35.29, followed by <ref type="bibr" target="#b19">(Hegde et al., 2021)</ref> with a score of 0.43 and <ref type="bibr" target="#b34">(Prajapati et al., 2021)</ref> with a score of 0.0.</p><p>The reason for the variation in results among language pair tasks is due the following reasons as reported in the System descriptions:</p><p>• In Xie (2021), the system does not give good scores due the variation in the test set for English -Malayalam when compared with the development set where the BLEU score for the checkpoint average is 25.87.</p><p>• <ref type="bibr" target="#b34">Prajapati et al. (2021)</ref> report that the overall translation quality of the test set is not as good as that of the validation data due to the variation in data in terms of sentence complexity and length when compared to the validation data.</p><p>• The reason for lower BLEU scores on the test set is due to the complexity of translation due to the presence of special characters, morphological richness of the language pairs and also due to the test set sentences being longer in length, according to <ref type="bibr" target="#b19">Hegde et al. (2021)</ref> To summarize, the systems submitted by the teams have shown improvement when additional data corpora were used and when additional preprocessing steps and/or layers/mechanisms were added. The teams reported that the overall system scores for the test set are not good when compared to the validation set, due to the complexity of the test set in terms of longer length sentences and morphological richness in the language pairs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>This paper described the shared task of machine translation of Dravidian (Tamil) languages to be presented at the first workshop on Speech and Language Technologies for Dravidian Technologies and summarized the results of this workshop. The best performing systems submitted to this workshop achieved good performance in terms of BLEU scores inspite of the lack of data available for training. This is a promising result in that such similar techniques can be applied to other under resourced languages. We would like to conclude by saying that we hope to continue to conduct this workshop over the coming years, and therefore continue to contribute to the development of language technology for under-resourced Dravidian (Tamil) languages.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>•</head><label></label><figDesc><ref type="bibr" target="#b19">Hegde et al. (2021)</ref> propose a sequence-tosequence architecture based on a stacked LSTM model as the translation system. The proposed system has multiple layers in order to learn better representations and enhance the learnability of the model. A stacked LSTM model consists of multiple hidden LSTM layers. Stacking makes the model deeper and more accurate.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>due to geographical separation by the steep Western Ghats from the main speech group. Ramacaritam ('Deeds of Rama') was the first literary work in Malayalam written in Malayalam, a combination Tamil and Sanskrit, using the Tamil Grantha script which was used in Tamil Nadu to write Sanskrit and foreign words<ref type="bibr" target="#b2">(Andronov, 1996)</ref>. Telugu existed in the earliest time in the form of inscriptions from 575 CE onwards. Telugu literary works split from Tamil by the first grammar of Telugu in the 13th century CE which was written by Atharvana Acharya, naming it the TrilingaŚabdānusāsana (or Trilinga Grammar). Similarly, Kannada also split from Tamil by 8th century CE. The Kappe Arab-</figDesc><table><row><cell>Team</cell><cell>Languages</cell><cell>BLEU</cell></row><row><cell>GX (Xie, 2021)</cell><cell>English-Telugu</cell><cell>38.86</cell></row><row><cell cols="2">IRLAB-DAIICT (Prajapati et al., 2021) English-Telugu</cell><cell>6.25</cell></row><row><cell cols="2">MUCS Shared Task (Hegde et al., 2021) English-Telugu</cell><cell>0.29</cell></row><row><cell>GX (Xie, 2021)</cell><cell>English-Tamil</cell><cell>36.66</cell></row><row><cell>Spartans</cell><cell>English-Tamil</cell><cell>28.27</cell></row><row><cell cols="2">IRLAB-DAIICT (Prajapati et al., 2021) English-Tamil</cell><cell>6.04</cell></row><row><cell cols="2">MUCS Shared Task (Hegde et al., 2021) English-Tamil</cell><cell>1.66</cell></row><row><cell>GX (Xie, 2021)</cell><cell>English-Malayalam</cell><cell>19.84</cell></row><row><cell>Spartans</cell><cell>English-Malayalam</cell><cell>15.31</cell></row><row><cell cols="2">IRLAB-DAIICT (Prajapati et al., 2021) English-Malayalam</cell><cell>8.43</cell></row><row><cell cols="2">MUCS Shared Task (Hegde et al., 2021) English-Malayalam</cell><cell>0.48</cell></row><row><cell>GX (Xie, 2021)</cell><cell>Tamil-Telugu</cell><cell>35.29</cell></row><row><cell cols="2">MUCS Shared Task (Hegde et al., 2021) Tamil-Telugu</cell><cell>0.43</cell></row><row><cell cols="2">IRLAB-DAIICT (Prajapati et al., 2021) Tamil-Telugu</cell><cell>0.0</cell></row></table><note>Table 1: Results of the participating systems in BLEU score. hatta record of 700 CE is the oldest extant form of Kannada poetry in the Tripadi metre. It is based in part on Kavyadarsha, a Sanskrit text</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell>: System Ranks for each Translation Language Pair</cell></row><row><cell>dling multiple languages simultaneously to</cell></row><row><cell>facilitate the translation performance of these</cell></row><row><cell>languages; (2) backtranslation, they collected</cell></row><row><cell>other open-source parallel and monolingual</cell></row><row><cell>data and apply back-translation to benefit</cell></row><row><cell>from the monolingual data. The experimental</cell></row><row><cell>results show that they achieved good transla-</cell></row><row><cell>tion results in these Dravidian languages and</cell></row><row><cell>rank first in the four translation directions on</cell></row><row><cell>the ranklist.</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://competitions.codalab.org/ competitions/27650</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">also called Damili or Tamil-Brahmi 3 Tamil-inscription 4 Keeladi-Book-English-18-09-2019.pdf   </note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">http://opus.nlpl.eu/ OpenSubtitles-v2018.php</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Massively multilingual neural machine translation</title>
+		<author>
+			<persName><forename type="first">Roee</forename><surname>Aharoni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Melvin</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Orhan</forename><surname>Firat</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-1388</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="3874" to="3884" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<author>
+			<persName><forename type="first">Devasagayam</forename><surname>Albert</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Institute of Tamil Studies</title>
+				<imprint>
+			<date type="published" when="1985" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">A grammar of the Malayalam language in historical treatment</title>
+		<author>
+			<persName><forename type="first">Mikhail</forename><surname>Sergeevich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andronov</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1996" />
+			<publisher>Otto Harrassowitz Verlag</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Neural machine translation by jointly learning to align and translate</title>
+		<author>
+			<persName><forename type="first">Dzmitry</forename><surname>Bahdanau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1409.0473</idno>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Print, folklore, and nationalism in colonial South India</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Stuart</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Blackburn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Orient Blackswan</title>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">1875. A comparative grammar of the Dravidian or South-Indian family of languages</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Caldwell</surname></persName>
+		</author>
+		<imprint>
+			<publisher>Trübner</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Leveraging orthographic information to improve machine translation of under-resourced languages</title>
+		<author>
+			<persName><forename type="first">Chakravarthi</forename><surname>Bharathi Raja</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+		<respStmt>
+			<orgName>NUI Galway</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Improving Wordnets for Under-Resourced Languages Using Machine Translation</title>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th Global WordNet Conference. The Global WordNet Conference 2018 Committee</title>
+				<meeting>the 9th Global WordNet Conference. The Global WordNet Conference 2018 Committee</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Comparison of Different Orthographies for Machine Translation of Under-Resourced Dravidian Languages</title>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+		<idno type="DOI">10.4230/OASIcs.LDK.2019.6</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2nd Conference on Language, Data and Knowledge (LDK 2019)</title>
+		<title level="s">Dagstuhl, Germany. Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik</title>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="1" to="6" />
+		</imprint>
+	</monogr>
+	<note>70 of OpenAccess Series in Informatics (OA-SIcs</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">WordNet gloss translation for under-resourced languages using multilingual neural machine translation</title>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Multilingualism at the Intersection of Knowledge Bases and Machine Translation</title>
+				<meeting>the Second Workshop on Multilingualism at the Intersection of Knowledge Bases and Machine Translation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Association for Machine Translation</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1" to="7" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Multilingual multimodal machine translation for Dravidian languages utilizing phonetic transcription</title>
+		<author>
+			<persName><forename type="first">Ruba</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernardo</forename><surname>Priyadharshini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arun</forename><surname>Stearns</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Jayapal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sridevy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manel</forename><surname>Zarrouk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Mccrae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Technologies for MT of Low Resource Languages</title>
+				<meeting>the 2nd Workshop on Technologies for MT of Low Resource Languages<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Association for Machine Translation</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="56" to="63" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Bilingual lexicon induction across orthographicallydistinct under-resourced Dravidian languages</title>
+		<author>
+			<persName><forename type="first">Navaneethan</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Rajasekaran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noel</forename><forename type="middle">E</forename><surname>Mcguinness</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>O'connor</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh Workshop on NLP for Similar Languages, Varieties and Dialects</title>
+				<meeting>the Seventh Workshop on NLP for Similar Languages, Varieties and Dialects<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">A survey of orthographic information in machine translation</title>
+		<author>
+			<persName><forename type="first">Priya</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Rani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page">2008</biblScope>
+		</imprint>
+	</monogr>
+	<note>arXiv e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">An efficient machine translation model for Dravidian language</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Chandramma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Kumar Pareek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Swathi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Shetteppanavar</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/RTEICT.2017.8256970</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2nd IEEE International Conference on Recent Trends in Electronics, Information Communication Technology (RTEICT)</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="2101" to="2105" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">On the properties of neural machine translation: Encoder-decoder approaches</title>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bart</forename><surname>Van Merriënboer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dzmitry</forename><surname>Bahdanau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/v1/W14-4012</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SSST-8, Eighth Workshop on Syntax, Semantics and Structure in Statistical Translation</title>
+				<meeting>SSST-8, Eighth Workshop on Syntax, Semantics and Structure in Statistical Translation<address><addrLine>Doha, Qatar</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="103" to="111" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Zero-resource translation with multi-lingual neural machine translation</title>
+		<author>
+			<persName><forename type="first">Orhan</forename><surname>Firat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Baskaran</forename><surname>Sankaran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yaser</forename><surname>Al-Onaizan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Fatos T Yarman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Vural</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cho</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="268" to="277" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Universal neural machine translation for extremely low resource languages</title>
+		<author>
+			<persName><forename type="first">Jiatao</forename><surname>Gu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hany</forename><surname>Hassan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><forename type="middle">K</forename><surname>Victor</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Li</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N18-1032</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Long Papers; New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="344" to="354" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Toward multilingual neural machine translation with universal encoder and decoder</title>
+		<author>
+			<persName><forename type="first">Thanh-Le</forename><surname>Ha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Niehues</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Waibel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Institute for Anthropomatics and Robotics</title>
+				<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">16</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">KanCMD: Kannada CodeMixed dataset for sentiment analysis and offensive language detection</title>
+		<author>
+			<persName><forename type="first">Adeep</forename><surname>Hande</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruba</forename><surname>Priyadharshini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bharathi Raja</forename><surname>Chakravarthi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Modeling of People&apos;s Opinions, Personality, and Emotion&apos;s in Social Media</title>
+				<meeting>the Third Workshop on Computational Modeling of People&apos;s Opinions, Personality, and Emotion&apos;s in Social Media<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="54" to="63" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">MUCS@ -Machine Translation for Dravidian Languages using Stacked Long Short Term Memory</title>
+		<author>
+			<persName><forename type="first">Asha</forename><surname>Hegde</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ibrahim</forename><surname>Gashaw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">L</forename><surname>Shashirekha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Google&apos;s multilingual neural machine translation system: Enabling zero-shot translation</title>
+		<author>
+			<persName><forename type="first">Melvin</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Schuster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Quoc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maxim</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonghui</forename><surname>Krikun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhifeng</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fernanda</forename><surname>Thorat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Viégas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Greg</forename><surname>Wattenberg</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Corrado</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association of Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="339" to="351" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Trivial transfer learning for low-resource neural machine translation</title>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Kocmi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ondrej</forename><surname>Bojar</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page">244</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Findings of the WMT 2019 shared task on parallel corpus filtering for low-resource conditions</title>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vishrav</forename><surname>Chaudhary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><surname>Pino</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W19-5404</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Conference on Machine Translation</title>
+				<meeting>the Fourth Conference on Machine Translation<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="54" to="72" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Development of Telugu-Tamil Transfer-Based Machine Translation System: An Improvization Using Divergence Index</title>
+		<author>
+			<persName><forename type="first">Parameswari</forename><surname>Krishnamurthy</surname></persName>
+		</author>
+		<idno type="DOI">10.1515/jisys-2018-0214</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Intelligent Systems</title>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="493" to="504" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Comparative Dravidian studies. Current trends in linguistics</title>
+		<author>
+			<persName><forename type="first">Bhadriraju</forename><surname>Krishnamurti</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page">309</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Factored Statistical Machine Translation System for English to Tamil Language</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>M Anand Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dhanalakshmi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kp Soman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Rajendran</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Pertanika Journal of Social Sciences &amp; Humanities</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">An Overview of the Shared Task on Machine Translation in Indian Languages (MTIL) -2017</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Premjith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shivkaran</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Rajendran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">P</forename><surname>Soman</surname></persName>
+		</author>
+		<idno type="DOI">10.1515/jisys-2018-0024</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Intelligent Systems</title>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="455" to="464" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Improving zero-shot translation of low-resource languages</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Surafel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lakew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Quintino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Lotito</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcello</forename><surname>Turchi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Federico</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">14th International Workshop on Spoken Language Translation</title>
+				<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Effective approaches to attention-based neural machine translation</title>
+		<author>
+			<persName><forename type="first">Thang</forename><surname>Luong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hieu</forename><surname>Pham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D15-1166</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Lisbon</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1412" to="1421" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">Morphology based prototype statistical machine translation system for English to Tamil language</title>
+		<author>
+			<persName><forename type="first">Anand</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+	<note>Unpublished PhD Thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Pali: A Grammar of the Language of the Theravada Tipitaka. With a Concordance to Pischel&apos;s Grammatik der Prakrit-Sprachen</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Oberlies</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011" />
+			<publisher>Walter de Gruyter</publisher>
+			<biblScope unit="volume">3</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Findings of the LoResMT 2020 shared task on zero-shot for low-resource languages</title>
+		<author>
+			<persName><forename type="first">Atul</forename><surname>Kr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Valentin</forename><surname>Ojha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alina</forename><surname>Malykh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chao-Hong</forename><surname>Karakanta</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 3rd Workshop on Technologies for MT of Low Resource Languages</title>
+				<meeting>the 3rd Workshop on Technologies for MT of Low Resource Languages<address><addrLine>Suzhou, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="33" to="37" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Bleu: a method for automatic evaluation of machine translation</title>
+		<author>
+			<persName><forename type="first">Kishore</forename><surname>Papineni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Salim</forename><surname>Roukos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Todd</forename><surname>Ward</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei-Jing</forename><surname>Zhu</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/1073083.1073135</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 40th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Philadelphia, Pennsylvania, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="311" to="318" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">A Primer of Tamil Literature</title>
+		<author>
+			<persName><forename type="first">Pillai</forename><surname>Ms Purnalingam</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1904" />
+			<publisher>Ananda Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Neural Machine Translations for Dravidian Languages EACL 2021</title>
+		<author>
+			<persName><forename type="first">Raj</forename><surname>Prajapati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vijay</forename><surname>Vedant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prasenjit</forename><surname>Parikh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Majumder</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<title level="m" type="main">Strategies in the formation of compound nouns in Tamil. Languages Of India, 4. HG Rawlinson. 1930. THE KADAMBA KULA-A History of Ancient and Mediaeval Karnataka.(Studies in Indian History of the Indian Historical Research Institute</title>
+		<author>
+			<persName><surname>S Rajendran</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2004" />
+			<pubPlace>St. Xavier&apos;s College, Bombay</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<title level="m" type="main">Indian epigraphy: a guide to the study of inscriptions in Sanskrit, Prakrit, and the other Indo-Aryan languages</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Salomon</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>Oxford University Press on Demand</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">C</forename><surname>Sekhar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Bulletin of the Deccan College Research Institute</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="1" to="216" />
+			<date type="published" when="1951" />
+		</imprint>
+	</monogr>
+	<note>evolution of malayalam</note>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<title level="m" type="main">Keeladi: An Urban Settlement of Sangam Age on the Banks of River Vaigai. India: Department of Archaeology, Government of Tamil</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Sivanantham</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Seran</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<pubPlace>Nadu, Chennai</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">The Date of Tolkappiyam: A Retrospect</title>
+		<author>
+			<persName><surname>Bgl Swamy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Silver Jubilee</title>
+				<imprint>
+			<publisher>Madras</publisher>
+			<date type="published" when="1975" />
+			<biblScope unit="volume">292</biblScope>
+			<biblScope unit="page">317</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<author>
+			<persName><forename type="first">Takanobu</forename><surname>Takahashi</surname></persName>
+		</author>
+		<title level="m">Tamil love poetry and poetics</title>
+				<imprint>
+			<publisher>Brill</publisher>
+			<date type="published" when="1995" />
+			<biblScope unit="volume">9</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Sentiment Analysis in Tamil Texts: A Study on Machine Learning Techniques and Feature Representation</title>
+		<author>
+			<persName><forename type="first">Sajeetha</forename><surname>Thavareesan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinnathamby</forename><surname>Mahesan</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICIIS47346.2019.9063341</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2019 14th Conference on Industrial and Information Systems (ICIIS)</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="320" to="325" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Sentiment Lexicon Expansion using Word2vec and fastText for Sentiment Prediction in Tamil texts</title>
+		<author>
+			<persName><forename type="first">Sajeetha</forename><surname>Thavareesan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinnathamby</forename><surname>Mahesan</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/MERCon50084.2020.9185369</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2020 Moratuwa Engineering Research Conference (MERCon)</title>
+				<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="272" to="276" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Word embedding-based Part of Speech tagging in Tamil texts</title>
+		<author>
+			<persName><forename type="first">Sajeetha</forename><surname>Thavareesan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinnathamby</forename><surname>Mahesan</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICIIS51140.2020.9342640</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2020 IEEE 15th International Conference on Industrial and Information Systems (ICIIS)</title>
+				<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="478" to="482" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Google&apos;s neural machine translation system</title>
+		<author>
+			<persName><forename type="first">Yonghui</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Schuster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhifeng</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Quoc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wolfgang</forename><surname>Norouzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maxim</forename><surname>Macherey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuan</forename><surname>Krikun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qin</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Klaus</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Macherey</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1609.08144</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Bridging the gap between human and machine translation</title>
+				<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Generalized data augmentation for low-resource translation</title>
+		<author>
+			<persName><forename type="first">Mengzhou</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiang</forename><surname>Kong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="5786" to="5796" />
+		</imprint>
+	</monogr>
+	<note>Antonios Anastasopoulos, and Graham Neubig</note>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">GX@DravidianLangTech-EACL2021: Multilingual Neuron Machine Translation and Back-translation</title>
+		<author>
+			<persName><forename type="first">Wanying</forename><surname>Xie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Transfer learning for low-resource neural machine translation</title>
+		<author>
+			<persName><forename type="first">Barret</forename><surname>Zoph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deniz</forename><surname>Yuret</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>May</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Knight</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1568" to="1575" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

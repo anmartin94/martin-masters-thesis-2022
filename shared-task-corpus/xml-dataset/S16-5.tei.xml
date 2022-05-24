@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2016 Task 5: Aspect Based Sentiment Analysis</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Maria</forename><surname>Pontiki</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Institute for Language and Speech Processing</orgName>
+								<address>
+									<settlement>Athens</settlement>
+									<region>Athena R.C</region>
+									<country key="GR">Greece</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Dimitrios</forename><surname>Galanis</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Institute for Language and Speech Processing</orgName>
+								<address>
+									<settlement>Athens</settlement>
+									<region>Athena R.C</region>
+									<country key="GR">Greece</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Haris</forename><surname>Papageorgiou</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Institute for Language and Speech Processing</orgName>
+								<address>
+									<settlement>Athens</settlement>
+									<region>Athena R.C</region>
+									<country key="GR">Greece</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ion</forename><surname>Androutsopoulos</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Institute for Language and Speech Processing</orgName>
+								<address>
+									<settlement>Athens</settlement>
+									<region>Athena R.C</region>
+									<country key="GR">Greece</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="department">Dept. of Informatics, Athens University of Economics and Business</orgName>
+								<address>
+									<country key="GR">Greece</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Suresh</forename><surname>Manandhar</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="department">Dept. of Computer Science</orgName>
+								<orgName type="institution">University of York</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mohammad</forename><surname>Al-Smadi</surname></persName>
+							<affiliation key="aff4">
+								<orgName type="department">Computer Science Dept</orgName>
+								<orgName type="institution">University of Science and Technology Irbid</orgName>
+								<address>
+									<country>Jordan, Jordan</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mahmoud</forename><surname>Al-Ayyoub</surname></persName>
+							<affiliation key="aff4">
+								<orgName type="department">Computer Science Dept</orgName>
+								<orgName type="institution">University of Science and Technology Irbid</orgName>
+								<address>
+									<country>Jordan, Jordan</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yanyan</forename><surname>Zhao</surname></persName>
+							<affiliation key="aff5">
+								<orgName type="institution">Harbin Institute of Technology</orgName>
+								<address>
+									<addrLine>Heilongjiang, P.R. China, 6 LT3</addrLine>
+									<settlement>Harbin</settlement>
+								</address>
+							</affiliation>
+							<affiliation key="aff6">
+								<orgName type="institution">Ghent University</orgName>
+								<address>
+									<settlement>Ghent</settlement>
+									<country key="BE">Belgium</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Bing</forename><surname>Qin</surname></persName>
+							<affiliation key="aff5">
+								<orgName type="institution">Harbin Institute of Technology</orgName>
+								<address>
+									<addrLine>Heilongjiang, P.R. China, 6 LT3</addrLine>
+									<settlement>Harbin</settlement>
+								</address>
+							</affiliation>
+							<affiliation key="aff6">
+								<orgName type="institution">Ghent University</orgName>
+								<address>
+									<settlement>Ghent</settlement>
+									<country key="BE">Belgium</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Orphée</forename><surname>De Clercq</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Marianna</forename><surname>Apidianaki</surname></persName>
+							<affiliation key="aff7">
+								<orgName type="laboratory">LIMSI, CNRS, Univ. Paris-Sud</orgName>
+								<orgName type="institution">Université Paris-Saclay</orgName>
+								<address>
+									<settlement>Orsay</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Xavier</forename><surname>Tannier</surname></persName>
+							<affiliation key="aff7">
+								<orgName type="laboratory">LIMSI, CNRS, Univ. Paris-Sud</orgName>
+								<orgName type="institution">Université Paris-Saclay</orgName>
+								<address>
+									<settlement>Orsay</settlement>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Natalia</forename><surname>Loukachevitch</surname></persName>
+							<affiliation key="aff8">
+								<orgName type="institution">Lomonosov Moscow State University</orgName>
+								<address>
+									<settlement>Moscow</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Evgeny</forename><surname>Kotelnikov</surname></persName>
+							<affiliation key="aff9">
+								<orgName type="institution">Vyatka State University</orgName>
+								<address>
+									<addrLine>Russian Federation, 10 Universitat Pompeu Fabra</addrLine>
+									<settlement>Kirov, Barcelona</settlement>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Nuria</forename><surname>Bel</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Salud</forename><surname>María Jiménez-Zafra</surname></persName>
+							<affiliation key="aff10">
+								<orgName type="department">Dept. of Computer Science</orgName>
+								<orgName type="institution">Universidad de Jaén</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Gülşen</forename><surname>Eryiğit</surname></persName>
+							<affiliation key="aff11">
+								<orgName type="department">Dept. of Computer Engineering</orgName>
+								<orgName type="institution">Istanbul Technical University</orgName>
+								<address>
+									<country key="TR">Turkey</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<address>
+									<addrLine>June 16-17</addrLine>
+									<postCode>2016</postCode>
+									<settlement>San Diego</settlement>
+									<region>California</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2016 Task 5: Aspect Based Sentiment Analysis</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the SemEval 2016 shared task on Aspect Based Sentiment Analysis (ABSA), a continuation of the respective tasks of 2014 and 2015. In its third year, the task provided 19 training and 20 testing datasets for 8 languages and 7 domains, as well as a common evaluation procedure. From these datasets, 25 were for sentence-level and 14 for text-level ABSA; the latter was introduced for the first time as a subtask in SemEval. The task attracted 245 submissions from 29 teams.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Many consumers use the Web to share their experiences about products, services or travel destinations <ref type="bibr" target="#b37">(Yoo and Gretzel, 2008)</ref>. Online opinionated texts (e.g., reviews, tweets) are important for consumer decision making <ref type="bibr" target="#b10">(Chevalier and Mayzlin, 2006)</ref> and constitute a source of valuable customer feedback that can help companies to measure satisfaction and improve their products or services. In this setting, Aspect Based Sentiment Analysis (ABSA) -i.e., mining opinions from text about specific entities and their aspects <ref type="bibr" target="#b18">(Liu, 2012)</ref> -can provide valuable insights to both consumers and businesses. An ABSA * *Corresponding author: mpontiki@ilsp.gr. method can analyze large amounts of unstructured texts and extract (coarse-or fine-grained) information not included in the user ratings that are available in some review sites (e.g., Fig. <ref type="figure" target="#fig_0">1</ref>).</p><p>Sentiment Analysis (SA) touches every aspect (e.g., entity recognition, coreference resolution, negation handling) of Natural Language Processing <ref type="bibr" target="#b18">(Liu, 2012)</ref> and as <ref type="bibr" target="#b8">Cambria et al. (2013)</ref> mention "it requires a deep understanding of the explicit and implicit, regular and irregular, and syntactic and semantic language rules". Within the last few years several SA-related shared tasks have been organized in the context of workshops and conferences focus-ing on somewhat different research problems <ref type="bibr" target="#b30">(Seki et al., 2007;</ref><ref type="bibr" target="#b31">Seki et al., 2008;</ref><ref type="bibr" target="#b32">Seki et al., 2010;</ref><ref type="bibr" target="#b21">Mitchell, 2013;</ref><ref type="bibr" target="#b23">Nakov et al., 2013;</ref><ref type="bibr" target="#b27">Rosenthal et al., 2014;</ref><ref type="bibr" target="#b24">Pontiki et al., 2014;</ref><ref type="bibr" target="#b28">Rosenthal et al., 2015;</ref><ref type="bibr" target="#b14">Ghosh et al., 2015;</ref><ref type="bibr" target="#b25">Pontiki et al., 2015;</ref><ref type="bibr" target="#b22">Mohammad et al., 2016;</ref><ref type="bibr" target="#b26">Recupero and Cambria, 2014;</ref><ref type="bibr" target="#b29">Ruppenhofer et al., 2014;</ref><ref type="bibr" target="#b19">Loukachevitch et al., 2015)</ref>. Such competitions provide training datasets and the opportunity for direct comparison of different approaches on common test sets.</p><p>Currently, most of the available SA-related datasets, whether released in the context of shared tasks or not <ref type="bibr" target="#b34">(Socher et al., 2013;</ref><ref type="bibr" target="#b13">Ganu et al., 2009)</ref>, are monolingual and usually focus on English texts. Multilingual datasets <ref type="bibr" target="#b16">(Klinger and Cimiano, 2014;</ref><ref type="bibr" target="#b15">Jiménez-Zafra et al., 2015)</ref> provide additional benefits enabling the development and testing of crosslingual methods <ref type="bibr" target="#b17">(Lambert, 2015)</ref>. Following this direction, this year the SemEval ABSA task provided datasets in a variety of languages.</p><p>ABSA was introduced as a shared task for the first time in the context of SemEval in 2014; SemEval-2014 Task 4 1 (SE-ABSA14) provided datasets of English reviews annotated at the sentence level with aspect terms (e.g., "mouse", "pizza") and their polarity for the laptop and restaurant domains, as well as coarser aspect categories (e.g., "food") and their polarity only for restaurants <ref type="bibr" target="#b24">(Pontiki et al., 2014)</ref>. SemEval-2015 Task 12 2 (SE-ABSA15) built upon SE-ABSA14 and consolidated its subtasks into a unified framework in which all the identified constituents of the expressed opinions (i.e., aspects, opinion target expressions and sentiment polarities) meet a set of guidelines and are linked to each other within sentence-level tuples <ref type="bibr" target="#b25">(Pontiki et al., 2015)</ref>. These tuples are important since they indicate the part of text within which a specific opinion is expressed. However, a user might also be interested in the overall rating of the text towards a particular aspect. Such ratings can be used to estimate the mean sentiment per aspect from multiple reviews <ref type="bibr" target="#b20">(McAuley et al., 2012)</ref>. Therefore, in addition to sentence-level annotations, SE-ABSA16 3 accommodated also text-level ABSA annotations and provided the respective training and testing data. Fur-1 http://alt.qcri.org/semeval2014/task4/ 2 http://alt.qcri.org/semeval2015/task12/ 3 http://alt.qcri.org/semeval2016/task5/ thermore, the SE-ABSA15 annotation framework was extended to new domains and applied to languages other than English <ref type="bibr">(Arabic, Chinese, Dutch, French, Russian, Spanish, and Turkish)</ref>.</p><p>The remainder of this paper is organized as follows: the task set-up is described in Section 2. Section 3 provides information about the datasets and the annotation process, while Section 4 presents the evaluation measures and the baselines. General information about participation in the task is provided in Section 5. The evaluation scores of the participating systems are presented and discussed in Section 6. The paper concludes with an overall assessment of the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>The SE-ABSA16 task consisted of the following subtasks and slots. Participants were free to choose the subtasks, slots, domains and languages they wished to participate in.</p><p>Subtask 1 (SB1): Sentence-level ABSA. Given an opinionated text about a target entity, identify all the opinion tuples with the following types (tuple slots) of information:</p><p>• Slot1: Aspect Category. Identification of the entity E and attribute A pairs towards which an opinion is expressed in a given sentence. E and A should be chosen from predefined inventories 4 of entity types (e.g., "restaurant", "food") and attribute labels (e.g., "price", "quality").</p><p>• Slot2: Opinion Target Expression (OTE). Extraction of the linguistic expression used in the given text to refer to the reviewed entity E of each E#A pair. The OTE is defined by its starting and ending offsets. When there is no explicit mention of the entity, the slot takes the value "null". The identification of Slot2 values was required only in the restaurants, hotels, museums and telecommunications domains.</p><p>• Slot3: Sentiment Polarity. Each identified E#A pair has to be assigned one of the following polarity labels: "positive", "negative", "neutral" (mildly positive or mildly negative).  An example of opinion tuples with Slot1-3 values from the restaurants domain is shown below: "Their sake list was extensive, but we were looking for Purple Haze, which wasn't listed but made for us upon request!" → {cat: "drinks#style_options", trg: "sake list", fr: "6", to: "15", pol: "positive"}, {cat: "service#general", trg: "null", fr: "0", to: "0", pol: "positive"}. The variable cat indicates the aspect category (Slot1), pol the polarity (Slot3), and trg the ote (Slot2); f r, to are the starting/ending offsets of ote.</p><p>Subtask 2 (SB2): Text-level ABSA. Given a customer review about a target entity, the goal was to identify a set of {cat, pol} tuples that summarize the opinions expressed in the review. cat can be assigned the same values as in SB1 (E#A tuple), while pol can be set to "positive", "negative", "neutral", or "conflict". For example, for the review text "The So called laptop Runs to Slow and I hate it! Do not buy it! It is the worst laptop ever ", a system should return the following opinion tuples: {cat: "laptop#general", pol: "negative"}, {cat: "laptop#operation_performance", pol: "negative"} .</p><p>Subtask 3 (SB3): Out-of-domain ABSA. In SB3 participants had the opportunity to test their systems in domains for which no training data was made available; the domains remained unknown until the start of the evaluation period. Test data for SB3 were provided only for the museums domain in French.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Datasets</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Collection and Annotation</head><p>A total of 39 datasets were provided in the context of the SE-ABSA16 task; 19 for training and 20 for testing. The texts were from 7 domains and 8 languages; English (en), Arabic (ar), Chinese (ch), Dutch (du), French (fr), Russian (ru), Spanish (es) and Turkish (tu). The datasets for the domains of restaurants (rest), laptops (lapt), mobile phones (phns), digital cameras (came), hotels (hote) and museums (muse) consist of customer reviews, whilst the telecommunication domain (telc) data consists of tweets. A total of 70790 manually annotated ABSA tuples were provided for training and testing; sentencelevel annotations (SB1) in 8 languages for 7 domains, and 23136 text-level annotations (SB2) in 6 languages for 3 domains. Table <ref type="table" target="#tab_1">1</ref> provides more information on the distribution of texts, sentences and annotated tuples per dataset.</p><p>The rest, hote, and lapt datasets were annotated at the sentence-level (SB1) following the respective annotation schemas of SE-ABSA15 <ref type="bibr" target="#b25">(Pontiki et al., 2015)</ref>. Below are examples 5 of annotated sentences for the aspect category "service#general" in en (1), du (2), fr (3), ru (4), es (5), and tu (6) for the rest domain and in ar (7) for the hote domain:</p><p>1. Service was slow, but the people were friendly. → {trg: "Service", pol: "negative"}, {trg: "people", pol: "positive"} 2. Snelle bediening en vriendelijk personeel moet ook gemeld worden!! → {trg: "bediening", pol: "positive"}, {trg: "personeel", pol: "positive"} 3. Le service est impeccable, personnel agréable. → {trg: "service" , pol: "positive"}, {trg: "personnel", pol: "positive"} 4. Про сервис ничего негативного не скажешьбыстро подходят, все улябаются, подходят спрашивают, всё ли нравится. → {trg: "сервис", pol: "neutral" } 5. También la rapidez en el servicio. → {trg: "servicio", pol: "positive" } 6. Servisi hızlı valesi var. → {trg: "Servisi", pol: "positive"} 7. .. ‫ﺳﺮﯾﻌﺔ‬ ‫و‬ ‫ﺟﺪا‬ ‫ﺟﯿﺪة‬ ‫اﻟﺨﺪﻣﺔ‬ → {trg: ‫"اﻟﺨﺪﻣﺔ"‬ , pol: "positive"}</p><p>The lapt annotation schema was extended to two other domains of consumer electronics, came and phns. Examples of annotated sentences in the lapt (en), phns (du and ch) and came (ch) domains are shown below:</p><p>1. It is extremely portable and easily connects to WIFI at the library and elsewhere. → {cat: "laptop#portability", pol: "positive"} , {cat: "laptop#connectivity", pol: "positive"} 2. Apps starten snel op en werken vlot, internet gaat prima.</p><p>→ {cat: "software#operation_performance", pol: "positive"}, {cat: "phone#connectivity", pol: "positive"} <ref type="bibr">5</ref> The offsets of the opinion target expressions are omitted.</p><p>3. 当然屏幕这么好 →{cat: "display#quality", pol: "positive"} 4. 更 轻 便 的 机 身 也 便 于 携 带。→ {cat: "camera# portability", pol: "positive"}</p><p>In addition, the SE-ABSA15 framework was extended to two new domains for which annotation guidelines were compiled: telc for tu and muse for fr. Below are two examples:</p><p>1. #Internet kopuyor sürekli :( @turkcell → {cat:</p><p>"internet#coverage", trg: "Internet", pol: "positive"} 2. 5€ pour les étudiants, ça vaut le coup. → {cat: "museum#prices", "null", "positive"}</p><p>The text-level (SB2) annotation task was based on the sentence-level annotations; given a customer review about a target entity (e.g., a restaurant) that included sentence-level annotations of ABSA tuples, the goal was to identify a set of {cat, pol} tuples that summarize the opinions expressed in it. This was not a simple summation/aggregation of the sentence-level annotations since an aspect may be discussed with different sentiment in different parts of the review. In such cases the dominant sentiment had to be identified. In case of conflicting opinions where the dominant sentiment was not clear, the "conflict" label was assigned. In addition, each review was assigned an overall sentiment label about the target entity (e.g., "restaurant#general", "laptop#general"), even if it was not included in the sentence-level annotations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Annotation Process</head><p>All datasets for each language were prepared by one or more research groups as shown in Table <ref type="table" target="#tab_3">2</ref>. The en, du, fr, ru and es datasets were annotated using brat <ref type="bibr" target="#b35">(Stenetorp et al., 2012)</ref>, a web-based annotation tool, which was configured appropriately for the needs of the task. The tu datasets were annotated using a customized version of turksent <ref type="bibr" target="#b12">(Eryigit et al., 2013)</ref>, a sentiment annotation tool for social media. For the ar and the ch data in-house tools 6 were used.  Below are some further details about the annotation process for each language. English. The SE-ABSA15 <ref type="bibr" target="#b25">(Pontiki et al., 2015)</ref> training and test datasets (with some minor corrections) were merged and provided for training (rest and lapt domains). New data was collected and annotated from scratch for testing. In a first phase, the rest test data was annotated by an experienced 7 linguist (annotator A), and the lapt data by 5 undergraduate computer science students. The resulting annotations for both domains were then inspected and corrected (if needed) by a second expert linguist, one of the task organizers (annotator B). Borderline cases were resolved collaboratively by annotators A and B.</p><p>Arabic. The hote dataset was annotated in repeated cycles. In a first phase, the data was annotated by three native Arabic speakers, all with a computer science background; then the output was validated by a senior researcher, one of the task organizers. If needed (e.g. when inconsistencies were found) they were given back to the annotators.</p><p>Chinese. The datasets presented by <ref type="bibr" target="#b38">Zhao et al. (2015)</ref> were re-annotated by three native Chinese speakers according to the SE-ABSA16 annotation schema and were provided for training and testing (phns and came domains).</p><p>Dutch. The rest and phns datasets (De Clercq and Hoste, 2016) were initially annotated by a trained linguist, native speaker of Dutch. Then, the output was verified by another Dutch linguist and disagreements were resolved between them. Fi-7 Also annotator for SE-ABSA14 and 15.</p><p>nally, the task organizers inspected collaboratively all the annotated data and corrections were made when needed.</p><p>French. The train (rest) and test (rest, muse) datasets were annotated from scratch by a linguist, native speaker of French. When the annotator was not confident, a decision was made collaboratively with the organizers. In a second phase, the task organizers checked all the annotations for mistakes and inconsistencies and corrected them, when necessary. For more information on the French datasets consult Apidianaki et al. <ref type="bibr">(2016)</ref>.</p><p>Russian. The rest datasets of the SentiRuEval-2015 task <ref type="bibr" target="#b19">(Loukachevitch et al., 2015)</ref> were automatically converted to the SE-ABSA16 annotation schema; then a linguist, native speaker of Russian, checked them and added missing information. Finally, the datasets were inspected by a second linguist annotator (also native speaker of Russian) for mistakes and inconsistencies, which were resolved along with one of the task organizers.</p><p>Spanish. Initially, 50 texts (134 sentences) from the whole available data were annotated by 4 annotators. The inter-anotator agreement (IAA) in terms of F-1 was 91% for the identification of OTE, 88% for the aspect category detection (E#A pair), and 80% for opinion tuples extraction (E#A, OTE, polarity). Provided that the IAA was substantially high for all slots, the rest of the data was divided into 4 parts and each one was annotated by a different native Spanish speakers (2 linguists and 2 software engineers). Subsequently, the resulting annotations were validated and corrected (if needed) by the task organizers.</p><p>Turkish. The telc dataset was based on the data used in <ref type="bibr">(Yıldırım et al., 2015)</ref>, while the rest dataset was created from scratch. Both datasets were annotated simultaneously by two linguists. Then, one of the organizers validated/inspected the resulting annotations and corrected them when needed.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Datasets Format and Availability</head><p>Similarly to SE-ABSA14 and SE-ABSA15, the datasets 8 of SE-ABSA16 were provided in an XML format and they are available under specific license terms through META-SHARE 9 , a repository devoted to the sharing and dissemination of language resources (Piperidis, 2012).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Measures and Baselines</head><p>The evaluation ran in two phases. In the first phase (Phase A), the participants were asked to return separately the aspect categories (Slot1), the OTEs (Slot2), and the {Slot1, Slot2} tuples for SB1. For SB2 the respective text-level categories had to be identified. In the second phase (Phase B), the gold annotations for the test sets of Phase A were provided and participants had to return the respective sentiment polarity values (Slot3). Similarly to SE-ABSA15, F-1 scores were calculated for Slot1, Slot2 and {Slot1, Slot2} tuples, by comparing the annotations that a system returned to the gold annotations (using micro-averaging). For Slot1 evaluation, duplicate occurrences of categories were ignored in both SB1 and SB2. For Slot2, the calculation for each sentence considered only distinct targets and discarded "null" targets, since they do not correspond to explicit mentions. To evaluate sentiment polarity classification (Slot3) in Phase B, we calculated the accuracy of each system, defined as the number of correctly predicted polarity labels of the (gold) aspect categories, divided by the total number of the gold aspect categories. Furthermore, we implemented and provided baselines for all slots of SB1 and SB2. In particular, the SE-ABSA15 baselines that were implemented for the English language <ref type="bibr">8</ref> The data are available at: http://metashare.ilsp. gr:8080/repository/search/?q=semeval+2016 9 META-SHARE (http://www.metashare.org/) was implemented in the framework of the META-NET Network of Excellence (http://www.meta-net.eu/). <ref type="bibr" target="#b25">(Pontiki et al., 2015)</ref>, were adapted for the other languages by using appropriate stopword lists and tokenization functions. The baselines are briefly discussed below: SB1-Slot1: For category (E#A) extraction, a Support Vector Machine (SVM) with a linear kernel is trained. In particular, n unigram features are extracted from the respective sentence of each tuple that is encountered in the training data. The category value (e.g., "service#general") of the tuple is used as the correct label of the feature vector. Similarly, for each test sentence s, a feature vector is built and the trained SVM is used to predict the probabilities of assigning each possible category to s (e.g., {"service#general", 0.2}, {"restaurant#general", 0.4}. Then, a threshold 10 t is used to decide which of the categories will be assigned 11 to s. As features, we use the 1,000 most frequent unigrams of the training data excluding stopwords.</p><p>SB1-Slot2: The baseline uses the training reviews to create for each category c (e.g., "service#general") a list of OTEs (e.g., "service#general" → {"staff", "waiter"}). These are extracted from the (training) opinion tuples whose category value is c . Then, given a test sentence s and an assigned category c, the baseline finds in s the first occurrence of each OTE of c's list. The OTE slot is filled with the first of the target occurrences found in s. If no target occurrences are found, the slot is assigned the value "null". SB1-Slot3: For polarity prediction we trained a SVM classifier with a linear kernel. Again, as in Slot1, n unigram features are extracted from the respective sentence of each tuple of the training data. In addition, an integer-valued feature 12 that indicates the category of the tuple is used. The correct label for the extracted training feature vector is the corresponding polarity value (e.g., "positive"). Then, for each tuple {category, OTE} of a test sentence s, a feature vector is built and classified using the trained SVM.</p><p>SB2-Slot1: The sentence-level tuples returned by the SB1 baseline are copied to the text level and duplicates are removed. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>SB2-Slot3:</head><p>For each text-level aspect category c the baseline traverses the predicted sentence-level tuples of the same category returned by the respective SB1 baseline and counts the polarity labels (positive, negative, neutral). Finally, the polarity label with the highest frequency is assigned to the textlevel category c. If there are no sentence-level tuples for the same c, the polarity label is determined based on all tuples regardless of c.</p><p>The baseline systems and evaluation scripts are implemented in Java and are available for download from the SE-ABSA16 website <ref type="bibr">13</ref> . The LibSVM package 14 <ref type="bibr" target="#b9">(Chang and Lin, 2011)</ref> is used for SVM training and prediction. The scores of the baselines 13 http://alt.qcri.org/semeval2016/task5/index. php?id=data-and-tools 14 http://www.csie.ntu.edu.tw/~cjlin/libsvm/ in the test datasets are presented in Section 6 along with the system scores.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participation</head><p>The task attracted in total 245 submissions from 29 teams. The majority of the submissions (216 runs) were for SB1. The newly introduced SB2 attracted 29 submissions from 5 teams in 2 languages (en and sp). Most of the submissions (168) were runs for the rest domain. This was expected, mainly for two reasons; first, the rest classification schema is less fine-grained (complex) compared to the other domains (e.g., lapt). Secondly, this domain was supported for 6 languages enabling also multilingual or language-agnostic approaches. The remaining submissions were distributed as follows: 54 in lapt, 12 in phns, 7 in came and 4 in hote.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation Results</head><p>The evaluation results are presented in Tables <ref type="table" target="#tab_1">3  (SB1</ref>  lexica) and additional data of any kind could be used for training. In the latter case, the teams had to report the resources used. Delayed submissions (i.e., runs submitted after the deadline and the release of the gold annotations) are marked with "*". As revealed by the results, in both SB1 and SB2 the majority of the systems surpassed the baseline by a small or large margin and, as expected, the unconstrained systems achieved better results than the constrained ones. In SB1, the teams with the highest scores for Slot1 and Slot2 achieved similar F-1 scores (see Table <ref type="table" target="#tab_4">3</ref>) in most cases (e.g., en/rest, es/rest, du/rest, fr/rest), which shows that the two slots have a similar level of difficulty. However, as expected, the {Slot1, Slot2} scores were significantly lower since the linking of the target expressions to the corresponding aspects is also required. The highest scores in SB1 for all slots (Slot1, Slot2, {Slot1, Slot2}, Slot3) were achieved in the en/rest; this is probably due to the high participation and to the lower complexity of the rest annotation schema compared to the other domains. If we compare the results for SB1 and SB2, we notice that the SB2 scores for Slot1 are significantly higher (e.g., en/lapt, en/rest, es/rest) even though the respective annotations are for the same (or almost the same) set of texts. This is due to the fact that it is easier to identify whether a whole text discusses an aspect c than finding all the sentences in the text discussing c . On the other hand, for Slot3, the SB2 scores are lower (e.g., en/rest, es/rest, ru/rest, en/lapt) than the respective SB1 scores. This is mainly because an aspect may be discussed at different points in a text and often with different sentiment. In such cases a system has to identify the dominant sentiment, which  usually is not trivial.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusions</head><p>In its third year, the SemEval ABSA task provided 19 training and 20 testing datasets, from 7 domains and 8 languages, attracting 245 submissions from 29 teams. The use of the same annotation guidelines for domains addressed in different languages gives the opportunity to experiment also with crosslingual or language-agnostic approaches. In addition, SE-ABSA16 included for the first time a text-  level subtask. Future work will address the creation of datasets in more languages and domains and the enrichment of the annotation schemas with other types of SA-related information like topics, events and figures of speech (e.g., irony, metaphor).</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Table summarizing the average sentiment for each aspect of an entity.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Datasets provided for SE-ABSA16.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head></head><label></label><figDesc>Language and Speech Processing, Athena R.C., Athens, Greece Dept. of Informatics, Athens University of Economics and Business, Greece Arabic Computer Science Dept., Jordan University of Science and Technology Irbid, Jordan Chinese Harbin Institute of Technology, Harbin, Heilongjiang, P.R.</figDesc><table><row><cell>Lang.</cell><cell>Research team(s)</cell></row><row><cell>English</cell><cell>Institute for China</cell></row><row><cell>Dutch</cell><cell>LT3, Ghent University, Ghent, Belgium</cell></row><row><cell>French</cell><cell>LIMSI, CNRS, Univ. Paris-Sud, Université Paris-Saclay, Orsay, France</cell></row><row><cell>Russian</cell><cell>Lomonosov Moscow State University, Moscow, Russian Federation Vyatka State University, Kirov, Russian Federation</cell></row><row><cell>Spanish</cell><cell>Universitat Pompeu Fabra, Barcelona, Spain SINAI, Universidad de Jaén, Spain</cell></row><row><cell cols="2">Turkish Dept. of Computer Engineering, Istanbul Technical University, Turkey</cell></row><row><cell></cell><cell>Turkcell Global Bilgi, Turkey</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Research teams that contributed to the creation of the datasets for each language.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>English REST results for SB1.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 5 :</head><label>5</label><figDesc>Number of participating teams and submitted runs per language.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head></head><label></label><figDesc>NLANG./U/51.937 IIT-T./U/82.772 LAPT</figDesc><table><row><cell>Lang./</cell><cell>Slot1</cell><cell>Slot3</cell></row><row><cell>Dom.</cell><cell>F-1</cell><cell>Acc.</cell></row><row><cell>EN/</cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6 :</head><label>6</label><figDesc>LAPT, CAME, and PHNS results for SB1.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 7 :</head><label>7</label><figDesc>Results for SB2.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">The full inventories of the aspect category labels for each domain are provided in Appendix A.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">The ar annotation tool was developed by the technical team of the Advanced Arabic Text Mining group at Jordan University of Science and Technology. The ch tool was developed by the Research Center for Social Computing and Information Retrieval at Harbin Institute of Technology.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10">The threshold t was set to 0.2 for all datasets.11  We use the -b 1 option of LibSVM to obtain probabilities.12 Each E#A pair has been assigned a distinct integer value.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">submitted results for 2 languages, 5 teams submitted results for 3-7 languages, while only one team participated in all languages.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="15">No submissions were made for sb3-muse-fr &amp; sb1-telctu.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>The authors are grateful to all the annotators and contributors for their valuable support to the task: Konstantina Papanikolaou, Juli Bakagianni, Omar Qwasmeh, Nesreen Alqasem, Areen Magableh, Saja Alzoubi, Bashar Talafha, Zekui Li, Binbin Li, Shengqiu Li, Aaron Gevaert, Els Lefever, Cécile Richart, Pavel Blinov, Maria Shatalova, M. Teresa Martín-Valdivia, Pilar Santolaria, Fatih Samet Çetin, Ezgi Yıldırım, Can Özbey, Leonidas Valavanis, Stavros Giorgis, Dionysios Xenos, Panos Theodor-akakos, and Apostolos Rousas. The work described in this paper is partially funded by the projects EOX GR07/3712 and "Research Programs for Excellence 2014-2016 / CitySense-ATHENA R.I.C.". The Arabic track was partially supported by the Jordan University of Science and Technology, Research Grant Number: 20150164. The Dutch track has been partly funded by the PARIS project (IWT-SBO-Nr. 110067). The French track was partially supported by the French National Research Agency under project ANR-12-CORD-0015/TransRead. The Russian track was partially supported by the Russian Foundation for Basic Research (RFBR) according to the research projects No. 14-07-00682a, 16-07-00342a, and No. 16-37-00311mol_a. The Spanish track has been partially supported by a grant from the Ministerio de Educación, Cultura y Deporte (MECD -scholarship FPU014/00983) and REDES project (TIN2015-65136-C2-1-R) from the Ministerio de Economía y Competitividad. The Turkish track was partially supported by TUBITAK-TEYDEB (The Scientific and Technological Research Council of Turkey -Technology and Innovation Funding Programs Directorate) project (grant number: 3140671).</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Entity Labels phone, display, keyboard, cpu, ports, memory, power_supply, hard_disk, multimedia_devices, battery, hardware, software, os, warranty, shipping, support, company Attribute Labels Same as in Laptops (Table <ref type="table">8</ref>) with the exception of portability that is included in the design_features label and does not apply as a separate attribute type. Entity Labels camera, display, keyboard, cpu, ports, memory, power_supply, battery, multimedia_devices, hardware, software, os, warranty, shipping, support, company, lens, photo, focus Attribute Labels Same as in Laptops (Table <ref type="table">8</ref>).     </p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Acc</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Aueb-</surname></persName>
+		</author>
+		<ptr target="/U/71.537UWB/C/66.906" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Leehu</surname></persName>
+		</author>
+		<idno>BUAP/U/50.253</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Iit-T</surname></persName>
+		</author>
+		<ptr target="/U/63.051IHS-R./U/43.808" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ihs-R</surname></persName>
+		</author>
+		<ptr target="/U/55.034COMMI./C/70.547" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ihs-R</surname></persName>
+		</author>
+		<ptr target="/U/53.149SNLP/U/69.965" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Phns Iit-T</surname></persName>
+		</author>
+		<ptr target="/U/45.443IIT-T./U/82.576" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">A Dataset for Aspect-Based Sentiment Analysis in French</title>
+		<author>
+			<persName><forename type="first">Xavier</forename><surname>References Marianna Apidianaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cécile</forename><surname>Tannier</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Richart</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Language Resources and Evaluation</title>
+				<meeting>the International Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">New Avenues in Opinion Mining and Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Erik</forename><surname>Cambria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Björn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yunqing</forename><surname>Schuller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Catherine</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Havasi</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="page" from="15" to="21" />
+		</imprint>
+	</monogr>
+	<note type="report_type">IEEE Intelligent Systems</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">LIBSVM: A library for support vector machines</title>
+		<author>
+			<persName><forename type="first">Chih-Chung</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chih-Jen</forename><surname>Lin</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011" />
+			<publisher>ACM TIST</publisher>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">27</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The effect of word of mouth on sales: Online book reviews</title>
+		<author>
+			<persName><forename type="first">Judith</forename><surname>Chevalier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Mayzlin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Marketing Res</title>
+		<imprint>
+			<biblScope unit="page" from="345" to="354" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Rude waiter but mouthwatering pastries! An exploratory study into Dutch Aspect-Based Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Orphée</forename><surname>De Clercq</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Conference on Language Resources and Evaluation</title>
+				<meeting>the 10th International Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">TURKSENT: A Sentiment Annotation Tool for Social Media</title>
+		<author>
+			<persName><forename type="first">Gülsen</forename><surname>Eryigit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fatih</forename><surname>Samet Cetin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Meltem</forename><surname>Yanık</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th Linguistic Annotation Workshop and Interoperability with Discourse</title>
+				<meeting>the 7th Linguistic Annotation Workshop and Interoperability with Discourse</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+	<note>Turkcell Global Bilgi, Tanel Temel, and Ilyas Ciçekli</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Beyond the Stars: Improving Rating Predictions using Review Text Content</title>
+		<author>
+			<persName><forename type="first">Gayatree</forename><surname>Ganu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noemie</forename><surname>Elhadad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amélie</forename><surname>Marian</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of WebDB</title>
+				<meeting>WebDB</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">SemEval-2015 Task 11: Sentiment Analysis of Figurative Language in Twitter</title>
+		<author>
+			<persName><forename type="first">Aniruddha</forename><surname>Ghosh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guofu</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tony</forename><surname>Veale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Shutova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Barnden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Reyes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">A Multilingual Annotated Dataset for Aspect-Oriented Opinion Mining</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Salud</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giacomo</forename><surname>Jiménez-Zafra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Berardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diego</forename><surname>Esuli</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Marcheggiani</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Empirical Methods in Natural Language Processing</title>
+				<meeting>Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="2533" to="2538" />
+		</imprint>
+	</monogr>
+	<note>María Teresa Martín-Valdivia, and Alejandro Moreo Fernández</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">The USAGE Review Corpus for Fine Grained Multi Lingual Opinion Analysis</title>
+		<author>
+			<persName><forename type="first">Roman</forename><surname>Klinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Cimiano</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Ninth International Conference on Language Resources and Evaluation</title>
+				<meeting>the Ninth International Conference on Language Resources and Evaluation<address><addrLine>Reykjavik, Iceland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Aspect-Level Cross-lingual Sentiment Classification with Constrained SMT</title>
+		<author>
+			<persName><forename type="first">Patrik</forename><surname>Lambert</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Association for Computational Linguistics and the International Joint Conference on Natural Language Processing</title>
+				<meeting>the Association for Computational Linguistics and the International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="781" to="787" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Synthesis Lectures on Human Language Technologies</title>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<publisher>Morgan &amp; Claypool Publishers</publisher>
+		</imprint>
+	</monogr>
+	<note>Sentiment Analysis and Opinion Mining</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">SentiRuEval: Testing Objectoriented Sentiment Analysis Systems in Russian</title>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Loukachevitch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pavel</forename><surname>Blinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Evgeny</forename><surname>Kotelnikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yulia</forename><surname>Rubtsova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vladimir</forename><surname>Ivanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Tutubalina</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of International Conference Dialog</title>
+				<meeting>International Conference Dialog</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Learning Attitudes and Attributes from Multiaspect Reviews</title>
+		<author>
+			<persName><forename type="first">Julian</forename><forename type="middle">J</forename><surname>Mcauley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jure</forename><surname>Leskovec</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Jurafsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">12th IEEE International Conference on Data Mining, ICDM 2012</title>
+				<meeting><address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012-12-10" />
+			<biblScope unit="page" from="1020" to="1025" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Overview of the TAC2013 Knowledge Base Population Evaluation English Sentiment Slot Filling</title>
+		<author>
+			<persName><forename type="first">Margaret</forename><surname>Mitchell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Text Analysis Conference</title>
+				<meeting>the 6th Text Analysis Conference<address><addrLine>Gaithersburg, Maryland, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">SemEval-2016 Task 6: Detecting Stance in Tweets</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kiritchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Parinaz Sobhani, Xiaodan Zhu, and Colin Cherry</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Stelios Piperidis. 2012. The META-SHARE Language Resources Sharing Infrastructure: Principles, Challenges, Solutions</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zornitsa</forename><surname>Kozareva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Theresa</forename><surname>Wilson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Conference on Language Resources and Evaluation</title>
+				<meeting>the 8th International Conference on Language Resources and Evaluation<address><addrLine>Atlanta, Georgia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the 7th International Workshop on Semantic Evaluation</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Harris Papageorgiou, Ion Androutsopoulos, and Suresh Manandhar</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Pontiki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dimitrios</forename><surname>Galanis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Pavlopoulos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014 Task 4: Aspect Based Sentiment Analysis</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">SemEval-2015 Task 12: Aspect Based Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Pontiki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dimitrios</forename><surname>Galanis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Harris</forename><surname>Papageorgiou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+	<note>Suresh Manandhar, and Ion Androutsopoulos</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Eswc&apos;14 challenge on concept-level sentiment analysis</title>
+		<author>
+			<persName><forename type="first">Diego</forename><surname>Reforgiato Recupero</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erik</forename><surname>Cambria</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Semantic Web Evaluation Challenge -SemWe-bEval</title>
+				<meeting><address><addrLine>Anissaras, Crete, Greece</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="3" to="20" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">SemEval-2014 Task 4: Sentiment Analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">SemEval-2015 Task 10: Sentiment Analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">IG-GSA Shared Tasks on German Sentiment Analysis (GESTALT)</title>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Ruppenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roman</forename><surname>Klinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><forename type="middle">Maria</forename><surname>Struß</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Sonntag</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Wiegand</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Workshop Proceedings of the 12th Edition of the KONVENS Conference</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="164" to="173" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Overview of Opinion Analysis Pilot Task at NTCIR-6</title>
+		<author>
+			<persName><forename type="first">Yohei</forename><surname>Seki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><forename type="middle">Kirk</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lun-Wei</forename><surname>Ku</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hsin-Hsi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noriko</forename><surname>Kando</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chin-Yew</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th NTCIR Workshop</title>
+				<meeting>the 6th NTCIR Workshop<address><addrLine>Tokyo, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Overview of Multilingual Opinion Analysis Task at NTCIR-7</title>
+		<author>
+			<persName><forename type="first">Yohei</forename><surname>Seki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><forename type="middle">Kirk</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lun-Wei</forename><surname>Ku</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Le</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hsin-Hsi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noriko</forename><surname>Kando</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th NTCIR Workshop</title>
+				<meeting>the 7th NTCIR Workshop<address><addrLine>Tokyo, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">Overview of Multilingual Opinion Analysis Task at NTCIR-8: A Step Toward Cross</title>
+		<author>
+			<persName><forename type="first">Yohei</forename><surname>Seki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lun-Wei</forename><surname>Ku</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Le</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hsin-Hsi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noriko</forename><surname>Kando</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Lingual Opinion Analysis</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th NTCIR Workshop</title>
+				<meeting>the 8th NTCIR Workshop<address><addrLine>Tokyo, Japan</addrLine></address></meeting>
+		<imprint>
+			<biblScope unit="page" from="209" to="220" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Recursive Deep Models for Semantic Compositionality Over a Sentiment Treebank</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Perelygin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Chuang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">Y</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Potts</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Empirical Methods in Natural Language Processing</title>
+				<meeting>Empirical Methods in Natural Language Processing<address><addrLine>Stroudsburg, PA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1631" to="1642" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">BRAT: A Web-based Tool for NLP-Assisted Text Annotation</title>
+		<author>
+			<persName><forename type="first">Pontus</forename><surname>Stenetorp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Topic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoko</forename><surname>Ohta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sophia</forename><surname>Ananiadou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the European Chapter</title>
+				<meeting>the European Chapter</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="102" to="107" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<author>
+			<persName><forename type="first">Ezgi</forename><surname>Yıldırım</surname></persName>
+		</author>
+		<title level="m">Fatih Samet Çetin, Gülşen Eryiğit, and Tanel Temel. 2015. The impact of nlp on turkish sentiment analysis. TÜRKİYE BİLİŞİM VAKFI BİLGİSAYAR BİLİMLERİ ve MÜHENDİSLİĞİ DERGİSİ</title>
+				<imprint>
+			<biblScope unit="volume">7</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">What Motivates Consumers to Write Online Travel Reviews?</title>
+		<author>
+			<persName><forename type="first">Kyung</forename><forename type="middle">Hyan</forename><surname>Yoo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ulrike</forename><surname>Gretzel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. of IT &amp; Tourism</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="283" to="295" />
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Creating a Fine-Grained Corpus for Chinese Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Yanyan</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Intelligent Systems</title>
+		<imprint>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="36" to="43" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

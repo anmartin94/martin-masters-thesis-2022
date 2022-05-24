@@ -1,0 +1,1161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">CoNLL 2016 Shared Task on Multilingual Shallow Discourse Parsing</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+							<email>xuen@brandeis.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Hwee</forename><forename type="middle">Tou</forename><surname>Ng</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Bonnie</forename><surname>Webber</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Hongmin</forename><surname>Wang</surname></persName>
+							<email>wanghm@comp.nus.edu.sg</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<address>
+									<addrLine>August 7-12</addrLine>
+									<postCode>2016</postCode>
+									<settlement>Berlin</settlement>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">Brandeis University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="institution">National University of Singapore</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff3">
+								<orgName type="institution">University of Edinburgh</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff4">
+								<orgName type="institution">National University of Singapore</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">CoNLL 2016 Shared Task on Multilingual Shallow Discourse Parsing</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The CoNLL-2016 Shared Task is the second edition of the CoNLL-2015 Shared Task, now on Multilingual Shallow discourse parsing. Similar to the 2015 task, the goal of the shared task</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>is to identify individual discourse relations that are present in natural language text. Given a natural language text, participating teams are asked to locate the discourse connectives (explicit or implicit) and their arguments as well as predicting the sense of the discourse connectives. Based on the success of the previous year, we continued to ask participants to deploy their systems on TIRA, a web-based platform on which participants can run their systems on the test data for evaluation. This evaluation methodology preserves the integrity of the shared task. We have also made a few changes and additions in the 2016 shared task based on the feedback from 2015. The first is that teams could choose to carry out the task on Chinese texts, or English texts, or both. We have also allowed participants to focus on parts of the shared task (rather than the whole thing) as a typical system requires sub-stantial investment of effort. Finally, we have modified the scorer so that it can report results based on partial matches of the arguments. 23 teams participated in this year's shared task, using a wide variety of approaches. In this overview paper, we present the task definition, the training and test sets, and the evaluation protocol and metric used during this shared task. We also summarize the different approaches adopted by the participating teams, and present the evaluation results. The evaluation data sets and the scorer will serve as a benchmark for future research on shallow discourse parsing.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The shared task for the Twentieth Conference on Computational Natural Language Learning <ref type="bibr">(CoNLL-2016</ref>) is a follow-on to the CoNLL-2015 shared task, and it is on Multilingual Shallow Discourse Parsing <ref type="bibr">(SDP)</ref>. While the 2015 task focused on newswire text data in English, this year we added a new language, Chinese. Given a natural language text as input, the goal of an SDP system is to detect and categorize discourse relations between discourse segments in the text. The conceptual framework of the Shallow Discourse Parsing task is that of the Penn Discourse TreeBank (PDTB) <ref type="bibr" target="#b27">(Prasad et al., 2008;</ref><ref type="bibr" target="#b28">Prasad et al., 2014)</ref>, where a discourse relation is viewed as a predicate that takes two abstract objects as arguments. The two arguments may be realized as clauses or sentences, or occasionally phrases. It is "shallow" in that sense that the system is not required to output a tree or graph that covers the entire text, and the discourse relations are not hierarchically organized. As such, it differs from analyses according to either Rhetorical Structure <ref type="bibr" target="#b18">(Mann and Thompson, 1988)</ref> or Segmented Discourse Representation Theory (SDRT) <ref type="bibr" target="#b0">(Asher and Lascarides, 2003)</ref>.</p><p>The rest of this overview paper is structured as follows. In Section 2, we provide a concise definition of the shared task. We describe how the training and test data are prepared in Section 3. In Section 4, we present the evaluation protocol, metric and scorer. The different approaches that participants took in the shared task are summarized in Section 5. In Section 6, we present the ranking of participating systems and analyze the evaluation results. We present our conclusions in Section 7.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Definition</head><p>The goal of the shared task on shallow discourse parsing is to detect and categorize individual discourse relations. Specifically, given a newswire article as input, a participating system is asked to return the set of discourse relations it can identify in the text. A discourse relation is defined as a relation taking two abstract objects (events, states, facts, or propositions) as arguments <ref type="bibr" target="#b27">(Prasad et al., 2008;</ref><ref type="bibr" target="#b28">Prasad et al., 2014)</ref>. Discourse relations may be expressed with explicit connectives like because, however, but, or implicitly inferred between two argument spans interpretable as abstract objects. In the current version of the PDTB, only adjacent spans are considered. Each discourse relation is labeled with a sense selected from a sense hierarchy. Its argument spans may be sentences, clauses, or in some rare cases, noun phrases. To detect a discourse relation, a participating system needs to:</p><p>1. Identify the text span of an explicit discourse connective, if present, or the po-sition between adjacent sentences as the proxy site of an implicit discourse relation; 2. Identify the two text spans that serve as arguments to the relation; 3. Label the arguments as Arg1 or Arg2, as appropriate; 4. Predict the sense of the discourse relation (e.g., "Cause", "Condition", "Contrast").</p><p>A full system that outputs all four components of the discourse relations usually comprises a long pipeline, and it is hard for teams that do not have a pre-existing system to put together a competitive full system. This year we therefore allowed participants to focus solely on predicting the sense of discourse relations, given gold-standard connectives and their arguments.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Training and Development</head><p>The training and development sets for English remain exactly the same as those used in the CoNLL-2015 shared task. Details regarding how the data was adapted from the Penn Discourse TreeBank 2.0 (PDTB 2.0) are provided in the overview paper of the CoNLL 2015 shared task . The Chinese training and development sets are taken from the Chinese Discourse Tree-Bank (CDTB) 0.5 <ref type="bibr" target="#b40">(Zhou and Xue, 2012;</ref><ref type="bibr" target="#b41">Zhou and Xue, 2015)</ref>, available from the LDC (http://ldc.upenn.edu), supplemented with additional annotated data from the Chinese TreeBank <ref type="bibr" target="#b38">(Xue et al., 2005)</ref>.</p><p>The CDTB adopts the general annotation strategy of the PDTB, associating discourse relations with explicit or implicit discourse connectives and the two spans that serve as their arguments. In the case of explicit discourse relations (Example 1), there is an overt discourse connective, which may be realized syntactically as a subordinating or coordinating conjunction, or a discourse adverbial. Implicit discourse relations are cases where there is not an overt discourse connective (Example 2). Like PDTB, CDTB also annotates Alternative Lexicalizations (AltLex) and Entity Relations (EntRel) when no explicit or implicit discourse relations can be identified.</p><p>(</p><formula xml:id="formula_0">1) [Conn 尽管 even though ] [Arg1 亚洲 Asia 一些 some 国家 country 的 DE 金融 financial 动荡 turmoil 会 will 使 make 这些 these 国家 country 的 DE 经济 economy 增长 growth 受到 experience 严重 serious 影响 impact ] ， , [Conn 但 but ] [Arg2 就 to 整 whole 个 CL 世界 world 经济 economy 而 言 ， , 其他 other 国家 country 的 DE 强劲 strong 增长 growth 势头 momentum 会 will 弥补 compensate 这 this 一 one 损失 loss ] 。</formula><p>.</p><p>"Even though the financial turmoil in some Asian countries will affect the economic growth of these countries, as far as the economy of the whole world is concerned, the strong economic growth of other countries will make up for this loss." The CDTB also differs somewhat in its annotation practices. The first difference is in the way that implicit discourse relations are identified. PDTB uses sentence-final punctuation (periods, question or exclamation marks) to identify where implicit discourse relations might occur. However, since the concept of "sentence" is less formalized in Chinese, and since a comma may serve as a sentence-final marker (as well as sentence-internal punctuation), CDTB identifies implicit relations by examining commas in addition to periods, question and exclamation marks, and disambiguating them to identify those serving as sentencefinal markers. Teams that exploited these language-specific characteristics did well on the Chinese task (Section 6). Table <ref type="table" target="#tab_2">1</ref> shows that the distribution of explicit and implicit discourse relations also differs between Chinese and English: while there are about equal numbers of explicit and discourse relations in English, implicit discourse relations outnumber explicit discourse relations in Chinese. The second difference in annotation practices is how the arguments are labeled. In the PDTB, the argument that is introduced by a discourse connective (e.g., a subordinate conjunction) is labeled Arg1 while the other argument is labeled Arg2. Since there are much fewer explicit discourse relations than implicit discourse relations, the argument labels are defined "semantically", meaning they are defined based on how arguments are interpreted. For example, for a Causation relation, Arg1 is the cause while Arg2 is the result. Since arguments are defined semantically, there is less of a need to have Level-3 subtypes as in the PDTB. For example, Contingency:Cause:Reason and Contingency:Cause:Result are essentially the same relation, just with the arguments reversed. For this reason, CDTB adopts a flat set of 10 relations (Table <ref type="table" target="#tab_5">2</ref>), which are used in this shared task without any modification.</p><p>The above discussion shows that PDTBstyle discourse relations are substantially, but not fully language-independent due to different lexicalizations (e.g., explicit vs implicit discourse connectives) and grammaticalizations (the formalization of the concept of sentence). As we shall see in Section 5 where we discuss different approaches, teams that exploited these language-specific properties did well on the Chinese task. For example, the way in which implicit discourse relations are annotated impacts how the arguments for implicit discourse relations are identified. In addition, because the smaller number of explicit discourse relations, it makes less sense to train separate models for explicit relations alone because many of the discourse connectives in the training data will not repeat in the test data. In addition, the senses of discourse relations are less evenly distributed in Chinese than in English. For example, "Conjunction" is a very common category, presumably because without explicit discourse connectives, a discourse relation is harder to judge, leading annotators  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Test Data</head><p>We provide two test sets for each language: a test set from a publicly available annotated corpus, and a blind test set specifically prepared for this task. The official ranking of the systems is based on their performance on the blind test set. We reused the English test sets from the 2015 shared task, details of which can be found in . For Chinese, one test set is from the CDTB, and uses the same data source as the training data. The blind test set is from Chinese Wikinews.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.1">Data Selection and Post-processing</head><p>For the blind test data, 29,892 words of Chinese newswire texts were selected from a dump of Chinese Wikinews 1 created on 23rd October 2015, and annotated in accordance with the CDTB-0.5 annotation guidelines. The raw Wikinews data was pre-processed as follows:</p><p>• News articles were extracted from the Wikinews XML dump 2 using the publicly available WikiExtractor.py script. 3</p><p>• Additional processing was done to remove any remaining XML annotations and produce a raw text version of each article (including its title and date).</p><p>• Articles written purely in simplified Chinese were identified using the Dragon Mapper 4 Python library, and segmented using the NUS Chinese word segmenter <ref type="bibr" target="#b17">(Low et al., 2005)</ref>. • Sentences in each article were manually segmented such that adjacent sentences were separated by a carriage return, and one extra carriage return was added between two paragraphs to ease paragraph boundary identification. • Each article was named according to its unique Wikinews ID, accessible online at http://zh.wikinews.org/wiki? curid=ID.</p><p>Since longer articles with many multisentence paragraphs are more consistent with the CDTB-0.5 texts, 64 articles were randomly selected among the articles with more than 400 characters. Word segmentation errors and some typos were manually corrected.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.2">Annotations</head><p>The blind test set was annotated by two of the shared task organizers, one of whom (seventh author) was the main annotator (MA) while the other (first author) acted as the reviewing annotator (RA), reviewing each relation annotated by the MA and recording agreement or disagreement. Annotation involved marking the relation type (Explicit, Implicit, AltLex), sense (alternative, causation, conditional, conjunction, contrast, expansion, purpose, temporal, EntRel, NoRel), and arguments (Arg1 and Arg2), using the PDTB annotation tool. <ref type="bibr">5</ref> Before commencing official annotation, the MA was trained in CDTB-0.5 style annotation by the RA. After a review of the guidelines, the MA annotated some CDTB texts that were already annotated, and then compared his annotations with the standard annotations. Some differences were discussed between the MA and the RA to further strengthen MA's knowledge of the guidelines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation</head><p>The scorer that computes all of the available evaluation metrics is open-source with some contribution from the participants during the task period 6 .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Main evaluation metric:</head><p>End-to-end discourse parsing  discourse relation basis for both languages.</p><formula xml:id="formula_2">A</formula><p>The input to an SDP consists of documents with gold-standard word tokens along with their automatic parses. We do not pre-identify discourse connectives or any other elements of the discourse annotation. The SDP must output a list of discourse relations comprising argument spans and their labels, explicit discourse connectives where applicable, and the senses. The F 1 score is computed based on the number of predicted relations that match a gold standard relation exactly. Like the 2015 edition of the task, a relation is correctly predicted if and only if the text spans of its two arguments are correctly predicted (Arg1 and Arg2), as is its sense. The results from this evaluation is shown in Table <ref type="table" target="#tab_11">5</ref>.</p><p>An argument is considered correctly identified if and only if it matches the corresponding gold standard argument span exactly, and is also correctly labeled (Arg1 or Arg2). In the main evaluation, partial matching is given no credit. Sense classification evaluation is less straightforward, since senses are sometimes annotated partially or annotated with two senses. To be considered correct, the predicted sense for a relation must match one of the two senses if there is more than one sense. If the gold standard is partially annotated, the sense must match with the partially annotated sense although the blind test set contains no partial annotation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Supplementary Evaluation: Discourse relation sense classification</head><p>Although the submissions are ranked based on the end-to-end F 1 score, discourse relation sense classification subtask has gained much attention from the community within the past years including some participants from last year. We provide the data and evaluation setup for participants who are only interested in the discourse relation sense classification subtask and for those who want to evaluate their system without the error propagation from argument extraction.</p><p>In this supplementary evaluation, the input is gold-standard argument pairs and their corresponding explicit discourse connectives if applicable. The goal is to fill in the senses including EntRel. The results from this evaluation are shown in <ref type="table" target="#tab_15">Table 9</ref> </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Component-wise and partial evaluation</head><p>For analytical purposes, the scorer also provides component-wise evaluation with error propagation and a breakdown of the discourse parser performance for explicit and non-explicit discourse relations. The scorer computes the precision, recall, and F 1 for the following tasks:</p><p>• Explicit discourse connective identification.</p><p>• Arg1 identification.</p><p>• Arg2 identification.</p><p>• Arg1 and Arg2 identification.</p><p>• Sense classification with error propagation from discourse connective and argument identification.</p><p>For purposes of evaluation, an explicit discourse connective predicted by a parser is considered correct if and only if the predicted raw connective includes the gold raw connective head, while allowing for the tokens of the predicted connective to be a subset of the tokens in the gold raw connective. We provide a function that maps discourse connectives to their corresponding heads. The notion of discourse connective head is not the same as its syntactic head. Rather, it is thought of as the part of the connective conveying its core meaning. For example, the head of the discourse connective "At least not when" is "when", and the head of "five minutes before" is "before". The non-head part of the connective serves to semantically restrict the interpretation of the connective.</p><p>Although Implicit discourse relations are annotated with an implicit connective inserted between adjacent sentences, participants are not required to provide the inserted connective. They only need to output the sense of the discourse relation. Similarly, for AltLex relations, which are also annotated between adjacent sentences, participants are not required to output the text span of the AltLex expression, but only the sense. The EntRel relation is included as a sense in the shared task, and here, systems are required to correctly label the EntRel relation between adjacent sentence pairs.</p><p>We also provide partial evaluation to assess how well a system does when we relax the criteria. The official full evaluation metric produces low scores due to error propagation from argument extraction. Partial evaluation instead allows 'fuzzy matching' in arguments. The extracted Arg1 and Arg2 are correct if and only if the average of F 1 score of the extracted Arg1 and Arg2 is greater than 0.7. This allows us to evaluate the sense classification of that relation even if the argument extraction is not perfect. The evaluation is also done for both explicit and non-explicit relations separately (Table <ref type="table" target="#tab_14">8</ref>) and together (Table <ref type="table" target="#tab_12">6</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Closed and open tracks</head><p>In keeping with the CoNLL shared task tradition, participating systems were evaluated in two tracks, a closed track and an open track. A participating system in the closed track could only use the provided PDTB training set but was allowed to process the data using any publicly available (i.e., non-proprietary) natural language processing tools such as syntactic parsers and semantic role labelers. In contrast, in the open track, a participating system could not only use any publicly available NLP tools to process the data, but also any publicly available (i.e., non-proprietary) data for training. A participating team could choose to participate in the closed track or the open track, or both.</p><p>The motivation for having two tracks in CoNLL shared tasks was to isolate the contribution of algorithms and resources to a particular task. In the closed track, the resources are held constant so that the advantages of different algorithms and models can be more meaningfully compared. In the open track, the focus of the evaluation is on the overall performance and the use of all possible means to improve the performance of a task. This distinction was easier to maintain for early CoNLL tasks such as noun phrase chunking and named entity recognition, where competitive performance could be achieved without having to use resources other than the provided training set. However, this is no longer true for a high-level task like discourse parsing where external resources such as Brown clusters have proved to be useful <ref type="bibr" target="#b30">(Rutherford and Xue, 2014)</ref>. In addition, to be competitive in the discourse parsing task, one also has to process the data with syntactic and possibly semantic parsers, which may also be trained on data that is outside the training set. As a compromise, therefore, we allowed participants in the closed track to use the following linguistic resources, in addition to the training set:</p><p>For English,</p><p>• Brown clusters</p><formula xml:id="formula_3">• VerbNet • Sentiment lexicon • Word embeddings (word2vec)</formula><p>For Chinese, the following resources are provided, both trained on Gigaword Simplified Chinese data:</p><p>• Brown clusters (implementation from <ref type="bibr" target="#b15">(Liang, 2005</ref>)) • Word embeddings (word2vec)</p><p>To make the task more manageable for participants, we provided them with training and test data with the following layers of automatic linguistic annotation produced using state-of-the-art NLP tools:</p><p>For English,</p><p>• Phrase structure parses predicted using the Berkeley parser <ref type="bibr" target="#b24">(Petrov and Klein, 2007</ref>); • Dependency parses converted from phrase structure parses using the Stanford converter <ref type="bibr" target="#b19">(Manning et al., 2014)</ref>.</p><p>For Chinese,</p><p>• Phrase structure parses predicted with 10-fold cross validation on CTB8.0 using the transition-based Chinese parser <ref type="bibr" target="#b36">(Wang and Xue, 2014</ref>); • Dependency parses converted from phrase structure parses using the Penn2Malt converter.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.5">Evaluation Platform: TIRA</head><p>We use a new web service called TIRA as the platform for system evaluation <ref type="bibr" target="#b4">(Gollub et al., 2012;</ref><ref type="bibr" target="#b26">Potthast et al., 2014)</ref>. Traditionally, participating teams have been asked to manually run their system on the blind test set without the gold standard labels, and submit the output for evaluation. Starting with the 2015 shared task, however, we shifted this evaluation paradigm, asking participants to deploy their systems on a remote virtual machine, and to use the TIRA web platform (tira.io) to run their systems on the test sets without actually seeing them. The organizers would then inspect the evaluation results, and verify that participating systems yielded acceptable output. This evaluation protocol allowed us to maintain the integrity of the blind test set and reduce the organizational overhead. On TIRA, the blind test set can only be accessed in the evaluation environment, and the evaluation results are automatically collected. Participants cannot see any part of the test sets and hence cannot do iterative development based on the test set performance, which preserves the integrity of the evaluation. Most importantly, this evaluation platform promotes replicability, which is crucial for proper evaluation of scientific progress. Reproducing all of the results is just a matter of a button click on TIRA. All of the results presented in this paper, along with the trained models and the software, are archived and available for distribution upon request to the organizers and upon the permission of the participating team, who holds the copyrights to the software. Replicability also helps speed up the research and development in discourse parsing. Anyone wanting to extend or apply any of the approaches proposed by a shared task participant does not have to re-implement the model from scratch. They can request a clone of the virtual machine where the participating system is deployed, and then implement their extension based off the original source code. Any extension effort also benefits from the precise evaluation of the progress and improvement since the system is based off the exact same implementation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Approaches</head><p>Teams could participate in either English or Chinese or both, and either submit an end-toend system or just compete in the discourse relation sense prediction component. All endto-end systems for English adopted some variation of the pipeline architecture proposed by <ref type="bibr" target="#b16">Lin et al (2014)</ref> and perfected by <ref type="bibr" target="#b34">Wang and Lan (2015)</ref>, which has components for identifying discourse connectives and extracting their arguments, for determining the presence or absence of discourse relations in a particular context, and for predicting the senses of the discourse relations. Here we briefly summarize the approaches used in each subtask.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Connective identification</head><p>The identification of discourse connectives is not a simple dictionary lookup as some discourse connective expressions are ambiguous and may function as discourse connectives in some context but not in others. Several approaches to this  subtask are represented in this competition.</p><p>One is to collect all candidate discourse connective by looking up a list of possible connectives compiled from the training data and train a classifier to disambiguate them. There are two variants in this approach: one strategy is to train a classifier for each individual discourse connective expression <ref type="bibr" target="#b22">(Oepen et al., 2016)</ref>, and the other is to train one classifier for all discourse connective expressions <ref type="bibr" target="#b35">(Wang and Lan, 2016;</ref><ref type="bibr" target="#b10">Kong et al., 2015;</ref><ref type="bibr" target="#b12">Laali et al., 2016)</ref>. Alternatively, connective identification is treated as a token-level sequence labeling task, solved with sequence labeling models like CRF .   <ref type="bibr" target="#b22">(Oepen et al., 2016;</ref><ref type="bibr" target="#b12">Laali et al., 2016;</ref><ref type="bibr" target="#b2">Chandrasekar et al., 2016)</ref>. The extraction of the arguments for explicit discourse relations is more involved as their distribution is more diverse. The two arguments of an explicit discourse relations can be in either the same or different sentence. Identifying the argument spans of explicit discourse relations thus resembles finding the text span for discourse connectives, and there are two general approaches. One is to treat it a sequence labeling task and solve it with sequence labeling models like CRF <ref type="bibr" target="#b3">(Fan et al., 2016;</ref>, and the other is to identify candidate argument spans and train a binary classifier to determine if the candidate argument span is a true (fragment of) argument span. The difference is that the arguments are typically clauses or sentences while discourse connectives are typically single words (e.g., "as") or multi-word expressions (e.g.,"as long as"). Candidate arguments are typically identified with the help of syntactic parse trees rather than dictionaries <ref type="bibr" target="#b22">(Oepen et al., 2016;</ref><ref type="bibr" target="#b35">Wang and Lan, 2016;</ref><ref type="bibr" target="#b11">Kong et al., 2016)</ref>. The argument spans do not align perfectly with constituents in a tree, and participating systems have adopted two strategies to cope with this. One is to first identify pieces of an argument and compose them <ref type="bibr" target="#b35">(Wang and Lan, 2016;</ref><ref type="bibr" target="#b11">Kong et al., 2016)</ref>, and the other is to identify whole arguments but then edit them based on linguistically motivated heuristics <ref type="bibr" target="#b22">(Oepen et al., 2016)</ref> or the prediction of classifiers <ref type="bibr" target="#b12">(Laali et al., 2016)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Argument extraction</head><p>Relation sense classification All systems have separate classifiers for explicit and implicit discourse connectives. For explicit relations, the discourse connective itself is the best predictor of the discourse relation. Many discourse connectives are unambiguous, always mapping to one discourse relation sense. For ambiguous discourse connectives, discourse relation sense classification amounts to word sense disambiguation. For explicit discourse relation senses, participants have generally adopted "conventional" machine learning techniques such as SVM and MaxEnt models that rely on manually designed features. Explicit discourse relation senses can be predicted with high accuracy. The main challenge is predicting implicit discourse relation senses, which has received a considerable amount of attention in recent years <ref type="bibr" target="#b25">(Pitler et al., 2009;</ref><ref type="bibr" target="#b1">Biran and McKeown, 2013;</ref><ref type="bibr" target="#b30">Rutherford and Xue, 2014)</ref>. Determining implicit discourse relation senses relies on information from the two arguments of the relation. For this subtask, there is a good balance between "conventional" machine learning techniques such as Support Vector Machines and Maximum Entropy models that rely heavily on handcrafted features, and neural network based approaches. A wide variety of features have been used for this subtask, and they include features extracted from syntactic parses <ref type="bibr" target="#b7">(Kang et al., 2016;</ref><ref type="bibr" target="#b11">Kong et al., 2016;</ref><ref type="bibr" target="#b5">Jain and Majumder, 2016;</ref><ref type="bibr" target="#b35">Wang and Lan, 2016;</ref><ref type="bibr" target="#b3">Fan et al., 2016)</ref>, Brown clusters <ref type="bibr" target="#b11">(Kong et al., 2016;</ref><ref type="bibr" target="#b22">Oepen et al., 2016;</ref><ref type="bibr" target="#b12">Laali et al., 2016;</ref><ref type="bibr" target="#b2">Chandrasekar et al., 2016;</ref><ref type="bibr" target="#b23">Pacheco et al., 2016)</ref>, VerbNet classes <ref type="bibr" target="#b8">Kaur et al., 2016)</ref>, and the MPQA lexicon <ref type="bibr" target="#b8">Kaur et al., 2016)</ref>. However, features extracted from the two arguments for "conventional" machine learning methods are generally weak predictors of relation sense. Neural network based learning methods that are capable of learning representations for classification purposes seem to be particularly appealing in this learning scenario and many teams trained neural network models for the subtask of predicting the sense of implicit discourse relations. A variety of neural network architectures are represented. <ref type="bibr" target="#b32">(Schenk et al., 2016</ref>) used a feedforward neural network, with dependency structures used to re-weight the word embeddings used as input to the network. <ref type="bibr" target="#b35">(Wang and Lan, 2016;</ref><ref type="bibr" target="#b29">Qin et al., 2016)</ref> achieved competitive performance using a Convolutional Neural Network architecture for this subtask. Finally, <ref type="bibr" target="#b37">(Weiss and Bajec, 2016)</ref> produced competitive results with a focused RNN. Word embeddings were typically used as input to the neural network models and different pooling methods have been used to derive the vectors for arguments. <ref type="bibr" target="#b31">Rutherford and Xue (2016)</ref> used simple summation pooling in a feedforward network and achieved competitive performance in classifying implicit discourse relation senses.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Language (in-)dependence of the task</head><p>To achieve competitive results, teams that participated in the Chinese task made significant changes to their systems, based on the linguistic characteristic and style of annotation for the Chinese data <ref type="bibr" target="#b7">(Kang et al., 2016;</ref><ref type="bibr" target="#b35">Wang and Lan, 2016)</ref>. The majority of Chinese discourse connectives are paired or discontinuous. When identifying discourse connectives, a system has to allow the possibility that different parts of the same connective may be separated from each other. The ECNU team devised a strategy that allowed their system to identify candidate discourse connectives that are discontinuous <ref type="bibr" target="#b35">(Wang and Lan, 2016)</ref>. Also, because different parts of a paired connective are text-bound to different arguments, it is no longer possible to follow the PDTB practice of labelling an argument based on whether it is bound to a connective or not (i.e, Arg2 is argument bound to the con-nective, while Arg1 is the other argument). As a result, the argument labels in the CDTB are defined semantically. The CAS team made labeling the argument a separate task from identifying the text spans of the argument <ref type="bibr" target="#b7">(Kang et al., 2016)</ref>, and <ref type="bibr" target="#b35">(Wang and Lan, 2016)</ref> use a combination of classifiers and rules to determine the argument labels. Finally, because implicit discourse relations in Chinese text are not restricted to adjacent sentences with unambiguous punctuation marks, competitive Chinese systems realized the importance of disambiguating mid-sentence punctuation marks as anchors for identifying the argument spans <ref type="bibr" target="#b7">(Kang et al., 2016;</ref><ref type="bibr" target="#b35">Wang and Lan, 2016)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Results</head><p>We provide no separate rankings for the closed track and open track, even though there are a few teams that used external resources. Also, no overall ranking is provided based on both English and Chinese, due to imbalanced participation.</p><p>Table <ref type="table" target="#tab_11">5</ref> shows the performance of end-toend systems based on the strict match of argument spans. We present results on three data sets for each language. For English the three data sets are (1) the blind test set (official); (2) the standard WSJ test set; and (3) the standard WSJ development set. The three data for Chinese are (1) the blind test set;</p><p>(2) the CDTB test set; and (3) the CDTB development set. The official rankings are based on the blind test sets annotated specifically for this shared task. The three data sets for English are exactly the same as those we used for the 2015 shared task  so we can measure progress from year to year. The top-ranked submission for English is by the Olso-Potsdam-Teesside team, and their overall score based on strict match is 27.77% F1 score, which represents an improvement of 3.77% over last year's winning system submitted by the East China Normal University (ECNU) <ref type="bibr" target="#b34">(Wang and Lan, 2015)</ref>. Four other teams also beat the score of last year's winning system. There is considerable fluctuation in the rankings across the three data sets, with the ECNU system receiving the highest score on both the WSJ development and test sets.</p><p>The top ranked Chinese system was submitted by the Institute of Automation, Chinese Academy of Sciences, although the difference between the top two teams is only 0.3%. However, the rankings are very stable across data sets. Since there are many more teams that participated in the English task than the Chinese task, we decided not to provide an overall ranking based on the results of both languages. (In such a putative ranking, the ECNU system would be ranked top.)</p><p>Table <ref type="table" target="#tab_12">6</ref> provides the ranking based on partial match of argument spans. The ranking remains largely unchanged when the scorer setting is changed from strict match to partial match for English. For the Chinese evaluation, the ranking is also to a large extent consistent with that based on strict match. For both English, the overall parser scores based on F1 score are considerably higher when the scorer shifts from a strict match setting to a partial match setting, indicating that error propagation is a serious issue when there is a long pipeline. Tables <ref type="table" target="#tab_13">7 and 8</ref> present the accuracy of individual components for explicit and implicit discourse relations based on strict and partial match respectively. For English, the parser accuracy for explicit discourse relations is generally higher than that for implicit discourse relations, although the argument span extraction accuracy is higher for implicit discourse relations than for explicit discourse relations.</p><p>The overall parser accuracy for implicit relations is dragged down by the lower accuracy in predicting discourse relation sense, as is shown is Table <ref type="table" target="#tab_15">9</ref>, which compares the accuracy of classifying explicit and implicit discourse relation sense. This pattern does not consistently hold for results on Chinese across the three data sets. On the blind test set, the parser accuracy for some of the teams is actually higher for implicit discourse relations than for explicit discourse relations. Our hypothesis is that this is caused by the fact that there are much more instances for implicit discourse relations than explicit discourse relations. In this situation, the difference in discourse relation sense accuracy between explicit and implicit discourse relations is much smaller in Chinese than in English, an observation that is largely born      the training and development data to participating teams. We are also very grateful to the TIRA team, who provided their evaluation platform, and especially to Martin Potthast for his technical assistance in using the TIRA platform and countless hours of troubleshooting.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1</head><label>1</label><figDesc></figDesc><table><row><cell>: The distribution of discourse relation</cell></row><row><cell>types in the Chinese data</cell></row><row><cell>to use "Conjunction" as a default category.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>statements, co-occurrence of which seems contradictory, counter-intuitive, out-of-ordinary, etc. Expansion Relation in which one argument is an elaboration or restatement of another PurposeRelation between an action and the intention behind it Temporal Relation that is temporal in nature, expressing temporal precedence, etc. Progression Relation in which one argument represents a progression from the other, in extent, intensity, scale, etc. EntRel Relation between two statements that are connected only by the fact that they are about the same entity or entities.</figDesc><table><row><cell>Sense</cell><cell>Definition</cell></row><row><cell>Alternative</cell><cell>Relation between two alternatives</cell></row><row><cell>Causation</cell><cell>Relation between cause and effect</cell></row><row><cell>Condition</cell><cell>Relation between a supposed condition and a supposed result</cell></row><row><cell>Conjunction</cell><cell>Relation between two equal-status statements serving a common communicative function</cell></row><row><cell>Contrast</cell><cell>Relation between two</cell></row><row><cell></cell><cell>shallow discourse parser (SDP) is evaluated</cell></row><row><cell></cell><cell>based on the end-to-end F 1 score on a per-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 2 :</head><label>2</label><figDesc>Definitions of relation senses in the Chinese data.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Approaches of participating systems (Part I). Teams that have not submitted a system description paper are marked with * .</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 4 :</head><label>4</label><figDesc>Approaches of participating systems (Part II). Teams that have not submitted a system description paper are marked with * .</figDesc><table><row><cell>an implicit discourse relation. It is possi-</cell></row><row><cell>ble that no discourse relation exists, but such</cell></row><row><cell>cases are rare and most systems choose to ig-</cell></row><row><cell>nore such a possibility</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 5 :</head><label>5</label><figDesc>Scoreboard for the CoNLL-2016 shared task showing performance (strict scoring) across the subtasks and the three data partitions-blind test, standard test and development set for both English and Chinese. out in the results shown in Table9.</figDesc><table><row><cell>7 Conclusions</cell></row><row><cell>Twenty three teams from three continents</cell></row><row><cell>participated in the CoNLL-2016 Shared Task</cell></row><row><cell>on multilingual shallow discourse parsing.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 6 :</head><label>6</label><figDesc>Scoreboard for the CoNLL-2016 shared task showing performance (partial scoring) across the subtasks and the three data partitions-blind test, standard test and development set for both English and Chinese.</figDesc><table><row><cell>The shared task required the development of</cell><cell>reflecting the serious error propagation prob-</cell></row><row><cell>an end-to-end system, and the best system</cell><cell>lem in such a system. The shared task ex-</cell></row><row><cell>achieved an F1 score of 27.77% on the blind</cell><cell>posed the most challenging aspect of shallow</cell></row><row><cell>test set for English, and 26.90% for Chinese,</cell><cell>discourse parsing as a research problem, help-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 7 :</head><label>7</label><figDesc>F-score (strict scoring) of all subtasks separated by Explicit and Implicit discourse relations across the three data partitions-blind test, standard test and development set for both English and Chinese.ing future research better calibrate their efforts. The evaluation data sets and the scorer we prepared for the shared task will be a useful benchmark for future research on shallow discourse parsing.</figDesc><table><row><cell></cell><cell></cell><cell cols="4">Standard Xinhua Test</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Chinese</cell><cell>cip2016</cell><cell>64.80</cell><cell>64.80</cell><cell>73.74</cell><cell>63.47</cell><cell>49.87</cell><cell>74.15</cell><cell>75.46</cell><cell>73.39</cell></row><row><cell>Chinese</cell><cell>ecnucs</cell><cell>66.67</cell><cell>67.82</cell><cell>72.41</cell><cell>65.82</cell><cell>49.63</cell><cell>72.21</cell><cell>72.46</cell><cell>71.04</cell></row><row><cell>Chinese</cell><cell>li16b</cell><cell>63.44</cell><cell>65.59</cell><cell>65.59</cell><cell>61.90</cell><cell>50.46</cell><cell>71.11</cell><cell>73.46</cell><cell>69.79</cell></row><row><cell>Chinese</cell><cell>goethe</cell><cell>62.64</cell><cell>62.64</cell><cell>68.13</cell><cell>60.49</cell><cell>27.74</cell><cell>53.77</cell><cell>54.79</cell><cell>50.36</cell></row><row><cell>Chinese</cell><cell>nikko</cell><cell>35.14</cell><cell>40.54</cell><cell>39.19</cell><cell>33.33</cell><cell>3.84</cell><cell>18.61</cell><cell>11.82</cell><cell>7.77</cell></row><row><cell></cell><cell></cell><cell cols="4">Standard Xinhua Development</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Chinese</cell><cell>ecnucs</cell><cell>78.43</cell><cell>73.20</cell><cell>79.74</cell><cell>79.39</cell><cell>49.93</cell><cell>76.02</cell><cell>71.57</cell><cell>68.09</cell></row><row><cell>Chinese</cell><cell>cip2016</cell><cell>75.34</cell><cell>64.38</cell><cell>71.23</cell><cell>72.41</cell><cell>50.68</cell><cell>77.78</cell><cell>73.88</cell><cell>70.94</cell></row><row><cell>Chinese</cell><cell>li16b</cell><cell>65.33</cell><cell>56.00</cell><cell>74.67</cell><cell>62.90</cell><cell>49.41</cell><cell>75.96</cell><cell>72.61</cell><cell>68.77</cell></row><row><cell>Chinese</cell><cell>goethe</cell><cell>57.72</cell><cell>59.06</cell><cell>65.77</cell><cell>56.91</cell><cell>27.06</cell><cell>61.71</cell><cell>54.92</cell><cell>47.58</cell></row><row><cell>Chinese</cell><cell>nikko</cell><cell>29.41</cell><cell>33.82</cell><cell>39.71</cell><cell>26.98</cell><cell>6.97</cell><cell>23.45</cell><cell>14.58</cell><cell>6.30</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 8 :</head><label>8</label><figDesc>F-score (partial scoring) of all subtasks separated by Explicit and Implicitdiscourse relations across the three data partitions-blind test, standard test and development set for both English and Chinese.</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell cols="3">Standard Xinhua Test</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Chinese</cell><cell>BIT</cell><cell>37.00</cell><cell>36.92</cell><cell>36.96</cell><cell>94.74</cell><cell>93.75</cell><cell>94.24</cell><cell>21.73</cell><cell>21.73</cell><cell>21.73</cell></row><row><cell>Chinese</cell><cell>ecnucs</cell><cell>77.09</cell><cell>76.92</cell><cell>77.01</cell><cell>94.74</cell><cell>93.75</cell><cell>94.24</cell><cell>72.42</cell><cell>72.42</cell><cell>72.42</cell></row><row><cell>Chinese</cell><cell>goethe</cell><cell>77.09</cell><cell>76.92</cell><cell>77.01</cell><cell>96.84</cell><cell>95.83</cell><cell>96.34</cell><cell>71.87</cell><cell>71.87</cell><cell>71.87</cell></row><row><cell>Chinese</cell><cell>gw0</cell><cell>70.11</cell><cell>70.11</cell><cell>70.11</cell><cell>92.71</cell><cell>92.71</cell><cell>92.71</cell><cell>64.07</cell><cell>64.07</cell><cell>64.07</cell></row><row><cell>Chinese</cell><cell>gw0</cell><cell>50.77</cell><cell>50.77</cell><cell>50.77</cell><cell>3.13</cell><cell>3.13</cell><cell>3.13</cell><cell>63.51</cell><cell>63.51</cell><cell>63.51</cell></row><row><cell>Chinese</cell><cell>tao0920</cell><cell>72.91</cell><cell>72.75</cell><cell>72.83</cell><cell>93.68</cell><cell>92.71</cell><cell>93.19</cell><cell>67.41</cell><cell>67.41</cell><cell>67.41</cell></row><row><cell>Chinese</cell><cell>ttr</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>70.47</cell><cell>70.47</cell><cell>70.47</cell></row><row><cell></cell><cell></cell><cell cols="5">Standard Xinhua Development</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Chinese</cell><cell>BIT</cell><cell>36.03</cell><cell>36.03</cell><cell>36.03</cell><cell>92.21</cell><cell>92.21</cell><cell>92.21</cell><cell>21.90</cell><cell>21.90</cell><cell>21.90</cell></row><row><cell>Chinese</cell><cell>ecnucs</cell><cell>78.07</cell><cell>78.07</cell><cell>78.07</cell><cell>96.10</cell><cell>96.10</cell><cell>96.10</cell><cell>73.53</cell><cell>73.53</cell><cell>73.53</cell></row><row><cell>Chinese</cell><cell>goethe</cell><cell>75.72</cell><cell>75.72</cell><cell>75.72</cell><cell>96.10</cell><cell>96.10</cell><cell>96.10</cell><cell>70.59</cell><cell>70.59</cell><cell>70.59</cell></row><row><cell>Chinese</cell><cell>gw0</cell><cell>72.06</cell><cell>72.06</cell><cell>72.06</cell><cell>93.51</cell><cell>93.51</cell><cell>93.51</cell><cell>66.67</cell><cell>66.67</cell><cell>66.67</cell></row><row><cell>Chinese</cell><cell>gw0</cell><cell>68.15</cell><cell>68.15</cell><cell>68.15</cell><cell>94.81</cell><cell>94.81</cell><cell>94.81</cell><cell>61.44</cell><cell>61.44</cell><cell>61.44</cell></row><row><cell>Chinese</cell><cell>tao0920</cell><cell>76.76</cell><cell>76.76</cell><cell>76.76</cell><cell>97.40</cell><cell>97.40</cell><cell>97.40</cell><cell>71.57</cell><cell>71.57</cell><cell>71.57</cell></row><row><cell>Chinese</cell><cell>ttr</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>63.38</cell><cell>63.38</cell><cell>63.38</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 9 :</head><label>9</label><figDesc>Discourse relation sense classification evaluation results (Supplementary evaluation).All participants are given gold standard discourse connectives and argument pairs.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://zh.wikinews.org/ 2 https://dumps.wikimedia.org/zhwikinews/20151020/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">https://www.seas.upenn.edu/~pdtb/tools.shtml#annotator 6 http://www.github.com/attapol/conll16st.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We would like to thank the Penn Discourse TreeBank team and the Chinese Discourse TreeBank Team, for allowing us to use the PDTB corpus and the CDTB corpus for the shared task. Thanks also go the LDC (Linguistic Data Consortium), who helped distribute This work was partially supported by the National Science Foundation via Grant Nos. 0910532 and IIS-1421067 and by the Singapore Ministry of Education Academic Research Fund Tier 2 grant MOE2013-T2-1-150.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Language</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Participant</head><p>Explicit Implicit </p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Logics of conversation</title>
+		<author>
+			<persName><forename type="first">Nicholas</forename><surname>Asher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Lascarides</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2003" />
+			<publisher>Cambridge University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Aggregated word pair features for implicit discourse relation disambiguation</title>
+		<author>
+			<persName><forename type="first">Or</forename><surname>Biran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kathleen</forename><surname>Mckeown</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 51st Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 51st Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The virginia tech system at conll-2016 shared task on shallow discourse parsing</title>
+		<author>
+			<persName><forename type="first">Prashant</forename><surname>Chandrasekar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuan</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saurabh</forename><surname>Chakravarty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arijit</forename><surname>Ray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Krulick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alla</forename><surname>Rozovskaya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Finding arguments as sequence labeling in discourse parsing</title>
+		<author>
+			<persName><forename type="first">Ziwei</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhenghua</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Min</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Ousting Ivory Tower Research: Towards a Web Framework for Providing Experiments as a Service</title>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Gollub</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Burrows</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">35th International ACM Conference on Research and Development in Information Retrieval (SIGIR 12)</title>
+				<editor>
+			<persName><forename type="first">Bill</forename><surname>Hersh</surname></persName>
+			<persName><forename type="first">Jamie</forename><surname>Callan</surname></persName>
+			<persName><forename type="first">Yoelle</forename><surname>Maarek</surname></persName>
+			<persName><forename type="first">Mark</forename><surname>Sanderson</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2012-08" />
+			<biblScope unit="page" from="1125" to="1126" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Da-iict submission for pdtb-styled discourse parser</title>
+		<author>
+			<persName><forename type="first">Devanshu</forename><surname>Jain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prasenjit</forename><surname>Majumder</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Discourse relation sense classification systems for conll-2016 shared task</title>
+		<author>
+			<persName><forename type="first">Ping</forename><surname>Jian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaohan</forename><surname>She</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chenwei</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pengcheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Feng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">An endto-end chinese discourse parser with adaptation to explicit and non-explicit relation recognition</title>
+		<author>
+			<persName><forename type="first">Xiaomian</forename><surname>Kang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haoran</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Long</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiajun</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chengqing</forename><surname>Zong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Iit (bhu) submission on the conll-2016 shared task: Shallow discourse parsing using semantic lexicons</title>
+		<author>
+			<persName><forename type="first">Manpreet</forename><surname>Kaur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nishu</forename><surname>Kumari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anil</forename><forename type="middle">Kumar</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rajeev</forename><surname>Sangal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Discourse relation sense classification with two-step classifiers</title>
+		<author>
+			<persName><forename type="first">Yusuke</forename><surname>Kido</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Akiko</forename><surname>Aizawa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The SoNLP-DP system in the CoNLL-2015 shared task</title>
+		<author>
+			<persName><forename type="first">Fang</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sheng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guodong</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Nineteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Nineteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Sonlp-dp system for conll-2016 english shallow discourse parsing</title>
+		<author>
+			<persName><forename type="first">Fang</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sheng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junhui</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhua</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guodong</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Association for Computational Linguistics</title>
+		<author>
+			<persName><forename type="first">Majid</forename><surname>Laali</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andre</forename><surname>Cianflone</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leila</forename><surname>Kosseim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>The clac discourse parser at conll-2016</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Sonlp-dp system for conll-2016 chinese shallow discourse parsing</title>
+		<author>
+			<persName><forename type="first">Junhui</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fang</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sheng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhua</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guodong</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">A constituent syntactic parse tree based discourse parser</title>
+		<author>
+			<persName><forename type="first">Zhongyi</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hai</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chenxi</forename><surname>Pang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lili</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huan</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Semi-supervised learning for natural language</title>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+		<respStmt>
+			<orgName>Massachusetts Institute of Technology</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">A PDTB-styled end-to-end discourse parser</title>
+		<author>
+			<persName><forename type="first">Ziheng</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Min-Yen</forename><surname>Hwee Tou Ng</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="151" to="184" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">A maximum entropy approach to Chinese word segmentation</title>
+		<author>
+			<persName><forename type="first">Jin</forename><forename type="middle">Kiat</forename><surname>Low</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hwee Tou</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wenyuan</forename><surname>Guo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth SIGHAN Workshop on Chinese Language Processing</title>
+				<meeting>the Fourth SIGHAN Workshop on Chinese Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="161" to="164" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Rhetorical Structure Theory: Toward a functional theory of text organization</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>William</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><forename type="middle">A</forename><surname>Mann</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Thompson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Text</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="243" to="281" />
+			<date type="published" when="1988" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">The Stanford CoreNLP natural language processing toolkit</title>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Bauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jenny</forename><surname>Finkel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><forename type="middle">J</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mcclosky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 52nd Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Discourse relation sense classification using crossargument semantic similarity based on word embeddings</title>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Annette</forename><surname>Frank</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Sdp-jaist: A shallow discourse parsing system conll 2016 shared task</title>
+		<author>
+			<persName><forename type="first">Minh</forename><surname>Nguyen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Opt: Oslopotsdam-teesside. pipelining rules, rankers, and classifier ensembles for shallow discourse parsing</title>
+		<author>
+			<persName><forename type="first">Stephan</forename><surname>Oepen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathon</forename><surname>Read</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tatjana</forename><surname>Scheffler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Uladzimir</forename><surname>Sidarenka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manfred</forename><surname>Stede</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Velldal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lilja</forename><surname>Ovrelid</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Adapting event embedding for implicit discourse relation recognition</title>
+		<author>
+			<persName><forename type="first">Maria</forename><forename type="middle">Leonor</forename><surname>Pacheco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I-Ta Lee</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiao</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdullah</forename><surname>Khan Zehady</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pranjal</forename><surname>Daga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Di</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ayush</forename><surname>Parolia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Goldwasser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Improved inferencing for unlexicalized parsing</title>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Klein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Human Language Technology/North American Chapter of the Association for Computational Linguistics</title>
+				<meeting>the Human Language Technology/North American Chapter of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Automatic sense prediction for implicit discourse relations in text</title>
+		<author>
+			<persName><forename type="first">Emily</forename><surname>Pitler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Annie</forename><surname>Louis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ani</forename><surname>Nenkova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Joint Conference of the 47th Annual Meeting of the ACL and the 4th International Joint Conference on Natural Language Processing of the AFNLP</title>
+				<meeting>the Joint Conference of the 47th Annual Meeting of the ACL and the 4th International Joint Conference on Natural Language Processing of the AFNLP</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Improving the Reproducibility of PAN&apos;s Shared Tasks: Plagiarism Detection, Author Identification, and Author Profiling</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Potthast</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Gollub</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Rangel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Efstathios</forename><surname>Stamatatos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Information Access Evaluation meets Multilinguality, Multimodality, and Visualization. 5th International Conference of the CLEF Initiative (CLEF 14)</title>
+				<meeting><address><addrLine>Paul Clough, Mark Sanderson, Mark Hall, Allan Hanbury, and Elaine Toms; Berlin Heidelberg New York</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2014-09" />
+			<biblScope unit="page" from="268" to="299" />
+		</imprint>
+	</monogr>
+	<note>Evangelos Kanoulas, Mihai Lupu</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">The Penn Discourse Treebank 2.0</title>
+		<author>
+			<persName><forename type="first">Rashmi</forename><surname>Prasad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Dinesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eleni</forename><surname>Miltsakaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Livio</forename><surname>Robaldo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aravind</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bonnie</forename><surname>Webber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Conference on Language Resources and Evaluation</title>
+				<meeting>the 6th International Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Reflections on the Penn Discourse Treebank, comparable corpora, and complementary annotation</title>
+		<author>
+			<persName><forename type="first">Rashmi</forename><surname>Prasad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bonnie</forename><surname>Webber</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aravind</forename><surname>Joshi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">40</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="921" to="950" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Shallow discourse parsing using convolutional neural network</title>
+		<author>
+			<persName><forename type="first">Lianhui</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhisong</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hai</forename><surname>Zhao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Discovering implicit discourse relations through Brown cluster pair representation and coreference patterns</title>
+		<author>
+			<persName><forename type="first">Attapol</forename><surname>Rutherford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th Conference of the European Chapter of the Association for Computational Linguistics</title>
+				<meeting>the 14th Conference of the European Chapter of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Robust non-explicit neural discourse parser in english and chinese</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Attapol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Rutherford</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Xue</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Do we really need all those rich linguistic features? a neural network-based approach to implicit sense labeling</title>
+		<author>
+			<persName><forename type="first">Niko</forename><surname>Schenk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Chiarcos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kathrin</forename><surname>Donandt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Samuel Rönnqvist</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Evgeny</forename><surname>Stepanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Riccardi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Unitn end-to-end discourse parser for conll 2016 shared task</title>
+		<author>
+			<persName><forename type="first">Evgeny</forename><surname>Stepanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Riccardi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">A refined end-to-end discourse parser</title>
+		<author>
+			<persName><forename type="first">Jianxiang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Man</forename><surname>Lan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Nineteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Nineteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Two endto-end shallow discourse parsers for english and chinese in conll-2016 shared task</title>
+		<author>
+			<persName><forename type="first">Jianxiang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Man</forename><surname>Lan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-08" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Joint pos tagging and transition-based constituent parsing in chinese with non-local features</title>
+		<author>
+			<persName><forename type="first">Zhiguo</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACL (1)</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="733" to="742" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Discourse sense classification from scratch using focused rnns</title>
+		<author>
+			<persName><forename type="first">Gregor</forename><surname>Weiss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Bajec</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twentieth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Twentieth Conference on Computational Natural Language Learning: Shared Task<address><addrLine>Berlin, Germany, August</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">The penn chinese treebank: Phrase structure annotation of a large corpus</title>
+		<author>
+			<persName><forename type="first">Naiwen</forename><surname>Xue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fei</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fu-Dong</forename><surname>Chiou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural language engineering</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">02</biblScope>
+			<biblScope unit="page" from="207" to="238" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">The CoNLL-2015 shared task on shallow discourse parsing</title>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Hwee Tou Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rashmi</forename><surname>Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Prasad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Attapol</forename><surname>Bryant</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Rutherford</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Nineteenth Conference on Computational Natural Language Learning: Shared Task</title>
+				<meeting>the Nineteenth Conference on Computational Natural Language Learning: Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">PDTBstyle annotation of Chinese text</title>
+		<author>
+			<persName><forename type="first">Yuping</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 50th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 50th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<title level="m" type="main">The chinese discourse treebank: a chinese corpus annotated with discourse relations. Language Resources and Evaluation</title>
+		<author>
+			<persName><forename type="first">Yuping</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Xue</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">49</biblScope>
+			<biblScope unit="page" from="397" to="431" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

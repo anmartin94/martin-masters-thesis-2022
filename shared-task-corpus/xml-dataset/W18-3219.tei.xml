@@ -1,0 +1,1011 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Named Entity Recognition on Code-Switched Data: Overview of the CALCS 2018 Shared Task</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Gustavo</forename><surname>Aguilar</surname></persName>
+							<email>gaguilaralas@uh.edu</email>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Fahad</forename><surname>Alghamdi</surname></persName>
+							<email>fghamdi@gwu.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Victor</forename><surname>Soto</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">Columbia University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+							<email>mtdiab@gwu.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Julia</forename><surname>Hirschberg</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">Columbia University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+							<email>tsolorio@uh.edu</email>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">The George Washington University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Named Entity Recognition on Code-Switched Data: Overview of the CALCS 2018 Shared Task</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In the third shared task of the Computational Approaches to Linguistic Code-Switching (CALCS) workshop, we focus on Named Entity Recognition (NER) on code-switched social-media data. We divide the shared task into two competitions based on the English-Spanish (ENG-SPA) and Modern Standard Arabic-Egyptian (MSA-EGY) language pairs. We use Twitter data and 9 entity types to establish a new dataset for code-switched NER benchmarks. In addition to the CS phenomenon, the diversity of the entities and the social media challenges make the task considerably hard to process. As a result, the best scores of the competitions are 63.76% and 71.61% for ENG-SPA and MSA-EGY, respectively. We present the scores of 9 participants and discuss the most common challenges among submissions.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Code-switching (CS) is a linguistic behavior that occurs on spoken and written language. CS happens when multilingual speakers move back and forth from one language to another in the same discourse. The growing incidence of social media in the way we communicate has also increased the occurrences of code-switching on informal written language. As a result, there is a prevalent demand for more tools and resources that can help to process such phenomenon.</p><p>In the previous versions of the Computational Approaches to Linguistic Code-Switching (CALCS) workshop, we focused on providing an annotated corpora for language identification <ref type="bibr" target="#b23">(Solorio et al., 2014;</ref>. In this occasion, we extend the annotations to the Named Entity Recognition (NER) level. The goal of this shared task is to provide a code-switched NER dataset that can help to benchmark NER stateof-the-art approaches. This will directly impact the performance of higher-level NLP applications where the code-switching behavior is commonly found.</p><p>ENG-SPA Tweet Original: @ xoxoBecky lmao ni ganas tengo de llorar , the last movie that made me cry was [Pineapple Express]TITLE me dejo llorando de risa English: @ xoxoBecky lmao I don't even want to cry , the last movie that made me cry was <ref type="bibr">[</ref>  In the English-Spanish data, the highlighted words represent a movie, tagged as TITLE. While in the MSA-EGY data, the bolded words represent government agencies, tagged as ORGANIZATION</p><p>We had a total of 9 participants from which we received 8 submissions on English-Spanish and 5 submissions on Modern Standard Arabic-Egyptian. The best F1-score reported for ENG-SPA 1 was 63.76% by the IIT BHU team <ref type="bibr" target="#b28">(Trivedi et al., 2018)</ref> whereas in MSA-EGY 2 was 71.61% by the FAIR team <ref type="bibr" target="#b31">(Wang et al., 2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task definition</head><p>The task consists of recognizing entities in a relatively short code-switched context. The entity types for this task are person, organization, location, group, title, product, event, time, and other. We describe each entity type on Section 3.1. Since NER is a sequential tagging task, we use the IOB scheme to identify multiple words as a single named entity. The addition of this scheme duplicates the number of entities in the task yielding a B(eginning) and I(nside) variations of each of them. This leaves us with 19 possible labels for the classification task.</p><p>The evaluation of the task uses two versions of the F1-score. The first is the standard F1, and the second is the Surface Form F1-score introduced by <ref type="bibr" target="#b9">Derczynski et al. (2014)</ref>. The Surface Form F1-score captures the rare and emerging aspects of the entities. We average both metrics to determine the positions in the leaderboard. Additionally, the shared task was conducted on the CodaLab platform 3 , where participants are able to directly evaluate their approaches against the gold data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Datasets</head><p>In this section we provide the definition of our labels, describe the annotation process and show the distribution of the ENG-SPA and MSA-EGY datasets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Entity instructions</head><p>The named entities have been annotated using the instructions below. Note that the definitions of the entity types apply to both language pairs.</p><p>• Person: This entity type includes proper names and nicknames that can identify a person uniquely. We ignore cases where a person is referred by nouns with adjectives that are not necessarily a nickname. Single artists and famous people are treated as person.</p><p>• Organization: This entity type includes names of companies, institutions and corporations, i.e. every entity that has employees and takes actions as a whole. If the NE can potentially be any other type, the context should be sufficient to support whether it is <ref type="bibr">3</ref> The competitions will be permanently open for future benchmarks organization or not (e.g., Facebook as organization vs. Facebook as the website application).</p><p>• Location: This NE refers to physical places that people can visit. It includes cities, countries, addresses, facilities, touristic places, etc. This entity type is not to be confused with organization. For instance, when people use organization names to refer to places that can be visited (e.g., restaurants), those entities must be tagged as location.</p><p>• Group: This NE includes sports teams, music bands, duets, etc. Group and organization are not to be confused. For example, the Houston Astros as a team (i.e., group) is different from the Houston Astros institution.</p><p>• Product: This NE refers to articles that have been manufactured or refined for sale, like devices, medicine, food produced by a company, any well-defined service, website accounts, etc.</p><p>• Title: This type includes titles of movies, books, TV shows, songs, etc. Very often, titles can be sentences (e.g., the movie We're the Millers). Titles usually refer to media and must not be confused with the product type.</p><p>• Event: This type refers to situations or scenarios that gather people for a specific purpose such as concerts, competitions, conferences, award events, etc. Events do not consider holidays.</p><p>• Time: This NE includes months, days of the week, seasons, holidays and dates that happen periodically, which are not events (e.g., Christmas). It excludes hours, minutes, and seconds. 'Yesterday', 'tomorrow', 'week' and 'year' are not tagged as time.</p><p>• Other: This type includes any other named entity that does not fit in the previous categories. This may include nationalities, languages, music genres, etc.</p><p>The motivation behind these entity types partly lies on the contextual difference in which they appear. For instance, when an organization can be lexically confused with a product, the context should break down the ambiguity. Additionally,  we tried to include entity types that have an impact on higher-level NLP applications under similar social media scenarios.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">ENG-SPA</head><p>Data annotation: We use the English-Spanish language identification dataset introduced in the first CALCS shared task <ref type="bibr" target="#b23">(Solorio et al., 2014)</ref>. We build upon this dataset to generate the entity labels. To annotate the data, we designed a Crowd-Flower 4 job from scratch 5 . The interface of the job is described in Figure <ref type="figure">2</ref>. The job allows annotators to select one or many words for a single NE. When the annotators select a word the tool suggests to incorporate words surrounding the current selection.</p><p>When the selection of a whole entity is done, the annotators can add the entity to the second step where the type is determined. The annotators repeat this process until no more named entities can be identified in the tweet. The output of our customized job contains the entity type of one or multiple words that identify an NE according to the criteria of the annotators. The annotators are required to know both English and Spanish, and the job is constrained to reach an accuracy of at least 80%. We also required 3 annotators per tweet. Additionally, the job was launched in geographic locations were both English and Spanish are reasonably common. Some of these places were USA, Mexico, Central America, Puerto Rico, Colombia, Venezuela, Chile, Uruguay, Paraguay and Spain.</p><p>After getting the output data from CrowdFlower, we reviewed the results to correct any possible mistakes.</p><p>Data distribution: The entity types along with their distribution are listed in   to create the new training corpora for the NER Shared Task. The data was harvested from Twitter. We apply a number of quality and validation checks to insure the quality of the old data. Therefore, we retrieved all old tweets using the the new version of the Arabic Tweets Token Assigner which is made available through the Shared Task website 7 . One of the main reasons for the re-crawling step is to eliminate the tweets that have been deleted, or the tweets that belong to the users whose accounts are suspended by Twitter. The other reason is that some tweets may cause encoding issues when they are retrieved using the crawler script. Thus, all these tweets were removed and eliminated. After performing the validation checks, we accepted and published 11,224 tweets (10,102 tweets for the training set, and 1,122 tweets for the development set). . Data creation and annotation: Since we combined the test set used in the EMNLP-2016 CS Shared Task  with the dataset used in the EMNLP-2014 CS Shared Task <ref type="bibr" target="#b23">(Solorio et al., 2014)</ref> to form the new training and development sets, we needed to crawl and annotate a new test set for our new Shared Task. We resorted to using the Tweepy library to harvest the timeline of 12 Egyptian public figures. We applied the same filtration criteria when crawling and building the test set used in the 2016 CS shared task . We divided the old combined tweets into training and development sets as follows: 80% train set and 10% development set. Thus, we needed ∼ 1,110 tweets, which represents the 10% of the new test set. As we did in the previous Shared Task, we wanted to consider choosing tweets from public figures whose tweets contain more code-switching points. Therefore, we resorted to using the Automatic Identification of Dialectal Arabic (AIDA2) tool <ref type="bibr" target="#b2">(Al-Badrashiny et al., 2015)</ref> to perform token-level language identification for the MSA and EGY tokens in context. Public figures with more than 35% of code-switching points in their tweets were considered. The annotation work of the MSA-EGY dataset was done in-lab by two trained Egyptian native speakers. Our annotation team followed the Named Entity Annotation Guidelines for MSA-EGY, which is made available through the Shared Task website 8 . In the two previous editions of the CS Shared Task <ref type="bibr" target="#b23">(Solorio et al., 2014;</ref>, we used a Named Entity ("ne") tag. The "ne" tag was defined as a word or multi-word that represents names of a unique entity such as people's names, countries and places, organizations, companies, websites, etc. The AIDA2 tool <ref type="bibr" target="#b2">(Al-Badrashiny et al., 2015)</ref> was used to assign initial automatic tags for highly confident data categories Figure <ref type="figure">3</ref>: MSA-EGY Data Annotation (i.e., URL, Punctuation, Number, etc) in addition to named entities. Then, we extracted and prepared all the tweets that contained "ne" for annotation. As we mentioned earlier, the IOB scheme is used as an annotation scheme to identify multiple words as a single named entity. All the URLs, Punctuation and Numbers tags are deterministically converted to "O" tag, while the tweets that include "ne" tags were given to our in-lab annotators for validation and re-annotation if needed.</p><p>. Quality checks and data distribution: We computed the Inter-Annotator Agreement (IAA) on 10% of the dataset to validate the performance and agreement among annotators. One of our annotators is a specialist linguist who carried out adjudication and revisions of accuracy measurements. We approached a stable Inter Annotator Agreement (IAA) of over 92% pairwise agreement. The workflow of the annotation process for MSA-EGY is shown in Figure <ref type="figure">-3</ref>.</p><p>The total number of tweets in MSA-EGY dataset is 12,334 tweets. It is divided into three sets train, development, and test sets (10,102, 1,122, 1,110 tweets, respectively). Table <ref type="table" target="#tab_2">1</ref> shows that the total number of NE training tokens is 23,093. It means that NE tokens represent 11.3% of the total number of tokens. Similarly, the percentages of NE tokens in the development and test sets are 7.5%, 11.9%, respectively. As we mentioned earlier, the MSA-EGY tweets were harvested from the timeline of 12 Egyptian politicians public figures. Generally, politicians tend to use NEs more often when they write their tweets. This explains why the percentage of the NE tokens in MSA-EGY dataset is higher than the percentage of the NE tokens in ESP-ENG dataset.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Approaches</head><p>In this section, we briefly describe the systems of the participants and discuss their results as well as the final scores.</p><p>• IIT BHU <ref type="bibr" target="#b28">(Trivedi et al., 2018)</ref>. They proposed a "new architecture based on gating of character-and word-based representation of a token". They captured the character and the word representations using a CNN and a bidirectional LSTM, respectively. They also used the Multi-Task Learning on the output layer and transfer the learning to a CRF classifier following <ref type="bibr" target="#b1">Aguilar et al. (2017)</ref>. Moreover, they fed a gazetteers representation to their model.</p><p>• CAiRE++ <ref type="bibr" target="#b32">(Winata et al., 2018)</ref>. They used a bidirectional LSTM model for characters and words. They primarily focused on OOV using the FastText library <ref type="bibr" target="#b6">(Bojanowski et al., 2016)</ref>.</p><p>• FAIR <ref type="bibr" target="#b31">(Wang et al., 2018)</ref>. They proposed a joint bidirectional LSTM-CRF network that uses attention at the embedding layer. They also preprocessed the data before feeding the network.</p><p>• Linguists <ref type="bibr" target="#b12">(Jain et al., 2018)</ref>. They used a Conditional Random Fields with many handcrafted features. Their focus was primarily on English-Spanish data.</p><p>• Flytxt <ref type="bibr" target="#b22">(Sikdar et al., 2018)</ref>. This team also employed a Conditional Random Fields. They fed the CRF with features from both external and internal resources. Additionally, they incorporated the language identification labels of the datasets from the previous versions of this workshop.</p><p>• semantic <ref type="bibr" target="#b11">(Geetha et al., 2018)</ref>. They jointly trained a Bidirectional LSTM with a Conditional Random Fields on the output layer.</p><p>• BATs <ref type="bibr" target="#b13">(Janke et al., 2018)</ref>. They used a Conditional Random Fields with multiple features. Some of those features were also used for neural network, but they got better results with the CRF approach.</p><p>• Fraunhofer FKIE <ref type="bibr" target="#b8">(Claeser et al., 2018)</ref>. They used a Support Vector Machine (SVM) classifier with a Radial Basis kernel. They handcrafted a lot of features and also included gazetteers.</p><p>• GHHT <ref type="bibr" target="#b4">(Attia and Samih, 2018)</ref>. They trained a BLSTM-CRF network using pretrained word embeddings, brown clusters and gazetteers.</p><p>• Baseline. We used a simple Bidirectional LSTM network with randomly initialized embedding vectors of 200 dimensions. We also used dropout operations on each direction of the BLSTM component.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation and results</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Evaluation</head><p>The evaluation of the shared task was conducted through CodaLab, where the participants were able to obtain immediate feedback of their submissions. The metrics used for the evaluation phase were the standard harmonic mean F1-score and the Surface Form F1 variation proposed by <ref type="bibr" target="#b9">Derczynski et al. (2014)</ref>. Additionally, to have a single leaderboard per language pair, we unified both metrics by averaging them. The average values are the ones described in Table <ref type="table" target="#tab_6">3</ref>. As stated by <ref type="bibr" target="#b9">(Derczynski et al., 2014)</ref>, the idea of the Surface Form F1-score is to capture the novel and emerging aspects that are usually encountered in social media data. Those aspects describe a fast-moving language that constantly produces new entities challenging more the recall capabilities of state-of-the-art models than the precision side.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Results and Error analysis</head><p>Although all the scores reported by the participants outperformed the baselines in both ENG-SPA and MSA-EGY language pairs, the results are arguably low considering that the current stateof-the-art systems achieve around 91.2% of F1score on well-formatted text <ref type="bibr" target="#b14">(Lample et al., 2016;</ref><ref type="bibr" target="#b17">Ma and Hovy, 2016;</ref><ref type="bibr" target="#b16">Liu et al., 2017)</ref>. As mentioned before, the best performing systems reached 63.76% <ref type="bibr" target="#b28">(Trivedi et al., 2018)</ref> and 71.61% <ref type="bibr" target="#b31">(Wang et al., 2018)</ref> for ENG-SPA and MSA-EGY, respectively. These low outcomes are aligned with the challenges that come along with social media data and the addition of more heterogeneous entity types <ref type="bibr" target="#b20">(Ritter et al., 2011;</ref><ref type="bibr" target="#b5">Augenstein et al., 2017;</ref><ref type="bibr" target="#b9">Derczynski et al., 2014;</ref><ref type="bibr" target="#b0">Aguilar et al., 2018)</ref>.</p><p>Most of the MSA-EGY tweets are related to politics because they were harvested from the  According to the results of the participants in the ENG-SPA shared task, the top three most challenging entity types were event, title, and time. It is worth noting that these three classes are more or less the least frequent types in the dataset (see Table <ref type="table" target="#tab_2">1</ref>), which suggests that having more data samples would produce better results. However, in the case of title, there are 1,980 samples against 1,381 samples of organization, and the performance is significantly better for the latter one (19% vs. 35% of F1-scores). Additionally, looking at The bold words are the ground truth samples and the underscored words are the predictions of the best performing systems.</p><p>ing that the entity instances are flexible in format that can even describe independent sentences (i.e., a homogeneous type is person). The entities Love Man (title), Billboard 2014 (event), and show de shamu (event) also describe the same pattern and they were hardly identified by participants.</p><p>Unlike English and Spanish language pair which can be considered as two distinct languages, Modern Standard Arabic and Egyptian are more closely related which makes the task of identifying NE tokens more challenging. This is mainly due to the fact that Modern Standard Arabic and Egyptian are close variants of one another and hence they share considerable amount of lexical items. Some of the challenges faced by the participants include words that still have punctuation attached to them (e.g.</p><p>) , (mSr, (Egypt ) . In order to mitigate these issues, some participants preprocessed these cases by, for example, removing any leading and trailing punctuation from those tokens. Other participants normalized these cases by unifying all the attached punctuations, while the remaining participants decided to keep them and let their model learn them. Table <ref type="table" target="#tab_9">5</ref> and the following examples show some challenges faced by the submitted systems:</p><p>• Clitic attachment can obscure tokens, e.g. wAllh "and-God" or "swear".</p><p>• Clitic attachment can obscure tokens, e.g. wmnY "and-Mona" or "swear".  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Related work</head><p>Before the CALCS workshop series, the codeswitching behavior was studied from different perspectives and for many languages <ref type="bibr" target="#b27">(Toribio, 2001;</ref><ref type="bibr">Solorio and Liu, 2008a,b;</ref><ref type="bibr" target="#b19">Piergallini et al., 2016;</ref>. Most of them focused on either exploring this phenomenon or solving core code-switching tasks from the NLP pipeline. More recently, researchers have been considering the sentiment analysis task on code-switching settings <ref type="bibr" target="#b15">(Lee and Wang, 2015;</ref><ref type="bibr" target="#b29">Vilares et al., 2015)</ref>. However, the lack of resources at the core level of the NLP pipeline greatly reduces the chances of improving higher-level applications. In this line, we aim at providing two datasets for named entity recognition benchmarks on the English-Spanish and Modern Standard Arabic-Egyptian language pairs. It worth noting that there are some contributions of CS corpora, such as a collection of Turkish-German CS tweets , a large collection of Modern Standrd Arabic and Egyptian Dialectal Arabic CS data  and a collection of sentiment annotated Spanish-English tweets <ref type="bibr" target="#b30">(Vilares et al., 2016)</ref>. Named entity recognition has been vastly studied along the years <ref type="bibr" target="#b21">(Sang and Meulder, 2003)</ref>. More recently, however, the focus has drastically moved to social media data due to the great incidence that social networks have in our daily communication <ref type="bibr" target="#b20">(Ritter et al., 2011;</ref><ref type="bibr" target="#b5">Augenstein et al., 2017)</ref>. The workshop on Noisy User-generated Text (W-NUT) has been a great effort towards the study of named entity recognition on noisy data. In 2016, the organizers focused on named entities from different topics to evaluate the adaptation of models from one topic to another <ref type="bibr" target="#b26">(Strauss et al., 2016)</ref>. In 2017, the organizers introduced the Surface Form F1-score metric and collected data from multiple social media platforms <ref type="bibr" target="#b9">(Derczynski et al., 2014)</ref>. The challenge not only lies on the entity types and the social media noisy but also in the distribution of the datasets and their different data domain patterns.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>We presented the setup and results of the 3rd shared task of the Computational Approaches to Linguistic Code-Switching workshop. We introduced a named entity recognition dataset focused on code-switched social media text for two language pairs: English-Spanish and Modern Standard Arabic-Egyptian. We received submissions from nine teams, eight of them submitted to ENG-SPA and six to MSA-EGY. Similar to the previous sequence tagging tasks of our workshop, the predominant aspect among the approaches was the Conditional Random Fields. Additionally, the combination of the CRF with a bidirectional LSTM (with some variations) yielded the best results among participants. The best F1score for ENG-SPA was 63.7628% and for MSA-EGY was 71.6154%. Compared to monolingual formal text (i.e., newswire), the reported scores are significantly lower due to the code-switching phenomenon as well as the noise of SM environment. This serves as strong evidence that we need more robust approaches that can detect and process named entities in such challenging conditions.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Examples of the CALCS 2018 dataset.In the English-Spanish data, the highlighted words represent a movie, tagged as TITLE. While in the MSA-EGY data, the bolded words represent government agencies, tagged as ORGANIZATION</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>Any controversy against the Interior Ministry and State Security Service will make me feel happy</figDesc><table><row><cell></cell><cell>Pineapple</cell></row><row><cell>Express]TITLE</cell><cell>it left me crying with laughter</cell></row><row><cell cols="2">MSA-EGY Tweet</cell></row><row><cell cols="2">Buckwalter Encoding: wAy mErkp Dd [AldAxlyp]ORG</cell></row><row><cell cols="2">[wAmn Aldwlp]ORG hbqY sEydp byhA</cell></row><row><cell>Arabic:</cell><cell></cell></row><row><cell>English:</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>The named entity distribution of the training, development and testing sets for both language pairs. Note that the NE tokens row contains the B(eginning) and I(nside) tokens of the datasets following the IOB scheme. The O Tokens row refers to the non-entity tokens.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 1 .</head><label>1</label><figDesc>We provide training, development and testing 6 sets containing 50,757, 832 and 15,634 tweets, respectively. The development and testing splits are inherited from previous CALCS Shared Tasks, whereas training uses the original split with the addition of 40,000 tweets. We added more tweets to the original training set to increase the number of samples per entity type since the NER datasets are naturally skewed. From Table1, it is worth noting that the total number of NE training tokens is 18,544 whereas the non-entity tokens add up to 614,013. This means that only 3% of the tokens of the training set are NE-related. Likewise, the ratio of tokens for the development and testing sets are 2.3% and 2.5%, respectively. This skewed distribution poses a great challenge considering that the datasets are further separated by 18 fine-grained entity types (i.e., each entity type has a beginning and inside variations from the IOB scheme). However, we think that the skewness can be reasonably handled with the provided data. Moreover, the training, development and testing sets draw a Figure2: The CrowdFlower interface that we developed to annotate the ENG-SPA dataset. The green-highlighted words are the entities selected by the annotator. The words in the same green area describe a single entity. Once the NE selection has been added, the annotators have to select the type of the entities. very similar data distribution, which can also help to adapt the learning from training to testing.</figDesc><table><row><cell>3.3 MSA-EGY</cell></row><row><cell>Validating old tweets: For the Modern Standard</cell></row><row><cell>Arabic-Egyptian Arabic Dialect (MSA-EGY) lan-</cell></row><row><cell>guage pair, we combined the training, develop-</cell></row><row><cell>ment, and test sets that we used in the EMNLP</cell></row><row><cell>2016 CS Shared Task</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>The table shows the main component and strategies used by the participants. Ext Res means external resources such as pre-trained word embeddings, gazetteers, etc. Hand Feats means handcrafted features such as capitalization.</figDesc><table><row><cell>Team</cell><cell>Preproc Ext Res Hand Feats CNN B-LSTM CRF</cell><cell>Other</cell></row><row><cell>IIT BHU</cell><cell></cell><cell>MTL</cell></row><row><cell>CAiRE++</cell><cell></cell><cell>FastText</cell></row><row><cell>FAIR</cell><cell></cell><cell>Attention</cell></row><row><cell>Linguists</cell><cell></cell><cell></cell></row><row><cell>Flytxt</cell><cell></cell><cell></cell></row><row><cell>semantic</cell><cell></cell><cell></cell></row><row><cell>BATs</cell><cell></cell><cell></cell></row><row><cell>Fraunhofer FKIE</cell><cell></cell><cell>SVM</cell></row><row><cell>GHHT</cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>The results of the participants in both ENG-SPA and MSA-EGY language pairs. The scores are based on the average of the standard and the Surface form F1 metrics. The highlighted teams are the best scores of the shared task.</figDesc><table><row><cell>timeline of number of Egyptian politician public</cell></row><row><cell>figures. Generally, these kinds of tweets encom-</cell></row><row><cell>pass more NEs in comparison with other kinds of</cell></row><row><cell>tweets. This explains why the percentage of the</cell></row><row><cell>NE tokens in MSA-EGY dataset is high compared</cell></row><row><cell>to the NEs' percentage in ESP-ENG data set. This</cell></row><row><cell>high percentage of NE tokens helps the submitted</cell></row><row><cell>systems to see and learn more examples and pat-</cell></row><row><cell>terns. Thus, systems can generalize more effec-</cell></row><row><cell>tively.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4</head><label>4</label><figDesc>, the entity Orange is the New Black was not recognized by participants as a title. This is an example of what we refer to heterogeneous entity type, mean-N ENG-SPA Samples 1 Retiro totalmente lo dicho sobre Orange is the New Black. Temporada terminada y holly sh*t. HOLLY SH*T. 2 Love Man by Otis Redding, found with</figDesc><table><row><cell>@Shazam. Listen now: como me hubiese</cell></row><row><cell>gustado ver a mis padres bailando esto ...</cell></row><row><cell>3 Michael Jackson revivió en los</cell></row><row><cell>Billboard 2014</cell></row><row><cell>4 @fairy0821 en el show de shamu !!!</cell></row><row><cell>Table 4: Challenging samples from the test set.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 :</head><label>5</label><figDesc>Challenging samples from the MSA-EGY test set. The bold words are the ground truth samples.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">ENG-SPA competition https://competitions. codalab.org/competitions/18725 2 MSA-EGY competition https://competitions. codalab.org/competitions/18724</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">https://crowdflower.com/ 5 The JavaScript code and HTML/CSS can be found here: https://github.com/tavo91/ner_annot</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">We do not provide the annotations of the test set because we want the CodaLab competition to be used for public benchmark in the future</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">https://code-switching.github.io/ 2018/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">https://codeswitching.github.io/2018/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We would like to thank the National Science Foundation for partially supporting this work under award number 1462142.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Modeling noisiness to recognize named entities using multitask neural networks on social media</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Aguilar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adrian Pastor Lopez</forename><surname>Monroy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabio</forename><surname>Gonzalez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1401" to="1412" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">A multitask approach for named entity recognition in social media data</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Aguilar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suraj</forename><surname>Maharjan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 3rd Workshop on Noisy User-generated Text</title>
+				<meeting>the 3rd Workshop on Noisy User-generated Text<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="148" to="153" />
+		</imprint>
+	</monogr>
+	<note>Adrian Pastor López Monroy, and Thamar Solorio. Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Aida2: A hybrid approach for token and sentence level dialect identification in arabic</title>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Al-Badrashiny</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Heba</forename><surname>Elfardy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><forename type="middle">T</forename><surname>Diab</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 19th Conference on Computational Natural Language Learning</title>
+				<meeting>the 19th Conference on Computational Natural Language Learning<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2015-07-30" />
+			<biblScope unit="page" from="42" to="51" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Part of speech tagging for code switched data</title>
+		<author>
+			<persName><forename type="first">Fahad</forename><surname>Alghamdi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Molina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><forename type="middle">T</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdelati</forename><surname>Hawwari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Victor</forename><surname>Soto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Hirschberg</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W16-5812</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Computational Approaches to Code Switching@EMNLP 2016</title>
+				<meeting>the Second Workshop on Computational Approaches to Code Switching@EMNLP 2016<address><addrLine>Austin, Texas, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-11-01" />
+			<biblScope unit="page" from="98" to="107" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">GHHT at CALCS 2018: Named Entity Recognition for Dialectal Arabic Using Neural Networks</title>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Attia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Younes</forename><surname>Samih</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Generalisation in named entity recognition: A quantitative analysis</title>
+		<author>
+			<persName><forename type="first">Isabelle</forename><surname>Augenstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+		<idno>abs/1701.02877</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Enriching word vectors with subword information</title>
+		<author>
+			<persName><forename type="first">Piotr</forename><surname>Bojanowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Joulin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1607.04606</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">Nicoletta</forename><surname>Calzolari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Khalid</forename><surname>Choukri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thierry</forename><surname>Declerck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Goggi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marko</forename><surname>Grobelnik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bente</forename><surname>Maegaard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joseph</forename><surname>Mariani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hélène</forename><surname>Mazo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Asunción</forename><surname>Moreno</surname></persName>
+		</author>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation LREC 2016</title>
+				<editor>
+			<persName><forename type="first">Stelios</forename><surname>Odijk</surname></persName>
+			<persName><surname>Piperidis</surname></persName>
+		</editor>
+		<meeting>the Tenth International Conference on Language Resources and Evaluation LREC 2016<address><addrLine>Portorož, Slovenia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-01" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">System Description for the Shared Task: Named Entity Recognition on Code-switched Data</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Claeser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samantha</forename><surname>Kent</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dennis</forename><surname>Felske</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Analysis of named entity recognition and linking for tweets</title>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Maynard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Rizzo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marieke</forename><surname>Van Erp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Genevieve</forename><surname>Gorrell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raphaël</forename><surname>Troncy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johann</forename><surname>Petrak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+		<idno>abs/1410.7182</idno>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">Creating a large multilayered representational repository of linguistic code switched arabic data</title>
+		<author>
+			<persName><forename type="first">Mona</forename><forename type="middle">T</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mahmoud</forename><surname>Ghoneim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdelati</forename><surname>Hawwari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fahad</forename><surname>Alghamdi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nada</forename><surname>Almarwani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Al-Badrashiny</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">;</forename><surname>Calzolari</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Tackling Code-Switched NER: Participation of &apos;semantic</title>
+		<author>
+			<persName><forename type="first">Parvathy</forename><surname>Geetha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Khyathi</forename><surname>Chandu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><forename type="middle">W</forename><surname>Black</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Simple Features for Strong Performance on Named Entity Recognition in Code-Switched Twitter Data</title>
+		<author>
+			<persName><forename type="first">Devanshu</forename><surname>Jain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Kustikova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mayank</forename><surname>Darbari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rishabh</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Mayhew</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Submission for the Code-Switching Workshop Shared Task</title>
+		<author>
+			<persName><forename type="first">Florian</forename><surname>Janke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tongrui</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Rincón</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gualberto</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Bullock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Almeida Jacqueline</forename><surname>Toribio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Neural architectures for named entity recognition</title>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Lample</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miguel</forename><surname>Ballesteros</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandeep</forename><surname>Subramanian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kazuya</forename><surname>Kawakami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+		<idno>abs/1603.01360</idno>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Emotion in code-switching texts: Corpus construction and analysis</title>
+		<author>
+			<persName><forename type="first">Sophia</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhongqing</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth SIGHAN Workshop on Chinese Language Processing</title>
+				<meeting>the Eighth SIGHAN Workshop on Chinese Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="91" to="99" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">Empower sequence labeling with task-aware neural language model</title>
+		<author>
+			<persName><forename type="first">Liyuan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingbo</forename><surname>Shang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><forename type="middle">F</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiang</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huan</forename><surname>Gui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Peng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiawei</forename><surname>Han</surname></persName>
+		</author>
+		<idno>abs/1709.04109</idno>
+		<imprint>
+			<date type="published" when="2017" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">End-to-end sequence labeling via bi-directional lstm-cnns-crf</title>
+		<author>
+			<persName><forename type="first">Xuezhe</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1064" to="1074" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Overview for the second shared task on language identification in code-switched data</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Molina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fahad</forename><surname>Alghamdi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mahmoud</forename><surname>Ghoneim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdelati</forename><surname>Hawwari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Rey-Villamizar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Computational Approaches to Code Switching</title>
+				<meeting>the Second Workshop on Computational Approaches to Code Switching<address><addrLine>Austin, Texas</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="40" to="49" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Word-level language identification and predicting codeswitching points in swahili-english language data</title>
+		<author>
+			<persName><forename type="first">Mario</forename><surname>Piergallini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rouzbeh</forename><surname>Shirvani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gauri</forename><forename type="middle">S</forename><surname>Gautam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Chouikha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Computational Approaches to Code Switching</title>
+				<meeting>the Second Workshop on Computational Approaches to Code Switching<address><addrLine>Austin, Texas</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="21" to="29" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Named entity recognition in tweets: An experimental study</title>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mausam</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Etzioni</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;11</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;11<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1524" to="1534" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Introduction to the conll-2003 shared task: Language-independent named entity recognition</title>
+		<author>
+			<persName><forename type="first">Erik</forename><forename type="middle">F</forename><surname>Tjong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kim</forename><surname>Sang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fien</forename><surname>De Meulder</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh Conference on Natural Language Learning</title>
+				<meeting>the Seventh Conference on Natural Language Learning<address><addrLine>Edmonton, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2003-05-31" />
+			<biblScope unit="page" from="142" to="147" />
+		</imprint>
+	</monogr>
+	<note>cooperation with HLT-NAACL 2003</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Named Entity Recognition on Code-Switched Data using Conditional Random Fields</title>
+		<author>
+			<persName><forename type="first">Biswanath</forename><surname>Utpal Kumar Sikdar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Björn</forename><surname>Barik</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gambäck</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Overview for the first shared task on language identification in code-switched data</title>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><surname>Blair</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suraj</forename><surname>Maharjan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mahmoud</forename><surname>Ghoneim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdelati</forename><surname>Hawwari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fahad</forename><surname>Alghamdi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Hirschberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alison</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pascale</forename><surname>Fung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Computational Approaches to Code Switching</title>
+				<meeting>the First Workshop on Computational Approaches to Code Switching<address><addrLine>Doha, Qatar</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="62" to="72" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Learning to predict code-switching points</title>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2008 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2008 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Honolulu, Hawaii</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="973" to="981" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Part-of-speech tagging for english-spanish code-switched text</title>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;08</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;08<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="1051" to="1060" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Results of the wnut16 named entity recognition shared task</title>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Strauss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bethany</forename><surname>Toma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Catherine</forename><surname>De Marneffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Xu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Noisy User-generated Text (WNUT)</title>
+				<meeting>the 2nd Workshop on Noisy User-generated Text (WNUT)<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="138" to="144" />
+		</imprint>
+	</monogr>
+	<note>The COLING 2016 Organizing Committee</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Accessing bilingual code-switching competence</title>
+		<author>
+			<persName><forename type="first">Jacqueline</forename><surname>Almeida</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Toribio</surname></persName>
+		</author>
+		<idno type="DOI">10.1177/13670069010050040201</idno>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Bilingualism</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="403" to="436" />
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">IIT (BHU) Submission for the ACL Shared Task on Named Entity Recognition on Codeswitched Data</title>
+		<author>
+			<persName><forename type="first">Shashwat</forename><surname>Trivedi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Harsh</forename><surname>Rangwani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anil Kumar</forename><surname>Singh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Sentiment analysis on monolingual, multilingual and code-switching twitter corpora</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Vilares</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miguel</forename><forename type="middle">A</forename><surname>Alonso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Gómez-Rodríguez</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W15-2902</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis</title>
+				<meeting>the 6th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="2" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">En-es-cs: An english-spanish code-switching twitter corpus for multilingual sentiment analysis</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Vilares</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miguel</forename><forename type="middle">A</forename><surname>Alonso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Gómez-Rodríguez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC 2016)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC 2016)<address><addrLine>Paris, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Code-Switched Named Entity Recognition with Embedding Attention</title>
+		<author>
+			<persName><forename type="first">Changhan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Bilingual Character Representation for Efficiently Addressing Outof-Vocabulary in Code-Switching Named Entity Recognition</title>
+		<author>
+			<persName><forename type="first">Chien-Sheng</forename><surname>Genta Indra Winata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pascale</forename><surname>Madotto</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Fung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Approaches to Linguistic Code-Switching</title>
+				<meeting>the Third Workshop on Computational Approaches to Linguistic Code-Switching<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

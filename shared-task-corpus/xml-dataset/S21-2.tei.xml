@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2021 Task 2: Multilingual and Cross-lingual Word-in-Context Disambiguation (MCL-WiC)</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Federico</forename><surname>Martelli</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="laboratory">Sapienza NLP Group</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Najla</forename><surname>Kalach</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="laboratory">Sapienza NLP Group</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Gabriele</forename><surname>Tola</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="laboratory">Sapienza NLP Group</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="laboratory">Sapienza NLP Group</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2021 Task 2: Multilingual and Cross-lingual Word-in-Context Disambiguation (MCL-WiC)</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this paper, we introduce the first SemEval task on Multilingual and Cross-Lingual Wordin-Context disambiguation (MCL-WiC). This task allows the largely under-investigated inherent ability of systems to discriminate between word senses within and across languages to be evaluated, dropping the requirement of a fixed sense inventory. Framed as a binary classification, our task is divided into two parts. In the multilingual sub-task, participating systems are required to determine whether two target words, each occurring in a different context within the same language, express the same meaning or not. Instead, in the crosslingual part, systems are asked to perform the task in a cross-lingual scenario, in which the two target words and their corresponding contexts are provided in two different languages. We illustrate our task, as well as the construction of our manually-created dataset including five languages, namely Arabic, Chinese, English, French and Russian, and the results of the participating systems. Datasets and results are available at: https://github.com/ SapienzaNLP/mcl-wic.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>During recent decades, the field of Natural Language Processing (NLP) has witnessed the development of an increasing number of neural approaches to representing words and their meanings. Word embeddings encode a target word type with one single vector based on co-occurrence information. However, word embeddings conflate different meanings of a single target word into the same representation, thus they fail to capture the polysemous nature of words. To address this limitation, more sophisticated representations such as multi-prototype and contextualized embeddings have been put forward. Multi-prototype embeddings concentrate on the semantics which underlie a target word by clustering occurrences based on their context similarities <ref type="bibr" target="#b24">(Neelakantan et al., 2015;</ref><ref type="bibr" target="#b25">Pelevina et al., 2016)</ref>. In an effort to exploit the knowledge derived from lexical-knowledge bases, <ref type="bibr" target="#b12">Iacobacci et al. (2015)</ref> introduced a new approach which allows sense representations to be linked to a predefined sense inventory. More recently, contextualized embeddings were proposed. These representations are obtained by means of neural language modeling, e.g. using LSTMs <ref type="bibr" target="#b18">(Melamud et al., 2016)</ref> or the Transformer architecture <ref type="bibr" target="#b8">(Devlin et al., 2019;</ref><ref type="bibr" target="#b6">Conneau et al., 2020)</ref>, and are capable of representing words based on the context in which they occur. Contextualized representations have also been used to obtain effective sense embeddings <ref type="bibr" target="#b16">(Loureiro and Jorge, 2019;</ref><ref type="bibr">Scarlini et al., 2020a,b;</ref><ref type="bibr" target="#b4">Calabrese et al., 2020)</ref>.</p><p>Although virtually all the above approaches can be evaluated in downstream applications, the inherent ability of the various embeddings to capture meaning distinctions still remains largely underinvestigated. While Word Sense Disambiguation (WSD), i.e. the task of determining the meaning of a word in a given context <ref type="bibr" target="#b22">(Navigli, 2009)</ref>, has long explored the aforementioned ability, the task does not make it easy to test approaches that are not explicitly linked to existing sense inventories, such as WordNet <ref type="bibr" target="#b20">(Miller et al., 1990)</ref> and BabelNet <ref type="bibr" target="#b23">(Navigli and Ponzetto, 2010)</ref>. This has two major drawbacks. First, sense inventories are not always available, especially for rare languages. Second, such requirement limits the evaluation of word and sense representations which are not bound to a sense inventory. To tackle this limitation, some benchmarks have recently been proposed. The CoSimLex dataset <ref type="bibr">(Armendariz et al.)</ref> and the related SemEval-2020 Task 3 <ref type="bibr" target="#b0">(Armendariz et al., 2020)</ref> focus on evaluating the similarity of word pairs which occur in the same context. More recently, the Word-in-Context (WiC) task <ref type="bibr" target="#b26">(Pilehvar and Camacho-Collados, 2019)</ref>, included in the Su-perGLUE benchmark for Natural Language Understanding (NLU) systems <ref type="bibr" target="#b32">(Wang et al., 2019)</ref> and its multilingual extension XL-WiC <ref type="bibr" target="#b27">(Raganato et al., 2020)</ref>, require systems to determine whether a word occurring in two different sentences is used with the same meaning, without relying on a predefined sense inventory. For instance, given the following sentence pair:</p><p>• the mouse eats the cheese,</p><p>• click the right mouse button, the ideal system should establish that the target word mouse is used with two different meanings.</p><p>Despite the steps forward made in this promising research direction, existing benchmarks suffer from the following shortcomings: i) they are mostly automatically retrieved; ii) they do not enable cross-lingual evaluation scenarios in which systems are tested in different languages at the same time; iii) they do not cover all open-class parts of speech.</p><p>In order to address the aforementioned drawbacks, we propose the first SemEval task on Multilingual and Cross-Lingual Word-in-Context disambiguation (MCL-WiC) and present the first entirely manually-annotated dataset for the task. Importantly, MCL-WiC enables new cross-lingual evaluation scenarios covering all open-class parts of speech, as well as a wide range of domains and genres. The dataset is available in five European and non-European languages, i.e. Arabic (Ar), Chinese (Zh), English (En), French (Fr) and Russian (Ru).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Several different tasks have been put forward which go beyond traditional WSD and drop the requirement of fixed sense inventories. Among the first alternatives we cite monolingual and cross-lingual Lexical Substitution <ref type="bibr" target="#b17">(McCarthy and Navigli, 2007;</ref><ref type="bibr" target="#b19">Mihalcea et al., 2010)</ref>. Word-in-context similarity has also been proposed as a way to capture the dynamic nature of word meanings: the Stanford Contextual Word Similarities (SCWS) dataset, proposed by <ref type="bibr" target="#b11">Huang et al. (2012)</ref> More recently, Pilehvar and Camacho-Collados (2019) presented the Word-in-Context (WiC) dataset. Framed as a binary classification task, WiC is a benchmark for the evaluation of contextdependent embeddings. However, WiC covers only one language, i.e. English, and two parts of speech, namely nouns and verbs. To enable evaluation in languages other than English, <ref type="bibr" target="#b27">Raganato et al. (2020)</ref> proposed XL-WiC, an extension of the WiC dataset which covers different European and non-European languages, thus allowing for zero-shot settings. Despite their effectiveness, both the WiC and XL-WiC datasets are not manually created and do not cover all open-class parts of speech. Moreover, they do not consider cross-lingual evaluation scenarios in which systems are tested in more than one language at the same time, thus highlighting the need for a new evaluation benchmark.   <ref type="table">1</ref> provides an overview of the composition of the dataset, which we detail further in the remainder of this paper. Compared to existing datasets, MCL-WiC makes it possible to perform a thorough, high-quality evaluation of a multitude of approaches, ranging from architectures based on pre-trained language models to traditional WSD systems.</p><p>In the following, we introduce the multilingual and cross-lingual sub-tasks. Then, we describe the data sources, the selection of the target lexemes and sentence pairs and, finally, the annotation process.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Multilingual sub-task</head><p>This sub-task allows systems to be evaluated in a scenario in which only one language at a time is considered. To this end, we manually select sentence pairs in the following language combinations: Ar-Ar, En-En, Fr-Fr, Ru-Ru and Zh-Zh. The multilingual sub-task includes training, development and test splits as reported in Table <ref type="table">1</ref> (top). The training data, available only in English, contains 4000 unique lexemes and 8000 sentence pairs. Instead, both the development and test data splits include 500 unique lexemes and 1000 sentence pairs for each of the aforementioned language combinations. To avoid any bias, each dataset contains a balanced number of tags, i.e. 50% True (T) and 50% False (F).</p><p>In Table <ref type="table" target="#tab_2">2</ref>, <ref type="bibr">3</ref> we report two instances derived from En-En, which share the first sentence. Given the target lemma leave, its part of speech (verb) and two sentences in which two occurrences of leave are contained, participating systems are required to determine whether the target occurrences (shown in bold type in the Table <ref type="table">)</ref> share the same meaning (T) or not (F). Since the senses of the target occurrences differ in both sentence pairs, they are both tagged with F in the gold file, as shown in Table <ref type="table">3</ref>. Note that, in MCL-WiC, target occurrences can be inflected forms of the target lemma.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Cross-lingual sub-task</head><p>The cross-lingual sub-task allows systems to be tested and compared in a cross-lingual scenario. Here, sentence pairs are composed of a sentence in English and a sentence in one of the other MCL-WiC languages, including the following language combinations: En-Ar, En-Fr, En-Ru and En-Zh. It is worth mentioning that, in contrast to past efforts,  all sentences are manually selected and annotated, and that Arabic and Russian are included in a Wordin-Context dataset for the first time. We report two cross-lingual instances (sentence pairs) in Table <ref type="table" target="#tab_4">4</ref> for the En-Ru language combination, which share the first sentence. Given the English lemma light, its part of speech (noun), and two sentences, one in English where light occurs and one in Russian where a translation of light appears, participants are asked to determine whether the target occurrence (in bold in the Table <ref type="table">)</ref> of light and its translations into Russian zavisimosti and uqetom share the same meaning or not. Importantly, translations are allowed to be multi-word expressions and periphrases.</p><p>The cross-lingual sub-task comprises test data only and includes 500 unique English lexemes and 1000 sentence pairs for each language combination as reported in Table <ref type="table">1</ref> (bottom). Note that, in this case, all cross-lingual datasets share the same English target lexemes. Similarly to its multilingual counterpart, the data in this sub-task contains a balanced number of T (50%) and F (50%) tags.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Selection of the data and annotation</head><p>Sources of the data In order to construct MCL-WiC, we leveraged three resources. First, we used the BabelNet 4 multilingual semantic network <ref type="bibr" target="#b23">(Navigli and Ponzetto, 2010)</ref> to obtain a set of lexemes in all languages of interest. Subsequently, we extracted sentence pairs containing occurrences of such lexemes from two corpora, namely the United Nations Parallel Corpus <ref type="bibr" target="#b37">(Ziemski et al., 2016</ref>, UNPC) 5 and Wikipedia 6 . UNPC is a collection of official records and parliamentary docu-ments of the United Nations available in the six UN languages 7 , whereas Wikipedia is a wide-coverage multilingual collaborative encyclopedia. These corpora were selected due to their wide coverage in terms of domains and languages. In fact, such heterogeneity allowed for the creation of a new competitive benchmark capable of evaluating the generalization ability of a system in discriminating senses in different domains and across languages. With this aim in view, we derived 50% of the selected sentence pairs from UNPC and the remaining 50% from Wikipedia.</p><p>Selection of lexemes Starting from BabelNet, we extracted a set of 5250 unique ambiguous lexemes in English and 1000 unique lexemes for each of the following languages: Arabic, Chinese, French and Russian. The selected pairs in English were distributed as follows: 4000 for the training data, 500 for the development data and 750 for the test data (500 for the multilingual sub-task and 250 for the cross-lingual sub-task 8 ; we enriched the latter with additional 250 pairs derived from the multilingual test data). Instead, the selected pairs in languages other than English were included in the multilingual sub-task only and distributed as follows: 500 for the development data and 500 for the test data. We selected the target lexemes starting from basic vocabulary words and such that they had at least three senses in BabelNet. A key goal was to cover all open-class parts of speech, namely nouns, verbs, adjectives and adverbs, whose distribution in MCL-WiC is shown in Table <ref type="table" target="#tab_6">5</ref>. The target lexemes were chosen so as to avoid phrasal verbs and multi-word expressions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>En-En</head><p>Ar  Selection and annotation of sentence pairs For each of the target lexemes, we annotated two sentence pairs from either UNPC or Wikipedia. All selected sentences were well-formatted and, most importantly, provided a sufficient semantic context to determine the meaning of the target occurrences unequivocally. Subsequently, each sentence pair was associated with a tag, depending on whether the target words in the two contexts are used with the same meaning (T) or not (F). To perform both the selection of the data as well as the annotation, we employed eight annotators with a high level of education and linguistic proficiency in the corresponding language; the annotation work required approximately six months. Importantly, all annotators followed specific criteria which we describe in the following paragraph.</p><p>Annotation criteria We provided each annotator with general annotation guidelines. Besides general criteria, each annotation team 9 established ad-hoc guidelines for specific linguistic issues, some of which will be briefly illustrated in Section 4, below.</p><p>General annotation criteria can be broadly divided into grammatical and lexicographic-semantic criteria. The former refer to the format and the grammatical correctness of the sentences to be selected: annotators were asked to choose wellwritten sentences only, i.e. sentences with a clear structure, ending with a full stop and containing a main clause. Instead, lexicographic-semantic criteria refer to the attribution of the labels. To determine whether two occurrences were used with the same meaning or not, annotators were asked to use multiple reputable dictionaries (e.g. for English we used the Merriam-Webster, Oxford Dictionary of English and English Collins dictionaries). Moreover, to avoid misperceptions in the same-sense tagging annotations, we asked annotators to justify their choices by providing substitutes for the target occurrences with synonyms, hypernyms, paraphrases or the like. Contrary to what was done in WiC and XL-WiC, we argue that, for the purposes of this task, annotating according to lexicographic motivations, i.e. by using reliable dictionaries, contributes significantly to minimizing the impact of subjectivity, thus producing more adequate and consistent data. Finally, lexicographic-semantic criteria also provided concrete indications and examples regarding the attribution of tags. For instance, T was used if and only if the two target occurrences were used with exactly the same meaning or, in other words, if, using a dictionary, the definition of the two target words was the same.</p><p>Inter-annotator agreement In order to determine the degree of uncertainty encountered during the annotation process, we computed the interannotator agreement. To this end, we randomly selected a sample of 500 sentence pairs from each of the En-En and Ru-Ru multilingual datasets, and 200 sentence pairs from the En-Ar and En-Zh crosslingual datasets. Validators were provided with the same guidelines used during the annotation process. We calculated the agreement between two different annotators using the Cohen's kappa, obtaining κ=0.968 in En-En, 0.952 in Ru-Ru, 0.94 in En-Ar and 0.91 in En-Zh, which is interpreted as almost perfect agreement.</p><p>Data format For each sub-task, we provide two types of file (.data and .gold) in JSON format. The .data files contain the following information: a unique ID, the lemma, its part of speech, the two sentences and the positional indices to identify the target occurrences to be considered (see Tables <ref type="table" target="#tab_2">2  and 4</ref>). Instead, the .gold files include the gold answers, i.e. the corresponding ID and tag, as shown in Table <ref type="table">3</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Linguistic Issues</head><p>In this section, we describe interesting languagespecific issues which required additional guidelines. Due to space limits, we focus on languages which do not use the Latin alphabet, i.e. Arabic, Chinese and Russian, illustrating only the most significant issues encountered.</p><p>Arabic From a WSD perspective, compared to other languages, written Arabic poses bigger challenges due to the omission of vocalization, which increases the degree of semantic ambiguity. In fact, the vocalization, expressed by diacritics placed above or below consonants, contributes significantly to determining the right interpretation and thus the meaning of words. For instance, the unvocalized word form b-r-d could be interpreted as bard ("cold"), burd ("garment") or barad ("hail"). Of course, in Arabic, polysemy also affects vocalized words, which can have multiple meanings, e.g. ummiyy means "maternal", but also "illiterate". For the purposes of MCL-WiC, we chose to keep the sentences as they are found in UNPC and Wikipedia, i.e. unvocalized in the vast majority of cases, while -instead -providing the target lemmas in the vocalized form. This was done in order to avoid lexical ambiguity deriving from lemmas which share the same word form but are vocalized in a different way. Furthermore, this choice facilitated the selection and annotation of sentence pairs in which a given target lemma occurs.</p><p>Chinese Since Chinese does not adopt an alphabet, the semantic ambiguity that can be found in English homographs is basically lost. In Chinese, if two unrelated words are pronounced in the same way, such as "plane" (the airplane) and "plane" (the surface), they are not usually written in the same way. By way of illustration, 沉默, meaning "silent; to be silent" and 沉没, "to sink", are both pronounced as chénmò, but, because they are written with different characters, they cannot be considered ambiguous words. Analogously, some characters have an extremely high semantic ambiguity themselves, but since they appear most frequently in polysyllabic words, their ambiguity is lost. For example, the character guǒ 果 has at least two meanings, "fruit" and "result", but this character almost never stands as a word on its own in contemporary Chinese. In the current lexicon most of the Chinese words are composed of two or more characters; when it appears in actual texts, guǒ is al-most always connected to other characters, and the word thus formed is no longer semantically ambiguous. Finally, similarly to the cross-lingual sub-task, some ambiguity had to be discarded in translation, as in the case of Chinese classifiers which have a marked potential for semantic ambiguity. For example, dào 道 is, among others, the classifier for long and narrow objects, as in yī dào hé 一道河, a river (one+classifier+river), or for doors, walls and similar objects with an entry and an exit, as in yī dào mén 一道门, a door (one+classifier+door). However, since classifiers are virtually absent in European languages, they could not be applied in the cross-lingual sub-task and were discarded.</p><p>Russian A noteworthy issue encountered by Russian annotators concerned the verbal aspects which can be viewed as one of the most challenging features of the Russian language especially for L2learners 10 with no Slavic background. In Russian, a verb can be perfective, imperfective or both. Normally, a perfective verb has one or more imperfective counterparts and vice versa. Broadly speaking, perfective verbs are typically used to express nonrepetitive actions completed in the past, or actions which will certainly be carried out in the future, and also in general for past or future actions for which the speaker intends to emphasize the result that was or will be achieved. Conversely, imperfective verbs are used to express actions which are incomplete, habitual, in progress, or actions for which the speaker does not stress the result to be attained. In MCL-WiC, given a verbal target lexeme, we decided to choose sentences in which the target words occurring in the selected sentences and the target lemma shared the same aspect. In fact, in Russian, although pairs of perfective and imperfective verbs such as delat , sdelat (to do) or spraxivat , sposit (to ask) show a high degree of morphological relatedness, they tend to be considered as distinct lemmas.</p><p>Another interesting issue regards participles. In some cases, annotators raised issues concerning the part of speech of participles occurring as target words in the selected sentences. In fact, Russian participles derive from verbs, but are declined and can behave as adjectives. Since the target lexemes and the corresponding occurrences must share the same part of speech, we decided to discard sentences in which the part of speech of the target words could not be determined unequivocally.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participating Systems</head><p>This Section is devoted to the participating systems. First, we briefly describe the rules of the competition. Subsequently, we provide an overview of the data and approaches used by participants. Then, we focus on some of the best-scoring systems and provide a breakdown of the techniques adopted. We report the three best-performing teams for each sub-task and language combination in Tables <ref type="table">6 and  7</ref>. All results are publicly available on the official MCL-WiC page on GitHub 11 . For each winning team, we show only the best performance in the corresponding category.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Rules of the competition</head><p>Participants were given no constraints as far as data was concerned; for instance, the development data could be used for training or it was allowed to enrich the provided data by constructing new datasets in an automatic or semi-automatic fashion. Furthermore, we allowed more than one participant for each team. Participating teams could upload up to five submissions, each including up to 9 language combinations for the two sub-tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Data</head><p>Multilingual sub-task As far as English is concerned, the majority of participating systems used the MCL-WiC training and development data. Some participants also used the data derived from WiC and XL-WiC. Furthermore, automaticallyconstructed WiC-like datasets were obtained by some participants, starting from semantic resources such as SemCor <ref type="bibr" target="#b21">(Miller et al., 1993)</ref>, WordNet and the Princeton WordNet Gloss Corpus (PWNG) <ref type="bibr">12</ref> , or by automatically translating available datasets into English. The available data was also enriched via sentence reversal augmentation (given a sentence pair, the two sentences were swapped). In some cases, the development and trial 13 data was used to enrich the training data.</p><p>As regards languages other than English, most participants used XL-WiC data, or new training and development datasets were obtained by splitting the MCL-WiC language-specific development data. Alternatively, in zero-shot scenarios, participants trained their models using the English training data. Furthermore, some participants augmented the training and development data by including the trial data. Also in this case, training and development splits were augmented via sentence reversal. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Cross</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Approaches</head><p>Multilingual sub-task Most participants used XLM-RoBERTa <ref type="bibr" target="#b6">(Conneau et al., 2020)</ref> as pretrained language model to obtain contextual representations of the target occurrences. Other models frequently used by participants were mBERT, RoBERTa <ref type="bibr" target="#b15">(Liu et al., 2019)</ref>, ALBERT <ref type="bibr" target="#b14">(Lan et al., 2019)</ref>, ELECTRA <ref type="bibr" target="#b5">(Clark et al., 2019)</ref> and ERNIE <ref type="bibr" target="#b31">(Sun et al., 2020)</ref>. The majority of participants made use of fine-tuned contextualized embeddings and used logistic regression to perform binary classification. Some participants used ensembles and majority voting.</p><p>Cross-lingual sub-task Also in this sub-task, XLM-RoBERTa was the most used multilingual language model. Again, the majority of systems obtained contextualized embeddings, passing them to a logistic regression unit. In this case, participants mainly explored zero-shot approaches. Some participants made use of ensembles, adversarial training, pseudo-labelling <ref type="bibr" target="#b33">(Wu and Prasad, 2017)</ref> and cross-validation techniques.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Competition and best-scoring systems</head><p>The MCL-WiC competition took place on the Co-daLab 14 open Web-based platform and reported 170 participants, out of which 48 uploaded one or more datasets. Overall, 170 submissions were received, the majority of which were focused on the multilingual sub-task and specifically on the En-En dataset. As far as the evaluation metric was concerned, systems were tested using the accuracy score. In what follows, we provide insights regarding the approaches adopted by some of the best-performing participating systems, based on the information we received.</p><p>Cam The Cam team <ref type="bibr" target="#b35">(Yuan and Strohmaier, 2021</ref>) made use of the WiC and XL-WiC datasets in addition to the MCL-WIC data. Furthermore, examples from the Sense Complexity Dataset <ref type="bibr">(Strohmaier et al., 2020, SeCoDa)</ref> and the Cambridge Advanced Learner's Dictionary (CALD) were extracted. Cam used pre-trained XLM-RoBERTa as underlying language model and added two additional layers on top to perform binary classification with tanh and sigmoid activation, respectively. As input, the following items were concatenated: the representation corresponding to the first token of the sequence, the representations of the target words in both sentences, as well as the absolute difference, cosine similarity and pairwise distance between the two vectors. When the target word was split into multiple sub-tokens, Cam took the average representation rather than the first sub-token. Finally, a two-step training strategy was applied: 1) pre-training the system using out-of-domain data, i.e. WiC, XL-WiC, SeCoDa and CALD; 2) finetuning the system on MCL-WiC data.</p><p>godzilla godzilla enriched the MCL-WiC training data by automatically constructing a dataset starting from WordNet and using Machine Translation. Different types of pre-trained models, such as RoBERTa and XLM-RoBERTa, were adopted. godzilla highlighted the target words by surrounding them with special markings on both sides and appending the target words to the end of each sentence. As architecture, this system used the next sentence prediction models from the hugging face 15 library. Given the strong connection between En-Ar, En-Fr, En-Ru, En-Zh test datasets, pseudo-tagging was used for each language combination. Finally, godzilla applied label smoothing and model merging.</p><p>LIORI The LIORI 16 team <ref type="bibr" target="#b7">(Davletov et al., 2021)</ref> used the datasets provided in the MCL-WiC competition. Specifically, the training data was enriched with 70% of the development data for Arabic, Chinese, French and Russian, and the whole trial data. Optionally, data augmentation was performed by swapping sentences in each example. LIORI finetuned XLM-RoBERTa on a binary classification task and used a 2-layered feed-forward neural network on top of the language model with dropout and the tanh activation function. Sentences in each pair were concatenated by the special token "&lt;/s&gt;" and fed to XLM-RoBERTa. As input, the model took the concatenation of the contextualized embeddings of the target words, aggregating over subtokens either by max pooling, or just by taking the first sub-token. LIORI used a voting ensemble composed of three models: the first model trained with data augmentation, using the concatenations of the first sub-tokens of the target words; the second trained with data augmentation using max-pooling over sub-tokens; finally, the third trained without data augmentation and using concatenations of the first sub-tokens.</p><p>stce stce used the MCL-WiC datasets and built additional training data using HowNet <ref type="bibr" target="#b9">(Dong and Dong, 2003)</ref>. Furthermore, the training data was enriched by pseudo-labelling the test datasets. Data cleaning was performed and target words were surrounded by special markings. The main language model used was XLM-RoBERTa-large. During the training process, dynamic negative sampling was performed for each batch of data fed to the model. At the same time, stce adopted the Fast Gradient Method and added disturbance to the embedding layer to obtain more stable word representations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Dataset Team Score</head><p>En-Ar The model was trained for 4.5 epochs and stopped by Early Stopping with patience equal to 2. For each sentence, zhestyatsky took the embeddings of all sub-tokens corresponding to the target word and max pooled them into one embedding. Subsequently, zhestyatsky evaluated the cosine similarity of these embeddings and activated this value through ReLU.</p><p>MCL@IITK First, the MCL@IITK 17 team <ref type="bibr" target="#b10">(Gupta et al., 2021)</ref> pre-processed the sentences by adding a signal, either double quotes on both sides of the target word, or the target word itself appended to the end of the sentence. For En-En, MCL@IITK enriched the MCL-WiC training data using sentence reversal augmentation, WiC and SemCor. MCL@IITK obtained embeddings of the target words using the last hidden layer, and passed them to a logistic regression unit. MCL@IITK used ELECTRA, ALBERT, and XLM-RoBERTa as language models and submitted probability sum ensembles. For the non-English multilingual subtask, MCL@IITK used XLM-RoBERTa only and tackled all four language pairs jointly. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Baselines</head><p>Following <ref type="bibr" target="#b27">Raganato et al. (2020)</ref>, we used a baseline transformer-based binary classifier. Thus, first, given a sentence pair, a dense representation is obtained for each target occurrence. As indicated in <ref type="bibr" target="#b8">Devlin et al. (2019)</ref>, in the case that a target occurrence is split into multiple sub-tokens, the first sub-token is selected. The resulting representations are then given as input to a binary classifier implemented following <ref type="bibr" target="#b32">Wang et al. (2019)</ref>. We selected the Adam optimizer (Kingma and Ba, 2015) with learning rate and weight decay equal to 1e-5 and 0, respectively, and trained for 10 epochs. We experimented with two different contextualized embedding models: BERT (base-multilingualcased) and XLM-RoBERTa (base). As for the data, in contrast to most participants, we made use of the data provided for the task only. We used En-En as training and development data for English. As for other language combinations, we trained on En-En and validated both on En-En or and on the other  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Results and Discussion</head><p>In this section, we discuss the results achieved in our competition. Overall, the MCL-WiC dataset allows systems to attain high performances, in the 85-93% accuracy range. This leads us to hypothesize that, in general, systems were able to develop a good ability in capturing sense distinctions without relying on a fixed sense inventory. When compared to the proposed baselines, we observe that best-performing systems were able to achieve an absolute improvement of up to 27.1 points over the corresponding baselines (e.g. on En-Ar, cf. Tables <ref type="table" target="#tab_11">7 and 8</ref>). Both our baselines and the systems developed by participants confirm that, in this task, XLM-RoBERTa outperforms BERT in most language combinations. The highest score was obtained in En-En, with the best system achieving 93.3% accuracy. Note that our baselines were also able to attain good performances in En-En, i.e. 84.0% using BERT and 86.6% with XLM-RoBERTa, without benefiting from additional training and development data. Interestingly, Chinese was the language which achieved the second-best results, both in Zh-Zh and En-Zh, attaining on average results which were considerably higher. Instead, Arabic seems to have been the most difficult language for participants, especially in Ar-Ar. A reason for this result, deserving further exploration, could lie in morpho-semantic features inherent in Arabic, which we briefly outlined in Section 4.</p><p>Zero-shot approaches differ in the performances achieved by participants in the two sub-tasks: in the cross-lingual sub-task participants were able to achieve slightly better performances than those in the multilingual setting, most probably thanks to the presence of English in both the training and the test data, and, more in general, to the availability of English WiC-style datasets which could be used to enrich the already provided data. With the exception of Chinese, instead, on the multilingual sub-task we observe a performance drop between 1.6 and 4.3%.</p><p>Finally, we note that performance boosts were observed across the board when using data augmentation, especially by swapping the two sentences within a pair or by coupling the second sentences of two pairs sharing the same first sentence and the same meaning. Another consistent performance increase, observed both in the multilingual and in the cross-lingual sub-task, was obtained when adding a signal on both sides of the target occurrences.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusions</head><p>In this paper, we described the SemEval-2021 Task 2 and introduced Multilingual and Cross-lingual Word-in-Context (MCL-WiC), the first entirely manually-curated WiC-style dataset in five European and non-European languages, namely Arabic, Chinese, English, French and Russian. MCL-WiC allows the inherent ability of systems to discriminate between word senses within the same language to be tested, and also, interestingly, within crosslingual scenarios in which a system is evaluated in two languages at the same time, namely English and one of the remaining MCL-WiC languages.</p><p>While current Word-in-Context datasets focus primarily on single tokens, as a suggestion for future work we would like to further explore the integration of multi-word expressions and idiomatic phrases into a Word-in-Context task. This would allow us to investigate the intrinsic ability of a system to correctly discriminate the semantics of such linguistic constructs, especially those whose meaning is not compositional, i.e. it cannot be derived by combining the meaning of each of their individual components.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>-lingual sub-task In the cross-lingual subtask, most participants used the MCL-WiC English training and development data in zero-shot settings. A smaller group of participants used WiC and XL-WiC data. Some participants created additional training and development data from other resources such as the Open Multilingual WordNet and PWNG. Additional training and development data was produced via Machine Translation.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell cols="2">: Excerpt from the multilingual dataset (En-En): two sentence pairs sharing the same first sentence</cell></row><row><cell cols="2">are shown, with the target word occurrence in bold type.</cell></row><row><cell>ID</cell><cell>Tag</cell></row><row><cell>training.en-en.624</cell><cell>F</cell></row><row><cell>training.en-en.625</cell><cell>F</cell></row><row><cell cols="2">Table 3: Example of gold file.</cell></row><row><cell cols="2">both sub-tasks, for each lexeme, we provide two</cell></row><row><cell cols="2">different instances which share one sentence 2 . We</cell></row><row><cell cols="2">provide training and development data only for</cell></row><row><cell cols="2">the multilingual sub-task, whereas test data is pro-</cell></row><row><cell cols="2">vided for both sub-tasks. While training data is</cell></row><row><cell cols="2">produced only in English, both the development</cell></row><row><cell cols="2">and the test data are available in other languages</cell></row><row><cell>as well. Table</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>for concentrating the solar light, resulted in an overall efficiency of 20%.39 50 Ka dy predstavitel mo et vystupat v zavisimosti ot poluqennyh ukazani .</figDesc><table><row><cell>ID</cell><cell>Lemma</cell><cell>POS</cell><cell>Start End</cell><cell>Sentence</cell></row><row><cell cols="5">test.en-ru.18 Using a technique test.en-ru.19 light NOUN 46 51 light NOUN 46 51 Using a technique for concentrating the solar light, resulted in an overall efficiency of 20%. 2 S uqetom raboty, orator sqitaet 8 celesoobraznym izlo it principy.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Excerpt from the cross-lingual dataset (En-Ru): two sentence pairs sharing the same first sentence are shown, with the target word occurrence in bold type.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head></head><label></label><figDesc>Train Dev Test Dev Test Dev Test Dev Test Dev Test Test NOUN 4124 582 528 490 494 548 514 572 582 520 554 458 VERB 2270 246 298 428 398 262 272 352 372 330 364 320</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>-Ar</cell><cell cols="2">Fr-Fr</cell><cell cols="2">Ru-Ru</cell><cell cols="2">Zh-Zh</cell><cell>En-*</cell></row><row><cell>ADJ</cell><cell cols="3">1430 158 144</cell><cell>72</cell><cell>98</cell><cell cols="2">156 184</cell><cell>54</cell><cell>30</cell><cell>122</cell><cell>62</cell><cell>178</cell></row><row><cell>ADV</cell><cell>176</cell><cell>14</cell><cell>30</cell><cell>10</cell><cell>10</cell><cell>34</cell><cell>30</cell><cell>22</cell><cell>16</cell><cell>28</cell><cell>20</cell><cell>44</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 5 :</head><label>5</label><figDesc>Part-of-speech distribution in MCL-WiC. * indicates all languages supported in MCL-WiC other than English.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head></head><label></label><figDesc>A 9:1 traindev split with sentence reversal augmentation was used on the non-English dev data, in addition to En-En train data and XL-WiC with an ensemble model. For the cross-lingual subtask, ELECTRA embeddings were used. The models were trained on partly back-translated En-En train set and validated on back-translated En-En development set.</figDesc><table><row><cell>PALI The PALI 18 team (Xie et al., 2021) en-</cell></row><row><cell>riched the MCL-WiC data using WordNet while</cell></row><row><cell>keeping the original cross-lingual data to maintain</cell></row><row><cell>the target words in the cross-lingual data. After text</cell></row><row><cell>pre-processing, task-adaptive pre-training was per-</cell></row><row><cell>formed using the MCL-WiC data. The target words</cell></row><row><cell>were surrounded by special symbols. PALI used</cell></row><row><cell>XLM-RoBERTa as main language model and took</cell></row><row><cell>its final output layer, concatenating the [CLS] to-</cell></row><row><cell>ken with the embeddings of the target occurrences</cell></row><row><cell>in each sentence pair. To increase the training</cell></row><row><cell>data, PALI exchanged the order of 20% of the sen-</cell></row><row><cell>tence pairs. During training, lookahead (AdamW)</cell></row><row><cell>was used together with adversarial training imple-</cell></row><row><cell>mented by the Fast Gradient Method to obtain more</cell></row><row><cell>stable word representations. Hyperparameters were</cell></row><row><cell>tuned through trial-and-errors. The models of strat-</cell></row><row><cell>ified 5-fold cross-validation were averaged to yield</cell></row><row><cell>the final prediction results.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8 :</head><label>8</label><figDesc>Accuracy of baselines for multilingual and cross-lingual sub-tasks. Columns indicate the test set used. In setting 1, we used the En-En training data and the En-En development data. In setting 2, we used the En-En training data and the corresponding development datasets in languages other than English.</figDesc><table><row><cell>language multilingual development data. Table 8</cell></row><row><cell>reports the best training results according to the</cell></row><row><cell>corresponding validation.</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Each lexeme corresponds to a lemma and its part of speech.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">To speed up the annotation process, for each lexeme, we selected a fixed sentence and annotated two other sentences so as to obtain two instances.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">Due to space limits we removed some words from the sentences reported in Table2 and 4.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">https://babelnet.org/ 5 https://conferences.unite.un.org/uncorpus/ 6 https://wikipedia.org</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">Arabic, Chinese, English, French, Spanish and Russian.8  We recall that, in the cross-lingual sub-task, the target lexemes are provided in English and shared across all datasets.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">An annotation team is made up of annotators working on the same language.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10">In language teaching, L2 indicates a language which is not the native language of the speaker.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">https://github.com/SapienzaNLP/mcl-wic 12 http://wordnetcode.princeton.edu/ 13 As trial data, we provided 4 instances for each sub-task and dataset.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="14">https://competitions.codalab.org/competitions/27054</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="15">https://huggingface.co/16  The following member of the team LIORI took part in the competition: davletov.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="17">The following members of the MCL@IITK team took part in the competition: jaymundra, rohangpt and dipakam.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="18">The following members of the PALI team took part in the competition: endworld and xsysigma.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>The authors gratefully acknowledge the support of the ERC Consolidator Grant MOUSSE No. 726487 and the ELEXIS project No. 731015 under the European Union's Horizon 2020 research and innovation programme.</p><p>We gratefully thank Luisa Borchio, Ibraam Abdelsayed, Anna Guseva, Zhihao Lyu and Beatrice Buselli for their valuable annotation work.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Senja Pollak, Nikola Ljubešić, Matej Ulčar, Ivan Vulić, and Mohammad Taher Pilehvar</title>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Santos Armendariz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Purver</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Graded Word Similarity in Context</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fourteenth Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="36" to="49" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Matej Ulcar, Senja Pollak, Nikola Ljubesic, Marko Robnik-Sikonja, Mark Granroth-Wilding, and Kristiina Vaik. CoSimLex: A resource for evaluating graded word similarity in context</title>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Santos Armendariz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Purver</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th</title>
+				<meeting>The 12th</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<author>
+			<persName><surname>Lan-Guage</surname></persName>
+		</author>
+		<title level="m">Resources and Evaluation Conference</title>
+				<imprint>
+			<biblScope unit="page" from="5878" to="5886" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">EViLBERT: Learning task-agnostic multimodal sense embeddings</title>
+		<author>
+			<persName><forename type="first">Agostina</forename><surname>Calabrese</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michele</forename><surname>Bevilacqua</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<idno type="DOI">10.24963/ijcai.2020/67</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twenty-Ninth International Joint Conference on Artificial Intelligence, IJCAI-20</title>
+				<meeting>the Twenty-Ninth International Joint Conference on Artificial Intelligence, IJCAI-20</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="481" to="487" />
+		</imprint>
+	</monogr>
+	<note>ternational Joint Conferences on Artificial Intelligence Organization</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Electra: Pre-training text encoders as discriminators rather than generators</title>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Minh-Thang</forename><surname>Luong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Quoc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher D</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Unsupervised cross-lingual representation learning at scale</title>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Conneau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kartikay</forename><surname>Khandelwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vishrav</forename><surname>Chaudhary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Wenzek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Édouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="8440" to="8451" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">LIORI at SemEval-2021 Task 2: Span Prediction and Binary Classification approaches to Word-in-Context Disambiguation</title>
+		<author>
+			<persName><forename type="first">Adis</forename><surname>Davletov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Arefyev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Denis</forename><surname>Gordeev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Rey</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation (SemEval-2021)</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation (SemEval-2021)<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">BERT: pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/n19-1423</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT 2019</title>
+		<title level="s">Long and Short Papers</title>
+		<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT 2019<address><addrLine>Minneapolis, MN, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019-06-02" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">HowNet-a hybrid language and knowledge resource</title>
+		<author>
+			<persName><forename type="first">Zhendong</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiang</forename><surname>Dong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Natural Language Processing and Knowledge Engineering</title>
+				<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="820" to="824" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">MCL@IITK at SemEval-2021 Task 2: Multilingual and Cross-lingual Wordin-Context Disambiguation using Augmented Data, Signals, and Transformers</title>
+		<author>
+			<persName><forename type="first">Rohan</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jay</forename><surname>Mundra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deepak</forename><surname>Mahajan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation<address><addrLine>Bangkok, Thailand</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Improving word representations via global context and multiple word prototypes</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Eric</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Christopher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew Y</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 50th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 50th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="873" to="882" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Sensembed: Learning sense embeddings for word and relational similarity</title>
+		<author>
+			<persName><forename type="first">Ignacio</forename><surname>Iacobacci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Taher Pilehvar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="95" to="105" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Adam: A Method for Stochastic Optimization</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Diederik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jimmy</forename><surname>Kingma</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ba</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">ALBERT: A Lite BERT for Self-supervised Learning of Language Representations</title>
+		<author>
+			<persName><forename type="first">Zhenzhong</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Goodman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Gimpel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piyush</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">RoBERTa: A robustly optimized BERT pretraining approach</title>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1907" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Language modelling makes sense: Propagating representations through wordnet for full-coverage word sense disambiguation</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Loureiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alípio</forename><surname>Jorge</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/p19-1569</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Conference of the Association for Computational Linguistics, ACL 2019</title>
+				<meeting>the 57th Conference of the Association for Computational Linguistics, ACL 2019<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019-07-28" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="5682" to="5691" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">SemEval-2007 Task 10: English lexical substitution task</title>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th International Workshopon Semantic Evaluations</title>
+				<meeting>the 4th International Workshopon Semantic Evaluations</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="48" to="53" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Context2Vec: Learning generic context embedding with bidirectional LSTM</title>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Melamud</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Goldberger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/k16-1006</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGNLL Conference on Computational Natural Language Learning</title>
+				<meeting>the 20th SIGNLL Conference on Computational Natural Language Learning<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2016-08-11" />
+			<biblScope unit="page" from="51" to="61" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">SemEval-2010 Task 2: Cross-lingual lexical substitution</title>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ravi</forename><surname>Sinha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Mccarthy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th international workshop on semantic evaluation</title>
+				<meeting>the 5th international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="9" to="14" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Introduction to WordNet: an online lexical database</title>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">A</forename><surname>Miller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">T</forename><surname>Beckwith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christiane</forename><forename type="middle">D</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Gross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Miller</surname></persName>
+		</author>
+		<idno type="DOI">10.1093/ijl/3.4.235</idno>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Lexicography</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<date type="published" when="1990" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">A semantic concordance</title>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">A</forename><surname>Miller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claudia</forename><surname>Leacock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Randee</forename><surname>Tengi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ross</forename><forename type="middle">T</forename><surname>Bunker</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of a Workshop Held at</title>
+				<meeting>a Workshop Held at<address><addrLine>Plainsboro, New Jersey</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1993-03-21" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Word sense disambiguation: A survey</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/1459352.1459355?casa_token=4eYidWc6aDkAAAAA:E6Err8XYSWpYDhWvogYHoXoLTljiy5K4AO6tUjT7ald-H0qXBhyjPUxTg_Bnxq02jIEwv5ZXvoDfAQ</idno>
+	</analytic>
+	<monogr>
+		<title level="m">ACM computing surveys (CSUR)</title>
+				<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="page" from="1" to="69" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Ba-belNet: Building a very large multilingual semantic network</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 48th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 48th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Uppsala, Sweden</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="216" to="225" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Efficient non-parametric estimation of multiple embeddings per word in vector space</title>
+		<author>
+			<persName><forename type="first">Arvind</forename><surname>Neelakantan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeevan</forename><surname>Shankar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Passos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+		<idno>abs/1504.06654</idno>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1059" to="1069" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Making sense of word embeddings</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Pelevina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Arefiev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Panchenko</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W16-1620</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Representation Learning for NLP, Rep4NLP@ACL 2016</title>
+				<meeting>the 1st Workshop on Representation Learning for NLP, Rep4NLP@ACL 2016<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016-08-11" />
+			<biblScope unit="page" from="174" to="183" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">WiC: the Word-in-Context dataset for evaluating context-sensitive meaning representations</title>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Taher Pilehvar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">José</forename><surname>Camacho-Collados</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/n19-1128</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT 2019</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT 2019<address><addrLine>Minneapolis, MN, USA; Long and Short Papers</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019-06-02" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1267" to="1273" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Xlwic: A multilingual benchmark for evaluating semantic contextualization</title>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Raganato</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Pasini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jose</forename><surname>Camacho-Collados</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad Taher</forename><surname>Pilehvar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="7193" to="7206" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">SensEmBERT: Context-enhanced sense embeddings for multilingual word sense disambiguation</title>
+		<author>
+			<persName><forename type="first">Bianca</forename><surname>Scarlini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Pasini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of AAAI</title>
+				<meeting>of AAAI</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="8758" to="8765" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">With More Contexts Comes Better Performance: Contextualized Sense Embeddings for All-Round Word Sense Disambiguation</title>
+		<author>
+			<persName><forename type="first">Bianca</forename><surname>Scarlini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Pasini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="3528" to="3539" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">SeCoDa: Sense complexity dataset</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Strohmaier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sian</forename><surname>Gooding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shiva</forename><surname>Taslimipoor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Kochmar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th Language Resources and Evaluation Conference</title>
+				<meeting>the 12th Language Resources and Evaluation Conference<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Language Resources Association</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="5962" to="5967" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Ernie 2.0: A continual pre-training framework for language understanding</title>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuohuan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yukun</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shikun</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Hao Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haifeng</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Conference on Artificial Intelligence</title>
+				<meeting>the AAAI Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="page" from="8968" to="8975" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">SuperGLUE: A stickier benchmark for general-purpose language understanding systems</title>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yada</forename><surname>Pruksachatkun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikita</forename><surname>Nangia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amanpreet</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julian</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felix</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><forename type="middle">R</forename><surname>Bowman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems</title>
+				<meeting><address><addrLine>NeurIPS; Vancouver, BC, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019-12-14" />
+			<biblScope unit="page" from="3261" to="3275" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Semi-supervised deep learning using pseudo labels for hyperspectral image classification</title>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saurabh</forename><surname>Prasad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Image Processing</title>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="1259" to="1270" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">PALI at SemEval-2021 task 2: Fine-Tune XLM-RoBERTa for Word in Context Disambiguation</title>
+		<author>
+			<persName><forename type="first">Shuyi</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haiqin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lianxin</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Mo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianping</forename><surname>Shen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Cambridge at SemEval-2021 Task 2: Neural WiC-Model with Data Augmentation and Exploration of Representation</title>
+		<author>
+			<persName><forename type="first">Zheng</forename><surname>Yuan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Strohmaier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th International Workshop on Semantic Evaluation</title>
+				<meeting>the 15th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Zhestyatsky at SemEval-2021 Task 2: ReLU over Cosine Similarity for BERT Fine-tuning</title>
+		<author>
+			<persName><forename type="first">Boris</forename><surname>Zhestiankin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Ponomareva</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fifteenth Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2021</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">The United Nations Parallel Corpus v1. 0</title>
+		<author>
+			<persName><forename type="first">Michał</forename><surname>Ziemski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcin</forename><surname>Junczys-Dowmunt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bruno</forename><surname>Pouliquen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="3530" to="3534" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

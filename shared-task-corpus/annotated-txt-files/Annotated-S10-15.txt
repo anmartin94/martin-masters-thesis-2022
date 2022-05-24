@@ -1,0 +1,16 @@
+title
+SemEval-2 Task 15: Infrequent Sense Identification for Mandarin Text to Speech Systems
+abstract
+Introduction
+There are seven cases of grapheme to phoneme in a text to speech system (Yarowsky, 1997). Among them, the most difficult task is <TASK>disambiguating the homograph word, which has the same POS but different pronunciation</TASK>. In this case, different pronunciations of the same word always correspond to different word senses. Once the word senses are disambiguated, the problem of GTP is resolved.
+There is a little different from traditional WSD, in this task two or more senses may correspond to one pronunciation. That is, the sense granularity is coarser than WSD. For example, the preposition "为" has three senses: sense1 and sense2 have the same pronunciation {wei 4}, while sense3 corresponds to {wei 2}. In this task, to the target word, not only the pronunciations but also the sense labels are provided for training; but for test, only the pronunciations are evaluated. The challenge of this task is the much skewed distribution in real text: the most frequent pronunciation occupies usually over 80%.
+In this task, we will provide a large volume of training data (each homograph word has at least 300 instances) accordance with the truly distribution in real text. In the test data, we will provide at least 100 instances for each target word. The senses distribution in test data is the same as in training data.All instances come from People Daily newspaper (the most popular newspaper in Mandarin). Double blind annotations are executed manually, and a third annotator checks the annotation.
+
+Participating Systems
+Two kinds of precisions are evaluated. One is micro-average:
+/ N is the number of all target word-types. m i is the number of labeled correctly to one specific target word-type and n i is the number of all test instances for this word-type. The other is macroaverage:
+There are two teams participated in and submitted nine systems. Table 1 shows the results, all systems are better than baseline (Baseline is using the most frequent sense to tag all the tokens).
+
+System
+Micro  
+

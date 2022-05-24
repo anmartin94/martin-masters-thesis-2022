@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">CMCL 2021 Shared Task on Eye-Tracking Prediction</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Nora</forename><surname>Hollenstein</surname></persName>
+							<email>nora.hollenstein@gmail.com</email>
+						</author>
+						<author>
+							<persName><forename type="first">Emmanuele</forename><surname>Chersoni</surname></persName>
+							<email>emmanuelechersoni@gmail.com</email>
+						</author>
+						<author>
+							<persName><forename type="first">Cassandra</forename><surname>Jacobs</surname></persName>
+							<email>jacobs.cassandra.l@gmail.com</email>
+						</author>
+						<author>
+							<persName><forename type="first">Yohei</forename><surname>Oseki</surname></persName>
+							<email>oseki@g.ecc.u-tokyo.ac.jp</email>
+						</author>
+						<author>
+							<persName><forename type="first">Laurent</forename><surname>Prévot</surname></persName>
+							<email>laurent.prevot@univ-amu.fr</email>
+						</author>
+						<author>
+							<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+							<email>esantus@gmail.com</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Copenhagen</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">The Hong Kong Polytechnic University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Wisconsin</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff3">
+								<orgName type="institution">University of Tokyo</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff4">
+								<orgName type="institution">Marseille University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">CMCL 2021 Shared Task on Eye-Tracking Prediction</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:31+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Eye-tracking data from reading represent an important resource for both linguistics and natural language processing. The ability to accurately model gaze features is crucial to advance our understanding of language processing. This paper describes the Shared Task on Eye-Tracking Data Prediction, jointly organized with the eleventh edition of the Workshop on Cognitive Modeling and Computational Linguistics (CMCL 2021). The goal of the task is to predict 5 different token-level eyetracking metrics from the Zurich Cognitive Language Processing Corpus (ZuCo). Eyetracking data were recorded during natural reading of English sentences. In total, we received submissions from 13 registered teams, whose systems include boosting algorithms with handcrafted features, neural models leveraging transformer language models, or hybrid approaches. The winning system used a range of linguistic and psychometric features in a gradient boosting framework.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction/Overview</head><p>The ability of accurately modeling eye-tracking features is crucial to advance the understanding of language processing. Eye-tracking provides millisecond-accurate records on where humans look, shedding lights on where they pay attention during their reading and comprehension phase (see the example in Figure <ref type="figure" target="#fig_0">1</ref>). The benefits of utilizing eye movement data have been noticed in various domains, including natural language processing and computer vision. Not only can it reveal the workings of the underlying cognitive processes of language understanding, but the performance of computational models can also be improved if their inductive bias is adjusted using human cognitive signals such as eye-tracking, fMRI, or EEG</p><p>The film often achieves a mesmerizing poetry. data <ref type="bibr" target="#b4">(Barrett et al., 2016;</ref><ref type="bibr" target="#b19">Hollenstein et al., 2019;</ref><ref type="bibr" target="#b34">Toneva and Wehbe, 2019)</ref>. Thanks to the recent introduction of a standardized dataset <ref type="bibr" target="#b20">(Hollenstein et al., 2018</ref><ref type="bibr" target="#b21">(Hollenstein et al., , 2020</ref>, it is now possible to compare the capabilities of machine learning approaches to model and analyze human patterns of reading.</p><p>In this shared task, we present the challenge of predicting eye word-level tracking-based metrics recorded during English sentence processing. We encouraged submissions concerning both cognitive modeling and linguistically motivated approaches (e.g., language models). All data files are available on the competition website. 1</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Research on naturalistic reading has shown that fixation patterns are influenced by the predictability of words in their sentence context <ref type="bibr" target="#b13">(Ehrlich and Rayner, 1981)</ref>. In natural language processing and psycholinguistics, the most influential account of the phenomenon is surprisal theory <ref type="bibr" target="#b17">(Hale, 2001;</ref><ref type="bibr" target="#b26">Levy, 2008)</ref>, which claims that the processing difficulty of a word is proportional to its surprisal, i.e., the negative logarithm of the probabil-ity of the word given the context. Surprisal theory was the reference framework for several studies on language models and eye-tracking data prediction <ref type="bibr" target="#b11">(Demberg and Keller, 2008;</ref><ref type="bibr" target="#b15">Frank and Bod, 2011;</ref><ref type="bibr" target="#b14">Fossum and Levy, 2012)</ref>. These studies use the data from the Dundee Corpus <ref type="bibr" target="#b23">(Kennedy et al., 2003)</ref>, which consists of sentences from British newspapers with eye-tracking measurements from 10 participants, as one of the earliest and most popular benchmarks.</p><p>Later work on the topic found that the perplexity of a language model is the primary factor determining the fit to human reading times <ref type="bibr" target="#b16">(Goodkind and Bicknell, 2018)</ref>, a result that was confirmed also by the recent investigations involving neural language models such as GRU networks <ref type="bibr" target="#b2">(Aurnhammer and Frank, 2019)</ref> and Transformers <ref type="bibr" target="#b30">(Merkx and Frank, 2020;</ref><ref type="bibr" target="#b37">Wilcox et al., 2020;</ref><ref type="bibr" target="#b18">Hao et al., 2020)</ref>. Using an alternative approach, <ref type="bibr" target="#b5">Bautista and Naval (2020)</ref> obtained good results for the prediction of eye movements with autoencoders.</p><p>In addition to the ZuCo corpus used for this shared task (see Section 4), there are several other resources of eye-tracking data for English. The Ghent Eye-Tracking Corpus (GECO; <ref type="bibr" target="#b8">Cop et al., 2017)</ref> is composed of the entire Agatha Christie's novel The Mysterious Affair at Styles, for a total of 54, 364 tokens, it contains eye-tracking data from 33 subjects, both English native speakers (14) and bilingual speakers of Dutch and English (19), and comes with the Dutch counterpart. The Provo corpus (Luke and Christianson, 2017) contains 55 short English texts about various topics, with 2.5 sentences and 50 words on average, for a total of 2, 689 tokens, and eye-tracking measures collected from 85 subjects. Annotated eye-tracking corpora are also available for other languages, including German <ref type="bibr" target="#b24">(Kliegl et al., 2006)</ref>, Hindi <ref type="bibr" target="#b22">(Husain et al., 2015)</ref>, Japanese <ref type="bibr" target="#b1">(Asahara et al., 2016)</ref> and Russian (Laurinavichyute et al., 2019), among others.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>In this shared task, we present the challenge of predicting eye-tracking-based metrics recorded during English sentence processing. The task is formulated as a regression task to predict the following 5 eye-tracking features for each token in the context of a full sentence:</p><p>1. NFIX (number of fixations): total number of fixations on the current word.    2. FFD (first fixation duration): the duration of the first fixation on the prevailing word.</p><p>3. TRT (total reading time): the sum of all fixation durations on the current word, including regressions.</p><p>4. GPT (go-past time): the sum of all fixations prior to progressing to the right of the current word, including regressions to previous words that originated from the current word.</p><p>5. FIXPROP (fixation proportion): the proportion of participants that fixated the current word (as a proxy for how likely a word is to be fixated).</p><p>The goal of the task is to train a model which predicts these five eye-tracking features for each token in a given sentence.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data</head><p>We use the eye-tracking data recorded during normal reading from the freely available Zurich Cognitive Language Processing Corpus (ZuCo; <ref type="bibr" target="#b20">Hollenstein et al., 2018</ref><ref type="bibr" target="#b21">Hollenstein et al., , 2020</ref>. ZuCo is a combined eye-tracking and EEG brain activity dataset, which provides anonymized records in compliance with an ethical board approval and as such it does not  contain any information that can be linked to the participants.</p><p>The eye-tracking data was recorded with an Eye-Link 1000 system in a series of naturalistic reading experiments. Full sentences were presented at the same position on the screen one at a time. The participants read each sentence at their own reading speed. The reading material included sentences from movie reviews from the Stanford Sentiment Treebank <ref type="bibr" target="#b33">(Socher et al., 2013)</ref> and a Wikipedia dataset <ref type="bibr" target="#b9">(Culotta et al., 2006)</ref>. For a detailed description of the data acquisition, please refer to the original publications. An example sentence is presented in Figure <ref type="figure" target="#fig_0">1</ref>.</p><p>We use the normal reading paradigms from ZuCo, i.e, Task 1 and Task 2 from ZuCo 1.0, and all tasks from ZuCo 2.0. We extracted the eyetracking data from all 12 subjects from ZuCo 1.0 and all 18 subjects from ZuCo 2.0. The dataset contains 990 sentences. All sentences were shuffled randomly before splitting into training and test sets.</p><p>The training data contains 800 sentences, and the test data 190 sentences.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Preprocessing</head><p>Tokenization The tokens in the sentences are split in the same manner as they were presented to the participants during the reading experiments. Hence, this does not necessarily follow a linguistically correct tokenization. For example, the sequences "(except," and "don't" were presented as such to the reader and not split into "(", "except", "," and "do", "n't" as a tokenizer would do. Sentence endings are marked with an &lt;EOS&gt; symbol added to the last token.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Feature Extraction</head><p>The eye-tracking feature values are scaled between 0 and 100 to facilitate evaluation via the mean absolute error. The features NFIX and FIXPROP are scaled separately, while FFD, GPT and TRT are scaled together since these are all dependent and measured in milliseconds. The features are averaged across all readers. The data was scaled and randomly shuffled before splitting into training and test data. Tables <ref type="table" target="#tab_0">1 and 2</ref> show the ranges of the eye-tracking features before and after scaling. Figure <ref type="figure" target="#fig_4">2</ref> depicts the feature value distributions in both training and test sets, showing that the distributions are very similar in both splits.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation</head><p>In this section, we describe the evaluation procedure used to assess the submitted predictions of the participating teams.</p><p>Any additional data source was allowed to train the models, as long as it is freely available to the research community. For example, additional eyetracking corpora, additional features such as brain activity signals, pre-trained language models, etc.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Scoring Metric</head><p>The submitted predictions are evaluated against the real eye-tracking feature values using the mean absolute error (MAE) metric, a measure of errors between paired observations including comparisons of predicted (y) versus observed (x) values for each  word in the test set:</p><formula xml:id="formula_0">M AE = n i=1 |y i − x i | n (1)</formula><p>The winning system is defined as the one with the lowest average MAE across all 5 eye-tracking features.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Mean Baseline</head><p>We use the mean central tendency as a baseline for this regression problem, i.e., we calculate the mean value for each feature from the training data and use it as a prediction for all words in the test data.</p><p>Table <ref type="table" target="#tab_3">3</ref> shows the MAE scores achieved by this mean baseline for each eye-tracking feature.</p><p>6 Participating Teams &amp; Systems 13 teams and a total of 42 participants registered on the competition website. All 13 teams, including 26 registered participants, submitted their predictions during the evaluation phase. Each team was allowed three submissions during the evaluation phase. Finally, 10 teams published system description papers outlining their approach (see Table <ref type="table" target="#tab_3">3</ref> for all references).</p><p>Methods The participating teams submitted predictions generated from various approaches. Mainly two methods were used: (1) Boosting methods using tree-based algorithms with extensive feature extraction (e.g., CatBoost 2 or LightGBM 3 ), and (2) neural network based approaches for regression such as fine-tuning transformer-based language models <ref type="bibr" target="#b35">(Vaswani et al., 2017)</ref>. Most teams achieved their best performance using an ensemble of predictors. Moreover, some teams also trained hybrid systems including both feature-based approaches and state-of-the-art language models.</p><p>Features The features included for training the systems include surface features (e.g., word length, sentence length, word positions in the sentence), lexical features (e.g., lemmas, named entities) token probability features (word frequency and ngram metrics), syntactic features (e.g., part-ofspeech tags and dependency parsing), text complexity metrics, behavioral measures, (e.g., concreteness, familiarity, age of acquisition), context features (i.e., information about the preceding and following tokens) as well as representations from state-of-the-art language models, such as BERT <ref type="bibr" target="#b12">(Devlin et al., 2019)</ref>, RoBERTa <ref type="bibr" target="#b28">(Liu et al., 2019)</ref>, and XLNet <ref type="bibr" target="#b38">(Yang et al., 2019)</ref>.</p><p>Additional data Only one team <ref type="bibr" target="#b27">(Li and Rudzicz, 2021)</ref> used external eye-tracking data, leveraging the Provo corpus <ref type="bibr" target="#b29">(Luke and Christianson, 2017)</ref> for additional word-level eye movement samples.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Results</head><p>In this section, we describe the prediction performance achieved by the participating teams. The official results of this shared task are presented in Table <ref type="table" target="#tab_3">3</ref>. The best results were achieved by a linguistic feature-based approach <ref type="bibr" target="#b6">(Bestgen, 2021)</ref>. As described above, other teams opted for neural approaches (e.g., <ref type="bibr" target="#b27">Li and</ref><ref type="bibr" target="#b27">Rudzicz, 2021 and</ref><ref type="bibr" target="#b31">Oh, 2021)</ref> or hybrid approaches (e.g., <ref type="bibr" target="#b39">Yu et al., 2021 and</ref><ref type="bibr">Choudhary et al., 2021)</ref>, combining linguistic features and state-of-the-art language representations.</p><p>The difficulty of predicting the individual eyetracking features is analogous in all submitted systems. FFD is the most accurately predicted feature. This seems to suggest that the models are more capable to capture early processing stages of lexical access compared to late-stage semantic integration, indexed by TRT and NFIX.</p><p>Generally, the error for the three features representing reading times in milliseconds (FFD, GPT, and TRT), is much lower than for NFIX and FIX-PROP. The latter are the features with the most variance. The mean baseline results also reveal the same patterns. The features with lower variance achieve lower MAEs. The FIXPROP feature, representing how likely a word is to be fixated, might be more challenging to predict since it is more dependent on subject-specific characteristics. Nevertheless, when comparing the MAEs of each eyetracking feature to the mean baseline, the systems achieve the largest improvement on this feature.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Outlook &amp; Conclusion</head><p>We presented the results of the first shared task on predicting token-level eye-tracking features recorded during natural sentences reading. We hope the CMCL Shared Task makes a lasting contribution to the field of linguistic cognitive modelling by providing researchers with a standard evaluation framework and a high quality dataset. Despite the limited size of the test set, many previously reached conclusions can now be tested more thoroughly and future models can be compared on a shared benchmark.</p><p>For future editions of this shared task, we see the following improvement opportunities: (1) providing an official development set during the training phase; (2) using additional metrics for assessment, such as R 2 to achieve a better understanding of the submitted models; (3) extending the dataset to include additional eye-tracking data from other English corpora, as well as including data from other languages such as Dutch or Russian (e.g., <ref type="bibr" target="#b8">Cop et al., 2017</ref><ref type="bibr" target="#b25">or Laurinavichyute et al., 2019</ref>.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Example sentence from the ZuCo corpus read by a single reader. The blue dots mark fixations on the corresponding words above, a wider diameter represent a longer fixation duration.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Boxplot showing the feature value distributions of both training and test sets. Below each box is the median value of each feature.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>Minimum, maximum, mean and standard deviation of the feature values before scaling in both training and test data, after averaging across readers.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Minimum, maximum, mean and standard deviation of the scaled feature values in both training and test data, after averaging across readers.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Overall results showing the best submission per team and the mean baseline. The teams are ranked by the MAE averaged across all five eye-tracking features (third column).</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://catboost.ai/ 3 https://lightgbm.readthedocs.io/en/ latest/</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Lan-gResearchLab_NC at CMCL2021 Shared Task: Predicting Gaze Behaviour using Linguistic Features and Tree Regressors</title>
+		<author>
+			<persName><forename type="first">Raksha</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niladri</forename><surname>Chatterjee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Balanced Corpus of Contemporary Written Japanese</title>
+		<author>
+			<persName><forename type="first">Masayuki</forename><surname>Asahara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hajime</forename><surname>Ono</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edson T</forename><surname>Miyamoto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING: Technical Papers</title>
+				<meeting>COLING: Technical Papers</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Reading-Time Annotations for</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Evaluating Information-theoretic Measures of Word Prediction in Naturalistic Sentence Reading</title>
+		<author>
+			<persName><forename type="first">Christoph</forename><surname>Aurnhammer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Stefan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Frank</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neuropsychologia</title>
+		<imprint>
+			<biblScope unit="volume">134</biblScope>
+			<biblScope unit="page">107198</biblScope>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Team ReadMe at CMCL 2021 Shared Task: Predicting Human Reading Patterns by Traditional Oculomotor Control Models and Machine Learning</title>
+		<author>
+			<persName><forename type="first">Alişan</forename><surname>Balkoca</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdullah</forename><surname>Algan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cengiz</forename><surname>Acarturk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cagri</forename><surname>Çöltekin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Weakly Supervised Part-ofspeech Tagging Using Eye-tracking Data</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Barrett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joachim</forename><surname>Bingel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Keller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anders</forename><surname>Søgaard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Towards Learning to Read Like Humans</title>
+		<author>
+			<persName><forename type="first">Louise</forename><forename type="middle">Gillian</forename><surname>Bautista</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prospero</forename><surname>Naval</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Computational Collective Intelligence</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="779" to="791" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">LAST at CMCL 2021 Shared Task: Predicting Gaze Data During Reading with a Gradient Boosting Decision Tree Approach</title>
+		<author>
+			<persName><forename type="first">Yves</forename><surname>Bestgen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Raksha Agarwal, and Niladri Chatterjee. 2021. MTL782_IITD at CMCL 2021 Shared Task: Prediction of Eye-Tracking Features using BERT Embeddings and Linguistic Features</title>
+		<author>
+			<persName><forename type="first">Shivani</forename><surname>Choudhary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kushagri</forename><surname>Tandon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Presenting GECO: An Eyetracking Corpus of Monolingual and Bilingual Sentence Reading</title>
+		<author>
+			<persName><forename type="first">Uschi</forename><surname>Cop</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Dirix</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Denis</forename><surname>Drieghe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wouter</forename><surname>Duyck</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Behavior Research Methods</title>
+		<imprint>
+			<biblScope unit="volume">49</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="602" to="615" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Integrating Probabilistic Extraction Models and Data Mining to Discover Relations and Patterns in Text</title>
+		<author>
+			<persName><forename type="first">Aron</forename><surname>Culotta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Betz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL</title>
+				<meeting>NAACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">TALEP at CMCL 2021 Shared Task: Non Linear Combination of Low and High-level Features for Predicting Eye-Tracking Data</title>
+		<author>
+			<persName><forename type="first">Franck</forename><surname>Dary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Nasr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdellah</forename><surname>Fourtassi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Data from Eye-tracking Corpora as Evidence for Theories of Syntactic Processing Complexity</title>
+		<author>
+			<persName><forename type="first">Vera</forename><surname>Demberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Keller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognition</title>
+		<imprint>
+			<biblScope unit="volume">109</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="193" to="210" />
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL</title>
+				<meeting>NAACL</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Contextual Effects on Word Perception and Eye Movements During Reading</title>
+		<author>
+			<persName><forename type="first">Susan</forename><forename type="middle">E</forename><surname>Ehrlich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Keith</forename><surname>Rayner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Verbal Learning and Verbal Behavior</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="page" from="641" to="665" />
+			<date type="published" when="1981" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Sequential vs. Hierarchical Syntactic Models of Human Incremental Sentence Processing</title>
+		<author>
+			<persName><forename type="first">Victoria</forename><surname>Fossum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Levy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Insensitivity of the Human Sentence-processing System to Hierarchical Structure</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Stefan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rens</forename><surname>Frank</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bod</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Psychological Science</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="829" to="834" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Predictive Power of Word Surprisal for Reading Times Is a Linear Function of Language Model Quality</title>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Goodkind</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Klinton</forename><surname>Bicknell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the LSA Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the LSA Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">A Probabilistic Earley Parser as a Psycholinguistic Model</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Hale</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL</title>
+				<meeting>NAACL</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Probabilistic Predictions of People Perusing: Evaluating Metrics of Language Model Performance for Psycholinguistic Modeling</title>
+		<author>
+			<persName><forename type="first">Yiding</forename><surname>Hao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Mendelsohn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Sterneck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Randi</forename><surname>Martinez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Frank</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the EMNLP Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the EMNLP Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<author>
+			<persName><forename type="first">Nora</forename><surname>Hollenstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Barrett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marius</forename><surname>Troendle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Bigiolli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Langer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ce</forename><surname>Zhang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1904.02682</idno>
+		<title level="m">Advancing NLP with Cognitive Language Processing Signals</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">ZuCo, a Simultaneous EEG and Eye-tracking Resource for Natural Sentence Reading</title>
+		<author>
+			<persName><forename type="first">Nora</forename><surname>Hollenstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Rotsztejn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marius</forename><surname>Troendle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Pedroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ce</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Langer</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Scientific Data</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">ZuCo 2.0: A Dataset of Physiological Recordings During Natural Reading and Annotation</title>
+		<author>
+			<persName><forename type="first">Nora</forename><surname>Hollenstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marius</forename><surname>Troendle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ce</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Langer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC</title>
+				<meeting>LREC</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Integration and Prediction Difficulty in Hindi Sentence Comprehension: Evidence from an Eye-Tracking Corpus</title>
+		<author>
+			<persName><forename type="first">Samar</forename><surname>Husain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shravan</forename><surname>Vasishth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Narayanan</forename><surname>Srinivasan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Eye Movement Research</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">The Dundee Corpus</title>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Kennedy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robin</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joël</forename><surname>Pynte</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th European Conference on Eye Movement</title>
+				<meeting>the 12th European Conference on Eye Movement</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Tracking the Mind During Reading: The Influence of Past, Present, and Future Words on Fixation Durations</title>
+		<author>
+			<persName><forename type="first">Reinhold</forename><surname>Kliegl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antje</forename><surname>Nuthmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralf</forename><surname>Engbert</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Experimental Psychology</title>
+		<imprint>
+			<biblScope unit="volume">135</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">12</biblScope>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Russian Sentence Corpus: Benchmark Measures of Eye Movements in Reading in Cyrillic</title>
+		<author>
+			<persName><surname>Ak Laurinavichyute</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Irina</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sekerina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">A</forename><surname>Sv Alexeeva</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bagdasaryan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Behavior Research Methods</title>
+		<imprint>
+			<biblScope unit="volume">51</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="1161" to="1178" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Expectation-based Syntactic Comprehension</title>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Levy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognition</title>
+		<imprint>
+			<biblScope unit="volume">106</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="1126" to="1177" />
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">TorontoCL at CMCL 2021 Shared Task: RoBERTa with Multi-Stage Fine-Tuning for Eye-Tracking Prediction</title>
+		<author>
+			<persName><forename type="first">Bai</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Rudzicz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">RoBERTa: A Robustly Optimized BERT Pretraining Approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">The Provo Corpus: A Large Eye-tracking Corpus with Predictability Norms</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Steven</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kiel</forename><surname>Luke</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Christianson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Behavior Research Methods</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="8" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<author>
+			<persName><forename type="first">Danny</forename><surname>Merkx</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Stefan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Frank</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2005.09471</idno>
+		<title level="m">Comparing Transformers and RNNs on Predicting Human Sentence Processing Data</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Team Ohio State at CMCL 2021 Shared Task: Fine-Tuned RoBERTa for Eye-Tracking Data Prediction</title>
+		<author>
+			<persName><forename type="first">Byung-Doh</forename><surname>Oh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">PIHKers at CMCL 2021 Shared Task: Cosine Similarity and Surprisal to Predict Human Reading Patterns</title>
+		<author>
+			<persName><forename type="first">Lavinia</forename><surname>Salicchi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Recursive Deep Models for Semantic Compositionality over a Sentiment Treebank</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Perelygin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Chuang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Christopher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Potts</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Interpreting and Improving Natural Language Processing (in Machines) with Natural Language Processing (in the Brain)</title>
+		<author>
+			<persName><forename type="first">Mariya</forename><surname>Toneva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leila</forename><surname>Wehbe</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="14928" to="14938" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Attention Is All You Need</title>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Vaswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niki</forename><surname>Parmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aidan</forename><forename type="middle">N</forename><surname>Gomez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Łukasz</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="5998" to="6008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">CogNLP-Sheffield at CMCL 2021 Shared Task: Blending Cognitively Inspired Features with Transformerbased Language Models for Predicting Eye Tracking Patterns</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Vickers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rosa</forename><surname>Wainwright</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Harish Tayyar Madabushi, and Aline Villavicencio</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<monogr>
+		<author>
+			<persName><forename type="first">Ethan</forename><forename type="middle">Gotlieb</forename><surname>Wilcox</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jon</forename><surname>Gauthier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennifer</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Levy</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2006.01912</idno>
+		<title level="m">On the Predictive Power of Neural Language Models for Human Real-Time Comprehension Behavior</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">XLNet: Generalized Autoregressive Pretraining for Language Understanding</title>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Russ</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc V</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Le</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="5753" to="5763" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">KonTra at CMCL 2021 Shared Task: Predicting Eye Movements by combining BERT with Surface, Linguistic and Behavioral Information</title>
+		<author>
+			<persName><forename type="first">Qi</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aikaterini-Lida</forename><surname>Kalouli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diego</forename><surname>Frassinelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL Workshop on Cognitive Modeling and Computational Linguistics</title>
+				<meeting>the NAACL Workshop on Cognitive Modeling and Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

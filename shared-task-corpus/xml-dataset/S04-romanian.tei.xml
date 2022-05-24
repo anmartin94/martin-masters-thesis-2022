@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">An Evaluation Exercise for Romanian Word Sense Disambiguation</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of North Texas Dallas</orgName>
+								<address>
+									<region>TX</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Vivi</forename><surname>Nȃstase</surname></persName>
+							<email>vnastase@site.uottawa.ca</email>
+							<affiliation key="aff1">
+								<orgName type="department">School of Computer Science</orgName>
+								<orgName type="institution">University of Ottawa Ottawa</orgName>
+								<address>
+									<region>ON</region>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Timothy</forename><surname>Chklovski</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="department">Information Sciences Institute University of Southern California Marina del Rey</orgName>
+								<address>
+									<region>CA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Doina</forename><surname>Tȃtar</surname></persName>
+							<email>dtatar@ubb.ro</email>
+							<affiliation key="aff3">
+								<orgName type="department">Department of Computer Science Babeş</orgName>
+								<orgName type="institution">Bolyai University</orgName>
+								<address>
+									<settlement>Cluj-Napoca</settlement>
+									<country key="RO">Romania</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Dan</forename><surname>Tufiş</surname></persName>
+							<email>tufis@racai.ro</email>
+							<affiliation key="aff4">
+								<orgName type="department">Romanian Academy Center for Artificial Intelligence Bucharest</orgName>
+								<address>
+									<country key="RO">Romania</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Florentina</forename><surname>Hristea</surname></persName>
+							<email>fhristea@mailbox.ro</email>
+							<affiliation key="aff5">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Bucharest</orgName>
+								<address>
+									<settlement>Bucharest</settlement>
+									<country key="RO">Romania</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">An Evaluation Exercise for Romanian Word Sense Disambiguation</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:25+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the task definition, resources, participating systems, and comparative results for a Romanian Word Sense Disambiguation task, which was organized as part of the SENSEVAL-3 evaluation exercise. Five teams with a total of seven systems were drawn to this task.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>SENSEVAL is an evaluation exercise of the latest word-sense disambiguation (WSD) systems. It serves as a forum that brings together researchers in WSD and domains that use WSD for various tasks. It allows researchers to discuss modifications that improve the performance of their systems, and analyze combinations that are optimal.</p><p>Since the first edition of the SENSEVAL competitions, a number of languages were added to the original set of tasks. Having the WSD task prepared for several languages provides the opportunity to test the generality of WSD systems, and to detect differences with respect to word senses in various languages.</p><p>This year we have proposed a Romanian WSD task. Five teams with a total of seven systems have tackled this task. We present in this paper the data used and how it was obtained, and the performance of the participating systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Open Mind Word Expert</head><p>The sense annotated corpus required for this task was built using the Open Mind Word Expert system <ref type="bibr" target="#b1">(Chklovski and Mihalcea, 2002)</ref>, adapted to Roma-nian 1 .</p><p>To overcome the current lack of sense tagged data and the limitations imposed by the creation of such data using trained lexicographers, the Open Mind Word Expert system enables the collection of semantically annotated corpora over the Web.</p><p>Sense tagged examples are collected using a Webbased application that allows contributors to annotate words with their meanings.</p><p>The tagging exercise proceeds as follows. For each target word the system extracts a set of sentences from a large textual corpus. These examples are presented to the contributors, who are asked to select the most appropriate sense for the target word in each sentence. The selection is made using checkboxes, which list all possible senses of the current target word, plus two additional choices, "unclear" and "none of the above." Although users are encouraged to select only one meaning per word, the selection of two or more senses is also possible. The results of the classification submitted by other users are not presented to avoid artificial biases.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Sense inventory</head><p>For the Romanian WSD task, we have chosen a set of words from three parts of speech -nouns, verbs and adjectives. Table <ref type="table" target="#tab_1">1</ref> presents the number of words under each part of speech, and the average number of senses for each class.</p><p>The senses were (manually) extracted from a Romanian dictionary (Dicţionarul EXplicativ al limbii române -DEX <ref type="bibr" target="#b1">(Coteanu et al., 1975)</ref>  and their dictionary definitions were incorporated in the Open Mind Word Expert. For each annotation task, the contributors could choose from this list of 39 words. For each chosen word, the system displays the associated senses, together with their definitions, and a short (1-4 words) description of the sense. After the user gets familiarized with these senses, the system displays each example sentence, and the list of senses together with their short description, to facilitate the tagging process.</p><p>For the coarse grained WSD task, we had the option of using the grouping provided by the dictionary. A manual analysis however showed that some of the senses in the same group are quite distinguishable, while others that were separated were very similar.</p><p>For example, for the word circulatie (roughly, circulation). The following two senses are grouped in the dictionary: 2a. movement, travel along a communication line/way 2b. movement of the sap in plants or the cytoplasm inside cells Sense 2a fits better with sense 1 of circulation: 1. the event of moving about while sense 2b fits better with sense 3: 3. movement or flow of a liquid, gas, etc. within a circuit or pipe.</p><p>To obtain a better grouping, a linguist clustered the similar senses for each word in our list of forty. The average number of senses for each class is almost halved.</p><p>Notice that Romanian is a language that uses diacritics, and the the presence of diacritics may be crucial for distinguishing between words. For example peste without diacritics may mean fish or over. In choosing the list of words for the Romanian WSD task, we have tried to avoid such situations. Although some of the words in the list do have diacritics, omitting them does not introduce new ambiguities.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Corpus</head><p>Examples are extracted from the ROCO corpus, a 400 million words corpus consisting of a collection of Romanian newspapers collected on the Web over a three years period <ref type="bibr">(1999)</ref><ref type="bibr">(2000)</ref><ref type="bibr">(2001)</ref><ref type="bibr">(2002)</ref>.</p><p>The corpus was tokenized and part-of-speech tagged using RACAI's tools <ref type="bibr" target="#b2">(Tufis, 1999)</ref>. The tokenizer recognizes and adequately segments various constructs: clitics, dates, abbreviations, multiword expressions, proper nouns, etc. The tagging followed the tiered tagging approach with the hidden layer of tagging being taken care of by Thorsten Brants' TNT <ref type="bibr" target="#b0">(Brants, 2000)</ref>. The upper level of the tiered tagger removed from the assigned tags all the attributes irrelevant for this WSD exercise. The estimated accuracy of the part-of-speech tagging is around 98%.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Sense Tagged Data</head><p>While several sense annotation schemes have been previously proposed, including single or dual annotations, or the "tag until two agree" scheme used during SENSEVAL-2, we decided to use a new scheme and collect four tags per item, which allowed us to conduct and compare inter-annotator agreement evaluations for two-, three-, and four-way agreement. The agreement rates are listed in Table <ref type="table" target="#tab_3">3</ref>. The two-way agreement is very high -above 90% -and these are the items that we used to build the annotated data set. Not surprisingly, four-way agreement is reached for a significantly smaller number of cases. While these items with four-way agreement were not explicitly used in the current evaluation, we believe that this represents a "platinum standard" data set with no precedent in the WSD research community, which may turn useful for a range of future experiments (for bootstrapping, in particular).     In addition to sense annotated examples, participants have been also provided with a large number of unlabeled examples. However, among all participating systems, only one system -described in (Serban and Tȃtar 2004) -attempted to integrate this additional unlabeled data set into the learning process.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Participating Systems</head><p>Five teams participated in this word sense disambiguation task. Table <ref type="table" target="#tab_6">4</ref> lists the names of the participating systems, the corresponding institutions, and references to papers in this volume that provide detailed descriptions of the systems and additional analysis of their results.</p><p>There were no restrictions placed on the number of submissions each team could make. A total number of seven submissions was received for this task. Table <ref type="table">5</ref> shows all the submissions for each team, and gives a brief description of their approaches.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Results and Discussion</head><p>Table <ref type="table">6</ref> lists the results obtained by all participating systems, and the baseline obtained using the "most frequent sense" (MFS) heuristic. The table lists precision and recall figures for both fine grained and coarse grained scoring.</p><p>The performance of all systems is significantly higher than the baseline, with the best system performing at 72.7% (77.1%) for fine grained (coarse grained) scoring, which represents a 35% (38%) error reduction with respect to the baseline.</p><p>The best system (romanian-swat hk-bo) relies on a Maximum Entropy classifier with boosting, using local context (neighboring words, lemmas, and their part of speech), as well as bag-of-words features for surrounding words.</p><p>Not surprisingly, several of the top performing systems are based on combinations of multiple sclassifiers, which shows once again that voting</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Sense inventory</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell>: Inter-agreement rates for two-, three-, and</cell></row><row><cell>four-way agreement</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2</head><label>2</label><figDesc>lists the target words selected for this task, together with their most common English translations. For each word, we also list the number of senses, as defined in the DEX sense inventory (collocations included), and the number of annotated examples made available to task participants.</figDesc><table><row><cell>Word</cell><cell cols="6">Main English senses senses Train Test Word</cell><cell cols="5">Main English senses senses Train Test</cell></row><row><cell></cell><cell>translation</cell><cell cols="4">(fine) (coarse) size size</cell><cell></cell><cell>translation</cell><cell cols="4">(fine) (coarse) size size</cell></row><row><cell>NOUNS</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ac</cell><cell>needle</cell><cell>16</cell><cell>7</cell><cell>127</cell><cell>65</cell><cell>accent</cell><cell>accent</cell><cell>5</cell><cell>3</cell><cell>172</cell><cell>87</cell></row><row><cell>actiune</cell><cell>action</cell><cell>10</cell><cell>7</cell><cell cols="3">261 128 canal</cell><cell>channel</cell><cell>6</cell><cell>5</cell><cell>134</cell><cell>66</cell></row><row><cell>circuit</cell><cell>circuit</cell><cell>7</cell><cell>5</cell><cell cols="4">200 101 circulatie circulation</cell><cell>9</cell><cell>3</cell><cell>221</cell><cell>114</cell></row><row><cell>coroana</cell><cell>crown</cell><cell>15</cell><cell>11</cell><cell cols="3">252 126 delfin</cell><cell>doplhin</cell><cell>5</cell><cell>4</cell><cell>31</cell><cell>15</cell></row><row><cell cols="2">demonstratie demonstration</cell><cell>6</cell><cell>3</cell><cell cols="3">229 115 eruptie</cell><cell>eruption</cell><cell>2</cell><cell>2</cell><cell>54</cell><cell>27</cell></row><row><cell>geniu</cell><cell>genius</cell><cell>5</cell><cell>3</cell><cell>106</cell><cell>54</cell><cell>nucleu</cell><cell>nucleus</cell><cell>7</cell><cell>5</cell><cell>64</cell><cell>33</cell></row><row><cell>opozitie</cell><cell>opposition</cell><cell>12</cell><cell>7</cell><cell cols="3">266 134 perie</cell><cell>brush</cell><cell>5</cell><cell>3</cell><cell>46</cell><cell>24</cell></row><row><cell>pictura</cell><cell>painting</cell><cell>5</cell><cell>2</cell><cell cols="4">221 111 platforma platform</cell><cell>11</cell><cell>8</cell><cell>226</cell><cell>116</cell></row><row><cell>port</cell><cell>port</cell><cell>7</cell><cell>3</cell><cell cols="4">219 108 problema problem</cell><cell>6</cell><cell>4</cell><cell>262</cell><cell>131</cell></row><row><cell>proces</cell><cell>process</cell><cell>11</cell><cell>3</cell><cell>166</cell><cell>82</cell><cell>reactie</cell><cell>reaction</cell><cell>7</cell><cell>6</cell><cell>261</cell><cell>131</cell></row><row><cell>stil</cell><cell>style</cell><cell>14</cell><cell>4</cell><cell cols="3">199 101 timbru</cell><cell>stamp</cell><cell>7</cell><cell>3</cell><cell>231</cell><cell>116</cell></row><row><cell>tip</cell><cell>type</cell><cell>7</cell><cell>4</cell><cell cols="3">263 131 val</cell><cell>wave</cell><cell>15</cell><cell>9</cell><cell>242</cell><cell>121</cell></row><row><cell>valoare</cell><cell>value</cell><cell>23</cell><cell>9</cell><cell cols="2">251 125</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>VERBS</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>cistiga</cell><cell>win</cell><cell>5</cell><cell>4</cell><cell cols="3">227 115 citi</cell><cell>read</cell><cell>10</cell><cell>4</cell><cell>259</cell><cell>130</cell></row><row><cell>cobori</cell><cell>descend</cell><cell>11</cell><cell>6</cell><cell cols="3">252 128 conduce</cell><cell>drive</cell><cell>7</cell><cell>6</cell><cell>265</cell><cell>134</cell></row><row><cell>creste</cell><cell>grow</cell><cell>14</cell><cell>6</cell><cell cols="3">209 103 desena</cell><cell>draw</cell><cell>3</cell><cell>3</cell><cell>54</cell><cell>27</cell></row><row><cell>desface</cell><cell>untie</cell><cell>11</cell><cell>5</cell><cell>115</cell><cell>58</cell><cell>fierbe</cell><cell>boil</cell><cell>11</cell><cell>4</cell><cell>83</cell><cell>43</cell></row><row><cell>indulci</cell><cell>sweeten</cell><cell>7</cell><cell>4</cell><cell>19</cell><cell>10</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ADJECTIVES</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>incet</cell><cell>slow</cell><cell>6</cell><cell>3</cell><cell cols="3">224 113 natural</cell><cell>natural</cell><cell>12</cell><cell>5</cell><cell>242</cell><cell>123</cell></row><row><cell>neted</cell><cell>smooth</cell><cell>7</cell><cell>3</cell><cell>34</cell><cell>17</cell><cell>oficial</cell><cell>official</cell><cell>5</cell><cell>3</cell><cell>185</cell><cell>96</cell></row><row><cell>simplu</cell><cell>simple</cell><cell>15</cell><cell>6</cell><cell>153</cell><cell>82</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell cols="3">: Target words in the SENSEVAL-3 Romanian Lexical Sample task</cell></row><row><cell>Team</cell><cell>System name</cell><cell>Reference (this volume)</cell></row><row><cell>Babes-Bolyai University, Cluj-Napoca (1)</cell><cell>ubb nbc ro</cell><cell>(Csomai, 2004)</cell></row><row><cell>Babes-Bolyai University, Cluj-Napoca (2)</cell><cell>UBB</cell><cell>(Serban and Tatar, 2004)</cell></row><row><cell>Swarthmore College</cell><cell>swat-romanian</cell><cell>(Wicentowski et al., 2004a)</cell></row><row><cell cols="2">Swarthmore College / Hong Kong Polytechnic University swat-hk-romanian</cell><cell>(Wicentowski et al., 2004b)</cell></row><row><cell>Hong Kong University of Science and Technology</cell><cell>romanian-swat hk-bo</cell><cell></cell></row><row><cell>University of Maryland, College Park</cell><cell>UMD SST6</cell><cell>(Cabezas et al., 2004)</cell></row><row><cell>University of Minnesota, Duluth</cell><cell>Duluth-RomLex</cell><cell>(Pedersen, 2004)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Teams participating in the SENSEVAL-3 Romanian Word Sense Disambiguation task</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Romanian Open Mind Word Expert can be accessed at http://teach-computers.org/word-expert/romanian</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>Many thanks to all those who contributed to the Romanian Open Mind Word Expert project, making this task possible. Special thanks to Bogdan Harhata, from the Institute of Linguistics Cluj-Napoca, for building a coarse grained sense map. We are also grateful to all the participants in this task, for their hard work and involvement in this evaluation exercise. Without them, all these comparative analyses would not be possible.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>System</head><p>Description romanian-swat hk-bo Supervised learning using Maximum Entropy with boosting, using bag-of-words and n-grams around the head word as features swat-hk-romanian</p><p>The swat-romanian and romanian-swat hk-bo systems combined with majority voting.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Duluth-RLSS</head><p>An ensemble approach that takes a vote among three bagged decision trees, based on unigrams, bigrams and co-occurrence features swat-romanian Three classifiers: cosine similarity clustering, decision list, and Naive Bayes, using bag-of-words and n-grams around the head word as features combined with a majority voting scheme. UMD SST6 Supervised learning using Support Vector Machines, using contextual features. ubb nbc ro Supervised learning using a Naive Bayes learning scheme, and features extracted using a bag-of-words approach. UBB A k-NN memory-based learning approach, with bag-of-words features.  schemes that combine several learning algorithms outperform the accuracy of individual classifiers.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>A Romanian Word Sense Disambiguation task was organized as part of the SENSEVAL-3 evaluation exercise.</p><p>In this paper, we presented the task definition, and resources involved, and shortly described the participating systems. The task drew the participation of five teams, and included seven different systems. The sense annotated data used in this exercise is available online from http://www.senseval.org and http://teach-computers.org.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Tnt -a statistical part-of-speech tagger</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Brants</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Applied NLP Conference, ANLP-2000</title>
+				<meeting>the 6th Applied NLP Conference, ANLP-2000<address><addrLine>Seattle, WA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000-05" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Word Sense Disambiguation: Recent Successes and Future Directions</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Chklovski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mihalcea ; Philadelphia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">July</forename><forename type="middle">I</forename><surname>Coteanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Seche</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Seche</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Burnei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Ciobanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Contraş</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Creţa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Hristea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Mareş</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Stîngaciu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Tefȃnescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Ugulea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Vulpescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Hristea</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on</title>
+				<editor>
+			<persName><forename type="first">Dicţionarul</forename><surname>Explicativ Al Limbii Române</surname></persName>
+			<persName><surname>Editura Academiei Republicii Socialiste România</surname></persName>
+		</editor>
+		<meeting>the Workshop on</meeting>
+		<imprint>
+			<date type="published" when="1975" />
+		</imprint>
+	</monogr>
+	<note>Building a sense tagged corpus with Open Mind Word Expert</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Tiered tagging and combined classifiers</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tufis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Text, Speech and Dialogue</title>
+		<title level="s">Lecture Notes in Artificial Intelligence</title>
+		<imprint>
+			<date type="published" when="1999" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,834 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2019 Task 5: Multilingual Detection of Hate Speech Against Immigrants and Women in Twitter</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Valerio</forename><surname>Basile</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Dipartimento di Informatica</orgName>
+								<orgName type="institution" key="instit1">Università degli Studi di Torino (Italy)</orgName>
+								<orgName type="institution" key="instit2">Università degli Studi di Milano Bicocca</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Cristina</forename><surname>Bosco</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Dipartimento di Informatica</orgName>
+								<orgName type="institution" key="instit1">Università degli Studi di Torino (Italy)</orgName>
+								<orgName type="institution" key="instit2">Università degli Studi di Milano Bicocca</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Elisabetta</forename><surname>Fersini</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Debora</forename><surname>Nozza</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Viviana</forename><surname>Patti</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Dipartimento di Informatica</orgName>
+								<orgName type="institution" key="instit1">Università degli Studi di Torino (Italy)</orgName>
+								<orgName type="institution" key="instit2">Università degli Studi di Milano Bicocca</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Francisco</forename><surname>Rangel</surname></persName>
+							<email>francisco.rangel@autoritas.es</email>
+						</author>
+						<author>
+							<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+							<email>♣prosso@dsic.upv.es</email>
+						</author>
+						<author>
+							<persName><forename type="first">Manuela</forename><surname>Sanguinetti</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Dipartimento di Informatica</orgName>
+								<orgName type="institution" key="instit1">Università degli Studi di Torino (Italy)</orgName>
+								<orgName type="institution" key="instit2">Università degli Studi di Milano Bicocca</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="department">♥ PRHLT Research Center, Universitat Politècnica de València (</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2019 Task 5: Multilingual Detection of Hate Speech Against Immigrants and Women in Twitter</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The paper describes the organization of the SemEval 2019 Task 5 about the detection of hate speech against immigrants and women in Spanish and English messages extracted from Twitter. The task is organized in two related classification subtasks: a main binary subtask for detecting the presence of hate speech, and a finer-grained one devoted to identifying further features in hateful contents such as the aggressive attitude and the target harassed, to distinguish if the incitement is against an individual rather than a group. HatEval has been one of the most popular tasks in SemEval-2019 with a total of 108 submitted runs for Subtask A and 70 runs for Subtask B, from a total of 74 different teams. Data provided for the task are described by showing how they have been collected and annotated. Moreover, the paper provides an analysis and discussion about the participant systems and the results they achieved in both subtasks.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Hate Speech (HS) is commonly defined as any communication that disparages a person or a group on the basis of some characteristic such as race, color, ethnicity, gender, sexual orientation, nationality, religion, or other characteristics <ref type="bibr" target="#b15">(Nockleby, 2000)</ref>. Given the huge amount of user-generated contents on the Web, and in particular on social media, the problem of detecting, and therefore possibly contrasting the HS diffusion, is becoming fundamental, for instance for fighting against misogyny and xenophobia. Some key aspects feature online HS, such as virality, or presumed anonymity, which distinguish it from offline communication and make it potentially also more dangerous and hurtful. Often hate speech fosters discrimination against particular categories and undermines equality, an everlasting issue for each civil society. Among the mainly targeted categories there are immigrants and women. For the first target, especially raised by refugee crisis and political changes occurred in the last few years, several governments and policy makers are currently trying to address it, making especially interesting the development of tools for the identification and monitoring such kind of hate . For the second one instead, hate against the female gender is a long-time and well-known form of discrimination <ref type="bibr" target="#b14">(Manne, 2017)</ref>. Both these forms of hate content impact on the development of society and may be confronted by developing tools that automatically detect them.</p><p>A large number of academic events and shared tasks for different languages (i.e. English, Spanish, Italian, German, Mexican-Spanish, Hindi) took place in the very recent past which are centered on HS and related topics, thus reflecting the interest by the NLP community. Let us mention the first and second edition of the Workshop on Abusive Language 1 <ref type="bibr">(Waseem et al., 2017)</ref>, the First Workshop on Trolling, Aggression and Cyberbullying <ref type="bibr" target="#b13">(Kumar et al., 2018)</ref>, that also included a shared task on aggression identification, the tracks on Automatic Misogyny Identification (AMI) <ref type="bibr" target="#b10">(Fersini et al., 2018b)</ref> and on Authorship and Aggressiveness Analysis (MEX-A3T) <ref type="bibr" target="#b3">(Carmona et al., 2018)</ref> proposed at the 2018 edition of IberEval 2 , the GermEval Shared Task on the Identification of Offensive Language <ref type="bibr" target="#b25">(Wiegand et al., 2018)</ref>, and finally the Automatic Misogyny Identification task (AMI) <ref type="bibr" target="#b9">(Fersini et al., 2018a)</ref> and the Hate Speech Detection task (HaSpeeDe)  at EVALITA 2018 3 for investigating respectively misogyny and HS in Italian.</p><p>HatEval consists in detecting hateful contents in social media texts, specifically in Twitter's posts, against two targets: immigrants and women. Moreover, the task implements a multilingual perspective where data for two widespread languages, English and Spanish, are provided for training and testing participant systems. The motivations for organizing HatEval go beyond the advancement of the state of the art for HS detection for each of the involved languages and targets. The variety of targets of hate and languages provides a unique comparative setting, both with respect to the amount of data collected and annotated applying the same scheme, and with respect to the results achieved by participants training their systems on those data. Such comparative setting may help in shedding new light on the linguistic and communication behaviour against these targets, paving the way for the integration of HS detection tools in several application contexts. Moreover, the participation of a very large amount of research groups in this task (see Section 4) has improved the possibility of in-depth investigation of the involved phenomena.</p><p>The paper is organized as follows. In the next section, the datasets released to the participants for training and testing the systems are described. Section 3 presents the two subtasks and the measures we exploited in the evaluation. Section 4 reports on approaches and results of the participant systems. In Section 5, a preliminary analysis of common errors in top-ranked systems is proposed. Section 6 concludes the paper.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data</head><p>The data have been collected using different gathering strategies. For what concerns the time frame, tweets have been mainly collected in the time span from July to September 2018, with the exception of data with target women. Indeed, the most part of the training set of tweets against women has been derived from an earlier collection carried out in the context of two previous challenges on misogyny identification <ref type="bibr">(Fersini et al., 2018a,b)</ref>. Different approaches were employed   to collect tweets: (1) monitoring potential victims of hate accounts, (2) downloading the history of identified haters and (3) filtering Twitter streams with keywords, i.e. words, hashtags and stems. Regarding the keyword-driven approach, we employed both neutral keywords (in line with the collection strategy applied in ), derogatory words against the targets, and highly polarized hashtags, in order to collect a corpus for reflecting also on the subtle but important differences between HS, offensiveness <ref type="bibr" target="#b25">(Wiegand et al., 2018)</ref> and stance <ref type="bibr" target="#b23">(Taulé et al., 2017)</ref>. The keywords that occur more frequently in the collected tweets are: migrant, refugee, #buildthatwall, bitch, hoe, women for English, and inmigra-, arabe, sudaca, puta, callate, perra for Spanish 4 . The entire HatEval dataset is composed of 19,600 tweets, 13,000 for English and 6,600 for Spanish. They are distributed across the targets as follows: 9,091 about immigrants and 10,509 about women (see also Tables 1 for English and 2 for Spanish). Figures <ref type="figure" target="#fig_0">1 and 2</ref> show the distribution of the labels in the training and development set data according to the different targets of hate (woman and immigrants, respectively).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Annotation</head><p>The data are released after the annotation process, which involved non-trained contributors on the crowdsourcing platform Figure Eight (F8) 5 . The annotation scheme applied to the HatEval data is a simplified merge of schemes already applied in the development of corpora for HS detection and misogyny by the organizers <ref type="bibr">(Fersini et al., 2018a,b;</ref>, also in the context of funded projects with focus on the tasks topics 6 <ref type="bibr" target="#b19">Poletto et al., 2017)</ref>. It includes the following categories:</p><p>• HS -a binary value indicating if HS is occurring against one of the given targets (women or immigrants): 1 if occurs, 0 if not.</p><p>• Target Range -if HS occurs (i.e. the value for the feature HS is 1), a binary value indicating if the target is a generic group of people (0) or a specific individual (1).</p><p>• Aggressiveness -if HS occurs (i.e. the value for the feature HS is 1), a binary value indicating if the tweeter is aggressive (1) or not (0).</p><p>We gave the annotators a series of guidelines in English and Spanish, including the definition for hate speech against the two targets considered, the aggressiveness's definition and a list of examples 7 . As requested by the platform, we provided a restricted set of "correct" answers to test the reliability of the annotators. We required to collect at least three independent judgments for each tweet. We adopted the default F8 settings for assigning the majority label (relative majority). The F8 reported average confidence (i.e., a measure combining inter-rater agreement and reliability of the contributor) on the English dataset for the fields HS, TR, AG is 0.83, 0.70 and 0.73 respectively, while for the Spanish dataset is 0.89, 0.47 and 0.47. The use of crowdsourcing has been successfully already experimented in several tasks and in HS detection too, both for English <ref type="bibr" target="#b7">(Davidson et al., 2017)</ref> and other languages . However, stimulated by the discussion in <ref type="bibr" target="#b0">(Basile et al., 2018)</ref>, we decided to apply 5 http://www.figure-eight.com/ 6 http://hatespeech.di.unito.it/ ihateprejudice.html.</p><p>7 Annotation guidelines provided are accessible here: https://github.com/msang/hateval/blob/ master/annotation_guidelines.md.  a similar methodology by adding two more expert annotations to all the crowd-annotated data, provided by native or near-native speakers of British English and Castilian Spanish, having a long experience in annotating data for the specific task's subject. We assigned the final label for this data based on majority voting from crowd, expert1, and expert2. This does not erase the contribution of the crowd, but hopefully maximises consistency with the guidelines in order to provide a solid evaluation benchmark for this task.</p><p>For data release and distribution each post has been identified by a newly generated index which substitutes the original Twitter's IDs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Training, Development and Test Data</head><p>Data for training and development were released according to the distribution described in Figures 1 and 2 across languages (Spanish and English) and targets (women and immigrants). For what concerns Spanish, the training and development set includes 5,000 tweets, (3,209 for the target women and 1,991 for immigrants), while for English it in-cludes 10,000 tweets (5,000 for each target). For a cross-language perspective see Figures <ref type="figure" target="#fig_0">1 and 2</ref>. It can be also observed that the distribution across categories is pivoting around the main task category, HS, while the other ones more freely vary. Indeed, in order to provide a more balanced distribution of the HS and non-HS categories in the dataset released for Subtask A, we altered the natural distribution: both in the training and test set, hateful tweets are over-represented with respect to the distribution observed in the data we collected from Twitter 8 . Instead, the distribution of the other categories which are relevant for Subtask B is not constrained, and naturally follows from the selection of tweets for representing the classes relevant for the main Subtask A.</p><p>As far as the test set is concerned, 3,000 tweets have been annotated for English, half with target women and half immigrants, and 1,600 for Spanish distributed with the same proportion across the targets of hate: 1,260 hateful tweets and 1,740 non-hateful tweets for English, 660 hateful tweets and 940 non-hateful tweets for Spanish.</p><p>According to the schema described above, the format of an annotated tweet in the training and development set has the following pattern:</p><p>ID, Tweet-text, HS, TR, AG</p><p>where ID is a progressive number denoting the tweet within the dataset, Tweet-text is the given text of the tweet, while the other parts of the pattern, given in the training data and to be predicted in the test set, are: Hate Speech <ref type="bibr">[HS]</ref> (1 or 0), Target Range [TR] (0 for group or 1 for individual), and Aggressiveness [AG] (0 or 1). Data included in the test instead only include ID and Tweet-text, the annotation of HS, TR and AG to be provided by participants according to the subtask. An example of annotation is the following:</p><p>7, lol, chop her head off and rape the bitch https://t.co/ZB8CosmSD8, 1, 1, 1 which has been considered by the annotators as hateful, against an individual target, and aggressive. The latter category is not necessarily associated to HS, as shown in the following example, where a hateful content is expressed against a generic group of people in terms of disrespect and misogynistic stereotypes rather than using an aggressive language: <ref type="bibr">8</ref> The whole original annotated dataset was very skewed towards the non-HS class (only about 10% of the annotated data contained hate speech).</p><p>11, WOW can't believe all these women riding the subway today? Shouldn't these bitches be making sandwiches LOL #ihatefemales.., 1, 0, 0</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>The task is articulated around two related subtasks. The first consists of a basic detection of HS, where participants are asked to mark the presence of hateful content. In the second subtask instead fine-grained features of hateful contents are investigated in order to understand how existing approaches may deal with the identification of especially dangerous forms of hate, i.e., those where the incitement is against an individual rather than against a group of people, and where an aggressive behaviour of the author can be identified as a prominent feature of the expression of hate. The participants will be asked in this latter subtask to identify if the target of hate is a single human or a group of persons, and if the message author intends to be aggressive, harmful, or even to incite, in various forms, to violent acts against the target (see e.g. ).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Subtask A -Hate Speech Detection against immigrants and women</head><p>Subtask A is a two-class (or binary) classification task where the system has to predict whether a tweet in English or in Spanish with a given target (women or immigrants) contains HS or not. The following sentences present examples of a hateful and non-hateful tweet where the targets are women.</p><p>[hateful] Next, in Subtask B systems are asked to classify hateful tweets (e.g., tweets where HS against our targets has been identified) regarding both aggressive attitude and the target harassed. On one hand, the kind of target must be classified, and the task is binary:</p><p>• Individual: the text includes hateful messages purposely sent to a specific target.</p><p>• Generic: it refers to hateful messages posted to many potential receivers.</p><p>[Individual]: On the other hand, the aggressive behaviour has to be identified, then we propose a two-class classification task also for this feature. A tweet must be classified as aggressive or not:</p><p>[Aggressive] </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Evaluation Measures and Baseline</head><p>The evaluation of the results considers different strategies and metrics for Subtasks A and B in order to allow more fine-grained scores.</p><p>Subtask A. Systems will be evaluated using standard evaluation metrics, including Accuracy, Precision, Recall and macro-averaged F 1 -score.</p><p>In order to provide a measure that is independent on the class size, the submissions will be ranked by macro-averaged F 1 -score, computed as described in <ref type="bibr">(Özgür et al., 2005)</ref>. The metrics will be computed as follows:</p><p>Accuracy = number of correctly predicted instances total number of instances</p><p>(1)</p><p>P recision = number of correctly predicted instances number of predicted labels</p><p>(2)</p><p>Recall = number of correctly predicted labels number labels in the gold standard</p><p>(3)</p><formula xml:id="formula_0">F 1 -score = 2 × P recision × Recall P recision + Recall (4) Subtask B.</formula><p>The evaluation of systems participating to Subtask B will be based on two criteria: (1) partial match and (2) exact match. Regarding the partial match, each dimension to be predicted (HS , TR and AG) will be evaluated independently from the others using standard evaluation metrics, including accuracy, precision, recall and macro-averaged F 1 -score. We will report to the participants all the measures and a summary of the performance in terms of macro-averaged F 1score, computed as follows:</p><formula xml:id="formula_1">F 1 -score = F 1 (HS) + F 1 (AG) + F 1 (T R) 3</formula><p>(5)</p><p>Concerning the exact match, all the dimensions to be predicted will be jointly considered computing the Exact Match Ratio <ref type="bibr" target="#b12">(Kazawa et al., 2005)</ref>. Given the multi-label dataset consisting of n multi-label samples (x i , Y i ), where x i denotes the i-th instance and Y i represents the corresponding set of labels to be predicted (HS ∈ {0, 1}, TR ∈ {0, 1} and AG ∈ {0, 1}), the Exact Match Ratio (EMR) will be computed as follows:</p><formula xml:id="formula_2">EMR = 1 n n i=1 I(Y i , Z i )<label>(6)</label></formula><p>where Z i denotes the set of labels predicted for the i-th instance and I is the indicator function. The submissions will be ranked by EMR. This choice is motivated by the willingness to capture the difficulty of modeling the entire phenomenon, and therefore to identify the most dangerous behaviours against the targets.</p><p>Baselines. In order to provide a benchmark for the comparison of the submitted systems, we considered two different baselines. The first one (MFC baseline) is a trivial model that assigns the most frequent label, estimated on the training set, to all the instances in the test set. The second one (SVC baseline) is a linear Support Vector Machine (SVM) based on a TF-IDF representation, where the hyper-parameters are the default values set by the scikit-learn Python library <ref type="bibr" target="#b17">(Pedregosa et al., 2011)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participant Systems and Results</head><p>HatEval has been one of the most popular tasks in SemEval-2019 with a total of 108 submitted runs for Subtask A and 70 runs for Subtask B. We received submission from 74 different teams, of which 22 teams participated to all the subtasks for the two languages 10 .</p><p>Besides traditional Machine Learning approaches, it has been observed that more than half of the participants investigated Deep Learning models. In particular, most of the systems adopted models known to be particularly suitable for dealing with texts, from Recurrent Neural Networks to recently proposed language models <ref type="bibr" target="#b21">(Sabour et al., 2017;</ref><ref type="bibr" target="#b5">Cer et al., 2018)</ref>. Consequently, external resources such as pre-trained Word Embeddings on tweets have been widely adopted as input features. Only a few works deepen the linguistic features analysis, probably due to the high expectations on the ability of Deep Learning models to extract high-level features. Most of the submitted systems adopted traditional preprocessing techniques, such as tokenization, lowercase, stopwords, URLs and punctuation removal. Some participants investigated Twitter-driven preprocessing procedures such as hashtag segmentation, slang conversion in correct English and emoji translation into words. It is worth mentioning that the construction of customized hate lexicons derived by the detection of language patterns in the training set has been preferred to the use of external hate lexicons expressing a more universal knowledge about the hate speech phenomenon, additionally demonstrating the need of developing more advanced approaches for detecting hate speech towards women and immigrants. <ref type="bibr">10</ref> The evaluation results are published here:</p><p>https://docs.google.com/ spreadsheets/d/1wSFKh1hvwwQIoY8_ XBVkhjxacDmwXFpkshYzLx4bw-0/</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Subtask A -Hate Speech Detection against immigrants and women</head><p>We received 69 submissions to the English Subtask A, of which 49% and 96% outperformed the SVC and MFC baseline respectively, in terms of macro-averaged F 1 -score. Among the five best performing teams, only the team of Panaetius, which obtained the second position (0.571), has not provided a description of their system. The higher macro-averaged F 1 -score (0.651) has been obtained by the Fermi team. They trained a SVM model with RBF kernel only on the provided data, exploiting sentence embeddings from Google's Universal Sentence Encoder <ref type="bibr" target="#b5">(Cer et al., 2018)</ref> as features. Both the third, fourth and fifth ranked teams employ Neural Network models and, more specifically, Convolutional Neural Networks (CNNs) and Long Short Term Memory networks (LSTMs). In particular, the third position has been obtained by the YNU DYX team, which system achieved 0.535 macro-averaged F 1 -score by training a stacked Bidirectional Gated Recurrent Units (BiGRUs) <ref type="bibr" target="#b6">(Cho et al., 2014)</ref> exploiting fastText word embeddings <ref type="bibr" target="#b11">(Joulin et al., 2017)</ref>. Then, the output of BiGRU is fed as input to the capsule network <ref type="bibr" target="#b21">(Sabour et al., 2017)</ref>. The textual preprocessing has been conducted with standard procedures, e.g. punctuation removal, tokenization, contraction normalization, use of tags for hyperlinks, numbers and mentions. The fourth place has been achieved by the team of alonzorz (0.535), which used a novel type of CNN called Multiple Choice CNN on the top of contextual embeddings. These embeddings have been created with a model similar to Bidirectional Encoder Representations from Transformers (BERT) <ref type="bibr" target="#b8">(Devlin et al., 2018)</ref> trained using 50 million unique tweets from the Twitter Firehose dataset. The SINAI-DL team ranked fifth with a F 1 -score of 0.519. They employ a LSTM model based on the pretrained GloVe Word Embeddings from Stanford-NLP group <ref type="bibr" target="#b18">(Pennington et al., 2014)</ref>. Since Deep Learning models require a large amount of data for training, they perform data augmentation through the use of paraphrasing tools. For preprocessing the texts in the specific Twitter domain, they convert all the mentions to a common tag and they tokenized hashtags according to the Camel Case procedure, i.e. the practice of writing phrases such that each word or abbreviation in the middle of the phrase begins with a capital letter, with no inter-vening spaces or punctuation.</p><p>For Subtask A in Spanish, we received 39 submissions of which 51% and 100% outperformed the SVC and MFC baseline respectively, in terms of macro-averaged F 1 -score. The Atalaya and MineriaUNAM teams obtained the best macroaveraged F 1 -score of 0.73, both taking advantage of Support Vector Machines. The Atalaya team studied several sophisticated systems, however the best performances have been obtained by a linear-kernel SVM trained on a text representation composed of bag-of-words, bag-of-characters and tweet embeddings, computed from fastText sentiment-oriented word vectors. The system proposed by the MineriaUNAM team is based on a linear-kernel SVM. The study has focused on a combinatorial framework used to search for the best feature configuration among a combination of linguistic patterns features, a lexicon of aggressive words and different types of n-grams (characters, words, POS tags, aggressive words, word jumps, function words and punctuation symbols). The MITRE team has achieved the performance of 0.729, presenting a novel method for adapting pretrained BERT models to Twitter data using a corpus of tweets collected during the same time period of the HatEval training dataset. The CIC-2 team achieved 0.727 with a word-based representation by combining Logistic Regression, Multinomial Naïve Bayes, Classifiers Chain and Majority Voting. They used TF and TF/IDF after removing HTML tags, punctuation marks and special characters, converting slang and short forms into correct English words and stemming. The participants did not use external resources and trained their systems only with the provided data. Finally, the GSI-UPM team obtained the macro-averaged F 1 -score of 0.725 with a system where the linearkernel SVM has been trained on an automated selection of linguistic and semantic features, sentiment indicators, word embeddings, topic modeling features, and word and character TF-IDF ngrams.</p><p>Table <ref type="table" target="#tab_5">3</ref> shows basic statistics computed both for Subtasks A and B, with respect to the relative performance measures. The statistics comprise mean, standard deviation (StdDev), minimum, maximum, median and the first and third quartiles (Q1 and Q3). Concerning Subtask A, we notice that the maximum value in Spanish (0.7300) is higher than the English one (0.6510),  while the difference is even higher (23 points) when considering the mean value, from 0.6821 to 0.4484. On the other hand, the variability is very similar between English (0.0569) and Spanish (0.0521).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Subtask B -Aggressive behaviour and Target Classification</head><p>For Subtask B in English, we received 39 submissions, of which no system has been able to outperform the MFC baseline, which achieved 0.580 of EMR, while 61% outperformed the SVC baseline. Among the five best performing teams, only the team of scmhl5, which obtained the third position (0.483), has not provided us with a description of the system. The higher EMR result has been obtained by the LT3 team with a value of 0.570. They considered a supervised classification-based approach with SVM models which combines a variety of standard lexical and syntactic features with specific features for capturing offensive language exploiting external lexicons. The second position has been obtained by the CIC-1 team. The team achieved 0.568 in EMR with Logistic Regression and Classifier Chains. They trained their model only with the provided data, with a word-based representation and without external resources. The only preprocessing action was stemming and stop words removal. The fourth position was obtained by the team named The Titans. They achieved 0.471 of EMR with LSTM and TF/IDF-based Multilayer Perceptron. To represent the documents, they used the tweet words after removing links, mentions and spaces. They also tokenized hashtags into word tokens. The MITRE team exploits the same approach used for participating in Subtask A, obtaining 0.399 EMR. It is worth men-tioning that, despite the fact that the baseline could not be overcome in terms of EMR, the five first performing systems obtained higher F-values. For example, while the baseline obtained 0.421, the scmhl5 (0.632) and the MITRE team (0.614) systems obtained about 20 points over it.</p><p>For Subtask B in Spanish, we received 23 submissions of which 52% and 70% outperformed the SVC and MFC baseline respectively, in terms of EMR. The first position has been achieved by the CIC-2 team with 0.705 in terms of EMR, proposing the same approach for Subtask A in Spanish. The CIC-1 and MITRE teams, described previously, achieved the second and third positions with 0.675 and 0.675 in EMR respectively. The fourth position was obtained by the Atalaya team that achieved 0.657 EMR by extending the previously presented approach for Subtask A to a 5-way classification problem for all the possible label combinations. Finally, the team of Oscar-Garibo achieved the fifth position (0.6444) with Support Vector Machines and statistical embeddings to represent the texts. The proposed method, a variation of LDSE <ref type="bibr" target="#b20">(Rangel et al., 2016)</ref>, consists of finding thresholds on the frequencies of use of the different terms in the corpora depending on the class they belong to. In this subtask, the correlation between EMR and macro-averaged F 1 -score is more homogeneous than in English. However, it is worth mentioning the case of the CIC-1 team since its macro-averaged F 1 -score decreases with respect to the EMR and is 10 points lower than the rest of the best five performing teams.</p><p>The comparative results between all the performing teams in the two languages show interesting insights (see Table <ref type="table" target="#tab_5">3</ref>). Firstly, the best result is much higher in the case of Spanish (0.7050) than in English (0.5700) in more than 13 points. In the case of the fifth best results, the difference is much higher (0.2454), from 0.3990 in English to 0.6440 in Spanish. The average value changes from 0.3223 in English to 0.6013 in Spanish, with a difference of 28 points. The variability is also higher in English (0.0890) with respect to the value in Spanish (0.0662).</p><p>We can also derive further conclusions by comparing the statistics of the two Subtasks. Looking at the median, it is possible to notice that in both languages, the performances obtained on Subtask B are lower than the performances of Subtask A, with a difference between Subtask A and B of 14 and 8 points for English and Spanish respectively. This suggests that participant systems found much harder to predict the aggressiveness and targets than just the presence of hate speech. The quartile Q1 has highlighted that for the English language 75% of the systems obtained a score higher than 0.41 and 0.28 for Subtasks A and B, in particular 50 out of 69 for Subtask A and 31 out of 41 for Subtask B. While Q3 shows that 25% of the systems achieved a score value higher than 0.49 and 0.36 for Subtasks A and B, in particular 18 out of 69 for Subtask A and 11 out of 41 for Subtask B. For the Spanish language, the value of Q1 indicates that 75% of the systems have a score higher than 0.67 and 0.58 for Subtasks A and B, in particular 30 out of 39 for Subtask A and 17 out of 23 for Subtask B. Observing the quartile Q3, it is possible to observe that 25% of the systems achieved a value higher than 0.72 and 0.64 for Subtasks A and B, in particular 10 out of 39 for Subtask A and 6 out of 23 for Subtask B. Moreover, it is worth mentioning that the smaller the standard deviation the closer are the data to the mean value, highlighting that the Subtask B has shown high variability in terms of results than Subtask A. This statistics remarks again the difficulties of addressing Subtask B compared to Subtask A.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Error Analysis</head><p>In order to gain deeper insight into the results of the HatEval evaluation, we conducted a first error analysis experiment. For both languages, we selected the three top-ranked systems and checked the instances in the test set that were wrongly labeled by all three of them.</p><p>In the English Subtask A, the three top systems (Fermi, Panaetius, and YNU DYX) predicted the same wrong labels 569 times out of 2,971 (19.1%). In the Spanish Subtask A, the three top systems (Atalaya, mineriaUNAM, and MITRE) predicted the same wrong labels 234 times out of 1,600 (14.6%). The results showing the percentages by wrongly assigned labels are summarized in Table 4.  The common errors are highly skewed towards the false positives. However, the unbalance is stronger for English (89.1% false positives) than for Spanish (76% false positives).</p><p>Two English examples, respectively a false positive and a false negative, are: The false positive contains a swear word ("Bitch") used in a humorous, not offensive context, which is a potential source of confusion for a classifier. The false negative is a hateful message towards migrants, but phrased in a slightly convoluted way, in particular due to the use of negation ("no innocent people").</p><p>Similarly, a false positive and a false negative in Spanish: Like in the English example, in this false positive a negative word ("sudaca") is used humorously, for the purpose of a wordplay. In the false negative, there a misogynistic message is expressed, although covertly, implying that the target should "shut up and sing".</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>The very high number of participating teams at HatEval 2019 confirms the growing interest of the community around abusive language in social media and hate speech detection in particular. The presence of this task at SemEval 2019 was indeed very timely and the multilingual perspective we applied by developing data in two different widespread languages, English and Spanish, contributed to include and raise interest in a wider community of scholars. 38 teams sent their system reports to describe the approaches and the details of their participation to the task, contributing in shedding light on this difficult task. Some of the HatEval participants also participated to the OffensEval 11 , another task related to abusive language identification, but with an accent on the different notion of offensiveness, an orthogonal notion that can characterize also expressions that cannot be featured as hate speech <ref type="bibr" target="#b4">12</ref> . Overall, results confirm that hate speech detection against women and immigrants in micro-blogging texts is challenging, with a large room for improvement. We hope that the dataset made available as part of the shared task will foster further research on this topic, including its multilingual perspective.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Distribution of the annotated categories in English and Spanish training and development set for the target women.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Distribution of the annotated categories in English and Spanish training and development set for the target immigrants.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>[</head><label></label><figDesc>id: 4723] @ saima55016154 Come on box I show you my cock darling [Generic]: [id: 5823] Women are equal and deserve respect. Just kidding, they should suck my dick.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>[</head><label></label><figDesc>id:1890] Sick barstewards! This is what happens when we put up the refugees welcome signs! They not only rape our wives or girlfriends, our daughters but our ruddy mothers too!! https://t.co/XAYLr6FjNk [Non-Aggressive] [id: 945] @EmmanuelMacron Hello?? Stop groping my nation.Schneider: current migrant crisis represents a plan orchestrated and prepared for a long time by international powers to radically alter Christian and national identity of European peoples.http</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>[</head><label></label><figDesc>id: 33119] Soy un sudaca haciendo sudokus https://t.co/vA7nQsfm85 I am a sudaca doing sudokus [id: 34455] Estoy escuchando una puta canción y la pelotuda de Demi Lovato se pone a hablar en el medio. CANTÁ Y CALLATE LA BOCA. I am listening to a fucking song and that asshole Demi Lovato starts talking in the middle of it. SING AND SHUT YOUR MOUTH.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Distribution percentages across sets and categories for English data. The percentages for the target and aggressiveness categories are computed on the total number of hateful tweets.</figDesc><table><row><cell></cell><cell cols="2">Training</cell><cell>Test</cell></row><row><cell>Label</cell><cell cols="3">Imm. Women Imm. Women</cell></row><row><cell>Hateful</cell><cell>41.93</cell><cell>41.38 40.50</cell><cell>42.00</cell></row><row><cell>Non-Hateful</cell><cell>58.07</cell><cell>58.62 59.50</cell><cell>58.00</cell></row><row><cell cols="2">Individual Target 13.72</cell><cell>87.58 32.10</cell><cell>94.94</cell></row><row><cell>Generic Target</cell><cell>86.28</cell><cell>12.42 67.90</cell><cell>5.06</cell></row><row><cell>Aggressive</cell><cell>68.58</cell><cell>87.58 50.31</cell><cell>92.56</cell></row><row><cell>Non-Aggressive</cell><cell>31.42</cell><cell>12.42 46.69</cell><cell>7.44</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Distribution percentages across sets and categories for Spanish data. The percentages for the target and aggressiveness categories are computed on the total number of hateful tweets.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell>: Basic statistics of the results for the partici-</cell></row><row><cell>pating system and baselines in Subtask A and Subtask</cell></row><row><cell>B expressed in terms of macro-averaged F 1 -score and</cell></row><row><cell>EMR respectively.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>Number of instances mislabeled by all the three top-ranked systems, broken down by wrongly assigned label.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head></head><label></label><figDesc>[id: 30249] My mom FaceTimed me to show off new shoes she got and was like "no cabe duda que soy una Bitch" i love her</figDesc><table><row><cell>[id:</cell><cell>30542]</cell><cell>@ JohnnyMalc</cell></row><row><cell cols="3">@ OMGTheMess There are NO IN-</cell></row><row><cell cols="3">NOCENT people in detention centres</cell></row><row><cell cols="2">#SendThemBack</cell><cell></cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://sites.google.com/view/alw2018/ 2 http://sites.google.com/view/ ibereval-2018</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">The complete set of keywords exploited is available here: https://github.com/msang/hateval/ blob/master/keyword_set.md</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">The target of the misogynistic hate here is Victoria Donda Prez, an Argentinian woman, human rights activist and member of the Argentine National Congress (mentioned in the at-mention of the original tweet).</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0" />
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Sentiment polarity classification at evalita: Lessons learned and open challenges</title>
+		<author>
+			<persName><forename type="first">Valerio</forename><surname>Basile</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicole</forename><surname>Novielli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Croce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Barbieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Malvina</forename><surname>Nissim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Viviana</forename><surname>Patti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Affective Computing</title>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Overview of the EVALITA 2018 Hate Speech Detection Task</title>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Bosco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felice</forename><surname>Dell'orletta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabio</forename><surname>Poletto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Sanguinetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maurizio</forename><surname>Tesconi</surname></persName>
+		</author>
+		<ptr target="CEUR-WS.org" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Sixth Evaluation Campaign of Natural Language Processing and Speech Tools for Italian. Final Workshop</title>
+				<meeting>the Sixth Evaluation Campaign of Natural Language Processing and Speech Tools for Italian. Final Workshop</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Tools and Resources for Detecting Hate and Prejudice Against Immigrants in Social Media</title>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Bosco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patti</forename><surname>Viviana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcello</forename><surname>Bogetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michelangelo</forename><surname>Conoscenti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giancarlo</forename><surname>Ruffo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rossano</forename><surname>Schifanella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Stranisci</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of First Symposium on Social Interactions in Complex Intelligent Systems (SICIS), AISB Convention</title>
+				<meeting>First Symposium on Social Interactions in Complex Intelligent Systems (SICIS), AISB Convention</meeting>
+		<imprint>
+			<publisher>AI and Society</publisher>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Miguelángelálvarez</forename><surname>Carmona</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Estefanía</forename><surname>Guzmán-Falcón</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuel</forename><surname>Montes-Y-Gómez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hugo</forename><forename type="middle">Jair</forename><surname>Escalante</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luis</forename><forename type="middle">Villaseñor</forename><surname>Pineda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Verónica</forename><surname>Reyes-Meza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><forename type="middle">Rico</forename><surname>Sulayes</surname></persName>
+		</author>
+		<ptr target="https://competitions.codalab.org/competitions/20011" />
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">11</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">2018) for a deeper reflection on hate speech and offensiveness. of MEX-A3T at IberEval 2018: Authorship and Aggressiveness Analysis in Mexican Spanish Tweets</title>
+		<author>
+			<persName><forename type="first">(</forename><surname>See</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sanguinetti</surname></persName>
+		</author>
+		<ptr target="CEUR-WS.org" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Evaluation of Human Language Technologies for Iberian Languages</title>
+				<meeting>the Third Workshop on Evaluation of Human Language Technologies for Iberian Languages</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Chris Tar, Yun-Hsuan Sung, Brian Strope, and Ray Kurzweil</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Cer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yinfei</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sheng-Yi</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nan</forename><surname>Hua</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicole</forename><surname>Limtiaco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rhomni</forename><surname>St</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><surname>John</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mario</forename><surname>Constant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steve</forename><surname>Guajardo-Cespedes</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Yuan</surname></persName>
+		</author>
+		<idno>abs/1803.11175</idno>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+		<respStmt>
+			<orgName>Universal sentence encoder. CoRR</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Learning phrase representations using rnn encoder-decoder for statistical machine translation</title>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bart</forename><surname>Van Merrienboer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Caglar</forename><surname>Gulcehre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dzmitry</forename><surname>Bahdanau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fethi</forename><surname>Bougares</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Holger</forename><surname>Schwenk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1724" to="1734" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">Automated Hate Speech Detection and the Problem of Offensive Language</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Davidson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dana</forename><surname>Warmsley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">W</forename><surname>Macy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ingmar</forename><surname>Weber</surname></persName>
+		</author>
+		<idno>abs/1703.04009</idno>
+		<imprint>
+			<date type="published" when="2017" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">Bert: Pre-training of deep bidirectional transformers for language understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">In Proceedings of Sixth Evaluation Campaign of Natural Language Processing and Speech Tools for Italian</title>
+		<author>
+			<persName><forename type="first">Elisabetta</forename><surname>Fersini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Debora</forename><surname>Nozza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<ptr target="CEUR-WS.org" />
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Overview of the EVALITA 2018 Task on Automatic Misogyny Identification (AMI)</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Overview of the Task on Automatic Misogyny Identification at IberEval</title>
+		<author>
+			<persName><forename type="first">Elisabetta</forename><surname>Fersini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Anzovino</surname></persName>
+		</author>
+		<ptr target="CEUR-WS.org" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Evaluation of Human Language Technologies for Iberian Languages</title>
+				<meeting>the Third Workshop on Evaluation of Human Language Technologies for Iberian Languages</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Bag of tricks for efficient text classification</title>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Joulin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piotr</forename><surname>Bojanowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Conference of the European Chapter</title>
+				<meeting>the 15th Conference of the European Chapter<address><addrLine>Short Papers</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="427" to="431" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Maximal margin labeling for multi-topic text categorization</title>
+		<author>
+			<persName><forename type="first">Hideto</forename><surname>Kazawa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomonori</forename><surname>Izumitani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hirotoshi</forename><surname>Taira</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eisaku</forename><surname>Maeda</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="649" to="656" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Ojha, Marcos Zampieri, and Shervin Malmasi, editors</title>
+		<author>
+			<persName><forename type="first">Ritesh</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Atul</forename><surname>Kr</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Trolling, Aggression and Cyberbullying (TRAC-2018). ACL</title>
+				<meeting>the First Workshop on Trolling, Aggression and Cyberbullying (TRAC-2018). ACL</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Down Girl. The Logic of Misogyny</title>
+		<author>
+			<persName><forename type="first">Kate</forename><surname>Manne</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+			<publisher>Oxford University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Hate speech. Encyclopedia of the American Constitution</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>John</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nockleby</surname></persName>
+		</author>
+		<editor>Leonard W. Levy, Kenneth L. Karst et al.</editor>
+		<imprint>
+			<date type="published" when="2000" />
+			<publisher>Macmillan</publisher>
+			<biblScope unit="page" from="1277" to="1279" />
+			<pubPlace>New York</pubPlace>
+		</imprint>
+	</monogr>
+	<note>2nd ed.</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Text categorization with class-based and corpus-based keyword selection</title>
+		<author>
+			<persName><forename type="first">Leventözgür</forename><surname>Arzucanözgür</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tunga</forename><surname>Güngör</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Symposium on Computer and Information Sciences</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="606" to="615" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Scikit-learn: Machine learning in Python</title>
+		<author>
+			<persName><forename type="first">Fabian</forename><surname>Pedregosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gaël</forename><surname>Varoquaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Gramfort</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Michel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bertrand</forename><surname>Thirion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olivier</forename><surname>Grisel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mathieu</forename><surname>Blondel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Prettenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ron</forename><surname>Weiss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Dubourg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="2825" to="2830" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Hate Speech Annotation: Analysis of an Italian Twitter Corpus</title>
+		<author>
+			<persName><forename type="first">Fabio</forename><surname>Poletto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Stranisci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Sanguinetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Viviana</forename><surname>Patti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Bosco</surname></persName>
+		</author>
+		<ptr target="CEUR-WS.org" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Italian Conference on Computational Linguistics</title>
+				<meeting>the Fourth Italian Conference on Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">A low dimensionality representation for language variety identification</title>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Rangel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Franco-Salvador</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">17th International Conference on Intelligent Text Processing and Computational Linguistics, CICLing</title>
+				<imprint>
+			<publisher>Springer-Verlag</publisher>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Dynamic routing between capsules</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Sabour</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicholas</forename><surname>Frosst</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><forename type="middle">E</forename><surname>Hin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="3856" to="3866" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">An Italian Twitter Corpus of Hate Speech against Immigrants</title>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Sanguinetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabio</forename><surname>Poletto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Bosco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Viviana</forename><surname>Patti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Stranisci</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th Language Resources and Evaluation Conference</title>
+				<meeting>the 11th Language Resources and Evaluation Conference</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Overview of the task on stance and gender detection in tweets on catalan independence</title>
+		<author>
+			<persName><forename type="first">Mariona</forename><surname>Taulé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><forename type="middle">Antònia</forename><surname>Martí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><forename type="middle">M</forename><surname>Rangel Pardo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Bosco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Viviana</forename><surname>Patti</surname></persName>
+		</author>
+		<ptr target="CEUR-WS.org" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Evaluation of Human Language Technologies for Iberian Languages</title>
+				<meeting>the Second Workshop on Evaluation of Human Language Technologies for Iberian Languages</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m">2017. Proceedings of the First Workshop on Abusive Language Online. ACL</title>
+				<editor>
+			<persName><forename type="first">Zeerak</forename><surname>Waseem</surname></persName>
+			<persName><forename type="first">Wendy</forename><forename type="middle">Hui</forename></persName>
+			<persName><forename type="first">Kyong</forename><surname>Chung</surname></persName>
+			<persName><forename type="first">Dirk</forename><surname>Hovy</surname></persName>
+			<persName><forename type="first">Joel</forename><surname>Tetreault</surname></persName>
+		</editor>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Wiegand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Melanie</forename><surname>Siegel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Ruppenhofer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Overview of the GermEval</title>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Shared Task on the Identification of Offensive Language</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of GermEval 2018, 14th Conference on Natural Language Processing</title>
+				<meeting>GermEval 2018, 14th Conference on Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

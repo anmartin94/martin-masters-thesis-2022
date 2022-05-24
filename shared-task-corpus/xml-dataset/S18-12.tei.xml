@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2018 Task 12: The Argument Reasoning Comprehension Task</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Ivan</forename><surname>Habernal</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="laboratory">Ubiquitous Knowledge Processing Lab (UKP) and Research Training Group AIPHES</orgName>
+								<orgName type="institution">Technische Universität Darmstadt</orgName>
+								<address>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Henning</forename><surname>Wachsmuth</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="laboratory">Ubiquitous Knowledge Processing Lab (UKP) and Research Training Group AIPHES</orgName>
+								<orgName type="institution">Technische Universität Darmstadt</orgName>
+								<address>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="department">Faculty of Media</orgName>
+								<address>
+									<addrLine>Bauhaus-Universität Weimar</addrLine>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2018 Task 12: The Argument Reasoning Comprehension Task</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>A natural language argument is composed of a claim as well as reasons given as premises for the claim. The warrant explaining the reasoning is usually left implicit, as it is clear from the context and common sense. This makes a comprehension of arguments easy for humans but hard for machines. This paper summarizes the first shared task on argument reasoning comprehension. Given a premise and a claim along with some topic information, the goal is to automatically identify the correct warrant among two candidates that are plausible and lexically close, but in fact imply opposite claims. We describe the dataset with 1970 instances that we built for the task, and we outline the 21 computational approaches that participated, most of which used neural networks. The results reveal the complexity of the task, with many approaches hardly improving over the random accuracy of ≈ 0.5. Still, the best observed accuracy (0.712) underlines the principle feasibility of identifying warrants. Our analysis indicates that an inclusion of external knowledge is key to reasoning comprehension.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>When we argue in natural language, we give reasons as premises for our claims. A fundamental pragmatic instrument in this regard is to leave those parts of an argument unstated that can be presupposed. This is particularly common for the reasoning between an argument's premises and its claim, called implicit warrants there <ref type="bibr" target="#b18">(Toulmin, 1958)</ref>. A warrant takes the role of an inference rule, i.e., the abstract structure of an argument is reason → (since) warrant → (therefore) claim. In principle, this structure applies to deductive arguments, which allows us to validate arguments properly formalized in propositional logic. However, most natural language arguments are in fact inductive <ref type="bibr" target="#b6">(Govier, 2010)</ref> or defeasible <ref type="bibr" target="#b20">(Walton, 2007)</ref>.</p><p>Topic: Tax Break for Sports. Additional Information: Should pro sports leagues enjoy nonprofit status? Premise (Reason): Government is already struggling to pay for basic needs. And since Warrant 0: the government isn't required to pay for all the country's needs Warrant 1: the government is required to pay for the country's needs Claim: Sport leagues should not enjoy nonprofit.</p><p>Figure <ref type="figure">1</ref>: Instance of the argument reasoning comprehension task. The correct warrant has to be classified. Now, when we comprehend an argument, we reconstruct its warrant driven by the cognitive principle of relevance <ref type="bibr" target="#b21">(Wilson and Sperber, 2004)</ref>. What is easy for humans in many cases, however, turns out to be hard for machines, because reasoning usually depends on context and common sense. In <ref type="bibr" target="#b8">(Habernal et al., 2018)</ref>, we have thus introduced the argument reasoning comprehension task in order to study the construction and identification of implicit warrants for natural language arguments. It forms the basis of the shared task presented here:</p><p>Task Given an argument with a reason serving as a premise for a claim, along with the topic and some additional information of the discussion they occur in, identify the correct warrant among two opposing candidates, warrant0 and warrant1.</p><p>With opposing, we here mean that the two candidate warrants actually imply contradicting claims, the correct one and its opposite. An instance of the task is shown in Figure <ref type="figure">1</ref>. Being a binary classification task, the main evaluation measure of argument reasoning comprehension is accuracy.</p><p>To our knowledge, this is the first shared NLP task directly targeting argumentation; others tasks have only been sketched so far <ref type="bibr" target="#b10">(Kiesel et al., 2015)</ref>.</p><p>A solution to our task will represent a substantial step towards automatic warrant reconstruction, which in turn is important for the general longterm goal of automatic argument evaluation. So far, most research on computational argumentation focused on mining claims and premises from text and assessing their properties. In contrast, filling the gap between claims and premises computationally remains an open issue, due to the inherent difficulty of reconstructing the world knowledge and reasoning patterns in arguments <ref type="bibr" target="#b5">(Feng and Hirst, 2011;</ref><ref type="bibr" target="#b7">Green, 2014;</ref><ref type="bibr">Boltužić andŠnajder, 2016)</ref>. Previous tasks have dealt with the textual entailment of a hypothesis from a proposition <ref type="bibr" target="#b4">(Dagan et al., 2009)</ref> or with semantic inference <ref type="bibr" target="#b2">(Bowman et al., 2015)</ref>. While understanding semantics is important in the given task, argumentation also reasoning beyond what is understood, i.e., pragmatics.</p><p>As a basis for the shared task, we built a new dataset with 1970 instances based on authentic English arguments, whose concept and construction process is detailed in Section 2. We outline the systems that participated in the task in Section 3. Most systems implement a computational approach that employs one or more neural networks (often LSTMs, often with attention) based on different pre-trained embedding models. We then present the results of all systems on the test set of the shared task in Section 4 and analyze specific cases in Section 5, before we finally conclude (Section 6).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Dataset</head><p>This section presents the dataset with all instances used in the shared task. We summarize the main points from its construction process, which is described in detail in <ref type="bibr" target="#b8">(Habernal et al., 2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Task Instances</head><p>Let R be the reason for the claim C in a natural language argument. Then there is a warrant W that explains why R supports C, but W is left implicit. For example, if C is "It should be illegal to declaw your cat" and R is "They need to use their claws for defense and instinct", then W could be specified as 'If cat needs claws for instincts, declawing would be against nature' or similar.</p><p>The question is how to find a warrant W for a given reason R and claim C. To obtain candidate warrants systematically for our dataset, we propose a trick. In particular, we first construct an alternative warrant AW that explains why R may serve as</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Unit Text</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Reason</head><p>Cooperating with Russia on terrorism ignores Russia's overall objectives.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Claim</head><p>Russia cannot be a partner. Warrant0 Russia has the same objectives of the US. Warrant1 Russia has the opposite objectives of the US.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Reason</head><p>Economic growth needs innovation. Claim 3-D printing will change the world. Warrant0 There is no innovation in 3-d printing since it's unsustainable. Warrant1 There is much innovation in 3-d printing and it is sustainable.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Reason</head><p>College students have the best chance of knowing history.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Claim</head><p>College students' votes do matter in an election. Warrant0 Knowing history doesn't mean that we will repeat it. Warrant1 Knowing history means that we won't repeat it. Table <ref type="table">1</ref>: Three example task instances from the dataset. In all cases, warrant1 is the alternative warrant. For brevity, we omit the topic and additional information.</p><p>support for the opposite ¬C of the claim C. For the example above, we invert C to "It should be legal to declaw your cat" (¬C). ¬C may be explained based on R quite plausibly with the alternative warrant "Most house cats don't face enemies" (AW ). Analog to C and ¬C, we then invert AW to "Most house cats face enemies", which is a plausible warrant W for the original reason-claim pair (R,C).</p><p>Constructing a plausible alternative warrant is not always possible, as many reasons already convey the arguer's stance. If it is, however, W and AW usually capture the core of a reason's relevance and reveal the implicit presuppositions, due to the trick we performed for construction. For such as cases, we define an instance of our task as a 6-tuple: Instance (reason, claim, warrant0, warrant1, topic, additional information)</p><p>The question to be answered is whether warrant0 is W and warrant1 is AW , or vice versa. As context, we provide a short topic specification and some additional information describing the topic. Figure <ref type="figure">1</ref> has already shown an example. Further are given in Table <ref type="table">1</ref>. They all result from the following process.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Data Acquisition and Annotation</head><p>To obtain a dataset with a permissive license, we decided to build a new dataset from scratch. As source data, we used user-generated web comments from the well-moderated Room for Debate of the New York Times, which covers arguments on a variety of contemporary controversial issues. <ref type="bibr">1</ref> We manually selected 188 debates with polar questions in the title from a six-year span <ref type="bibr">(2011)</ref><ref type="bibr">(2012)</ref><ref type="bibr">(2013)</ref><ref type="bibr">(2014)</ref><ref type="bibr">(2015)</ref><ref type="bibr">(2016)</ref><ref type="bibr">(2017)</ref>. We converted each question into a claim C (e.g., "It should be illegal to declaw your cat") and derived a directly opposing claim ¬C ("It should be legal to declaw your cat"). Then, we crawled all comments from the debates and sampled about 11,000 high-ranked, root-level comments 2 from which 5,000 were selected randomly as a basis for the dataset construction. Each comment was split into elementary discourse units using SistaNLP <ref type="bibr" target="#b17">(Surdeanu et al., 2015)</ref>. To obtain task instances, we then performed the following eight-step crowdsourcing process using Amazon Mechanical Turk:</p><p>1. Stance Annotation. For each comment, the crowdworkers first classified what stance it takes, if it remains neutral, or if it does not take any stance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Reason Span Annotation.</head><p>In all 2,884 comments taking a stance, the workers then marked sequences of discourse units that give a reason for the claim.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Reason Gist Summarization.</head><p>In this step, the workers rewrote all 5,119 marked reasons (2,026 within arguments), such that their gist remains the same but the clutter is removed. The result is a reason R for the claim C. 4. Reason Disambiguation. In order to ensure that R implies C really holds, the workers next decided whether C or ¬C is more plausible for R, or whether both are similarly (im)plausible. We kept only those 1,955 reason-claim pairs where workers agreed that C is most plausible.</p><p>5. Alternative Warrant. This step was the trickiest. As in the example above, the workers had to specify a plausible alternative warrant AW , explaining why R implies ¬C, or declare that impossible.</p><p>6. Alternative Warrant Validation. Afterwards, other workers validated each of the 5,342 specified alternative warrants AW as to whether it actually relates to R, by identifying R among two alternatives: R itself and the lexically most similar reason from the same debate topic. For the 3,791 correctly validated cases, we let workers score how logical AW is (0-2) and only kept those 2,613 that had a mean score of at least 0.68. This threshold was chosen based on a manual examination of the scores. 7. Warrant For Original Claim. Given R and C, workers then should create a minimally modified version of each AW that may serve as an actual warrant W for C (as in the second half of the example above). They succeeded to do so in 2,447 cases.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.">Warrant Validation.</head><p>To ensure that only W is correct for R and C, all tuples (R,C,W, AW ) were validated again. Unclear cases were resolved by an expert. We obtained 1,970 instances of the argument reasoning comprehension task, so 1,970 pairs of warrant0 and warrant1 for a reason and a claim, along with a topic and the additional information.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Agreement</head><p>To assess quality in the crowdsourcing process, we relied on MACE <ref type="bibr" target="#b9">(Hovy et al., 2013)</ref>, which estimates gold labels for a set of workers, outperforming simple majority votes. Given the number of the different crowdsourcing tasks and their variety, here we only demonstrate the first step, namely stance annotation. We collected 18 assignments per item and split them into two groups (9+9) based on their submission time. We then considered each group as an independent experiment and estimated gold labels for each group. Having two independent "experts from the crowd" allowed us to compute standard agreement scores. We also varied the size of each group from 1 to 9 by repeated random sampling of assignments, and we tuned the MACE threshold for keeping only the most confident predictions. Figure <ref type="figure">2</ref> shows the Cohen's κ agreement for stance annotation with respect to the crowd size computed by our method. The decision what number of workers per task to take (five in case of stance annotation) implies a trade-off between the number of instances and their reliability. We performed similar quality measures with reasonable agreement for the other crowdsourcing steps too. Details are given in <ref type="bibr" target="#b8">(Habernal et al., 2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Datasets in the Shared Task</head><p>For the shared task, we split the 1,970 instances into three sets based on the year of the debate they were taken from: 2011-2015 became the training set (1,210 instances), 2016 the development set (316 instances), and 2017 the test set (444 instances). This follows the paradigm of learning on past data and predicting on new ones. In addition, it removes much lexical and topical overlap. The same split has been used by <ref type="bibr" target="#b8">Habernal et al. (2018)</ref>.</p><p>The shared task had two phases, trial and test. In the trial phase, the training and development set were given, both with gold labels stating the correct warrant for all instances. In the test phase, all three datasets were available. Naturally, no labels were given for the test set instances. All provided data is licensed under Creative Commons-family license.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Approaches</head><p>This section briefly summarizes the computational approaches of the systems that participated in the shared task as well as baselines. Intuitions and detailed explanations are given in the system description papers associated to the shared task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Participating Systems</head><p>The following 20 systems participated in the shared task, sorted alphabetically. In addition, a 21st system called Joker took part, but the team behind did not provide any description. For many of the systems, many more details are given in the respective SemEval-2018 system description papers.</p><p>ArcNet uses GloVe embeddings and an LSTM encoder to get the semantic representation of each input (reason, claim, and both warrants). Then an attention mechanism aligns the reason and the warrant so that the reason-aware warrant representation is generated. Finally, a bilinear function matches the claim with the reason-aware warrant. The network is trained to minimize margin loss. The submission was based on an ensemble model of 10 training runs with the identical architecture.</p><p>ArgEns-GRU votes a majority on an ensemble of the following three systems: First, a shared GRU network that learns one representation of the reason, claim, and both warrants each, initialized with 100-dimensional GloVe embeddings. Its output is concatenated and passed through a softmax layer for the final predictions. Second, an extension of the GRU with an attention on the reason, claim, and both warrants each. And third, another GRU model extended with negation and polarity features.</p><p>ART uses a bi-directional LSTM with an attention mechanism on top, followed by a multi-layer perceptron network.</p><p>blcu nlp not only pays attention to the consensual part between each warrant and other information, but also to the contradictory part between two warrants. On the model's input (GloVe embeddings), warrant0, claim, reason, and debate info are concatenated in order to put attention on warrant1. An analog structure is used for the attention on war-rant0. After obtaining two vectors 'attented w0' and 'attented w1' -referring to the ESIM model <ref type="bibr" target="#b3">(Chen et al., 2017)</ref> -the two warrants are aligned. A similarity matrix helps to highlight the consensual and the contradictory part. The decision is then drawn after passing through feed-forward layers. A majority voting strategy is used in the final ensemble, which is based on five models performing best on the development data.</p><p>Deepfinder shares one LSTM layer for warrant0, warrant1, claim, and reason, while the topic part uses one LSTM alone. All of them share the same word embedding layer before LSTM layers. After that, one individual dot product is computed for the output of the warrant0 LSTM and each of the claim, reason and claim (the same is done for the warrant1 LSTM). The resulting dot products are concatenated and fed into a softmax layer.</p><p>ECNU modifies the baseline intra-warrant attention <ref type="bibr" target="#b8">(Habernal et al., 2018</ref>) by using a CNN and an LSTM for representing each sentence (claim, reason, debate, warrant0, and warrant1). Different parts of warrant0 and warrant1 are used as an attention vector to obtain representations of the warrants. Similarly, different parts of claim and the opposite claim serve as attention for the final representation. The final decision is then given by a vote from three networks.</p><p>GIST uses pretrained word2vec embeddings as well as the ESIM model <ref type="bibr" target="#b3">(Chen et al., 2017)</ref>, trained on the SNLI <ref type="bibr" target="#b2">(Bowman et al., 2015)</ref> and MultiNLI <ref type="bibr" target="#b13">(Nangia et al., 2017)</ref> datasets. The parameters have been frozen afterwards. Then, pairs of sentences are fed into the the ESIM model. For warrant0, for example, these pairs are (claim, warrant0), (war-rant0, reason), and (warrant0, warrant1). Also, another bi-LSTM module encoding claim, warrant, and reason is added. The output vectors of each pair and the bi-LSTM are concatenated after averaging and max pooling, and the final prediction is made through feed-forward layers.</p><p>HHU encodes reason, claim, and warrants using a bi-directional LSTM. Next, warrant0, reason, and claim are fed into another LSTM; similarly, warrant1, reason, and claim to another LSTM in parallel. Both branches are followed by a dropout and two common dense layers. Embeddings have been pre-trained in four different flavors: fasttextembeddings trained on the entire Wikipedia corpus, two embeddings trained on the task's dataset using the word2vec skip-gram model with different dimensionalities, and another word2vec model based on the tasks vocabulary but augmented with related articles from Wikipedia. For all embeddings, different parameter combinations and seeds were used to train an ensemble of 623 models in total.</p><p>ITNLP-ARC first encodes sentences (warrant, reason, claim) using LSTMs. Attention is used to merge the reason vector with the claim vector. A shared weight matrix then holds the relationship between the warrant and the attention vector, from which the maximum is chosen as the answer. An ensemble method is used for the final vote. lyb3b encodes sentences using word2vec or GloVe embeddings and a bi-directional LSTM. The instances are treated as positive or negative, depending on the correct training warrant. The network then combines the warrant with the reason, claim, and additional info. Finally, a fully-connected layer is used to decide whether the instance is correct.</p><p>mingyan performs a word-by-word attention that is fused with the original representation then. Selfattention pooling produces a single vector fed into a sigmoid function, trained with cross-entropy loss.</p><p>NLITrans attempts to leverage the transfer of semantic knowledge from a bi-directional LSTM encoder with max pooling trained on the MultiNLI corpus <ref type="bibr" target="#b13">(Nangia et al., 2017)</ref>. This yields a small performance boost on the development set. All sentences (claim, reason, warrant0, and warrant1) are encoded with this a transferred encoder. Then, taskspecific representations of two 'arguments', one for each warrant, are learned via fully-connected layers. A final linear layer generates an independent score representing the fit of each warrant to the argument. These are concatenated and passed through softmax to generate a probability distribution over the two warrants.</p><p>RW2C uses two neural networks. The first one classifies each warrant as true or false separately and chooses the one with higher confidence as the right one. The second model makes a decision given two warrant candidates. The final prediction is an ensemble over the previous predictions. Both models represent sentences using a CNN.</p><p>SNU IDS decides whether a logic built on a set of given sentences (claim, reason, and warrant) is plausible. It accepts only one warrant at a time and outputs a score on the warrant's validity. The intuition is that the model can learn what has more meaningful semantics of natural language when it judges whether the logic of the given sequence is correct, instead of just selecting the more probable warrant among two candidates. The model consists of an encoding layer with GloVe embeddings <ref type="bibr" target="#b14">(Pennington et al., 2014)</ref> and a CoVe sentence encoder <ref type="bibr" target="#b12">(McCann et al., 2017)</ref>, a 'localization' layer (a set of fully connected layers), and output layers that combine calculating several arithmetic measures over the input representation and compute a final score using a logistic layer on top.</p><p>TakeLab preprocesses sentences from the dataset, applies some arithmetic, converts them to Skip-Thought vectors, and feeds them into an SVM classifier with fine-tuned hyperparameters. The Skip-Thought vectors are sentence representation vectors whose encoder and decoder (with an identical structure to RNN encoder-decoders used for neural machine translation) are trained on a large corpus of books unbiased in domain <ref type="bibr" target="#b11">(Kiros et al., 2015)</ref>.</p><p>TRANSRW learns the semantic representation of sentences (reason, warrants, claim) using a convolutional neural network. The assumption behind is that a composition of the reason and the warrant is close to the representation of the claim.</p><p>UniMelb combines 3 stacked LSTMs, one for the reason, one for the claim, and one shared Siamese Network for the two warrants under investigation. It generates semantic feature vectors that serve as input to a shared compressed feature space by using simple vector operations and semantic similarity classification to enforce the interrelationships between them. In doing so, the aim is to learn a form of "generative implication" through the semantic feature vectors. The vectors are able to correctly encode the interrelationships between a reason, a claim, and both the correct and incorrect warrants. The given data is augmented by utilizing WordNet synonym fuzzing.</p><p>YNU-HPCC uses a bi-directional LSTM with attention whose input is divided into three parts (claim, reason, and both warrants). To prevent overfitting, dropout is added before the final layer.</p><p>YNU Deep combines the reason and the claim with a so-called 'story' feature. The story feature is merged with the warrant. The network is a bidirectional LSTM with attention and uses GloVe embeddings. Ensemble technology is put on top to mitigate the small size of the data.</p><p>ztangfdu first concatenates the claim and the reason as one sentence named 'sent1', and denotes the correct warrant as 'sent2' and the wrong warrant as 'sent3', respectively. The output of an LSTM layer with non-trained embeddings then represents each of the sentences. After applying mean pooling to transform the output matrices to vectors, two fully connected layers cater for obtaining the difference score between 'sent2' and 'sent3', whose minimization is the core of the loss function.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Baselines</head><p>For the official task, we provided only a simple naïve random baseline. The outcome (warrant0 or warrant1) is drawn from a Bernoulli distribution (θ = 0.5) resulting in a theoretical accuracy of 0.5. The reported baseline was a single random draw.</p><p>Further computational baseline approaches, such as a language model, are evaluated in <ref type="bibr" target="#b8">(Habernal et al., 2018</ref>), but we did not consider them within the official competition. There, we also report human bounds for argument reasoning comprehension based on a crowdsourcing study, where each of 173 participants had to solve 10 instances. The mean accuracy was 0.798, but varied depending on the participants' prior knowledge of reasoning, logic, and argumentation. Those with extensive prior knowledge achieved 0.909, and 30 participants solved all instances correctly. We conclude that the task is reasonably solvable for humans.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Results</head><p>The final accuracies of all participating systems are ranked in Table <ref type="table" target="#tab_1">2</ref>. Due to the limited size of the test set (444 instances) and the subtle accuracy differences of many systems, we also measured significance using the approximate randomization test, as described in <ref type="bibr" target="#b16">(Riezler and Maxwell, 2005)</ref>. <ref type="bibr">3</ref> Table <ref type="table" target="#tab_3">3</ref> shows p-values of all system pairs, including the random baseline. As p-values lower than 0.05 are usually considered statistically significant, only three systems outperform the random baseline. However, we would like to emphasize that drawing a strong conclusion about superiority of a particular neural-based system given only one benchmark value might be misleading, as <ref type="bibr" target="#b15">Reimers and Gurevych (2017)</ref> showed for several NLP tasks. We see that the winning system GIST significantly outperforms all other systems on this particular test data (p 0.05). For future SemEval tasks, however, we encourage task organizers to solicit multiple submissions of the same system trained with different random initializations, and perform a proper Bayesian system comparison. The machine learning community has already abandoned the controversial p-value and replaced it with Bayesian methods that are easily interpretable and account well for uncertainty <ref type="bibr" target="#b0">(Benavoli et al., 2017</ref>  Only the three top systems (GIST, blcu nlp, and ECNU) are significantly better than the random baseline (p-values &lt; 0.05). The first system (GIST) also significantly outperforms the second system (blcu nlp) (p-value 0.05).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Analysis</head><p>First, we show a quantitative analysis of the results on the test instances. Figure <ref type="figure">3</ref> displays the distribution of all instances over the number of systems that classified each of them correctly. The shape of this rather bi-modal distribution reveals that there are both easy and hard cases. In particular, there are 13 instances completely unsolved and about 90 instances solved by fewer than five participating systems. On the other hand, 32 instances were solved by all systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Easy instances</head><p>We qualitatively investigated instances that were classified correctly by all participating systems. It turned out that systems needed to learn only one single property common to all of them: negation. Correct warrants in these instances contain negating words ("not", "don't") or negated modals ("can't", "wouldn't"), as shown in Figure <ref type="figure" target="#fig_1">4</ref>. This artifact originates from the process of intentionally creating the dichotomy between the alternative warrant and warrant (see Section 2) that in many cases consist of an assertion firstly created for the alternative warrant, and its negation for the correct warrant.</p><p>Figure <ref type="figure">3</ref>: Despite many solvable instances (centered around the right mode), there are hard cases that most systems were not able to cope with (the left mode).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Difficult instances</head><p>A similar problem arises for the difficult instances, such as those not solved by any system. We manually analyzed them and found that the opposite of the easy instances caused misclassification here, namely misleading negation. In these instances, the correct warrant is a positive assertion while the alternative warrant is negated. It seems that the Topic: Have Comment Sections Failed? Additional Information: In recent years, many media companies have disabled them because of widespread abuse and obscenity.</p><p>Premise (Reason): Comment sections are just a propaganda device.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>And since</head><p>Warrant 0: propaganda is the grease of the democratic wheels Warrant 1: propaganda is not the grease of the democratic wheels Claim: Comment sections have failed.  This data analysis clearly shows that it is possible to guess some answers right only given their surface or syntactic form, perhaps because such "features" are prevalent in the training data. However, they do not really help to find any underlying connections between the reasons, warrants, and claims. One solution to test for such cases would be to double the test set simply by adding to each instance another one with an opposite claim and switched warrants. From the reasoning perspective, such an instance still makes sense (which is actually a backbone principle of creating our data), but would clearly penalize systems relying on simple features, such as negation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>This paper has overviewed the first shared task on argument reasoning comprehension, one of the tasks at SemEval-2018. Being able to identify the correct warrant connecting an argument's reason to its claim automatically, which is the goal of the task, is the first step of understanding the argu-Topic: Have Christians Created a Harmful Atmosphere for Gays? Additional Information: Church-backed efforts to fight L.G.B.T. rights have been blamed for feeding a hateful atmosphere that accommodates attacks on gays. ment's reasoning. We have outlined the dataset used in the task, the participating system, and the performance they achieved. The results have revealed how challenging the task is: Many systems improved only little over the random baseline. At the same time, the accuracy of GIST, the best system in the evaluation, suggests that it is possible in principle to identify warrants computationally.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Premise (Reason</head><p>Our analysis of the results showed that the participating systems were capable to solve cases with discriminative surface features, but failed where exactly these were misleading. The strongest systems relied on models trained on natural language inference corpora, which suggests that external knowledge may be key to argument reasoning comprehension. Still, more research needs to be done in the future to further investigate this hypothesis.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>Figure 2: Cohen's κ agreement for stance annotation on 98 comments. As a trade-off between the number of kept instances and their reliability, we chose five annotators and a threshold of 0.95 for this task, which resulted in κ = 0.58 (moderate to substantial agreement).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 4 :</head><label>4</label><figDesc>Figure 4: Examples of "easy" instances from the test data solved by all systems, revealing that relying solely on the negation artifact in the correct warrant gives the right answer (IDs: 18247022 132 A104V8NZIQFN2F, 18068301 176 A3TKD7EJ6BM0M5).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head></head><label></label><figDesc>Figure 5: Examples of "difficult" instances from the test data on which all systems failed. One possibly explanation is the misleading negation contained in these instances (IDs: 18865357 593 A1CF6U3GF7DZEJ, 18362833 247 A1CF6U3GF7DZEJ).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>Final results of the competition. For the stardenoted system, no description has been provided.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head></head><label></label><figDesc>ArcNet .00 .25 .34 .64 .84 .90 .58 UniMelb .00 .33 .37 .69 .87 .94 1.0 .58 TRANSRW .00 .25 .29 .55 .71 .76 .88 .87 .57 lyb3b .00 .12 .17 .38 .54 .62 .74 .80 1.0 .57 SNU IDS .00 .13 .13 .37 .50 .60 .70 .74 .94 1.0 .57 ArgEns-GRU .00 .09 .08 .23 .31 .41 .47 .52 .71 .71 .78 .56 ITNLP-ARC .00 .03 .05 .11 .15 .21 .19 .40 .58 .47 .63 .92 .55 YNU-HPCC .00 .02 .03 .12 .17 .22 .24 .35 .54 .35 .54 .86 1.0 .55 TakeLab .00 .02 .03 .09 .16 .18 .21 .28 .37 .39 .42 .63 .73 .80 .54 HHU .00 .00 .01 .03 .03 .04 .04 .12 .23 .10 .18 .41 .39 .49 .87 .53 Random bsl. .00 .03 .03 .08 .11 .13 .16 .17 .23 .25 .30 .42 .50 .54 .74 .89 .53 Deepfinder .00 .00 .00 .02 .03 .04 .04 .07 .14 .06 .09 .25 .26 .27 .64 .75 1.0 .52 ART .00 .00 .00 .00 .01 .01 .01 .03 .07 .00 .04 .15 .10 .10 .47 .44 .84 .83 .52 RW2C .00 .00 .00 .00 .01 .01 .01 .02 .01 .02 .03 .07 .07 .10 .20 .24 .47 .45 .58 .50 ztangfdu .00 .00 .00 .00 .00 .00 .00 .00 .00 .00 .00 .00 .00 .00 .01 .00 .07 .02 .02 .24 .46</figDesc><table><row><cell></cell><cell>GIST</cell><cell>blcu nlp</cell><cell>ECNU</cell><cell>NLITrans</cell><cell>YNU Deep</cell><cell>mingyan</cell><cell>ArcNet</cell><cell>UniMelb</cell><cell>TRANSRW</cell><cell>lyb3b</cell><cell>SNU IDS</cell><cell>ArgEns-GRU</cell><cell>ITNLP-ARC</cell><cell>YNU-HPCC</cell><cell>TakeLab</cell><cell>HHU</cell><cell>Random bsl.</cell><cell>Deepfinder</cell><cell>ART</cell><cell>RW2C</cell><cell>ztangfdu</cell></row><row><cell>GIST blcu nlp ECNU NLITrans YNU Deep mingyan</cell><cell cols="6">.71 .00 .61 .00 1.0 .60 .00 .59 .67 .59 .00 .42 .47 .85 .58 .00 .39 .45 .80 1.0 .58</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>).</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>p-values obtained by running the approximate randomization test among all systems. For convenience, the diagonal (bold values) shows the accuracy of each system as in Table2but rounded to two decimal numbers.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>Topic: Does Turkey Still Belong in NATO? Additional Information: Given President Erdogan's record on human rights and how his focus on the Kurdish minority has interfered with his fight against ISIS, is he a reliable ally?</figDesc><table><row><cell>Premise (Reason): Turkey does not have much in common with the rest of the countries in NATO.</cell></row><row><cell>And since</cell></row><row><cell>Warrant 0: diversity wouldn't be good for NATO</cell></row><row><cell>Warrant 1: diversity would be good for NATO</cell></row><row><cell>Claim: Turkey doesn't belong to NATO</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://www.nytimes.com/roomfordebate</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">We removed 'noisy' candidates based on several indicators, such as the absence of quotations or URLs and certain lengths. We did not check any quality criteria of arguments, though, because this was not our focus; see, for instance,<ref type="bibr" target="#b19">(Wachsmuth et al., 2017)</ref> for argumentation quality.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">The implementation of the complete task evaluation is available at https://github.com/habernal/ semeval2018-task12-results.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This work was supported by the German Research Foundation (DFG) within the ArguAna Project GU 798/20-1, and by the DFG-funded research training group "Adaptive Preparation of Information form Heterogeneous Sources" (AIPHES, GRK 1994/1).</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Time for a Change: a Tutorial for Comparing Multiple Classifiers Through Bayesian Analysis</title>
+		<author>
+			<persName><forename type="first">Alessio</forename><surname>Benavoli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giorgio</forename><surname>Corani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Janez</forename><surname>Demsar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Zaffalon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="page" from="1" to="36" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Fill the Gap! Analyzing Implicit Premises between Claims from Online Debates</title>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Boltužić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Janšnajder</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Argument Mining</title>
+				<meeting>the Third Workshop on Argument Mining<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="124" to="133" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">A large annotated corpus for learning natural language inference</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Samuel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gabor</forename><surname>Bowman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Angeli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Potts</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="632" to="642" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Enhanced LSTM for Natural Language Inference</title>
+		<author>
+			<persName><forename type="first">Qian</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodan</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhenhua</forename><surname>Ling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Si</forename><surname>Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hui</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Inkpen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1657" to="1668" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Recognizing textual entailment: Rational, evaluation and approaches</title>
+		<author>
+			<persName><forename type="first">Bill</forename><surname>Ido Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernardo</forename><surname>Dolan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Magnini</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Roth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="i" to="xvii" />
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+	<note>Special Issue 04</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Classifying arguments by scheme</title>
+		<author>
+			<persName><forename type="first">Vanessa</forename><surname>Wei Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graeme</forename><surname>Hirst</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="987" to="996" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">A Practical Study of Argument</title>
+		<author>
+			<persName><forename type="first">Trudy</forename><surname>Govier</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+			<pubPlace>Wadsworth, Cengage Learning</pubPlace>
+		</imprint>
+	</monogr>
+	<note>7th edition</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Towards Creation of a Corpus for Argumentation Mining the Biomedical Genetics Research Literature</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Nancy</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Green</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Argumentation Mining</title>
+				<meeting>the First Workshop on Argumentation Mining<address><addrLine>Baltimore, Maryland USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="11" to="18" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">The argument reasoning comprehension task: Identification and reconstruction of implicit warrants</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Habernal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henning</forename><surname>Wachsmuth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, page</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, page<address><addrLine>LA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>New Orleans. Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Learning whom to trust with MACE</title>
+		<author>
+			<persName><forename type="first">Dirk</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Taylor</forename><surname>Berg-Kirkpatrick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Vaswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT 2013</title>
+				<meeting>NAACL-HLT 2013<address><addrLine>Atlanta, Georgia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1120" to="1130" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">A shared task on argumentation mining in newspaper editorials</title>
+		<author>
+			<persName><forename type="first">Johannes</forename><surname>Kiesel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Al</forename><surname>Khalid</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Khatib</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Hagen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Stein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Argumentation Mining</title>
+				<meeting>the 2nd Workshop on Argumentation Mining</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="35" to="38" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Skip-Thought Vectors</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Kiros</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yukun</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Ruslan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raquel</forename><surname>Zemel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Urtasun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sanja</forename><surname>Torralba</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Fidler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<meeting><address><addrLine>Montreal, CA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="page" from="3276" to="3284" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Learned in Translation: Contextualized Word Vectors</title>
+		<author>
+			<persName><forename type="first">Bryan</forename><surname>Mccann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Bradbury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Caiming</forename><surname>Xiong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<meeting><address><addrLine>Long Beach, CA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page" from="6294" to="6305" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">The repeval 2017 shared task: Multi-genre natural language inference with sentence representations</title>
+		<author>
+			<persName><forename type="first">Nikita</forename><surname>Nangia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adina</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Angeliki</forename><surname>Lazaridou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Bowman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Evaluating Vector Space Representations for NLP</title>
+				<meeting>the 2nd Workshop on Evaluating Vector Space Representations for NLP<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1" to="10" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)<address><addrLine>Doha, Qatar</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Reporting Score Distributions Makes a Difference: Performance Study of LSTM-networks for Sequence Tagging</title>
+		<author>
+			<persName><forename type="first">Nils</forename><surname>Reimers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="338" to="348" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">On some pitfalls in automatic evaluation and significance testing for MT</title>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Riezler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">T</forename><surname>Maxwell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL Workshop on Intrinsic and Extrinsic Evaluation Measures for Machine Translation and/or Summarization</title>
+				<meeting>the ACL Workshop on Intrinsic and Extrinsic Evaluation Measures for Machine Translation and/or Summarization<address><addrLine>Ann Arbor, Michigan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="57" to="64" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Two practical rhetorical structure theory parsers</title>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Hicks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><forename type="middle">Antonio</forename><surname>Valenzuela-Escarcega</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations</title>
+				<meeting>the 2015 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations<address><addrLine>Denver, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1" to="5" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">The Uses of Argument</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><forename type="middle">E</forename><surname>Toulmin</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1958" />
+			<publisher>Cambridge University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Argumentation Quality Assessment: Theory vs. Practice</title>
+		<author>
+			<persName><forename type="first">Henning</forename><surname>Wachsmuth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nona</forename><surname>Naderi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Habernal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yufang</forename><surname>Hou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graeme</forename><surname>Hirst</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="250" to="255" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Media Argumentation: Dialect, Persuasion and Rhetoric</title>
+		<author>
+			<persName><forename type="first">Douglas</forename><surname>Walton</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007" />
+			<publisher>Cambridge University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Relevance Theory</title>
+		<author>
+			<persName><forename type="first">Deirdre</forename><surname>Wilson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Sperber</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The Handbook of Pragmatics, chapter 27</title>
+				<editor>
+			<persName><forename type="first">R</forename><surname>Laurence</surname></persName>
+			<persName><forename type="first">Gregory</forename><surname>Horn</surname></persName>
+			<persName><surname>Ward</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Oxford, UK</addrLine></address></meeting>
+		<imprint>
+			<publisher>Wiley-Blackwell</publisher>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="607" to="632" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>
