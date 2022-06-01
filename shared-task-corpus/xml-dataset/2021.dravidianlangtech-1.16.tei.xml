@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Findings of the Shared Task on Troll Meme Classification in Tamil</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Shardul</forename><surname>Suryawanshi</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Insight SFI Research Centre for Data Analytics</orgName>
+								<orgName type="department" key="dep2">Data Science Institute</orgName>
+								<orgName type="institution">National University of Ireland Galway Galway</orgName>
+								<address>
+									<country key="IE">Ireland</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Bharathi</forename><forename type="middle">Raja</forename><surname>Chakravarthi</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department" key="dep1">Insight SFI Research Centre for Data Analytics</orgName>
+								<orgName type="department" key="dep2">Data Science Institute</orgName>
+								<orgName type="institution">National University of Ireland Galway Galway</orgName>
+								<address>
+									<country key="IE">Ireland</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Findings of the Shared Task on Troll Meme Classification in Tamil</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The internet has facilitated its user-base with a platform to communicate and express their views without any censorship. On the other hand, this freedom of expression or free speech can be abused by its user or a troll to demean an individual or a group. Demeaning people based on their gender, sexual orientation, religious believes or any other characteristics -trolling-could cause significant distress in the online community. Hence, the content posted by a troll needs to be identified and dealt with before causing any more damage. Amongst all the forms of troll content, memes are most prevalent due to their popularity and ability to propagate across cultures. A troll uses a meme to demean, attack or offend its targetted audience. In this shared task, we provide a resource (TamilMemes) that could be used to train a system capable of identifying a troll meme in the Tamil language. In our TamilMemes dataset, each meme has been categorized into either a "troll" or a "not troll" class. Along with the meme images, we also provided the Latin transcripted text from memes. We received ten system submissions from the participants, which were evaluated using the weighted average F1-score. The system with the weighted average F1-score of 0.55 secured the first rank.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>We have seen a rise in the usage of memes on the internet. Memes could come in many forms and languages, but we emphasize on the image with text (IWT) memes <ref type="bibr" target="#b15">(Du et al., 2020)</ref> in the Tamil language. IWT memes are inherently multimodal as their meaning is not understood when just the image or the text considered in isolation; hence, both image and text should be considered. These memes can propagate and mutate through cultures like the selfish gene <ref type="bibr" target="#b11">(Dawkins, 2016)</ref>. Propagation and mutation of memes ensure widespread on the internet; hence they could be weaponized by trolls <ref type="bibr" target="#b26">(Mandl et al., 2020)</ref>. Trolls are individuals or users on the internet who tend to attack or offend other individuals or groups in a demeaning manner <ref type="bibr" target="#b39">(Tomaiuolo et al., 2020)</ref>.</p><p>A meme used by troll -troll meme-could come in any languages, and since languages are representative of cultures, a meme in one language could represent a culture. In this shared task, we provide the TamilMemes dataset  that consists of 2,969 memes to the participants. Additionally, we also provided the text (caption) associated with each meme. The text has been transcripted in Latin by a native Tamil speaker, which was later evaluated and corrected by the expert.</p><p>Tamil (ISO 639-3: tam) is an official language in Tamil Nadu, Puducherry, Sri Lanka, Singapore and a recognised minority language in Malaysia and South Africa with a 75 million speaker base <ref type="bibr" target="#b4">(Chakravarthi et al., 2018;</ref><ref type="bibr">Mahesan, 2019, 2020a,b)</ref>. Tamil inscription in pottery from Kodumanal and Porunthal 1 2 was the oldest inscription in India dating to 580 BCE then Asoka inscription in Prakrit, Greek and Aramaic dating to 260 BCE <ref type="bibr" target="#b25">(Mahadevan, 2002;</ref><ref type="bibr" target="#b30">Rajakumar and Bharathi, 2012)</ref>. In Sanskrit, the oldest known inscriptions are from the 1st century CE, such as Dhana's Ayodhya Inscription and Ghosundi-Hathibada. The first book printed in India in an Indian language was Tampiran Vanakkam in Tamil on 1578 CE, a 16-page translation of the Portuguese "Doctrina Christam" <ref type="bibr" target="#b0">(Balachandran, 2005)</ref>. In the modern Tamil script, there are 12 vowels, 18 consonants and one special character, theāytam <ref type="bibr" target="#b3">(Chakravarthi, 2020b)</ref>. The vowels and consonants combine in order to form 216 compound characters, giving a total of 247 characters. However, Tamil is often transcribed in Latin Script by a multilingual speaker on social media platforms <ref type="bibr" target="#b2">(Chakravarthi, 2020a)</ref>. This behaviour could be attributed to the ease or comfort in scripting Tamil in Latin script <ref type="bibr" target="#b5">(Chakravarthi et al., 2019;</ref><ref type="bibr" target="#b18">Hande et al., 2020)</ref>. Also, these multilingual speakers tend to switch to another language such as English. This phenomenon, also known as code-mixing or codeswitching is commonly observed amongst multilingual speakers <ref type="bibr" target="#b21">(Jose et al., 2020;</ref>. A great deal of work and resources <ref type="bibr">(Chakravarthi et al., 2020a,c)</ref> has been created for Dravidian languages but the multimodal aspect of code-mixed content in the form of meme remains unexplored.</p><p>In recent years, we have seen a rise in awareness of tackling multimodal offensive <ref type="bibr">(Sharma et al., 2020)</ref> or hate <ref type="bibr">(Kiela et al., 2020)</ref> content in memes in the English language, but other under-resourced languages remain unexplored. Our "Troll Meme Classification in Tamil" task aims to promote research in multimodal troll meme classification in under-resourced Tamil language. Moreover, this task provides a unique opportunity to study the effect of code-switching or code-mixing in the English transcript of Tamil  in association with the image from the meme.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>The goal of the "Troll Meme Classification in Tamil" shared task was to classify if a given meme is a "troll" or "not-troll" based on the image and text associated with the meme in the Tamil language. The text from the meme is written in either the Tamil grammar and English lexicon or English grammar and Tamil lexicon. However, for consistency, we transcripted the text in Latin.</p><p>Troll meme is a meme, which consists of offensive text and non-offensive images, offensive images with non-offensive text, sarcastically offensive text with non-offensive images, or sarcastic images with offensive text to provoke, distract and has digressive or off-topic content with intend to demean or offend particular people, group or race, otherwise, a not-troll meme . Figure <ref type="figure">1</ref> shows examples of a troll and nottroll meme from the TamilMeme dataset. Example 1 is a troll meme targeted towards the potato chip brand called "Lays". In this example, an image is harmless with just a picture of the potato chips  packet, but the translation of the text is "If you buy one packet air, then 5 chips free" which is offensive for the brand. The translation of Example 2 would be "Sorry my friend (girl)". This example does not contain any provoking or offensive image or text and hence, it is a not-troll meme.</p><p>Previously, we developed this TamilMemes dataset and treated the task of identifying a troll meme as an image classification problem. Since the text associated with the meme acts as a context of the image, we enhanced our TamilMemes dataset by providing the text as a separate modality for the shared task. We expected our participant to approach the task in a multimodal way. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Rank Team</head><p>Precision Recall F1-score 1 Codewithzichao <ref type="bibr" target="#b23">(Li, 2021)</ref> 0.57 0.60 0.55 2 IIITK <ref type="bibr">(Ghanghor et al., 2021)</ref> 0  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation</head><p>Table <ref type="table" target="#tab_1">1</ref> shows the class distribution in the training and test set for the TamilMemes dataset. We provided a training set of 2,500 memes (with the Latin scripted text) to the participants. Later, we evaluated all the systems on the held-out or test set of 667 memes. We considered a weighted average version of the F1-score as a primary evaluation metric by taking class imbalance into the account.</p><p>The weighted average F1-score 3 is calculated by averaging the support-weighted mean F1 score perclass.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Methodology</head><p>In system submissions, we saw a variety of methodologies used by the participants which were as simple as Logistic Regression (Wright, 1995) and as complex as BERT <ref type="bibr" target="#b12">(Devlin et al., 2018)</ref>. By keeping multimodality in mind, most of the participants implemented a method that could leverage both text and image. Mostly, the image part has been processed using Convolutional Neural Network (CNN) such as ResNet152 <ref type="bibr">(He et al., 2016)</ref> or the custom residual networks while the text has been processed RNN (LSTM (Hochreiter and Schmidhuber, 1997)), transformer (BERT, ROBERTA <ref type="bibr" target="#b24">(Liu et al., 2019)</ref>). However, in one exceptional case, one participant has used a transformer for processing both modalities.</p><p>• Li ( <ref type="formula">2021</ref>) utilized a transformer-based approach that leverages the pre-trained BERT and ResNet152 model to derive the text and image features. The novelty of the work</p><p>3 Weighted average F-1 score is calculated with the help of the sklearn classification report utility comes from the implementation of multimodal attention which considers the whole text caption in the context of the image by mapping both image and text features in the same semantic space. Their model achieved a 0.55 weighted average F1 score and ranked first in the shared task.</p><p>• <ref type="bibr">Ghanghor et al. (2021)</ref> utilized a transformerbased approach to identify the troll and nottroll Tamil meme. The state of the art text classifier (BERT) and image (CNN) classifiers were used to extract useful attention features.</p><p>Their system submission for Tamil troll meme classification achieved a 0.54 weighted average F1 score.</p><p>• Hossain et al. <ref type="bibr" target="#b17">(2021)</ref> utilized a systematic text-based, image-based and multimodal approach to identify a troll meme. The paper laid out a detailed investigation into the problem presented in the shared task by capturing visual and textual features using CNN, VGG16 <ref type="bibr" target="#b33">(Simonyan and Zisserman, 2014)</ref>, Inception <ref type="bibr" target="#b35">(Szegedy et al., 2017)</ref>, m-BERT, XLM-RoBERTa, XLNet <ref type="bibr" target="#b41">(Yang et al., 2019)</ref>. Multimodal features were extracted by combining image (CNN, ResNet50, Inception) and text (BiLSTM) <ref type="bibr" target="#b42">(Zhou et al., 2016)</ref> features using an early fusion technique. But the results showed that the text-based approach with XLNet achieved the highest weighted F1-score of 0.58, and enabled their system implementation to secure 3rd rank.</p><p>• Silvia A and B ( <ref type="formula">2021</ref>) used traditional NLP approaches such as Multilayer perceptron (MLP <ref type="bibr" target="#b19">(Haykin and Network, 2004)</ref>), Random forest (RF) <ref type="bibr" target="#b1">(Breiman, 2001)</ref> and K-nearest neighbour (KNN ) <ref type="bibr">(Cunningham and Delany, 2020)</ref> on the text features derived from tf-idf, count vector and mBERT embeddings. The paper opts for a text-based approach over the multimodal approach and achieved a weighted average F1-score of 0.50.</p><p>• <ref type="bibr" target="#b29">Que et al. (2021)</ref> used a text-based approach to deal with the multimodal issue of identifying troll memes. Here the author trains XLM-Roberta in combination with the custom CNN on the text modality and achieves a weighted average F1-score of 0.49.</p><p>• J and HS ( <ref type="formula">2021</ref>) utilized ResNet-50 to identify if a given meme is a troll or not based on the visual features. However, no text modality has been used as a feature while training the system. Their system achieved a weighted average F1-score of 0.48 and ranked sixth.</p><p>• Hegde et al. ( <ref type="formula">2021</ref>) utilized a transformerbased approach to identify the troll and nottroll Tamil meme. The state of the art text (mBERT) and image (Vision transformer) <ref type="bibr" target="#b14">(Dosovitskiy et al., 2020)</ref> classifiers were used to extract useful attention features. They achieve a weighted average F1-score of 0.46 and ranked seventh.</p><p>• Huang and Bai ( <ref type="formula">2021</ref>) used a BiGRU <ref type="bibr" target="#b13">(Dey and Salem, 2017)</ref> and custom CNN to capture text and image features, which later are concatenated to form a multimodal representation of a meme. They ranked ninth with a weighted average F1-score of 0.40.</p><p>• Mishra and Saumya ( <ref type="formula">2021</ref>) used a hybrid approach that combines text and image features using CNN and BiLSTM. Their proposed model obtained 10th rank in the shared task and reported a weighted F1-score of 0.30.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results and Discussion</head><p>We have received 10 submissions for the shared task. Table <ref type="table" target="#tab_3">2</ref> shows that the maximum weighted average F1-score could only reach 0.55, which is less.</p><p>While the submissions claimed that the evaluation metric exceeded the validation set, the poor performance on the test set point towards overfitting. Overfitting is commonly seen when complex models with large numbers of parameters are trained on small datasets.</p><p>In this shared task, we provided 2,967 samples which might be less for the data-hungry models such as BERT and it's predecessor such as ROBERTa, XLM-RoBERTa. Moreover, due to the high dimensionality presented by the images, the traditional machine learning models such as logistic regression, Naive Bayes are not able to generalize. The poor performance of the traditional machine learning model shows that they are rather too simple to learn useful features from the high dimensional data presented in the form of image and text. Furthermore, the Tamil text (could be with or without code-mixed) from the meme is transcripted in the Latin script leaves little room for using pre-trained models (e.g. multilingual BERT) which are primarily trained in English or zero-shot transferred to other languages written in their native script. Hence, such multilingual models need to be finetuned on the more code-mixed, transliterated data. In the case of images, the visual features have been captured using a CNN pre-trained on the imagenet weights.</p><p>In the previous study, we observed that the visual features captured by such CNNs tend to be less useful for identifying a troll Tamil meme. The same effect has been observed in the system submitted to the shared task. Overall, we need a robust approach that takes into account all the aspects of this multimodal classification problem -lack of data, high dimensionality, low resource language processing and code-mixing.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>In the "Troll Meme Classification in Tamil" shared task, we presented a unique multimodal classification problem by providing a newly improved TamilMeme dataset which now has Tamil text (in the form of transcripted Latin text) from memes. This task was not only a multimodal classification problem but also posed challenges such as natural language processing of low-resourced language, transcripted code-mixed text. The submissions received from the participants showed multiple ways to approach the problem and we hope that their contribution along with our enriched dataset will kindle the research in this less explored area. </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>Figure 1: Examples for a troll and not-troll meme from the TamilMemes dataset</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>A class distribution in the training and test set of the TamilMemes dataset</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>The rank list with detailed report on Precision (P), Recall (R), F1-score (F1) of submissions for the "Troll Meme Classification in Tamil" task</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>Grant Number SFI/12/RC/2289 P2 (Insight 2) and 13/RC/2106 P2 (ADAPT), co-funded by the European Regional Development Fund and Irish Research Council grant IRCLA/2017/129 (CARDAMOM-Comparative Deep Models of Language for Minority and Historical Languages).</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Tamil inscriptions wiki 2 Iron Age -Early Historic Transition in South Indian Appraisal</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This publication is the outcome of the research supported in part by a research grant from Science Foundation Ireland (SFI) under</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<author>
+			<persName><surname>Balachandran</surname></persName>
+		</author>
+		<title level="m">Pioneers of Tamil Literature: Transition to Modernity. Indian Literature</title>
+				<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="volume">49</biblScope>
+			<biblScope unit="page" from="179" to="184" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Random forests. Machine learning</title>
+		<author>
+			<persName><forename type="first">Leo</forename><surname>Breiman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2001" />
+			<biblScope unit="volume">45</biblScope>
+			<biblScope unit="page" from="5" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">HopeEDI: A multilingual hope speech detection dataset for equality, diversity, and inclusion</title>
+		<author>
+			<persName><forename type="first">Chakravarthi</forename><surname>Bharathi Raja</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Modeling of People&apos;s Opinions, Personality, and Emotion&apos;s in Social Media</title>
+				<meeting>the Third Workshop on Computational Modeling of People&apos;s Opinions, Personality, and Emotion&apos;s in Social Media<address><addrLine>Barcelona, Spain (Online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="41" to="53" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Leveraging orthographic information to improve machine translation of under-resourced languages</title>
+		<author>
+			<persName><forename type="first">Chakravarthi</forename><surname>Bharathi Raja</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+		<respStmt>
+			<orgName>NUI Galway</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Improving wordnets for underresourced languages using machine translation</title>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th Global Wordnet Conference</title>
+				<meeting>the 9th Global Wordnet Conference<address><addrLine>Singapore</addrLine></address></meeting>
+		<imprint>
+			<publisher>Global Wordnet Association</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="77" to="86" />
+		</imprint>
+		<respStmt>
+			<orgName>Nanyang Technological University (NTU)</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">WordNet gloss translation for underresourced languages using multilingual neural machine translation</title>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Multilingualism at the Intersection of Knowledge Bases and Machine Translation</title>
+				<meeting>the Second Workshop on Multilingualism at the Intersection of Knowledge Bases and Machine Translation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Association for Machine Translation</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1" to="7" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A sentiment analysis dataset for codemixed malayalam-english</title>
+		<author>
+			<persName><forename type="first">Navya</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shardul</forename><surname>Jose</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><surname>Suryawanshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">Philip</forename><surname>Sherly</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mc-Crae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Joint Workshop on Spoken Language Technologies for Under-resourced languages (SLTU) and Collaboration and Computing for Under-Resourced Languages (CCURL)</title>
+				<meeting>the 1st Joint Workshop on Spoken Language Technologies for Under-resourced languages (SLTU) and Collaboration and Computing for Under-Resourced Languages (CCURL)</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="177" to="184" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Overview of the track on HASOC-Offensive Language Identification-DravidianCodeMix</title>
+		<author>
+			<persName><forename type="first">Anand</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Philip Mccrae</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Premjith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">P</forename><surname>Soman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Mandl</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Working Notes of the Forum for Information Retrieval Evaluation</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>FIRE 2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+	</analytic>
+	<monogr>
+		<title level="m">CEUR Workshop Proceedings</title>
+				<meeting><address><addrLine>Hyderabad, India</addrLine></address></meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Corpus creation for sentiment analysis in code-mixed Tamil-English text</title>
+		<author>
+			<persName><forename type="first">Vigneshwaran</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruba</forename><surname>Muralidaran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">Philip</forename><surname>Priyadharshini</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mc-Crae</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Joint Workshop on Spoken Language Technologies for Under-resourced languages (SLTU) and Collaboration and Computing for Under-Resourced Languages (CCURL)</title>
+				<meeting>the 1st Joint Workshop on Spoken Language Technologies for Under-resourced languages (SLTU) and Collaboration and Computing for Under-Resourced Languages (CCURL)<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="202" to="210" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources association</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Padraig</forename><surname>Cunningham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sarah</forename><forename type="middle">Jane</forename><surname>Delany</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2004.04523</idno>
+		<imprint/>
+	</monogr>
+	<note type="report_type">2020. k-nearest neighbour classifiers-. arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">The selfish gene</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Dawkins</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+			<publisher>Oxford university press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">Bert: Pre-training of deep bidirectional transformers for language understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Gate-variants of gated recurrent unit (gru) neural networks</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Dey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">M</forename><surname>Salem</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/MWSCAS.2017.8053243</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2017 IEEE 60th International Midwest Symposium on Circuits and Systems (MWSCAS)</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1597" to="1600" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Dosovitskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucas</forename><surname>Beyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Kolesnikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dirk</forename><surname>Weissenborn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaohua</forename><surname>Zhai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Unterthiner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mostafa</forename><surname>Dehghani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Minderer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georg</forename><surname>Heigold</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sylvain</forename><surname>Gelly</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2010.11929</idno>
+		<title level="m">An image is worth 16x16 words: Transformers for image recognition at scale</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Understanding visual memes: An empirical analysis of text superimposed on memes shared on twitter</title>
+		<author>
+			<persName><forename type="first">Yuhao</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhammad</forename><forename type="middle">Aamir</forename><surname>Masood</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenneth</forename><surname>Joseph</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International AAAI Conference on Web and Social Media</title>
+				<meeting>the International AAAI Conference on Web and Social Media</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="page" from="153" to="164" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Ghanghor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruba</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sajeetha</forename><surname>Priyadharshini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Parameswari</forename><surname>Thavareesan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Krishnamurthy</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Offensive Language Identification and Meme Classification in Tamil, Malayalam and Kannada</title>
+		<author>
+			<persName><surname>Iiitk@dravidianlangtech-Eacl2021</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">KanCMD: Kannada CodeMixed dataset for sentiment analysis and offensive language detection</title>
+		<author>
+			<persName><forename type="first">Adeep</forename><surname>Hande</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruba</forename><surname>Priyadharshini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bharathi Raja</forename><surname>Chakravarthi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Workshop on Computational Modeling of People&apos;s Opinions, Personality, and Emotion&apos;s in Social Media</title>
+				<meeting>the Third Workshop on Computational Modeling of People&apos;s Opinions, Personality, and Emotion&apos;s in Social Media<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="54" to="63" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">A comprehensive foundation</title>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Haykin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Network</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neural networks</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page">41</biblScope>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Trollmeta@DravidianLangtech-EACL2021: Meme classification using deep learning</title>
+		<author>
+			<persName><forename type="first">Manoj</forename><surname>Balaji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chinmaya</forename><surname>Hs</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">A Survey of Current Datasets for Code-Switching Research</title>
+		<author>
+			<persName><forename type="first">Navya</forename><surname>Jose</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shardul</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><surname>Suryawanshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Sherly</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICACCS48705.2020.9074205</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2020 6th International Conference on Advanced Computing and Communication Systems (ICACCS)</title>
+				<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="136" to="141" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Pratik Ringshia, and Davide Testuggine. 2020. The hateful memes challenge: Detecting hate speech in multimodal memes</title>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hamed</forename><surname>Firooz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aravind</forename><surname>Mohan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vedanuj</forename><surname>Goswami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amanpreet</forename><surname>Singh</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2005.04790</idno>
+		<imprint/>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Codewithzichao@DravidianLangtech-EACL2021: Exploring Multimodal Transformers for Meme Classification in Tamil Language</title>
+		<author>
+			<persName><forename type="first">Zichao</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">Roberta: A robustly optimized bert pretraining approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Aryan or dravidian or neither? a study of recent attempts to decipher the indus script</title>
+		<author>
+			<persName><forename type="first">Iravatham</forename><surname>Mahadevan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Electronic Journal of Vedic Studies</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="19" />
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Overview of the HASOC Track at FIRE 2020: Hate Speech and Offensive Language Identification in Tamil</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Mandl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandip</forename><surname>Modha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anand</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bharathi Raja Chakravarthi ;</forename><surname>Malayalam</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hindi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">German</forename><surname>English</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3441501.3441517</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Forum for Information Retrieval Evaluation</title>
+				<meeting><address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="volume">2020</biblScope>
+			<biblScope unit="page" from="29" to="32" />
+		</imprint>
+	</monogr>
+	<note>Association for Computing Machinery</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">IIIT DWD@DravidianLangtech-EACL2021: Identifying Tamil troll meme using a hybrid deep learning approach</title>
+		<author>
+			<persName><forename type="first">Ankit</forename><surname>Kumar Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sunil</forename><surname>Saumya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Named Entity Recognition for Code-Mixed Indian Corpus using Meta Embedding</title>
+		<author>
+			<persName><forename type="first">Ruba</forename><surname>Priyadharshini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mani</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Vegupatti</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccrae</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICACCS48705.2020.9074379</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2020 6th International Conference on Advanced Computing and Communication Systems (ICACCS)</title>
+				<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="68" to="72" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Simon@DravidianLangtech-EACL2021: Meme Classification for Tamil with BERT</title>
+		<author>
+			<persName><forename type="first">Qinyu</forename><surname>Que</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuanchi</forename><surname>Qu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suidong</forename><surname>Qu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Eighth century tamil consonants recognition from stone inscriptions</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Rajakumar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bharathi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2012 International Conference on Recent Trends in Information Technology</title>
+				<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="40" to="43" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<author>
+			<persName><forename type="first">Chhavi</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><surname>Paka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deepesh</forename><surname>Scott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amitava</forename><surname>Bhageria</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Das</surname></persName>
+		</author>
+		<title level="m">Soujanya Poria, Tanmoy Chakraborty, and Björn Gambäck. 2020. Task Report: Memotion Analysis 1.0 @SemEval 2020: The Visuo-Lingual Metaphor! In Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting><address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Meme classification for Tamil using machine learning approach</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Speech and Language Technologies for Dravidian Languages</title>
+				<meeting>the First Workshop on Speech and Language Technologies for Dravidian Languages</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<author>
+			<persName><forename type="first">Karen</forename><surname>Simonyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Zisserman</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1409.1556</idno>
+		<title level="m">Very deep convolutional networks for large-scale image recognition</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">A dataset for troll classification of TamilMemes</title>
+		<author>
+			<persName><forename type="first">Shardul</forename><surname>Suryawanshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Bharathi Raja Chakravarthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihael</forename><surname>Verma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Arcan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Philip Mccrae</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Buitelaar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the WILDRE5-5th Workshop on Indian Language Data: Resources and Evaluation</title>
+				<meeting>the WILDRE5-5th Workshop on Indian Language Data: Resources and Evaluation<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="7" to="13" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Inception-v4, inception-resnet and the impact of residual connections on learning</title>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Szegedy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Ioffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Vanhoucke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Alemi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Conference on Artificial Intelligence</title>
+				<meeting>the AAAI Conference on Artificial Intelligence</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">31</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Sentiment Analysis in Tamil Texts: A Study on Machine Learning Techniques and Feature Representation</title>
+		<author>
+			<persName><forename type="first">Sajeetha</forename><surname>Thavareesan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinnathamby</forename><surname>Mahesan</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICIIS47346.2019.9063341</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2019 14th Conference on Industrial and Information Systems (ICIIS)</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="320" to="325" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Sentiment Lexicon Expansion using Word2vec and fastText for Sentiment Prediction in Tamil texts</title>
+		<author>
+			<persName><forename type="first">Sajeetha</forename><surname>Thavareesan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinnathamby</forename><surname>Mahesan</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/MERCon50084.2020.9185369</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2020 Moratuwa Engineering Research Conference (MERCon)</title>
+				<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="272" to="276" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Word embedding-based Part of Speech tagging in Tamil texts</title>
+		<author>
+			<persName><forename type="first">Sajeetha</forename><surname>Thavareesan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinnathamby</forename><surname>Mahesan</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICIIS51140.2020.9342640</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2020 IEEE 15th International Conference on Industrial and Information Systems (ICIIS)</title>
+				<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="478" to="482" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">A survey on troll detection</title>
+		<author>
+			<persName><forename type="first">Michele</forename><surname>Tomaiuolo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gianfranco</forename><surname>Lombardo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Monica</forename><surname>Mordonini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Cagnoni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Agostino</forename><surname>Poggi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Future Internet</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">31</biblScope>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<title level="m" type="main">Logistic regression</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Raymond</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wright</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc V</forename><surname>Le</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.08237</idno>
+		<title level="m">Xlnet: Generalized autoregressive pretraining for language understanding</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Attention-based bidirectional long short-term memory networks for relation classification</title>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Shi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun</forename><surname>Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhenyu</forename><surname>Qi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bingchen</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongwei</forename><surname>Hao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Xu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th annual meeting of the association for computational linguistics</title>
+				<meeting>the 54th annual meeting of the association for computational linguistics</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="207" to="212" />
+		</imprint>
+	</monogr>
+	<note>Short papers</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

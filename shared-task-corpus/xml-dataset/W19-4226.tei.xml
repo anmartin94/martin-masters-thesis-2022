@@ -1,0 +1,1694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">The SIGMORPHON 2019 Shared Task: Morphological Analysis in Context and Cross-Lingual Transfer for Inflection</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Shijie</forename><surname>Wu</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Chaitanya</forename><surname>Malaviya</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Lawrence</forename><surname>Wolf-Sonkin</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Garrett</forename><surname>Nicolai</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Miikka</forename><surname>Silfverberg</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sabrina</forename><forename type="middle">J</forename><surname>Mielke</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Jeffrey</forename><surname>Heinz</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Johns Hopkins University ♥ University of Melbourne</orgName>
+								<orgName type="institution" key="instit2">Allen Institute for AI ♦ Google University of Helsinki Stony Brook University University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">The SIGMORPHON 2019 Shared Task: Morphological Analysis in Context and Cross-Lingual Transfer for Inflection</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The SIGMORPHON 2019 shared task on cross-lingual transfer and contextual analysis in morphology examined transfer learning of inflection between 100 language pairs, as well as contextual lemmatization and morphosyntactic description in 66 languages. The first task evolves past years' inflection tasks by examining transfer of morphological inflection knowledge from a high-resource language to a low-resource language. This year also presents a new second challenge on lemmatization and morphological feature analysis in context. All submissions featured a neural component and built on either this year's strong baselines or highly ranked systems from previous years' shared tasks. Every participating team improved in accuracy over the baselines for the inflection task (though not Levenshtein distance), and every team in the contextual analysis task improved on both state-of-the-art neural and non-neural baselines.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>While producing a sentence, humans combine various types of knowledge to produce fluent outputvarious shades of meaning are expressed through word selection and tone, while the language is made to conform to underlying structural rules via syntax and morphology. Native speakers are often quick to identify disfluency, even if the meaning of a sentence is mostly clear.</p><p>Automatic systems must also consider these constraints when constructing or processing language. Strong enough language models can often reconstruct common syntactic structures, but are insufficient to properly model morphology. Many languages implement large inflectional paradigms that mark both function and content words with a varying levels of morphosyntactic information. * Now at Google For instance, Romanian verb forms inflect for person, number, tense, mood, and voice; meanwhile, Archi verbs can take on thousands of forms <ref type="bibr" target="#b24">(Kibrik, 1998)</ref>. Such complex paradigms produce large inventories of words, all of which must be producible by a realistic system, even though a large percentage of them will never be observed over billions of lines of linguistic input. Compounding the issue, good inflectional systems often require large amounts of supervised training data, which is infeasible in many of the world's languages. This year's shared task is concentrated on encouraging the construction of strong morphological systems that perform two related but different inflectional tasks. The first task asks participants to create morphological inflectors for a large number of under-resourced languages, encouraging systems that use highly-resourced, related languages as a cross-lingual training signal. The second task welcomes submissions that invert this operation in light of contextual information: Given an unannotated sentence, lemmatize each word, and tag them with a morphosyntactic description. Both of these tasks extend upon previous morphological competitions, and the best submitted systems now represent the state of the art in their respective tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Tasks and Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Task 1: Cross-lingual transfer for morphological inflection</head><p>Annotated resources for the world's languages are not distributed equally-some languages simply have more as they have more native speakers willing and able to annotate more data. We explore how to transfer knowledge from high-resource languages that are genetically related to low-resource languages.</p><p>The first task iterates on last year's main task: morphological inflection .</p><p>Instead of giving some number of training examples in the language of interest, we provided only a limited number in that language. To accompany it, we provided a larger number of examples in either a related or unrelated language. Each test example asked participants to produce some other inflected form when given a lemma and a bundle of morphosyntactic features as input. The goal, thus, is to perform morphological inflection in the low-resource language, having hopefully exploited some similarity to the high-resource language. Models which perform well here can aid downstream tasks like machine translation in lowresource settings. All datasets were resampled from UniMorph, which makes them distinct from past years.</p><p>The mode of the task is inspired by <ref type="bibr" target="#b47">Zoph et al. (2016)</ref>, who fine-tune a model pre-trained on a high-resource language to perform well on a lowresource language. We do not, though, require that models be trained by fine-tuning. Joint modeling or any number of methods may be explored instead.</p><p>Example The model will have access to typelevel data in a low-resource target language, plus a high-resource source language. We give an example here of Asturian as the target language with Spanish as the source language.  Evaluation We score the output of each system in terms of its predictions' exact-match accuracy and the average Levenshtein distance between the predictions and their corresponding true forms.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Low</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Task 2: Morphological analysis in context</head><p>Although inflection of words in a context-agnostic manner is a useful evaluation of the morphological quality of a system, people do not learn morphology in isolation.</p><p>In 2018, the second task of the CoNLL-SIGMORPHON Shared Task  required submitting systems to complete an inflectional cloze task <ref type="bibr" target="#b39">(Taylor, 1953)</ref> given only the sentential context and the desired lemma -an example of the problem is given in the following lines: A successful system would predict the plural form "dogs". Likewise, a Spanish word form "ayuda" may be a feminine noun or a third-person verb form, which must be disambiguated by context.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>The are barking. (dog)</head><p>This year's task extends the second task from last year. Rather than inflect a single word in context, the task is to provide a complete morphological tagging of a sentence: for each word, a successful system will need to lemmatize and tag it with a morphsyntactic description (MSD). Context is critical-depending on the sentence, identical word forms realize a large number of potential inflectional categories, which will in turn influence lemmatization decisions. If the sentence were instead "The barking dogs kept us up all night", "barking" is now an adjective, and its lemma is also "barking".</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data for Task 1</head><p>Language pairs We presented data in 100 language pairs spanning 79 unique languages. Data for all but four languages (Basque, Kurmanji, Murrinhpatha, and Sorani) are extracted from English Wiktionary, a large multi-lingual crowd-sourced dictionary with morphological paradigms for many lemmata. 1 20 of the 100 language pairs are either distantly related or unrelated; this allows speculation into the relative importance of data quantity and linguistic relatedness.</p><p>Data format For each language, the basic data consists of triples of the form (lemma, feature bundle, inflected form), as in Table <ref type="table" target="#tab_1">1</ref>. The first feature in the bundle always specifies the core part of speech (e.g., verb). For each language pair, separate files contain the high-and low-resource training examples.</p><p>All features in the bundle are coded according to the UniMorph Schema, a cross-linguistically consistent universal morphological feature set <ref type="bibr">(Sylak-Glassman et al., 2015a,b)</ref>.</p><p>Extraction from Wiktionary For each of the Wiktionary languages, Wiktionary provides a number of tables, each of which specifies the full inflectional paradigm for a particular lemma. As in the previous iteration, tables were extracted using a template annotation procedure described in <ref type="bibr">(Kirov et al., 2018)</ref>.</p><p>Sampling data splits From each language's collection of paradigms, we sampled the training, development, and test sets as in 2018. <ref type="bibr">2</ref> Crucially, while the data were sampled in the same fashion, the datasets are distinct from those used for the 2018 shared task.</p><p>Our first step was to construct probability distributions over the (lemma, feature bundle, inflected form) triples in our full dataset. For each triple, we counted how many tokens the inflected form has in the February 2017 dump of Wikipedia for that language. To distribute the counts of an observed form over all the triples that have this token as its form, we follow the method used in the previous shared task , training a neural network on unambiguous forms to estimate the distribution over all, even ambiguous, forms. We then sampled 12,000 triples without replacement from this distribution. The first 100 were taken as training data for low-resource settings. The first 10,000 were used as high-resource training sets. As these sets are nested, the highest-count triples tend to appear in the smaller training sets. <ref type="bibr">3</ref> is discussed in <ref type="bibr" target="#b30">Mansfield (2019)</ref>. Data for Kurmanji Kurdish and Sorani Kurdish were created as part of the Alexina project .</p><p>2 These datasets can be obtained from https:// sigmorphon.github.io/sharedtasks/2019/ 3 Several high-resource languages had necessarily fewer, but on a similar order of magnitude. Bengali, Uzbek, Kannada,</p><p>The final 2000 triples were randomly shuffled and then split in half to obtain development and test sets of 1000 forms each. <ref type="bibr">4</ref> The final shuffling was performed to ensure that the development set is similar to the test set. By contrast, the development and test sets tend to contain lower-count triples than the training set. <ref type="bibr">5</ref> Other modifications We further adopted some changes to increase compatibility. Namely, we corrected some annotation errors created while scraping Wiktionary for the 2018 task, and we standardized Romanian t-cedilla and t-comma to t-comma. (The same was done with s-cedilla and s-comma.)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Data for Task 2</head><p>Our data for task 2 come from the Universal Dependencies treebanks (UD; <ref type="bibr">Nivre et al., 2018, v2.3</ref>), which provides pre-defined training, development, and test splits and annotations in a unified annotation schema for morphosyntax and dependency relationships. Unlike the 2018 cloze task which used UD data, we require no manual data preparation and are able to leverage all 107 monolingual treebanks. As is typical, data are presented in CoNLL-U format, 6 although we modify the morphological feature and lemma fields.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Data conversion</head><p>The morphological annotations for the 2019 shared task were converted to the Uni-Morph schema <ref type="bibr">(Kirov et al., 2018)</ref> according to , who provide a deterministic mapping that increases agreement across languages. This also moves the part of speech into the bundle of morphological features. We do not attempt to individually correct any errors in the UD source material. Further, some languages received additional pre-processing. In the Finnish data, we removed morpheme boundaries that were present in the lemmata (e.g., puhe#kieli → puhekieli 'spoken+language'). Russian lemmata in the GSD treebank were presented in all uppercase; to match the 2018 shared task, we lowercased these. In development and test data, all fields except for form and index within the sentence were struck.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Baselines</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Task 1 Baseline</head><p>We include four neural sequence-to-sequence models mapping lemma into inflected word forms: soft attention <ref type="bibr" target="#b27">(Luong et al., 2015)</ref>, non-monotonic hard attention <ref type="bibr" target="#b46">(Wu et al., 2018)</ref>, monotonic hard attention and a variant with offset-based transition distribution . Neural sequenceto-sequence models with soft attention <ref type="bibr" target="#b27">(Luong et al., 2015)</ref> have dominated previous SIGMOR-PHON shared tasks <ref type="bibr" target="#b18">(Cotterell et al., 2017)</ref>. <ref type="bibr" target="#b46">Wu et al. (2018)</ref> instead models the alignment between characters in the lemma and the inflected word form explicitly with hard attention and learns this alignment and transduction jointly.  shows that enforcing strict monotonicity with hard attention is beneficial in tasks such as morphological inflection where the transduction is mostly monotonic. The encoder is a biLSTM while the decoder is a left-to-right LSTM. All models use multiplicative attention and have roughly the same number of parameters. In the model, a morphological tag is fed to the decoder along with target character embeddings to guide the decoding. During the training of the hard attention model, dynamic programming is applied to marginalize all latent alignments exactly.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Task 2 Baselines</head><p>Non-neural <ref type="bibr" target="#b32">(Müller et al., 2015)</ref>: The Lemming model is a log-linear model that performs joint morphological tagging and lemmatization. The model is globally normalized with the use of a second order linear-chain CRF. To efficiently calculate the partition function, the choice of lemmata are pruned with the use of pre-extracted edit trees.</p><p>Neural <ref type="bibr" target="#b29">(Malaviya et al., 2019)</ref>: This is a stateof-the-art neural model that also performs joint morphological tagging and lemmatization, but also accounts for the exposure bias with the application of maximum likelihood (MLE). The model stitches the tagger and lemmatizer together with the use of jackknifing <ref type="bibr">(Agić and Schluter, 2017)</ref> to expose the lemmatizer to the errors made by the tagger model during training. The morphological tagger is based on a character-level biLSTM embedder that produces the embedding for a word,  and a word-level biLSTM tagger that predicts a morphological tag sequence for each word in the sentence. The lemmatizer is a neural sequenceto-sequence model ) that uses the decoded morphological tag sequence from the tagger as an additional attribute. The model uses hard monotonic attention instead of standard soft attention, along with a dynamic programming based training scheme.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results</head><p>The SIGMORPHON 2019 shared task received 30 submissions-14 for task 1 and 16 for task 2from 23 teams. In addition, the organizers' baseline systems were evaluated.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Task 1 Results</head><p>Five teams participated in the first Task, with a variety of methods aimed at leveraging the crosslingual data to improve system performance. The University of Alberta (UAlberta) performed a focused investigation on four language pairs, training cognate-projection systems from external cognate lists. Two methods were considered: one which trained a high-resource neural encoderdecoder, and projected the test data into the HRL, and one that projected the HRL data into the LRL, and trained a combined system. Results demonstrated that certain language pairs may be amenable to such methods.   The Tuebingen University submission (Tuebingen) aligned source and target to learn a set of editactions with both linear and neural classifiers that independently learned to predict action sequences for each morphological category. Adding in the cross-lingual data only led to modest gains.</p><p>AX-Semantics combined the low-and highresource data to train an encoder-decoder seq2seq model; optionally also implementing domain adaptation methods to focus later epochs on the target language.</p><p>The CMU submission first attends over a decoupled representation of the desired morphological sequence before using the updated decoder state to attend over the character sequence of the lemma. Secondly, in order to reduce the bias of the decoder's language model, they hallucinate two types of data that encourage common affixes and character copying. Simply allowing the model to learn to copy characters for several epochs significantly outperforms the task baseline, while further improvements are obtained through fine-tuning. Making use of an adversarial language discriminator, cross lingual gains are highly-correlated to linguistic similarity, while augmenting the data with hallucinated forms and multiple related target language further improves the model.</p><p>The system from IT-IST also attends separately to tags and lemmas, using a gating mechanism to interpolate the importance of the individual attentions. By combining the gated dual-head attention with a SparseMax activation function, they are able to jointly learn stem and affix modifications, improving significantly over the baseline system.</p><p>The relative system performance is described in Table <ref type="table" target="#tab_7">5</ref>, which shows the average per-language accuracy of each system. The table reflects the fact that some teams submitted more than one system (e.g. Tuebingen-1 &amp; Tuebingen-2 in the table).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Task 2 Results</head><p>Nine teams submitted system papers for Task 2, with several interesting modifications to either the baseline or other prior work that led to modest improvements.</p><p>Charles-Saarland achieved the highest overall tagging accuracy by leveraging multi-lingual BERT embeddings fine-tuned on a concatenation of all available languages, effectively transporting the cross-lingual objective of Task 1 into Task 2. Lemmas and tags are decoded separately (with a joint encoder and separate attention); Lemmas are a sequence of edit-actions, while tags are calculated jointly. (There is no splitting of tags into features; tags are atomic.)</p><p>CBNU instead lemmatize using a transformer network, while performing tagging with a multilayer perceptron with biaffine attention. Input words are first lemmatized, and then pipelined to the tagger, which produces atomic tag sequences (i.e., no splitting of features).</p><p>The team from Istanbul Technical University (ITU) jointly produces lemmatic edit-actions and morphological tags via a two level encoder (first word embeddings, and then context embeddings) and separate decoders. Their system slightly improves over the baseline lemmatization, but significantly improves tagging accuracy.</p><p>The team from the University of Groningen (RUG) also uses separate decoders for lemmatization and tagging, but uses ELMo to initialize the contextual embeddings, leading to large gains in performance. Furthermore, joint training on related languages further improves results.</p><p>CMU approaches tagging differently than the multi-task decoding we've seen so far (baseline is used for lemmatization). Making use of a hierarchical CRF that first predicts POS (that is subsequently looped back into the encoder), they then seek to predict each feature separately. In particular, predicting POS separately greatly improves results. An attempt to leverage gold typological information led to little gain in the results; experiments suggest that the system is already learning the pertinent information.</p><p>The team from Ohio State University (OHIOSTATE) concentrates on predicting tags; the baseline lemmatizer is used for lemmatization. To that end, they make use of a dual decoder that first predicts features given only the word embedding as input; the predictions are fed to a GRU seq2seq, which then predicts the sequence of tags.</p><p>The UNT HiLT+Ling team investigates a lowresource setting of the tagging, by using parallel Bible data to learn a translation matrix between English and the target language, learning morphological tags through analogy with English.</p><p>The UFAL-Prague team extends their submission from the UD shared task (multi-layer LSTM), replacing the pretrained embeddings with BERT, to great success (first in lemmatization, 2nd in tag-  ging). Although they predict complete tags, they use the individual features to regularize the decoder. Small gains are also obtained from joining multilingual corpora and ensembling.</p><p>CUNI-Malta performs lemmatization as operations over edit actions with LSTM and ReLU. Tagging is a bidirectional LSTM augmented by the edit actions (i.e., two-stage decoding), predicting features separately.</p><p>The Edinburgh system is a character-based LSTM encoder-decoder with attention, implemented in OpenNMT. It can be seen as an extension of the contextual lemmatization system Lematus <ref type="bibr" target="#b15">(Bergmanis and Goldwater, 2018)</ref> to include morphological tagging, or alternatively as an adaptation of the morphological re-inflection system MED <ref type="bibr" target="#b23">(Kann and Schütze, 2016)</ref> to incorporate context and perform analysis rather than re-inflection. Like these systems it uses a completely generic encoderdecoder architecture with no specific adaptation to the morphological processing task other than the form of the input. In the submitted version of the system, the input is split into short chunks corresponding to the target word plus one word of context on either side, and the system is trained to output the corresponding lemmas and tags for each three-word chunk.</p><p>Several teams relied on external resources to improve their lemmatization and feature analysis. Several teams made use of pre-trained embeddings. CHARLES-SAARLAND-2 and UFALPRAGUE-1 used pretrained contextual embeddings (BERT) provided by Google <ref type="bibr" target="#b20">(Devlin et al., 2019)</ref>. CBNU-1 used a mix of pre-trained embeddings from the CoNLL 2017 shared task and fastText. Further, some teams trained their own embeddings to aid performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Future Directions</head><p>In general, the application of typology to natural language processing (e.g., <ref type="bibr" target="#b21">Gerz et al., 2018;</ref> provides an interesting avenue for multilinguality. Further, our shared task was designed to only leverage a single helper language, though many may exist with lexical or morphological overlap with the target language. Techniques like those of <ref type="bibr" target="#b33">Neubig and Hu (2018)</ref> may aid in designing universal inflection architectures. Neither task this year included unannotated monolingual corpora. Using such data is well-motivated from an L1-learning point of view, and may affect the performance of low-resource data settings.</p><p>In the case of inflection an interesting future topic could involve departing from orthographic representation and using more IPA-like representations, i.e. transductions over pronunciations. Differ-    ent languages, in particular those with idiosyncratic orthographies, may offer new challenges in this respect. <ref type="bibr">7</ref> Only one team tried to learn inflection in a multilingual setting-i.e. to use all training data to train one model. Such transfer learning is an interesting avenue of future research, but evaluation could be difficult. Whether any cross-language transfer is actually being learned vs. whether having more data better biases the networks to copy strings is an evaluation step to disentangle. <ref type="bibr">8</ref> Creating new data sets that accurately reflect learner exposure (whether L1 or L2) is also an important consideration in the design of future shared tasks. One pertinent facet of this is information about inflectional categories-often the inflectional information is insufficiently prescribed by the lemma, as with the Romanian verbal inflection classes or nominal gender in German.</p><p>As we move toward multilingual models for morphology, it becomes important to understand which representations are critical or irrelevant for adapting to new languages; this may be probed in the style of <ref type="bibr" target="#b41">(Thompson et al., 2018)</ref>, and it can be used as a first step toward designing systems that avoid "catastrophic forgetting" as they learn to inflect new languages <ref type="bibr" target="#b40">(Thompson et al., 2019)</ref>.</p><p>Future directions for Task 2 include exploring cross-lingual analysis-in stride with both Task 1 and <ref type="bibr" target="#b28">Malaviya et al. (2018)</ref>-and leveraging these analyses in downstream tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusions</head><p>The SIGMORPHON 2019 shared task provided a type-level evaluation on 100 language pairs in 79 languages and a token-level evaluation on 107 treebanks in 66 languages, of systems for inflection and analysis. On task 1 (low-resource inflection with cross-lingual transfer), 14 systems were submitted, while on task 2 (lemmatization and morphological feature analysis), 16 systems were submitted. All used neural network models, completing a trend in past years' shared tasks and other recent work on morphology.</p><p>In task 1, gains from cross-lingual training were generally modest, with gains positively correlating with the linguistic similarity of the two languages.</p><p>In the second task, several methods were implemented by multiple groups, with the most successful systems implementing variations of multiheaded attention, multi-level encoding, multiple decoders, and ELMo and BERT contextual embeddings.</p><p>We have released the training, development, and test sets, and expect these datasets to provide a useful benchmark for future research into learning of inflectional morphology and string-to-string transduction.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>PL V;PRS;3;PL V;V.PTCP;PRS PUNCT</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>.0 it-ist-02 kurmanji-sorani 15.0 69.0 CMU-03 bashkir-turkmen 94.0 88.0 it-ist-01 latin-czech 20.1 71.4 CMU-03 basque-kashubian 40.0 76.0 CMU-03 latvian-lithuanian 17.1 48.4 CMU-03 belarusian-old-irish 2.0 10.0 CMU-03 latvian-scottish-gaelic 48.0 68.0 CMU-03 bengali-greek 17.7 74.6 CMU-03 persian-azeri 46.0 69.0 CMU-03 bulgarian-old-church-slavonic 44.0 56.0 CMU-03 persian-pashto 27.0 48.0 CMU-03 czech-kashubian 52.0 78.0 CMU-03 polish-kashubian 74.0 78.0 CMU-03 czech-latin 8.4 42.0 CMU-03 polish-old-church-slavonic 40.0 58.0 CMU-03 danish-middle-high-german 72.0 82.0 it-ist-02 portuguese-russian 27.5 76.3 CMU-03 danish-middle-low-german 36.0 44.0 it-ist-01 romanian-latin 6.7 41.3 CMU-03 danish-north-frisian 28.0 46.0 CMU-03 russian-old-church-slavonic 34.0 64.0 CMU-03 danish-west-frisian 42.0 43.0 CMU-03 russian-portuguese 50.5 88.4 CMU-03 danish-yiddish 76.0 67.0 it-ist-01 sanskrit-bengali 33.0 65.0 CMU-03 dutch-middle-high-german 76.0 78.0 it-ist-01 / it-ist-02 sanskrit-pashto 34.0 43.0 CMU-03 dutch-middle-low-german 42.0 52.0 it-ist-02 slovak-kashubian 54.0 76.0 CMU-03 dutch-north-frisian 32.0 46.0 CMU-03 slovene-old-saxon 10.6 53.2 CMU-03 dutch-west-frisian 38.0 51.0 it-ist-02 sorani-irish 27.6 66.3 CMU-03 dutch-yiddish 78.0 64.0 it-ist-01 spanish-friulian 53.0 81.0 CMU-03 english-murrinhpatha 22.0 42.0 it-ist-02 spanish-occitan 57.0 78.0 CMU-03 english-north-frisian 31.0 42.0 CMU-03 swahili-quechua 13.9 92.1 CMU-03 english-west-frisian 35.0 43.0 CMU-03 turkish-azeri 80.0 87.0 it-ist-02 estonian-ingrian 30.0 44.0 it-ist-02 turkish-crimean-tatar 83.0 89.0 CMU-03 / it-ist-02 estonian-karelian 74.0 68.0 it-ist-01 turkish-kazakh 76.0 86.0 it-ist-02 estonian-livonian 36.0 40.0 it-ist-02 turkish-khakas 76.0 94.0 it-ist-01 estonian-votic 25.0 35.0 it-ist-01 turkish-tatar 73.0 83.0 it-ist-02 finnish-ingrian 54.0 48.0 it-ist-02 turkish-turkmen 86.0 98.0 it-ist-01 finnish-karelian 70.0 78.0 it-ist-01 urdu-bengali 49.0 67.0 CMU-03 finnish-livonian 22.0 34.0 CMU-03 / it-ist-01 urdu-old-english 20.8 40.3 CMU-03 finnish-votic 42.0 40.0 it-ist-02 uzbek-azeri 57.0 70.0 CMU-03 french-occitan 50.0 80.0 CMU-03 uzbek-crimean-tatar 67.0 67.0 CMU-03 german-middle-high-german 72.0 82.0 CMU-03 uzbek-kazakh 84.0 72.0 CMU-03 german-middle-low-german 42.0 52.0 it-ist-02 uzbek-khakas 86.0 92.0 it-ist-01 german-yiddish 77.0 68.0 it-ist-</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head></head><label></label><figDesc>0.05 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Norwegian-Bokmaal 0.03 0.01 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Czech-CAC 0.05 0.01 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Norwegian-Nynorsk 0.04 0.01 CHARLES-SAARLAND-02 UD Czech-CLTT 0.04 0.01 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Norwegian-NynorskLIA 0.08 0.03 UFALPRAGUE-01 UD Czech-FicTree 0.04 0.02 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Old Church Slavonic-0.03 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Portuguese-Bosque 0.05 0.02 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Dutch-LassySmall 0.06 0.03 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Portuguese-GSD 0.18 0.05 CHARLES-SAARLAND-02 / UFALPRAGUE-</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Sample language pair and data format for Task 1</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Task 1 Team Scores, averaged across all Languages; * indicates submissions were only applied to a subset of languages, making scores incomparable. † indicates that additional resources were used for training.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell>: Task 1 Accuracy scores</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc></figDesc><table /><note>Task 1 Levenshtein scores</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Task 2 Team Scores, averaged across all treebanks; * indicates submissions were only applied to a subset of languages, making scores incomparable. † indicates that additional external resources were used for training, and ‡ indicates that training data were shared across languages or treebanks.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 6 :</head><label>6</label><figDesc>Task 2 Lemma Accuracy scores</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 7 :</head><label>7</label><figDesc>Task 2 Lemma Levenshtein scores</figDesc><table><row><cell>Best Team</cell></row><row><cell>Baseline</cell></row><row><cell>Language (Treebank)</cell></row><row><cell>Best Team</cell></row><row><cell>Baseline</cell></row><row><cell>Language (Treebank)</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">The Basque language data was extracted from a manually designed finite-state morphological analyzer<ref type="bibr" target="#b14">(Alegria et al., 2009)</ref>. Murrinhpatha data was donated by JohnMansfield; it   </note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot">Swahili. Likewise, the low-resource language Telugu had fewer than 100 forms.4  When sufficient data are unavailable, we instead use 50 or 100 examples.5 This mimics a realistic setting, as supervised training is usually employed to generalize from frequent words that appear in annotated resources to less frequent words that do not. Unsupervised learning methods also tend to generalize from more frequent words (which can be analyzed more easily by combining information from many contexts) to less frequent ones.6 https://universaldependencies.org/format. html</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">Although some work suggests that working with IPA or phonological distinctive features in this context yields very similar results to working with graphemes<ref type="bibr" target="#b44">(Wiemerslage et al., 2018)</ref>.8  This has been addressed by<ref type="bibr" target="#b22">Jin and Kann (2017)</ref>.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0" />
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">UD Ancient Greek-Perseus 69</title>
+		<imprint>
+			<biblScope unit="volume">88</biblScope>
+			<biblScope unit="page" from="94" to="95" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">UD Ancient Greek-PROIEL 84</title>
+		<imprint>
+			<biblScope unit="volume">55</biblScope>
+			<biblScope unit="page" from="94" to="95" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ud Komi Zyrian</surname></persName>
+		</author>
+		<idno>IKDP 35.94 75.78 UFALPRAGUE-01</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ud Komi Zyrian</surname></persName>
+		</author>
+		<idno>45.05 69.78 UFALPRAGUE-01 UD Armenian-ArmTDP 64.38 93.34 UFALPRAGUE-01</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">UD North Sami-Giella 66</title>
+		<idno>SAARLAND-02</idno>
+		<imprint>
+			<biblScope unit="volume">87</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ud Old</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Church</surname></persName>
+		</author>
+		<idno>Slavonic-PROIEL 84.13 93.01 UFALPRAGUE-01</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">UD French-Sequoia 81</title>
+		<imprint>
+			<biblScope unit="volume">50</biblScope>
+			<biblScope unit="page" from="15" to="16" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+	</analytic>
+	<monogr>
+		<title level="m">Task 2 Morph Accuracy scores UD Afrikaans-AfriBooms</title>
+				<imprint>
+			<biblScope unit="volume">8</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Akkadian</surname></persName>
+		</author>
+		<idno>PISANDUB 80.41 89.06 CHARLES-SAARLAND-02 UD Italian-PUD 92.24 98.42 CHARLES-SAARLAND-02</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">UD Ancient Greek-Perseus 88</title>
+		<idno>96.72 UFALPRAGUE-01</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ud Komi Zyrian</surname></persName>
+		</author>
+		<idno>Lattice 74.12 82.99 RUG-01 / RUG-02</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Ud North Sami</surname></persName>
+		</author>
+		<idno>85.45 95.33 CHARLES-SAARLAND-02</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">-</forename><surname>Ud German</surname></persName>
+		</author>
+		<idno>GSD 88.91 95.90 CHARLES-SAARLAND-02 UD Tagalog-TRG 87.07 95.04 CHARLES-SAARLAND-02 / UFALPRAGUE-01 UD Gothic-PROIEL 90.02 96.64 CHARLES-SAARLAND-02 UD Tamil-TTB 89.22 96.00 UFALPRAGUE-01</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">How (not) to train a dependency parser: The curious case of jackknifing part-of-speech taggers</title>
+		<idno type="DOI">10.18653/v1/P17-2107</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="page" from="679" to="684" />
+		</imprint>
+	</monogr>
+	<note>Task 2 Morph F1 scores Referenceš Zeljko Agić and Natalie Schluter</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Porting Basque morphological grammars to foma, an open-source tool</title>
+		<author>
+			<persName><forename type="first">Izaskun</forename><surname>Inaki Alegria</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Etxeberria</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Workshop on Finite-State Methods and Natural Language Processing</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="105" to="113" />
+		</imprint>
+	</monogr>
+	<note>Mans Hulden, and Montserrat Maritxalar</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Context sensitive neural lemmatization with Lematus</title>
+		<author>
+			<persName><forename type="first">Toms</forename><surname>Bergmanis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sharon</forename><surname>Goldwater</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N18-1126</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1391" to="1400" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arya</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">The CoNLL-SIGMORPHON 2018 shared task: Universal morphological reinflection</title>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabrina</forename><forename type="middle">J</forename><surname>Kann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Mielke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Nicolai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection</title>
+				<meeting>the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection<address><addrLine>Brussels</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1" to="27" />
+		</imprint>
+	</monogr>
+	<note>Jason Eisner, and Mans Hulden</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gėraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+			<publisher>Jason Eisner, and Mans Hulden</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<author>
+			<persName><forename type="first">-</forename><surname>Conll</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sigmorphon</surname></persName>
+		</author>
+		<title level="m">Universal morphological reinflection in 52 languages. Proceedings of the CoNLL SIGMORPHON 2017 Shared Task: Universal Morphological Reinflection</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1" to="30" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long and Short Papers</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Language modeling for morphologically rich languages: Character-aware modeling for word-level prediction</title>
+		<author>
+			<persName><forename type="first">Daniela</forename><surname>Gerz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edoardo</forename><surname>Ponti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Naradowsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00032</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="451" to="465" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Exploring cross-lingual transfer of morphological knowledge in sequence-to-sequence models</title>
+		<author>
+			<persName><forename type="first">Huiming</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W17-4110</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Subword and Character Level Models in NLP</title>
+				<meeting>the First Workshop on Subword and Character Level Models in NLP<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="70" to="75" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">MED: The LMU system for the SIGMORPHON 2016 shared task on morphological reinflection</title>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W16-2010</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 14th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="62" to="70" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<author>
+			<persName><forename type="first">E</forename><surname>Aleksandr</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kibrik</surname></persName>
+		</author>
+		<title level="m">The Handbook of Morphology</title>
+				<editor>
+			<persName><forename type="first">Andrew</forename><surname>Spencer</surname></persName>
+			<persName><forename type="first">Arnold</forename><forename type="middle">M</forename><surname>Zwicky</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Oxford</addrLine></address></meeting>
+		<imprint>
+			<publisher>Blackwell Publishers</publisher>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="455" to="476" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabrina</forename><forename type="middle">J</forename><surname>Mielke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arya</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">European Language Resource Association</title>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th Language Resources and Evaluation Conference</title>
+				<meeting>the 11th Language Resources and Evaluation Conference<address><addrLine>Miyazaki, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>UniMorph 2.0: Universal Morphology</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Effective approaches to attention-based neural machine translation</title>
+		<author>
+			<persName><forename type="first">Thang</forename><surname>Luong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hieu</forename><surname>Pham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D15-1166</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Lisbon</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1412" to="1421" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Neural factor graph models for cross-lingual morphological tagging</title>
+		<author>
+			<persName><forename type="first">Chaitanya</forename><surname>Malaviya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><forename type="middle">R</forename><surname>Gormley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Neubig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="2653" to="2663" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">A simple joint model for improved contextual neural lemmatization</title>
+		<author>
+			<persName><forename type="first">Chaitanya</forename><surname>Malaviya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shijie</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1517" to="1528" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Murrinhpatha morphology and phonology</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Mansfield</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+			<publisher>Walter de Gruyter GmbH &amp; Co KG</publisher>
+			<biblScope unit="volume">653</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Marrying Universal Dependencies and Universal Morphology</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Hulden</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Universal Dependencies</title>
+				<meeting>the Second Workshop on Universal Dependencies<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>UDW</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="91" to="101" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Joint lemmatization and morphological tagging with LEMMING</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Fraser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D15-1272</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="2268" to="2274" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Rapid adaptation of neural machine translation to new languages</title>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Neubig</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junjie</forename><surname>Hu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="875" to="880" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitchell</forename><surname>Abrams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Željko</forename><surname>Agić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lars</forename><surname>Ahrenberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lene</forename><surname>Antonsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katya</forename><surname>Aplonova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><forename type="middle">Jesus</forename><surname>Aranzabe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gashaw</forename><surname>Arutie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Masayuki</forename><surname>Asahara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luma</forename><surname>Ateyah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Attia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitziber</forename><surname>Atutxa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liesbeth</forename><surname>Augustinus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Badmaeva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miguel</forename><surname>Ballesteros</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Esha</forename><surname>Banerjee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Bank</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Victoria</forename><surname>Verginica Barbu Mititelu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Basmov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Bauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kepa</forename><surname>Bellato</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yevgeni</forename><surname>Bengoetxea</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Berzak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmad</forename><surname>Irshad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Riyaz</forename><forename type="middle">Ahmad</forename><surname>Bhat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erica</forename><surname>Bhat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eckhard</forename><surname>Biagetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rogier</forename><surname>Bick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Victoria</forename><surname>Blokland</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carl</forename><surname>Bobicev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Börstell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gosse</forename><surname>Bosco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Bouma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adriane</forename><surname>Bowman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aljoscha</forename><surname>Boyd</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie</forename><surname>Burchardt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernard</forename><surname>Candito</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gauthier</forename><surname>Caron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gülşen</forename><surname>Caron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Flavio</forename><surname>Cebiroglu Eryigit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><forename type="middle">G A</forename><surname>Massimiliano Cecchini</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Celano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Savas</forename><surname>Slavomírčéplö</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabricio</forename><surname>Cetin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinho</forename><surname>Chalub</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yongseok</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jayeol</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silvie</forename><surname>Chun</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cinková</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Aurélie Collomb, Ç agrı Çöltekin</title>
+		<editor>Kaja Dobrovoljc, Timothy Dozat, Kira Droganova, Puneet Dwivedi, Marhaba Eli, Ali Elkahky, Binyam Ephrem</editor>
+		<imprint>
+			<publisher>Tomaž Erjavec</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<author>
+			<persName><forename type="first">Richárd</forename><surname>Etienne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hector</forename><surname>Farkas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennifer</forename><surname>Fernandez Alcalde</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cláudia</forename><surname>Foster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katarína</forename><surname>Freitas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Gajdošová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Galbraith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Moa</forename><surname>Garcia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Gärdenfors</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kim</forename><surname>Garza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Gerdes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iakes</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Koldo</forename><surname>Goenaga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Memduh</forename><surname>Gojenola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Gökırmak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xavier</forename><forename type="middle">Gómez</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Berta</forename><forename type="middle">Gonzáles</forename><surname>Guinovart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matias</forename><surname>Saavedra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Normunds</forename><surname>Grioni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bruno</forename><surname>Grūzītis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Céline</forename><surname>Guillaume</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nizar</forename><surname>Guillot-Barbance</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Habash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Hajič</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hajič Jr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Na-Rae</forename><surname>Linh Hà Mỹ</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kim</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dag</forename><surname>Harris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbora</forename><surname>Haug</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaroslava</forename><surname>Hladká</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Florinel</forename><surname>Hlaváčová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Petter</forename><surname>Hociung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jena</forename><surname>Hohle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Hwang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Ion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Irimia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomáš</forename><surname>Ishola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anders</forename><surname>Jelínek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fredrik</forename><surname>Johannsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hüner</forename><surname>Jørgensen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kaşıkara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroshi</forename><surname>Sylvain Kahane</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jenna</forename><surname>Kanayama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Boris</forename><surname>Kanerva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tolga</forename><surname>Katz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><surname>Kayadelen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Václava</forename><surname>Kenney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jesse</forename><surname>Kettnerová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kamil</forename><surname>Kirchner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Kopacewicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Kotsyba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sookyoung</forename><surname>Krek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veronika</forename><surname>Kwak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lorenzo</forename><surname>Laippala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucia</forename><surname>Lambertino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tatiana</forename><surname>Lam</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lando</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexei</forename><surname>Septina Dian Larasati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Lavrentiev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Phuong</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lê H`ông</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saran</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Herman</forename><surname>Lertpradit</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Leung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ying</forename><surname>Cheuk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josie</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Keying</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyungtae</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikola</forename><surname>Lim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Ljubešić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Loginova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Teresa</forename><surname>Lyashevskaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vivien</forename><surname>Lynn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aibek</forename><surname>Macketanz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Makazhanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Mandl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruli</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cȃtȃlina</forename><surname>Manurung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mȃrȃnduc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katrin</forename><surname>Mareček</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Marheinecke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">André</forename><surname>Héctor Martínez Alonso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Martins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuji</forename><surname>Mašek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Matsumoto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niko</forename><surname>Mendonça</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Margarita</forename><surname>Miekka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Misirpashayeva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cȃtȃlin</forename><surname>Missilä</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yusuke</forename><surname>Mititelu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simonetta</forename><surname>Miyao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amir</forename><surname>Montemagni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><forename type="middle">Moreno</forename><surname>More</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Keiko</forename><forename type="middle">Sophie</forename><surname>Romero</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shinsuke</forename><surname>Mori</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bjartur</forename><surname>Mori</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bohdan</forename><surname>Mortensen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kadri</forename><surname>Moskalevskyi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yugo</forename><surname>Muischnek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kaili</forename><surname>Murawaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pinkey</forename><surname>Müürisep</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan Ignacio Navarro</forename><surname>Nainwani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Horñiacek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gunta</forename><surname>Nedoluzhko</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nešpore-Bērzkalne</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Luong Nguy˜ên Thi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Huy`ên Nguy˜ên Thi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vitaly</forename><surname>Minh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rattima</forename><surname>Nikolaev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hanna</forename><surname>Nitisaroj</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stina</forename><surname>Nurmi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adédayo</forename><surname>Ojala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mai</forename><surname>Olúòkun</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Omura</surname></persName>
+		</author>
+		<title level="m">Faculty of Mathematics and Physics</title>
+				<editor>
+			<persName><forename type="first">Marat</forename><forename type="middle">M</forename><surname>Yan</surname></persName>
+			<persName><forename type="first">Zhuoran</forename><surname>Yavrumyan</surname></persName>
+			<persName><surname>Yu</surname></persName>
+			<persName><forename type="first">Amir</forename><surname>Zdeněkžabokrtský</surname></persName>
+			<persName><forename type="first">Daniel</forename><surname>Zeldes</surname></persName>
+			<persName><forename type="first">Manying</forename><surname>Zeman</surname></persName>
+			<persName><forename type="first">Hanzhi</forename><surname>Zhang</surname></persName>
+			<persName><surname>Zhu</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Petya Osenova, RobertÖstling, Lilja Øvrelid, Niko Partanen, Elena Pascual, Marco Passarotti, Agnieszka Patejuk, Guilherme Paulino-Passos, Siyao Peng, Cenel-Augusto Perez, Guy Perrier, Slav Petrov, Jussi Piitulainen, Emily Pitler, Barbara Plank, Thierry Poibeau, Martin Popel, Lauma Pretkalniņa, Sophie Prévost, Prokopis Prokopidis, Adam Przepiórkowski, Tiina Puolakainen, Sampo Pyysalo, Andriela Rääbis, Alexandre Rademaker, Loganathan Ramasamy, Taraka Rama, Carlos Ramisch, Vinit Ravishankar, Livy Real, Siva Reddy, Georg Rehm, Michael Rießler, Larissa Rinaldi, Laura Rituma, Luisa Rocha, Mykhailo Romanenko, Rudolf Rosa, Davide Rovati, Valentin Ros , ca, Olga Rudina, Jack Rueter, Shoval Sadde; Maria Simi, Radu Simionescu, Katalin Simkó, MáriaŠimková, Kiril Simov, Aaron Smith, Isabela Soares-Bastos, Carolyn Spadine, Antonio Stella, Milan Straka, Jana Strnadová, Alane Suhr, Umut Sulubacak, Zsolt Szántó, Dima Taji, Yuta Takahashi, Takaaki Tanaka, Isabelle Tellier, Trond Trosterud, Anna Trukhina, Reut Tsarfaty, Francis Tyers</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+		<respStmt>
+			<orgName>Sumire Uematsu, Zdeňka Urešová, Larraitz Uria, Hans Uszkoreit, Sowmya Vajjala, Daniel van Niekerk, Gertjan van Noord, Viktor Varga, Eric Villemonte de la Clergerie, Veronika Vincze, Lars Wallin, Jing Xian Wang, Jonathan North Washington, Seyi Williams, Mats Wirén, Tsegay Woldemariam, Tak-sum Wong ; Charles University</orgName>
+		</respStmt>
+	</monogr>
+	<note>Universal dependencies 2.3. LIN-DAT/CLARIN digital library at the Institute of Formal and Applied Linguistics (ÚFAL</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<title level="m" type="main">Modeling language variation and universals: A survey on typological linguistics for natural language processing</title>
+		<author>
+			<persName><surname>Edoardo Maria Ponti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O'</forename><surname>Helen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yevgeni</forename><surname>Horan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Berzak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Vulic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thierry</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Poibeau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Shutova</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Korhonen</surname></persName>
+		</author>
+		<idno>abs/1807.00914</idno>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">A universal feature schema for rich morphological annotation and fine-grained cross-lingual part-of-speech tagging</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Post</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Que</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/978-3-319-23980-4_5</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th Workshop on Systems and Frameworks for Computational Morphology (SFCM), Communications in Computer and Information Science</title>
+				<editor>
+			<persName><forename type="first">Cerstin</forename><surname>Mahlow</surname></persName>
+			<persName><forename type="first">Michael</forename><surname>Piotrowski</surname></persName>
+		</editor>
+		<meeting>the 4th Workshop on Systems and Frameworks for Computational Morphology (SFCM), Communications in Computer and Information Science<address><addrLine>Berlin</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="72" to="93" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">A language-independent feature schema for inflectional morphology</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Que</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="674" to="680" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Cloze procedure&quot;: A new tool for measuring readability</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Wilson</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Taylor</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journalism Bulletin</title>
+		<imprint>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="415" to="433" />
+			<date type="published" when="1953" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Overcoming catastrophic forgetting during domain adaptation of neural machine translation</title>
+		<author>
+			<persName><forename type="first">Brian</forename><surname>Thompson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Gwinnup</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huda</forename><surname>Khayrallah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Duh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="2062" to="2068" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Freezing subnetworks to analyze domain adaptation in neural machine translation</title>
+		<author>
+			<persName><forename type="first">Brian</forename><surname>Thompson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huda</forename><surname>Khayrallah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonios</forename><surname>Anastasopoulos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Duh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rebecca</forename><surname>Marvin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Mcnamee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Gwinnup</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Conference on Machine Translation: Research Papers</title>
+				<meeting>the Third Conference on Machine Translation: Research Papers<address><addrLine>Belgium, Brussels</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="124" to="132" />
+		</imprint>
+	</monogr>
+	<note>Tim Anderson, and Philipp Koehn</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Developing a large-scale lexicon for a less-resourced language: General methodology and preliminary experiments on Sorani Kurdish</title>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benoît</forename><surname>Sagot</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th SaLTMiL Workshop on Creation and use of basic lexical resources for less-resourced languages (LREC 2010 Workshop)</title>
+				<meeting>the 7th SaLTMiL Workshop on Creation and use of basic lexical resources for less-resourced languages (LREC 2010 Workshop)<address><addrLine>Valetta, Malta</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title level="m" type="main">Fast development of basic NLP tools: Towards a lexicon and a POS tagger for Kurmanji Kurdish</title>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benoît</forename><surname>Sagot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karën</forename><surname>Fort</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+	<note>In International conference on lexis and grammar</note>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Phonological features for morphological inflection</title>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Wiemerslage</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the Fifteenth Workshop on Computational Research in Phonetics, Phonology, and Morphology<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="161" to="166" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<monogr>
+		<title level="m" type="main">Exact hard monotonic attention for character-level transduction</title>
+		<author>
+			<persName><forename type="first">Shijie</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1905.06319v1</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Hard non-monotonic attention for character-level transduction</title>
+		<author>
+			<persName><forename type="first">Shijie</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pamela</forename><surname>Shapiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="4425" to="4438" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Transfer learning for low-resource neural machine translation</title>
+		<author>
+			<persName><forename type="first">Barret</forename><surname>Zoph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deniz</forename><surname>Yuret</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>May</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Knight</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D16-1163</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Austin, Texas</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1568" to="1575" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

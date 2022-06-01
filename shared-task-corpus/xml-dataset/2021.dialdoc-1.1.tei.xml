@@ -1,0 +1,1066 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">DialDoc 2021 Shared Task: Goal-Oriented Document-grounded Dialogue Modeling</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Song</forename><surname>Feng</surname></persName>
+							<email>sfeng@us.ibm.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">IBM Research AI</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">DialDoc 2021 Shared Task: Goal-Oriented Document-grounded Dialogue Modeling</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We present the results of Shared Task at Workshop DialDoc 2021 that is focused on document-grounded dialogue and conversational question answering. The primary goal of this Shared Task is to build goal-oriented information-seeking conversation systems that can identify the most relevant knowledge in the associated document for generating agent responses in natural language. It includes two subtasks on predicting agent responses: the first subtask is to predict the grounding text span in the given document for next agent response; the second subtask is to generate agent response in natural language given the context. Many submissions outperform baseline significantly. For the first task, the best-performing system achieved 67.1 Exact Match and 76.3 F1. For the second subtask, the best system achieved 41.1 SacreBLEU and highest rank by human evaluation.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Goal-oriented conversational systems could assist end users to query information in documents dynamically via natural language interactions. Meanwhile, there is a vast number of documents in which individuals and organizations choose to present their interests and knowledge to the world for broad applications. Thus, it attracts a lot of attentions from researchers and practitioners from different fields. There have been significant individual research threads that show promises in handling heterogeneous knowledge embedded in the documents <ref type="bibr" target="#b25">(Talmor et al., 2021)</ref>, including (1) unstructured content such as text passages (CoQA <ref type="bibr" target="#b22">(Reddy et al., 2019)</ref>, QuAC <ref type="bibr" target="#b4">(Choi et al., 2018)</ref>, ShARC <ref type="bibr" target="#b23">(Saeidi et al., 2018)</ref>, <ref type="bibr">DoQA (Campos et al., 2020)</ref>, Doc2Dial <ref type="bibr">(Feng et al., 2020)</ref>); (2) semi-structured content such as tables or lists (SQA <ref type="bibr" target="#b12">(Iyyer et al., 2017)</ref>, HybridQA <ref type="bibr" target="#b2">(Chen et al., 2020)</ref>); (3) mul-timedia such as images and videos with associated textual descriptions (RecipeQA <ref type="bibr" target="#b29">(Yagcioglu et al., 2018)</ref>, PsTuts-VQA <ref type="bibr" target="#b5">(Colas et al., 2020)</ref>, MI-MOQA <ref type="bibr" target="#b24">(Singh et al., 2021)</ref>) Despite these recent advances, the challenge remains for handling multiturn queries of complex dialogue scenarios <ref type="bibr" target="#b19">(Ma et al., 2020;</ref><ref type="bibr">Feng et al., 2020)</ref> and then respond based on the most relevant content in documents of various types from wide domains. As a step forward, we propose a shared task and competition to invite researchers to bring their individual perspectives and advance the field in joint effort.</p><p>We introduce DialDoc 2021 Shared Task, which focuses on building goal-oriented informationseeking dialogue that are grounded in textual content. In particular, the goal is to develop a dialogue system to comprehend multi-turn queries and identify the most relevant knowledge in the associated document for generating agent responses in natural language. It includes two subtasks for predicting agent response. The first subtask (Subtask 1) is to predict the grounding text span in the given document for next agent response; the second subtask (Subtask 2) is to generate agent response in natural language given the contexts. The dataset used for the task is a goal-oriented document-grounded dialogue dataset Doc2Dial <ref type="bibr">(Feng et al., 2020)</ref>. We hosted the leaderboards for Dev-Test and Test phase on eval.ai for two subtasks respectively. There are a total of 23 teams that participated Dev-Test phase. For final test phrase, 11 teams submitted to the leaderboard of Subtask 1, and 9 teams submitted to the leaderboard of Subtask 2. For the first task, the best system achieved 67.09 Exact Match and 76.34 F1. For the second subtask, the best system achieved 41.06 sacrebleu and rank the best by human evaluation.</p><p>In this work, we first describe the dataset and the two subtasks. Then, we provide a summary of the evaluation results from participating systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Dataset</head><p>We use Doc2Dial dataset 1 introduced in <ref type="bibr">Feng et al. (2020)</ref>, which contains 4793 goal-oriented dialogues and a total of 488 associated grounding documents from four domains for social welfare: dmv, va, ssa, and studentaid. In this dataset, dialogues contain the scenarios when agent ask follow-up questions for clarification or verification based on dialogue-based and document-based context. Each turn is annotated with (1) grounding span from the associated document, (2) dialogue act, e.g., query, respond and (3) speaker role, either agent or user.</p><p>For developing models, we divide the data into training, validation and test split based on the number of dialogues. For evaluating the models, we provide a dev-test set which contains about 30% test dataset. The final test set also includes dialogue and document data from an unseen domain cdccovid that is not in the training, validation or dev-test set. The dialogues of unseen domain were collected in the same data collection process as published Doc2Dial dataset. Table <ref type="table" target="#tab_1">1</ref> presents the number of dialogues ('dials'), total turns ('turns') of all dialogues and total turns for prediction ('predicts') in each data split.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>This Shared Task focuses on building goal-oriented information-seeking dialogue systems. The goal is to teach a dialogue system to identify the most relevant knowledge in the associated document for generating agent responses in natural language. It includes two subtasks on predicting agent response. The agent can either provide an answer or ask follow-up question. Here we only consider the cases that use queries are answerable.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Subtask 1</head><p>This subtask is to predict the grounding span of next agent response. The input current turn, dialogue history and one associated document; the output is a text span. The evaluation is based on token-level F1 and exact match score <ref type="bibr" target="#b21">(Rajpurkar et al., 2018)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Subtask 2</head><p>This subtask is to generate the next agent utterance. The input is current turn, dialogue history and the  document context; the output is utterance in natural language. The evaluation is based on SacreBLEU <ref type="bibr" target="#b20">(Post, 2018)</ref>. We also perform human evaluation on the top three submissions with highest SacreBLEU for determining the final rank.</p><p>Human evaluation We ask human annotators to rank a group of three utterances from the three submissions based on relevance and fluency given document context and dialogue history. relevance is used to measure how well the generated utterance is relevant to grounding span as a response to the previous dialogue turn(s). fluency indicates whether the generated utterance is grammatically correct and generally fluent in English. We randomly select 100 generated turns where the utterances are not all the same. We collect five judgements per group.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Baseline</head><p>Subtask 1 The baseline model for Subtask 1 is based on BERT-QA . For each token, it computes the probabilities of start and end positions by a linear projection from the last hidden layers of the BERT model. Then it multiplies the scores of the start and end positions for estimating the probability of the corresponding span. As a baseline, we fine-tune BERT-base on Doc2Dial dataset where the input is dialogue query and the associated document context. The dialogue query is the concatenation of dialogue turns in reverse order.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Subtask 2</head><p>The task is formulated as an end-toend text generation task. The baseline approach for Subtask 2 is based on sequence-to-sequence model BART by <ref type="bibr" target="#b17">(Lewis et al., 2020)</ref>. We fine-tune the pre-trained BART model (bart-cnn-large) on Doc2Dial dataset. The source input consists of current turn, dialogue history along with document title and content that are separated by special tokens. The target output is next agent utterance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Shared Task Submissions</head><p>We hosted the leaderboards 2 for Dev-Test and Test phase for the two subtasks on eval.ai. The Dev-Test and Test phase lasted three months and one week respectively. There are a total of 23 teams that participated Dev-Test phase. For final Test phrase, 11 teams submitted to the leaderboard of Subtask 1, and 9 teams submitted to the leaderboard of Subtask 2. Among the best-performing systems, some teams utilize additional data for augmentation for pre-training (e.g., CAiRE <ref type="bibr" target="#b28">(Xu et al., 2021)</ref>, SCIR-DT <ref type="bibr" target="#b18">(Li et al., 2021)</ref>), some teams employ neural retrievers for obtaining most relevant document passages (e.g., RWTH <ref type="bibr" target="#b6">(Daheim et al., 2021)</ref> and ER). For the first task, the best system achieved 67.1 Exact Match and 76.3 F1. For the second subtask, the best system achieved 41.1 sacrebleu and rank the best by human evaluation. Next, we provide a brief summary of the work by 8 teams as listed in Table <ref type="table" target="#tab_3">2</ref>, who submitted their technical system papers.  rameter for inference. The team ranks 2nd based on the average of normalized F1 and EM scores used for the final evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">ER</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">KU NLP</head><p>KU NLP <ref type="bibr" target="#b14">(Kim et al., 2021)</ref> participates both tasks. For Subtask 1, they adopt pretrained RoBERTa as backbone and predict dialogue act and span jointly. For Subtask 2, they include several tokens and embeddings based on document structure into input representation for BART. Instead of random order of the training instances, they propose to apply curriculum learning <ref type="bibr" target="#b27">(Xu et al., 2020)</ref> based on the computed task difficulty level for each task respectively. The final submission on Subtask 2 is based on the span prediction by a single model. It achieves best SacreBLEU and human evaluation results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">RWTH</head><p>RWTH <ref type="bibr" target="#b6">(Daheim et al., 2021)</ref> participates both tasks. For Subtask 1, it applies BERTQA with additional span-based specifics in their approach. First, they restrict start and end position only to the begin and end of sub-clauses since Doc2Dial dataset is based on preprocessed spans. In addition, they consider modeling the joint probability of a span inspired by <ref type="bibr" target="#b9">Fajcik et al. (2020)</ref>. The final submission is the ensemble of multiple models, where the probability of a span is obtained by marginalizing the joint probability of span and model over all models. For Subtask 2, they propose to cascade over all spans where they use top N (=5) spans as a approximation. The probability is computed jointly. The generation model is trained with cross-entropy using an n-best list obtained from the separately trained selection model.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.5">CAiRE</head><p>CAiRE <ref type="bibr" target="#b28">(Xu et al., 2021)</ref> participates both tasks. They utilize data augmentation methods and several training techniques. For the first task, it uses QA data such as MRQA shared task dataset <ref type="bibr" target="#b11">(Fisch et al., 2019)</ref> and conversational QA data such as CoQA <ref type="bibr" target="#b22">(Reddy et al., 2019)</ref> for pretraining RoBERTa with multi-task learning strategy and the models are fine-tuned on Doc2Dial dataset. For the second task, they pretrain BART on Wizard-of-Wikipedia dataset <ref type="bibr" target="#b8">(Dinan et al., 2019)</ref>. Then they fine-tune the model using the knowledge prediction results from the first task. The final submission is based on the ensemble of multiple models where the best span is determined by the majority vote by models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.6">SB NITK</head><p>SB NITK <ref type="bibr" target="#b0">(Bachina et al., 2021)</ref> participates Subtask 1. They also adapt data augmentation approaches that utilize additional Question Answering dataset such as SQuAD 2.0 <ref type="bibr" target="#b16">(Lee et al., 2020)</ref>, Natural Questions <ref type="bibr" target="#b15">(Kwiatkowski et al., 2019)</ref> and <ref type="bibr">CORD-19 (Wang et al., 2020)</ref> for pretraining several models including RoBERTa, ALBERT and ELECTRA. Then they experiment with different combinations of ensemble models. The final submission is based on the ensemble of ensemble AL-BERTA and RoBERTa using all three additional datasets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.7">JARS</head><p>JARS <ref type="bibr" target="#b13">(Khosla et al., 2021)</ref> participates in Subtask 1. It also uses transformer-based QA models, for which it pretrains on different Question Answering datasets such as SQuAD, different subsets of MRQA-2019 training set along with conversational QA data such as CoQA and QuAC. The experiments suggest that conversational QA datasets are more helpful comparing to QA datasets. They compare three different ensemble methods and use the highest average probability score for span prediction based on multiple models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.8">Schlussstein</head><p>Schlussstein <ref type="bibr" target="#b3">(Chen et al., 2021)</ref> submit to both subtasks. For Subtask 1, they pretrain BERT on datasets such as SQuAD and CoQA before finetuning on Doc2Dial. To incorporate longer document content in Doc2Dial dataset, they also experiment with longer document stride and observe per-   We use three different ways to compute majority vote to get the aggregated results: (1) we consider the rank if it is agreed among at least three annotators;</p><p>(2) we consider the rank if it is agreed among at least two annotators;</p><p>(3) we also use the aggregation results provided by Appen platform, which takes consideration of annotator's historical performances.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>We presented the results of 1st DialDoc 2021 Shared Task, which included two subtasks on document-grounded goal-oriented dialogue modeling. We received submissions from a total of 17 teams during entire phase for Subtask 1, and 9 teams for Subtask 2. All submissions during final Test phase outperformed baselines by a large margin for both subtasks. By organizing this shared task, we hope to invite researchers and practitioners to bring their individual perspectives on the subject, and to jointly advance the techniques toward building assistive agents to access document content for end users by conversing.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Statistics of dialogue data of different data splits.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Participating teams and affiliations.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Participating teams of Subtask 1. The rank is based on the average of normalized average of F1 and EM scores.</figDesc><table><row><cell>Rank</cell><cell>Team</cell><cell>SacreBLEU</cell></row><row><cell>1</cell><cell>KU NLP</cell><cell>41.1 (41.1)</cell></row><row><cell>2</cell><cell>RWTH</cell><cell>40.4 (39.1)</cell></row><row><cell>3</cell><cell>CAiRE</cell><cell>37.7 (-)</cell></row><row><cell>4</cell><cell>SCIR-DT</cell><cell>30.7 (-)</cell></row><row><cell>-</cell><cell>baseline</cell><cell>17.6 (17.6)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4</head><label>4</label><figDesc>We present the evaluation results on final Test phase of Subtask1 from 7 participating teams in Table3. The submissions are ordered based on the average of normalized F1 and EM scores. All submissions of Test Phase outperform BERT-base baseline by large margin. The scores in parentheses are by single models. All other results except the ones by KU NLP are based on various ensemble methods, which further improve the performances significantly in most cases. Table4presents the evaluation results on final test set of Subtask 2 from 4 participating teams. We performance human evaluations on the top three submissions based on SacreBLEU scores.</figDesc><table><row><cell>: Participating teams and evaluation results on</cell></row><row><cell>test set of Subtask 2.</cell></row><row><cell>formance improvement. For Subtask 2, it pretrains</cell></row><row><cell>BART model on CoQA dataset before fine-tuning</cell></row><row><cell>it on Doc2Dial dataset.</cell></row><row><cell>6 Results</cell></row><row><cell>Subtask 1 Subtask 2</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://doc2dial.github.io/file/ doc2dial_v1.0.1.zip</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We would like to thank Luis Lastras, Sachindra Joshi, Siva Reddy and Siva Sankalp Patel for a lot of helpful discussions on organizing this shared task. We thank eval.ai for their help and support on hosting the leaderboards on their platform. Finally, we are thankful to IBM Research AI for sponsoring the shared task and competition.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Ensemble albert and roberta for span prediction in question answering</title>
+		<author>
+			<persName><forename type="first">Sony</forename><surname>Bachina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Spandana</forename><surname>Balumuri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sowmya</forename><surname>Kamath</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</title>
+				<meeting>the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">DoQA -accessing domain-specific FAQs via conversational QA</title>
+		<author>
+			<persName><forename type="first">Jon</forename><surname>Ander Campos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arantxa</forename><surname>Otegi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Soroa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Deriu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Cieliebak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.652</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Online. Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="7302" to="7314" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">HybridQA: A dataset of multi-hop question answering over tabular and textual data</title>
+		<author>
+			<persName><forename type="first">Wenhu</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hanwen</forename><surname>Zha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhiyu</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wenhan</forename><surname>Xiong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hong</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">Yang</forename><surname>Wang</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.findings-emnlp.91</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Findings of the Association for Computational Linguistics: EMNLP 2020</title>
+				<imprint>
+			<publisher>Online. Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="1026" to="1036" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Building goal-oriented document-grounded dialogue systems</title>
+		<author>
+			<persName><forename type="first">Xi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Faner</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yeju</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kaixin</forename><surname>Ma</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</title>
+				<meeting>the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">QuAC: Question answering in context</title>
+		<author>
+			<persName><forename type="first">Eunsol</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">He</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Yatskar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wentau</forename><surname>Yih</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yejin</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1241</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2174" to="2184" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">TutorialVQA: Question answering dataset for tutorial videos</title>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Colas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seokhwan</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Franck</forename><surname>Dernoncourt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siddhesh</forename><surname>Gupte</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhe</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Doo Soon</forename><surname>Kim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th Language Resources and Evaluation Conference</title>
+				<meeting>the 12th Language Resources and Evaluation Conference<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Language Resources Association</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="5450" to="5455" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Cascaded span extraction and response generation for document-grounded dialog</title>
+		<author>
+			<persName><forename type="first">Nico</forename><surname>Daheim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Thulke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Dugast</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hermann</forename><surname>Ney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Documentgrounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</title>
+				<meeting>the 1st Workshop on Documentgrounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-1423</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long and Short Papers</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Wizard of wikipedia: Knowledge-powered conversational agents</title>
+		<author>
+			<persName><forename type="first">Emily</forename><surname>Dinan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Roller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kurt</forename><surname>Shuster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Angela</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Auli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Weston</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">BUT-FIT at SemEval-2020 task 5: Automatic detection of counterfactual statements with deep pre-trained language representation models</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Fajcik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Jon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Docekal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pavel</forename><surname>Smrz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourteenth Workshop on Semantic Evaluation</title>
+				<meeting>the Fourteenth Workshop on Semantic Evaluation<address><addrLine>Barcelona</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="437" to="444" />
+		</imprint>
+	</monogr>
+	<note>International Committee for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">2020. doc2dial: A goal-oriented document-grounded dialogue dataset</title>
+		<author>
+			<persName><forename type="first">Song</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hui</forename><surname>Wan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chulaka</forename><surname>Gunasekara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siva</forename><surname>Patel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sachindra</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luis</forename><surname>Lastras</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.emnlp-main.652</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+		<title level="s">Online. Association for Computational Linguistics</title>
+		<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</meeting>
+		<imprint>
+			<biblScope unit="page" from="8118" to="8128" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">MRQA 2019 shared task: Evaluating generalization in reading comprehension</title>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Fisch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Talmor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robin</forename><surname>Jia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Minjoon</forename><surname>Seo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eunsol</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D19-5801</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Machine Reading for Question Answering</title>
+				<meeting>the 2nd Workshop on Machine Reading for Question Answering<address><addrLine>Hong Kong, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1" to="13" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Search-based neural structured learning for sequential question answering</title>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yih</forename><surname>Wen-Tau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P17-1167</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1821" to="1831" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Team jars: Dialdoc subtask 1 -improved knowledge identification with supervised out-of-domain pretraining</title>
+		<author>
+			<persName><forename type="first">Sopan</forename><surname>Khosla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Justin</forename><surname>Lovelace</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ritam</forename><surname>Dutt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adithya</forename><surname>Pratapa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</title>
+				<meeting>the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Document-grounded goal-oriented dialogue systems on pre-trained language model with diverse input representation</title>
+		<author>
+			<persName><forename type="first">Boeun</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dohaeng</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yejin</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Harksoo</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sihyung</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jin-Xia</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oh-Woog</forename><surname>Kwon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</title>
+				<meeting>the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<author>
+			<persName><forename type="first">Tom</forename><surname>Kwiatkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennimaria</forename><surname>Palomaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olivia</forename><surname>Redfield</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Collins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankur</forename><surname>Parikh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Alberti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danielle</forename><surname>Epstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Kelcey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><forename type="middle">N</forename><surname>Toutanova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+		<title level="m">Natural questions: a benchmark for question answering research. Transactions of the Association of Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">SQuAD2-CR: Semi-supervised annotation for cause and rationales for unanswerability in SQuAD 2.0</title>
+		<author>
+			<persName><forename type="first">Gyeongbok</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Seung-Won</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hyunsouk</forename><surname>Hwang</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cho</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th Language Resources and Evaluation Conference</title>
+				<meeting>the 12th Language Resources and Evaluation Conference<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<publisher>European Language Resources Association</publisher>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="5425" to="5432" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">BART: Denoising sequence-to-sequence pretraining for natural language generation, translation, and comprehension</title>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal ; Abdelrahman Mohamed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.703</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="7871" to="7880" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Technical report on shared task in dialdoc21</title>
+		<author>
+			<persName><forename type="first">Jiapeng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Longxuan</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weinan</forename><surname>Zhangy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering</title>
+				<meeting>the 1st Workshop on Document-grounded Dialogue and Conversational Question Answering</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">A survey of document grounded dialogue systems (dgds)</title>
+		<author>
+			<persName><forename type="first">Longxuan</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei-Nan</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2004.13818</idno>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">A call for clarity in reporting BLEU scores</title>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Post</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W18-6319</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Third Conference on Machine Translation: Research Papers</title>
+				<meeting>the Third Conference on Machine Translation: Research Papers<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="186" to="191" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Know what you don&apos;t know: Unanswerable questions for SQuAD</title>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Rajpurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robin</forename><surname>Jia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P18-2124</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="784" to="789" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">CoQA: A conversational question answering challenge</title>
+		<author>
+			<persName><forename type="first">Siva</forename><surname>Reddy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00266</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page" from="249" to="266" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Interpretation of natural language rules in conversational machine reading</title>
+		<author>
+			<persName><forename type="first">Marzieh</forename><surname>Saeidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Max</forename><surname>Bartolo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Rocktäschel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Sheldon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Bouchard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1233</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2087" to="2097" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">MIMOQA: Multimodal input multimodal output question answering</title>
+		<author>
+			<persName><forename type="first">Hrituraj</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anshul</forename><surname>Nasery</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Denil</forename><surname>Mehta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aishwarya</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jatin</forename><surname>Lamba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Balaji Vasan</forename><surname>Srinivasan</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2021.naacl-main.418</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+			<biblScope unit="page" from="5317" to="5332" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Mul-timodal{qa}: complex question answering over text, tables and images</title>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Talmor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ori</forename><surname>Yoran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amnon</forename><surname>Catav</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Lahav</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yizhong</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Akari</forename><surname>Asai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gabriel</forename><surname>Ilharco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hannaneh</forename><surname>Hajishirzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Berant</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">CORD-19: The COVID-19 open research dataset</title>
+		<author>
+			<persName><forename type="first">Lucy</forename><forename type="middle">Lu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Lo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoganand</forename><surname>Chandrasekhar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Russell</forename><surname>Reas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiangjiang</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Doug</forename><surname>Burdick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Darrin</forename><surname>Eide</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kathryn</forename><surname>Funk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannis</forename><surname>Katsis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rodney</forename><forename type="middle">Michael</forename><surname>Kinney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yunyao</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ziyang</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><surname>Merrill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Mooney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dewey</forename><forename type="middle">A</forename><surname>Murdick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Devvret</forename><surname>Rishi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jerry</forename><surname>Sheehan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhihong</forename><surname>Shen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on NLP for COVID-19 at ACL 2020, Online. Association for Computational Linguistics</title>
+				<editor>
+			<persName><forename type="first">M</forename><surname>Raymond</surname></persName>
+			<persName><forename type="first">Daniel</forename><forename type="middle">S</forename><surname>Weld</surname></persName>
+			<persName><forename type="first">Oren</forename><surname>Etzioni</surname></persName>
+			<persName><forename type="first">Sebastian</forename><surname>Kohlmeier</surname></persName>
+		</editor>
+		<meeting>the 1st Workshop on NLP for COVID-19 at ACL 2020, Online. Association for Computational Linguistics<address><addrLine>Brandon Stilson, Alex D. Wade, Kuansan Wang, Nancy Xin Ru Wang, Christopher Wilhelm, Boya Xie</addrLine></address></meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Curriculum learning for natural language understanding</title>
+		<author>
+			<persName><forename type="first">Benfeng</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Licheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhendong</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongtao</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yongdong</forename><surname>Zhang</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.542</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="6095" to="6104" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Caire in dialdoc21: Data augmentation for information-seeking dialogue system</title>
+		<author>
+			<persName><forename type="first">Yan</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Etsuko</forename><surname>Ishii</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Genta</forename><surname>Indra Winata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhaojiang</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Madotto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pascale</forename><surname>Fung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Documentgrounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</title>
+				<meeting>the 1st Workshop on Documentgrounded Dialogue and Conversational Question Answering. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">RecipeQA: A challenge dataset for multimodal comprehension of cooking recipes</title>
+		<author>
+			<persName><forename type="first">Semih</forename><surname>Yagcioglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aykut</forename><surname>Erdem</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erkut</forename><surname>Erdem</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nazli</forename><surname>Ikizler-Cinbis</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1166</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1358" to="1368" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

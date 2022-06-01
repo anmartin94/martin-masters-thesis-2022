@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2021 Task 10: Source-Free Domain Adaptation for Semantic Processing</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Egoitz</forename><surname>Laparra</surname></persName>
+							<email>laparra@email.arizona.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Arizona</orgName>
+								<address>
+									<postCode>85721</postCode>
+									<settlement>Tucson</settlement>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Xin</forename><surname>Su</surname></persName>
+							<email>xinsu@email.arizona.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Arizona</orgName>
+								<address>
+									<postCode>85721</postCode>
+									<settlement>Tucson</settlement>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yiyun</forename><surname>Zhao</surname></persName>
+							<email>yiyunzhao@email.arizona.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Arizona</orgName>
+								<address>
+									<postCode>85721</postCode>
+									<settlement>Tucson</settlement>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ozlem</forename><surname>Uzuner</surname></persName>
+							<email>ouzuner@gmu.edu</email>
+							<affiliation key="aff1">
+								<orgName type="institution">George Mason University</orgName>
+								<address>
+									<postCode>22030</postCode>
+									<settlement>Fairfax</settlement>
+									<region>VA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Timothy</forename><forename type="middle">A</forename><surname>Miller</surname></persName>
+							<email>timothy.miller@childrens.harvard.edu</email>
+							<affiliation key="aff2">
+								<orgName type="department">Boston Children&apos;s Hospital and Harvard Medical School</orgName>
+								<address>
+									<postCode>02115</postCode>
+									<settlement>Boston</settlement>
+									<region>MA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+							<email>bethard@email.arizona.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Arizona</orgName>
+								<address>
+									<postCode>85721</postCode>
+									<settlement>Tucson</settlement>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2021 Task 10: Source-Free Domain Adaptation for Semantic Processing</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the Source-Free Domain Adaptation shared task held within SemEval-2021. The aim of the task was to explore adaptation of machine-learning models in the face of data sharing constraints. Specifically, we consider the scenario where annotations exist for a domain but cannot be shared. Instead, participants are provided with models trained on that (source) data. Participants also receive some labeled data from a new (development) domain on which to explore domain adaptation algorithms. Participants are then tested on data representing a new (target) domain. We explored this scenario with two different semantic tasks: negation detection (a text classification task) and time expression recognition (a sequence tagging task).</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Data sharing restrictions are common in NLP datasets. For example, Twitter policies do not allow sharing of tweet text, though tweet IDs may be shared. The situation is even more common in clinical NLP, where patient health information must be protected, and annotations over health text, when released at all, often require the signing of complex data use agreements.</p><p>The Source-Free Domain Adaptation shared task presents a new framework that asks participants to develop semantic annotation systems in the face of data sharing constraints. A participant's goal is to develop an accurate system for a target domain when annotations exist for a related domain but cannot be distributed. Instead of annotated training data, participants are given a model trained on the annotations. Then, given unlabeled target domain data, they are asked to make predictions. This is a challenging setting, and much previous work on domain adaptation does not apply, as it assumes access to source data <ref type="bibr" target="#b6">(Ganin et al., 2016;</ref><ref type="bibr" target="#b25">Ziser and Reichart, 2017;</ref><ref type="bibr" target="#b17">Saito et al., 2017;</ref><ref type="bibr" target="#b16">Ruder and Plank, 2018)</ref>, or assumes that labeled target domain data is available <ref type="bibr" target="#b4">(Daumé III, 2007;</ref><ref type="bibr" target="#b23">Xia et al., 2013;</ref><ref type="bibr" target="#b9">Kim et al., 2016;</ref><ref type="bibr" target="#b14">Peng and Dredze, 2017)</ref>.</p><p>Two different semantic tasks in English were created to explore this framework: negation detection and time expression recognition. These represent two common types of classification tasks: negation detection is typically formulated as predicting an attribute of a word or span given its context, and time expression recognition is typically formulated as a named entity tagging problem. Both of these tasks have previously been run as shared tasks, and had at least two different domains of data available, and we had access to experienced annotators for both tasks, allowing us to annotate data in a new domain.</p><p>Negation detection is the task of identifying negation cues in text. This task has been widely studied by previous work <ref type="bibr" target="#b2">(Chapman et al., 2007</ref><ref type="bibr" target="#b3">(Chapman et al., , 2001</ref>; <ref type="bibr" target="#b7">Harkema et al., 2009;</ref><ref type="bibr" target="#b19">Sohn et al., 2012)</ref> including the development of a variety of datasets <ref type="bibr" target="#b20">(Uzuner et al., 2011;</ref><ref type="bibr" target="#b13">Mehrabi et al., 2015)</ref>. However, there are still large performance losses in the cross-domain setting <ref type="bibr" target="#b22">(Wu et al., 2014)</ref>.</p><p>For negation detection, we provided a "spanin-context" classification model, fine-tuned on instances of the SHARP Seed dataset of Mayo Clinic clinical notes, which the organizers have access to but cannot currently be distributed. (Models were approved to be distributed, as the data is deidentified.) In the SHARP data, clinical events are marked with a boolean polarity indicator, with values of either asserted or negated. As development   data, we used the i2b2 2010 Challenge Dataset, a de-identified dataset of notes from Partners Health-Care. The evaluation dataset for this task consisted of de-identified intensive care unit progress notes from the MIMIC III corpus <ref type="bibr" target="#b8">(Johnson et al., 2016)</ref>. Time expression recognition has been a key component of previous temporal language related competitions, like TempEval 2010 <ref type="bibr" target="#b15">(Pustejovsky and Verhagen, 2009)</ref> and TempEval 2013 <ref type="bibr" target="#b21">(UzZaman et al., 2013)</ref>. For this task, we followed the Compositional Annotation of Time Expressions (SCATE) schema <ref type="bibr" target="#b0">(Bethard and Parker, 2016)</ref> used in in Sem-Eval 2018 Task 6 <ref type="bibr" target="#b11">(Laparra et al., 2018)</ref>. As in negation detection, previous works have also oberved a significant performance degradation on domain shift <ref type="bibr" target="#b24">(Xu et al., 2019)</ref>.</p><p>For time expression recognition, we provided a sequence tagging model, fine-tuned on deidentified clinical notes from the Mayo Clinic, which were available to the task organizers, but are difficult to gain access to due to the complex data use agreements necessary. (Models were approved to be distributed, as the data is deidentified.) The development data was the annotated news portion of the SemEval 2018 Task 6 data whose source text is from the freely available TimeBank. For evaluation, we used a set of annotated documents extracted from food security warning systems.</p><p>The main impact of this task is to drive the NLP community to address the serious challenges of data sharing constraints by designing new domain adaptation algorithms that allow source data and target data to remain separate, rather than assuming they can be shared freely with each other.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data and Resources</head><p>In this section, we describe both negation detection and time expression recognition tasks, the models fine-tuned on a difficult-to-obtain set of annotated data, the development data representing a new domain on which participants can explore their approaches for domain adaptation, and the test data representing another new domain on which the systems developed by participants are evaluated. Details of the different data sets can be found in Tables <ref type="table" target="#tab_1">1 and 2</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Negation detection</head><p>The negation detection track asks participants to classify clinical event mentions (e.g., diseases, symptoms, procedures, etc.) for whether they are being negated by their context.</p><p>For example, the sentence:</p><p>(1) Has no diarrhea and no new lumps or masses has three relevant events (diarrhea, lumps, masses), two cue words (both no), and all three entities are negated. This task is important in the clinical domain because it is common for physicians to document negated information encountered during the clinical course, for example, when ruling out certain elements of a differential diagnosis. This task can be treated as a "span-in-context" classification problem, where the model jointly considers both the event to be classified and its surrounding context. For example, a typical transformer-based encoding of this problem for the diarrhea event in the example above looks like:</p><p>(2) Has no &lt;e&gt; diarrhea &lt;/e&gt; and no new lumps or masses .</p><p>Pre-trained model Participants were provided with a "span-in-context" classification model, trained on the 10,259 instances (902 negated) in the SHARP Seed dataset of de-identified clinical notes from Mayo Clinic, which the organizers had access to but cannot currently be distributed. In the SHARP data, clinical events are marked with a boolean polarity indicator, with values of either ASSERTED or NEGATED.</p><p>Development data Participants could use as development data the i2b2 2010 Challenge Dataset, a de-identified dataset of notes from Partners Health-Care, containing 5,545 entities labeled with an assertion status in the set {ASSERTED, NEGATED, UNCERTAIN, HYPOTHETICAL, CONDITIONAL, FAMILYRELATED}. We provided scripts that extracted i2b2 entities and simplified the label set to {NEGATED, NOTNEGATED}. Since the i2b2 2010 dataset consisted of notes from two sources, Partners and MIMIC III, the latter of which overlaps with our proposed test set, our script also filtered the development instances to contain only those from the Partners notes.</p><p>Test data During the testing period, participants were provided with the raw text of 622,703 instances drawn from the MIMIC III corpus 1 , which contains manually de-identified progress notes for patients from the intensive care unit of Beth Israel Deaconess Medical Center, with entities of interest already identified. From this, we manually annotated 9,580 instances of which 958 were negated.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Time expression recognition</head><p>The time expression recognition track, which represents a sequence-tagging task, uses the fine-grained time expression annotations that were a component of SemEval 2018 Task 6 <ref type="bibr" target="#b11">(Laparra et al., 2018)</ref>. For example:</p><p>(3) In This task can be treated as a sequence classification problem, as in other named-entity tagging tasks.</p><p>1 https://mimic.physionet.org/ Pre-trained model Participants were provided with a sequence tagging model, trained on the 18,020 time expressions in the clinical portions of the SemEval 2018 Task 6, that were available to the task organizers, but are currently difficult to gain access to due to the complex data use agreements.</p><p>Development data Participants could use as development data the annotated news portion of the SemEval 2018 Task 6 data. The source text is from the freely available TimeBank 2 , and the 2,231 time entity annotations were from the freely available SCATE GitHub repository 3 .</p><p>Test data During the testing period, participants were provided with the raw text of 47 reports drawn from food security warning systems 4 and asked to predict time expressions. From this, we used 17 documents that included 1,900 time entities, annotated by two independent annotators and an adjudicator.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation Metrics</head><p>Negation detection was evaluated using the precision/recall/F 1 of the negated class, as used in most published work.</p><p>Time expression recognition was evaluated using the standard precision/recall/F 1 previously used for the entityfinding portion of SemEval 2018 Task 6.</p><p>In both cases, the metrics are defined as:</p><formula xml:id="formula_0">P (S, H) = |S ∩ H| |S| R(S, H) = |S ∩ H| |H| F 1 (S, H) = 2 • P (S, H) • R(S, H) P (S, H) + R(S, H)</formula><p>where S is the set of items predicted by a system and H is the set of items manually annotated by humans.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Baseline Systems</head><p>To provide a comparison benchmark, we proposed two baselines for both negation detection and time expression recognition:  Source-Trained Models pre-trained on only the source train data, i.e., the models that the organizers shared with the participants as explained in Section 2.</p><p>Dev-Tuned Models pre-trained on the source data (i.e., Source-Trained) and then fine-tuned on the labeled dev data.</p><p>All baselines were built on RoBERTa <ref type="bibr" target="#b12">(Liu et al., 2019)</ref> using the HuggingFace Transformers library. <ref type="bibr">5</ref> Table <ref type="table" target="#tab_4">3</ref> shows the performance of the baselines on negation detection and time expression recognition respectively. In both cases, there is a big drop in the performance of Source-Trained when it is applied to out-of-domain datasets. Using the development data to continue training the model (Dev-Tuned) provides some improvement for both tasks, but it is still far from in-domain performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participating Systems</head><p>Since our goal was to see a set of experiments as varied as possible, we did not impose any constraint on the approaches participants could submit, including the use of any of the unlabeled or labeled data provided. The task had 9 participants that submitted 20 unique runs in total, as shown in Table <ref type="table" target="#tab_6">4</ref>. For each task, 2 submissions per team were allowed. There were 5 participants and 8 submission in negation detection, and 7 participants and 12 submissions in time expression recognition. Only 3 participants took part in both tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Negation detection</head><p>BLCUFIGHT-1 tried a self-training method fixing the top classifier so only the feature extractor was updated. Then, they ran an ensemble of 3 models. BLCUFIGHT-2 built an unlabeled dataset selecting 5 https://github.com/huggingface/ transformers.</p><p>2,000 instances from the development set, 2,000 from the test set and 2,886 from the training set. They used that unlabeled dataset progressively to continue fine-tuning the distributed model (for 2 epochs) following a self-learning approach. They additionally selected some negative prefixes and negative words as rules. The final predictions were obtained from an ensemble of 5 models.</p><p>UArizona-1 used the development data to continue fine-tuning the distributed model (for 10 epochs). Then, they randomly sampled 3,000 examples from unlabeled test data and performed 2 self-learning iterations, using a 0.95 threshold to filter the pseudo training examples.</p><p>IITK-1 also adapted the model with pseudo labels obtained from a sample of 25,000 instances from the test data. They selected predictions with low entropy as the pseudo training examples, performed data-augmentation on the selected instances, and used the resulting set to continue training the distributed model. IITK-2 applied an adaptive version of this approach by slowly increasing the entropy threshold after each epoch and filtering again the training instances.</p><p>MedAI-1 and MedAI-2 followed a self-learning strategy preceded by a negation-aware pre-training process. For the latter, they built a dataset applying some heuristics on the test data. First, they manually collected a dictionary including negation cues, such as "not", "no", "no longer". Second, they selected the nouns within a 3 token window around occurrences of the negation cues. Finally, they labeled the cue-noun pairs as negated instances.  submissions but one used the unlabeled test data to produce a training set for the target domain, either in the form of pseudo-labeled instances (5 submissions) or by heuristic-driven annotation (2 submissions). No submissions used additional resources.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Time expression recognition</head><p>BLCUFIGHT-1 and BLCUFIGHT-2 proposed an unsupervised mean-teacher framework that updates the model in a self-learning manner. Additionally, they used a set of string-matching heuristics derived from the development set, e.g., "spring" or "summer" for Season-Of -Year, and "decades" for Period. BLCUFIGHT-1 ensembled 2 models for a better robustness.</p><p>Self-Adapter-1 and Self-Adapter-2 generated pseudo training examples by running the provided model on the test documents and selecting the sentences where the highest words' entropy was lower than 0.1. In Self-Adapter-1, they combined the predictions of both a fixed version and a trainable version of the model. Self-Adapter-2 used only the trainable model. In both submissions, the trainable model was updated by applying 3 iterations of the sloughing trick, i.e., training the model iteratively with the pseudo-labels obtained by the model of the previous iteration.</p><p>PTST-UoM-1, also following a self-training approach, built, for each unlabeled input sentence, a chart containing high probability label sequences produced by the distributed model and applied it as a supervision signal. They used the labeled development data for tuning some of the hyperparameters.</p><p>UArizona-1 combined active learning and data augmentation. They ran 5 iterations of the following steps: 1) predict the unlabeled test data and then select 32 sentences with high entropy calculated as the sum of the entropy of all tokens in the sentence; 2) manually label time entities in the 32 sentences; 3) for each manually labeled time entity, generate 5 additional training examples using 5 new words with same entity type; 4) train the model on the resulting dataset. The same method was used by UArizona-2, but, in this case, they fixed some errors in the manual annotations.</p><p>KISNLP-1 and KISNLP-2 used the development labeled data as a fine-tuning resource, which was complemented by a data augmentation process. They did not use the unlabeled test data, nor any other resource.</p><p>YNU-HPCC-1 and YNU-HPCC-2 also used the labeled portion of the development set. They finetuned 4 popular transformer-based pre-trained models: RoBERTa, BERT <ref type="bibr" target="#b5">(Devlin et al., 2019)</ref>, Distil-BERt <ref type="bibr" target="#b18">(Sanh et al., 2020)</ref> and ALBERT <ref type="bibr" target="#b10">(Lan et al., 2020)</ref>. The final prediction was given by hard voting strategy, integrating the results of the 4 models along with Source-Trained.</p><p>Observations: Self-learning (5 submissions) and data augmentation (4 submissions) were the most commonly followed approaches. 2 submissions extended a self-learning technique with manually created heuristics. Only 3 submissions proposed ensemble methods. In this task, the development set was more frequently exploited and 4 submissions made use of the labeled data to continue fine-tuning the provided model. The test set was manually annotated by 2 submissions that followed an active learning approach, along with some additional resources. 4 submissions did not use the unlabeled test data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation Results</head><p>Tables <ref type="table" target="#tab_8">5 and 6</ref> shows the performance of the systems described in Section 5 on negation detection and time expression recognition. For comparison, the tables also include the performance of the baselines described in Section 4.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Negation detection</head><p>As shown in Table <ref type="table" target="#tab_8">5</ref>, 7 out of 8 submissions on negation detection outperform Source-Trained but only 4 performed better than Dev-Tuned.</p><p>The best results were obtained by MedAI-1 and MedAI-2, achieving 16.2 and 9.2 percentage points of F 1 more than Source-Trained and Dev-Tuned, respectively. These model had a large recall improvement (14.5 points more than Source-Trained and 24.0 more than Dev-Tuned) at the expense of a slight degradation in precision.  IITK-1 and Boom-1 outperform both baselines in terms of precision but obtain a worse recall than Dev-Tuned.</p><p>The 3 best submissions on this task (MedAI-1, MedAI-2 and UArizona-1) make use of some kind of labeled data. In the case of MedAI-1 and MedAI-2, this data belongs to the target test domain, which could explain the good results of these 2 submissions. BLCUFIGHT-2, the next best performing system and the only other one that outperforms both baselines, also applies some manual supervision in the form of hand-crafted rules.</p><p>In general, self-learning proved to be an effective technique for negation detection, especially in terms of recall, while data-augmentation also shows recall improvements in some cases. As usual, ensemble models are helpful. Including some manual supervision drove the largest gains.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Time expression recognition</head><p>Table <ref type="table" target="#tab_10">6</ref> shows that for time expression recognition, 9 out of 12 submissions outperformed Source-Trained and only 3 obtained a better performance than Dev-Tuned. The gains were generally smaller than on negation detection, with the best models being only 2.1 percentage points of F 1 above Source-Trained and 1.1 percentage points above Dev-Tuned.</p><p>As in negation detection, the best performing system (BLCUFIGHT-1) utilizes some form of manual supervision. In this case, they apply a set of manually created string matching heuristics in combination with a self-learning approach that is boosted by a model ensemble.</p><p>In this task, the use of the labeled development  set is more frequent. 5 of the submissions made use of this data, but none obtained better results than Dev-Tuned, although YNU-HPCC-2 got a close F 1 score. In the case of PTST-UoM-1, this explained by the fact that they only consulted this set to finetune the hyperparameters of their model, although this strategy was enough to obtain the best precision among all systems. The approach of KISNLP-1 and KISNLP-1 is the same as Dev-Tuned but combined with some data-augmentation, resulting in a drop in performance. This may be caused by only using the development set to perform the augmentation since, after all, it belongs to a different domain than the test documents. YNU-HPCC-2 is the only submission, along with YNU-HPCC-1, that utilized other pre-trained transformers, in an ensemble mode, besides the model provided.</p><p>UArizona-1 and UArizona-2 are the only submissions that tried an active learning strategy. The approach performed slightly better than Source-Trained but worse than Dev-Tuned. This contrasts with the best performing model on negation detection that also implemented a manual annotation process on test data, but it is explained by the much more complex annotation scheme of time expressions. UArizona-2 obtains the best recall on the task.</p><p>Self-Adapter-1 is the only submission that outperforms Dev-Tuned without using any kind of manual supervision. The only difference with re-spect to Self-Adapter-2, that did not perform as well, is that the original model trained on the source domain is consulted to produce pseudo-examples in every iteration of their self-learning technique. This seems to counteract a possible degradation of the predictions caused by updating the model with pseudo-labels.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Future directions</head><p>Self-learning and data augmentation were the most frequently used techniques. Some systems, including the best performing ones, incorporated some kind of manual supervision in the form of active-learning, hand-crafted heuristics or semiautomatically building a training set. This suggests that future work on source-free domain adaptation will focus on acquiring data instances for the target domain either automatically or manually, and use such data to continue fine-tuning the sourcedomain model.</p><p>Any new approaches will have to address some fundamental challenges. Errors in the generation of pseudo-labels propagate in successive self-learning iterations degrading the performance. Continual fine-tuning on data from a new domain can lead to catastrophic forgetting, especially if the data is restricted to certain instances like those drawn from high-confident predictions of the source model. Manually supervised approaches, such as active learning, do not necessarily solve these problems due to the complexity of some annotation schemes, like in time expressions recognition, and the reduced number of labels that this methods can yield. Some of the experiments carried out during this task have approached these issues and should be taken as an starting point for future research.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>In this paper, we have described the Source-Free Domain Adaptation shared task held within SemEval-2021. In this task, participants were asked to adapt a given model to a target domain when the access to both labeled and unlabeled source data is restricted. In contrast to previous tasks on domain adaptation, participants were only provided with a trained model and the target unlabeled data. Systems were evaluated on two tasks, negation detection and time expression recognition, that are paradigmatic examples of two common types of machine-learning problems in natural language processing: text classification and sequence labeling.</p><p>9 participants took part in the challenge with 20 different systems. In negation detection, 8 submissions were received from 5 participants while 7 participants submitted 12 runs for time expression recognition. 3 participants presented approaches for both tasks. 7 out of 8 submissions for negation detection and 9 out of 12 submissions for time expression recognition outperformed the model trained on the source domain. Compared to the same model fine-tuned on the development data, 4 systems in negation detection and 3 in time expression recognition showed a better performance. This is the first time that such a framework is formally designed and aims to draw the community's attention to a challenging problem that seriously affects the deployment of NLP models to real-life scenarios, like health institutions.</p><p>The scripts and the code of the baselines, along with the development and test data, can be obtained from the task's GitHub repository. <ref type="bibr" target="#b1">6</ref> The trained models are available in the HuggingFace model hub for both negation detection 7 and time expression recognition. <ref type="bibr">8</ref> The CodaLab 9 leader-board of the of the post-evaluation phase will continue to accept submissions indefinitely.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Size of the negation detection datasets. The train set is never distributed to the participants.</figDesc><table><row><cell></cell><cell cols="2">Source Collection Source Domain</cell><cell cols="2">Documents Time entities</cell></row><row><cell>train</cell><cell>THYME</cell><cell>Mayo Clinic clinical notes</cell><cell>278</cell><cell>18,020</cell></row><row><cell>dev</cell><cell>TimeBank</cell><cell>News</cell><cell>99</cell><cell>2,231</cell></row><row><cell cols="2">test (unlabeled) -</cell><cell>Food security</cell><cell>47</cell><cell>-</cell></row><row><cell>test (labeled)</cell><cell>-</cell><cell>Food security</cell><cell>17</cell><cell>1,900</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Size of the time expression recognition datasets. The train set is never distributed to the participants.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>Trained 0.967 0.968 0.968 0.775 0.768 0.771 0.849 0.746 0.794</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell>source</cell><cell></cell><cell></cell><cell>dev</cell><cell></cell><cell></cell><cell>test</cell><cell></cell></row><row><cell>Sub-task</cell><cell>System</cell><cell>P</cell><cell>R</cell><cell>F 1</cell><cell>P</cell><cell>R</cell><cell>F 1</cell><cell>P</cell><cell>R</cell><cell>F 1</cell></row><row><cell>Negation</cell><cell>Src-Trained</cell><cell>-</cell><cell>-</cell><cell cols="7">0.820 0.851 0.818 0.834 0.917 0.516 0.660</cell></row><row><cell>Negation</cell><cell>Dev-Tuned</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell cols="3">0.908 0.611 0.730</cell></row><row><cell cols="2">Time Expression Src-Time Expression Dev-Tuned</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell cols="3">0.827 0.782 0.804</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Performance of the baselines on the source domain, where Source-Trained (Src-Trained) was trained, and the two target domains (dev and test). For Dev-Tuned, dev set was also used for training.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc></figDesc><table /><note>Some details on the tasks submissions. For each submission, the table reflects the task (neg. stands for negation) where it participates, if it uses the unlabeled or labeled development data (dev data), if it uses the unlabeled test data, if participants carried out some manual or heuristics-based annotation, if other source of data is used and the main techniques applied. List of abbreviations in the main technique column: act-learn for active learning, dt-augm for data augmentation, ens for ensemble, heur for heuristics, neg-train for negationaware pre-training, sf-learn for self learning, sf-train for self training, teach for mean teacher.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc>Official results (ranked by F 1 ) on negation detection. Superscripts indicate that the submission used:</figDesc><table /><note>* unlabeled dev, + labeled dev or † unlabeled test data</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 6 :</head><label>6</label><figDesc>Official results (ranked by F 1 ) on time expression recognition. Superscripts indicate that the submission used: * unlabeled dev, + labeled dev or † unlabeled test data</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://www.cs.york.ac.uk/ semeval-2013/task1/index.php%3Fid=data. html 3 https://github.com/bethard/ anafora-annotations 4 Like the UN World Food Programme https://www. wfp.org/ or the Famine Early Warning Systems Network https://fews.net/.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>Research reported in this publication was supported by the National Library of Medicine of the National Institutes of Health under Award Numbers R01LM012918 and R01LM010090. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">A semantically compositional annotation scheme for time normalization</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Parker</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC&apos;16)<address><addrLine>Portorož, Slovenia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="3779" to="3786" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Machine-Learning-for-Medical-Language/ source-free-domain</title>
+		<ptr target="https://huggingface.co/tmills/roberta_sfda_sharpseed8https://huggingface.co/clulab/roberta-timex-semeval9https://competitions.codalab.org/competitions/26152" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">ConText: An algorithm for identifying contextual features from clinical text</title>
+		<author>
+			<persName><forename type="first">Wendy</forename><surname>Chapman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Dowling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Chu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Biological, translational, and clinical language processing</title>
+				<meeting><address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="81" to="88" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">A simple algorithm for identifying negated findings and diseases in discharge summaries</title>
+		<author>
+			<persName><forename type="first">Wendy</forename><forename type="middle">W</forename><surname>Chapman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Will</forename><surname>Bridewell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Hanbury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gregory</forename><forename type="middle">F</forename><surname>Cooper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bruce</forename><forename type="middle">G</forename><surname>Buchanan</surname></persName>
+		</author>
+		<idno type="DOI">10.1006/jbin.2001.1029</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Biomedical Informatics</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="301" to="310" />
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Frustratingly easy domain adaptation</title>
+		<author>
+			<persName><forename type="first">Hal</forename><surname>Daumé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iii</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 45th Annual Meeting of the Association of Computational Linguistics</title>
+				<meeting>the 45th Annual Meeting of the Association of Computational Linguistics<address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="256" to="263" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-1423</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long and Short Papers</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Domainadversarial training of neural networks</title>
+		<author>
+			<persName><forename type="first">Yaroslav</forename><surname>Ganin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Evgeniya</forename><surname>Ustinova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hana</forename><surname>Ajakan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pascal</forename><surname>Germain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hugo</forename><surname>Larochelle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">François</forename><surname>Laviolette</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mario</forename><surname>March</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Victor</forename><surname>Lempitsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">59</biblScope>
+			<biblScope unit="page" from="1" to="35" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">ConText: An algorithm for determining negation, experiencer, and temporal status from clinical reports</title>
+		<author>
+			<persName><forename type="first">Henk</forename><surname>Harkema</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">N</forename><surname>Dowling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tyler</forename><surname>Thornblade</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wendy</forename><forename type="middle">W</forename><surname>Chapman</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jbi.2009.05.002</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Biomedical Natural Language Processing</title>
+				<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="volume">42</biblScope>
+			<biblScope unit="page" from="839" to="851" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">MIMIC-III, a freely accessible critical care database</title>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">W</forename><surname>Alistair</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lu</forename><surname>Pollard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H Lehman</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mengling</forename><surname>Li-Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Ghassemi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Moody</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leo</forename><forename type="middle">Anthony</forename><surname>Szolovits</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger G</forename><surname>Celi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mark</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Scientific data</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="9" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Frustratingly easy neural domain adaptation</title>
+		<author>
+			<persName><forename type="first">Young-Bum</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karl</forename><surname>Stratos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruhi</forename><surname>Sarikaya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers</title>
+				<meeting>COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="387" to="396" />
+		</imprint>
+	</monogr>
+	<note>The COLING 2016 Organizing Committee</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">ALBERT: A lite BERT for self-supervised learning of language representations</title>
+		<author>
+			<persName><forename type="first">Zhenzhong</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Goodman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Gimpel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piyush</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Learning Representations</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">SemEval 2018 task 6: Parsing time normalizations</title>
+		<author>
+			<persName><forename type="first">Egoitz</forename><surname>Laparra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dongfang</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmed</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/S18-1011</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="88" to="96" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">RoBERTa: A robustly optimized BERT pretraining approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">DEEPEN: A negation detection system for clinical text incorporating dependency relation into NegEx</title>
+		<author>
+			<persName><forename type="first">Saeed</forename><surname>Mehrabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anand</forename><surname>Krishnan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sunghwan</forename><surname>Sohn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandra</forename><forename type="middle">M</forename><surname>Roch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Heidi</forename><surname>Schmidt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joe</forename><surname>Kesterson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Beesley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Dexter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">Max</forename><surname>Schmidt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongfang</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mathew</forename><surname>Palakal</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jbi.2015.02.010</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Biomedical Informatics</title>
+		<imprint>
+			<biblScope unit="volume">54</biblScope>
+			<biblScope unit="page" from="213" to="219" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Multi-task domain adaptation for sequence tagging</title>
+		<author>
+			<persName><forename type="first">Nanyun</forename><surname>Peng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Dredze</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W17-2612</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Representation Learning for NLP</title>
+				<meeting>the 2nd Workshop on Representation Learning for NLP<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="91" to="100" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">TempEval-2)</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluations: Recent Achievements and Future Directions (SEW-2009)</title>
+				<meeting>the Workshop on Semantic Evaluations: Recent Achievements and Future Directions (SEW-2009)<address><addrLine>Boulder, Colorado</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="112" to="116" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2010 task 13: Evaluating events, time expressions, and temporal relations</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Strong baselines for neural semi-supervised learning under domain shift</title>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Ruder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Plank</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P18-1096</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1044" to="1054" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Asymmetric tri-training for unsupervised domain adaptation</title>
+		<author>
+			<persName><forename type="first">Kuniaki</forename><surname>Saito</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshitaka</forename><surname>Ushiku</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tatsuya</forename><surname>Harada</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="2988" to="2997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter</title>
+		<author>
+			<persName><forename type="first">Victor</forename><surname>Sanh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lysandre</forename><surname>Debut</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julien</forename><surname>Chaumond</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Wolf</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Dependency parser-based negation detection in clinical narratives</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Sohn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Stephen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Chute</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">AMIA Summits on Translational Science Proceedings</title>
+		<imprint>
+			<biblScope unit="volume">2012</biblScope>
+			<biblScope unit="page" from="1" to="8" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">2010 i2b2/VA challenge on concepts, assertions, and relations in clinical text</title>
+		<author>
+			<persName><forename type="first">Ozlem</forename><surname>Uzuner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Brett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuying</forename><surname>South</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott L</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Duvall</surname></persName>
+		</author>
+		<idno type="DOI">10.1136/amiajnl-2011-000203</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="552" to="556" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">SemEval-2013 task 1: TempEval-3: Evaluating time expressions, events, and temporal relations</title>
+		<author>
+			<persName><forename type="first">Naushad</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hector</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+	<note>Second Joint Conference on Lexical and Computational Semantics (*SEM). Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Negation&apos;s not solved: Generalizability versus optimizability in clinical natural language processing</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Miller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Masanz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Coarr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott</forename><surname>Halgrim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Carrell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cheryl</forename><surname>Clark</surname></persName>
+		</author>
+		<idno type="DOI">10.1371/journal.pone.0112774</idno>
+	</analytic>
+	<monogr>
+		<title level="j">PLOS ONE</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="1" to="11" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Instance selection and instance weighting for cross-domain sentiment classification via PU learning</title>
+		<author>
+			<persName><forename type="first">Rui</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuelei</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfeng</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chengqing</forename><surname>Zong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twenty-Third International Joint Conference on Artificial Intelligence, IJCAI &apos;13</title>
+				<meeting>the Twenty-Third International Joint Conference on Artificial Intelligence, IJCAI &apos;13<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="2176" to="2182" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Pre-trained contextualized character embeddings lead to major improvements in time normalization: a detailed analysis</title>
+		<author>
+			<persName><forename type="first">Dongfang</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Egoitz</forename><surname>Laparra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/S19-1008</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth Joint Conference on Lexical and Computational Semantics (*SEM 2019)</title>
+				<meeting>the Eighth Joint Conference on Lexical and Computational Semantics (*SEM 2019)<address><addrLine>Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="68" to="74" />
+		</imprint>
+	</monogr>
+	<note>Minneapolis</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Neural structural correspondence learning for domain adaptation</title>
+		<author>
+			<persName><forename type="first">Yftah</forename><surname>Ziser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/K17-1040</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 21st Conference on Computational Natural Language Learning</title>
+				<meeting>the 21st Conference on Computational Natural Language Learning<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="400" to="410" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

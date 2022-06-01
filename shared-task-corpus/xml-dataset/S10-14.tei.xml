@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2010 Task 14: Word Sense Induction &amp; Disambiguation</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Suresh</forename><surname>Manandhar</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of York</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ioannis</forename><forename type="middle">P</forename><surname>Klapaftis</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of York</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Dmitriy</forename><surname>Dligach</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Colorado</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sameer</forename><forename type="middle">S</forename><surname>Pradhan</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="institution">BBN Technologies Cambridge</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2010 Task 14: Word Sense Induction &amp; Disambiguation</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents the description and evaluation framework of SemEval-2010 Word Sense Induction &amp; Disambiguation task, as well as the evaluation results of 26 participating systems. In this task, participants were required to induce the senses of 100 target words using a training set, and then disambiguate unseen instances of the same words using the induced senses. Systems' answers were evaluated in: (1) an unsupervised manner by using two clustering evaluation measures, and (2) a supervised manner in a WSD task.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Word senses are more beneficial than simple word forms for a variety of tasks including Information Retrieval, Machine Translation and others <ref type="bibr" target="#b6">(Pantel and Lin, 2002)</ref>. However, word senses are usually represented as a fixed-list of definitions of a manually constructed lexical database. Several deficiencies are caused by this representation, e.g. lexical databases miss main domain-specific senses <ref type="bibr" target="#b6">(Pantel and Lin, 2002)</ref>, they often contain general definitions and suffer from the lack of explicit semantic or contextual links between concepts <ref type="bibr" target="#b1">(Agirre et al., 2001)</ref>. More importantly, the definitions of hand-crafted lexical databases often do not reflect the exact meaning of a target word in a given context <ref type="bibr" target="#b9">(Véronis, 2004)</ref>.</p><p>Unsupervised Word Sense Induction (WSI) aims to overcome these limitations of handconstructed lexicons by learning the senses of a target word directly from text without relying on any hand-crafted resources. The primary aim of SemEval-2010 WSI task is to allow comparison of unsupervised word sense induction and disambiguation systems.</p><p>The target word dataset consists of 100 words, 50 nouns and 50 verbs. For each target word, participants were provided with a training set in order to learn the senses of that word. In the next step, participating systems were asked to disambiguate unseen instances of the same words using their learned senses. The answers of the systems were then sent to organisers for evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task description</head><p>Figure <ref type="figure">1</ref> provides an overview of the task. As can be observed, the task consisted of three separate phases.</p><p>In the first phase, training phase, participating systems were provided with a training dataset that consisted of a set of target word (noun/verb) instances (sentences/paragraphs). Participants were then asked to use this training dataset to induce the senses of the target word. No other resources were allowed with the exception of NLP components for morphology and syntax. In the second phase, testing phase, participating systems were provided with a testing dataset that consisted of a set of target word (noun/verb) instances (sentences/paragraphs). Participants were then asked to tag (disambiguate) each testing instance with the senses induced during the training phase. In the third and final phase, the tagged test instances were received by the organisers in order to evaluate the answers of the systems in a supervised and an unsupervised framework. Table <ref type="table" target="#tab_0">1</ref> shows the total number of target word instances in the training and testing set, as well as the average number of senses in the gold standard.</p><p>The main difference of the SemEval-2010 as compared to the SemEval-2007 sense induction task is that the training and testing data are treated separately, i.e the testing data are only used for sense tagging, while the training data are only used  The evaluation framework of SemEval-2010 WSI task considered two types of evaluation. In the first one, unsupervised evaluation, systems' answers were evaluated according to: (1) V-Measure <ref type="bibr" target="#b7">(Rosenberg and Hirschberg, 2007)</ref>, and</p><p>(2) paired F-Score <ref type="bibr" target="#b2">(Artiles et al., 2009)</ref>. Neither of these measures were used in the SemEval-2007 WSI task. <ref type="bibr" target="#b5">Manandhar &amp; Klapaftis (2009)</ref> provide more details on the choice of this evaluation setting and its differences with the previous evaluation. The second type of evaluation, supervised evaluation, follows the supervised evaluation of the SemEval-2007 WSI task <ref type="bibr" target="#b0">(Agirre and Soroa, 2007)</ref>. In this evaluation, induced senses are mapped to gold standard senses using a mapping corpus, and systems are then evaluated in a standard WSD task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Training dataset</head><p>The target word dataset consisted of 100 words, i.e. 50 nouns and 50 verbs. The training dataset for each target noun or verb was created by following a web-based semi-automatic method, similar to the method for the construction of Topic Signatures <ref type="bibr" target="#b1">(Agirre et al., 2001)</ref>. Specifically, for each WordNet <ref type="bibr" target="#b3">(Fellbaum, 1998)</ref> sense of a target word, we created a query of the following form:</p><p>&lt;Target Word&gt; AND &lt;Relative Set&gt;</p><p>The &lt;Target Word&gt; consisted of the target word stem. The &lt;Relative Set&gt; consisted of a disjunctive set of word lemmas that were related  The created queries were issued to Yahoo! search API 3 and for each query a maximum of 1000 pages were downloaded. For each page we extracted fragments of text that occurred in &lt;p&gt; &lt;/p&gt; html tags and contained the target word stem. In the final stage, each extracted fragment of text was POS-tagged using the Genia tagger <ref type="bibr" target="#b8">(Tsuruoka and Tsujii, 2005)</ref> and was only retained, if the POS of the target word in the extracted text matched the POS of the target word in our dataset.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Testing dataset</head><p>The testing dataset consisted of instances of the same target words from the training dataset. This dataset is part of OntoNotes <ref type="bibr" target="#b4">(Hovy et al., 2006)</ref>. We used the sense-tagged dataset in which sentences containing target word instances are tagged with OntoNotes <ref type="bibr" target="#b4">(Hovy et al., 2006)</ref> senses. The texts come from various news sources including CNN, ABC and others.</p><p>1 An act that fails 2 An event that does not accomplish its intended purpose  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation framework</head><p>For the purposes of this section we provide an example (Table <ref type="table" target="#tab_4">3</ref>) in which a target word has 181 instances and 3 GS senses. A system has generated a clustering solution with 4 clusters covering all instances. Table <ref type="table" target="#tab_4">3</ref> shows the number of common instances between clusters and GS senses.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Unsupervised evaluation</head><p>This section presents the measures of unsupervised evaluation, i.e V-Measure <ref type="bibr" target="#b7">(Rosenberg and Hirschberg, 2007)</ref> and ( <ref type="formula">2</ref>) paired F-Score <ref type="bibr" target="#b2">(Artiles et al., 2009)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.1">V-Measure evaluation</head><p>Let w be a target word with N instances (data points) in the testing dataset. Let K = {C j |j = 1 . . . n} be a set of automatically generated clusters grouping these instances, and S = {G i |i = 1 . . . m} the set of gold standard classes containing the desirable groupings of w instances. V-Measure <ref type="bibr" target="#b7">(Rosenberg and Hirschberg, 2007</ref>) assesses the quality of a clustering solution by explicitly measuring its homogeneity and its completeness. Homogeneity refers to the degree that each cluster consists of data points primarily belonging to a single GS class, while completeness refers to the degree that each GS class consists of data points primarily assigned to a single cluster <ref type="bibr" target="#b7">(Rosenberg and Hirschberg, 2007)</ref>. Let h be homogeneity and c completeness. V-Measure is the harmonic mean of h and c, i.e. V M = 2•h•c h+c . Homogeneity. The homogeneity, h, of a clustering solution is defined in Formula 1, where H(S|K) is the conditional entropy of the class distribution given the proposed clustering and H(S) is the class entropy.</p><formula xml:id="formula_0">h = 1, if H(S) = 0 1 − H(S|K) H(S) , otherwise<label>(1)</label></formula><formula xml:id="formula_1">H(S) = − |S| i=1 |K| j=1 a ij N log |K| j=1 a ij N (2) H(S|K) = − |K| j=1 |S| i=1 a ij N log a ij |S| k=1 a kj<label>(3)</label></formula><p>When H(S|K) is 0, the solution is perfectly homogeneous, because each cluster only contains data points that belong to a single class. However in an imperfect situation, H(S|K) depends on the size of the dataset and the distribution of class sizes. Hence, instead of taking the raw conditional entropy, V-Measure normalises it by the maximum reduction in entropy the clustering information could provide, i.e. H(S). When there is only a single class (H(S) = 0), any clustering would produce a perfectly homogeneous solution. Completeness. Symmetrically to homogeneity, the completeness, c, of a clustering solution is defined in Formula 4, where H(K|S) is the conditional entropy of the cluster distribution given the class distribution and H(K) is the clustering entropy. When H(K|S) is 0, the solution is perfectly complete, because all data points of a class belong to the same cluster.</p><p>For the clustering example in Table <ref type="table" target="#tab_4">3</ref>, homogeneity is equal to 0.404, completeness is equal to 0.37 and V-Measure is equal to 0.386. </p><formula xml:id="formula_2">c = 1, if H(K) = 0 1 − H(K|S) H(K) , otherwise<label>(4)</label></formula><formula xml:id="formula_3">H(K) = − |K| j=1 |S| i=1 a ij N log |S| i=1 a ij N (5) H(K|S) = − |S| i=1 |K| j=1 a ij N log a ij |K| k=1 a ik<label>(</label></formula><formula xml:id="formula_4">G i .</formula><p>Let F (K) be the set of instance pairs that exist in the automatically induced clusters and F (S) be the set of instance pairs that exist in the gold standard. Precision can be defined as the number of common instance pairs between the two sets to the total number of pairs in the clustering solution (Equation <ref type="formula">7</ref>), while recall can be defined as the number of common instance pairs between the two sets to the total number of pairs in the gold standard (Equation <ref type="formula">8</ref>). Finally, precision and recall are combined to produce the harmonic mean (F S = 2•P •R P +R ).</p><formula xml:id="formula_5">P = |F (K) ∩ F (S)| |F (K)| (7) R = |F (K) ∩ F (S)| |F (S)| (8)</formula><p>For example in 2 for G 2 and 75 2 for G 3 . In total, the GS classes contain 5820 instance pairs. There are 3435 common instance pairs, hence precision is equal to 62.39%, recall is equal to 59.09% and paired F-Score is equal to 60.69%.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Supervised evaluation</head><p>In this evaluation, the testing dataset is split into a mapping and an evaluation corpus. The first one is used to map the automatically induced clusters to GS senses, while the second is used to evaluate methods in a WSD setting. This evaluation follows the supervised evaluation of SemEval-2007 WSI task <ref type="bibr" target="#b0">(Agirre and Soroa, 2007)</ref>, with the difference that the reported results are an average of 5 random splits. This repeated random sampling was performed to avoid the problems of the SemEval-2007 WSI challenge, in which different splits were providing different system rankings.</p><p>Let us consider the example in Table <ref type="table" target="#tab_4">3</ref> and assume that this matrix has been created by using the mapping corpus. Table <ref type="table" target="#tab_4">3</ref> shows that C 1 is more likely to be associated with G 3 , C 2 is more likely to be associated with G 2 , C 3 is more likely to be associated with G 3 and C 4 is more likely to be associated with G 1 . This information can be utilised to map the clusters to GS senses.</p><p>Particularly, the matrix shown in Table <ref type="table" target="#tab_4">3</ref> is normalised to produce a matrix M , in which each entry depicts the estimated conditional probability P (G i |C j ). Given an instance I of tw from the evaluation corpus, a row cluster vector IC is created, in which each entry k corresponds to the score assigned to C k to be the winning cluster for instance I. The product of IC and M provides a row sense vector, IG, in which the highest scoring entry a denotes that G a is the winning sense. For example, if we produce the row cluster vector   <ref type="table" target="#tab_4">3</ref>, then we would get a row sense vector in which G 3 would be the winning sense with a score equal to 0.43.</p><formula xml:id="formula_6">[C 1 = 0.8, C 2 = 0.1, C 3 = 0.1, C 4 = 0.0],</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation results</head><p>In this section, we present the results of the 26 systems along with two baselines. The first baseline, Most Frequent Sense (MFS), groups all testing instances of a target word into one cluster. The second baseline, Random, randomly assigns an instance to one out of four clusters. The number of clusters of Random was chosen to be roughly equal to the average number of senses in the GS. This baseline is executed five times and the results are averaged.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Unsupervised evaluation</head><p>Table <ref type="table" target="#tab_8">4</ref> shows the V-Measure (VM) performance of the 26 systems participating in the task. The last column shows the number of induced clusters of each system in the test set.The MFS baseline has a V-Measure equal to 0, since by definition its completeness is 1 and homogeneity is 0. All systems outperform this baseline, apart from one, whose V-Measure is equal to 0. Regarding the Random baseline, we observe that 17 perform better, which indicates that they have learned useful information better than chance.  ters than the number of GS senses, although V-Measure does not increase monotonically with the number of clusters increasing. For that reason, we introduced the second unsupervised evaluation measure (paired F-Score) that penalises systems when they produce: (1) a higher number of clusters (low recall) or (2) a lower number of clusters (low precision), than the GS number of senses.</p><p>Table <ref type="table" target="#tab_10">5</ref> shows the performance of systems using the second unsupervised evaluation measure. In this evaluation, we observe that most of the systems perform better than Random. Despite that, none of the systems outperform the MFS baseline. It seems that systems generating a smaller number of clusters than the GS number of senses are biased towards the MFS, hence they are not able to perform better. On the other hand, systems generating a higher number of clusters are penalised by this measure. Systems generating a number of clusters roughly the same as the GS tend to conflate the GS senses lot more than the MFS.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Supervised evaluation results</head><p>Table <ref type="table" target="#tab_12">6</ref> shows the results of this evaluation for a 80-20 test set split, i.e. 80% for mapping and 20% for evaluation. The last columns shows the average number of GS senses identified by each system in the five splits of the evaluation datasets. Overall, 14 systems outperform the MFS, while 17 of them perform better than Random.  The supervised evaluation changes the distribution of clusters by mapping each cluster to a weighted vector of senses. Hence, it can potentially favour systems generating a high number of homogeneous clusters. For that reason, we applied a second testing set split, where 60% of the testing corpus was used for mapping and 40% for evaluation. Reducing the size of the mapping corpus allows us to observe, whether the above statement is correct, since systems with a high number of clusters would suffer from unreliable mapping.</p><p>Table <ref type="table" target="#tab_14">7</ref> shows the results of the second supervised evaluation. The ranking of participants did not change significantly, i.e. we observe only different rankings among systems belonging to the same participant. Despite that, Table <ref type="table" target="#tab_14">7</ref> also shows that the reduction of the mapping corpus has a different impact on systems generating a larger number of clusters than the GS number of senses.</p><p>For instance, UoY that generates 11.54 clusters outperformed the MFS by 3.77% in the 80-20 split and by 3.71% in the 60-40 split. The reduction of the mapping corpus had a minimal impact on its performance. In contrast, KSU KDD that generates 17.5 clusters was below the MFS by 6.49%  in the 80-20 split and by 7.83% in the 60-40 split.</p><p>The reduction of the mapping corpus had a larger impact in this case. This result indicates that the performance in this evaluation also depends on the distribution of instances within the clusters. Systems generating a skewed distribution, in which a small number of homogeneous clusters tag the majority of instances and a larger number of clusters tag only a few instances, are likely to have a better performance than systems that produce a more uniform distribution.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>We presented the description, evaluation framework and assessment of systems participating in the SemEval-2010 sense induction task. The evaluation has shown that the current state-of-the-art lacks unbiased measures that objectively evaluate clustering.</p><p>The results of systems have shown that their performance in the unsupervised and supervised evaluation settings depends on cluster granularity along with the distribution of instances within the clusters. Our future work will focus on the assessment of sense induction on a task-oriented basis as well as on clustering evaluation.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>3 http://developer.yahoo.com/search/ [Access:10/04/2010]</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Figure 1 :</head><label>1</label><figDesc>Training, testing and evaluation phases of SemEval-2010 Task 14</figDesc><table><row><cell></cell><cell>Training set</cell><cell>Testing set</cell><cell>Senses (#)</cell></row><row><cell>All</cell><cell>879807</cell><cell>8915</cell><cell>3.79</cell></row><row><cell>Nouns</cell><cell>716945</cell><cell>5285</cell><cell>4.46</cell></row><row><cell>Verbs</cell><cell>162862</cell><cell>3630</cell><cell>3.12</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1</head><label>1</label><figDesc></figDesc><table><row><cell>: Training &amp; testing set details</cell></row><row><cell>for sense induction. Treating the testing data as</cell></row><row><cell>new unseen instances ensures a realistic evalua-</cell></row><row><cell>tion that allows to evaluate the clustering models</cell></row><row><cell>of each participating system.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell>: Training set creation: example queries for</cell></row><row><cell>target word failure</cell></row><row><cell>to the target word sense for which the query was</cell></row><row><cell>created. The relations considered were WordNet's</cell></row><row><cell>hypernyms, hyponyms, synonyms, meronyms and</cell></row><row><cell>holonyms. Each query was manually checked by</cell></row><row><cell>one of the organisers to remove ambiguous words.</cell></row><row><cell>The following example shows the query created</cell></row><row><cell>for the first 1 and second 2 WordNet sense of the</cell></row><row><cell>target noun failure.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Clusters &amp; GS senses matrix.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head></head><label></label><figDesc>In this evaluation, the clustering problem is transformed into a classification problem. For each cluster C i we generate |C i | 2 instance pairs, where |C i | is the total number of instances that belong to cluster C i . Similarly, for each GS class G i we generate |G i | 2 instance pairs, where |G i | is the total number of instances that belong to GS class</figDesc><table><row><cell>6)</cell></row><row><cell>3.1.2 Paired F-Score evaluation</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell>, we can generate 35 2 in-stance pairs for C 1 , 70 2 for C 2 , 71 2 for C 3 and 5 2 for C 4 , resulting in a total of 5505 instance pairs. In the same vein, we can generate 36 2 in-stance pairs for G 1 , 70</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head></head><label></label><figDesc>and</figDesc><table><row><cell>System</cell><cell>VM (%)</cell><cell>VM (%)</cell><cell>VM (%)</cell><cell>#Cl</cell></row><row><cell></cell><cell>(All)</cell><cell>(Nouns)</cell><cell>(Verbs)</cell><cell></cell></row><row><cell>Hermit</cell><cell>16.2</cell><cell>16.7</cell><cell>15.6</cell><cell>10.78</cell></row><row><cell>UoY</cell><cell>15.7</cell><cell>20.6</cell><cell>8.5</cell><cell>11.54</cell></row><row><cell>KSU KDD</cell><cell>15.7</cell><cell>18</cell><cell>12.4</cell><cell>17.5</cell></row><row><cell>Duluth-WSI</cell><cell>9</cell><cell>11.4</cell><cell>5.7</cell><cell>4.15</cell></row><row><cell>Duluth-WSI-SVD</cell><cell>9</cell><cell>11.4</cell><cell>5.7</cell><cell>4.15</cell></row><row><cell>Duluth-R-110</cell><cell>8.6</cell><cell>8.6</cell><cell>8.5</cell><cell>9.71</cell></row><row><cell>Duluth-WSI-Co</cell><cell>7.9</cell><cell>9.2</cell><cell>6</cell><cell>2.49</cell></row><row><cell>KCDC-PCGD</cell><cell>7.8</cell><cell>7.3</cell><cell>8.4</cell><cell>2.9</cell></row><row><cell>KCDC-PC</cell><cell>7.5</cell><cell>7.7</cell><cell>7.3</cell><cell>2.92</cell></row><row><cell>KCDC-PC-2</cell><cell>7.1</cell><cell>7.7</cell><cell>6.1</cell><cell>2.93</cell></row><row><cell>Duluth-Mix-Narrow-Gap</cell><cell>6.9</cell><cell>8</cell><cell>5.1</cell><cell>2.42</cell></row><row><cell>KCDC-GD-2</cell><cell>6.9</cell><cell>6.1</cell><cell>8</cell><cell>2.82</cell></row><row><cell>KCDC-GD</cell><cell>6.9</cell><cell>5.9</cell><cell>8.5</cell><cell>2.78</cell></row><row><cell>Duluth-Mix-Narrow-PK2</cell><cell>6.8</cell><cell>7.8</cell><cell>5.5</cell><cell>2.68</cell></row><row><cell>Duluth-MIX-PK2</cell><cell>5.6</cell><cell>5.8</cell><cell>5.2</cell><cell>2.66</cell></row><row><cell>Duluth-R-15</cell><cell>5.3</cell><cell>5.4</cell><cell>5.1</cell><cell>4.97</cell></row><row><cell>Duluth-WSI-Co-Gap</cell><cell>4.8</cell><cell>5.6</cell><cell>3.6</cell><cell>1.6</cell></row><row><cell>Random</cell><cell>4.4</cell><cell>4.2</cell><cell>4.6</cell><cell>4</cell></row><row><cell>Duluth-R-13</cell><cell>3.6</cell><cell>3.5</cell><cell>3.7</cell><cell>3</cell></row><row><cell>Duluth-WSI-Gap</cell><cell>3.1</cell><cell>4.2</cell><cell>1.5</cell><cell>1.4</cell></row><row><cell>Duluth-Mix-Gap</cell><cell>3</cell><cell>2.9</cell><cell>3</cell><cell>1.61</cell></row><row><cell>Duluth-Mix-Uni-PK2</cell><cell>2.4</cell><cell>0.8</cell><cell>4.7</cell><cell>2.04</cell></row><row><cell>Duluth-R-12</cell><cell>2.3</cell><cell>2.2</cell><cell>2.5</cell><cell>2</cell></row><row><cell>KCDC-PT</cell><cell>1.9</cell><cell>1</cell><cell>3.1</cell><cell>1.5</cell></row><row><cell>Duluth-Mix-Uni-Gap</cell><cell>1.4</cell><cell>0.2</cell><cell>3</cell><cell>1.39</cell></row><row><cell>KCDC-GDC</cell><cell>7</cell><cell>6.2</cell><cell>7.8</cell><cell>2.83</cell></row><row><cell>MFS</cell><cell>0</cell><cell>0</cell><cell>0</cell><cell>1</cell></row><row><cell>Duluth-WSI-SVD-Gap</cell><cell>0</cell><cell>0</cell><cell>0.1</cell><cell>1.02</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc></figDesc><table /><note>V-Measure unsupervised evaluation multiply it with the normalised matrix of Table</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 4</head><label>4</label><figDesc></figDesc><table><row><cell>also shows that V-Measure tends to</cell></row><row><cell>favour systems producing a higher number of clus-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 5 :</head><label>5</label><figDesc></figDesc><table /><note>Paired F-Score unsupervised evaluation</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head></head><label></label><figDesc>The ranking of systems in nouns and verbs is different. For in-</figDesc><table><row><cell>System</cell><cell>SR (%)</cell><cell>SR (%)</cell><cell>SR (%)</cell><cell>#S</cell></row><row><cell></cell><cell>(All)</cell><cell>(Nouns)</cell><cell>(Verbs)</cell><cell></cell></row><row><cell>UoY</cell><cell>62.4</cell><cell>59.4</cell><cell>66.8</cell><cell>1.51</cell></row><row><cell>Duluth-WSI</cell><cell>60.5</cell><cell>54.7</cell><cell>68.9</cell><cell>1.66</cell></row><row><cell>Duluth-WSI-SVD</cell><cell>60.5</cell><cell>54.7</cell><cell>68.9</cell><cell>1.66</cell></row><row><cell>Duluth-WSI-Co-Gap</cell><cell>60.3</cell><cell>54.1</cell><cell>68.6</cell><cell>1.19</cell></row><row><cell>Duluth-WSI-Co</cell><cell>60.8</cell><cell>54.7</cell><cell>67.6</cell><cell>1.51</cell></row><row><cell>Duluth-WSI-Gap</cell><cell>59.8</cell><cell>54.4</cell><cell>67.8</cell><cell>1.11</cell></row><row><cell>KCDC-PC-2</cell><cell>59.8</cell><cell>54.1</cell><cell>68.0</cell><cell>1.21</cell></row><row><cell>KCDC-PC</cell><cell>59.7</cell><cell>54.6</cell><cell>67.3</cell><cell>1.39</cell></row><row><cell>KCDC-PCGD</cell><cell>59.5</cell><cell>53.3</cell><cell>68.6</cell><cell>1.47</cell></row><row><cell>KCDC-GDC</cell><cell>59.1</cell><cell>53.4</cell><cell>67.4</cell><cell>1.34</cell></row><row><cell>KCDC-GD</cell><cell>59.0</cell><cell>53.0</cell><cell>67.9</cell><cell>1.33</cell></row><row><cell>KCDC-PT</cell><cell>58.9</cell><cell>53.1</cell><cell>67.4</cell><cell>1.08</cell></row><row><cell>KCDC-GD-2</cell><cell>58.7</cell><cell>52.8</cell><cell>67.4</cell><cell>1.33</cell></row><row><cell>Duluth-WSI-SVD-Gap</cell><cell>58.7</cell><cell>53.2</cell><cell>66.7</cell><cell>1.01</cell></row><row><cell>MFS</cell><cell>58.7</cell><cell>53.2</cell><cell>66.6</cell><cell>1</cell></row><row><cell>Duluth-R-12</cell><cell>58.5</cell><cell>53.1</cell><cell>66.4</cell><cell>1.25</cell></row><row><cell>Hermit</cell><cell>58.3</cell><cell>53.6</cell><cell>65.3</cell><cell>2.06</cell></row><row><cell>Duluth-R-13</cell><cell>58.0</cell><cell>52.3</cell><cell>66.4</cell><cell>1.46</cell></row><row><cell>Random</cell><cell>57.3</cell><cell>51.5</cell><cell>65.7</cell><cell>1.53</cell></row><row><cell>Duluth-R-15</cell><cell>56.8</cell><cell>50.9</cell><cell>65.3</cell><cell>1.61</cell></row><row><cell>Duluth-Mix-Narrow-Gap</cell><cell>56.6</cell><cell>48.1</cell><cell>69.1</cell><cell>1.43</cell></row><row><cell>Duluth-Mix-Narrow-PK2</cell><cell>56.1</cell><cell>47.5</cell><cell>68.7</cell><cell>1.41</cell></row><row><cell>Duluth-R-110</cell><cell>54.8</cell><cell>48.3</cell><cell>64.2</cell><cell>1.94</cell></row><row><cell>KSU KDD</cell><cell>52.2</cell><cell>46.6</cell><cell>60.3</cell><cell>1.69</cell></row><row><cell>Duluth-MIX-PK2</cell><cell>51.6</cell><cell>41.1</cell><cell>67.0</cell><cell>1.23</cell></row><row><cell>Duluth-Mix-Gap</cell><cell>50.6</cell><cell>40.0</cell><cell>66.0</cell><cell>1.01</cell></row><row><cell>Duluth-Mix-Uni-PK2</cell><cell>19.3</cell><cell>1.8</cell><cell>44.8</cell><cell>0.62</cell></row><row><cell>Duluth-Mix-Uni-Gap</cell><cell>18.7</cell><cell>1.6</cell><cell>43.8</cell><cell>0.56</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 6</head><label>6</label><figDesc></figDesc><table><row><cell>: Supervised recall (SR) (test set split:80%</cell></row><row><cell>mapping, 20% evaluation)</cell></row><row><cell>stance, the highest ranked system in nouns is UoY,</cell></row><row><cell>while in verbs Duluth-Mix-Narrow-Gap. It seems</cell></row><row><cell>that depending on the part-of-speech of the target</cell></row><row><cell>word, different algorithms, features and parame-</cell></row><row><cell>ters' tuning have different impact.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 7</head><label>7</label><figDesc></figDesc><table><row><cell>: Supervised recall (SR) (test set split:60%</cell></row><row><cell>mapping, 40% evaluation)</cell></row></table></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We gratefully acknowledge the support of the EU FP7 INDECT project, Grant No. 218086, the Na-tional Science Foundation Grant NSF-0715078, Consistent Criteria for Word Sense Disambiguation, and the GALE program of the Defense Advanced Research Projects Agency, Contract No. HR0011-06-C-0022, a subcontract from the BBN-AGILE Team.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">SemEval-2007 Task 02: Evaluating Word Sense Induction and Discrimination Systems</title>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Soroa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval-2007</title>
+				<meeting>SemEval-2007<address><addrLine>Prague, Czech Republic. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="7" to="12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Enriching Wordnet Concepts With Topic Signatures</title>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olatz</forename><surname>Ansa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Martinez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+	<note>ArXiv Computer Science e-prints</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The role of named entities in web people search</title>
+		<author>
+			<persName><forename type="first">Javier</forename><surname>Artiles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Enrique</forename><surname>Amigó</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julio</forename><surname>Gonzalo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="534" to="542" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Wordnet: An Electronic Lexical Database</title>
+		<author>
+			<persName><forename type="first">Christiane</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>MIT Press</publisher>
+			<pubPlace>Cambridge, Massachusetts, USA</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Ontonotes: the 90% solution</title>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitchell</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lance</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralph</forename><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL</title>
+				<meeting>NAACL</meeting>
+		<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="57" to="60" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Semeval-2010 Task 14: Evaluation Setting for Word Sense Induction &amp; Disambiguation Systems</title>
+		<author>
+			<persName><forename type="first">Suresh</forename><surname>Manandhar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Ioannis</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Klapaftis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">DEW &apos;09: Proceedings of the Workshop on Semantic Evaluations: Recent Achievements and Future Directions</title>
+				<meeting><address><addrLine>Boulder, Colorado, USA. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="117" to="122" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Discovering Word Senses from Text</title>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Pantel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dekang</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">KDD &apos;02: Proceedings of the 8th ACM SIGKDD Conference</title>
+				<meeting><address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="613" to="619" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Vmeasure: A Conditional Entropy-based External Cluster Evaluation Measure</title>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Rosenberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Hirschberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2007 EMNLP-CoNLL Joint Conference</title>
+				<meeting>the 2007 EMNLP-CoNLL Joint Conference<address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="410" to="420" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Bidirectional Inference With the Easiest-first Strategy for Tagging Sequence Data</title>
+		<author>
+			<persName><forename type="first">Yoshimasa</forename><surname>Tsuruoka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juníchi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the HLT-EMNLP Joint Conference</title>
+				<meeting>the HLT-EMNLP Joint Conference<address><addrLine>Morristown, NJ, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="467" to="474" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Hyperlex: Lexical Cartography for Information Retrieval</title>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Véronis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computer Speech &amp; Language</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="223" to="252" />
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

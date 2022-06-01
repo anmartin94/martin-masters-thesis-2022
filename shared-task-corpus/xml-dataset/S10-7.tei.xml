@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2010 Task 7: Argument Selection and Coercion</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Dept. of Computer Science</orgName>
+								<orgName type="institution">Brandeis University Waltham</orgName>
+								<address>
+									<region>MA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Anna</forename><surname>Rumshisky</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Dept. of Computer Science</orgName>
+								<orgName type="institution">Brandeis University Waltham</orgName>
+								<address>
+									<region>MA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Alex</forename><surname>Plotnick</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Dept. of Computer Science</orgName>
+								<orgName type="institution">Brandeis University Waltham</orgName>
+								<address>
+									<region>MA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Elisabetta</forename><surname>Jezek</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Dept. of Linguistics</orgName>
+								<orgName type="institution">University of Pavia Pavia</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Olga</forename><surname>Batiukova</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="department">Dept. of Humanities Carlos</orgName>
+								<orgName type="institution">III University of Madrid Madrid</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Valeria</forename><surname>Quochi</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="department">ILC-CNR Pisa</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2010 Task 7: Argument Selection and Coercion</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We describe the Argument Selection and Coercion task for the SemEval-2010 evaluation exercise. This task involves characterizing the type of compositional operation that exists between a predicate and the arguments it selects. Specifically, the goal is to identify whether the type that a verb selects is satisfied directly by the argument, or whether the argument must change type to satisfy the verb typing. We discuss the problem in detail, describe the data preparation for the task, and analyze the results of the submissions.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In recent years, a number of annotation schemes that encode semantic information have been developed and used to produce data sets for training machine learning algorithms. Semantic markup schemes that have focused on annotating entity types and, more generally, word senses, have been extended to include semantic relationships between sentence elements, such as the semantic role (or label) assigned to the argument by the predicate <ref type="bibr" target="#b15">(Palmer et al., 2005;</ref><ref type="bibr" target="#b23">Ruppenhofer et al., 2006;</ref><ref type="bibr" target="#b10">Kipper, 2005;</ref><ref type="bibr" target="#b2">Burchardt et al., 2006;</ref><ref type="bibr" target="#b24">Subirats, 2004)</ref>.</p><p>In this task, we take this one step further and attempt to capture the "compositional history" of the argument selection relative to the predicate. In particular, this task attempts to identify the operations of type adjustment induced by a predicate over its arguments when they do not match its selectional properties. The task is defined as follows: for each argument of a predicate, identify whether the entity in that argument position satisfies the type expected by the predicate. If not, then identify how the entity in that position satisfies the typing expected by the predicate; that is, identify the source and target types in a type-shifting or coercion operation.</p><p>Consider the example below, where the verb report normally selects for a human in subject position, as in (1a). Notice, however, that through a metonymic interpretation, this constraint can be violated, as demonstrated in (1b).</p><p>(1) a. John reported in late from Washington. b. Washington reported in late.</p><p>Neither the surface annotation of entity extents and types nor assigning semantic roles associated with the predicate would reflect in this case a crucial point: namely, that in order for the typing requirements of the predicate to be satisfied, a type coercion or a metonymy <ref type="bibr" target="#b8">(Hobbs et al., 1993;</ref><ref type="bibr" target="#b20">Pustejovsky, 1991;</ref><ref type="bibr" target="#b14">Nunberg, 1979;</ref><ref type="bibr" target="#b4">Egg, 2005)</ref> has taken place.</p><p>The SemEval Metonymy task <ref type="bibr" target="#b12">(Markert and Nissim, 2007)</ref> was a good attempt to annotate such metonymic relations over a larger data set. This task involved two types with their metonymic variants: categories-for-locations (e.g., placefor-people) and categories-for-organizations (e.g., organization-for-members). One of the limitations of this approach, however, is that while appropriate for these specialized metonymy relations, the annotation specification and resulting corpus are not an informative guide for extending the annotation of argument selection more broadly.</p><p>In fact, the metonymy example in (1) is an instance of a much more pervasive phenomenon of type shifting and coercion in argument selection. For example, in (2) below, the sense annotation for the verb enjoy should arguably assign similar values to both (2a) and (2b). The consequence of this is that under current sense and role annotation strategies, the mapping to a syntactic realization for a given sense is made more complex, and is in fact perplexing for a clustering or learning algorithm operating over subcategorization types for the verb.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Methodology of Annotation</head><p>Before introducing the specifics of the argument selection and coercion task, we will briefly review our assumptions regarding the role of annotation in computational linguistic systems.</p><p>We assume that the features we use for encoding a specific linguistic phenomenon are rich enough to capture the desired behavior. These linguistic descriptions are typically distilled from extensive theoretical modeling of the phenomenon. The descriptions in turn form the basis for the annotation values of the specification language, which are themselves the features used in a development cycle for training and testing a labeling algorithm over a text. Finally, based on an analysis and evaluation of the performance of a system, the model of the phenomenon may be revised.</p><p>We call this cycle of development the MATTER methodology (Fig. <ref type="figure" target="#fig_0">1</ref>):</p><p>Model: Structural descriptions provide theoretically informed attributes derived from empirical observations over the data;</p><p>Annotate: Annotation scheme assumes a feature set that encodes specific structural descriptions and properties of the input data;</p><p>Train: Algorithm is trained over a corpus annotated with the target feature set;</p><p>Test: Algorithm is tested against held-out data;</p><p>Evaluate: Standardized evaluation of results;</p><p>Revise: Revisit the model, annotation specification, or algorithm, in order to make the annotation more robust and reliable.</p><p>Some of the current and completed annotation efforts that have undergone such a development cycle include PropBank <ref type="bibr" target="#b15">(Palmer et al., 2005)</ref>, Nom-Bank <ref type="bibr" target="#b13">(Meyers et al., 2004), and</ref><ref type="bibr">TimeBank (Pustejovsky et al., 2005)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>The argument selection and coercion (ASC) task involves identifying the selectional mechanism used by the predicate over a particular argument. <ref type="bibr">1</ref> For the purposes of this task, the possible relations between the predicate and a given argument are restricted to selection and coercion. In selection, the argument NP satisfies the typing requirements of the predicate, as in ( <ref type="formula">3</ref>):</p><p>(3) a. The spokesman denied the statement (PROPOSI-TION).</p><p>b. The child threw the stone (PHYSICAL OBJECT).</p><p>c. The audience didn't believe the rumor (PROPOSI-TION).</p><p>Coercion occurs when a type-shifting operation must be performed on the complement NP in order to satisfy selectional requirements of the predicate, as in ( <ref type="formula">4</ref>). Note that coercion operations may apply to any argument position in a sentence, including the subject, as seen in ( <ref type="formula">4b</ref>). Coercion can also be seen as an object of a proposition, as in (4c). In order to determine whether type-shifting has taken place, the classification task must then involve (1) identifying the verb sense and the associated syntactic frame, (2) identifying selectional requirements imposed by that verb sense on the target argument, and (3) identifying the semantic type of the target argument.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Resources and Corpus Development</head><p>We prepared the data for this task in two phases: the data set construction phase and the annotation phase (see Fig. <ref type="figure" target="#fig_2">2</ref>). The first phase consisted of (1) selecting the target verbs to be annotated and compiling a sense inventory for each target, and (2) data extraction and preprocessing. The prepared data was then loaded into the annotation interface. During the annotation phase, the annotation judgments were entered into the database, and an adjudicator resolved disagreements. The resulting database was then exported in an XML format. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Data Set Construction Phase: English</head><p>For the English data set, the data construction phase was combined with the annotation phase. The data for the task was created using the following steps:</p><p>1. The verbs were selected by examining the data from the BNC, using the Sketch Engine (Kilgarriff et al., 2004) as described in <ref type="bibr" target="#b21">(Rumshisky and Batiukova, 2008)</ref>. Verbs that consistently impose semantic typing on one of their arguments in at least one of their senses (strongly coercive verbs) were included into the final data set: arrive (at), cancel, deny, finish, and hear.</p><p>2. Sense inventories were compiled for each verb, with the senses mapped to OntoNotes <ref type="bibr" target="#b16">(Pradhan et al., 2007)</ref> whenever possible. For each sense, a set of type templates was compiled using a modification of the CPA technique <ref type="bibr" target="#b6">(Hanks and Pustejovsky, 2005;</ref><ref type="bibr" target="#b17">Pustejovsky et al., 2004)</ref>: every argument in the syntactic pattern associated with a given sense was assigned a type specification. Although a particular sense is often compatible with more than one semantic type for a given argument, this was never the case in our data set, where no disjoint types were tested. The coercive senses of the chosen verbs were associated with the following type templates: We used a subset of semantic types from the Brandeis Shallow Ontology (BSO), which is a shallow hierarchy of types developed as a part of the CPA effort <ref type="bibr" target="#b7">(Hanks, 2009;</ref><ref type="bibr" target="#b17">Pustejovsky et al., 2004;</ref><ref type="bibr" target="#b22">Rumshisky et al., 2006)</ref>. Types were selected for their prevalence in manually identified selection context patterns developed for several hundred English verbs. That is, they capture common semantic distinctions associated with the selectional properties of many verbs. The types used for annotation were: This set of types is purposefully shallow and non-hierarchical. For example, HUMAN is a subtype of both ANIMATE and PHYSICAL OB-JECT, but annotators and system developers were instructed to choose the most relevant type (e.g., HUMAN) and to ignore inheritance.</p><p>3. A set of sentences was randomly extracted for each target verb from the BNC <ref type="bibr" target="#b3">(Burnard, 1995)</ref>. The extracted sentences were parsed automatically, and the sentences organized according to the grammatical relation the target verb was involved in. Sentences were excluded from the set if the target argument was expressed as anaphor, or was not present in the sentence. The semantic head for the target grammatical relation was identified in each case.</p><p>4. Word sense disambiguation of the target predicate was performed manually on each extracted sentence, matching the target against the sense inventory and the corresponding type templates as described above. The appropriate senses were then saved into the database along with the associated type template.</p><p>5. The sentences containing coercive senses of the target verbs were loaded into the Brandeis Annotation Tool <ref type="bibr" target="#b25">(Verhagen, 2010)</ref>. Annotators were presented with a list of sentences and asked to determine whether the argument in the specified grammatical relation to the target belongs to the type associated with that sense in the corresponding template. Disagreements were resolved by adjudication. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Data Set Construction Phase: Italian</head><p>In constructing the Italian data set, we adopted the same methodology used for the English data set, with the following differences:</p><p>1. The list of coercive verbs was selected by examining data from the ItWaC <ref type="bibr" target="#b0">(Baroni and Kilgarriff, 2006</ref>) using the Sketch Engine <ref type="bibr" target="#b9">(Kilgarriff et al., 2004)</ref>:</p><p>accusare 'accuse', annunciare 'announce', arrivare 'arrive', ascoltare 'listen', avvisare 'inform', chiamare 'call', cominciare 'begin', completare 'complete', concludere 'conclude', contattare 'contact', divorare 'devour', echeggiare 'echo', finire 'finish', informare 'inform', interrompere 'interrupt', leggere 'read', raggiungere 'reach', recar(si) 'go to', rimbombare 'resound', sentire 'hear', udire 'hear', visitare 'visit'.</p><p>2. The coercive senses of the chosen verbs were associated with type templates, some of which are listed listed below. Whenever possible, senses and type templates were adapted from the Italian Pattern Dictionary <ref type="bibr" target="#b5">(Hanks and Jezek, 2007)</ref> and mapped to their SIMPLE equivalents <ref type="bibr" target="#b11">(Lenci et al., 2000)</ref>. The annotators were provided with a set of definitions and examples of each type.</p><p>3. A set of sentences for each target verb was extracted and parsed from the PAROLE sottoinsieme corpus <ref type="bibr" target="#b1">(Bindi et al., 2000)</ref>. They were skimmed to ensure that the final data set contained a sufficient number of coercions, with proportionally more selections than coercions. Sentences were preselected to include instances representing one of the chosen senses.</p><p>4. In order to exclude instances that may have been wrongly selected, a judge performed word sense disambiguation of the target predicate in the extracted sentences.</p><p>5. Annotators were presented with a list of sentences and asked to determine the usual semantic type associated with the argument in the specified grammatical relation. Every sentence was annotated by two annotators and one judge, who resolved disagreements.</p><p>6. Some of the coercion types selected for Italian were: </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Data Format</head><p>The test and training data were provided in XML.</p><p>The relation between the predicate (viewed as a function) and its argument were represented by composition link elements (CompLink), as</p><p>shown below. The test data differed from the training data in the omission of CompLink elements. In case of coercion, there is a mismatch between the source and the target types, and both types need to be identified; e.g., The State Department repeatedly denied the attack:</p><p>The State Department repeatedly &lt;SELECTOR sid="s1"&gt;denied&lt;/SELECTOR&gt; the &lt;TARGET id="t1"&gt;attack&lt;/TARGET&gt;. &lt;CompLink cid="cid1" compType="COERCION" selector_id="s1" relatedToTarget="t1" sourceType="EVENT" targetType="PROPOSITION"/&gt;</p><p>When the compositional operation is selection, the source and target types must match; e.g., The State Department repeatedly denied the statement:</p><p>The State Department repeatedly &lt;SELECTOR sid="s2"&gt;denied&lt;/SELECTOR&gt; the &lt;TARGET id="t2"&gt;statement&lt;/TARGET&gt;. &lt;CompLink cid="cid2" compType="SELECTION" selector_id="s2" relatedToTarget="t2" sourceType="PROPOSITION" targetType="PROPOSITION"/&gt;</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Results &amp; Analysis</head><p>We received only a single submission for the ASC task. The UTDMet system was an SVMbased system with features derived from two main sources: a PageRank-style algorithm over Word-Net hypernyms used to define semantic classes, and statistics from a PropBank-style parse of some 8 million documents from the English Gigaword corpus. The results, shown in Table <ref type="table" target="#tab_6">2</ref>, were computed from confusion matrices constructed for each of four classification tasks for the 1039 link instances in the English test data: determination of argument selection or coercion, identification of the argument source type, identification of the argument target type, and the joint identification of the source/target type pair. Clearly, the UTDMet system did quite well at this task. The one immediately noticeable outlier is the macro-averaged precision for the joint type, which reflects a small number of miscategorizations of rare types. For example, eliminating the single miscategorized ARTIFACT-LOCATION link in the submitted test data bumps this score up to a respectable 94%. This large discrepancy can explained by the lack of any coercions with those types in the gold-standard data.  In the absence of any other submissions, it is difficult to provide a point of comparison for this performance. However, we can provide a baseline by taking each link to be a selection whose source and target types are the most common type (EVENT for the gold-standard English data). This yields micro-averaged precision scores of 69% for selection vs. coercion, 33% for source type identification, 37% for the target type identification, and 22% for the joint type.</p><p>The performance of the UTDMet system suggests that most of the type coercions were identifiable based largely on examination of lexical clues associated with selection contexts. This is in fact to be expected for the type coercions that were the focus of the English data set. It will be interesting to see how systems perform on the Italian data set and an expanded corpus for English and Italian, where more subtle and complex type exploitations and manipulations are at play. These will hopefully be explored in future competitions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>In this paper, we have described the Argument Selection and Coercion task for SemEval-2010. This task involves identifying the relation between a predicate and its argument as one that encodes the compositional history of the selection process. This allows us to distinguish surface forms that directly satisfy the selectional (type) requirements of a predicate from those that are coerced in context. We described some details of a specification language for selection, the annotation task using this specification to identify argument selection behavior, and the preparation of the data for the task. Finally, we analyzed the results of the task submissions.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: The MATTER Methodology</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>(4) a. The president denied the attack (EVENT → PROPO-SITION). b. The White House (LOCATION → HUMAN) denied this statement. c. The Boston office called with an update (EVENT → INFO).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Corpus Development Architecture</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>Hear, sense perceive physical sound : HUMAN hear SOUND</figDesc><table /><note>a. Arrive (at), sense reach a destination or goal : HU-MAN arrive at LOCATION b. Cancel, sense call off : HUMAN cancel EVENT c. Deny, sense state or maintain that something is untrue: HUMAN deny PROPOSITION d. Finish, sense complete an activity: HUMAN finish EVENT e.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>HUMAN arriva [prep] LOCATION b. cominciare, sense initiate an undertaking: HUMAN comincia EVENT c. completare, sense finish an activity: HUMAN completa EVENT d. udire, sense perceive a sound : HUMAN ode SOUND e. visitare, sense visit a place: HUMAN visita LOCA-</figDesc><table><row><cell>TION</cell></row><row><cell>The following types were used to annotate</cell></row><row><cell>the Italian dataset:</cell></row><row><cell>ABSTRACT ENTITY, ANIMATE, ARTIFACT, ATTITUDE,</cell></row><row><cell>CONTAINER, DOCUMENT, DRINK, EMOTION, ENTITY,</cell></row><row><cell>EVENT, FOOD, HUMAN, HUMAN GROUP, IDEA, IN-</cell></row><row><cell>FORMATION, LIQUID, LOCATION, ORGANIZATION,</cell></row><row><cell>PHYSICAL OBJECT, PROPERTY, SENSATION, SOUND,</cell></row><row><cell>TIME PERIOD, VEHICLE</cell></row></table><note>a. arrivare, sense reach a location:</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>HUMAN (accusare, annunciare) b. ARTIFACT → HUMAN (annunciare, avvisare) c. EVENT → LOCATION (arrivare, raggiungere) d. ARTIFACT → EVENT (cominciare, completare) e. EVENT → DOCUMENT (leggere, divorare) f. HUMAN → DOCUMENT (leggere, divorare) g. EVENT → SOUND (ascoltare, echeggiare) h. ARTIFACT → SOUND (ascoltare, echeggiare)</figDesc><table><row><cell>7. The Italian training data contained 1466 in-</cell></row><row><cell>stances, 381 of which are coercions; the test</cell></row><row><cell>data had 1463 instances, with 384 coercions.</cell></row></table><note>a. LOCATION →</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 2 :</head><label>2</label><figDesc>Results for the UTDMet submission.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">This task is part of a larger effort to annotate text with compositional operations<ref type="bibr" target="#b19">(Pustejovsky et al., 2009)</ref>.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Large linguistically-processed web corpora for multiple languages</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kilgarriff</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of European ACL</title>
+				<meeting>European ACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Bindi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Monachini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Gola</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+	<note type="report_type">PAROLE-Sottoinsieme. ILC-CNR Internal Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The salsa corpus: a german corpus resource for lexical semantics</title>
+		<author>
+			<persName><forename type="first">Aljoscha</forename><surname>Burchardt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katrin</forename><surname>Erk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anette</forename><surname>Frank</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Kowalski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Pado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manfred</forename><surname>Pinkal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC</title>
+				<meeting>LREC<address><addrLine>Genoa, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Users&apos; Reference Guide, British National Corpus</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Burnard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">British National Corpus Consortium</title>
+				<meeting><address><addrLine>Oxford, England</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Flexible semantics for reinterpretation phenomena</title>
+		<author>
+			<persName><forename type="first">Marcus</forename><forename type="middle">Egg ;</forename><surname>Csli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stanford</forename></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Building Pattern Dictionaries with Corpus Analysis</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Jezek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Colloquium on Possible Dictionaries</title>
+				<meeting><address><addrLine>Rome</addrLine></address></meeting>
+		<imprint>
+			<publisher>Oral Presentation</publisher>
+			<date type="published" when="2007-06" />
+			<biblScope unit="page" from="6" to="7" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">A pattern dictionary for natural language processing</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+	<note>Revue Française de Linguistique Appliquée</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">Corpus pattern analysis. CPA Project Page</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hanks</surname></persName>
+		</author>
+		<ptr target="http://nlp.fi.muni.cz/projekty/cpa/" />
+		<imprint>
+			<date type="published" when="2009-04-11" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Interpretation as abduction</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">R</forename><surname>Hobbs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Stickel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Martin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">63</biblScope>
+			<biblScope unit="page" from="69" to="142" />
+			<date type="published" when="1993" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kilgarriff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Rychly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Smrz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Tugwell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Sketch Engine. Proceedings of Euralex</title>
+		<imprint>
+			<biblScope unit="page" from="105" to="116" />
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">VerbNet: A broad-coverage, comprehensive verb lexicon. Phd dissertation</title>
+		<author>
+			<persName><forename type="first">Karin</forename><surname>Kipper</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+			<pubPlace>PA</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>University of Pennsylvania</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">SIMPLE: A general framework for the development of multilingual lexicons</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Bel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Busa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Calzolari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Gola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Monachini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ogonowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Ruimy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Lexicography</title>
+		<imprint>
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page">249</biblScope>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">SemEval-2007 task 8: Metonymy resolution</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Markert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nissim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth International Workshop on Semantic Evaluations</title>
+				<editor>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+			<persName><forename type="first">Richard</forename><surname>Wicentowski</surname></persName>
+		</editor>
+		<meeting>the Fourth International Workshop on Semantic Evaluations<address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007-06" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">The NomBank project: An interim report</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Meyers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Reeves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Macleod</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Szekely</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Zielinska</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Young</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Grishman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">HLT-NAACL 2004 Workshop: Frontiers in Corpus Annotation</title>
+				<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="24" to="31" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">The non-uniqueness of semantic solutions</title>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Nunberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Polysemy. Linguistics and Philosophy</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="143" to="184" />
+			<date type="published" when="1979" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">The proposition bank: An annotated corpus of semantic roles</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Gildea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Kingsbury</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="71" to="106" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Ontonotes: A unified relational semantic representation</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Semantic Computing</title>
+				<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="517" to="526" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Automated Induction of Sense in Context</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rumshisky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">COL-ING</title>
+				<meeting><address><addrLine>Geneva, Switzerland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="924" to="931" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Temporal and event information in natural language text</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Knippen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Littman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Sauri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Language Resources and Evaluation</title>
+		<imprint>
+			<biblScope unit="volume">39</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="123" to="164" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">GLML: Annotating argument selection and coercion</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rumshisky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Batiukova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IWCS-8: Eighth International Conference on Computational Semantics</title>
+				<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">The generative lexicon</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<date type="published" when="1991" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Polysemy in verbs: systematic relations between senses and their effect on annotation</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rumshisky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Batiukova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">COLING Workshop on Human Judgement in Computational Linguistics (HJCL-2008)</title>
+				<meeting><address><addrLine>Manchester, England</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Constructing a corpus-based ontology using model bias</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rumshisky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Havasi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The 19th International FLAIRS Conference</title>
+				<meeting><address><addrLine>Melbourne Beach, Florida, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Ruppenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ellsworth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Petruck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Scheffczyk</surname></persName>
+		</author>
+		<title level="m">FrameNet II: Extended Theory and Practice</title>
+				<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">FrameNet Español. Una red semántica de marcos conceptuales</title>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Subirats</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">VI International Congress of Hispanic Linguistics</title>
+				<meeting><address><addrLine>Leipzig</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">The Brandeis Annotation Tool</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Language Resources and Evaluation Conference, LREC 2010</title>
+				<meeting><address><addrLine>Malta</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

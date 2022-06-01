@@ -1,0 +1,1590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2018 Task 9: Hypernym Discovery</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Jose</forename><surname>Camacho-Collados</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">School of Computer Science and Informatics</orgName>
+								<orgName type="institution">Cardiff University</orgName>
+								<address>
+									<country key="GB">United Kingdom</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Claudio</forename><surname>Delli Bovi</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="laboratory">MIT</orgName>
+								<orgName type="institution">United States ♠ Bar-Ilan University</orgName>
+								<address>
+									<settlement>Ramat Gan</settlement>
+									<country key="IL">Israel</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Luis</forename><surname>Espinosa-Anke</surname></persName>
+							<email>espinosa-ankel@cardiff.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Computer Science and Informatics</orgName>
+								<orgName type="institution">Cardiff University</orgName>
+								<address>
+									<country key="GB">United Kingdom</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sergio</forename><surname>Oramas</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">Pompeu Fabra University</orgName>
+								<address>
+									<settlement>Barcelona</settlement>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Tommaso</forename><surname>Pasini</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="laboratory">MIT</orgName>
+								<orgName type="institution">United States ♠ Bar-Ilan University</orgName>
+								<address>
+									<settlement>Ramat Gan</settlement>
+									<country key="IL">Israel</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+							<email>esantus@mit.edu</email>
+							<affiliation key="aff1">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="laboratory">MIT</orgName>
+								<orgName type="institution">United States ♠ Bar-Ilan University</orgName>
+								<address>
+									<settlement>Ramat Gan</settlement>
+									<country key="IL">Israel</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Vered</forename><surname>Shwartz</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+							<email>navigli@di.uniroma1.it</email>
+							<affiliation key="aff1">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Sapienza University of Rome</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="laboratory">MIT</orgName>
+								<orgName type="institution">United States ♠ Bar-Ilan University</orgName>
+								<address>
+									<settlement>Ramat Gan</settlement>
+									<country key="IL">Israel</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">Pompeu Fabra University</orgName>
+								<address>
+									<settlement>Barcelona</settlement>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2018 Task 9: Hypernym Discovery</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the SemEval 2018 Shared Task on Hypernym Discovery. We put forward this task as a complementary benchmark for modeling hypernymy, a problem which has traditionally been cast as a binary classification task, taking a pair of candidate words as input. Instead, our reformulated task is defined as follows: given an input term, retrieve (or discover) its suitable hypernyms from a target corpus. We proposed five different subtasks covering three languages (English, Spanish, and Italian), and two specific domains of knowledge in English (Medical and Music). Participants were allowed to compete in any or all of the subtasks. Overall, a total of 11 teams participated, with a total of 39 different systems submitted through all subtasks. Data, results and further information about the task can be found at https://competitions. codalab.org/competitions/17119.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Hypernymy, i.e. the capability to relate generic terms or classes to their specific instances, lies at the core of human cognition. It is not surprising, therefore, that identifying hypernymic (is-a) relations has been pursued in NLP for more than two decades <ref type="bibr" target="#b43">(Shwartz et al., 2016)</ref>: indeed, successfully identifying this lexical relation substantially improves Question Answering applications <ref type="bibr" target="#b34">(Prager et al., 2008;</ref><ref type="bibr" target="#b55">Yahya et al., 2013)</ref>, Textual Entailment and Semantic Search systems <ref type="bibr" target="#b19">(Hoffart et al., 2014;</ref><ref type="bibr" target="#b38">Roller et al., 2014;</ref><ref type="bibr" target="#b37">Roller and Erk, 2016)</ref>. In addition, hypernymic relations are the backbone of almost every ontology, semantic network and taxonomy <ref type="bibr" target="#b56">(Yu et al., 2015)</ref>, which are in turn useful resources for downstream tasks such as web retrieval, website navigation or records management <ref type="bibr" target="#b7">(Bordea et al., 2015)</ref>.</p><p>Generally, evaluation benchmarks for modeling hypernymy have been designed such that in most cases they are reduced to binary classification <ref type="bibr" target="#b2">(Baroni and Lenci, 2011;</ref><ref type="bibr" target="#b45">Snow et al., 2004;</ref><ref type="bibr" target="#b6">Boleda et al., 2017;</ref><ref type="bibr" target="#b51">Vyas and Carpuat, 2017)</ref>, where a system has to decide whether a hypernymic relation holds between a given candidate pair of terms. Criticisms to this experimental setting point out that supervised systems tend to benefit from the inherent modeling of the datasets in the hypernym detection task, leading to lexical memorization phenomena <ref type="bibr" target="#b22">(Levy et al., 2015;</ref><ref type="bibr" target="#b40">Santus et al., 2016a;</ref><ref type="bibr" target="#b44">Shwartz et al., 2017)</ref>. In this respect, recent work has attempted to alleviate this issue by including a graded scale for evaluating the degree of hypernymy on a given pair <ref type="bibr" target="#b50">(Vulić et al., 2017)</ref>.</p><p>Crucially,  proposed to frame the problem as Hypernym Discovery, i.e. given the search space of a domain's vocabulary, and given an input term, discover its best (list of) candidate hypernyms. This formulation addresses one of the main drawbacks of the evaluation criterion described above, and better frames the evaluated systems within downstream realworld applications <ref type="bibr" target="#b9">(Camacho-Collados, 2017)</ref>. In fact, lessons learned from these studies have motivated the construction of a full-fledged benchmarking dataset for the shared task we present here, which covers multiple languages and knowledge domains. The main goal of this task is that of complementing current research in hypernymy modeling with this novel discovery setting.  <ref type="table">Table 1</ref>: Some example terms and hypernyms extracted from different sources (see Section 4.1.4), for each of the subtasks and languages considered in the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Traditionally, identifying hypernymic relations from text corpora has been addressed with two main approaches: pattern-based and distributional <ref type="bibr" target="#b52">(Wang et al., 2017)</ref>. Pattern-based (path-based) methods, which provide higher precision at the price of lower coverage, exploit the co-occurrence of a hyponym and its hypernym in a textual corpus <ref type="bibr" target="#b18">(Hearst, 1992;</ref><ref type="bibr" target="#b27">Navigli and Velardi, 2010;</ref><ref type="bibr" target="#b5">Boella and Di Caro, 2013;</ref><ref type="bibr" target="#b13">Flati et al., 2016;</ref><ref type="bibr" target="#b15">Gupta et al., 2016;</ref><ref type="bibr" target="#b32">Pavlick and Pasca, 2017)</ref>. Conversely, distributional models rely on a distributional representation for each observed word, and are capable of identifying hypernymic relations between concepts even when they do not co-occur explicitly in text. Earlier work on hypernym modeling was unsupervised, and leveraged various interpretations of the distributional hypothesis. <ref type="bibr">1</ref> Most of the recent work on the subject is however supervised, and in the main based on using word embeddings as input for classification or prediction (e.g <ref type="bibr" target="#b0">Baroni et al., 2012;</ref><ref type="bibr" target="#b42">Santus et al., 2014;</ref><ref type="bibr" target="#b14">Fu et al., 2014;</ref><ref type="bibr" target="#b53">Weeds et al., 2014;</ref><ref type="bibr" target="#b39">Sanchez Carmona and Riedel, 2017;</ref><ref type="bibr" target="#b28">Nguyen et al., 2017)</ref>. As shown by <ref type="bibr" target="#b43">Shwartz et al. (2016)</ref>, pattern-based and distributional evidences can be effectively combined within a neural architecture. In this shared task we have actually received systems of both natures, including a combination of pattern-based and distributional cues, similar to the one mentioned above, which also proved to be highly effective (see Section 5).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>We define Hypernym Discovery operatively as the task of finding and extracting the appropriate hypernym(s) for a target input term. As input for the task, together with the target term, 2 a large textual corpus (source corpus henceforth) is provided, and participating systems are intended to exploit this large source of textual data to retrieve (i.e. "discover") as many suitable hypernyms as possible for the target term. A different source corpus, as well as the corresponding vocabulary, is specified for each subtask and language (cf. Section 4) in order to set a level playing field for competing systems, and constrain their search space.</p><p>For each input term (or hyponym) the expected output is a ranked list of candidate hypernyms (up to 15) drawn from the provided vocabulary. Some example input-output pairs (i.e. terms and corresponding hypernym lists) are shown in Table <ref type="table">1</ref> for each subtask and language. Table 1 also reports the sources of hypernymy information beside each pair, which vary depending on the subtask and language, as detailed in Section 4.1.4.</p><p>The structure of our Hypernym Discovery task consists of five independent but related subtasks, split into two larger groups: general-purpose hypernym discovery and domain-specific hypernym discovery. Participants were allowed to submit systems for any individual subtask. Along with a specific source corpus and vocabulary, each subtask features its specific training and testing data, consisting of input terms and corresponding gold hypernym lists, obtained as described throughout Section 4.</p><p>General-Purpose Hypernym Discovery consists in discovering hypernyms in a large corpus of general-purpose textual data, gathered from different and heterogeneous sources. A system operating in this setting requires the flexibility to provide hypernyms for terms in a wide range of domains. In this shared task we consider three different lan-guages for general-purpose hypernym discovery:</p><p>• English (subtask 1A), with a gold standard of 3,000 labeled terms;</p><p>• Italian (subtask 1B) and Spanish (subtask 1C), each with a gold standard of 2,000 labeled terms;</p><p>All the gold standards provide a balanced set of input terms, with different degrees of frequency and for different domains. The corresponding gold hypernyms have been extracted from multiple resources and manually validated . Training and testing data are split evenly (50% training -50% testing).</p><p>Domain-Specific Hypernym Discovery deals with the same problem, but constrains it to a specific domain of knowledge. As a consequence, in this case participants test their systems (which might be general or specifically tailored to the target domain) in a much more focused and reduced environment. In this shared task we focus on English and consider two different domains of knowledge:</p><p>• Medical (subtask 2A), with a gold standard of 1,000 labeled terms;</p><p>• Music (subtask 2B), also with a gold standard of 1,000 labeled terms;</p><p>As in the previous subtask, we provide a balanced set of terms and gold hypernyms, with different degrees of frequency and for different subdomains. Again, training and testing data are split evenly (50% training -50% testing).</p><p>Subclass vs. Instance. Although many hypernym detection approaches tend to overlook this distinction, it is customary to consider two different varieties of the "is-a" relation: a subclass-of variety (e.g. a dog is a mammal), and an instance-of variety (e.g. Rome is a city). <ref type="bibr">3</ref> From a practical standpoint, the former occurs between two concepts, while the latter connects a named entity with a concept. We make this distinction explicit in our shared task by handlabeling each input term as either a concept or a named entity. This strategy serves a double purpose: on one hand, it helps reducing lexical ambiguity, and narrowing the search space of potential hypernyms even further; 4 on the other hand, it enables participants to study and develop models specifically tailored to one of the two varieties, and possibly submit them separately. In this respect, <ref type="bibr" target="#b6">Boleda et al. (2017)</ref> has indeed shown how systems tend to perform differently on these two kinds of hypernymy relation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Task Data</head><p>In this section we present the data collection process carried out for each source corpus and gold standard featured in the task (Section 4.1). We then summarize and provide some global statistics on all these datasets (Section 4.2).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Data Collection Process</head><p>The process of collecting data for each subtask and language comprised five successive steps: compilation of the source corpus (Section 4.1.1), creation of the vocabulary (Section 4.1.2), collection and selection of the input terms (Section 4.1.3), extraction of the gold hypernyms (Section 4.1.4), and final filtering and validation of such hypernyms (Section 4.1.5).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.1">Corpus Compilation</head><p>First, we selected and compiled a source corpus for each dataset, which was also considered in the vocabulary creation step (Section 4.1.2). Naturally, we considered three corpora as general and as large as possible for the general-purpose track, whereas for the domain-specific datasets we opted for more targeted and specific text collections.</p><p>General-purpose corpora. As source corpus for the English subtask (1A) we used the 3-billionword UMBC corpus 5 <ref type="bibr" target="#b16">(Han et al., 2013)</ref>, which is a resource composed of paragraphs extracted from the web as part of the Stanford WebBase Project 6 <ref type="bibr">(Hirai et al. 2000)</ref>. The UMBC corpus is considerably large and contains information from many and diverse domains. This corpus presents additional challenges and different sources of information with respect to the corpora used in previous tasks, such as Wikipedia in the SemEval 2016 task on taxonomy extraction <ref type="bibr" target="#b8">(Bordea et al., 2016)</ref>. In fact, the encyclopedic nature of Wikipedia has been exploited in a wide variety of works <ref type="bibr" target="#b33">(Ponzetto and Strube, 2007;</ref><ref type="bibr" target="#b13">Flati et al., 2016;</ref><ref type="bibr" target="#b15">Gupta et al., 2016)</ref>, and differs substantially from the web-based corpus we put forward here. As source corpus for the Italian subtask (1B) we instead used the 1.3-billion-word itWac corpus 7 <ref type="bibr" target="#b1">(Baroni et al., 2009)</ref>, extracted from different sources of the web within the .it domain. Finally, as source corpus for the Spanish subtask (1C) we considered the 1.8-billion-word Spanish corpus 8 <ref type="bibr" target="#b11">(Cardellino, 2016)</ref>, which also contains heterogeneous documents from different sources.</p><p>Domain-specific corpora. As source corpus for the medical domain (subtask 2A) we provided a combination of texts drawn from the MEDLINE 9 (Medical Literature Analysis and Retrieval System) repository, which contains academic documents such as scientific publications and paper abstracts. This corpus contains 130 million words.</p><p>As regards the music domain (subtask 2B), instead, the source corpus we compiled is a concatenation of several music-specific corpora, i.e. music biographies from Last.fm contained in ELMD 2.0 <ref type="bibr" target="#b30">(Oramas et al., 2016)</ref>, articles from the music branch of Wikipedia, and a corpus of album customer reviews from Amazon <ref type="bibr" target="#b31">(Oramas et al., 2017)</ref>. The resulting corpus reaches 100 million words in total.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.2">Vocabulary Creation</head><p>With the aim of simplifying the task for participants by providing a unified hypernym search space, we built a series of vocabulary files including all the possible hypernyms on each dataset. Each vocabulary was constructed by considering all the words occurring at least N times across the source corpus of the corresponding subtask. We set N to five and three in the general-purpose and domain-specific subtasks, respectively. We also included bigrams and trigrams, by considering all the instances present in any of the resources that we leveraged as part of the hypernym extraction process (see Section 4.1.4), provided that they also surpassed the corresponding frequency thresholds.</p><p>In order to reduce the high granularity of some hypernymy relations (for example, dog is an entity) we created an additional blacklist of very general terms not considered in the vocabulary files. This list was obtained semi-automatically. We first extracted the most common hypernyms from the lexical sources we used for creating the datasets. Then, we filtered the resulting blacklist by removing manually a number of suitable hypernyms that, despite being general, provided useful information worthy to be taken into account (e.g. animal).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.3">Term Collection</head><p>After compiling a source corpus and a corresponding vocabulary, we selected a suitable collection of input terms (i.e. hyponyms) to construct the gold standard for each subtask. Term selection was based on three key constraints. First, as in vocabulary creation step (Section 4.1.2), input terms were required to occur five and three times in the general-purpose and domain-specific datasets, respectively. Second, only terms up to trigrams were considered. Finally, we only allowed terms with at least one extracted hypernym (see Section 4.1.4) present in the corresponding vocabulary file.</p><p>We carried out the term collection process with a semi-automatic two-pass procedure, which we applied to the source corpus of each subtask. First, candidate terms were extracted automatically from the source corpus, taking into account frequency, type (i.e. concept and entity) and knowledge domain 10 in order to produce a list as balanced and representative as possible. After a preliminary list of input terms was obtained, we carried out an extensive validation and refinement step by manually normalizing each item (e.g. changing plurals to singulars, capitalizing named entities and lowercasing concepts), and by pruning all the terms that appeared too vague or general, as well as terms with mis-attributed domains.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.4">Automatic Hypernym Extraction</head><p>Once the terms were collected we proceeded to extract a set of candidate hypernyms from a number of heterogeneous taxonomies. We drew taxonomic information from the following lexical resources: WordNet <ref type="bibr" target="#b25">(Miller, 1995)</ref>, Wikidata <ref type="bibr" target="#b49">(Vrandečić and Krötzsch, 2014)</ref>, MultiWiBi <ref type="bibr" target="#b13">(Flati et al., 2016), and</ref><ref type="bibr">Yago (Suchanek et al., 2007)</ref>. In order to be able to use seamlessly all hypernymy information for languages other than English, we exploited the inter-resource mappings provided by BabelNet <ref type="bibr" target="#b26">(Navigli and Ponzetto, 2012)</ref>. <ref type="bibr">11</ref> For the domain-specific datasets we additionally used <ref type="bibr">SnomedCT (Spackman et al., 1997)</ref> and Mu-sicBrainz <ref type="bibr" target="#b48">(Swartz, 2002)</ref> for the medical and music datasets, respectively.</p><p>The hypernym extraction process was carried out as follows: given a term (hyponym), we first retrieved all the BabelNet synsets which included the given term as lexicalization; then, starting from that synset, we iteratively visited the father nodes across all the reference taxonomies up to five levels <ref type="bibr">12</ref> and selected all the lexicalizations of the traversed synsets (i.e. concepts) as given by Ba-belNet, provided that they appeared in the corresponding vocabulary files (see Section 4.1.2).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.5">Hypernym Validation</head><p>Starting from the candidate gold hypernyms extracted in the previous step, we carried out a validation step using human annotators. We leveraged crowdsourcing for the English data in subtask 1A (which featured the largest dataset), and then expert verification in all subtasks (including English).</p><p>Crowdsourcing. We validated the English gold standard (both training and test set) by using crowdsourcing workers from Amazon Mechanical Turk. To ensure the quality of workers, we required workers to have answered at least 500 prior HITs with an approval rate of at least 95%, and applied a qualification test. For each target term, we showed the workers multiple candidate hypernyms, extracted in the previous step (Section 4.1.4), and asked them to select all the correct hypernyms. We also added 20% of random false candidates to prevent bias towards a positive answer. Finally, we assigned each HIT to 3 workers and determined the gold label with majority voting. The resulting annotations yielded an interannotator agreement of 73%.</p><p>11 Yago is the only resource which is not mapped to Babel-Net. For the mapping we simply relied on the WordNet and Wikipedia identifiers provided in Yago. <ref type="bibr">12</ref> We decided to consider only five levels for two reasons: first, to avoid very general hypernyms; and second, to avoid errors which would propagate to other levels and make the validation task much harder. To this aim, five levels seemed to provide a fine balance between precision and recall.  Expert verification. Expert verification comprised two steps. First, all the extracted data was verified by an expert human annotator. In this first step, the annotator was focused on removing the incorrect hypernyms, or normalizing them if required (e.g. plural to singular). This first verification was performed in all dataset except English, which underwent the crowsourcing validation explained earlier. Then, all datasets (including the English one) were again verified by other experts. However, in this case the annotators were given different guidelines: in particular, they were asked to fix clear hypernym errors (which may have been missed in the previous step) and to add obvious hypernyms which they found to be missing.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Statistics</head><p>Table <ref type="table" target="#tab_2">2</ref> shows the number of input terms in each dataset. The dataset was split equally in training and testing, while the trial data provided a fewer examples and could also be used as development set. English (subtask 1A) was the largest dataset with 1,500 terms (hyponyms) and for training and other 1,500 for testing. Then, for the Italian (subtask 1B) and Spanish (subtask 1C) datasets, 2,000 terms were given overall between training and testing. Finally, both domain-specific datasets (i.e. medical, subtask 2A, and music, subtask 2B) contained half of this quantity, with 1,000 terms each.</p><p>Note that each term may be associated with one or (in most cases) more than one hypernym. Therefore, counting all the term-hypernym pairs per dataset, as it is done in hypernymy detection datasets, would provide much larger figures. As an example, the number of term-hypernym pairs in the test gold standard is 7,048 for English, 4,770 for Italian, 6,070 for Spanish, 4,116 for the medical dataset, and 5,233 for the music dataset.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation</head><p>Parting ways from the classic precision-recall-F 1 metrics used so far in hypernym detection/extraction, we decided to evaluate this shared task as a soft ranking problem. Systems were evaluated over the top 15 (at most) hypernyms retrieved for each input term, which let us assess their performance through Information Retrieval metrics. Let us briefly introduce each of them.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Mean Average Precision (MAP).</head><p>We use MAP as the main evaluation metric of this task. Intuitively, this metric should give a fine estimate on the capability of a system to retrieve a sizable number of hypernyms from textual data, as well as considering the precision of each of them. Formally:</p><formula xml:id="formula_0">MAP = 1 |Q| q∈Q AP(q)</formula><p>where Q is a sample of experiment runs, AP(•) refers to average precision, i.e. an average of the correctness of each individual obtained hypernym from the search space.</p><p>Mean Reciprocal Rank (MRR). MRR rewards the position of the first correct result in a ranked list of outcomes, and is defined as:</p><formula xml:id="formula_1">MRR = 1 |Q| |Q| i=1 1 rank i</formula><p>where rank i refers to the rank position of the first relevant outcome for the ith run. While its main field of application is Information Retrieval, it has also been used in NLP tasks such as collocation recognition <ref type="bibr" target="#b54">(Wu et al., 2010;</ref><ref type="bibr" target="#b36">Rodríguez-Fernández et al., 2016)</ref>.</p><p>In addition to the above, we also provide results according to P@k, i.e. the number of correctly retrieved hypernyms at different cut-off thresholds, specifically k ∈ {1, 3, 5, 15}. 13</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Baselines</head><p>We compared the participating systems with both supervised and unsupervised baselines for each subtask, inspired by recent work on hypernym detection and discovery. In this section we briefly describe each of them.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.1">Supervised Baselines</head><p>We first used a naïve most frequent hypernym (MFH) baseline, which simply returns, for each input term, the 15 most frequent hypernyms found in the training data. As a less naïve baseline, we also trained a transformation matrix <ref type="bibr" target="#b24">(Mikolov et al., 2013;</ref><ref type="bibr" target="#b14">Fu et al., 2014)</ref>, using the same optimization described by Espinosa-Anke et al. <ref type="bibr">(2016)</ref>. For this baseline the hypernyms in the vocabulary which are among the fifteen closest vectors by applying the transformation matrix are retrieved. However, unlike in the original implementation, in this case we did not perform any a priori domain clustering of the embeddings space, and thus used the same matrix for all input terms. <ref type="bibr">14</ref> This second supervised baseline is referred to as vTE (vanilla Taxoembed).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.2">Unsupervised Baselines</head><p>We developed an unsupervised baseline by reducing hypernymy discovery to hypernymy detection. We generated a list of candidate hypernyms for each target word, and then employed unsupervised hypernymy detection measures to decide whether a hypernymy relation holds. We used the opensource code by <ref type="bibr" target="#b44">Shwartz et al. (2017)</ref>. <ref type="bibr">15</ref> Our baseline starts by creating a distributional semantic model (DSM) for each domain/language (English, Spanish, Italian, Music and Medical). We used a non-directional window of size 5 as context type, and PPMI as feature weighting. Similarly to the hyponym selection step (Section 4.1.3), all the terms with frequency of at least 3 occurrences in the source corpus are considered as valid targets. For the context words, instead, we required a minimum of 100 occurrences, as in <ref type="bibr" target="#b44">Shwartz et al. (2017)</ref>. To generate candidates, we took the 50 most similar terms for each target word via cosine similarity in the DSM.</p><p>We chose the hypernym detection measures as representative algorithms from each "family" of unsupervised measures: APSyn <ref type="bibr" target="#b41">(Santus et al., 2016b)</ref> as similarity measure, balAPInc (Kotlerman et al., 2010) as measure based on the distributional inclusion hypothesis, and SLQS (Santus et al., 2014) as measure based on informativeness. <ref type="bibr">16</ref> Finally, we tuned the thresholds for the above measures by maximizing the average of the performance metrics on the training set, separately for each subtask and measure.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Participant Systems</head><p>Table <ref type="table" target="#tab_4">3</ref> shows a summary of all participant systems, displaying their main features with respect to supervison and external resources used, if any.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Results</head><p>A summary of the results is provided in tables 3 to 7, respectively describing results for English, Italian, Spanish and Music and Medical domains. Almost all systems performed better than the unsupervised baselines, while the supervised ones showed to be more challenging, with few systems outperforming them. For English, Music and Medical domains, CRIM (Bernier-Colborne and Barriere, 2018) obtained the best results, with a large margin on the other systems and baselines. This system is based on learning a projection between hyponym-hypernym pairs in terms of their corresponding embeddings, and combines this module with an unsupervised system which uses Hearst-style patterns. Moreover, in Italian, the best system was 300-sparsans r1 <ref type="bibr" target="#b3">(Berend et al., 2018)</ref>, a logistic regression model informed mostly with information coming from word embeddings; whereas for Spanish, the best performing team was NLP HZ <ref type="bibr" target="#b35">(Qiu et al., 2018)</ref>, who approached the task with a nearest neighbors algorithm trained with the provided training data.</p><p>From the summary tables we can also appreciate the difference in performance of the systems on concepts and entities. Such difference is due to several factors, including the quantity and type of hypernyms that needed to be identified for the two subclasses. Except for the Music domain, systems tended to perform better with entities than with concepts. This is probably due to the fact that entities contain many hypernyms which appear often (e.g. person, company), which in principle favor the inherent lexical memorization <ref type="bibr" target="#b22">(Levy et al., 2015)</ref> of supervised systems. Hence, as expected, systems performed better in the specialized domains (i.e. medical and music) than in the generaldomain dataset (34.05% and 40.97% MAP performance by the best systems in the medical and music domains, respectively, compared to the 19.78% result of the best system in the English dataset).</p><p>Finally, the results also show the clear superiority of supervised systems over unsupervised approaches in all languages and domains. As far as fully unsupervised systems are concerned, they achieved a diverse degree of success. While in general they were outperformed by supervised systems, in some cases their performance came close, especially for concepts. For instance, the ADAPT (Maldonado and Klubika, 2018) system, which is based on a simple similarity measure applied to word embeddings, achieved a very decent 8.13 MAP percentage performance on the medical dataset, using neither supervision nor external resources. Supervised systems produced a larger gap for entities, probably due, as mentioned above, to the lower diversity of possible hypernyms.</p><p>Cross-evaluation. In addition to the normal setting on which supervised systems trained their system on the same dataset training data, we ask participants to train systems on the English generalpurpose data and trained on the domain-specific datasets. This experiment could enable us to test how a system could perform on a particular dataset when training data is not available. A few teams provided results on this setting and the results showed that even though trained on general data, they are still competitive with respect to other approaches. In fact, they tend to equally outperform unsupervised systems and in the medical dataset, for example, CRIM trained on the general English corpora outperformed all remaining participant systems trained on the medical training data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Analysis</head><p>Inspired by previous tasks in taxonomy learning <ref type="bibr" target="#b7">(Bordea et al., 2015)</ref>, we sampled for each system 50 incorrect hypernyms (25 entities, 25 concepts) which were retrieved as first choice, and manually assessed their correctness. This evaluation of false positives is intended to account for the inevitable scenario in which not all possible correct hypernyms according to human judgement were included in the gold standard. The results in false positives were measured by accuracy (i.e. percentage of correct false positives on the given sample) and are displayed in Tables 4-8 under FPs.</p><p>In general, we observe that the systems' performances in this false positives experiment are correlated with the figures they obtained with the other automatic evaluation measures. Nonetheless, according to this false positives evaluation, most systems (both supervised and unsupervised) were able to retrieve some hypernyms which were not present in the gold standard. This result is encouraging, as not only hypernym discovery sys-   tems can be used to speed up the hypernym discovery process, but they can also provide new hypernyms not considered beforehand. Unsupervised distributional methods (e.g. the unsupervised baselines) seemed to perform poorly overall, as these systems tended to retrieve similar words which are not necessarily hypernyms. For example, false positives for APSyn and bal-APInc are characterized by a large number of cohyponyms (e.g. Exodus and Genesis) and syntag-matically related words (e.g. orange and juice).</p><p>As regards the top performing systems, it is worth noting that they often tended to retrieve correct or near-correct hypernyms. The hypernyms that were retrieved on the gold standard were of several kinds: first, some hypernyms were present in the gold standard but normalized differently (for example, for About.com the gold standard contained website but not web site retrieved by CRIM r1); second, they retrieved hy- pernyms which were either more or less finegrained than the gold standard hypernyms (e.g. the list of gold hypernyms for downfall includes natural phenomenon but not storm, discovered by some supervised systems); third, some systems were able to retrieve hypernyms which correspond to another hyponym's sense not captured in the gold standard (e.g. facultad in Spanish can be either an educational institution or a virtue/ability, the latter not being captured by the gold standard  but retrieved by the 300-sparsans r2 system). Perhaps surprisingly, this latter case also extends to baselines such as MFH: in fact, many named entities have very skewed sense distributions, with less popular senses corresponding to people, cities, or companies often unbeknownst to most human annotators. <ref type="bibr">17</ref> In addition to these three common patterns, there are also other correct false positives which do not clearly correspond to any of these three.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>In this paper we have presented the SemEval 2018 task on Hypernym Discovery. We provided a large, reliable framework to evaluate hypernym discovery system in various languages (English, Italian, and Spanish) and domains (medical and music). This evaluation framework aims at going beyond the common practice of seeing hypernymy detection as a binary classification task, and provides a more challenging setting, inherently closer to how the task should be modeled within downstream applications. We hope this framework will contribute to the development of hypernym discovery systems in several languages and, more generally, to a wider understanding of hypernymy from a computational perspective.</p><p>As far as the results are concerned, this newlyproposed task proved to be challenging for all participating systems, leaving considerable room for improvement. It is clear from the figures that supervised systems perform considerably better than unsupervised systems. This might suggests that, given a well-defined downstream task, it could be more valuable to annotate hypernyms manually or semi-automatically (whenever possible) and then train a supervised system, than proposing unsupervised solutions with suboptimal performances. On the other hand, it is also noteworthy that the best system across three of the subtasks (i.e. CRIM) combined a supervised neural network architecture with the output of an unsupervised system using Hearst-style patterns <ref type="bibr" target="#b18">(Hearst, 1992)</ref>.</p><p>as interaction of sparse attributes. In Proceedings of The 12th International Workshop on Semantic Evaluation, pages 925-931, New Orleans, Louisiana. Association for Computational Linguistics.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Number of terms (hyponyms) for each dataset in trial, training and test sets.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Summary of participating systems and baselines, along with their main features (i.e. with or without supervision, and usage of external resources).</figDesc><table><row><cell></cell><cell></cell><cell cols="2">Concepts</cell><cell cols="2">1A: English</cell><cell cols="2">Entities</cell><cell></cell><cell></cell><cell>All</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="12">MAP MRR P@5 FPs MAP MRR P@5 FPs MAP MRR P@5 FPs</cell></row><row><cell>CRIM r1 CRIM r2</cell><cell cols="3">16.08 30.04 15.41 15.49 29.29 14.97</cell><cell cols="4">20 29.21 51.82 27.74 24 28.63 50.55 27.65</cell><cell cols="4">24 19.78 36.10 19.03 20 19.54 35.94 18.74</cell><cell>22 22</cell></row><row><cell>MSCG-SANITY r1</cell><cell>9.36</cell><cell>18.9</cell><cell>9.38</cell><cell cols="4">28 17.72 38.85 16.91</cell><cell cols="4">20 11.83 24.79 11.60</cell><cell>24</cell></row><row><cell>vTE* MSCG-SANITY r2 NLP HZ</cell><cell cols="2">6.99 16.05 8.66 17.24 7.17 13.13</cell><cell>6.55 8.76 7.11</cell><cell cols="4">36 19.22 42.39 17.92 24 12.49 28.20 12.09 24 14.61 27.21 14.14</cell><cell cols="3">12 10.60 23.83 40 9.80 20.48 20 9.37 17.29</cell><cell>9.91 9.74 9.19</cell><cell>24 32 22</cell></row><row><cell>300-sparsans r1</cell><cell cols="2">6.41 13.92</cell><cell>6.33</cell><cell cols="4">24 15.02 32.61 14.10</cell><cell>16</cell><cell cols="2">8.95 19.44</cell><cell>8.63</cell><cell>20</cell></row><row><cell>MFH*</cell><cell cols="2">4.73 12.48</cell><cell>4.13</cell><cell cols="4">0 18.42 42.65 16.59</cell><cell>16</cell><cell cols="2">8.77 21.39</cell><cell>7.81</cell><cell>8</cell></row><row><cell>300-sparsans r2</cell><cell cols="2">5.97 12.72</cell><cell>5.73</cell><cell cols="4">20 14.78 30.62 14.21</cell><cell>20</cell><cell cols="2">8.58 18.00</cell><cell>8.23</cell><cell>20</cell></row><row><cell>SJTU BCMI</cell><cell>3.29</cell><cell>5.68</cell><cell>3.57</cell><cell cols="4">0 11.70 22.19 11.67</cell><cell>12</cell><cell cols="2">5.77 10.56</cell><cell>5.96</cell><cell>6</cell></row><row><cell>Team 13</cell><cell>3.70</cell><cell>7.92</cell><cell>3.66</cell><cell>12</cell><cell>0.52</cell><cell>1.65</cell><cell>0.46</cell><cell>20</cell><cell>2.77</cell><cell>6.07</cell><cell>2.72</cell><cell>16</cell></row><row><cell>Apollo r2</cell><cell>2.72</cell><cell>6.05</cell><cell>2.76</cell><cell>16</cell><cell>2.60</cell><cell>5.91</cell><cell>2.51</cell><cell>20</cell><cell>2.68</cell><cell>6.01</cell><cell>2.69</cell><cell>18</cell></row><row><cell>Apollo r1</cell><cell>1.36</cell><cell>3.28</cell><cell>1.34</cell><cell>16</cell><cell>1.48</cell><cell>4.05</cell><cell>1.31</cell><cell>16</cell><cell>1.40</cell><cell>3.51</cell><cell>1.33</cell><cell>16</cell></row><row><cell>APSyn*</cell><cell>1.73</cell><cell>3.69</cell><cell>1.74</cell><cell>16</cell><cell>0.55</cell><cell>1.41</cell><cell>0.55</cell><cell>4</cell><cell>1.38</cell><cell>3.02</cell><cell>1.39</cell><cell>10</cell></row><row><cell>balAPInc*</cell><cell>1.73</cell><cell>3.87</cell><cell>1.67</cell><cell>8</cell><cell>0.47</cell><cell>1.53</cell><cell>0.44</cell><cell>4</cell><cell>1.36</cell><cell>3.18</cell><cell>1.30</cell><cell>6</cell></row><row><cell>SLQS*</cell><cell>0.70</cell><cell>1.68</cell><cell>0.73</cell><cell>4</cell><cell>0.37</cell><cell>0.92</cell><cell>0.33</cell><cell>4</cell><cell>0.60</cell><cell>1.46</cell><cell>0.61</cell><cell>4</cell></row><row><cell>UMDuluth C</cell><cell cols="2">8.13 18.93</cell><cell>7.53</cell><cell>20</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>EXPR C</cell><cell cols="2">4.94 11.64</cell><cell>4.52</cell><cell>16</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>UMDuluth E</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>3.79</cell><cell>9.99</cell><cell>3.66</cell><cell>28</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Results for the English subtask (1A). Baselines are marked with *, and those system participating only on Concepts or Entities are shown at the bottom and marked with either 'C' or 'E'.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 6 :</head><label>6</label><figDesc>Results for the Spanish subtask (1C). Baselines are marked with *.</figDesc><table><row><cell></cell><cell></cell><cell cols="2">Concepts</cell><cell></cell><cell cols="3">1B: Italian Entities</cell><cell></cell><cell></cell><cell>All</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="12">MAP MRR P@5 FPs MAP MRR P@5 FPs MAP MRR P@5 FPs</cell></row><row><cell>300-sparsans r1 NLP HZ 300-sparsans r2 MFH*</cell><cell cols="3">8.94 18.77 8.71 9.28 15.23 9.12 7.32 16.02 7.31 5.07 13.30 4.31</cell><cell cols="4">12 22.56 46.34 21.79 12 18.32 32.37 18.26 16 16.18 36.12 16.02 0 16.71 39.56 15.18</cell><cell cols="4">16 12.08 25.14 11.73 28 11.37 19.19 11.23 12 9.36 19.94 9.32 8 7.76 19.37 6.82</cell><cell>14 20 14 4</cell></row><row><cell>vTE*</cell><cell cols="3">4.85 11.09 4.62</cell><cell cols="4">12 13.74 33.08 12.63</cell><cell>16</cell><cell cols="2">6.91 16.17</cell><cell>6.47</cell><cell>14</cell></row><row><cell>balAPInc* APSyn*</cell><cell cols="3">4.84 10.71 4.84 4.30 9.50 4.33</cell><cell>16 12</cell><cell>0.72 1.00</cell><cell>1.96 2.06</cell><cell>0.77 1.00</cell><cell>4 4</cell><cell>3.89 3.54</cell><cell>8.69 7.56</cell><cell>3.90 3.56</cell><cell>10 8</cell></row><row><cell>SLQS*</cell><cell>2.02</cell><cell cols="2">4.02 2.07</cell><cell>4</cell><cell>0.26</cell><cell>0.75</cell><cell>0.17</cell><cell>0</cell><cell>1.62</cell><cell>3.26</cell><cell>1.63</cell><cell>2</cell></row><row><cell>Team 13</cell><cell>0.62</cell><cell cols="2">1.69 0.57</cell><cell>8</cell><cell>0.13</cell><cell>0.27</cell><cell>0.17</cell><cell>8</cell><cell>0.51</cell><cell>1.36</cell><cell>0.48</cell><cell>8</cell></row><row><cell></cell><cell cols="10">Table 5: Results for the Italian subtask (1B). Baselines are marked with *.</cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell cols="2">Concepts</cell><cell></cell><cell cols="3">1C: Spanish Entities</cell><cell></cell><cell></cell><cell>All</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="12">MAP MRR P@5 FPs MAP MRR P@5 FPs MAP MRR P@5 FPs</cell></row><row><cell cols="4">NLP HZ 300-sparsans r1 13.21 28.07 12.80 18.17 25.17 18.71 300-sparsans r2 11.10 22.90 11.07 MFH* 8.33 17.19 8.51</cell><cell cols="4">12 23.19 33.48 23.21 8 25.91 53.51 24.24 20 14.92 30.87 15.14 0 18.58 50.89 15.88</cell><cell cols="4">24 20.04 28.27 20.39 4 17.94 37.56 17.06 12 12.52 25.87 12.59 8 12.16 29.76 11.26</cell><cell>18 6 16 4</cell></row><row><cell>vTE*</cell><cell cols="2">6.08 14.32</cell><cell>6.01</cell><cell>12</cell><cell cols="2">8.84 20.96</cell><cell>9.10</cell><cell>4</cell><cell cols="2">7.11 16.80</cell><cell>7.16</cell><cell>8</cell></row><row><cell>balAPInc*</cell><cell>3.52</cell><cell>7.99</cell><cell>3.62</cell><cell>0</cell><cell>0.59</cell><cell>1.39</cell><cell>0.55</cell><cell>0</cell><cell>2.43</cell><cell>5.53</cell><cell>2.48</cell><cell>0</cell></row><row><cell>APSyn*</cell><cell>3.28</cell><cell>6.76</cell><cell>3.29</cell><cell>8</cell><cell>0.74</cell><cell>1.71</cell><cell>0.79</cell><cell>0</cell><cell>2.33</cell><cell>4.88</cell><cell>2.35</cell><cell>4</cell></row><row><cell>Team 13</cell><cell>2.57</cell><cell>6.08</cell><cell>2.06</cell><cell>12</cell><cell>0.06</cell><cell>0.13</cell><cell>0.05</cell><cell>4</cell><cell>1.63</cell><cell>4.31</cell><cell>1.65</cell><cell>8</cell></row><row><cell>SLQS*</cell><cell>1.21</cell><cell>2.27</cell><cell>1.14</cell><cell>0</cell><cell>0.37</cell><cell>0.89</cell><cell>0.32</cell><cell>0</cell><cell>0.90</cell><cell>1.75</cell><cell>0.83</cell><cell>0</cell></row><row><cell></cell><cell></cell><cell cols="2">Concepts</cell><cell></cell><cell cols="3">2B: Music Entities</cell><cell></cell><cell></cell><cell>All</cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="12">MAP MRR P@5 FPs MAP MRR P@5 FPs MAP MRR P@5 FPs</cell></row><row><cell>CRIM r1 CRIM r2</cell><cell cols="3">43.38 63.79 43.87 41.98 63.07 42.32</cell><cell cols="4">24 38.42 55.54 38.76 20 34.59 51.08 35.80</cell><cell cols="4">12 40.97 60.93 41.31 8 40.88 60.18 41.58</cell><cell>16 16</cell></row><row><cell>MFH*</cell><cell cols="3">33.56 56.82 35.22</cell><cell cols="4">0 32.72 38.03 37.11</cell><cell cols="4">0 33.32 51.48 35.76</cell><cell>0</cell></row><row><cell cols="4">300-sparsans r1 23.52 39.26 22.66 CRIM CE 24.62 42.92 25.46</cell><cell cols="4">16 44.71 64.53 44.48 8 11.93 24.03 12.24</cell><cell cols="4">20 29.54 46.43 28.86 16 21.20 37.55 21.70</cell><cell>18 12</cell></row><row><cell cols="4">300-sparsans r2 12.49 27.33 12.79</cell><cell cols="4">20 35.72 60.35 38.63</cell><cell cols="4">4 19.08 36.71 20.13</cell><cell>12</cell></row><row><cell>vTE* Anu vTE* CE</cell><cell cols="3">11.53 35.78 10.28 10.68 27.13 10.84 6.31 16.54 6.81</cell><cell cols="4">12 16.67 48.39 17.77 32 3.43 7.19 3.90 4 13.37 33.58 14.87</cell><cell cols="4">20 12.99 39.36 12.41 8 8.62 21.47 8.87 4 3.51 9.79 3.62</cell><cell>16 20 4</cell></row><row><cell>SJTU BCMI</cell><cell>5.16</cell><cell>9.84</cell><cell>5.41</cell><cell>4</cell><cell cols="2">6.30 11.57</cell><cell>6.67</cell><cell>4</cell><cell>4.71</cell><cell>9.15</cell><cell>4.91</cell><cell>4</cell></row><row><cell>Team 13</cell><cell cols="2">4.83 14.33</cell><cell>4.51</cell><cell>12</cell><cell>2.82</cell><cell>7.92</cell><cell>3</cell><cell>8</cell><cell cols="2">5.62 16.87</cell><cell>5.11</cell><cell>16</cell></row><row><cell>ADAPT</cell><cell>1.88</cell><cell>5.34</cell><cell>1.89</cell><cell>2</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0</cell><cell>2.63</cell><cell>7.46</cell><cell>2.64</cell><cell>4</cell></row><row><cell>balAPInc*</cell><cell>1.44</cell><cell>3.65</cell><cell>1.58</cell><cell>4</cell><cell>0.15</cell><cell>0.23</cell><cell>0.14</cell><cell>0</cell><cell>1.95</cell><cell>5.01</cell><cell>2.15</cell><cell>2</cell></row><row><cell>APSyn*</cell><cell>1.13</cell><cell>2.55</cell><cell>1.30</cell><cell>8</cell><cell>0.15</cell><cell>0.23</cell><cell>0.18</cell><cell>4</cell><cell>1.51</cell><cell>3.47</cell><cell>1.74</cell><cell>6</cell></row><row><cell>SLQS*</cell><cell>0.64</cell><cell>1.25</cell><cell>0.65</cell><cell>0</cell><cell>0.11</cell><cell>0.14</cell><cell></cell><cell>0</cell><cell>0.86</cell><cell>1.69</cell><cell>0.85</cell><cell>0</cell></row><row><cell></cell><cell cols="10">Table 7: Results for the Music subtask (2B). Baselines are marked with *.</cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 8 :</head><label>8</label><figDesc>Results for the Medical subtask (2A). Baselines are marked with * and cross evaluation systems are followed by ' CE'.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1"> See Shwartz et al. (2017)  for a detailed review on unsupervised distributional hypernymy detection.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">A valid input term is any word or multi-word expression drawn from the predefined vocabulary (cf. Section 4.1.2) up to trigrams.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">In fact, WordNet encodes hypernym and instance as two separate semantic relations. Instances are always leaf (terminal) nodes in their hierarchies.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">As an example, the term apple could either refer to a fruit (if labeled as concept) or to a company (if labeled as named entity).5 http://ebiquity.umbc. edu/blogger/2013/05/01/ umbc-webbase-corpus-of-3b-english-words/ 6 http://dbpubs.stanford.edu:8091/ testbed/doc2/WebBase/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">http://wacky.sslmit.unibo.it/doku. php?id=corpora 8 http://crscardellino.me/SBWCE/ 9 https://www.nlm.nih.gov/databases/ download/pubmed_medline.html</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10">We leveraged the domains from the Wikipedia featured articles pages available in BabelDomains<ref type="bibr" target="#b10">(Camacho- Collados and Navigli, 2017)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="13">Although only P@5 is displayed in the tables due to lack of space, the other thresholds were used in the official evaluation as well.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="14">We used the open-source code available at https:// bitbucket.org/luisespinosa/taxoembed 15 https://github.com/vered1986/ UnsupervisedHypernymy 16 Following the conclusions from<ref type="bibr" target="#b44">Shwartz et al. (2017)</ref>, we set the hyper-parameters to: SLQS: median, PLMI, N = 100 and APSyn: N = 500.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="17">As an example, Cervantes is universally known as the famous Spanish writer who authored 'Don Quixote', but the word might also refer to a town in Western Australia.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>The authors gratefully acknowledge the economic support in the construction of the datasets from the Maria de Maeztu-UPF Grant provided to Horacio Saggion, Luis Espinosa-Anke and Sergio Oramas; Google Research through the Google Doctoral Fellowship in Natural Language Processing to Jose Camacho-Collados; and Bar-Ilan University through Vered Shwartz. This work is partially supported by the TUNER project (TIN2015-65308-C5-5-R, MINECO/FEDER, UE), Spanish Ministry of Economy and Competitiveness.</p><p>We would also like to thank the task participants who provided helpful inputs to improve the task through their comments in the Google Group.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Entailment above the word level in distributional semantics</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raffaella</forename><surname>Bernardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ngoc-Quynh</forename><surname>Do</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chung-Chieh</forename><surname>Shan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="23" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">The wacky wide web: a collection of very large linguistically processed web-crawled corpora. Language resources and evaluation</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silvia</forename><surname>Bernardini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adriano</forename><surname>Ferraresi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eros</forename><surname>Zanchetta</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="page" from="209" to="226" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">How we blessed distributional semantic evaluation</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the GEMS 2011 Workshop on GEometrical Models of Natural Language Semantics</title>
+				<meeting>the GEMS 2011 Workshop on GEometrical Models of Natural Language Semantics</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1" to="10" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">300-sparsans at semeval</title>
+		<author>
+			<persName><forename type="first">Gbor</forename><surname>Berend</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mrton</forename><surname>Makrai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pter</forename><surname>Fldik</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<publisher>Hypernymy</publisher>
+			<biblScope unit="volume">9</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Crim at semeval-2018 task 9: A hybrid approach to hypernym discovery</title>
+		<author>
+			<persName><forename type="first">Gabriel</forename><surname>Bernier-Colborne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Caroline</forename><surname>Barriere</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="722" to="728" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Supervised learning of syntactic contexts for uncovering definitions and extracting hypernym relations in text databases</title>
+		<author>
+			<persName><forename type="first">Guido</forename><surname>Boella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luigi</forename><forename type="middle">Di</forename><surname>Caro</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine learning and knowledge discovery in databases</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="64" to="79" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Instances and concepts in distributional space</title>
+		<author>
+			<persName><forename type="first">Gemma</forename><surname>Boleda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abhijeet</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Padó</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL<address><addrLine>Valencia, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">Georgeta</forename><surname>Bordea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Buitelaar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Faralli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<title level="m">Semeval-2015 task 17: Taxonomy extraction evaluation (texeval). In Proceedings of the SemEval workshop</title>
+				<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Semeval-2016 task 13: Taxonomy extraction evaluation (texeval-2)</title>
+		<author>
+			<persName><forename type="first">Georgeta</forename><surname>Bordea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Buitelaar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">SemEval-2016</title>
+				<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1081" to="1091" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Why we have switched from building full-fledged taxonomies to simply detecting hypernymy relations</title>
+		<author>
+			<persName><forename type="first">Jose</forename><surname>Camacho-Collados</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1703.04178</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">BabelDomains: Large-Scale Domain Labeling of Lexical Resources</title>
+		<author>
+			<persName><forename type="first">Jose</forename><surname>Camacho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">-Collados</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL<address><addrLine>Valencia, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">Cristian</forename><surname>Cardellino</surname></persName>
+		</author>
+		<title level="m">Spanish Billion Words Corpus and Embeddings</title>
+				<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Supervised distributional hypernym discovery via domain adaptation</title>
+		<author>
+			<persName><forename type="first">Luis</forename><surname>Espinosa-Anke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jose</forename><surname>Camacho-Collados</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claudio</forename><forename type="middle">Delli</forename><surname>Bovi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="424" to="435" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">MultiWiBi: the Multilingual Wikipedia Bitaxonomy Project</title>
+		<author>
+			<persName><forename type="first">Tiziano</forename><surname>Flati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Vannella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Pasini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Artificial Intelligence</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Learning semantic hierarchies via word embeddings</title>
+		<author>
+			<persName><forename type="first">Ruiji</forename><surname>Fu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiang</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wanxiang</forename><surname>Che</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haifeng</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Revisiting taxonomy induction over wikipedia</title>
+		<author>
+			<persName><forename type="first">Amit</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Piccinno</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mikhail</forename><surname>Kozhevnikov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marius</forename><surname>Pasca</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Pighin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers</title>
+				<meeting>COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2300" to="2309" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Umbc ebiquity-core: semantic textual similarity systems</title>
+		<author>
+			<persName><forename type="first">Lushan</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Abhay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Kashyap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Finin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Mayfield</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Weese</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Main Conference and the Shared Task: Semantic Textual Similarity</title>
+				<meeting>the Main Conference and the Shared Task: Semantic Textual Similarity</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="44" to="52" />
+		</imprint>
+	</monogr>
+	<note>Second Joint Conference on Lexical and Computational Semantics (* SEM)</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Umduluth-cs8761 at semeval-2018 task 9: Hypernym discovery using hearst patterns, co-occurrence frequencies and word embeddings</title>
+		<author>
+			<persName><forename type="first">Manikya</forename><surname>Arshia Zernab Hassan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ted</forename><surname>Swathi Vallabhajosyula</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pedersen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="911" to="915" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Automatic acquisition of hyponyms from large text corpora</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Marti</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hearst</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th conference on Computational linguistics</title>
+				<meeting>the 14th conference on Computational linguistics</meeting>
+		<imprint>
+			<date type="published" when="1992" />
+			<biblScope unit="page" from="539" to="545" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Stics: searching with strings, things, and cats</title>
+		<author>
+			<persName><forename type="first">Johannes</forename><surname>Hoffart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dragan</forename><surname>Milchevski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Weikum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 37th international ACM SIGIR conference on Research &amp; development in information retrieval</title>
+				<meeting>the 37th international ACM SIGIR conference on Research &amp; development in information retrieval</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1247" to="1248" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Expr at semeval-2018 task 9: A combined approach for hypernym discovery</title>
+		<author>
+			<persName><forename type="first">Ahmad</forename><surname>Issa Alaa Aldine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mounira</forename><surname>Harzallah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Berio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Bchet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmad</forename><surname>Faour</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="916" to="920" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Directional distributional similarity for lexical inference</title>
+		<author>
+			<persName><forename type="first">Lili</forename><surname>Kotlerman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Idan</forename><surname>Szpektor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maayan</forename><surname>Zhitomirsky-Geffet</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="issue">04</biblScope>
+			<biblScope unit="page" from="359" to="389" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Do supervised distributional methods really learn lexical inference relations?</title>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steffen</forename><surname>Remus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Israel</forename><surname>Ramat-Gan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL 2015</title>
+				<meeting>NAACL 2015<address><addrLine>Denver, Colorado, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Adapt at semeval-2018 task 9: Skip-gram word embeddings for unsupervised hypernym discovery in specialised corpora</title>
+		<author>
+			<persName><forename type="first">Alfredo</forename><surname>Maldonado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Klubika</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="921" to="924" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Exploiting similarities among languages for machine translation</title>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Quoc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sutskever</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1309.4168</idno>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Wordnet: a lexical database for english</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>George</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Miller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Communications of the ACM</title>
+		<imprint>
+			<biblScope unit="volume">38</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="39" to="41" />
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">BabelNet: The automatic construction, evaluation and application of a wide-coverage multilingual semantic network</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">193</biblScope>
+			<biblScope unit="page" from="217" to="250" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Learning word-class lattices for definition and hypernym extraction</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paola</forename><surname>Velardi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACL</title>
+				<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1318" to="1327" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Hierarchical embeddings for hypernymy detection and directionality</title>
+		<author>
+			<persName><forename type="first">Maximilian</forename><surname>Kim Anh Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Köper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ngoc</forename><forename type="middle">Thang</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Vu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="233" to="243" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Apollo at semeval-2018 task 9: Detecting hypernymy relations using syntactic dependencies</title>
+		<author>
+			<persName><forename type="first">Mihaela</forename><surname>Onofrei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ionut</forename><surname>Hulub</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Trandabat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniela</forename><surname>Gifu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="895" to="899" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Elmd: An automatically generated entity linking gold standard dataset in the music domain</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Oramas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luis</forename><surname>Espinosa-Anke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Sordo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xavier</forename><surname>Serra</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Conference on Language Resources and Evaluation (LREC 2016). European Language Resources Association</title>
+				<meeting>the 10th International Conference on Language Resources and Evaluation (LREC 2016). European Language Resources Association</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Multi-label music genre classification from audio, text, and images using deep features</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Oramas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oriol</forename><surname>Nieto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Barbieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xavier</forename><surname>Serra</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th International Society of Music Information Retrieval Conference</title>
+				<meeting>the 18th International Society of Music Information Retrieval Conference</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Identifying 1950s american jazz musicians: Fine-grained isa extraction via modifier composition</title>
+		<author>
+			<persName><forename type="first">Ellie</forename><surname>Pavlick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marius</forename><surname>Pasca</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="2099" to="2109" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Deriving a large scale taxonomy from wikipedia</title>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Simone</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Ponzetto</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Strube</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">AAAI</title>
+				<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page" from="1440" to="1445" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Question answering by predictive annotation</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Prager</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennifer</forename><surname>Chu-Carroll</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><forename type="middle">W</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Krzysztof</forename><surname>Czuba</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Open Domain Question Answering</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="307" to="347" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Nlp hz at semeval-2018 task 9: a nearest neighbor approach</title>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mosha</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Linlin</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luo</forename><surname>Si</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="906" to="910" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Semanticsdriven recognition of collocations using word embeddings</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rodríguez-Fernández</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luis</forename><forename type="middle">Espinosa</forename><surname>Anke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Carlini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leo</forename><surname>Wanner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="499" to="505" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Relations such as hypernymy: Identifying and exploiting hearst patterns in distributional vectors for lexical entailment</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Roller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katrin</forename><surname>Erk</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP<address><addrLine>Austin, Texas</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2163" to="2172" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Inclusive yet selective: Supervised distributional hypernymy detection</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Roller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katrin</forename><surname>Erk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gemma</forename><surname>Boleda</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2014</title>
+				<meeting>COLING 2014<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">How Well Can We Predict Hypernyms from Word Embeddings? A Dataset-Centric Analysis</title>
+		<author>
+			<persName><forename type="first">V. Ivan Sanchez</forename><surname>Carmona</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL (short)</title>
+				<meeting>EACL (short)</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="401" to="407" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<title level="m" type="main">Nine features in a random forest to learn taxonomical semantic relations</title>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tin-Shing</forename><surname>Chiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qin</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chu-Ren</forename><surname>Huang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1603.08702</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Unsupervised measure of word similarity: How to outperform cooccurrence and vector cosine in vsms</title>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tin-Shing</forename><surname>Chiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qin</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chu-Ren</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Thirtieth AAAI Conference on Artificial Intelligence</title>
+				<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="4260" to="4261" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Chasing hypernyms in vector spaces with entropy</title>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qin</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th Conference of the European Chapter of the Association for Computational Linguistics</title>
+				<meeting>the 14th Conference of the European Chapter of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="38" to="42" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Improving hypernymy detection with an integrated path-based and distributional method</title>
+		<author>
+			<persName><forename type="first">Vered</forename><surname>Shwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Hypernyms under siege: Linguistically-motivated artillery for hypernymy detection</title>
+		<author>
+			<persName><forename type="first">Vered</forename><surname>Shwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL<address><addrLine>Valencia, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Learning syntactic patterns for automatic hypernym discovery</title>
+		<author>
+			<persName><forename type="first">Rion</forename><surname>Snow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Jurafsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew Y</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="volume">17</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Snomed rt: a reference terminology for health care</title>
+		<author>
+			<persName><forename type="first">Keith</forename><forename type="middle">E</forename><surname>Kent A Spackman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger</forename><forename type="middle">A</forename><surname>Campbell</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Côté</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AMIA annual fall symposium, page 640. American Medical Informatics Association</title>
+				<meeting>the AMIA annual fall symposium, page 640. American Medical Informatics Association</meeting>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Yago: A core of semantic knowledge</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Fabian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gjergji</forename><surname>Suchanek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Kasneci</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Weikum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">WWW</title>
+				<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="697" to="706" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Musicbrainz: A semantic web service</title>
+		<author>
+			<persName><forename type="first">Aaron</forename><surname>Swartz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Intelligent Systems</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="76" to="77" />
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Wikidata: a free collaborative knowledgebase</title>
+		<author>
+			<persName><forename type="first">Denny</forename><surname>Vrandečić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Markus</forename><surname>Krötzsch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Communications of the ACM</title>
+		<imprint>
+			<biblScope unit="volume">57</biblScope>
+			<biblScope unit="issue">10</biblScope>
+			<biblScope unit="page" from="78" to="85" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Hyperlex: A large-scale evaluation of graded lexical entailment</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniela</forename><surname>Gerz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felix</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Detecting asymmetric semantic relations in context: A casestudy on hypernymy detection</title>
+		<author>
+			<persName><forename type="first">Yogarshi</forename><surname>Vyas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marine</forename><surname>Carpuat</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Joint Conference on Lexical and Computational Semantics (*SEM 2017)</title>
+				<meeting>the 6th Joint Conference on Lexical and Computational Semantics (*SEM 2017)</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="33" to="43" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">A short survey on taxonomy learning from text corpora: Issues, resources and recent advances</title>
+		<author>
+			<persName><forename type="first">Chengyu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaofeng</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aoying</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1190" to="1203" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Learning to distinguish hypernyms and co-hyponyms</title>
+		<author>
+			<persName><forename type="first">Julie</forename><surname>Weeds</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daoud</forename><surname>Clarke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Reffin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Weir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bill</forename><surname>Keller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COL-ING 2014, the 25th International Conference on Computational Linguistics: Technical Papers</title>
+				<meeting>COL-ING 2014, the 25th International Conference on Computational Linguistics: Technical Papers</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="2249" to="2259" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">Automatic collocation suggestion in academic writing</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">C</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">C</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Mitamura</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">S</forename><surname>Chang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ACL Conference</title>
+				<meeting>the ACL Conference<address><addrLine>Uppsala</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+	<note>Short paper track</note>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">Robust question answering over the web of linked data</title>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Yahya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Klaus</forename><surname>Berberich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shady</forename><surname>Elbassuoni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Weikum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 22nd ACM international conference on Conference on information &amp; knowledge management</title>
+				<meeting>the 22nd ACM international conference on Conference on information &amp; knowledge management</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1107" to="1116" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">Learning term embeddings for hypernymy identification</title>
+		<author>
+			<persName><forename type="first">Zheng</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haixun</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuemin</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Min</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of IJCAI</title>
+				<meeting>IJCAI</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1390" to="1397" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">Sjtu-nlp at semeval-2018 task 9: Neural hypernym discovery with term embeddings</title>
+		<author>
+			<persName><forename type="first">Zhousheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiangtong</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hai</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bingjie</forename><surname>Tang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="900" to="905" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

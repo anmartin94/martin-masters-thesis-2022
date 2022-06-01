@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Sensiting inflectionality: Estonian task for SENSEVAL-2</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Neeme</forename><surname>Kahusk</surname></persName>
+							<email>nkahusk@psych.ut.ee</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Tartu Research Group of Computational Linguistics Tiigi 78</orgName>
+								<address>
+									<postCode>50410</postCode>
+									<settlement>Tartu</settlement>
+									<country key="EE">Estonia</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Heili</forename><surname>Orav</surname></persName>
+							<email>horav@psych.ut.ee</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Tartu Research Group of Computational Linguistics Tiigi 78</orgName>
+								<address>
+									<postCode>50410</postCode>
+									<settlement>Tartu</settlement>
+									<country key="EE">Estonia</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Baldur</forename><surname>Oim</surname></persName>
+							<email>hoim@psych.ut.ee</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Tartu Research Group of Computational Linguistics Tiigi 78</orgName>
+								<address>
+									<postCode>50410</postCode>
+									<settlement>Tartu</settlement>
+									<country key="EE">Estonia</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Sensiting inflectionality: Estonian task for SENSEVAL-2</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:25+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the all-word sense disambiguation task provided by Estonian team at SENSEVAL-2. About 10,000 words are manually disambiguated according to Estonian WordN et word senses. Language-specific problems and lexicon features are discussed.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>We got interested in word sense disambiguation (WSD) for two reasons. First, already a couple of years ago it was evident that WSD is becoming one of the new "hot" topics in computational linguistics and language engineering as our knowledge of how to handle semantic parameters of texts and semantic features of words in texts increased. The second reason was purely practical. Since 1996 we have been involved in a large project of building a semantic database of Estonian; participating in the Euro WordNet project has been a part of it (but a very important part, of course). The main source of building this database have been different corpora of Estonian, and in working with corpora the question of whether we are dealing with different meanings of a word in case of its concrete occurrences or not arises constantly. So we got interested in the possibility to use some objective methods here.</p><p>Our task was all-words task. This choice is explained with our "practical" interests explained above.</p><p>A large amount of work was done to provide training data where disambiguation was done manually. The same kind of work had to be done with test data, of course. The description of this work is given below. Let us note already here that this work appeared to be very useful and informative for us as builders of Estonian WordNet (EstWN).</p><p>And let us stress that this was our first attempt of WSD at all.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Corpora and lexicon</head><p>The test and training texts come from Corpus of the Estonian Literary Language (CELL), the 1980-s. We used this part of the corpus, that was morphologically disambiguated, initially for the syntactic analysis.</p><p>The morphological analysis was made with ESTMORF <ref type="bibr" target="#b0">(Kaalep, 1997)</ref>. Lemma and word class in the output of the program are relevant to our task, but it is impossible to get them without morphological disambiguation, because of frequent homonymy among word forms.</p><p>All training texts and most of test texts (5 of 6 total) are fiction. One of the test texts is from newspaper. Six training and six test files provided for the task contain about 2000 tokens each. More information about the texts used in the task is in Table <ref type="table" target="#tab_0">1</ref>.  <ref type="bibr">roWordNet (Vider et al., 1999)</ref>. Est WN is supposed to cover the Estonian base vocabulary in its initial version. The base vocabulary will be determined by statistical analysis of the reference corpus. Even so it is not always easy (nor appropriate) to stop encoding words with frequencies below a certain threshold. For this reason we expect Est WN to cover more than just the base vocabulary.</p><p>Still the Est WN is rather small, there were 9436 synsets, 13277 words and 16961 senses (literals) in it when the disambiguation was done. That makes about 1.28 senses per word as average.</p><p>Most of synsets are connected with hyperonym-hyponym relations building corresponding hierarchies.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Procedure</head><p>Four linguists disambiguated the texts, each text was disambiguated by two persons. Only nouns and verbs were disambiguated, as entering adjectives into Est WN is in the very beginning. The sense number was marked according to sense number in EstWN. If the word was missing from the Est WN, "0" was marked as sense number, and if the word was in EstWN, but missed the appropriate sense, "+ 1" was marked.</p><p>If inconsistencies were met, they were discussed until agreement was achieved. On about 28% of the cases the disambiguators had different opinions.</p><p>One of the problems that the disambiguators ran into concerned dividing words into different senses in Est WN. It turned out as overdifferentiation-word meaning marked as too specific, or over-generalisation--word meanmg marked as too general.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">How much the lexicon covers</head><p>Not all senses found in Est WN are represented in texts. Maximum number of senses per word found in texts is 13. This is more than appropriate senses in lexicon (see Table <ref type="table" target="#tab_2">3</ref>), but we must remeber about the "+1" that disambiguators had, if they found that there are not enough meanings in Est WN. Table <ref type="table" target="#tab_1">2</ref> describes distribution of senses in usage and Table <ref type="table" target="#tab_2">3</ref> shows the top of lemmas according to number of senses.  It would be the best, if all words to disambiguate were in the lexicon with all their possibl~ meanings. Apparently this presumption is not met.</p><p>The number of compounds in Estonian is indefinite. It is quite easy for a writer to invent new compounds that are not in any dictionary, but nevertheless are easily understood by readers. That is one reason, why there are so many sense numbers "0" in the texts. About 46% of words that are not in EstWN, are compounds.</p><p>Another remarkable class of words not in lexicon are proper names, as there are no proper names in EstWN. There are 17.5% of words proper names.</p><p>If we will postpone phrasal verbs and some strange words that contain hyphens (about 7 %) , it leaves us with about half thousand words to check why they are not in EstWN.</p><p>But why are there missing senses (tagged with "+1")? The reason is simply historical: such words were included into EstWN as synonyms of some base vocabulary word and the other senses of them are not considered yet.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Phrases and multi-word units</head><p>The initial format of text was as it came from ESTMORF and semantic disambiguation: every word on separate line, followed by an aditional line of morphological analysis and sense number, with multi-word phrase marked if word was part of it. The task to convert into Senseval XML format seemed trivial at first, but phrases turned out to be problematic. Unfortunately enough, all the story about phrases is concerning the training corpus only, because in test corpus the multi-word phrases were unmarked.</p><p>Estonian is a flective language with a free word order and that makes it complicated to figure out all phrases. The elements of a phrase can be scattered around the sentence in an unpredictable order.</p><p>In the initial texts, the disambiguators marked down the whole phrase on the line where the phrase occured. They were not told to mark it on each line, where the non-disambiguatable parts of the phrase were, and it happened that the phrase was not marked on the line, where the head of the phrase was. The algorithm of calculating head or satellite took into account the part of speech and the form. For verb phrases, if both components were verbs, declinable form of verb infinitive was marked as satellite. For noun phrases, substantive makes head and adjective satellite. If both words are substantives, head is the second one ... well, mostly.</p><p>However, it is known that expressions tend to contain frozen forms, including inflectional endings. For example, one may not say "*Human Right" or "*Humans Right". "Human Rights" is the only correct expression and should be added into thesauri in such form. Phrasal verbs like "ax a maksma" (to pay off) and idiomatic verbal expressions like "end tiikkideks naerma" (to laugh oneself into pieces) represent a situation that is different from the occasion described above: the verb part may inflect freely, but the other word(s) are frozen forms. Hereby, even if we have determined what is phrase 27 or collocational multi-word unit, we still have a question~ are they commonly used and should we add them into the lexicon.</p><p>Multiword expressions are included into Est WN if they build up a conceptual unit and are commonly used as lexical units.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Results</head><p>There were two systems to solve the task on Estonian. The results are in Table <ref type="table" target="#tab_3">4</ref>. Table <ref type="table" target="#tab_4">5</ref> shows the recall and precision of the COMMO-NEST baseline  As this is the first attempt to disambiguate Estonian nouns and verbs in text, there is no comparison data. These results will set the level that future systems will try to outgo.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Conclusions</head><p>Results of WSD of corpus texts turned to be a good way to add missing synsets and senses into our word net. There were significant inconsistencies in opinions of these people, who disambiguated the texts. This shows us the most problematic entries in EstWN, the need to reconsider the borders of meaning of some concepts. By now, the last version of EstWN contains 9524 synsets, 13344 words and 17076 senses.</p><p>For an inflectional language like Estonian, morphological analysis is extremely important and morphological and semantic disabiguation can help each other.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table><row><cell cols="3">Statistics on training and test corpora</cell></row><row><cell>Corpus</cell><cell>Training</cell><cell>Test</cell></row><row><cell>Total words</cell><cell cols="2">12162 11440</cell></row><row><cell>Words to disambiguate</cell><cell>5854</cell><cell>5650</cell></row><row><cell>of them being</cell><cell></cell><cell></cell></row><row><cell>verbs</cell><cell>2431</cell><cell>2191</cell></row><row><cell>nouns</cell><cell>3423</cell><cell>3459</cell></row><row><cell>2.1 Lexicon</cell><cell></cell><cell></cell></row><row><cell cols="3">The Estonian part of EuroWordNet 1 served as</cell></row><row><cell cols="3">the lexicon. Like other wordnets, Est WN is</cell></row></table><note>a lexical-semantic database, the basic unit of which is concept. Concepts are represented as synonym sets ( synsets) that are linked to each other by semantic relations. The description of Est WN is given in the final document of Eu-</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>Distribution of lemmas according 1 number of senses in texts</figDesc><table><row><cell>Corpus</cell><cell cols="2">Training Tesi</cell></row><row><cell>Total number of lemmas</cell><cell cols="2">2340 226E</cell></row><row><cell>Number of lemmas not in</cell><cell>819</cell><cell>94E</cell></row><row><cell>lexicon</cell><cell></cell><cell></cell></row><row><cell>Number of lemmas with 1</cell><cell cols="2">2040 2003</cell></row><row><cell>sense in texts</cell><cell></cell><cell></cell></row><row><cell>Lemmas with 2 senses lll</cell><cell>215</cell><cell>183</cell></row><row><cell>texts</cell><cell></cell><cell></cell></row><row><cell>Lemmas with 3 senses Ill</cell><cell>51</cell><cell>50</cell></row><row><cell>texts</cell><cell></cell><cell></cell></row><row><cell>Lemmas with 4 senses in</cell><cell>17</cell><cell>17</cell></row><row><cell>texts</cell><cell></cell><cell></cell></row><row><cell>Lemmas with more than 4</cell><cell>17</cell><cell>15</cell></row><row><cell>senses in texts</cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell cols="3">: Comparison of richest words in sense</cell></row><row><cell cols="3">POS No of senses Lemma No of senses</cell></row><row><cell>in text</cell><cell>in lexicon</cell><cell></cell></row><row><cell>verb</cell><cell>13 saama</cell><cell>12</cell></row><row><cell>verb</cell><cell>10 pidama</cell><cell>12</cell></row><row><cell>noun</cell><cell>10 asi</cell><cell>11</cell></row><row><cell>verb</cell><cell>9 olema</cell><cell>9</cell></row><row><cell>verb</cell><cell>9 kiiima</cell><cell>23</cell></row><row><cell>verb</cell><cell>7 votma</cell><cell>7</cell></row><row><cell>verb</cell><cell>7 panema</cell><cell>11</cell></row><row><cell>verb</cell><cell>7 nagema</cell><cell>7</cell></row><row><cell>verb</cell><cell>7 min em a</cell><cell>17</cell></row><row><cell>verb</cell><cell>7 leidma</cell><cell>8</cell></row><row><cell>noun</cell><cell>7 elu</cell><cell>7</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 4</head><label>4</label><figDesc></figDesc><table><row><cell cols="4">: Estonian all-words fine-grained scoring</cell></row><row><cell>results</cell><cell></cell><cell></cell><cell></cell></row><row><cell>System</cell><cell cols="3">Precision Recall Attempted</cell></row><row><cell>JHU</cell><cell>0.67</cell><cell>0.67</cell><cell>100</cell></row><row><cell>est-semyh</cell><cell>0.66</cell><cell>0.66</cell><cell>100</cell></row><row><cell></cell><cell>'</cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 5</head><label>5</label><figDesc></figDesc><table><row><cell cols="3">: COMMONEST baseline for Estonian</cell></row><row><cell>all-words task ' Data</cell><cell cols="2">Recall Precision</cell></row><row><cell>Overall</cell><cell>0.85</cell><cell>0.73</cell></row><row><cell>Polysemous</cell><cell>0.69</cell><cell>0.51</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http:/ jwww.hum. uva.nl;-ewn/</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>K. <ref type="bibr">Vider, L. Paldre, H. Orav, and H. Oim. 1999.</ref> The Estonian Wordnet. In C. Kunze, editor, Final Wordnets for German, French, Estonian and Czech. EuroWordNet (LE-8328), Deliverable 2D014.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">An estonian morphological analyser and the impact of a corpus on its development</title>
+		<author>
+			<persName><forename type="first">H.-J</forename><surname>Kaalep</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computers and the Humanities</title>
+		<imprint>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="page" from="115" to="133" />
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Overview of the Fourth Social Media Mining for Health (#SMM4H) Shared Task at ACL 2019</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Davy</forename><surname>Weissenbacher</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Perelman School of Medicine</orgName>
+								<orgName type="institution" key="instit1">DBEI</orgName>
+								<orgName type="institution" key="instit2">University of Pennsylvania</orgName>
+								<address>
+									<region>PA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">Biodesign Center for Environmental Health Engineering</orgName>
+								<orgName type="institution" key="instit2">Biodesign Institute</orgName>
+								<orgName type="institution" key="instit3">Arizona State University</orgName>
+								<address>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Abeed</forename><surname>Sarker</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Perelman School of Medicine</orgName>
+								<orgName type="institution" key="instit1">DBEI</orgName>
+								<orgName type="institution" key="instit2">University of Pennsylvania</orgName>
+								<address>
+									<region>PA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">Biodesign Center for Environmental Health Engineering</orgName>
+								<orgName type="institution" key="instit2">Biodesign Institute</orgName>
+								<orgName type="institution" key="instit3">Arizona State University</orgName>
+								<address>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Arjun</forename><surname>Magge</surname></persName>
+							<email>amaggera@asu.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Ashlynn</forename><surname>Daughton</surname></persName>
+							<email>ashlynn.daughton@colorado.edu</email>
+							<affiliation key="aff2">
+								<orgName type="institution">Information Science University of Colorado Boulder</orgName>
+								<address>
+									<region>CO</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Karen</forename><surname>O'connor</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Perelman School of Medicine</orgName>
+								<orgName type="institution" key="instit1">DBEI</orgName>
+								<orgName type="institution" key="instit2">University of Pennsylvania</orgName>
+								<address>
+									<region>PA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">Biodesign Center for Environmental Health Engineering</orgName>
+								<orgName type="institution" key="instit2">Biodesign Institute</orgName>
+								<orgName type="institution" key="instit3">Arizona State University</orgName>
+								<address>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Michael</forename><surname>Paul</surname></persName>
+							<email>mpaul@colorado.edu</email>
+							<affiliation key="aff2">
+								<orgName type="institution">Information Science University of Colorado Boulder</orgName>
+								<address>
+									<region>CO</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Graciela</forename><surname>Gonzalez-Hernandez</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Perelman School of Medicine</orgName>
+								<orgName type="institution" key="instit1">DBEI</orgName>
+								<orgName type="institution" key="instit2">University of Pennsylvania</orgName>
+								<address>
+									<region>PA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">Biodesign Center for Environmental Health Engineering</orgName>
+								<orgName type="institution" key="instit2">Biodesign Institute</orgName>
+								<orgName type="institution" key="instit3">Arizona State University</orgName>
+								<address>
+									<region>AZ</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Overview of the Fourth Social Media Mining for Health (#SMM4H) Shared Task at ACL 2019</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract/>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The number of users of social media continues to grow, with nearly half of adults worldwide and two-thirds of all American adults using social networking on a regular basis 1 . Advances in automated data processing and NLP present the possibility of utilizing this massive data source for biomedical and public health applications, if researchers address the methodological challenges unique to this media. We present the Social Media Mining for Health Shared Tasks collocated with the ACL at Florence in 2019, which address these challenges for health monitoring and surveillance, utilizing state of the art techniques for processing noisy, real-world, and substantially creative language expressions from social media users. For the fourth execution of this challenge, we proposed four different tasks. Task 1 asked participants to distinguish tweets reporting an adverse drug reaction (ADR) from those that do not. Task 2, a follow-up to Task 1, asked participants to identify the span of text in tweets reporting ADRs. Task 3 is an end-to-end task where the goal was to first detect tweets mentioning an ADR and then map the extracted colloquial mentions of ADRs in the tweets to their corresponding standard concept IDs in the MedDRA vocabulary. Finally, Task 4 asked participants to classify whether a tweet contains a personal mention of one's health, a more general discussion of the health issue, or is an unrelated mention. A total of 34 teams from around the world registered and 19 teams from 12 countries submitted a system run. We summarize here the corpora for this challenge which are freely available at https://competitions.codalab. org/competitions/22521, and present an overview of the methods and the results of the competing systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The intent of the #SMM4H shared tasks series is to challenge the community with Natural Language Processing tasks for mining relevant data for health monitoring and surveillance in social media. Such challenges require processing imbalanced, noisy, real-world, and substantially creative language expressions from social media. The competing systems should be able to deal with many linguistic variations and semantic complexities in the various ways people express medication-related concepts and outcomes. It has been shown in past research <ref type="bibr" target="#b6">(Liu et al., 2011;</ref><ref type="bibr" target="#b2">Giuseppe et al., 2017)</ref> that automated systems frequently under-perform when exposed to social media text because of the presence of novel/creative phrases, misspellings and frequent use of idiomatic, ambiguous and sarcastic expressions. The tasks act as a discovery and verification process of what approaches work best for social media data.</p><p>As in previous years, our tasks focused on mining health information from Twitter. This year we challenged the community with two different problems. The first problem focuses on performing pharmacovigilance from social media data. It is now well understood that social media data may contain reports of adverse drug reactions (ADRs) and these reports may complement traditional adverse event reporting systems, such as the FDA adverse event reporting system (FAERS). However, automatically curating reports from adverse reactions from Twitter requires the application of a series of NLP methods in an end-to-end pipeline . The first three tasks of this year's challenge represent three key NLP problems in a social media based pharmacovigilance pipeline -(i) automatic classification of ADRs, (ii) extraction of spans of ADRs and (iii) normal-ization of the extracted ADRs to standardized IDs.</p><p>The second problem explores the generalizability of predictive models. In health research using social media, it is often necessary for researchers to build individual classifiers to identify health mentions of a particular disease in a particular context. Classification models that can generalize to different health contexts would be greatly beneficial to researchers in these fields (e.g., <ref type="bibr" target="#b9">(Payam and Eugene, 2018)</ref>), as this would allow researchers to more easily apply existing tools and resources to new problems. Motivated by these ideas, Task 4 was testing tweet classification methods across diverse health contexts, so the test data included a very different health context than the training data. This setting measures the ability of tweet classifiers to generalize across health contexts.</p><p>The fourth iteration of our series follows the same organization as previous iterations. We collected posts from Twitter, annotated the data for the four tasks proposed and released the posts to the registered teams. This year, we conducted the evaluation of all participating systems using Codalab, an open source platform facilitating data science competitions. The performances of the systems were compared on a blind evaluations sets for each task.</p><p>All teams registered were allowed to participate to one or multiple tasks. We provided the participants with two sets of data for each task, a training and a test set. Participants had a period of six weeks, from March 5 th to April 15 th , for training their systems on our training sets, and 4 days, from the 16 th to 20 th of April, for calibrating their systems on our test sets and submitting their predictions. In total 34 teams registered and 19 teams submitted at least one run (each team was allowed to submit, at most, three runs per task). In detail, we received 43 runs for task 1, 24 for task 2, 10 for task 3 and 15 for task 4. We briefly describe each task and their data in section 2, before discussing the results obtained in section 3.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Descriptions</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Tasks</head><p>Task 1: Automatic classification of tweets mentioning an ADR. This is a binary classification task for which systems are required to predict if a tweet mentions an ADR or not. In an end-to-end social media based pharmacovigilance pipeline, such a system is needed after data collection to filter out the large volume of medication-related chatter that is not a mention of an ADR. This task is a rerun of the popular classification task organized in past years.</p><p>Task 2: Automatic extraction of ADR mentions from tweets. This is a named entity recognition (NER) task that typically follows the ADR classification step (Task 1) in an ADR extraction pipeline. Given a set of tweets containing drug mentions and potentially containing ADRs, the objective was to determine the span of the ADR mention, if any. ADRs are rare events making ADR classification a challenging task with an F1score in the vicinity of 0.5 (based on previous shared task results <ref type="bibr" target="#b14">(Weissenbacher et al., 2018)</ref>) for the ADR class. The dataset for the ADR extraction task contains tweets that are both positive and negative for the presence of ADRs. This allowed participants to choose to train their systems on either the set of tweets containing ADRs or include tweets that were negative for the presence of ADRs.</p><p>Task 3: Automatic extraction of ADR mentions and normalization of extracted ADRs to Med-DRA preferred term identifiers. This is an extension of Task 2 consisting of the combination of NER and entity normalization tasks: a named entity resolution task. In this task, given the same set of tweets as in Task 2, the objective was to extract the span of an ADR mention and to normalize it to MedDRA identifiers 2 . MedDRA (Medical Dictionary for Regulatory Activities), which is the standard nomenclature for monitoring medical products, and includes diseases, disorders, signs, symptoms, adverse events or adverse drug reactions. For the normalization task, MedDRA version 21.1 was used, containing 79,507 lower level terms (LLTs) and 23,389 respective preferred terms (PTs).</p><p>Task 4: Automatic classification of personal mentions of health. In this binary classification task, the systems were required to distinguish tweets of personal health status or opinions across different health domains. The proposed task was intended to provide a baseline understanding of the ability to identify personal health mentions in a generalized context.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Data</head><p>All corpora were composed of public tweets downloaded using the official streaming API provided by Twitter and made available to the participants in accordance with Twitter's data use policy. This study received an exempt determination by the Institutional Review Board of the University of Pennsylvania. Task 1. For training, participants were provided with all the tweets from the #SMM4H 2017 shared tasks , which are publicly available at: https://data.mendeley. com/datasets/rxwfb3tysd/2. A total of 25,678 tweets were made available for training. The test set consisted of 4575 tweets with 626 (13.7%) tweets representing ADRs. The evaluation metric for this task was micro-averaged F1score for the ADR class.</p><p>Task 2. Participants of Task 2 were provided with a training set containing 2276 tweets which mentioned at least one drug name. The dataset contained 1300 tweets that were positive for the presence of ADRs and 976 tweets that were negative. Participants were allowed to include additional negative instances from Task 1 for training purposes. Positive tweets were annotated with the start and end indices of the ADRs and the corresponding span text in the tweets. The evaluation set contained 1573 tweets, 785 and 788 tweets were positive and negative for the presence of ADRs respectively. The participants were asked to submit outputs from their systems that contained the predicted start and end indices of ADRs. The participants' submissions were evaluated using standard strict and overlapping F1-scores for extracted ADRs. Under strict mode of evaluation, ADR spans were considered correct only if both start and end indices matched with the indices in our gold standard annotations. Under overlapping mode of evaluation, ADR spans were considered correct only if spans in predicted annotations overlapped with our gold standard annotations. Task 3. Participants were provided with the same training and evaluation datasets as in Task 2. However, the datasets contained additional columns for the MedDRA annotated LLT and PT identifiers for each ADR mention. In total, of the 79,507 LLT and 23,389 PT identifiers available in MedDRA, the training set of 2276 tweets and 1832 annotated ADRs contained 490 unique LLT iden-tifiers and 327 unique PT identifiers. The evaluation set contained 112 PT identifiers that were not present as part of the training set. The participants were asked to submit outputs containing the predicted start and end indices of ADRs and respective PT identifiers. Although the training dataset contained annotations at the LLT level, the performance was only evaluated at the higher PT level. The participants' submissions were evaluated using standard strict and overlapping F-scores for extracted ADRs and respective MedDRA identifiers. Under strict mode of evaluation, ADR spans were considered correct only if both start and end indices matched along with matching MedDRA PT identifiers. Under overlapping mode of evaluation, ADR spans were considered correct only if spans in predicted ADRs overlapped with gold standard ADR spans in addition to matching MedDRA PT identifiers.</p><p>Task 4 Data. Participants were provided training data from one disease domain, influenza, across two contexts, being sick and getting vaccinated, both annotated for personal mentions: the user is personally sick or the user has been personally vaccinated. Test data included new tweets of personal health mentions about influenza and tweets from an additional disease domain, Zika virus, with two different contexts, the user is changing their travel plans in response to Zika concerns, or the user is minimizing potential mosquito exposure due to Zika concerns.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Annotation and Inter-Annotator Agreements</head><p>Two annotators with biomedical education and both experienced in Social Media research tasks manually annotated the corpora for tasks 1, 2 and 3. Our annotators independently dual-annotated each test sets to insure the quality of our annotations. Disagreement were resolved after an adjudication phase between our two annotators. On task 1, the classification task, the inter annotatoragreement (IAA) was high with a Cohens Kappa = 0.82. On task 2, the information extraction task, IAAs were good with and an F1-score of 0.73 for strict agreement, and 0.85 for overlapping agreement 3 . On task 3, our annotators double annotated 535 of the extracted ADR terms and normalized them to MedDRA lower lever terms (LLT). They achieved an agreement accuracy of 82.6%. After converting the LLT to their corresponding preferred term (PT) in MedDRA, which is the coding the task was scored against, accuracy improved to 87.7% 4 . The annotation process followed for task 4 was slightly different due to the nature of the task. We obtained the two datasets of our training set, focusing on flu vaccination and flu infection, from <ref type="bibr" target="#b4">(Huang et al., 2017)</ref> and <ref type="bibr" target="#b5">(Lamb et al., 2013</ref>) respectively. Huang et al. <ref type="bibr" target="#b4">(Huang et al., 2017)</ref> used mechanical turk to crowdsource labels (Fleiss' kappa = 0.793). Lamb et al. <ref type="bibr" target="#b5">(Lamb et al., 2013)</ref> did not report their labeling procedure or annotator agreement metrics, but do report annotation guidelines 5 . A few of the tweets released by Lamb et al. appeared to be mislabeled and were corrected in accordance with the annotation guidelines defined by the authors. We obtained the test data for task 4 by compiling three datasets. For the dataset related to travel changes due to Zika concerns, we selected a subset of data already available from <ref type="bibr" target="#b0">(Daughton and Paul, 2019)</ref>. Initial labeling of these tweets was performed by two annotators with a public health background (Cohen's kappa = 0.66). We reuse the original annotations for this dataset without changes. For the mosquito exposure dataset, tweets were labeled by one annotator with public health knowledge and experienced with social media, and then verified by a second annotator with similar experience. The additional set of data on personal exposure to Influenza were obtained from a separate group, who used an independent labeling procedure.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Results</head><p>The challenge received a solid response with 19 teams from 12 countries (7 from North America, 1 from South America, 6 from Asia and 5 from Europe) submitting 92 runs in total in one or more tasks. We present an overview of all architectures competing in the different tasks in Table <ref type="table">1</ref>, 2, 3, 4. We also list in these tables the external resources competitors integrated for improving the pre-training of their systems or for embedding high-level features to help decision-making.</p><p>The overview of all architectures is interesting in two ways. First, this challenge confirms the tendency of the community to abandon traditional Machine Learning systems based on handcrafted features for deep learning architectures capable of discovering the features relevant for the task at hand from pre-trained embeddings. During the challenge, when participants implemented traditional systems, such as SVM or CRF, they used such systems as baselines and, observing significant differences of performances with systems based on deep learning on their validation sets, most of them did not submit their predictions as official runs. Second, while last year convolutional or recurrent neural networks "fed" with pretrained word embeddings learned on local windows of words (e.g. word2vec, GloVe) were the most popular architectures, this year we can see a clear dominance of neural architectures using word embeddings pre-trained with the Bidirectional Encoder Representations from Transformers (BERT) proposed by <ref type="bibr" target="#b1">(Devlin et al., 2018)</ref>, or fine-tuning these words embeddings on our training corpora. BERT allows to compute words embeddings based on the full context of sentences and not only on local windows.</p><p>A notable result from task 1-3 is that, despite an improvement in performances for the detection of ADRs, their resolution remains challenging and will require further research. The participants largely adopted contextual word-embeddings during this challenge, a choice rewarded by new records in performances during the task 1, the only task reran from last years. The performances increased from .522 F1-score (.442 P, .636 R) <ref type="bibr" target="#b14">(Weissenbacher et al., 2018)</ref> to .646 F1-score (0.608 P, 0.689 R) for the best systems of each years. However, with a strict matching F1-score of .432 (.362 P, .535 R) for the best system, the performances obtained in task 3 for ADRs resolution are still low and human inspection is still required to make use of the data extracted automatically. As shown by the best score of .887 Accuracy obtained on the ADR normalization in task 3 ran during #SMM4H in 2017 <ref type="bibr">(Sarker et al., 2018) 6</ref> , once ADRs are extracted, the normalization of the ADRs can be per-formed with a good reliability. However errors are made during all steps of the resolution -detection, extraction, normalization -and their overall accumulation render current automatic systems inefficient. Note that bulk of the errors are made during the extraction of the ADRs, as shown by the low strict F1-score of the best system in task 2, .464 F1-score (.389P, .576 R).</p><p>For task 4, we were especially interested in the generalizability of first person health classifiers to a domain separate from that of the training data. We find that, on average, teams do reasonably well across the full test dataset (average F1-score: 0.70, range: 0.41-0.87). Unsurprisingly, classifiers tended to do better on a test set in the same domain as the training dataset (context 1, average F1-score: 0.82) and more modestly on the Zika travel and mosquito datasets (average F1-score: 0.40 and 0.52, respectively). Interestingly, in all contexts, precision was higher than recall. We note that both the training and the testing data were limited in quantity, and that classifiers would likely improve with more data. However, in general, it is encouraging that classifiers trained in one health domain can be applied to separate health domains.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Conclusion</head><p>In this paper we presented an overview of the results of #SMM4H 2019 which focuses on a) the resolution of adverse drug reaction (ADR) mentioned in Twitter and b) the distinction between tweets reporting personal health status form opinions across different health domains. With a total of 92 runs submitted by 19 teams, the challenge was well attended. The participants, in large part, opted for neural architectures and integrated pretrained word-embedding sensitive to their contexts based on the recent Bidirectional Encoder Representations from Transformers. Such architectures were the most efficient on our four tasks. Results on tasks 1-3 show that, despite a continuous improvement of performances in the detection of tweets mentioning ADRs over the past years, their end-to-end resolution still remain a major challenge for the community and an opportunity for further research. Results of task 4 were more encouraging, with systems able to generalized their predictions over domains not present in their training data.    </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 5 :</head><label>5</label><figDesc>System performances for each team for task 1 of the shared task. F1-score, Precision and Recall over the ADR class are shown. Top scores in each column are shown in bold.</figDesc><table><row><cell></cell><cell></cell><cell>Relaxed</cell><cell></cell><cell></cell><cell>Strict</cell><cell></cell></row><row><cell>Team</cell><cell>F1</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>P</cell><cell>R</cell></row><row><cell>KFU NLP</cell><cell cols="6">0.658 0.554 0.81 0.464 0.389 0.576</cell></row><row><cell>THU NGN</cell><cell cols="6">0.653 0.614 0.697 0.356 0.328 0.388</cell></row><row><cell cols="7">MIDAS@IIITD 0.641 0.537 0.793 0.328 0.274 0.409</cell></row><row><cell>TMRLeiden</cell><cell cols="6">0.625 0.555 0.715 0.431 0.381 0.495</cell></row><row><cell>ICRC</cell><cell cols="6">0.614 0.538 0.716 0.407 0.357 0.474</cell></row><row><cell>GMU</cell><cell cols="6">0.597 0.596 0.599 0.407 0.406 0.407</cell></row><row><cell>HealthNLP</cell><cell cols="6">0.574 0.632 0.527 0.336 0.37 0.307</cell></row><row><cell>SINAI</cell><cell cols="6">0.542 0.612 0.486 0.36 0.408 0.322</cell></row><row><cell>ASU BioNLP</cell><cell cols="6">0.535 0.415 0.753 0.269 0.206 0.39</cell></row><row><cell>Klick Health</cell><cell cols="6">0.396 0.416 0.378 0.194 0.206 0.184</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 6 :</head><label>6</label><figDesc>System performances for each team for task 2 of the shared task. (Strict/Relaxed) F1-score, Precision and Recall over the ADR mentions are shown. Top scores in each column are shown in bold.</figDesc><table><row><cell></cell><cell></cell><cell>Relaxed</cell><cell></cell><cell></cell><cell>Strict</cell><cell></cell></row><row><cell>Team</cell><cell>F1</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>P</cell><cell>R</cell></row><row><cell>KFU NLP</cell><cell cols="6">0.432 0.362 0.535 0.344 0.288 0.427</cell></row><row><cell cols="7">myTomorrows-TUDelft 0.345 0.336 0.355 0.244 0.237 0.252</cell></row><row><cell>TMRLeiden</cell><cell cols="2">0.312 0.37</cell><cell>0.27</cell><cell cols="3">0.25 0.296 0.216</cell></row><row><cell>GMU</cell><cell cols="6">0.208 0.221 0.196 0.109 0.116 0.102</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 7 :</head><label>7</label><figDesc>System performances for each team for task 3 of the shared task. (Strict/Relaxed) F1-score, Precision and Recall over the ADR resolution are shown. Top scores in each column are shown in bold.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Pew Research Center. Social Media Fact Sheet. 2017. [Online]. Available: http://www.pewinternet.org/factsheet/social-media/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://www.meddra.org/ Accessed: 05/13/2019.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">Since task 2 is a named-entity recognition task, we followed the recommendations of<ref type="bibr" target="#b3">(Hripcsak and Rothschild, 2005)</ref> and used precision and recall metrics to estimate the inter-annotator rate.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">We measured agreement using accuracy instead of Cohens Kappa because, with greater than 70,000 LLTs for the annotators to choose from, agreement due to chance is expected to be small.5  We used the awareness vs. infection labels as defined in<ref type="bibr" target="#b5">(Lamb et al., 2013)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">Organizers of the task 3 ran during #SMM4H 2017 provided participants with manually curated expressions referring to ADRs and participants had to map them to their corresponding preferred terms in MeDRA.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">We use C BiLSMT and C CNN to denote bidirectonal LSTMs or CNNs encoding sequences of characters, W BiLSTM and W FF to denote bidirectional LSTMs or Feed Forward encoders of word embeddings.</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Identifying protective health behaviors on twitter: Observational study of travel advisories and zika virus</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Ashlynn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">J</forename><surname>Daughton</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Paul</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Medical Internet Research</title>
+		<imprint>
+			<date type="published" when="2019" />
+			<publisher>In Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">BERT: pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno>abs/1810.04805</idno>
+		<imprint>
+			<date type="published" when="2018" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Lessons learnt from the named entity recognition and linking (neel) challenge series</title>
+		<author>
+			<persName><forename type="first">Rizzo</forename><surname>Giuseppe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pereira</forename><surname>Bianca</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Varga</forename><surname>Andrea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth Cano Basave</forename><surname>Van Erp Marieke</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Amparo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Semantic Web Journal</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="667" to="700" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Agreement, the f-measure, and reliability in information retrieval</title>
+		<author>
+			<persName><forename type="first">George</forename><surname>Hripcsak</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Adam S Rothschild</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="296" to="298" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Examining patterns of influenza vaccination in social media</title>
+		<author>
+			<persName><forename type="first">Xiaolei</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">C</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">J</forename><surname>Paul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmytro</forename><surname>Ryzhkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><forename type="middle">C</forename><surname>Quinn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><forename type="middle">A</forename><surname>Broniatowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Dredze</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">AAAI Joint Workshop on Health Intelligence (W3PHIAI)</title>
+				<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Separating fact from fear: Tracking flu infections on twitter</title>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Lamb</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">J</forename><surname>Paul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Dredze</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Recognizing named entities in tweets</title>
+		<author>
+			<persName><forename type="first">Xiaohua</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shaodian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Furu</forename><surname>Wei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="359" to="367" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Identifying disease-related expressions in reviews using conditional random fields</title>
+		<author>
+			<persName><forename type="first">Zulfat</forename><surname>Miftahutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Tutubalina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Tropsha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of International Conference on Computational Linguistics and Intellectual Technologies Dialog</title>
+				<meeting>International Conference on Computational Linguistics and Intellectual Technologies Dialog</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="155" to="167" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Pharmacovigilance from social media: mining adverse drug reaction mention using sequence labeling with word embedding cluster features</title>
+		<author>
+			<persName><forename type="first">Azadeh</forename><surname>Nikfarjam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abeed</forename><surname>Sarker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karen</forename><forename type="middle">O</forename><surname>'connor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Ginn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Gonzalez-Hernandez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="671" to="681" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Did you really just have a heart attack? towards robust detection of personal health mentions in social media</title>
+		<author>
+			<persName><forename type="first">Karisani</forename><surname>Payam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Agichtein</forename><surname>Eugene</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 World Wide Web Conference on World Wide Web</title>
+				<meeting>the 2018 World Wide Web Conference on World Wide Web</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="137" to="146" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Data and systems for medication-related text classification and concept normalization from twitter: insights from the social media mining for health (smm4h)-2017 shared task</title>
+		<author>
+			<persName><forename type="first">Abeed</forename><surname>Sarker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maksim</forename><surname>Belousov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jasper</forename><surname>Friedrichs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Hakala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Farrokh</forename><surname>Mehryary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sifei</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tung</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Rios</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramakanth</forename><surname>Kavuluru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Berry De Bruijn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Debanjan</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saif</forename><surname>Mahata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Nenadic</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gonzalez-Hernandez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J Am Med Inform Assoc</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="issue">10</biblScope>
+			<biblScope unit="page" from="1274" to="1283" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Utilizing social media data for pharmacovigilance: A review</title>
+		<author>
+			<persName><forename type="first">Abeed</forename><surname>Sarker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Ginn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Azadeh</forename><surname>Nikfarjam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karen</forename><surname>Oconnor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karen</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Swetha</forename><surname>Jayaraman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tejaswi</forename><surname>Upadhaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Gonzalez</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jbi.2015.02.004</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Biomedical Informatics</title>
+		<imprint>
+			<biblScope unit="volume">54</biblScope>
+			<biblScope unit="page" from="202" to="212" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">A corpus for mining drug-related knowledge from twitter chatter: Language models and their utilities</title>
+		<author>
+			<persName><forename type="first">Abeed</forename><surname>Sarker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Gonzalez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Data in Brief</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="page" from="122" to="131" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Portable automatic text classification for adverse drug reaction detection via multi-corpus training</title>
+		<author>
+			<persName><forename type="first">Abeed</forename><surname>Sarker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Gonzalez-Hernandez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of biomedical informatics</title>
+		<imprint>
+			<biblScope unit="volume">53</biblScope>
+			<biblScope unit="page" from="196" to="207" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Overview of the third social media mining for health (smm4h) shared tasks at emnlp 2018</title>
+		<author>
+			<persName><forename type="first">Davy</forename><surname>Weissenbacher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abeed</forename><surname>Sarker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Paul</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gonzalez-Hernandez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 EMNLP Workshop SMM4H: The 3rd Social Media Mining for Health Applications Workshop and Shared Task</title>
+				<meeting>the 2018 EMNLP Workshop SMM4H: The 3rd Social Media Mining for Health Applications Workshop and Shared Task</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="13" to="16" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

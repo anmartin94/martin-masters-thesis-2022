@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">WNUT-2020 Task 2: Identification of Informative COVID-19 English Tweets</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Dat</forename><surname>Quoc Nguyen</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">VinAI Research</orgName>
+								<address>
+									<country key="VN">Vietnam</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Thanh</forename><surname>Vu</surname></persName>
+							<email>thanh.v.vu@oracle.com</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Oracle Digital Assistant</orgName>
+								<address>
+									<settlement>Oracle</settlement>
+									<country key="AU">Australia</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Afshin</forename><surname>Rahimi</surname></persName>
+							<email>a.rahimi@uq.edu.au</email>
+							<affiliation key="aff2">
+								<orgName type="institution">The University of Queensland</orgName>
+								<address>
+									<country key="AU">Australia</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mai</forename><forename type="middle">Hoang</forename><surname>Dao</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">VinAI Research</orgName>
+								<address>
+									<country key="VN">Vietnam</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Linh</forename><forename type="middle">The</forename><surname>Nguyen</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">VinAI Research</orgName>
+								<address>
+									<country key="VN">Vietnam</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Long</forename><surname>Doan</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">VinAI Research</orgName>
+								<address>
+									<country key="VN">Vietnam</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">WNUT-2020 Task 2: Identification of Informative COVID-19 English Tweets</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this paper, we provide an overview of the WNUT-2020 shared task on the identification of informative COVID-19 English Tweets. We describe how we construct a corpus of 10K Tweets and organize the development and evaluation phases for this task. In addition, we also present a brief summary of results obtained from the final system evaluation submissions of 55 teams, finding that (i) many systems obtain very high performance, up to 0.91 F 1 score, (ii) the majority of the submissions achieve substantially higher results than the baseline fastText <ref type="bibr" target="#b2">(Joulin et al., 2017)</ref>, and (iii) fine-tuning pre-trained language models on relevant language data followed by supervised training performs well in this task.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>As of late-September 2020, the COVID-19 Coronavirus pandemic has led to about 1M deaths and 33M infected patients from 213 countries and territories, creating fear and panic for people all around the world. <ref type="bibr">1</ref> Recently, much attention has been paid to building monitoring systems (e.g. The Johns Hopkins Coronavirus Dashboard) to track the development of the pandemic and to provide users the information related to the virus, 2 e.g. any new suspicious/confirmed cases near/in the users' regions.</p><p>It is worth noting that most of the "official" sources used in the tracking tools are not frequently kept up to date with the current pandemic situation, e.g. WHO updates the pandemic information only once a day. Those monitoring systems thus use social network data, e.g. from Twit-ter, as a real-time alternative source for updating the pandemic information, generally by crowdsourcing or searching for related information manually. However, the pandemic has been spreading rapidly; we observe a massive amount of data on social networks, e.g. about 3.5M of COVID-19 English Tweets posted daily on the Twitter platform <ref type="bibr">(Lamsal, 2020)</ref> in which the majority are uninformative. Thus, it is important to be able to select the informative Tweets (e.g. COVID-19 Tweets related to new cases or suspicious cases) for downstream applications. However, manual approaches to identify the informative Tweets require significant human efforts, do not scale with rapid developments, and are costly.</p><p>To help handle the problem, we propose a shared task which is to automatically identify whether a COVID-19 English Tweet is informative or not. Our task is defined as a binary classification problem: Given an English Tweet related to COVID-19, decide whether it should be classified as INFORMATIVE or UNINFORMATIVE. Here, informative Tweets provide information about suspected, confirmed, recovered and death cases as well as the location or travel history of the cases. The goals of our shared task are: (i) To develop a language processing task that potentially impacts research and downstream applications, and (ii) To provide the research community with a new dataset for identifying informative COVID-19 English Tweets. To achieve the goals, we manually construct a dataset of 10K COVID-19 English Tweets with INFORMATIVE and UNIN-FORMATIVE labels. We believe that the dataset and systems developed for our task will be beneficial for the development of COVID-19 monitoring systems. All practical information, data download links and the final evaluation results can be found at the CodaLab website of our shared task: https://competitions.codalab. org/competitions/25845.</p><p>2 The WNUT-2020 Task 2 dataset</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Annotation guideline</head><p>We define the guideline to annotate a COVID-19 related Tweet with the "INFORMATIVE" label if the Tweet mentions suspected cases, confirmed cases, recovered cases, deaths, number of tests performed as well as location or travel history associated with the confirmed/suspected cases.</p><p>In addition, we also set further requirements in which the "INFORMATIVE" Tweet has to satisfy. In particular, the "INFORMATIVE" Tweet should not present a rumor or prediction. Furthermore, quantities mentioned in the Tweet have to be specific (e.g. "two new cases" or "about 125 tested positives") or could be inferred directly (e.g. "120 coronavirus tests done so far, 40% tested positive"), but not purely in percentages or rates (e.g. "20%", "1000 per million", or "a third").</p><p>The COVID-19 related Tweets not satisfying the "INFORMATIVE" annotation guideline are annotated with the "UNINFORMATIVE" label. An uninformative Tweet example is as follows: UNINFORMATIVE Indonesia frees 18,000 inmates, as it records highest #coronavirus death toll in Asia behind China HTTPURL</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">COVID-19 related Tweet collection</head><p>To be able to construct a dataset used in our shared task, we first have to crawl the COVID-19 related Tweets. We collect a general Tweet corpus related to the COVID-19 pandemic based on a predefined list of 10 keywords, including: "coronavirus", "covid-19", "covid 19", "covid 2019", "covid19", "covid2019", "covid-2019", "Coron-aVirusUpdate", "Coronavid19" and "SARS-CoV-2". We utilize the Twitter streaming API to download real-time English Tweets containing at least one keyword from the predefined list. <ref type="bibr">3</ref> We stream the Tweet data for four months using the API from 01 st March 2020 to 30 th June 2020. We then filter out Tweets containing less than 10 words (including hashtags and user mentions) as well as Tweets from users with less than five hundred followers. This is to help reduce the rate of Tweets with fake news (our manual annotation process does not involve in verifying fake news) with a rather strong assumption that reliable information is more likely to be propagated by users with a large number of followers. <ref type="bibr">4</ref> To handle the duplication problem: (i) we remove Retweets starting with the "RT" token, and (ii) in cases where two Tweets are the same after lowecasing as well as removing hashtags and user mentions, the earlier Tweet is kept and the subsequent Tweet will be filtered out as it tends to be a Retweet. Applying these filtering steps results in a final corpus of about 23M COVID-19 English Tweets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Annotation process</head><p>From the corpus of 23M Tweets, we select Tweets which are potentially informative, containing predefined strings relevant to the annotation guideline such as "confirm", "positive", "suspected", "death", "discharge", "test" and "travel history". We then remove similar Tweets with the tokenbased cosine similarity score <ref type="bibr" target="#b16">(Wang et al., 2011)</ref> that is equal or greater than 0.7, resulting in a dataset of "INFORMATIVE" candidates. We then randomly sample 2K Tweets from this dataset for the first phase of annotation.</p><p>Three annotators are employed to independently annotate each of the 2K Tweets with one of the two labels "INFORMATIVE" and "UN-INFORMATIVE". We use the "docanno" toolkit for handling the annotations <ref type="bibr" target="#b11">(Nakayama et al., 2018)</ref>. We measure the inter-annotator agreement to assess the quality of annotations and to see whether the guideline allows to carry out the task consistently. In particular, we use the Fleiss'  Kappa coefficient to assess the annotator agreement <ref type="bibr" target="#b1">(Fleiss, 1971)</ref>. For this first phase, the Kappa score is 0.797 which can be interpreted as substantial <ref type="bibr" target="#b6">(Landis and Koch, 1977)</ref>. We further run a discussion for Tweets where there is a disagreement in the assigned labels among the annotators.</p><p>The discussion is to determine the final labels of the Tweets as well as to improve the quality of the annotation guideline.</p><p>For the second phase, we employ the 2K annotated Tweets from the first phase to train a binary fastText classifier <ref type="bibr" target="#b2">(Joulin et al., 2017)</ref> to classify a COVID-19 related Tweet into either "INFORMA-TIVE" or "UNINFORMATIVE". We utilize the trained classifier to predict the probability of "IN-FORMATIVE" for each of all remaining Tweets in the dataset of "INFORMATIVE" candidates from the first phase. Then we randomly sample 8K Tweets from the candidate dataset, including 3K, 2K and 3K Tweets associated with the probability ∈ [0.0, 0.3), [0.3, 0.7) and [0.7, 1.0], respectively (here, we do not sample from the existing 2K annotated Tweets). The goal here is to select Tweets with varying degree of detection difficulty (with respect to the baseline) in both labels.</p><p>The three annotators then independently assign the "INFORMATIVE" or "UNINFORMATIVE" label to each of the 8K Tweets. The Kappa score is obtained at 0.818 which can be interpreted as almost perfect <ref type="bibr" target="#b6">(Landis and Koch, 1977)</ref>. Similar to the first phase, for each Tweet with a disagreement among the annotators, we also run a further discussion to decide its final label annotation.</p><p>We merge the two datasets from the first and second phases to formulate the final gold standard corpus of 10K annotated Tweets, consisting of 4,719 "INFORMATIVE" Tweets and 5,281 "UN-INFORMATIVE" Tweets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Data partitions</head><p>To split the gold standard corpus into training, validation and test sets, we first categorize its Tweets into two categories of "easy" and "not-easy", in which the "not-easy" category contains Tweets with a label disagreement among annotators before participating in the annotation discussions. We then randomly select 7K Tweets for training, 1K Tweets for validation and 2K Tweets for test with a constraint that ensures the number of the "not-easy" Tweets in the training is equal to that in the validation and test sets. Table <ref type="table" target="#tab_2">1</ref> describes the basic statistics of our corpus.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task organization</head><p>Development phase: Both the training and validation sets with gold labels are released publicly to all participants for system development. Although we provide a default training and validation split of the released data, participants are free to use this data in any way they find useful when training and tuning their systems, e.g. using a different split or performing cross-validation.</p><p>Evaluation phase: The raw test set is released when the final phase of system evaluation starts. To keep fairness among participants, the raw test set is a relatively large set of 12K Tweets, and the actual 2K test Tweets by which the participants' system outputs are evaluated are hidden in this large test set. We allow each participant to upload at most 2 submissions during this final evaluation phase, in which the submission obtaining higher F 1 score is ranked higher in the leaderboard.</p><p>Metrics: Systems are evaluated using standard evaluation metrics, including Accuracy, Precision, Recall and F 1 score. Note that the latter three metrics of Precision, Recall and F 1 will be calculated for the "INFORMATIVE" label only. The system evaluation submissions are ranked by the F 1 score.</p><p>Baseline: fastText <ref type="bibr" target="#b2">(Joulin et al., 2017)</ref> is used as our baseline, employing the default data split.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Results</head><p>In total, 121 teams spreading across 20 different countries registered to participate in our WNUT-2020 Task 2 during the system development phase. Of those 121 teams, 55 teams uploaded their submissions for the final evaluation phase. <ref type="bibr">5</ref> We report results obtained for each team in Table 2. The baseline fastText achieves 0.7503 in F 1 score. In particular, 48 teams outperform the baseline in terms of F 1 . There are 39 teams with an F 1 greater than 0.80, in which 10 teams are with an F 1 greater than 0.90. Both NutCracker <ref type="bibr" target="#b3">(Kumar and Singh, 2020)</ref> and NLP North <ref type="bibr">(Møller et al., 2020)</ref> obtain the highest F 1 score at 0.9096, in which NutCracker obtains the highest Accuracy at 91.50% that is 0.1% absolute higher than NLP North's.</p><p>Of the 55 teams, 36 teams submitted their system paper, in which 34 teams' papers are finally included in the Proceedings. All of the 36 teams with paper submissions employ pre-trained language models to extract latent features for learning classifiers. The majority of pre-trained language models employed include BERT <ref type="bibr" target="#b0">(Devlin et al., 2019)</ref>, XLNet <ref type="bibr" target="#b17">(Yang et al., 2019)</ref>, RoBERTa <ref type="bibr" target="#b7">(Liu et al., 2019</ref><ref type="bibr">), BERTweet (Nguyen et al., 2020</ref> and especially CT-BERT <ref type="bibr" target="#b10">(Müller et al., 2020)</ref>.</p><p>Not surprisingly, CT-BERT, resulted in by continuing pre-training from the pre-trained BERTlarge model on a corpus of 22.5M COVID-19 related Tweets, is utilized in a large number of the highly-ranked systems. In particular, all of top 6 teams including NutCracker, NLP North, UIT-HSE <ref type="bibr" target="#b13">(Tran et al., 2020)</ref>, #GCDH <ref type="bibr" target="#b14">(Varachkina et al., 2020)</ref>, Loner and Phonemer <ref type="bibr" target="#b15">(Wadhawan, 2020)</ref> utilize CT-BERT. That is why we find slight differences in their obtained F 1 scores. In addition, ensemble techniques are also used in a large proportion (61%) of the participating teams. Specifically, to obtain the best performance, the top 10 teams, except NLP North, #GCDH and Loner, all employ ensemble techniques.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>In this paper, we have presented an overview of the WNUT-2020 Task 2 "Identification of Informative COVID-19 English Tweets": (i) Provide details of the task, data preparation process, and the task organization, and (ii) Report the results obtained by participating teams and outline their commonly adopted approaches.</p><p>We receive registrations from 121 teams and final system evaluation submissions from 55 teams, in which 34/55 teams contribute detailed system descriptions. The evaluation results show that many systems obtain a very high performance of up to 0.91 F 1 score on the task, using pre-trained language models which are fine-tuned on unlabelled COVID-19 related Tweets (CT-BERT) and are subsequently trained on this task.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Basic statistics of our dataset. #INFOR and #UNINF denote the numbers of "INFORMATIVE" and "UNINFORMATIVE" Tweets, respectively.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://developer.twitter.com/ en/docs/twitter-api/v1/tweets/ filter-realtime/overview4  We acknowledge that there are accounts with a large number of followers, who participate in publication and propagation of misinformation.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">CXP949 is not shown on our CodaLab leaderboard because this team unfortunately makes an incorrectly-formatted submission file name, resulting in a fail for our CodaLab automatic evaluation program. We manually re-evaluate their submission and include its obtained results in Table2.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot">Table 2: Final results on the test set. P, R and Acc. denote the Precision, Recall and Accuracy, respectively. Teams are ranked by their highest F 1 score.</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Measuring nominal scale agreement among many raters</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Joseph</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Fleiss</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Psychological bulletin</title>
+		<imprint>
+			<biblScope unit="volume">76</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="378" to="382" />
+			<date type="published" when="1971" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Bag of Tricks for Efficient Text Classification</title>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Joulin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piotr</forename><surname>Bojanowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Conference of the European Chapter</title>
+				<meeting>the 15th Conference of the European Chapter<address><addrLine>Short Papers</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="427" to="431" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">NutCracker at WNUT-2020 Task 2: Robustly Identifying Informative COVID-19 Tweets using Ensembling and Adversarial Training</title>
+		<author>
+			<persName><forename type="first">Priyanshu</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aadarsh</forename><surname>Singh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Workshop on Noisy User-generated Text</title>
+				<meeting>the 6th Workshop on Noisy User-generated Text</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.21227/781w-ef42</idno>
+		<editor>Rabindra Lamsal. 2020. CORONAVIRUS (COVID-</editor>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Tweets Dataset</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dataport</surname></persName>
+		</author>
+		<idno type="DOI">10.21227/781w-ef42</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">The measurement of observer agreement for categorical data</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Landis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gary G</forename><surname>Koch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Biometrics</title>
+		<imprint>
+			<biblScope unit="volume">33</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="159" to="174" />
+			<date type="published" when="1977" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">RoBERTa: A Robustly Optimized BERT Pretraining Approach. arXiv preprint</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<author>
+			<persName><forename type="first">Anders</forename><forename type="middle">Giovanni</forename><surname>Møller</surname></persName>
+		</author>
+		<idno>at WNUT-2020</idno>
+		<title level="m">Rob van der Goot, and Barbara Plank. 2020. NLP North</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Pre-training versus Ensembling for Detection of Informative COVID-19 English Tweets</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Workshop on Noisy Usergenerated Text</title>
+				<meeting>the 6th Workshop on Noisy Usergenerated Text</meeting>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcel</forename><surname>Salathé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Per</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kummervold</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2005.07503</idno>
+		<title level="m">COVID-Twitter-BERT: A Natural Language Processing Model to Analyse COVID-19 Content on Twitter</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">Hiroki</forename><surname>Nakayama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Takahiro</forename><surname>Kubo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junya</forename><surname>Kamura</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yasufumi</forename><surname>Taniguchi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xu</forename><surname>Liang</surname></persName>
+		</author>
+		<ptr target="https://github.com/doccano/doccano" />
+		<title level="m">Text Annotation Tool for Human</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">BERTweet: A pre-trained language model for English Tweets</title>
+		<author>
+			<persName><forename type="first">Thanh</forename><surname>Dat Quoc Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anh</forename><forename type="middle">Tuan</forename><surname>Vu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nguyen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">UIT-HSE at WNUT-2020 Task 2: Exploiting CT-BERT for Identifying COVID-19 Information on the Twitter Social Network</title>
+		<author>
+			<persName><forename type="first">Khiem</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Phan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kiet</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ngan Luu Thuy</forename><surname>Nguyen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Workshop on Noisy User-generated Text</title>
+				<meeting>the 6th Workshop on Noisy User-generated Text</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">#GCDH at WNUT-2020 Task 2: BERT-Based Models for the Detection of Informativeness in English COVID-19 Related Tweets</title>
+		<author>
+			<persName><forename type="first">Hanna</forename><surname>Varachkina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Ziehe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tillmann</forename><surname>Dońicke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Franziska</forename><surname>Pannach</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Workshop on Noisy User-generated Text</title>
+				<meeting>the 6th Workshop on Noisy User-generated Text</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Phonemer at WNUT-2020 Task 2: Sequence Classification Using COVID Twitter BERT and Bagging Ensemble Technique based on Plurality Voting</title>
+		<author>
+			<persName><forename type="first">Anshul</forename><surname>Wadhawan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Workshop on Noisy User-generated Text</title>
+				<meeting>the 6th Workshop on Noisy User-generated Text</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Fast-join: An efficient method for fuzzy token matching based string similarity join</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Fe</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 27th IEEE International Conference on Data Engineering</title>
+				<meeting>the 27th IEEE International Conference on Data Engineering</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="458" to="469" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">XLNet: Generalized Autoregressive Pretraining for Language Understanding</title>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Russ</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc V</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Le</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="5753" to="5763" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

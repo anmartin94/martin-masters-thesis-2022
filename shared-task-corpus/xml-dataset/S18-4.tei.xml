@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval 2018 Task 4: Character Identification on Multiparty Dialogues</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Jinho</forename><forename type="middle">D</forename><surname>Choi</surname></persName>
+							<email>jinho.choi@emory.edu</email>
+							<affiliation key="aff0">
+								<orgName type="department">Computer Science</orgName>
+								<orgName type="institution">Emory University Atlanta</orgName>
+								<address>
+									<postCode>30322</postCode>
+									<region>GA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Henry</forename><forename type="middle">Y</forename><surname>Chen</surname></persName>
+							<email>henry.chen@snapchat.com</email>
+							<affiliation key="aff1">
+								<orgName type="department">Information Security Snap Inc. Santa Monica</orgName>
+								<address>
+									<postCode>90405</postCode>
+									<region>CA</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval 2018 Task 4: Character Identification on Multiparty Dialogues</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Character identification is a task of entity linking that finds the global entity of each personal mention in multiparty dialogue. For this task, the first two seasons of the popular TV show Friends are annotated, comprising a total of 448 dialogues, 15,709 mentions, and 401 entities. The personal mentions are detected from nominals referring to certain characters in the show, and the entities are collected from the list of all characters in those two seasons of the show. This task is challenging because it requires the identification of characters that are mentioned but may not be active during the conversation. Among 90+ participants, four of them submitted their system outputs and showed strengths in different aspects about the task. Thorough analyses of the distributed datasets, system outputs, and comparative studies are also provided. To facilitate the momentum, we create an opensource project for this task and publicly release a larger and cleaner dataset, hoping to support researchers for more enhanced modeling.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Most of the earlier works in natural language processing (NLP) had focused on formal writing such as newswires, whereas many recent works have targeted at colloquial writing such as text messages or social media. Since the evolution of Web 2.0, the amount of user-generated contents involving colloquial writing has exceeded the one with formal writing. NLP tasks are relatively well-explored at this point for certain types of colloquial writing i.e., microblogs and reviews <ref type="bibr" target="#b16">(Ritter et al., 2011;</ref><ref type="bibr" target="#b9">Kong et al., 2014;</ref><ref type="bibr" target="#b14">Ranganath et al., 2016;</ref><ref type="bibr" target="#b17">Shin et al., 2017)</ref>. However, the genre of multiparty dialogue is still under-explored, even though digital contents in dialogue forms keep increasing at a faster rate than any other types of writing. 1 This inspires us to create a new task called character identification that aims to link personal mentions (e.g, she, mom) to their global entities across multiple dialogues, where the entities indicate the specific characters referred by those mentions (e.g., Judy).</p><p>Due to the nature of multiparty dialogue where several speakers take turns to complete a context, character identification is a crucial step for adapting higher-end NLP tasks (e.g., summarization, question answering, machine translation) to this genre. It can also bring another level of sophistication to intelligent personal assistants or tutoring systems. This task is challenging because it needs to process through colloquialism that includes slangs, grammar mistakes, and/or rhetorical questions, as well as to handle cross-document resolution for the identification of entities that are mentioned but may not be actively participating during the conversation. Nonetheless, we believe that models produced by this task will remarkably enhance inference on dialogue contexts (e.g., business meetings, doctorpatient conversations) by providing finer-grained information about individual characters.</p><p>Section 2 illustrates the task of character identification and explains the key differences between it and other types of entity linking tasks. Section 3 describes the corpus, based on TV show transcripts, used for this task with annotation details. Section 4 gives brief overviews of the systems participated in this shared task. Section 5 explains the evaluation metrics and the results produced by those systems. Finally, Section 6 gives thorough analysis and comparative studies between these systems. This task was originally conducted at CodaLab. <ref type="bibr">2</ref> The latest dataset and the system outputs can be found from our open source project, Emory NLP. <ref type="bibr">3</ref> Ross I told mom and dad last night, they seemed to take it pretty well.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Monica</head><p>Oh really, so that hysterical phone call I got from a woman at sobbing 3:00 A.M., "I'll never have grandchildren, I'll never have grandchildren.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>Let a mention be a nominal that refers to a singular or a collective entity (e.g., she, mom, Judy), and an entity be the actual person that the mention refers to. Given a dialogue transcribed in text where all mentions are detected, the objective is to find the entity for each mention, who can be either active or passive in the dialogue. In Figure <ref type="figure" target="#fig_0">1</ref>, entities such as Ross, Monica, and Joey are the active speakers of the dialogue, whereas Jack and Judy are not although they are passively mentioned as mom and dad in this context. Linking such mentions to their global entities demands inferred knowledge about the kinship from other dialogues, challenging crossdocument resolution. Thus, character identification can be viewed as an entity linking task that aims for holistic understanding in multiparty dialogue. Most of previous works on entity linking have focused on Wikification, which links named entity mentions to their relevant Wikipedia articles <ref type="bibr" target="#b12">(Mihalcea and Csomai, 2007;</ref><ref type="bibr" target="#b15">Ratinov et al., 2011;</ref><ref type="bibr" target="#b5">Guo et al., 2013)</ref>. Unlike Wikification where most entities come with structured information from knowledge bases (e.g., Infobox, Freebase, DBPedia), entities in character identification have no such precom-piled information, which makes this task even more challenging. It is similar to coreference resolution in a sense that it groups mentions into entities, but distinguished because this task requires to identify each mention group as a known person. In Figure <ref type="figure" target="#fig_0">1</ref>, coreference resolution would give a cluster of the four mentions, {mom, woman, I, I}; however, it would not identify that cluster to be the entity Judy, which in this case is not possible to identify without getting contexts from other dialogues.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Corpus</head><p>The character identification corpus was first created by collecting transcripts from the popular TV show, Friends (Chen and Choi, 2016). These transcripts were voluntarily provided by fans who made them publicly available. <ref type="bibr">4</ref> Dialogues in this corpus mimic daily conversations that are more natural and various in topics than other dialogue corpora <ref type="bibr" target="#b7">(Janin et al., 2003;</ref><ref type="bibr" target="#b4">Danescu-Niculescu-Mizil and Lee, 2011;</ref><ref type="bibr" target="#b6">Hu et al., 2013;</ref><ref type="bibr" target="#b8">Kim et al., 2015;</ref><ref type="bibr" target="#b10">Lowe et al., 2015)</ref>. Although they are scripted, the interpretation of these dialogues is no easier than unscripted  The original transcripts collected from the fan site were formatted in HTML; we converted them into JSON so that they could be easily processed. This structured data were then manually checked for potential errors. Table <ref type="table" target="#tab_2">1</ref> shows the distributions from the subset of the character identification corpus used for this shared task. The provided dataset is divided into two seasons, each season is divided into episodes, each episode is divided into scenes, each scene contains utterances, where each utterance indicates a turn of speech.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Mention Annotation</head><p>For mention annotation, a heuristic-based mention detector was developed, which utilized dependency relations <ref type="bibr" target="#b3">(Choi and McCallum, 2013)</ref>, named entity tags , and personal noun gazetteers, then automatically detected mentions for the entire corpus. In this heuristic, a noun phrase was considered a personal mention if it was either:</p><p>1. A PERSON named entity, or 2. A pronoun or a possessive pronoun excluding the pronouns it and they, or 3. One of the personal noun gazetteers that are 603 common and singular personal nouns selected from Freebase and DBPedia.</p><p>Specific mentions such as it and they were excluded because they often referred to the ambiguous entity types, collective, general, and other (Section 3.2). For the quality assurance, about 10% of this pseudo annotation were randomly sampled and manually evaluated, showing a precision, a recall, and the F1score of 97.58%, 94.34%, and 95.93%, respectively. Finally, the annotation was manually checked again while it was systematically corrected for routinely produced errors. Although mention detection was the foundational step, including it as a part of this shared task could over-complicate the evaluation. Thus, gold mentions were provided for this year's shared task such that participants could purely concentrate on the task of entity linking.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Entity Annotation</head><p>All mentions were double-annotated with their referent entities, and adjudicated upon disagreements. Annotation and adjudication tasks were conducted on Amazon Mechanical Turk. Each mention was annotated with either a primary character, that are Ross, Chandler, Joey, Rachel, Monica, and Pheobe, a secondary character (other frequently recurring characters across the show), or one of the following ambiguous types suggested by Chen et al. ( <ref type="formula">2017</ref>):</p><p>• Generic: indicates actual characters in the show whose identities are unknown (e.g., That waitress is really cute, I am going to ask her out). Generic entities are annotated with their group names and optional numberings (e.g., Man 1, Woman 1).</p><p>• Collective: indicates the plural use of the pronoun you, which cannot be deterministically distinguished from the singular use.</p><p>• General: indicates mentions used in reference to a general case rather than an specific entity (e.g., The ideal guy you look for doesn't exist).</p><p>• Other: indicates all the other kinds of entities.</p><p>For this year's shared task, mentions annotated with the last three ambiguous types, collective, general, and other, were excluded from the dataset to reduce the high complexity of this task (Table <ref type="table" target="#tab_4">2</ref>).</p><p>Primary Secondary Generic Total    Table <ref type="table" target="#tab_5">3</ref> shows examples of these ambiguous types. About 83% were assigned to the primary and secondary characters, 1.4% were assigned to generic, and the rest were assigned to the other ambiguous types, collective, general, and other. To evaluate the annotation quality, the annotation agreement scores as well as Cohen's kappa scores were measured, showing 82.83% and 79.96%, respectively.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Data Split</head><p>The corpus was split into training and evaluation sets for this shared task (Table <ref type="table" target="#tab_6">4</ref>). No dedicated development set was provided; participants were encouraged to use sub-parts of the training set to create their own development sets or perform crossvalidation for the optimization of statistical models. Two types of datasets are provided for both training and evaluation sets, one treating each episode as an individual dialogue and the other treating each scene as an independent dialogue. <ref type="bibr">5</ref> Processing a larger dialogue makes coreference resolution harder because it needs to link referential mentions that are farther apart; on the other hand, each cluster comprises a greater number of mentions which can help identifying the global entity of that cluster. The numbers of clusters grouped in each dataset are shown as Clusters E and Clusters S , implying episode-level and scene-level clusters, respectively. Our corpus includes singleton mentions, which take about 22% of all mentions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Data Format</head><p>To help participants adapting their existing coreference resolution systems to this task, the original dataset in JSON was converted into the CoNLL'12 <ref type="bibr">5</ref> Each episode consists of about 10 scenes on average. shared task format <ref type="bibr" target="#b13">(Pradhan et al., 2012)</ref>, where each column is delimited by white spaces and represents the following:</p><p>1. Season and episode ID.</p><p>2. Document ID.</p><p>3. Token ID.</p><p>4. Word form.</p><p>5. Part-of-speech tag (auto-generated).</p><p>6. Phrase structure tag (auto-generated).</p><p>7. Lemma (auto-generated).</p><p>8. Predicate sense (not provided). 9. Word sense (not provided). 10. Speaker. 11. Named entity tag (auto-generated).</p><p>12. Entity ID.</p><p>The part-of-speech tags, lemmas, and named entity tags were automatically generated by NLP4J, <ref type="bibr">6</ref> and the phrase structure tags were produced by the Stanford parser. 7 Table <ref type="table" target="#tab_8">5</ref> shows the example of the first utterance in Figure <ref type="figure" target="#fig_0">1</ref> in the CoNLL'12 format.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">System Description</head><p>This section describes the top-2 scoring systems of this shared task. The AMORE-UPF is a group of researchers from the Universitat Pompeu Fabra in Spain (Section 4.1). The KNU CI is a group of researchers from Kangwon National University in South Korea (Section 4.2).   This is a matrix where each row vector represents an entity, and whose values are updated (only) during training. For tokens t i that are tagged as mentions, we map the hidden state to a representation that has the same dimensionality as the vectors in the entity library. <ref type="bibr">3</ref> Its similarity to each entity representation is computed using cosine. Softmax is then applied to the resulting similarity profile to obtain a probability distribution o i over entities ('class scores' in Figure <ref type="figure" target="#fig_0">1</ref>): </p><formula xml:id="formula_0">h i h i-1 h i+1 i i x i W o cos . . . . . .</formula><formula xml:id="formula_1">o i = softmax(cosine(E, (W o h i + b) | {z } ) (3)</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">KNU-CI System</head><p>The KNU-CI system tackles this task as a sequencelabeling problem. It uses an attention-based recurrent neural network (RNN) encoder-decoder model. The input dialogue of character identification consists of several conversations, resulting a long sequence of text. The RNN encoder-decoder model suffers from poor performance when the length of the input sequence is long. To overcome this issue, this system applies an attention, position encoding, and the self-matching network to the original RNN encoder-decoder model. As a result, the best performance is achieved by the attention-based RNN depicted in Figure <ref type="figure" target="#fig_5">3</ref>. the decoder and the hidden state of the encoder when performing decoding.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Model 1: Attention-based Enc-Dec model</head><p>The first model proposed in this paper is a general attention mechanism-based Enc-Dec model, as shown in Figure <ref type="figure" target="#fig_0">1</ref>.</p><p>The input of the encoder is one document that contains sentences (multiparty dialogue). Each sentence consists of words, and the input sequence is = { 1 , 2 , … , } . The input to the decoder is = { 0 , 1 , … , } consisting of the positions of the words given in the gold mentions, and the output sequence accordingly becomes = { 0 , 1 , … , } consisting of the character number, which is corresponded with the decoder's input mentions.</p><p>We use word embedding and adopt the Kdimensional word embedding , ∈ [1, ] for all input words, where is the word index in the input sequence. We perform feature embedding for three featuresspeaker, named entity recognition (NER) tags, and capitalizationand concatenate them to make ̃. The uppercase feature is a binary feature (1 or 0) that verifies whether the uppercase is included in the word. 10dimensional speaker embedding for a total of 205 different types of speakers included by "unknown". 19-dimensional NER embedding for a total of 19 different types of NER tags.</p><p>We use bidirectional gated recurrent unit (BiGRU) <ref type="bibr">(Cho et al., 2014)</ref> for the encoder. The hidden state of the encoder for the input (word) sequence is defined as ℎ .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>=</head><p>(1)</p><formula xml:id="formula_2">̃= [ ; ; ; ]<label>(2)</label></formula><p>where ℎ ⃗ an works, respe The deco lows.</p><p>The inpu generated b position of quence. The receives the sponding to coder and th <ref type="bibr">(ℎ , ℎ</ref> At the att attention w score for th and the enc tion layer ac gold mentio ing the atte vector . W attention which is ba attention w high score f tion.</p><p>(ℎ ,</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>= argm</head><p>After calc input of the we calculate tor , deco state ℎ are layer. Next, late the alig character in sponding to using the ar  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation</head><p>Following Chen et al. (2017), the labeling accuracy (Acc) and the macro-average F1 score (F1) are used for the evaluation (C: the total number of characters, F 1 i : the F1-score for the i'th character):</p><formula xml:id="formula_3">Acc = # of corrected identified mentions # of all mentions F 1 = 1 C C i=1 F 1 i</formula><p>Table <ref type="table" target="#tab_10">6</ref> shows the overall scores from all submitted systems. Two types of evaluation are performed for this task. The first one is based on seven characters where six of them compose the primary characters (Section 3.2) and every other character is grouped as one entity called Others (Main + Others). The other is based on 78 characters comprising all characters appeared in the dataset, except for the ones appear either in the training or the evaluation set but not both, which is grouped to the Others (ALL).  Table <ref type="table" target="#tab_12">7</ref> shows the F1 scores for the primary characters and Others, illustrating detailed evaluation for Main + Others. Table <ref type="table" target="#tab_11">8</ref> gives detailed evaluation for ALL, showing the F1-scores for the top-12 most frequently appeared secondary characters and Others that appear only in the training or the evaluation set but not both. The 18 characters in these two tables comprise about 85% of all mentions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Analysis</head><p>Based on the evaluation results, several interesting observations can be made for how different system architectures affect model performance on this task. The analysis in this section primarily focuses on the top-2 scoring systems, AMORE-UPF an KNU-CI, as their results vastly outperform the other two and the authors of those systems provide more detailed descriptions to the organizers.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Overall Performance</head><p>It is worth pointing out the significance of the two evaluation metrics proposed in Section 5 in terms of the model performance. The labeling accuracy indicates the raw predicative power of the model. This metric is biased towards more frequently appearing characters such as the primary characters, a total of which compose 70+% of the evaluation set. Thus, it is possible to achieve a relatively high labeling accuracy score without handling referents for the secondary characters well. On the contrary, the macro-average F1 score neutralizes the imbalance between frequently and not so frequently appearing characters. It reveals the model performance on a per-entity basis, which tends to favor transient and extra characters more because every character is treated equally in this metric.</p><p>For the overall performance, KNU-CI outperforms for Main + Others with the labeling accuracy of 85.10% and the macro-average F1 score of 86.00%, whereas AMORE-UPF outperforms for ALL with the labeling accuracy of 74.72% and the macroaverage F1 of 41.05% (Table <ref type="table" target="#tab_10">6</ref>). All systems produce better results for Main + Others than ALL, which is expected due to the fewer number of entities to classify (7 vs 78). It is possible that KNU-CI's attention model is highly optimized for the identification of the primary characters, whereas AMORE-UPF's LSTM model distributes weights for the secondary characters more evenly, but more detailed analysis needs to be made to see the comparative strengths between these two systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Main + Other Identification</head><p>Table <ref type="table" target="#tab_12">7</ref> depicts the strength of the KNU-CI system for the primary characters in comparisons to the others, which is attributed to its unique sequence labeling architecture and the attention mechanism.</p><p>Their encoder-decoder architecture helps consolidating sequential information of the input dialogue along with the mentions. The hidden units in RNNs enable the network to aggregate character-related information and to disambiguate timeline shifts across utterances. The encoder takes the input dialogue and provides the decoder with context-rich features. Coupled with the attention mechanism, this model focuses on the primary characters; thus, it results better performance on Main + Others. However, this architecture is not as well-adaptive as the number of characters increases for the identification, which can be observed from the system's low macro-average F1 score for All.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3">All Character Identification</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>In this shared task, we propose a novel entity linking task called character identification that aims to find the global entities for all personal mentions, representing individual characters in the contexts of multiparty dialogue. Among 90+ participants signed up for this task at CodaLab, only four submitted their system outputs, which is unfortunate. However, the top-2 scoring systems depict unique strengths, allowing us to make a good analysis for this task. It would be interesting to see if the sequence labeling architecture from KNU-CI coupled with the entity library from AMORE-UPF could produce an even higher performing model for both the Main + Other and All evaluation.</p><p>To facilitate the momentum, we create an opensource project that will continuously support this task. <ref type="bibr">8</ref> It is worth mentioning that Character Identification is a part of a bigger project called Character Mining that strives for machine comprehension on dialog. 9 Currently, this project provides more and cleaner annotation for character identification than the corpus described in Section 3, hoping to engage more researchers to this task.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: An example of character identification, excerpted from the Season 1 Episode 1 of Friends, where mentions are indicated in red boxes and entities are linked by arrows.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: The AMORE-UPF model.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: The overview of AMORE-UPF system.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Attention-based Enc-Dec.Figure 3: The overview of KNU-CI system.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 3 :</head><label>3</label><figDesc>Figure 1: Attention-based Enc-Dec.Figure 3: The overview of KNU-CI system.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Distributions from the subset of the character identification corpus used for this shared task.</figDesc><table><row><cell>dialogues; they not only involve as much disfluency</cell></row><row><cell>and context switching as real dialogues do, but also</cell></row><row><cell>include more humor, sarcasm, or metaphor. Thus,</cell></row><row><cell>models evaluated on this corpus should give a gen-</cell></row><row><cell>eral sense about the state of character identification</cell></row><row><cell>on multiparty dialogue.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>Distributions of the annotated entity types used for this shared task.UtteranceJoeyYeah, right! ... You1 serious? Rachel Everything you2 need to know is in that first kiss. Chandler Yeah. For us3, it's like the stand-up comedian4 you5 have to sit through before the main dude6 starts. Ross It's not that we7 don't like the comedian8, it's that ... that's not why we9 bought the ticket.{You1} → Rachel, {us3, we7,9} → Collective, {you2,5} → General, {comedian4,8} → Generic, {dude6} → Other</figDesc><table><row><cell>Speaker</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Examples of the entity annotation described in Section 3.2.</figDesc><table><row><cell></cell><cell cols="8">Episodes Scenes Entities Mentions ClustersE ClustersS SingletonE SingletonS</cell></row><row><cell>Training</cell><cell>47</cell><cell>374</cell><cell>372</cell><cell>13,280</cell><cell>893</cell><cell>2,051</cell><cell>209</cell><cell>472</cell></row><row><cell>Evaluation</cell><cell>7</cell><cell>74</cell><cell>106</cell><cell>2,429</cell><cell>304</cell><cell>370</cell><cell>54</cell><cell>83</cell></row><row><cell>Total</cell><cell>47</cell><cell>448</cell><cell>401</cell><cell>15,709</cell><cell>1,197</cell><cell>2,421</cell><cell>263</cell><cell>555</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Distributions of the training and the evaluation sets in Section 3.3.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc>Example of the first utterance in Figure 1 annotated in the CoNLL'12 format.</figDesc><table><row><cell></cell><cell cols="3">4.1 AMORE-UPF System</cell><cell></cell></row><row><cell></cell><cell cols="5">The AMORE-UPF system approaches this task as</cell></row><row><cell></cell><cell cols="5">a multi-class classification. It uses a bidirectional</cell></row><row><cell></cell><cell cols="5">Long Short-Term Memory (LSTM) that processes</cell></row><row><cell></cell><cell cols="5">the input dialogue and resolves mentions, by means</cell></row><row><cell></cell><cell cols="5">of a comparison between the LSTM's hidden state,</cell></row><row><cell></cell><cell cols="5">for each mention, to vectors in an entity library. In</cell></row><row><cell></cell><cell cols="5">this model, learned representations of each entity</cell></row><row><cell></cell><cell cols="5">are stored in the entity library, that is a matrix where</cell></row><row><cell></cell><cell cols="5">each row represents an entity and whose values are</cell></row><row><cell></cell><cell cols="4">learned during training (Figure 2).</cell></row><row><cell>roaches, as e et al. 2017, nstance, we stead on the oreover, we entity repre-</cell><cell cols="2">(fictional example) Ross &amp; Rachel: the Ross &amp; Rachel: guy ... Ross &amp; Rachel: was ... Inputs:</cell><cell>Ross Rachel guy {</cell><cell>tanh W s W t W s</cell><cell>+</cell></row><row><cell>ntity linking</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>rence resolu-</cell><cell>BiLSTM:</cell><cell>...</cell><cell></cell><cell></cell><cell>...</cell></row><row><cell></cell><cell>Entity library:</cell><cell>E</cell><cell></cell><cell>e</cell></row><row><cell>dentification ur model is e top left and</cell><cell>Class scores:</cell><cell></cell><cell cols="2">softmax o</cell></row><row><cell>, our model</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>rm memory,</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>at processes</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ns, by means</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>hidden state</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>arned entity</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ogue, which</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>token t i and et) are repre-</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>via two dis-</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>W s , respec-; see also x i ple speakers,</cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 6 :</head><label>6</label><figDesc>Overall scores from the submitted systems.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8</head><label>8</label><figDesc>describes the strength of the AMORE-UPF system for the secondary characters using the bidirectional LSTM model, leading it to outperform all the others for All. Although both AMORE-UPF and KNU-CI utilize variations of RNNs as their underlying architectures, the performance downfall is not as prominent for AMORE-UPF as the number of characters increases, thanks to its entity library. The entity library is consumed and updated as necessary given the mention embeddings. It is used to regularize training each individual character, which helps avoiding the bias towards frequently appearing characters. As the result, AMORE-UPF yields better performance for All while accomplishing reasonable results for Main + Others as well.</figDesc><table><row><cell>Character</cell><cell cols="6">Ross Rachel Chandler Joey Phoebe Monica</cell><cell>Others</cell></row><row><cell>Evaluation</cell><cell>18.98</cell><cell>13.96</cell><cell>9.80</cell><cell>9.51</cell><cell>9.02</cell><cell>8.97</cell><cell>29.77</cell></row><row><cell>Training</cell><cell>13.93</cell><cell>12.37</cell><cell>11.43</cell><cell>9.43</cell><cell>8.79</cell><cell>10.61</cell><cell>33.44</cell></row><row><cell>AMORE-UPF KNU-CI Kampfpudding</cell><cell>78.57 85.86 73.48</cell><cell>82.98 92.49 70.67</cell><cell cols="2">81.36 79.83 84.94 79.67 79.25 63.38</cell><cell>86.52 88.09 79.79</cell><cell>85.22 91.16 73.35</cell><cell>61.02 79.79 74.61</cell></row><row><cell>Zuma-AR</cell><cell>38.72</cell><cell>43.05</cell><cell cols="2">43.04 36.10</cell><cell>42.90</cell><cell>46.43</cell><cell>51.78</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 7 :</head><label>7</label><figDesc>Detailed evaluation for Main + Others in Table 6. The Evaluation and Training rows show the percentages of individual characters appeared in the evaluation and the training set, respectively.</figDesc><table><row><cell>Character</cell><cell>Be</cell><cell>Ca</cell><cell>Ed</cell><cell>Pa</cell><cell>Ju</cell><cell>MB</cell><cell>Ri</cell><cell>Sc</cell><cell>Ca</cell><cell>Fr</cell><cell>Ja</cell><cell>OT</cell></row><row><cell>Evaluation</cell><cell>3.46</cell><cell>1.73</cell><cell>1.56</cell><cell>1.44</cell><cell>1.32</cell><cell>0.86</cell><cell>0.86</cell><cell>0.78</cell><cell>0.74</cell><cell>0.70</cell><cell>0.62</cell><cell>2.92</cell></row><row><cell>Training</cell><cell>1.41</cell><cell>1.46</cell><cell>1.06</cell><cell>0.71</cell><cell>1.15</cell><cell>0.60</cell><cell>1.83</cell><cell>0.21</cell><cell>0.13</cell><cell>0.51</cell><cell>0.43</cell><cell>13.51</cell></row><row><cell>AMORE-UPF KNU-CI Kampfpudding</cell><cell cols="11">50.00 57.14 80.60 35.56 72.73 64.52 80.85 10.00 61.54 38.46 62.79 73.02 15.38 42.55 0.00 66.67 38.46 0.00 18.18 16.00 0.00 42.11 31.86 33.33 68.85 33.33 60.32 50.00 61.22 10.00 0.00 0.00 23.53</cell><cell>7.89 0.00 0.00</cell></row><row><cell>Zuma-AR</cell><cell cols="3">0.00 12.24 44.44</cell><cell cols="4">0.00 27.91 15.38 77.78</cell><cell cols="2">0.00 38.46</cell><cell cols="2">0.00 12.50</cell><cell>0.00</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 8 :</head><label>8</label><figDesc>Detailed evaluation for ALL in Table6. Be: Ben, Ca: Carol, Ed: Eddie, Pa: Paolo, Ju: Julie: MB:</figDesc><table /><note>Mrs. Bing, Ri: Richard, Sc: Scott, Ca: Carl, Fr: Frank, Ja: Janice, OT: Others.</note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://medium.com/hijiffy/10-graphs-that-show-theimmense-power-of-messaging-apps-4a41385b24d6</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://competitions.codalab.org/ competitions/17310 3 https://github.com/emorynlp/ semeval-2018-task4</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">http://www.livesinabox.com/friends/ scripts.shtml</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">https://emorynlp.github.io/nlp4j 7 https://nlp.stanford.edu/software/ lex-parser.shtml</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">https://github.com/emorynlp/ character-identification 9 https://github.com/emorynlp/ character-mining</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Character Identification on Multiparty Conversation: Identifying Mentions of Characters in TV Shows</title>
+		<author>
+			<persName><forename type="first">Henry</forename><surname>Yu-Hsin Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinho</forename><forename type="middle">D</forename><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th Annual Meeting of the Special Interest Group on Discourse and Dialogue. SIG-DIAL&apos;16</title>
+				<meeting>the 17th Annual Meeting of the Special Interest Group on Discourse and Dialogue. SIG-DIAL&apos;16</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="90" to="100" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Robust Coreference Resolution and Entity Linking on Dialogues: Character Identification on TV Show Transcripts</title>
+		<author>
+			<persName><forename type="first">Henry</forename><surname>Yu-Hsin Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ethan</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinho</forename><forename type="middle">D</forename><surname>Choi</surname></persName>
+		</author>
+		<ptr target="http://www.conll.org/2017" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 21st Conference on Computational Natural Language Learning. Vancouver, Canada, CoNLL&apos;17</title>
+				<meeting>the 21st Conference on Computational Natural Language Learning. Vancouver, Canada, CoNLL&apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="216" to="225" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Dynamic Feature Induction: The Last Gist to the State-of-the-Art</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Jinho</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies. NAACL&apos;16</title>
+				<meeting>the Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies. NAACL&apos;16</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Transitionbased Dependency Parsing with Selectional Branching</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Jinho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccallum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 51st Annual Meeting of the Association for Computational Linguistics. ACL&apos;13</title>
+				<meeting>the 51st Annual Meeting of the Association for Computational Linguistics. ACL&apos;13</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1052" to="1062" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Chameleons in Imagined Conversations: A New Approach to Understanding Coordination of Linguistic Style in Dialogs</title>
+		<author>
+			<persName><forename type="first">Cristian</forename><surname>Danescu-Niculescu-Mizil</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lillian</forename><surname>Lee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Cognitive Modeling and Computational Linguistics. CMCL&apos;11</title>
+				<meeting>the 2nd Workshop on Cognitive Modeling and Computational Linguistics. CMCL&apos;11</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="76" to="87" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">To Link or Not to Link? A Study on Endto-End Tweet Entity Linking</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emre</forename><surname>Kiciman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference of the North American Chapter of the Association for Computational Linguistics on Human Language Technology. NAACL</title>
+				<meeting>the Conference of the North American Chapter of the Association for Computational Linguistics on Human Language Technology. NAACL</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1020" to="1030" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Unsupervised Induction of Contingent Event Pairs from Film Scenes</title>
+		<author>
+			<persName><forename type="first">Zhichao</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elahe</forename><surname>Rahimtoroghi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Larissa</forename><surname>Munishkina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reid</forename><surname>Swanson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marilyn</forename><forename type="middle">A</forename><surname>Walker</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2013 Conference on Empirical Methods in Natural Language Processing. EMNLP&apos;13</title>
+				<meeting>the 2013 Conference on Empirical Methods in Natural Language Processing. EMNLP&apos;13</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="369" to="379" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Andreas Stolcke, and Chuck Wooters</title>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Janin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Don</forename><surname>Baron</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jane</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Ellis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Gelbart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nelson</forename><surname>Morgan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Peskin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thilo</forename><surname>Pfau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><surname>Shriberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of IEEE International Conference on Acoustics, Speech, and Signal Processing. ICASSP&apos;03</title>
+				<meeting>IEEE International Conference on Acoustics, Speech, and Signal Processing. ICASSP&apos;03</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="364" to="367" />
+		</imprint>
+	</monogr>
+	<note>The ICSI Meeting Corpus</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">The Fourth Dialog State Tracking Challenge</title>
+		<author>
+			<persName><forename type="first">Seokhwan</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luis</forename><surname>Fernandodharo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rafael</forename><forename type="middle">E</forename><surname>Banchs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><forename type="middle">D</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Henderson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th Dialog State Tracking Challenge. DSTC4</title>
+				<meeting>the 4th Dialog State Tracking Challenge. DSTC4</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">A Dependency Parser for Tweets</title>
+		<author>
+			<persName><forename type="first">Lingpeng</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Swabha</forename><surname>Swayamdipta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Archna</forename><surname>Bhatia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2014 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1001" to="1012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The Ubuntu Dialogue Corpus: A Large Dataset for Research in Unstructured Multi-Turn Dialogue Systems</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Lowe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nissan</forename><surname>Pow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iulian</forename><surname>Serban</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joelle</forename><surname>Pineau</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 16th</title>
+				<meeting>the 16th</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m">Annual Meeting of the Special Interest Group on Discourse and Dialogue. SIGDIAL&apos;15</title>
+				<imprint>
+			<biblScope unit="page" from="285" to="294" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Wikify!: Linking Documents to Encyclopedic Knowledge</title>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andras</forename><surname>Csomai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Sixteenth ACM Conference on Conference on Information and Knowledge Management. CIKM&apos;07</title>
+				<meeting>the Sixteenth ACM Conference on Conference on Information and Knowledge Management. CIKM&apos;07</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="233" to="242" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">CoNLL-2012 Shared Task: Modeling Multilingual Unrestricted Coreference in OntoNotes</title>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Sameer Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nianwen</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Xue</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuchen</forename><surname>Uryupina</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Sixteenth Conference on Computational Natural Language Learning: Shared Task. CoNLL&apos;12</title>
+				<meeting>the Sixteenth Conference on Computational Natural Language Learning: Shared Task. CoNLL&apos;12</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="1" to="40" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Identifying Rhetorical Questions in Social Media</title>
+		<author>
+			<persName><forename type="first">Suhas</forename><surname>Ranganath</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xia</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiliang</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suhang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huan</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Conference on Web and Social Media</title>
+				<meeting>the 10th International Conference on Web and Social Media</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="667" to="670" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Local and Global Algorithms for Disambiguation to Wikipedia</title>
+		<author>
+			<persName><forename type="first">Lev</forename><surname>Ratinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Doug</forename><surname>Downey</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies. ACL&apos;11</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies. ACL&apos;11</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1375" to="1384" />
+		</imprint>
+	</monogr>
+	<note>and Mike Anderson</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Named Entity Recognition in Tweets: An Experimental Study</title>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mausam</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Etzioni</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing. EMNLP</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing. EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1524" to="1534" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Lexicon Integrated CNN Models with Attention for Sentiment Analysis</title>
+		<author>
+			<persName><forename type="first">Bonggun</forename><surname>Shin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinho</forename><forename type="middle">D</forename><surname>Choi</surname></persName>
+		</author>
+		<ptr target="http://optima.jrc.it/wassa2017/" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the EMNLP Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis</title>
+				<meeting>the EMNLP Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="149" to="158" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

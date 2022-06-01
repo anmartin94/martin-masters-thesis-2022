@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2014 Task 10: Multilingual Semantic Textual Similarity</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of the Basque Country Basque Country</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Carmen</forename><surname>Banea</surname></persName>
+							<email>carmennb@umich.edu</email>
+							<affiliation key="aff1">
+								<orgName type="institution">University of Michigan Ann Arbor</orgName>
+								<address>
+									<region>MI</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Claire</forename><surname>Cardie</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">Cornell University Ithaca</orgName>
+								<address>
+									<region>NY</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Daniel</forename><surname>Cer</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="institution">Google Inc. Mountain View</orgName>
+								<address>
+									<region>CA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+							<email>mtdiab@gwu.edu</email>
+							<affiliation key="aff4">
+								<orgName type="institution">George Washington University Washington</orgName>
+								<address>
+									<region>DC</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Aitor</forename><surname>Gonzalez-Agirre</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of the Basque Country Basque Country</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Weiwei</forename><surname>Guo</surname></persName>
+							<affiliation key="aff5">
+								<orgName type="institution">Columbia University New York</orgName>
+								<address>
+									<region>NY</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">University of Michigan Ann Arbor</orgName>
+								<address>
+									<region>MI</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">German</forename><surname>Rigau</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of the Basque Country Basque Country</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Janyce</forename><surname>Wiebe</surname></persName>
+							<affiliation key="aff6">
+								<orgName type="institution">University of Pittsburgh Pittsburgh</orgName>
+								<address>
+									<region>PA</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2014 Task 10: Multilingual Semantic Textual Similarity</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In Semantic Textual Similarity, systems rate the degree of semantic equivalence between two text snippets. This year, the participants were challenged with new data sets for English, as well as the introduction of Spanish, as a new language in which to assess semantic similarity. For the English subtask, we exposed the systems to a diversity of testing scenarios, by preparing additional OntoNotes-WordNet sense mappings and news headlines, as well as introducing new genres, including image descriptions, DEFT discussion forums, DEFT newswire, and tweet-newswire headline mappings. For Spanish, since, to our knowledge, this is the first time that official evaluations are conducted, we used well-formed text, by featuring sentences extracted from encyclopedic content and newswire. The annotations for both tasks leveraged crowdsourcing. The Spanish subtask engaged 9 teams participating with 22 system runs, and the English subtask attracted 15 teams with 38 system runs.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction and motivation</head><p>Given two snippets of text, Semantic Textual Similarity (STS) captures the notion that some texts are more similar than others, measuring their degree of semantic equivalence. Textual similarity can range from complete unrelatedness to exact semantic equivalence, and a graded similarity intuitively captures the notion of intermediate shades of similarity, as pairs of text may differ from some minor nuanced aspects of meaning, to relatively important semantic differences, to sharing only some details, or to simply being related to the same topic (cf. Section 2).</p><p>One of the goals of the STS task is to create a unified framework for combining several semantic components that otherwise have historically tended to be evaluated independently and without characterization of impact on NLP applications. By providing such a framework, STS allows for an extrinsic evaluation of these modules. Moreover, such an STS framework itself could in turn be evaluated intrinsically and extrinsically as a grey/black box within various NLP applications such as Machine Translation (MT), Summarization, Generation, Question Answering (QA), etc.</p><p>STS is related to both Textual Entailment (TE) and Paraphrasing, but differs in a number of ways and it is more directly applicable to a number of NLP tasks. STS is different from TE inasmuch as it assumes bidirectional graded equivalence between the pair of textual snippets. In the case of TE the equivalence is directional, e.g. a car is a vehicle, but a vehicle is not necessarily a car. STS also differs from both TE and Paraphrasing (in as far as both tasks have been defined to date in the literature) in that, rather than being a binary yes/no decision (e.g. a vehicle is not a car), we define STS to be a graded similarity notion (e.g. a vehicle and a car are more similar than a wave and a car). A quantifiable graded bidirectional notion of textual similarity is useful for a myriad of NLP tasks such as MT evaluation, information extraction, question answering, summarization, etc.</p><p>In 2012 we held the first pilot task at SemEval 2012, as part of the *SEM 2012 conference, with great success: 35 teams participated with 88 system runs <ref type="bibr" target="#b1">(Agirre et al., 2012</ref>  For STS 2014 we defined two subtasks: English and Spanish. For the English subtask we provided five test datasets: two datasets that extend already released genres (the OntoNotes-WordNet sense mappings and news headlines) and three new genres: image descriptions, DEFT discussion forum data and newswire, as well as tweetnewswire headline mappings. Participants could use all datasets released in 2012 and 2013 as training data. The Spanish subtask introduced two diverse datasets on different genres, namely encyclopedic descriptions extracted from the Spanish Wikipedia and contemporary Spanish newswire. For the Spanish subtask, the participants had access to a limited amount of labeled data, consisting of 65 sentence pairs, which they could use for training.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">English Subtask</head><p>The English dataset comprises pairs of news headlines (HDL), pairs of glosses (OnWN), image descriptions (Images), DEFT-related discussion forums (Deft-forum) and news (Deft-news), and tweet comments and newswire headline mappings (Tweets).</p><p>For HDL, we used naturally occurring news headlines gathered by the Europe Media Monitor (EMM) engine <ref type="bibr" target="#b3">(Best et al., 2005)</ref> from several different news sources. EMM clusters together related news. Our goal was to generate a balanced data set across the different similarity ranges, hence we built two sets of headline pairs: (i) a set where the pairs come from the same EMM cluster, (ii) and another set where the headlines come from a different EMM cluster, then we computed the string similarity between those pairs. Accordingly, we sampled 375 headline pairs of headlines that occur in the same EMM cluster, aiming for pairs equally distributed between minimal and maximal similarity using simple string similarity. We sampled other 375 pairs from the different EMM cluster in the same manner.</p><p>For OnWN, we used the sense definition pairs of OntoNotes <ref type="bibr" target="#b10">(Hovy et al., 2006)</ref> and WordNet <ref type="bibr" target="#b7">(Fellbaum, 1998)</ref>. Different from previous tasks, the two definition sentences in a pair belong to different senses. We sampled 750 pairs based on a string similarity ranging from 0.5 to 1.</p><p>The Images data set is a subset of the PAS-CAL VOC-2008 data set <ref type="bibr" target="#b22">(Rashtchian et al., 2010)</ref>, which consists of 1,000 images and has been used by a number of image description systems. It was also sampled from string similarity values between 0.6 and 1.</p><p>Deft-forum and Deft-news are from DEFT data. 2 Deft-forum contains the forum post sentences, and Deft-news are news summaries. We selected 450 pairs for Deft-forum and 300 pairs for Deft-news. They are sampled evenly from string similarities falling in the interval 0.6 to 1.</p><p>The Tweets data set contains tweet-news pairs selected from the corpus released in , where each pair contains a sentence that pertains to the news title, while the other one represents a Twitter comment on that particular news. They are evenly sampled from string similarity values between 0.5 and 1.</p><p>Table <ref type="table" target="#tab_2">1</ref> shows the explanations and values associated with each score between 5 and 0. As in prior years, we used Amazon Mechanical Turk (AMT) 3 to crowdsource the annotation of the English pairs. <ref type="bibr">4</ref> Annotators are presented with the Score English Spanish</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>5/4</head><p>The two sentences are completely equivalent, as they mean the same thing.</p><p>The bird is bathing in the sink. Birdie is washing itself in the water basin.</p><p>El pájaro se esta bañando en el lavabo. El pájaro se está lavando en el aguamanil. 4</p><p>The two sentences are mostly equivalent, but some unimportant details differ.</p><p>In May 2010, the troops attempted to invade Kabul.</p><p>The US army invaded Kabul on May 7th last year, 2010. 3</p><p>The two sentences are roughly equivalent, but some important information differs/missing. John said he is considered a witness but not a suspect. "He is not a suspect anymore." John said.</p><p>John dijo queél es considerado como testigo, y no como sospechoso. "Él ya no es un sospechoso," John dijo. 2</p><p>The two sentences are not equivalent, but share some details.</p><p>They flew out of the nest in groups.</p><p>They flew into the nest together.</p><p>Ellos volaron del nido en grupos.</p><p>Volaron hacia el nido juntos. 1</p><p>The two sentences are not equivalent, but are on the same topic.</p><p>The woman is playing the violin.</p><p>The young lady enjoys listening to the guitar.</p><p>La mujer está tocando el violín. La joven disfruta escuchar la guitarra. 0</p><p>The two sentences are completely dissimilar. John went horse back riding at dawn with a whole group of friends. Sunrise at dawn is a magnificent view to take in if you wake up early enough for it.</p><p>Al amanecer, Juan se fue a montar a caballo con un grupo de amigos. La salida del sol al amanecer es una magnífica vista que puede presenciar si usted se despierta lo suficientemente temprano para verla. A similarity score of 5 in English is mirrored by a maximum score of 4 in Spanish; the definitions pertaining to scores 3 and 4 in English were collapsed under a score of 3 in Spanish, with the definition "The two sentences are mostly equivalent, but some details differ."</p><p>detailed instructions provided in Figure <ref type="figure" target="#fig_0">1</ref>, and are asked to label each STS sentence pair on our six point scale, selecting from a dropdown box. Five sentence pairs are presented to each annotator at once, per human intelligence task (HIT), at a payrate of $0.20; we collect five separate annotations per sentence pair. Annotators were only eligible to work on the task if they had the Mechanical Turk Master Qualification. This is a special Amazon Mechanical Turk, since it provides numerous useful tools to assist in running a successful annotation project using crowdsourcing, such as support for hidden 'golden' questions that can be used both to train annotators and to automatically stop people who repeatedly make mistakes from contributing to the task. However, in 2013, CrowdFlower dropped Amazon Mechanical Turk as an annotation source. When we tried running pairs for STS 2014 on CrowdFlower using the same templates that were successfully used for the 2013 task, we found that we obtained significantly degraded annotation quality, with an average Pearson (AMT provider vs. rest of AMT providers) of only 22.8%. In contrast, when we ran the task for 2014 on AMT, we obtained a one-vs-rest annotation of 73.6%.</p><p>qualification conferred by AMT (using a priority statistical model) to annotators who consistently maintain a very high level of quality across a variety of tasks from numerous requesters). Access to these skilled workers entails a 20% surcharge.</p><p>To monitor the quality of the annotations, we use the gold dataset of 105 pairs that were manually annotated by the task organizers during STS 2013. We include one of these gold pairs in each set of five sentence pairs, where the gold pairs are indistinguishable from the rest. Unlike when we ran on CrowdFlower for STS 2013, the gold pairs are not used for training purposes, nor are workers automatically banned from the task if they make too many mistakes on annotating them. Rather, the gold pairs are only used to help in identifying and removing the data associated with poorly performing annotators. With few exceptions, 90% of the answers from each individual annotator fall within +/-1 of the answers selected by the organizers for The distribution of scores obtained from the AMT providers in the Deft-forum, Deft-news, OnWN and tweet-news datasets is roughly uniform across the different grades of similarity, although the scores are slightly higher for tweetnews. Compared to the other data sets, the scores for OnWN, were more bimodal, ranging between 4.6 to 5 and 0 to 0.4, when compared to middle values (2.6-3.4).</p><p>In order to assess the annotation quality, we measure the correlation of each annotator with the average of the rest of the annotators, and then average the results. This approach to estimate the quality is identical to the method used for evaluations (see Section 3), and it can thus be considered as the upper bound of the systems. The inter-tagger correlation for each English dataset is as follows:</p><p>• HDL: 79.4%</p><p>• OnWN: 67.2%</p><p>• Deft-forum: 58.6%</p><p>• Deft-news: 70.7%</p><p>• Images: 83.6%</p><p>• Tweets-news: 74.4%</p><p>The correlation figures are generally high (over 70%), with the exception of the OnWN and Deft datasets, which score 67.2% and 58.6%, respectively. The reason for the low inter-tagger correla-tion on OnWN compared to the higher correlations in previous years is that we only used unmapped sense definitions, i.e., the two sentences in a pair belong to two different senses. For the Deft-forum dataset, we found that similarity values tend to be lower than in the other datasets, and more annotation disagreements happen in these low similarity values.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Spanish Subtask</head><p>The Spanish subtask follows a setup similar to the English subtask, except that the similarity scores were adapted to fit a range from 0 to 4 (see Table <ref type="table" target="#tab_2">1</ref>). We thought that the distinction between a score of 3 and 4 for the English task will pose more difficulty for us in conveying into Spanish, as the sole difference between the two lies in how the annotators perceive the importance of additional details or missing information with respect to the core semantic interpretation of the pair. As this aspect entails a subjective judgement, and since it is the first time that a Spanish STS evaluation is organized, we casted the annotation guidelines into straightforward and unambiguous instructions, and thus opted to use a similarity range from 0 to 4.</p><p>Prior to the evaluation window, we released 65 Spanish sentence pairs for trial / training. In order to evaluate system performance under differ-ent scenarios, we developed two test datasets, one extracted from the Spanish Wikipedia 5 (December 2013 dump) and one from contemporary news articles collected from media in Spanish (February 2014).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.1">Spanish Wikipedia</head><p>The Wikipedia dump was processed using the Parse::MediaWikiDump Perl library. We removed all titles, html tags, wiki tags and hyperlinks (keeping only the surface forms). Each article was split into paragraphs, where the first paragraph was considered to be the article's abstract, while the remaining ones were deemed to be its content. Each of these were split into sentences using the Perl library Uplug::PreProcess::SentDetect, and only the sentences longer than eight words were used. We iteratively computed the lexical similarity 6 between every sentence in the abstract and every sentence in the content, and retained those pairs whose sentence length ratio was higher than 0.5, and their similarity scored over 0.35.</p><p>The final set of sentence pairs was split into five bins, and their scores normalized to range from 0 to 1. The more interesting and difficult pairs were found, perhaps not surprisingly, in bins 0 and 1, where synonyms/short paraphrases where more frequent. An example extracted from those bins, where the text in italics highlights the differences between the two sentences:</p><p>• "America" es el segundo continente más grande del planeta, después de Asia.</p><p>"America" is the second largest continent in the world, following Asia.</p><p>• America corresponde a la segunda masa de tierra más grande del planeta, luego de Asia.</p><p>America is the second largest land mass on the planet, after Asia.</p><p>The Spanish verb "Es" maps to (En: 7 is), "corresponde a" (En: corresponds to), the phrase "el segundo continente" (En: the second continent) is equivalent to "la segunda masa de tierra" (the second land mass), and "despues" (En: following) to "luego" (En: after). Despite the difference in vocabulary choice, the two sentences are paraphrases of each other.</p><p>From the candidate pairs, we manually selected 324 sentence pairs, in order to ensure a diverse and challenging set. This set was annotated in two ways, first by two graduate students in Computer Science who are native speakers of Spanish, and second by using AMT.</p><p>The AMT framework was set up to contain seven sentence pairs per HIT, where six of them were part of the test dataset, while one was used for control. AMT providers were eligible to complete a task if they had more than 500 accepted HITs, with 90%+ acceptance rate. <ref type="bibr">8</ref> We paid $0.30 per HIT, and each HIT was annotated by five AMT providers. We sought to ensure that only Spanish speaking annotators would complete the HITs by providing all the information related to the task (its title, abstract, description, guidelines and examples), as well as the control pair in Spanish only. The participants were instructed to label the pairs on a scale from 0 to 4 (see Table <ref type="table" target="#tab_2">1</ref>). Each sentence pair was followed by a comment text box, which the AMT providers used to provide the topic of the sentences, corrections, etc.</p><p>The two students achieved a Pearson correlation of 0.6974 on the Wikipedia dataset. To see how their judgement compares to the crowd wisdom, we averaged the AMT scores for each pair, and computed their correlation with our annotators, obtaining 0.824 and 0.742, respectively. Surprisingly enough, both these correlation values are higher than the correlation among the annotators themselves. When averaging the annotator scores and comparing them with the AMT providers' average score per pair, the correlation becomes 0.8546, indicating that the task is well defined, and that the annotations contributed by the AMT providers are of satisfactory quality. Given these scores, the gold standard was annotated using the average AMT provider judgement per pair.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.2">Spanish News</head><p>The second Spanish dataset was extracted from news articles published in Spanish language media from around the world in February 2014. The hyperlinks to the articles were obtained by parsing the "International" page of Spanish Google News, 9 which aggregates or clusters in real time articles describing a particular event from a diverse pool of news sites, where each grouping is labeled with the title of one of the predominant articles. By leveraging these clusters of links pointing to the sites where the articles were originally published, we are able to gather raw text that has a high probability of containing semantically similar sentences. We encountered several difficulties while mining the articles, ranging from each article having its own formatting depending on the source site, to advertisements, cookie requirements, to encoding for Spanish diacritics. We used the lynx text-based browser, 10 which was able to standardize the raw articles to a degree. The output of the browser was processed using a rule based approach taking into account continuous text span length, ratio of symbols and numbers to the text, etc., in order to determine when a paragraph is part of the article content. After that, a second pass over the predictions corrected mislabeled paragraphs if they were preceded and followed by paragraphs identified as content. All the content pertaining to articles on the same event was joined, sentence split, and diff pairwise similarities were computed. The set of candidate sentences followed the same requirements as for the Wikipedia dataset, namely length ratio higher than 0.5 and similarity score over 0.35. From these, we manually extracted 480 sentence pairs which were deemed to pose a challenge to an automated system.</p><p>Due to the high correlations obtained between the AMT providers' scores and the annotators' scores on Wikipedia, the news dataset was only annotated using AMT, following exactly the same task setup as for Wikipedia.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Evaluation of STS is still an open issue.</head><p>STS experiments have traditionally used Pearson product-moment correlation between the system scores and the GS scores, or, alternatively, Spearman rank order correlation. In addition, we also need a method to aggregate the results from each dataset into an overall score. The analysis performed in <ref type="bibr">(Agirre and Amigó, In prep)</ref> shows that Pearson and averaging across datasets are the best suited combination in general. In particular, Pearson is more informative than Spearman, in that Spearman only takes the rank differences into account, while Pearson does account for value differences as well. The study also showed that other alternatives need to be considered, depending on the requirements of the target application.</p><p>We leave application-dependent evaluations for future work, and focus on average Pearson correlation. When averaging, we weight each individual correlation by the size of the dataset. In order to compute statistical significance among system results, we use a one-tailed parametric test based on Fisher's z-transformation (Press et al., 2002, equation 14.5.10). In addition, English subtask participants could provide an optional confidence measure between 0 and 100 for each of their predictions. Team RTM-DCU is the only one who has provided these, and the evaluation of their runs using weighted Pearson <ref type="bibr" target="#b19">(Pozzi et al., 2012</ref>) is listed at the end of Table <ref type="table">3</ref>.</p><p>Participants 11 could take part in the shared task with a maximum of 3 system runs per subtask.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">English Subtask</head><p>In order to provide a simple word overlap baseline (Baseline-tokencos), we tokenize the input sentences splitting on white spaces, and then represent each sentence as a vector in the multidimensional token space. Each dimension has 1 if the token is present in the sentence, 0 otherwise. Vector similarity is computed using the cosine similarity metric.</p><p>We also run the freely available system, Take-Lab <ref type="bibr">(Šarić et al., 2012)</ref>, which yielded state of the art performance in STS 2012 and strong results out-of-the-box in 2013. <ref type="bibr">12</ref> 15 teams participated in the English subtask, submitting 38 system runs. One team submitted the results past the deadline, as explicitly marked in Table <ref type="table">3</ref>. After the submission deadline expired, the organizers published the gold standard and participant submissions on the task website, in order to ensure a transparent evaluation process.</p><p>Table <ref type="table">3</ref> shows the results of the English subtask, with runs listed in alphabetical order. The correlation in each dataset is given, followed <ref type="bibr">11</ref> Participating teams: Bielefeld SC <ref type="bibr" target="#b18">(McCrae et al., 2013)</ref>, BUAP <ref type="bibr" target="#b27">(Vilariño et al., 2014)</ref>, DLS@CU <ref type="bibr" target="#b26">(Sultan et al., 2014b)</ref>, FBK-TR <ref type="bibr" target="#b28">(Vo et al., 2014)</ref>, IBM EG (no information), LIPN <ref type="bibr" target="#b5">(Buscaldi et al., 2014)</ref>, Meerkat Mafia <ref type="bibr" target="#b12">(Kashyap et al., 2014)</ref>, NTNU <ref type="bibr" target="#b16">(Lynum et al., 2014)</ref>, RTM-DCU <ref type="bibr" target="#b4">(Biçici and Way, 2014)</ref>, SemantiKLUE <ref type="bibr" target="#b21">(Proisi et al., 2014)</ref>, StanfordNLP <ref type="bibr" target="#b24">(Socher et al., 2014)</ref>, TeamZ <ref type="bibr" target="#b9">(Gupta, 2014)</ref>, UMCC DLSI SemSim <ref type="bibr" target="#b6">(Chavez et al., 2014)</ref>, UNAL-NLP , UNED <ref type="bibr" target="#b17">(Martinez-Romo et al., 2011)</ref>, UoW <ref type="bibr" target="#b23">(Rios, 2014</ref> Table <ref type="table">3</ref>: English evaluation results. Results at the top correspond to out-of-the-box systems. Results at the bottom correspond to results using the confidence score. Notes: "-" for not submitted, " †" for post-deadline submission.</p><p>by the mean correlation (the official measure), and the rank of the run. The highest correlations are for OnWN (87.5%, by Meerkat Mafia) and images (83.4%, by NTNU), followed by Tweets (79.2%, by NTNU), HEADL (78.4%, by NTNU) and deft news and forums (78.1% and 53.1%, respectively, by NTNU). Compared to the inter-annotator agreement correlation, the ranking among datasets is very similar, with the exception of OnWN, as it gets the best score but has very low agreement. One possible reason is that the participants used previously available data. The results of the best 4 top system runs are significantly different (p-value &lt; 0.05) from the 5th top scoring system run and below. The top 4 systems did not show statistical significant variation among them.</p><p>Only three runs (cf. lower rows in Table <ref type="table">3</ref>) included non-uniform confidence scores, barely affecting their ranking. Interestingly, the two top performing systems on the English STS sub-task are both unsupervised. DLS@CU <ref type="bibr" target="#b26">(Sultan et al., 2014b)</ref> presents an unsupervised algorithm which predicts the STS score based on the proportion of word alignments in the two sentences. Two related words are aligned depending on how similar the two words are, and also on how similar the contexts of the words are in the respective sentences <ref type="bibr" target="#b25">(Sultan et al., 2014a)</ref>. Meerkat Mafia pairingWords <ref type="bibr" target="#b12">(Kashyap et al., 2014)</ref> also follows a fully unsupervised approach. The authors train LSA on an English corpus of three billion words using a sliding window approach, resulting in a vocabulary size of 29,000 words associated with 300 dimensions. They account for named entities and out-of-vocabulary words by leveraging external resources such as DBpedia <ref type="bibr">13</ref> and Wordnik. <ref type="bibr">14</ref> In Spanish, the system equivalent to this run ranked second following a cross-lingual approach, by applying the English system to the translated version of the dataset (see 3.2).</p><p>The Table <ref type="table">also</ref> shows the results of TakeLab, which was trained with all datasets from previous years. TakeLab would rank 18th, ten absolute points below the best system, a smaller difference than in 2013. <ref type="bibr">13</ref> dbpedia.org 14 wordnick.com</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Spanish Subtask</head><p>The Spanish subtask attracted 9 teams with 22 participating systems, out of which 16 were supervised and 6 unsupervised. The participants were from both Spanish (Colombia, Cuba, Mexico, Spain), and non-Spanish speaking countries (two teams from France, Germany, Ireland, UK, US). The evaluation results appear in Table <ref type="table" target="#tab_5">4</ref>.</p><p>The top ranking system is the 2nd run of UMCC DLSI SemSim <ref type="bibr" target="#b6">(Chavez et al., 2014)</ref>, which achieves a weighted correlation of 0.807. It entails a cross-lingual approach, as it leverages a SVM-based English framework, by mapping the Spanish words to their English equivalent using the most common sense in WordNet 3.0. The classifier uses a combination of features, such as those derived from traditional knowledge-based <ref type="bibr" target="#b14">((Leacock and Chodorow, 1998;</ref><ref type="bibr" target="#b30">Wu and Palmer, 1994;</ref><ref type="bibr" target="#b15">Lin, 1998)</ref>, and others) and corpus-based metrics (LSA <ref type="bibr" target="#b13">(Landauer et al., 1997)</ref>), paired with lexical features (such as Dice-Similarity, Euclideandistance, etc.). It is trained on a cumulative English STS dataset comprising train and test data released as part of tasks in SemEval2012 <ref type="bibr" target="#b1">(Agirre et al., 2012)</ref> and *Sem 2013 <ref type="bibr" target="#b2">(Agirre et al., 2013)</ref>, as well as training data available from tasks 1 and 10 in SemEval 2014. Interestingly enough, run 2 of the system performs better than run 1, despite the fact that it uses half the features, and focuses on string based similarity measures only. This difference between runs is noticed on the Wikipedia dataset only, and it amounts to 4% Pearson correlation. While the system had a robust performance on the Spanish subtask, for English, its overall rank was 16, 18, and 33, respectively.</p><p>Coming in close at only 0.3% difference, is Meerkat-Mafia PairingAvg (run 2) <ref type="bibr" target="#b12">(Kashyap et al., 2014)</ref>, which also follows a cross-lingual approach, by applying the system the team developed for the English subtask to the translated version of the datasets (see 3.1). The interesting aspect of their work is that in their first submission (run 1), they only consider the similarity resulting from the sentence pair translation through the Google Translate service. <ref type="bibr">15</ref> In the second run, they expand each sentence to 20 possible combinations by accounting for the multiple translation meanings of a given word, and considering the average similarity of all resulting pairs. While the first run achieves a weighted correlation of 73.8%,  the second one performs significantly better at 80.4%, indicating that the additional context may also include multiple instances of accurate translations, hence significantly impacting the overall similarity score. In English, the system equivalent to run 2 in Spanish, namely Meerkat Mafia-pairingWords, achieves a competitive ranked performance across all six datasets, ranking second, at an order of 10 −4 distance from the top system. This supports the claim that, despite its unsupervised nature, the system is quite versatile and highly competitive with the top performing supervised frameworks, and that it may achieve an even higher performance in Spanish if accurate sentence translations were provided.</p><p>Overall, most systems were cross-lingual, relying on different translation approaches, such as 1) translating the test data into English (as the two systems above), and then exporting the score obtained for the English sentences back to Spanish, or 2) performing automatic translation of the English training data, and learning a classifier directly in Spanish. <ref type="bibr" target="#b5">(Buscaldi et al., 2014)</ref> supplemented their training dataset with human annotations conducted in Spanish, using definition pairs extracted from a Spanish dictionary. A different angle was explored by <ref type="bibr" target="#b23">(Rios, 2014)</ref>, who proposed a multilingual framework using transfer learning across English and Spanish by training on traditional lexical, knowledge-based and corpus-based features. The semantic similarity task was ap-proached from a monolingual perspective as well <ref type="bibr" target="#b9">(Gupta, 2014)</ref>, by focusing on Spanish resources, such as the trial data we released as part of the subtask, and the Spanish WordNet; 16 these were leveraged using meta-learning over variations of overlap-based metrics. Following the same line, <ref type="bibr" target="#b4">(Biçici and Way, 2014)</ref> pursued language independent methods, who avoided relying on task or domain specific information through the usage of referential translation machines. This approach models textual semantic similarity as a decision in terms of translation quality between two datasets (in our case Spanish STS trial and test data) given relevant examples from an in-language reference corpus.</p><p>In comparison to the correlations obtained in the English subtask, where the highest weighted mean was 76.1%, for Spanish, we obtained 80.7%, probably due to the more formal nature of the datasets, since Wikipedia and news articles employ mostly well formed and grammatically correct sentences, and we selected all snippets to be longer than 8 words. The overall correlation scores obtained for English were hurt by the deft-forum data, which scored significantly lower (at a maximum correlation of 50.8%), when compared to all the other datasets whose correlation was higher than 70%. The OnWN data was most similar to our test sets, and it attained a maximum of 85.9%.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Conclusion</head><p>This year's STS task comprised a multilingual flair, by introducing Spanish datasets alongside the English ones. In English, the datasets sought to expose the participating teams to more diverse scenarios compared to the previous years, by introducing image descriptions, forum and newswire genre, and tweet-newswire headline mappings. For Spanish, two datasets were developed consisting of encyclopedic and newswire text acquired from Spanish sources. Overall, the English subtask attracted 15 teams (with 38 system variations), while the Spanish subtask had 9 teams (with 22 system runs). Most teams from the Spanish subtask have also submitted runs for the English evaluations.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Annotation instructions for English subtask.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>). In addition, we held</figDesc><table><row><cell>year</cell><cell>dataset</cell><cell>pairs source</cell></row><row><cell cols="2">2012 MSRpar</cell><cell>1500 newswire</cell></row><row><cell cols="2">2012 MSRvid</cell><cell>1500 videos</cell></row><row><cell cols="2">2012 OnWN</cell><cell>750 glosses</cell></row><row><cell cols="2">2012 SMTnews</cell><cell>750 MT eval.</cell></row><row><cell cols="2">2012 SMTeuroparl</cell><cell>750 MT eval.</cell></row><row><cell cols="2">2013 HDL</cell><cell>750 newswire</cell></row><row><cell cols="2">2013 FNWN</cell><cell>189 glosses</cell></row><row><cell cols="2">2013 OnWN</cell><cell>561 glosses</cell></row><row><cell cols="2">2013 SMT</cell><cell>750 MT eval.</cell></row><row><cell cols="2">2014 HDL</cell><cell>750 newswire headlines</cell></row><row><cell cols="2">2014 OnWN</cell><cell>750 glosses</cell></row><row><cell cols="2">2014 Deft-forum</cell><cell>450 forum posts</cell></row><row><cell cols="2">2014 Deft-news</cell><cell>300 news summary</cell></row><row><cell cols="2">2014 Images</cell><cell>750 image descriptions</cell></row><row><cell cols="2">2014 Tweet-news</cell><cell>750 tweet-news pairs</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>English subtask: Summary of train (2012 and 2013) and test (2014) datasets.</figDesc><table /><note>a DARPA sponsored workshop at Columbia University.1  In 2013, STS was selected as the official Shared Task of the *SEM 2013 conference, with two subtasks: The Core task, which is similar to the 2012 task; and a Pilot task on Typedsimilarity between semi-structured records. The Core task attracted 34 participants with 89 runs, and the Typed-similarity task attracted 6 teams with 14 runs.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Similarity scores with explanations and examples for the English and Spanish subtasks, where the sentences in Spanish are translations of the English ones.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Spanish evaluation results in terms of Pearson correlation.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://www.cs.columbia.edu/˜weiwei/ workshop/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">LDC2013E19, LDC2012E54 3 www.mturk.com 4 For STS 2013, we used CrowdFlower as a front-end to</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">es.wikipedia.org 6 Algorithm based on the Linux diff command (Algorithm::Diff Perl module).7 "En" stands for English.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">Initially, Amazon had automatically upgraded our annotation task to require Master level providers (as those participating in the English annotations), yet after approximately 4 days, no HIT had been completed.9 news.google.es</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10"> lynx.browser.org   </note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="15"> translate.google.com   </note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="16"> grial.uab.es/descarregues.php   </note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>The authors are grateful to Verónica Pérez-Rosas and Vanessa Loza for their help with the annotations for the Spanish subtask. This material is based in part upon work supported by National Science Foundation CAREER award #1361274 and IIS award #1018613, by DARPA-BAA-12-47 DEFT grant #12475008, and by MINECO CHIST-ERA READERS and SKATER projects (PCIN-2013-002-C02-01, TIN2012-38584-C06-02). Aitor Gonzalez Agirre is supported by a doctoral grant from MINECO. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation or the Defense Advanced Research Projects Agency.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Exploring evaluation measures for semantic textual similarity</title>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Enrique</forename><surname>Amigó</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">prep</title>
+				<imprint/>
+	</monogr>
+	<note>Unpublished manuscript</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Semeval-2012 task 6: A pilot on semantic textual similarity</title>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Cer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Gonzalez-Agirre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">*SEM 2012: The First Joint Conference on Lexical and Computational Semantics</title>
+				<meeting><address><addrLine>Montréal, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012-06" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="7" to="8" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the Sixth International Workshop on Semantic Evaluation</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">*SEM 2013 Shared Task: Semantic textual similarity, including a pilot on typed-similarity</title>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Cer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Gonzalez-Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weiwei</forename><surname>Guo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The Second Joint Conference on Lexical and Computational Semantics (*SEM 2013)</title>
+				<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="32" to="43" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Europe media monitor -system description</title>
+		<author>
+			<persName><forename type="first">Clive</forename><surname>Best</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erik</forename><surname>Van Der Goot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ken</forename><surname>Blackler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tefilo</forename><surname>Garcia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Horby</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">EUR Report 22173-En</title>
+				<meeting><address><addrLine>Ispra, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">RTM-DCU: Referential translation machines for semantic similarity</title>
+		<author>
+			<persName><forename type="first">Ergun</forename><surname>Biçici</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andy</forename><surname>Way</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation (SemEval-2014)</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation (SemEval-2014)<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">LIPN: Introducing a new geographical context similarity measure and a statistical similarity measure based on the Bhattacharyya coefficient</title>
+		<author>
+			<persName><forename type="first">Davide</forename><surname>Buscaldi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><forename type="middle">J Garcia</forename><surname>Flores</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joseph</forename><forename type="middle">Le</forename><surname>Roux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nadi</forename><surname>Tomeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Belem Priego</forename><surname>Sanchez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">UMCC DLSI SemSim: Multilingual system for measuring semantic textual similarity</title>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Chavez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hector</forename><surname>Davila</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoan</forename><surname>Gutierrez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Fernandez-Orquin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrés</forename><surname>Montoyo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rafael</forename><surname>Munoz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">WordNet -An electronic lexical database</title>
+		<author>
+			<persName><forename type="first">Christiane</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>MIT Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Linking tweets to news: A framework to enrich online short text data in social media</title>
+		<author>
+			<persName><forename type="first">Weiwei</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ji</forename><surname>Heng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 51th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 51th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="239" to="249" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">TeamZ: Measuring semantic textual similarity for Spanish using an overlap-based approach</title>
+		<author>
+			<persName><forename type="first">Anubhav</forename><surname>Gupta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">OntoNotes: The 90% solution</title>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitchell</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lance</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralph</forename><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Human Language Technology Conference of the North American Chapter of the ACL</title>
+				<meeting>the Human Language Technology Conference of the North American Chapter of the ACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="57" to="60" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">UNAL-NLP: Combining soft cardinality features for semantic textual similarity, relatedness and entailment</title>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Jimenez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><surname>Dueñas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Baquero</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Gelbukh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Meerkat Mafia: Multilingual and cross-level semantic textual similarity systems</title>
+		<author>
+			<persName><forename type="first">Abhay</forename><surname>Kashyap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lushan</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Yus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennifer</forename><surname>Sleeman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Taneeya</forename><surname>Satyapanich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sunil</forename><surname>Gandhi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Finin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">How well can passage meaning be derived without using word order? A comparison of latent semantic analysis and humans</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><forename type="middle">K</forename><surname>Landauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Darrell</forename><surname>Laham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bob</forename><surname>Rehder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">E</forename><surname>Schreiner</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+	<note type="report_type">Cognitive Science</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Combining local context and WordNet similarity for word sense identification</title>
+		<author>
+			<persName><forename type="first">Claudia</forename><surname>Leacock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Chodorow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">WordNet: An Electronic Lexical Database</title>
+				<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="305" to="332" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">An information-theoretic definition of similarity</title>
+		<author>
+			<persName><forename type="first">Dekang</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifteenth International Conference on Machine Learning</title>
+				<meeting>the Fifteenth International Conference on Machine Learning<address><addrLine>Madison, Wisconsin</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="296" to="304" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">NTNU: Measuring semantic similarity with sublexical feature representations and soft cardinality</title>
+		<author>
+			<persName><forename type="first">André</forename><surname>Lynum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Partha</forename><surname>Pakray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Björn</forename><surname>Gambäck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Jimenez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Disentangling categorical relationships through a graph of co-occurrences</title>
+		<author>
+			<persName><forename type="first">Juan</forename><surname>Martinez-Romo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lourdes</forename><surname>Araujo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Javier</forename><surname>Borge-Holthoefer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Arenas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>José</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">José</forename><forename type="middle">A</forename><surname>Capitán</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cuesta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Phys. Rev. E</title>
+		<imprint>
+			<biblScope unit="volume">84</biblScope>
+			<biblScope unit="page">46108</biblScope>
+			<date type="published" when="2011-10" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Orthonormal explicit topic analysis for crosslingual document matching</title>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">P</forename><surname>Mccrae</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Cimiano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roman</forename><surname>Klinger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2013 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2013 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Seattle, Washington, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1732" to="1740" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Exponential smoothing weighted correlations</title>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Pozzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tiziana</forename><surname>Di Matteo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomaso</forename><surname>Aste</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The European Physical Journal B</title>
+		<imprint>
+			<biblScope unit="volume">85</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Numerical recipes: The art of scientific computing V 2.10 with Linux or single-screen license</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>William</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saul</forename><forename type="middle">A</forename><surname>Press</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">T</forename><surname>Teukolsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brian</forename><forename type="middle">P</forename><surname>Vetterling</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Flannery</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2002" />
+			<publisher>Cambridge University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">SemantiKLUE: Robust semantic similarity at multiple levels using maximum weight matching</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Proisi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Evert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Greiner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Besim</forename><surname>Kabashi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Collecting image annotations using Amazon&apos;s Mechanical Turk</title>
+		<author>
+			<persName><forename type="first">Cyrus</forename><surname>Rashtchian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Young</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Micah</forename><surname>Hodosh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julia</forename><surname>Hockenmaier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL HLT 2010 Workshop on Creating Speech and Language Data with Amazon&apos;s Mechanical Turk, CSLDAMT &apos;10</title>
+				<meeting>the NAACL HLT 2010 Workshop on Creating Speech and Language Data with Amazon&apos;s Mechanical Turk, CSLDAMT &apos;10<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="139" to="147" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">UoW: Multi-task learning Gaussian process for semantic textual similarity</title>
+		<author>
+			<persName><forename type="first">Miguel</forename><surname>Rios</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Grounded compositional semantics for finding and describing images with sentences</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrej</forename><surname>Karpathy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc</forename><forename type="middle">V</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">Y</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="page" from="207" to="218" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Back to basics for monolingual alignment: Exploiting word similarity and contextual evidence</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Md Arafat Sultan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamara</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sumner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="219" to="230" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">DLS@CU: Sentence similarity from word aligment</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Md Arafat Sultan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamara</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sumner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">BUAP: Evaluating features for multilingual and cross-level semantic textual similarity</title>
+		<author>
+			<persName><forename type="first">Darnes</forename><surname>Vilariño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Pinto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saúl</forename><surname>León</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mireya</forename><surname>Tovar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Beatriz</forename><surname>Beltrán</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">FBK-TR: Applying SVM with multiple linguistic features for cross-level semantic similarity</title>
+		<author>
+			<persName><forename type="first">Ngoc Phuoc An</forename><surname>Vo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Caselli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Octavian</forename><surname>Popescu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2014</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Takelab: Systems for measuring semantic text similarity</title>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Franešarić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mladen</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Janšnajder</forename><surname>Karan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bojana Dalbelo</forename><surname>Bašić</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Sixth International Workshop on Semantic Evaluation</title>
+				<meeting>the Sixth International Workshop on Semantic Evaluation<address><addrLine>Montréal, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012-06" />
+			<biblScope unit="page" from="7" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Verbs semantics and lexical selection</title>
+		<author>
+			<persName><forename type="first">Zhibiao</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 32nd annual meeting on Association for Computational Linguistics</title>
+		<title level="s">New Mexico</title>
+		<meeting>the 32nd annual meeting on Association for Computational Linguistics<address><addrLine>Las Cruces</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1994" />
+			<biblScope unit="page" from="133" to="138" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

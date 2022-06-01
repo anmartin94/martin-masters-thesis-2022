@@ -1,0 +1,2557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2017 Task 3: Community Question Answering</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">ALT Research Group</orgName>
+								<orgName type="institution" key="instit1">Qatar Computing Research Institute</orgName>
+								<orgName type="institution" key="instit2">HBKU</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Doris</forename><surname>Hoogeveen</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">The University of Melbourne</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">ALT Research Group</orgName>
+								<orgName type="institution" key="instit1">Qatar Computing Research Institute</orgName>
+								<orgName type="institution" key="instit2">HBKU</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">ALT Research Group</orgName>
+								<orgName type="institution" key="instit1">Qatar Computing Research Institute</orgName>
+								<orgName type="institution" key="instit2">HBKU</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Hamdy</forename><surname>Mubarak</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">ALT Research Group</orgName>
+								<orgName type="institution" key="instit1">Qatar Computing Research Institute</orgName>
+								<orgName type="institution" key="instit2">HBKU</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">The University of Melbourne</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Karin</forename><surname>Verspoor</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">The University of Melbourne</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2017 Task 3: Community Question Answering</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We describe SemEval2017 Task 3 on Community Question Answering.</p><p>This year, we reran the four subtasks from SemEval-2016: (A) Question-Comment Similarity, (B) Question-Question Similarity, (C) Question-External Comment Similarity, and (D) Rerank the correct answers for a new question in Arabic, providing all the data from 2015 and 2016 for training, and fresh data for testing. Additionally, we added a new subtask E in order to enable experimentation with Multi-domain Question Duplicate Detection in a larger-scale scenario, using StackExchange subforums. A total of 23 teams participated in the task, and submitted a total of 85 runs (36 primary and 49 contrastive) for subtasks A-D. Unfortunately, no teams participated in subtask E. A variety of approaches and features were used by the participating systems to address the different subtasks. The best systems achieved an official score (MAP) of 88.43, 47.22,  15.46, and 61.16  in subtasks A, B, C, and D, respectively. These scores are better than the baselines, especially for subtasks A-C.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Community Question Answering (CQA) on web forums such as Stack Overflow 1 and Qatar Living, 2 is gaining popularity, thanks to the flexibility of forums to provide information to a user . Forums are moderated only indirectly via the community, rather open, and subject to few restrictions, if any, on who can post and answer a question, or what questions can be asked. On the positive side, a user can freely ask any question and can expect a variety of answers. On the negative side, it takes efforts to go through the provided answers of varying quality and to make sense of them. It is not unusual for a popular question to have hundreds of answers, and it is very time-consuming for a user to inspect them all.</p><p>Hence, users can benefit from automated tools to help them navigate these forums, including support for finding similar existing questions to a new question, and for identifying good answers, e.g., by retrieving similar questions that already provide an answer to the new question.</p><p>Given the important role that natural language processing (NLP) plays for CQA, we have organized a challenge series to promote related research for the past three years. We have provided datasets, annotated data and we have developed robust evaluation procedures in order to establish a common ground for comparing and evaluating different approaches to CQA.</p><p>In greater detail, in SemEval-2015 Task 3 "Answer Selection in Community Question Answering" , <ref type="bibr">3</ref> we mainly targeted conventional Question Answering (QA) tasks, i.e., answer selection. In contrast, in SemEval-2016 Task 3 , we targeted a fuller spectrum of CQA-specific tasks, moving closer to the real application needs, 4 particularly in Subtask C, which was defined as follows: "given (i) a new question and (ii) a large collection of question-comment threads created by a user community, rank the comments that are most useful for answering the new question". A test question is new with respect to the forum, but can be related to one or more questions that have been previously asked in the forum. The best answers can come from different question-comment threads. The threads are independent of each other, the lists of comments are chronologically sorted, and there is meta information, e.g., date of posting, who is the user who asked/answered the question, category the question was asked in, etc.</p><p>The comments in a thread are intended to answer the question initiating that thread, but since this is a resource created by a community of casual users, there is a lot of noise and irrelevant material, in addition to the complications of informal language use, typos, and grammatical mistakes. Questions in the collection can also be related in different ways, although there is in general no explicit representation of this structure.</p><p>In addition to Subtask C, we designed subtasks A and B to give participants the tools to create a CQA system to solve subtask C. Specifically, Subtask A (Question-Comment Similarity) is defined as follows: "given a question from a questioncomment thread, rank the comments according to their relevance (similarity) with respect to the question." Subtask B (Question-Question Similarity) is defined as follows: "given a new question, rerank all similar questions retrieved by a search engine, assuming that the answers to the similar questions should also answer the new question."</p><p>The relationship between subtasks A, B, and C is illustrated in Figure <ref type="figure">1</ref>. In the figure, q stands for the new question, q is an existing related question, and c is a comment within the thread of question q . The edge qc relates to the main CQA task (subtask C), i.e., deciding whether a comment for a potentially related question is a good answer to the original question. This relation captures the relevance of c for q. The edge qq represents the similarity between the original and the related questions (subtask B). This relation captures the relatedness of q and q . Finally, the edge q c represents the decision of whether c is a good answer for the question from its thread, q (subtask A). This relation captures the appropriateness of c for q . In this particular example, q and q are indeed related, and c is a good answer for both q and q.</p><p>The participants were free to approach Subtask C with or without solving Subtasks A and B, and participation in the main subtask and/or the two subtasks was optional.</p><p>We had three objectives for the first two editions of our task: (i) to focus on semantic-based solutions beyond simple "bag-of-words" representations and "word matching" techniques; (ii) to study new NLP challenges arising in the CQA scenario, e.g., relations between the comments in a thread, relations between different threads, and question-to-question similarity; and (iii) to facilitate the participation of non-IR/QA experts.</p><p>Can I drive with an Australian driver's license in Qatar?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>q: q':</head><p>How long can i drive in Qatar with my international driver's permit before I'm forced to change my Australian license to a Qatari one? When I do change over to a Qatar license do I actually lose my Australian license? I'd prefer to keep it if possible...</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>c:</head><p>depends on the insurer, Qatar Insurance Company said this in email to me:"Thank you for your email! With regards to your query below, a foreigner is valid to drive in Doha with the following conditions: Foreign driver with his country valid driving license allowed driving only for one week from entry date Foreign driver with international valid driving license allowed driving for 6 months from entry date Foreign driver with GCC driving license allowed driving for 3 months from entry". As an Aussie your driving licence should be transferable to a Qatar one with only the eyetest (temporary, then permanent once RP sorted).</p><p>Figure <ref type="figure">1</ref>: The similarity triangle for CQA, showing the three pairwise interactions between the original question q, the related question q , and a comment c in the related question's thread.</p><p>The third objective was achieved by providing the set of potential answers and asking the participants to (re)rank the answers, and also by defining two optional subtasks (A and B), in addition to the main subtask (i.e., C).</p><p>Last year, we were successful in attracting a large number of participants to all subtasks. However, as the task design was new (we added subtasks B and C in the 2016 edition of the task), we felt that participants would benefit from a rerun, with new test sets for subtasks A-C.</p><p>We preserved the multilinguality aspect (as in 2015 and 2016), providing data for two languages: English and Arabic. In particular, we had an Arabic subtask D, which used data collected from three medical forums. This year, we used a slightly different procedure for the preparation of test set compared to the way the training, development, and test data for subtask D was collected last year.</p><p>Additionally, we included a new subtask, subtask E, which enables experimentation on Question-Question Similarity on a large-scale CQA dataset, i.e., StackExchange, based on the CQADupStack data set <ref type="bibr" target="#b35">(Hoogeveen et al., 2015)</ref>. Subtask E is a duplicate question detection task, and like Subtask B, it is focused on questionquestion similarity. Participants were asked to rerank 50 candidate questions according to their relevance with respect to each query question. The subtask included several elements that differentiate it from Subtask B (see Section 3.2).</p><p>We provided manually annotated training data for both languages and for all subtasks. All examples were manually labeled by a community of annotators using a crowdsourcing platform. The datasets and the annotation procedure for the old data for subtasks A, B and C are described in . In order to produce the new data for Subtask D, we used a slightly different procedure compared to 2016, which we describe in Section 3.1.1.</p><p>The remainder of this paper is organized as follows: Section 2 introduces related work. Section 3 gives a more detailed definition of the subtasks; it also describes the datasets and the process of their creation, and it explains the evaluation measures we used. Section 4 presents the results for all subtasks and for all participating systems. Section 5 summarizes the main approaches used by these systems and provides further discussion. Finally, Section 6 presents the main conclusions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>The first step to automatically answer questions on CQA sites is to retrieve a set of questions similar to the question that the user has asked. This set of similar questions is then used to extract possible answers for the original input question. Despite its importance, question similarity for CQA is a hard task due to problems such as the "lexical gap" between the two questions.</p><p>Question-question similarity has been featured as a subtask (subtask B) of SemEval-2016 Task 3 on Community Question Answering ; there was also a similar subtask as part of SemEval-2016 Task 1 on Semantic Textual Similarity <ref type="bibr" target="#b0">(Agirre et al., 2016)</ref>. Question-question similarity is an important problem with application to question recommendation, question duplicate detection, community question answering, and question answering in general. Typically, it has been addressed using a variety of textual similarity measures. Some work has paid attention to modeling the question topic, which can be done explicitly, e.g., using question topic and focus  or using a graph of topic terms , or implicitly, e.g., using a language model with a smoothing method based on the category structure of Yahoo! Answers <ref type="bibr" target="#b12">(Cao et al., 2009)</ref> or using LDA topic language model that matches the questions not only at the term level but also at the topic level <ref type="bibr" target="#b84">(Zhang et al., 2014)</ref>.</p><p>Another important aspect is syntactic structure, e.g., <ref type="bibr" target="#b76">Wang et al. (2009)</ref> proposed a retrieval model for finding similar questions based on the similarity of syntactic trees, and Da San  used syntactic kernels. Yet another emerging approach is to use neural networks, e.g., dos <ref type="bibr" target="#b19">Santos et al. (2015)</ref> used convolutional neural networks (CNNs),  used long short-term memory (LSTMs) networks with neural attention to select the important part of text when comparing two questions, and  used a combined recurrent-convolutional model to map questions to continuous semantic representations. Finally, translation <ref type="bibr" target="#b38">(Jeon et al., 2005;</ref><ref type="bibr" target="#b86">Zhou et al., 2011)</ref> and cross-language models  have also been popular for question-question similarity.</p><p>Question-answer similarity has been a subtask (subtask A) of our task in its two previous editions . This is a wellresearched problem in the context of general question answering. One research direction has been to try to match the syntactic structure of the question to that of the candidate answer. For example, <ref type="bibr" target="#b78">Wang et al. (2007)</ref> proposed a probabilistic quasi-synchronous grammar to learn syntactic transformations from the question to the candidate answers. <ref type="bibr" target="#b32">Heilman and Smith (2010)</ref> used an algorithm based on Tree Edit Distance (TED) to learn tree transformations in pairs. <ref type="bibr" target="#b77">Wang and Manning (2010)</ref> developed a probabilistic model to learn tree-edit operations on dependency parse trees. <ref type="bibr" target="#b83">Yao et al. (2013)</ref> applied linear chain conditional random fields (CRFs) with features derived from TED to learn associations between questions and candidate answers. Moreover, syntactic structure was central for some of the top systems that participated in SemEval-2016 Task 3 <ref type="bibr" target="#b24">(Filice et al., 2016;</ref>.</p><p>Another important research direction has been on using neural network models for questionanswer similarity <ref type="bibr" target="#b23">(Feng et al., 2015;</ref><ref type="bibr" target="#b67">Severyn and Moschitti, 2015;</ref><ref type="bibr" target="#b75">Wang and Nyberg, 2015;</ref><ref type="bibr" target="#b24">Filice et al., 2016;</ref>. For instance,  used neural attention over a bidirectional long short-term memory (LSTM) neural network in order to generate better answer representations given the questions. Another example is the work of , who combined neural networks with syntactic kernels. Yet another research direction has been on using machine translation models as features for question-answer similarity <ref type="bibr" target="#b9">(Berger et al., 2000;</ref><ref type="bibr" target="#b21">Echihabi and Marcu, 2003;</ref><ref type="bibr" target="#b38">Jeon et al., 2005;</ref><ref type="bibr" target="#b68">Soricut and Brill, 2006;</ref><ref type="bibr" target="#b64">Riezler et al., 2007;</ref><ref type="bibr" target="#b43">Li and Manandhar, 2011;</ref><ref type="bibr" target="#b69">Surdeanu et al., 2011;</ref><ref type="bibr" target="#b72">Tran et al., 2015;</ref><ref type="bibr" target="#b33">Hoogeveen et al., 2016a;</ref><ref type="bibr" target="#b81">Wu and Zhang, 2016)</ref>, e.g., a variation of IBM model 1 <ref type="bibr" target="#b11">(Brown et al., 1993)</ref>, to compute the probability that the question is a "translation" of the candidate answer. Similarly, <ref type="bibr">(Guzmán et al., 2016a,b)</ref> ported an entire machine translation evaluation framework <ref type="bibr" target="#b29">(Guzmán et al., 2015)</ref> to the CQA problem.</p><p>Using information about the answer thread is another important direction, which has been explored mainly to address Subtask A. In the 2015 edition of the task, the top participating systems used thread-level features, in addition to local features that only look at the question-answer pair. For example, the second-best team, HITSZ-ICRC, used as a feature the position of the comment in the thread, such as whether the answer is first or last <ref type="bibr" target="#b37">(Hou et al., 2015)</ref>. Similarly, the third-best team, QCRI, used features to model a comment in the context of the entire comment thread, focusing on user interaction <ref type="bibr" target="#b58">(Nicosia et al., 2015)</ref>. Finally, the fifth-best team, ICRC-HIT, treated the answer selection task as a sequence labeling problem and proposed recurrent convolutional neural networks to recognize good comments <ref type="bibr" target="#b88">(Zhou et al., 2015b)</ref>.</p><p>In follow-up work, <ref type="bibr" target="#b87">Zhou et al. (2015a)</ref> included long-short term memory (LSTM) units in their convolutional neural network to model the classification sequence for the thread, and  exploited the dependencies between the thread comments to tackle the same task. This was done by designing features that look globally at the thread and by applying structured prediction models, such as CRFs. This research direction was further extended by , who used the output structure at the thread level in order to make more consistent global decisions about the goodness of the answers in the thread. They modeled the relations between pairs of comments at any distance in the thread, and combined the predictions of local classifiers using graph-cut and Integer Linear Programming. In follow up work,  proposed joint learning models that integrate inference within the learning process using global normalization and an Ising-like edge potential.</p><p>Question-External comment similarity is our main task (subtask C), and it is inter-related to subtasks A and B, as described in the triangle of Figure <ref type="figure">1</ref>. This task has been much less studied in the literature, mainly because its definition is specific to our SemEval Task 3, and it first appeared in the 2016 edition . Most of the systems that took part in the competition, including the winning system of the SUper team <ref type="bibr" target="#b51">(Mihaylova et al., 2016)</ref>, approached the task indirectly by solving subtask A at the thread level and then using these predictions together with the reciprocal rank of the related questions in order to produce a final ranking for subtask C. One exception is the KeLP system <ref type="bibr" target="#b24">(Filice et al., 2016)</ref>, which was ranked second in the competition. This system combined information from different subtasks and from all input components. It used a modular kernel function, including stacking from independent subtask A and B classifiers, and applying SVMs to train a Good vs. Bad classifier <ref type="bibr" target="#b24">(Filice et al., 2016)</ref>. In a related study,  discussed the input information to solve Subtask C, and concluded that one has to model mainly question-to-question similarity (Subtask B) and answer goodness (subtask A), while modeling the direct relation between the new question and the candidate answer (from a related question) was found to be far less important.</p><p>Finally, in another recent approach, <ref type="bibr" target="#b10">Bonadiman et al. (2017)</ref> studied how to combine the different CQA subtasks. They presented a multitask neural architecture where the three tasks are trained together with the same representation. The authors showed that the multitask system yields good improvement for Subtask C, which is more complex and clearly dependent on the other two tasks.</p><p>Some notable features across all subtasks. Finally, we should mention some interesting features used by the participating systems across all three subtasks. This includes fine-tuned word embeddings 5 <ref type="bibr" target="#b50">(Mihaylov and Nakov, 2016b)</ref>; features modeling text complexity, veracity, and user trollness 6 <ref type="bibr" target="#b51">(Mihaylova et al., 2016)</ref>; sentiment polarity features <ref type="bibr" target="#b58">(Nicosia et al., 2015)</ref>; and PMI-based goodness polarity lexicons <ref type="bibr" target="#b45">Mihaylov et al., 2017a)</ref>.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Subtasks and Data Description</head><p>The 2017 challenge was structured as a set of five subtasks, four of which (A, B, C and E) were offered for English, while the fifth (D) one was for Arabic. We leveraged the data we developed in 2016 for the first four subtasks, creating only new test sets for them, whereas we built a completely new dataset for the new Subtask E.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Old Subtasks</head><p>The first four tasks and the datasets for them are described in ). Here we review them briefly.</p><p>English subtask A Question-Comment Similarity. Given a question Q and the first ten comments 7 in its question thread (c 1 , . . . , c 10 ), the goal is to rank these ten comments according to their relevance with respect to that question. Note that this is a ranking task, not a classification task; we use mean average precision (MAP) as an official evaluation measure. This setting was adopted as it is closer to the application scenario than pure comment classification. For a perfect ranking, a system has to place all "Good" comments above the "PotentiallyUseful" and the "Bad" comments; the latter two are not actually distinguished and are considered "Bad" at evaluation time. This year, we elliminated the "Poten-tiallyUseful" class for test at annotation time.</p><p>English subtask B Question-Question Similarity. Given a new question Q (aka original question) and the set of the first ten related questions from the forum (Q 1 , . . . , Q 10 ) retrieved by a search engine, the goal is to rank the related questions according to their similarity with respect to the original question.</p><p>In this case, we consider the "PerfectMatch" and the "Relevant" questions both as good (i.e., we do not distinguish between them and we will consider them both "Relevant"), and they should be ranked above the "Irrelevant" questions. As in subtask A, we use MAP as the official evaluation measure. To produce the ranking of related questions, participants have access to the corresponding related question-thread. 8 Thus, being more precise, this subtask could have been named Question -Question+Thread Similarity.</p><p>English subtask C Question-External Comment Similarity. Given a new question Q (also known as the original question), and the set of the first ten related questions (Q 1 , . . . , Q 10 ) from the forum retrieved by a search engine for Q, each associated with its first ten comments appearing in Q's thread (c 1 1 , . . . , c 10 1 , . . . , c 1 10 , . . . , c 10 10 ), the goal is to rank these 10×10 = 100 comments {c j i } 10 i,j=1</p><p>according to their relevance with respect to the original question Q. This is the main English subtask. As for subtask A, we want the "Good" comments to be ranked above the "PotentiallyUseful" and the "Bad" comments, which will be considered just bad in terms of evaluation. Although, the systems are supposed to work on 100 comments, we take an applicationoriented view in the evaluation, assuming that users would like to have good comments concentrated in the first ten positions. We believe users care much less about what happens in lower positions (e.g., after the 10th) in the rank, as they typically do not ask for the next page of results in a search engine such as Google or Bing. This is reflected in our primary evaluation score, MAP, which we restrict to consider only the top ten results for subtask C.</p><p>Arabic subtask D Rank the correct answers for a new question. Given a new question Q (aka the original question), the set of the first 30 related questions retrieved by a search engine, each associated with one correct answer ((Q 1 , c 1 ) . . . , (Q 30 , c 30 )), the goal is to rank the 30 question-answer pairs according to their relevance with respect to the original question. We want the "Direct" and the "Relevant" answers to be ranked above the "Irrelevant" answers; the former two are considered "Relevant" in terms of evaluation. We evaluate the position of "Relevant" answers in the rank, and this is again a ranking task. Unlike the English subtasks, here we use 30 answers since the retrieval task is much more difficult, leading to low recall, and the number of correct answers is much lower. Again, the systems were evaluated using MAP, restricted to the top-10 results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.1">Data Description for A-D</head><p>The English data for subtasks A, B, and C comes from the Qatar Living forum, which is organized as a set of seemingly independent questioncomment threads. In short, for subtask A, we annotated the comments in a question-thread as "Good", "PotentiallyUseful" or "Bad" with respect to the question that started the thread. Additionally, given original questions, we retrieved related question-comment threads and annotated the related questions as "PerfectMatch", "Relevant", or "Irrelevant" with respect to the original question (Subtask B). We then annotated the comments in the threads of related questions as "Good", "Po-tentiallyUseful" or "Bad" with respect to the original question (Subtask C).</p><p>For Arabic, the data was extracted from medical forums and has a different format. Given an original question, we retrieved pairs of the form (related question, answer to the related question). These pairs were annotated as "Direct" answer, "Relevant" and "Irrelevant" with respect to the original question.</p><p>For subtasks A, B, and C we annotated new English test data following the same setup as for SemEval-2016 Task 3 , except that we elliminated the "Potentially Useful" class for subtask A. We first selected a set of questions to serve as original questions. In a real-world scenario those would be questions that had never been asked previously, but here we used existing questions from Qatar Living.</p><p>From each original question, we generated a query, using the question's subject (after some word removal if the subject was too long). Then, we executed the query against Google, limiting the search to the Qatar Living forum, and we collected up to 200 resulting question-comment threads as related questions. Afterwards, we filtered out threads with less than ten comments as well as those for which the question was more than 2,000 characters long. Finally, we kept the top-10 surviving threads, keeping just the first 10 comments in each thread.</p><p>We formatted the results in XML with UTF-8 encoding, adding metadata for the related questions and for their comments; however, we did not provide any meta information about the original question, in order to emulate a scenario where it is a new question, never asked before in the forum. In order to have a valid XML, we had to do some cleansing and normalization of the data. We added an XML format definition at the beginning of the XML file and we made sure it validated.</p><p>We organized the XML data as a sequence of original questions (OrgQuestion), where each question has a subject, a body, and a unique question identifier (ORGQ ID). Each such original question is followed by ten threads, where each thread consists of a related question (from the search engine results) and its first ten comments.</p><p>We made available to the participants for training and development the data from 2016 (and for subtask A, also from 2015), and we created a new test set of 88 new questions associated with 880 question candidates and 8,800 comments; details are shown in Table <ref type="table" target="#tab_1">1</ref>.  For subtasks D we had to annotate new test data. In 2016, we used data from three Arabic medical websites, which we downloaded and indexed locally using Solr. <ref type="bibr">9</ref> Then, we performed 21 different query/document formulations, and we merged the retrieved results, ranking them according to the reciprocal rank fusion algorithm <ref type="bibr" target="#b15">(Cormack et al., 2009)</ref>. Finally, we truncated the result list to the 30 top-ranked question-answer pairs. This year we only used one of these websites, namely Altibbi.com 10 First, we selected some questions from that website to be used as original questions, and then we used Google to retrieve potentially related questions using the site: * filter.</p><p>We turned the question into a query as follows: We first queried Google using the first thirty words from the original question. If this did not return ten results, we reduced the query to the first ten non-stopwords 11 from the question, and if needed we further tried using the first five non-stopwords only. If we did not manage to obtain ten results, we discarded that original question.</p><p>If we managed to obtain ten results, we followed the resulting links and we parsed the target page to extract the question and the answer, which is given by a physician, as well as some metadata such as date, question classification, doctor's name and country, etc.</p><p>In many cases, Google returned our original question as one of the search results, in which case we had to exclude it, thus reducing the results to nine. In the remaining cases, we excluded the 10th result in order to have the same number of candidate question-answer pairs for each original question, namely nine. Overall, we collected 1,400 original questions, with exactly nine potentially related question-answer pairs for each of them, i.e., a total of 12,600 pairs. 9 https://lucene.apache.org/solr/ 10 http://www.altibbi.com/ - <ref type="bibr">11</ref> We used the following Arabic stopword list: https: //sites.google.com/site/kevinbouge/ stopwords-lists</p><p>We created an annotation job on CrowdFlower to obtain judgments about the relevance of the question-answer pairs with respect to the original question. We controlled the quality of annotation using a hidden set of 50 test questions. We had three judgments per example, which we combined using the CrowdFlower mechanism. The average agreement was 81%. Table <ref type="table" target="#tab_3">2</ref> shows statistics about the resulting dataset, together with statistics about the datasets from 2016, which could be used for training and development.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.2">Evaluation Measures for A-D</head><p>The official evaluation measure we used to rank the participating systems is Mean Average Precision ("MAP"), calculated over the top-10 comments as ranked by a participating system. We further report the results for two unofficial ranking measures, which we also calculated over the top-10 results only: Mean Reciprocal Rank ("MRR") and Average Recall ("AvgRec"). Additionally, we report the results for four standard classification measures, which we calculate over the full list of results: Precision, Recall and F 1 (with respect to the Good/Relevant class), and Accuracy.</p><p>We released a specialized scorer that calculates and returns all the above-mentioned scores.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">The New Subtask E</head><p>Subtask E is a duplicate question detection task, similar to Subtask B. Participants were asked to rerank 50 candidate questions according to their relevance with respect to each query question. The subtask included several elements that distinguish it from Subtask B:</p><p>• Several meta-data fields were added, including the tags that are associated with each question, the number of times a question has been viewed, and the score of each question, answer and comment (the number of upvotes it has received from the community, minus the number of downvotes), as well as user statistics, containing information such as user reputation and user badges. 12</p><p>• At test time, two extra test sets containing data from two surprise subforums were provided, to test the participants' system's crossdomain performance.  • The participants were asked to truncate their result list in such a way that only "Perfect-Match" questions appeared in it. The evaluation metrics were adjusted to be able to handle empty result lists (see Section 3.2.2).</p><p>• The data was taken from StackExchange instead of the Qatar Living forums, and reflected the real-world distribution of duplicate questions in having many query questions with zero relevant results.</p><p>The cross-domain aspect was of particular interest, as it has not received much attention in earlier duplicate question detection research.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.1">Data Description for E</head><p>The data consisted of questions from the following four StackExchange subforums: Android, English, Gaming, and Wordpress, derived from a data set known as CQADupStack <ref type="bibr" target="#b35">(Hoogeveen et al., 2015)</ref>. Data size statistics can be found in Table 3. These subforums were chosen due to their size, and to reflect a variety of domains.</p><p>The data was provided in the same format as for the other subtasks. Each original question had 50 candidate questions, and these related questions each had a number of comments. On top of that, they had a number of answers, and each answer potentially had individual comments. The difference between answers and comments is that answers should contain a well-formed answer to the question, while comments contain things such as requests for clarification, remarks, and small additions to someone else's answer. Since the content of StackExchange is provided by the community, the precise delineation between comments and the main body of a post can vary across forums.</p><p>The relevance labels in the development and in the training data were sourced directly from the users of the StackExchange sites, who can vote for questions to be closed as duplicates: these are the questions we labeled as PerfectMatch.</p><p>The questions labeled as Related are questions that are not duplicates, but that are somehow similar to the original question, also as judged by the StackExchange community. It is possible that some duplicate labels are missing, due to the voluntary nature of the duplicate labeling on Stack-Exchange. The development and training data should therefore be considered a silver standard <ref type="bibr" target="#b34">(Hoogeveen et al., 2016b)</ref>.</p><p>For the test data, we started an annotation project together with StackExchange. <ref type="bibr">13</ref> The goal was to obtain multiple annotations per question pair in the test set, from the same community that provided the labels in the development and in the training data. We expected the community to react enthusiastically, because the data would be used to build systems that can improve duplicate question detection on the site, ultimately saving the users manual effort. Unfortunately, only a handful of people were willing to annotate a sizeable set of question pairs, thus making their annotations unusable for the purpose of this shared task.</p><p>An example that includes a query question from the English subforum, a duplicate of that question, and a non-duplicate question (with respect to the query) is shown below:</p><p>• Query: Why do bread companies add sugar to bread?</p><p>• Duplicate: What is the purpose of sugar in baking plain bread?</p><p>• Non-duplicate: Is it safe to eat potatoes that have sprouted?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.2">Evaluation Measure for E</head><p>In CQA archives, the majority of new questions do not have a duplicate in the archive. We maintained this characteristic in the training, in the development, and in the test data, to stay as close to a real world setting as possible. This means that for most query questions, the correct result is an empty list.</p><p>This has two consequences: (1) a system that always returns an empty list is a challenging baseline to beat, and (2) standard IR evaluation metrics like MAP, which is used in the other subtasks, cannot be used, because they break down when the result list is empty or there are no relevant documents for a given query.</p><p>To solve this problem we used a modified version of MAP, as proposed by <ref type="bibr" target="#b44">Liu et al. (2016)</ref>. To make sure standard IR evaluation metrics do not break down on empty result list queries, <ref type="bibr" target="#b44">Liu et al. (2016)</ref> add a nominal terminal document to the end of the ranking returned by a system, to indicate where the number of relevant documents ended. This terminal document has a corresponding gain value of:</p><formula xml:id="formula_0">r t = 1 if R = 0 d i=1 r i /R if R &gt; 0</formula><p>The result of this adjustment is that queries without relevant documents in the index, receive a MAP score of 1.0 for an empty result ranking. This is desired, because in such cases, the empty ranking is the correct result.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participants and Results</head><p>The list of all participating teams can be found in Table <ref type="table">4</ref>. The results for subtasks A, B, C, and D are shown in tables 5, 6, 7, and 8, respectively. Unfortunately, there were no official participants in Subtask E, and thus we present baseline results in Table <ref type="table">9</ref>. In all tables, the systems are ranked by the official MAP scores for their primary runs 14 (shown in the third column). The following columns show the scores based on the other six unofficial measures; the ranking with respect to these additional measures are marked with a subindex (for the primary runs). Twenty two teams participated in the challenge presenting a variety of approaches and features to address the different subtasks. They submitted a total of 85 runs (36 primary and 49 contrastive), which breaks down by subtask as follows: The English subtasks A, B and C attracted 14, 13, and 6 systems and 31, 34 and 14 runs, respectively. The Arabic subtask D got 3 systems and 6 runs. And there were no participants for subtask E.</p><p>The best MAP scores had large variability depending on the subtask, going from 15.46 (best result for subtask C) to 88.43 (best result for subtask A). The best systems for subtasks A, B, and C were able to beat the baselines we provided by sizeable margins. In subtask D, only the best system was above the IR baseline.</p><p>4.1 Subtask A, English (Question-Comment Similarity)</p><p>Table <ref type="table">5</ref> shows the results for subtask A, English, which attracted 14 teams (two more than in the 2016 edition). In total 31 runs were submitted: 14 primary and 17 contrastive. The last four rows of the table show the performance of four baselines.</p><p>The first one is the chronological ranking, where the comments are ordered by their time of posting; we can see that all submissions but one outperform this baseline on all three ranking measures.</p><p>The second baseline is a random baseline, which is 10 MAP points below the chronological ranking. Baseline 3 classifies all comments as Good, and it outperforms all but three of the primary systems in terms of F 1 and one system in terms of Accuracy. However, it should be noted that the systems were not optimized for such measures. Finally, baseline 4 classifies all comments as Bad; it is outperformed by all primary systems in terms of Accuracy.</p><p>The winner of Subtask A is KeLP with a MAP of 88.43, closely followed by Beihang-MSRA, scoring 88.24. Relatively far from the first two, we find five systems, IIT-UHH, ECNU, bunji, EICA and SwissAlps, which all obtained an MAP of around 86.5.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Subtask B, English (Question-Question</head><p>Similarity)</p><p>Table <ref type="table" target="#tab_8">6</ref> shows the results for subtask B, English, which attracted 13 teams (3 more than in last year's edition) and 34 runs: 13 primary and 21 contrastive. This is known to be a hard task. In contrast to the 2016 results, in which only 6 out of 11 teams beat the strong IR baseline (i.e., ordering the related questions in the order provided by the search engine), this year 10 of the 13 systems outperformed this baseline in terms of MAP, AvgRec and MRR. Moreover, the improvements for the best systems over the IR baseline are larger (reaching &gt; 7 MAP points absolute). This is a remarkable improvement over last year's results.</p><p>The random baseline outperforms two systems in terms of Accuracy. The "all-good" baseline is below almost all systems on F 1 , but the "allfalse" baseline yields the best Accuracy results. This is partly because the label distribution in the dataset is biased (81.5% of negative cases), but also because the systems were optimized for MAP rather than for classification accuracy (or precision/recall). The winner of the task is SimBow with a MAP of 47.22, followed by LearningToQuestion with 46.93, KeLP with 46.66, and Talla with 45.70. The other nine systems scored sensibly lower than them, ranging from about 41 to 45. Note that the contrastive1 run of KeLP, which corresponds to the KeLP system from last year <ref type="bibr" target="#b24">(Filice et al., 2016)</ref>, achieved an even higher MAP of 49.00.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Subtask C, English (Question-External</head><p>Comment Similarity)</p><p>The results for subtask C, English are shown in Table <ref type="table">7</ref>. This subtask attracted 6 teams (sizable decrease compared to last year's 10 teams), and 14 runs: 6 primary and 8 contrastive. The test set from had much more skewed label distribution, with only 2.8% positive instances, compared to the ∼10% of the 2016 test set. This makes the overall MAP scores look much lower, as the number of examples without a single positive comment increased significantly, and they contribute 0 to the average, due to the definition of the measure. Consequently, the results cannot be compared directly to last year's. All primary systems managed to outperform all baselines with respect to the ranking measures. Moreover, all but one system outperformed the "all true" system on F 1 , and all of them were below the accuracy of the "all false" baseline, due to the extreme class imbalance.</p><p>The best-performing team for subtask C is IIT-UHH, with a MAP of 15.46, followed by bunji with 14.71, and KeLP with 14.35. The con-trastive1 run of bunji, which used a neural network, obtained the highest MAP, 16.57, two points higher than their primary run, which also uses the comment plausibility features. Thus, the difference seems to be due to the use of comment plausibility features, which hurt the accuracy. In their SemEval system paper, <ref type="bibr" target="#b41">Koreeda et al. (2017)</ref> explain that the similarity features are more important for Subtask C than plausibility features.</p><p>Indeed, Subtask C contains many comments that are not related to the original question, while candidate comments for subtask A are almost always on the same topic. Another explanation may be the overfitting to the development set since the authors manually designed plausibility features using that set. As a result, such features perform much worse on the 2017 test set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Subtask D, Arabic (Reranking the</head><p>Correct Answers for a New Question)</p><p>Finally, the results for subtask D, Arabic are shown in Table <ref type="table" target="#tab_11">8</ref>. This year, subtask D attracted only 3 teams, which submitted 6 runs: 3 primary and 3 contrastive. Compared to last year, the 2017 test set contains a significantly larger number of positive question-answer pairs (∼40% in 2017, compared to ∼20% in 2016), and thus the MAP scores are higher this year. Moreover, this year, the IR baseline is coming from Google and is thus very strong and difficult to beat. Indeed, only the best system was able to improve on it (marginally) in terms of MAP, MRR and AvgRec.</p><p>As in some of the other tasks, the participants in Subtask D did not concentrate on optimizing for precision/recall/F 1 /accuracy and they did not produce sensible class predictions in most cases.</p><p>The best-performing system is GW QA with a MAP score of 61.16, which barely improves over the IR baseline of 60.55. The other two systems UPC-USMBA and QU BIGIR are about 3-4 points behind.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.5">Subtask E, English (Multi-Domain</head><p>Question Duplicate Detection)</p><p>The baselines for Subtask E can be found in Table <ref type="table">9</ref>. The IR baseline is BM25 with perfect truncation after the final relevant document for a given document (equating to an empty result list if there are no relevant documents). The zero results baseline is the score for a system that returns an empty result list for every single query. This is a high number for each subforum because for many queries there are no duplicate questions in the archive.</p><p>As previously stated, there are no results submitted by participants to be discussed for this subtask. Eight teams signed up to participate, but unfortunately none of them submitted test results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Discussion and Conclusions</head><p>In this section, we first describe features that are common across the different subtasks. Then, we discuss the characteristics of the best systems for each subtask with focus on the machine learning algorithms and the instance representations used.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Feature Types</head><p>The features the participants used across the sutbtasks can be organized into the following groups:</p><p>(i) similarity features between questions and comments from their threads or between original questions and related questions, e.g., cosine similarity applied to lexical, syntactic and semantic representations, including distributed representations, often derived using neural networks;</p><p>(ii) content features, which are special signals that can clearly indicate a bad comment, e.g., when a comment contains "thanks";</p><p>(iii) thread level/meta features, e.g., user ID, comment rank in the thread;</p><p>(iv) automatically generated features from syntactic structures using tree kernels.</p><p>Generally, similarity features were developed for the subtasks as follows: Subtask A. Similarities between question subject vs. comment, question body vs. comment, and question subject+body vs. comment.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Subtask B.</head><p>Similarities between the original and the related question at different levels: subject vs. subject, body vs. body, and subject+body vs. subject+body. Subtask C. The same as above, plus the similarities of the original question, subject and body at all levels with the comments from the thread of the related question.</p><p>Subtask D. The same as above, without information about the thread, as there is no thread.</p><p>The similarity scores to be used as features were computed in various ways, e.g., most teams used dot product calculated over word n-grams (n=1,2,3), character n-grams, or with TF-IDF weighting. Simple word overlap, i.e., the number of common words between two texts, was also considered, often normalized, e.g., by question/comment length. Overlap in terms of nouns or named entities was also explored.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Learning Methods</head><p>This year, we saw variety of machine learning approaches, ranging from SVMs to deep learning.</p><p>The KeLP system, which performed best on Subtask A, was SVM-based and used syntactic tree kernels with relational links between questions and comments, together with some standard text similarity measures linearly combined with the tree kernel. Variants of this approach were successfully used in related research , as well as in last year's KeLP system <ref type="bibr" target="#b24">(Filice et al., 2016)</ref>.</p><p>The best performing system on Subtask C, IIT-UHH, was also SVM-based, and it used textual, domain-specific, word-embedding and topicmodeling features. The most interesting aspect of this system is their method for dialogue chain identification in the comment threads, which yielded substantial improvements.</p><p>The best-performing system on Subtask B was SimBow. They used logistic regression on a rich combination of different unsupervised textual similarities, built using a relation matrix based on standard cosine similarity between bag-of-words and other semantic or lexical relations.</p><p>This year, we also saw a jump in the popularity of deep learning and neural networks. For example, the Beihang-MSRA system was ranked second with a result very close to that of KeLP for Subtask A. They used gradient boosted regression trees, i.e., XgBoost, as a ranking model to combine (i) TF×IDF, word sequence overlap, translation probability, (ii) three different types of tree kernels, (iii) subtask-specific features, e.g., whether a comment is written by the author of the question, the length of a comment or whether a comment contains URLs or email addresses, and (iv) neural word embeddings, and the similarity score from Bi-LSTM and 2D matching neural networks.</p><p>LearningToQuestion achieved the second best result for Subtask B using SVM and Logistic Regression as integrators of rich feature representations, mainly embeddings generated by the following neural networks: (i) siamese networks to learn similarity measures using GloVe vectors <ref type="bibr" target="#b60">(Pennington et al., 2014)</ref>, (ii) bidirectional LSTMs, (iii) gated recurrent unit (GRU) used as another network to generate the neural embeddings trained by a siamese network similar to Bi-LSTM, (iv) and convolutional neural networks to generate embeddings inside the siamese network.</p><p>The bunji system, second on Subtask C, produced features using neural networks that capture the semantic similarities between two sentences as well as comment plausibility. The neural similarity features were extracted using a decomposable attention model <ref type="bibr" target="#b59">(Parikh et al., 2016)</ref>, which can model alignment between two sequences of text, allowing the system to identify possibly related regions of a question and of a comment, which then helps it predict whether the comment is relevant with respect to the question. The model compares each token pair from the question tokens and comment tokens associating them with an attention weight. Each question-comment pair is mapped to a realvalue score using a neural network with shared weights and the prediction loss is calculated listwise. The plausibility features are task-specific, e.g., is the person giving the answer actually trying to answer the question or is s/he making remarks or asking for more information. Other features are the presence keywords such as what, which, who, where within the question. There are also features about the question and the comment length. All these features were merged in a CRF.</p><p>Another interesting system is that of Talla, which consists of an ensemble of syntactic, semantic, and IR-based features, i.e., semantic word alignment, term frequency Kullback-Leibler divergence, and tree kernels. These were integrated in a pairwise-preference learning handled with a random forest classifier with 2,000 weak estimators. This system achieved very good performance on Subtask B.</p><p>Regarding Arabic, GW QA, the bestperforming system for Subtask D, used features based on latent semantic models, namely, weighted textual matrix factorization models (WTMF), as well as a set of lexical features based on string lengths and surface-level matching. WTMF builds a latent model, which is appropriate for semantic profiling of a short text. Its main goal is to address the sparseness of short texts using both observed and missing words to explicitly capture what the text is and is not about. The missing words are defined as those of the entire training data vocabulary minus those of the target document. The model was trained on text data from the Arabic Gigaword as well as on Arabic data that we provided in the task website, as part of the task. For Arabic text processing, the MADAMIRA toolkit was used.</p><p>The second-best team for Arabic, QU-BIGIR, used SVM-rank with two similarity feature sets. The first set captured similarity between pairs of text, i.e., synonym overlap, language model score, cosine similarity, Jaccard similarity, etc. The second set used word2vec to build average word embedding and covariance word embedding similarity to build the text representation.</p><p>The third-best team for Arabic, UPC-USMBA, combined several classifiers, including (i) lexical string similarities in vector representations, and (ii) rule-based features. A core component of their approach was the use of medical terminology covering both Arabic and English terms, which was organized into the following three categories: body parts, drugs, and diseases. In particular, they translated the Arabic dataset into English using the Google Translate service. The linguistic processing was carried out with Stanford CoreNLP for English and MADAMIRA for Arabic. Finally, WordNet synsets both for Arabic and English were added to the representation without performing word sense disambiguation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusions</head><p>We have described SemEval-2017 Task 3 on Community Question Answering, which extended the four subtasks at SemEval-2016 Task 3  with a new subtask on multi-domain question duplicate detection. Overall, the task attracted 23 teams, which submitted 85 runs; this is comparable to 2016, when 18 teams submitted 95 runs. The participants built on the lessons learned from the 2016 edition of the task, and further experimented with new features and learning frameworks. The top systems used neural networks with distributed representations or SVMs with syntactic kernels for linguistic analysis. A number of new features have been tried as well.</p><p>Apart from the new lessons learned from this year's edition, we believe that the task has another important contribution: the datasets we have created as part of the task, and which we have released for use to the research community, should be useful for follow-up research beyond SemEval.</p><p>Finally, while the new subtask E did not get any submissions, mainly because of the need to work with a large amount of data, we believe that it is about an important problem and that it will attract the interest of many researchers of the field. Table <ref type="table">5</ref>: Subtask A, English (Question-Comment Similarity): results for all submissions. The first column shows the rank of the primary runs with respect to the official MAP score. The second column contains the team's name and its submission type (primary vs. contrastive). The following columns show the results for the primary, and then for other, unofficial evaluation measures. The subindices show the rank of the primary runs with respect to the evaluation measure in the respective column. All results are presented as percentages. The system marked with a was a late submission.  results for all submissions. The first column shows the rank of the primary runs with respect to the official MAP score. The second column contains the team's name and its submission type (primary vs. contrastive). The following columns show the results for the primary, and then for other, unofficial evaluation measures. The subindices show the rank of the primary runs with respect to the evaluation measure in the respective column. All results are presented as percentages. Table <ref type="table">7</ref>: Subtask C, English (Question-External Comment Similarity): results for all submissions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Submission</head><p>The first column shows the rank of the primary runs with respect to the official MAP score. The second column contains the team's name and its submission type (primary vs. contrastive). The following columns show the results for the primary, and then for other, unofficial evaluation measures. The subindices show the rank of the primary runs with respect to the evaluation measure in the respective column. All results are presented as percentages. The system marked with a was a late submission.  The first column shows the rank of the primary runs with respect to the official MAP score.</p><p>The second column contains the team's name and its submission type (primary vs. contrastive). The following columns show the results for the primary, and then for other, unofficial evaluation measures. The subindices show the rank of the primary runs with respect to the evaluation measure in the respective column. All results are presented as percentages.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Statistics about the English CQA-QL dataset. Note that the Potentially Useful class was merged with Bad at test time for SemEval-2016 Task 3, and was eliminated altogether at SemEval-2017 task 3.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Statistics about the CQA-MD corpus.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Statistics on the data for Subtask E. Shown is the number of query questions; for each of them, 50 candidate questions were provided.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head></head><label></label><figDesc>77.5011 47.039 35.714 67.4811 46.714 71.484 8 IIT-UHH-primary 43.12 8 79.236 47.257 26.8511 71.1710 38.9910 58.7510 11 78.718 44.5213 37.431 76.697 50.302 71.933 12 EICA-primary 41.11 12 77.4512 45.5712 32.607 72.399 44.956 67.167</figDesc><table><row><cell>Submission</cell><cell cols="2">MAP AvgRec</cell><cell>MRR</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>Acc</cell></row><row><cell>KeLP-contrastive1</cell><cell>49.00</cell><cell>83.92</cell><cell>52.41</cell><cell>36.18</cell><cell>88.34</cell><cell>51.34</cell><cell>68.98</cell></row><row><cell>SimBow-contrastive2</cell><cell>47.87</cell><cell>82.77</cell><cell>50.97</cell><cell>27.03</cell><cell>93.87</cell><cell>41.98</cell><cell>51.93</cell></row><row><cell>1 SimBow-primary</cell><cell cols="7">47.22 1 82.601 50.073 27.3010 94.483 42.379 52.3911</cell></row><row><cell>LearningToQuestion-contrastive2</cell><cell>47.20</cell><cell>81.73</cell><cell>53.22</cell><cell>18.52</cell><cell>100.00</cell><cell>31.26</cell><cell>18.52</cell></row><row><cell>LearningToQuestion-contrastive1</cell><cell>47.03</cell><cell>81.45</cell><cell>52.47</cell><cell>18.52</cell><cell>100.00</cell><cell>31.26</cell><cell>18.52</cell></row><row><cell>2 LearningToQuestion-primary</cell><cell cols="7">46.93 2 81.294 53.011 18.5212 100.001 31.2612 18.5212</cell></row><row><cell>SimBow-contrastive1</cell><cell>46.84</cell><cell>82.73</cell><cell>50.43</cell><cell>27.80</cell><cell>94.48</cell><cell>42.96</cell><cell>53.52</cell></row><row><cell>3 KeLP-primary</cell><cell cols="7">46.66 3 81.363 50.852 36.013 85.285 50.641 69.205</cell></row><row><cell>Talla-contrastive1</cell><cell>46.54</cell><cell>82.15</cell><cell>49.61</cell><cell>30.39</cell><cell>76.07</cell><cell>43.43</cell><cell>63.30</cell></row><row><cell>Talla-contrastive2</cell><cell>46.31</cell><cell>81.81</cell><cell>49.14</cell><cell>29.88</cell><cell>74.23</cell><cell>42.61</cell><cell>62.95</cell></row><row><cell>4 Talla-primary</cell><cell cols="7">45.70 4 81.482 49.555 29.599 76.078 42.618 62.058</cell></row><row><cell>Beihang-MSRA-contrastive2</cell><cell>44.79</cell><cell>79.13</cell><cell>49.89</cell><cell>18.52</cell><cell>100.00</cell><cell>31.26</cell><cell>18.52</cell></row><row><cell>5 Beihang-MSRA-primary</cell><cell cols="7">44.78 5 79.137 49.884 18.5213 100.002 31.2613 18.5213</cell></row><row><cell>NLM NIH-contrastive1</cell><cell>44.66</cell><cell>79.66</cell><cell>48.08</cell><cell>33.68</cell><cell>79.14</cell><cell>47.25</cell><cell>67.27</cell></row><row><cell>6 NLM NIH-primary</cell><cell cols="7">44.62 6 79.595 47.746 33.685 79.146 47.253 67.276</cell></row><row><cell>UINSUSKA-TiTech-contrastive1</cell><cell>44.29</cell><cell>78.59</cell><cell>48.97</cell><cell>34.47</cell><cell>68.10</cell><cell>45.77</cell><cell>70.11</cell></row><row><cell>NLM NIH-contrastive2</cell><cell>44.29</cell><cell>79.05</cell><cell>47.45</cell><cell>33.68</cell><cell>79.14</cell><cell>47.25</cell><cell>67.27</cell></row><row><cell>Beihang-MSRA-contrastive1</cell><cell>43.89</cell><cell>79.48</cell><cell>48.18</cell><cell>18.52</cell><cell>100.00</cell><cell>31.26</cell><cell>18.52</cell></row><row><cell cols="2">7 UINSUSKA-TiTech-primary 43.44 7 UINSUSKA-TiTech-contrastive2 43.06</cell><cell>76.45</cell><cell>46.22</cell><cell>35.71</cell><cell>67.48</cell><cell>46.71</cell><cell>71.48</cell></row><row><cell>9 SCIR-QA-primary</cell><cell cols="7">42.72 9 78.249 46.6510 31.268 89.574 46.355 61.599</cell></row><row><cell>SCIR-QA-contrastive1</cell><cell>42.72</cell><cell>78.24</cell><cell>46.65</cell><cell>32.69</cell><cell>83.44</cell><cell>46.98</cell><cell>65.11</cell></row><row><cell>ECNU-contrastive2</cell><cell>42.48</cell><cell>79.44</cell><cell>45.09</cell><cell>36.47</cell><cell>78.53</cell><cell>49.81</cell><cell>70.68</cell></row><row><cell>IIT-UHH-contrastive2</cell><cell>42.38</cell><cell>78.59</cell><cell>46.82</cell><cell>32.99</cell><cell>59.51</cell><cell>42.45</cell><cell>70.11</cell></row><row><cell>ECNU-contrastive1</cell><cell>42.37</cell><cell>78.41</cell><cell>45.04</cell><cell>34.34</cell><cell>83.44</cell><cell>48.66</cell><cell>67.39</cell></row><row><cell>IIT-UHH-contrastive1</cell><cell>42.29</cell><cell>78.41</cell><cell>46.40</cell><cell>32.66</cell><cell>59.51</cell><cell>42.17</cell><cell>69.77</cell></row><row><cell>10 FA3L-primary</cell><cell cols="7">42.24 10 77.7110 47.058 33.176 40.4913 36.4611 73.862</cell></row><row><cell>LS2N-contrastive1</cell><cell>42.06</cell><cell>77.36</cell><cell>47.13</cell><cell>32.01</cell><cell>59.51</cell><cell>41.63</cell><cell>69.09</cell></row><row><cell cols="2">11 ECNU-primary 41.37 EICA-contrastive1 41.07</cell><cell>77.70</cell><cell>46.38</cell><cell>32.30</cell><cell>70.55</cell><cell>44.32</cell><cell>67.16</cell></row><row><cell>13 LS2N-primary</cell><cell cols="7">40.56 13 76.6713 46.3311 36.552 53.3712 43.397 74.201</cell></row><row><cell>EICA-contrastive2</cell><cell>40.04</cell><cell>76.98</cell><cell>44.00</cell><cell>31.69</cell><cell>71.17</cell><cell>43.86</cell><cell>66.25</cell></row><row><cell>Baseline 1 (IR)</cell><cell>41.85</cell><cell>77.59</cell><cell>46.42</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>Baseline 2 (random)</cell><cell>29.81</cell><cell>62.65</cell><cell>33.02</cell><cell>18.72</cell><cell>75.46</cell><cell>30.00</cell><cell>34.77</cell></row><row><cell>Baseline 3 (all 'true')</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>18.52</cell><cell>100.00</cell><cell>31.26</cell><cell>18.52</cell></row><row><cell>Baseline 4 (all 'false')</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>81.48</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6 :</head><label>6</label><figDesc>Subtask B, English (Question-Question Similarity):</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head></head><label></label><figDesc>UHH-primary 15.46 1 33.421 18.141 8.413 51.223 14.442 83.034</figDesc><table><row><cell></cell><cell>Submission</cell><cell cols="3">MAP AvgRec MRR</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>Acc</cell></row><row><cell></cell><cell>bunji-contrastive2</cell><cell>16.57</cell><cell>30.98</cell><cell>17.04</cell><cell>19.83</cell><cell>19.11</cell><cell>19.46</cell><cell>95.58</cell></row><row><cell cols="2">1 IIT-IIT-UHH-contrastive1</cell><cell>15.43</cell><cell>33.78</cell><cell>17.52</cell><cell>9.45</cell><cell>54.07</cell><cell>16.08</cell><cell>84.23</cell></row><row><cell cols="2">2 bunji-primary</cell><cell cols="7">14.71 2 29.474 16.482 20.261 19.114 19.671 95.642</cell></row><row><cell></cell><cell>EICA-contrastive1</cell><cell>14.60</cell><cell>32.71</cell><cell>16.14</cell><cell>10.80</cell><cell>9.35</cell><cell>10.02</cell><cell>95.31</cell></row><row><cell cols="2">3 KeLP-primary</cell><cell cols="7">14.35 3 30.742 16.073 6.485 89.022 12.074 63.755</cell></row><row><cell></cell><cell>IIT-UHH-contrastive2</cell><cell>14.00</cell><cell>30.53</cell><cell>14.65</cell><cell>5.98</cell><cell>85.37</cell><cell>11.17</cell><cell>62.06</cell></row><row><cell cols="2">4 EICA-primary</cell><cell cols="4">13.48 4 24.446 16.044 7.694</cell><cell>0.416</cell><cell>0.776</cell><cell>97.081</cell></row><row><cell></cell><cell>ECNU-contrastive2</cell><cell>13.29</cell><cell>30.15</cell><cell>14.95</cell><cell>13.86</cell><cell>26.42</cell><cell>18.18</cell><cell>93.35</cell></row><row><cell>5</cell><cell cols="8">FuRongWang-primary 13.23 5 29.513 14.275 2.806 100.001 5.445 2.806</cell></row><row><cell></cell><cell>EICA-contrastive2</cell><cell>13.18</cell><cell>25.16</cell><cell>15.05</cell><cell>10.00</cell><cell>0.81</cell><cell>1.50</cell><cell>97.02</cell></row><row><cell cols="2">6 ECNU-primary</cell><cell cols="7">10.54 6 25.565 11.096 13.442 13.825 13.633 95.103</cell></row><row><cell></cell><cell>ECNU-contrastive1</cell><cell>10.54</cell><cell>25.56</cell><cell>11.09</cell><cell>13.83</cell><cell>14.23</cell><cell>14.03</cell><cell>95.13</cell></row><row><cell></cell><cell>bunji-contrastive1</cell><cell>8.19</cell><cell>15.12</cell><cell>9.25</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>97.20</cell></row><row><cell></cell><cell>Baseline 1 (IR)</cell><cell>9.18</cell><cell>21.72</cell><cell>10.11</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell></cell><cell>Baseline 2 (random)</cell><cell>5.77</cell><cell>7.69</cell><cell>5.70</cell><cell>2.76</cell><cell>73.98</cell><cell>5.32</cell><cell>26.37</cell></row><row><cell></cell><cell>Baseline 3 (all 'true')</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>2.80</cell><cell>100.00</cell><cell>5.44</cell><cell>2.80</cell></row><row><cell></cell><cell>Baseline 4 (all 'false')</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>97.20</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head></head><label></label><figDesc>81.763 62.882 63.411 33.002 43.412 66.241 3 QU BIGIR-primary 56.69 3 81.892 61.833 41.592 70.161 52.221 49.643</figDesc><table><row><cell>Submission</cell><cell cols="3">MAP AvgRec MRR</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>Acc</cell></row><row><cell>1 GW QA-primary</cell><cell cols="7">61.16 1 85.431 66.851 0.003 0.003 0.003 60.772</cell></row><row><cell>QU BIGIR-contrastive2</cell><cell>59.48</cell><cell>83.83</cell><cell>64.56</cell><cell>55.35</cell><cell>70.95</cell><cell>62.19</cell><cell>66.15</cell></row><row><cell>QU BIGIR-contrastive1</cell><cell>59.13</cell><cell>83.56</cell><cell>64.68</cell><cell>49.37</cell><cell>85.41</cell><cell>62.57</cell><cell>59.91</cell></row><row><cell cols="2">2 UPC-USMBA-primary 57.73 2 UPC-USMBA-contrastive1 56.66</cell><cell>81.16</cell><cell>62.87</cell><cell>45.00</cell><cell>64.04</cell><cell>52.86</cell><cell>55.18</cell></row><row><cell>Baseline 1 (IR)</cell><cell>60.55</cell><cell>85.06</cell><cell>66.80</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>Baseline 2 (random)</cell><cell>48.48</cell><cell>73.89</cell><cell>53.27</cell><cell>39.04</cell><cell>66.43</cell><cell>49.18</cell><cell>46.13</cell></row><row><cell>Baseline 3 (all 'true')</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>39.23</cell><cell>100.00</cell><cell>56.36</cell><cell>39.23</cell></row><row><cell>Baseline 4 (all 'false')</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>60.77</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8 :</head><label>8</label><figDesc>Subtask D, Arabic (Reranking the correct answers for a new question): results for all submissions.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://stackoverflow.com/ 2 http://www.qatarliving.com/forum</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">http://alt.qcri.org/semeval2015/task3 4 A system based on SemEval-2016 Task 3 was integrated in Qatar Living's betasearch<ref type="bibr" target="#b36">(Hoque et al., 2016)</ref>:http://www.qatarliving.com/betasearch</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">https://github.com/tbmihailov/ semeval2016-task3-cqa6  Using a heuristic that if several users call somebody a troll, then s/he should be one(Mihaylov et al., 2015a,b;<ref type="bibr" target="#b49">Mihaylov and Nakov, 2016a;</ref><ref type="bibr" target="#b48">Mihaylov et al., 2017b)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">We limit the number of comments we consider to the first ten only in order to spare some annotation efforts.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">Note that the search engine indexes entire Web pages, and thus, the search engine has compared the original question to the related questions together with their comment threads.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="12">The complete list of available meta-data fields can be found on the Task website.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="13">A post made by StackExchange about the project can be found here: http://meta.stackexchange.com/ questions/286329/project-reduplicationof-deduplication-has-begun</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="14">Participants could submit one primary run, to be used for the official ranking, and up to two contrastive runs, which are scored, but they have unofficial status.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>This research was performed in part by the Arabic Language Technologies (ALT) group at the Qatar Computing Research Institute (QCRI), HBKU, part of Qatar Foundation. It is part of the Interactive sYstems for Answer Search (IYAS) project, which is developed in collaboration with MIT-CSAIL. This research received funding in part from the Australian Research Council.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Team ID Team Affiliation</head><p>Beihang-MSRA Beihang University, Beijing, China; Microsoft Research, Beijing, China <ref type="bibr" target="#b80">(Wu et al., 2017b</ref>) bunji Hitachi Ltd., Japan <ref type="bibr" target="#b41">(Koreeda et al., 2017</ref>   <ref type="table">9</ref>: Subtask E, English (Multi-Domain Duplicate Detection): Baseline results on the test dataset. The empty result baseline has an empty result list for all queries. The IR baselines are the results of applying BM25 with perfect truncation. All results are presented as percentages.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carmen</forename><surname>Banea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Cer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Gonzalez-Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">German</forename><surname>Rigau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Janyce</forename><surname>Wiebe</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Task 1: Semantic textual similarity, monolingual and cross-lingual evaluation</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation</title>
+				<meeting>the Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="497" to="511" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">UINSUSKA-TiTech at SemEval-2017 task 3: Exploiting word importance levels as similarity features for CQA</title>
+		<author>
+			<persName><forename type="first">Surya</forename><surname>Agustian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroya</forename><surname>Takamura</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="370" to="374" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">GW QA at SemEval-2017 task 3: Question answer re-ranking on Arabic fora</title>
+		<author>
+			<persName><forename type="first">Nada</forename><surname>Almarwani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="344" to="348" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">FA3L at SemEval-2017 task 3: A three embeddings recurrent neural network for question answering</title>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Attardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Carta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Federico</forename><surname>Errica</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Madotto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ludovica</forename><surname>Pannitto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="300" to="304" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">PMI-cool at SemEval-2016 Task 3: Experiments with PMI and goodness polarity lexicons for community question answering</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Balchev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yasen</forename><surname>Kiprov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Koychev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="844" to="850" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Threadlevel information for comment classification in community question answering</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><surname>Filice</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Moschitti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing. Beijing, China, ACL-IJCNLP &apos;15</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing. Beijing, China, ACL-IJCNLP &apos;15</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="687" to="693" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">ConvKN at SemEval-2016 Task 3: Answer and question selection for question answering on Arabic and English fora</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">Al</forename><surname>Fahad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Salvatore</forename><surname>Obaidli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kateryna</forename><surname>Romeo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Tymoshenko</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Uva</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, Se</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="896" to="903" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">NLM NIH at SemEval-2017 task 3: from question entailment to question similarity for community question answering</title>
+		<author>
+			<persName><forename type="first">Asma</forename><surname>Ben Abacha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="349" to="352" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Bridging the lexical chasm: Statistical approaches to answer-finding</title>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Berger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rich</forename><surname>Caruana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Cohn</surname></persName>
+		</author>
+		<idno>SIGIR &apos;00</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd Annual International ACM SIGIR Conference on Research and Development in Information Retrieval</title>
+				<meeting>the 23rd Annual International ACM SIGIR Conference on Research and Development in Information Retrieval<address><addrLine>Athens, Greece</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2000" />
+			<biblScope unit="page" from="192" to="199" />
+		</imprint>
+	</monogr>
+	<note>Dayne Freitag, and Vibhu Mittal</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Effective shared representations with multitask learning for community question answering</title>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Bonadiman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Uva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference of the European Chapter of the Association for Computational Linguistics</title>
+				<meeting>the Conference of the European Chapter of the Association for Computational Linguistics<address><addrLine>Valencia, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="726" to="732" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">The mathematics of statistical machine translation: Parameter estimation</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><forename type="middle">Della</forename><surname>Pietra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephen</forename><forename type="middle">Della</forename><surname>Pietra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Mercer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Comput. Linguist</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="263" to="311" />
+			<date type="published" when="1993" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">The use of categorization information in language models for question retrieval</title>
+		<author>
+			<persName><forename type="first">Xin</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gao</forename><surname>Cong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bin</forename><surname>Cui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Søndergaard Jensen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ce</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th ACM Conference on Information and Knowledge Management. Hong Kong, China, CIKM &apos;09</title>
+				<meeting>the 18th ACM Conference on Information and Knowledge Management. Hong Kong, China, CIKM &apos;09</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="265" to="274" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Recommending questions using the MDL-based tree cut model</title>
+		<author>
+			<persName><forename type="first">Yunbo</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huizhong</forename><surname>Duan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chin-Yew</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yong</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hsiao-Wuen</forename><surname>Hon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on World Wide Web</title>
+				<meeting>the International Conference on World Wide Web<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>WWW &apos;08</publisher>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="81" to="90" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Sim-Bow at SemEval-2017 task 3: Soft-cosine semantic similarity between questions for community question answering</title>
+		<author>
+			<persName><forename type="first">Delphine</forename><surname>Charlet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geraldine</forename><surname>Damnati</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="315" to="319" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Reciprocal rank fusion outperforms condorcet and individual rank learning methods</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Gordon</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cormack</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><forename type="middle">A</forename><surname>Charles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Clarke</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Buettcher</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 32nd international ACM SIGIR conference on Research and development in information retrieval</title>
+				<meeting>the 32nd international ACM SIGIR conference on Research and development in information retrieval<address><addrLine>Boston, Massachusetts, USA, SIGIR &apos;09</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="758" to="759" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Learning to re-rank questions in community question answering using advanced features</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><forename type="middle">Barrón</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Salvatore</forename><surname>Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Romeo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Uva</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Moschitti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 25th ACM International on Conference on Information and Knowledge Management</title>
+				<meeting>the 25th ACM International on Conference on Information and Knowledge Management<address><addrLine>Indianapolis, Indiana, USA, CIKM</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="1997" to="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Cross-language question re-ranking</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Salvatore</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Romeo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 40th International ACM SIGIR Conference on Research and Development in Information Retrieval</title>
+				<meeting>the 40th International ACM SIGIR Conference on Research and Development in Information Retrieval<address><addrLine>Tokyo, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page">17</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">SwissAlps at SemEval-2017 task 3: Attention-based convolutional neural network for community question answering</title>
+		<author>
+			<persName><forename type="first">Jan</forename><forename type="middle">Milan</forename><surname>Deriu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Cieliebak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="334" to="338" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Learning hybrid representations to retrieve semantically equivalent questions</title>
+		<author>
+			<persName><forename type="first">Santos</forename><surname>Cicero Dos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luciano</forename><surname>Barbosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dasha</forename><surname>Bogdanova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bianca</forename><surname>Zadrozny</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="694" to="699" />
+		</imprint>
+	</monogr>
+	<note>ACL-IJCNLP &apos;15</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Searching questions by identifying question topic and question focus</title>
+		<author>
+			<persName><forename type="first">Huizhong</forename><surname>Duan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yunbo</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chin-Yew</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yong</forename><surname>Yu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 46th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 46th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Columbus, Ohio, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="156" to="164" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">A noisy-channel approach to question answering</title>
+		<author>
+			<persName><forename type="first">Abdessamad</forename><surname>Echihabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Marcu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 41st Annual Meeting of the Association for Computational Linguistics. Sapporo, Japan, ACL &apos;03</title>
+				<meeting>the 41st Annual Meeting of the Association for Computational Linguistics. Sapporo, Japan, ACL &apos;03</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="16" to="23" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">UPC-USMBA at SemEval-2017 task 3: Combining multiple approaches for CQA for Arabic</title>
+		<author>
+			<persName><forename type="first">Yassine</forename><surname>El Adlouni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lahbari</forename><surname>Imane</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Horacio</forename><surname>Rodriguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Meknassi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="276" to="280" />
+		</imprint>
+	</monogr>
+	<note>Said Ouatik El Alaoui, and Noureddine Ennahnahi</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Applying deep learning to answer selection: a study and an open task</title>
+		<author>
+			<persName><forename type="first">Minwei</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Xiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">R</forename><surname>Glass</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lidan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bowen</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Automatic Speech Recognition and Understanding</title>
+				<meeting>the Workshop on Automatic Speech Recognition and Understanding<address><addrLine>Scottsdale, Arizona, USA, ASRU</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="813" to="820" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Simone</forename><surname>Filice</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Croce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Basili</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Learning semantic relations between questions and answers</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation. San Diego, California, USA, SemEval &apos;16</title>
+				<meeting>the Workshop on Semantic Evaluation. San Diego, California, USA, SemEval &apos;16</meeting>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="1116" to="1123" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">KeLP at SemEval-2017 task 3: Learning pairwise patterns in community question answering</title>
+		<author>
+			<persName><forename type="first">Simone</forename><surname>Filice</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Moschitti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="327" to="334" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Talla at SemEval-2017 task 3: Identifying similar questions through paraphrase detection</title>
+		<author>
+			<persName><forename type="first">Byron</forename><surname>Galbraith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bhanu</forename><surname>Pratap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Shank</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="375" to="379" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">LearningToQuestion at SemEval 2017 task 3: Ranking similar questions by learning to rank using rich features</title>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="310" to="314" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Pairwise neural machine translation evaluation</title>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing. Beijing, China, ACL-IJCNLP &apos;15</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing. Beijing, China, ACL-IJCNLP &apos;15</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="805" to="814" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Machine translation evaluation meets community question answering</title>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Berlin, Germany, ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="460" to="466" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">MTE-NN at SemEval-2016 Task 3: Can machine translation evaluation help community question answering?</title>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="887" to="895" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Tree edit models for recognizing textual entailments, paraphrases, and answers to questions</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Heilman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Human Language Technologies: The 2010 Annual Conference of the North American Chapter of the Association for Computational Linguistics. Los Angeles, California, USA, ACL &apos;10</title>
+				<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1011" to="1019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">UniMelb at SemEval-2016 Task 3: Identifying similar questions by combining a CNN with string similarity measures</title>
+		<author>
+			<persName><forename type="first">Doris</forename><surname>Hoogeveen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yitong</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huizhi</forename><surname>Liang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bahar</forename><surname>Salehi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Long</forename><surname>Duong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="851" to="856" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">CQADupStack: Gold or silver?</title>
+		<author>
+			<persName><forename type="first">Doris</forename><surname>Hoogeveen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karin</forename><surname>Verspoor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the SIGIR 2016 Workshop on Web Question Answering Beyond Factoids</title>
+				<meeting>the SIGIR 2016 Workshop on Web Question Answering Beyond Factoids<address><addrLine>Pisa, Italy, WebQA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page">16</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">CQADupStack: A benchmark data set for community question-answering research</title>
+		<author>
+			<persName><forename type="first">Doris</forename><surname>Hoogeveen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karin</forename><forename type="middle">M</forename><surname>Verspoor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th Australasian Document Computing Symposium</title>
+				<meeting>the 20th Australasian Document Computing Symposium<address><addrLine>Parramatta, NSW</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="1" to="3" />
+		</imprint>
+	</monogr>
+	<note>Australia, ADCS &apos;15</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">An interactive system for exploring community question answering forums</title>
+		<author>
+			<persName><forename type="first">Enamul</forename><surname>Hoque</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Salvatore</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Romeo</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Carenini</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 26th International Conference on Computational Linguistics: System Demonstrations</title>
+				<meeting>the 26th International Conference on Computational Linguistics: System Demonstrations<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1" to="5" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">HITSZ-ICRC: Exploiting classification approach for answer selection in community question answering</title>
+		<author>
+			<persName><forename type="first">Yongshuai</forename><surname>Hou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cong</forename><surname>Tan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaolong</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yaoyun</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qingcai</forename><surname>Chen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado, USA, Se</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="196" to="202" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Finding similar questions in large question and answer archives</title>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">Bruce</forename><surname>Jiwoon Jeon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joon Ho</forename><surname>Croft</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th ACM International Conference on Information and Knowledge Management</title>
+				<meeting>the 14th ACM International Conference on Information and Knowledge Management<address><addrLine>Bremen, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="84" to="90" />
+		</imprint>
+	</monogr>
+	<note>CIKM &apos;05</note>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Global thread-level inference for comment classification in community question answering</title>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Filice</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="573" to="578" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Joint learning with global inference for comment classification in community question answering</title>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>San Diego, California, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>NAACL-HLT &apos;16</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">task 3: Combination of neural similarity features and comment plausibility features</title>
+		<author>
+			<persName><forename type="first">Yuta</forename><surname>Koreeda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Takuya</forename><surname>Hashito</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshiki</forename><surname>Niwa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Misa</forename><surname>Sato</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toshihiko</forename><surname>Yanase</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenzo</forename><surname>Kurotsuchi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kohsuke</forename><surname>Yanai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="353" to="359" />
+		</imprint>
+	</monogr>
+	<note type="report_type">bunji at SemEval-2017</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Semi-supervised question retrieval with gated convolutions</title>
+		<author>
+			<persName><forename type="first">Tao</forename><surname>Lei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hrishikesh</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Regina</forename><surname>Barzilay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommi</forename><forename type="middle">S</forename><surname>Jaakkola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kateryna</forename><surname>Tymoshenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Annual Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 15th Annual Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>San Diego, California, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="1279" to="1289" />
+		</imprint>
+	</monogr>
+	<note>Alessandro Moschitti, and Lluís Màrquez</note>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Improving question recommendation by exploiting information need</title>
+		<author>
+			<persName><forename type="first">Shuguang</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suresh</forename><surname>Manandhar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Oregon, USA, ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1425" to="1434" />
+		</imprint>
+	</monogr>
+	<note>Portland</note>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Quit while ahead: Evaluating truncated rankings</title>
+		<author>
+			<persName><forename type="first">Fei</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alistair</forename><surname>Moffat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiuzhen</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 39th International ACM SIGIR Conference on Research and Development in Information Retrieval</title>
+				<meeting>the 39th International ACM SIGIR Conference on Research and Development in Information Retrieval<address><addrLine>Pisa, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="953" to="956" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Large-scale goodness polarity lexicons for community question answering</title>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Balchev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yasen</forename><surname>Kiprov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Koychev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 40th International Conference on Research and Development in Information Retrieval</title>
+				<meeting>the 40th International Conference on Research and Development in Information Retrieval<address><addrLine>Tokyo, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page">17</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Finding opinion manipulation trolls in news community forums</title>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgi</forename><surname>Georgiev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Nineteenth Conference on Computational Natural Language Learning. Beijing, China, CoNLL &apos;15</title>
+				<meeting>the Nineteenth Conference on Computational Natural Language Learning. Beijing, China, CoNLL &apos;15</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="310" to="314" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Exposing paid opinion manipulation trolls</title>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Koychev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgi</forename><surname>Georgiev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference Recent Advances in Natural Language Processing. Hissar, Bulgaria, RANLP&apos;15</title>
+				<meeting>the International Conference Recent Advances in Natural Language Processing. Hissar, Bulgaria, RANLP&apos;15</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="443" to="450" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<monogr>
+		<title level="m" type="main">The dark side of news community forums: Opinion manipulation trolls</title>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tsvetomila</forename><surname>Mihaylova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgi</forename><surname>Georgiev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Koychev</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note>Internet Research</note>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Hunting for troll comments in news community forums</title>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics. Berlin, Germany, ACL &apos;16</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics. Berlin, Germany, ACL &apos;16</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="399" to="405" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">SemanticZ at SemEval-2016 Task 3: Ranking relevant answers in community question answering using semantic similarity based on fine-tuned word embeddings</title>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="879" to="886" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">SUper Team at SemEval-2016 Task 3: Building a feature-rich system for community question answering</title>
+		<author>
+			<persName><forename type="first">Tsvetomila</forename><surname>Mihaylova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Gencheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Boyanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivana</forename><surname>Yovcheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Todor</forename><surname>Mihaylov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Momchil</forename><surname>Hardalov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yasen</forename><surname>Kiprov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Balchev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Koychev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivelina</forename><surname>Nikolova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Galia</forename><surname>Angelova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation</title>
+				<meeting>the Workshop on Semantic Evaluation<address><addrLine>San Diego; USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="836" to="843" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">SLS at SemEval-2016 Task 3: Neuralbased approaches for ranking in community question answering</title>
+		<author>
+			<persName><forename type="first">Mitra</forename><surname>Mohtarami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonatan</forename><surname>Belinkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei-Ning</forename><surname>Hsu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tao</forename><surname>Lei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kfir</forename><surname>Bar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott</forename><surname>Cyphers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jim</forename><surname>Glass</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="828" to="835" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">SIGIR 2016 workshop WebQA II: Web question answering beyond factoids</title>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Márquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eugene</forename><surname>Agichtein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charles</forename><surname>Clarke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Idan</forename><surname>Szpektor</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 39th International Conference on Research and Development in Information Retrieval</title>
+				<meeting>the 39th International Conference on Research and Development in Information Retrieval<address><addrLine>Pisa, Italy, SIGIR</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="1251" to="1252" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">It takes three to tango: Triangulation approach to answer ranking in community question answering</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Austin, Texas, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1586" to="1597" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">SemEval-2015 task 3: Answer selection in community question answering</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walid</forename><surname>Magdy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jim</forename><surname>Glass</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bilal</forename><surname>Randeree</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation. Denver</title>
+				<meeting>the International Workshop on Semantic Evaluation. Denver<address><addrLine>Colorado, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="269" to="281" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">Hamdy Mubarak, abed Alhakim Freihat, Jim Glass, and Bilal Randeree</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walid</forename><surname>Magdy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Workshop on Semantic Evaluation</title>
+				<meeting>the 10th International Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="525" to="545" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2016 task 3: Community question answering</note>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">task 3: Exploring multiple features for community question answering and implicit dialogue identification</title>
+		<author>
+			<persName><forename type="first">Titas</forename><surname>Nandi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deepak</forename><surname>Seid Muhie Yimam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sarah</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Asif</forename><surname>Kohail</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpak</forename><surname>Ekbal</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bhattacharyya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="91" to="98" />
+		</imprint>
+	</monogr>
+	<note type="report_type">IIT-UHH at SemEval-2017</note>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">QCRI: Answer selection for community question answeringexperiments for Arabic and English</title>
+		<author>
+			<persName><forename type="first">Massimo</forename><surname>Nicosia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><surname>Filice</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iman</forename><surname>Saleh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hamdy</forename><surname>Mubarak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kareem</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Darwish</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walid</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Magdy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation</title>
+				<meeting>the Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="203" to="209" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">A decomposable attention model for natural language inference</title>
+		<author>
+			<persName><forename type="first">Ankur</forename><surname>Parikh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oscar</forename><surname>Täckström</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dipanjan</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Austin, Texas, USA, EMNLP</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="2249" to="2255" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing<address><addrLine>Doha, Qatar</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">SCIR-QA at SemEval-2017 task 3: CNN model based on similar and dissimilar information between keywords for question similarity</title>
+		<author>
+			<persName><forename type="first">Le</forename><surname>Qi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="305" to="309" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<monogr>
+		<title level="m" type="main">Abed Alhakim Freihat, and Fausto Giunchiglia</title>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">H</forename><surname>Mohammed</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Qwaider</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note>TrentoTeam at</note>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">An application of Grice Maxims principles in ranking community question answers</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="272" to="275" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">Statistical machine translation for query expansion in answer retrieval</title>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Riezler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Vasserman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ioannis</forename><surname>Tsochantaridis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vibhu</forename><surname>Mittal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 45th Annual Meeting of the Association of Computational Linguistics</title>
+				<meeting>the 45th Annual Meeting of the Association of Computational Linguistics<address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="464" to="471" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">MoRS at SemEval-2017 task 3: Easy to use SVM in ranking tasks</title>
+		<author>
+			<persName><forename type="first">Miguel</forename><forename type="middle">J</forename><surname>Rodrigues</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Francisco</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Couto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="288" to="292" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title level="a" type="main">Neural attention for learning to rank questions in community question answering</title>
+		<author>
+			<persName><forename type="first">Salvatore</forename><surname>Romeo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonatan</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei-Ning</forename><surname>Belinkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Hsu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitra</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Mohtarami</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Glass</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 26th International Conference on Computational Linguistics: Technical Papers</title>
+				<meeting>the 26th International Conference on Computational Linguistics: Technical Papers<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1734" to="1745" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">Learning to rank short text pairs with convolutional deep neural networks</title>
+		<author>
+			<persName><forename type="first">Aliaksei</forename><surname>Severyn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 38th International ACM SIGIR Conference on Research and Development in Information Retrieval. Santiago, Chile, SIGIR &apos;15</title>
+				<meeting>the 38th International ACM SIGIR Conference on Research and Development in Information Retrieval. Santiago, Chile, SIGIR &apos;15</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="373" to="382" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<analytic>
+		<title level="a" type="main">Automatic question answering using the web: Beyond the factoid</title>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Brill</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Inf. Retr</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="191" to="206" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<analytic>
+		<title level="a" type="main">Learning to rank answers to nonfactoid questions from web collections</title>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Massimiliano</forename><surname>Ciaramita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hugo</forename><surname>Zaragoza</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Comput. Linguist</title>
+		<imprint>
+			<biblScope unit="volume">37</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="351" to="383" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<monogr>
+		<title level="m" type="main">Lstmbased deep learning models for non-factoid answer selection</title>
+		<author>
+			<persName><forename type="first">Ming</forename><surname>Tan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Xiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bowen</forename><surname>Zhou</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1511.04108</idno>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<analytic>
+		<title level="a" type="main">QU-BIGIR at SemEval-2017 task 3: Using similarity features for Arabic community question answering forums</title>
+		<author>
+			<persName><forename type="first">Marwan</forename><surname>Torki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Hasanain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="360" to="364" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<analytic>
+		<title level="a" type="main">JAIST: Combining multiple features for answer selection in community question answering</title>
+		<author>
+			<persName><forename type="first">Vu</forename><surname>Quan Hung Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tu</forename><surname>Tran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Minh</forename><surname>Vu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Son</forename><forename type="middle">Bao</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pham</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="215" to="219" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<analytic>
+		<title level="a" type="main">Learning to rank nonfactoid answers: Comment selection in web forums</title>
+		<author>
+			<persName><forename type="first">Kateryna</forename><surname>Tymoshenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Bonadiman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 25th ACM International on Conference on Information and Knowledge Management</title>
+				<meeting>the 25th ACM International on Conference on Information and Knowledge Management<address><addrLine>Indianapolis, Indiana, USA, CIKM</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="2049" to="2052" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<analytic>
+		<title level="a" type="main">TakeLab-QA at SemEval-2017 task 3: Classification experiments for answer retrieval in community QA</title>
+		<author>
+			<persName><forename type="first">Toni</forename><surname>Filipsaina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lukrecija</forename><surname>Kukurin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mladen</forename><surname>Puljić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jansnajder</forename><surname>Karan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="339" to="343" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<analytic>
+		<title level="a" type="main">A long short-term memory model for answer sentence selection in question answering</title>
+		<author>
+			<persName><forename type="first">Di</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Nyberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing. Beijing, China, ACL-IJCNLP &apos;15</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing. Beijing, China, ACL-IJCNLP &apos;15</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="707" to="712" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<analytic>
+		<title level="a" type="main">A syntactic tree matching approach to finding similar questions in community-based QA services</title>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhaoyan</forename><surname>Ming</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tat-Seng</forename><surname>Chua</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 32nd International ACM SIGIR Conference on Research and Development in Information Retrieval</title>
+				<meeting>the 32nd International ACM SIGIR Conference on Research and Development in Information Retrieval<address><addrLine>Boston, Massachusetts, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="187" to="194" />
+		</imprint>
+	</monogr>
+	<note>SI-GIR &apos;09</note>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<analytic>
+		<title level="a" type="main">Probabilistic tree-edit models with structured latent variables for textual entailment and question answering</title>
+		<author>
+			<persName><forename type="first">Mengqiu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd International Conference on Computational Linguistics</title>
+				<meeting>the 23rd International Conference on Computational Linguistics<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1164" to="1172" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<analytic>
+		<title level="a" type="main">What is the Jeopardy model? A quasisynchronous grammar for QA</title>
+		<author>
+			<persName><forename type="first">Mengqiu</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Teruko</forename><surname>Mitamura</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2007 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning. Prague, Czech Republic, EMNLP-CoNLL &apos;07</title>
+				<meeting>the 2007 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning. Prague, Czech Republic, EMNLP-CoNLL &apos;07</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="22" to="32" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<analytic>
+		<title level="a" type="main">ECNU at SemEval-2017 task 3: Using traditional and deep learning methods to address community question answering task</title>
+		<author>
+			<persName><forename type="first">Guoshun</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yixuan</forename><surname>Sheng Adn Man Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuanbin</forename><surname>Wu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation</title>
+				<meeting>the Workshop on Semantic Evaluation<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="365" to="369" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<analytic>
+		<title level="a" type="main">Beihang-MSRA at SemEval-2017 task 3: A ranking system with neural matching features for Community Question Answering</title>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wenzheng</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhoujun</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="281" to="287" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<analytic>
+		<title level="a" type="main">ICL00 at SemEval-2016 Task 3: Translation-based method for CQA system</title>
+		<author>
+			<persName><forename type="first">Yunfang</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Minghua</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation</title>
+				<meeting>the Workshop on Semantic Evaluation<address><addrLine>San Diego, California, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="857" to="860" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<analytic>
+		<title level="a" type="main">EICA team at SemEval-2017 task 3: Semantic and metadata-based features for Community Question Answering</title>
+		<author>
+			<persName><forename type="first">Yufei</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maoquan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jing</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhao</forename><surname>Lu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation. Vancouver</title>
+				<meeting>the International Workshop on Semantic Evaluation. Vancouver</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="293" to="299" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<analytic>
+		<title level="a" type="main">Answer extraction as sequence tagging with tree edit distance</title>
+		<author>
+			<persName><forename type="first">Xuchen</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Van Durme</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Callison-Burch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference of the North American Chapter of the Association for Computational Linguistics. NAACL-HLT &apos;13</title>
+				<meeting>the Conference of the North American Chapter of the Association for Computational Linguistics. NAACL-HLT &apos;13</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="858" to="867" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<analytic>
+		<title level="a" type="main">Question retrieval with high quality answers in community question answering</title>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haocheng</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhoujun</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd ACM International Conference on Information and Knowledge Management</title>
+				<meeting>the 23rd ACM International Conference on Information and Knowledge Management<address><addrLine>Shanghai, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="371" to="380" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b85">
+	<analytic>
+		<title level="a" type="main">FuRongWang at SemEval-2017 task 3: Deep neural networks for selecting relevant answers in community question answering</title>
+		<author>
+			<persName><forename type="first">Sheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiajun</forename><surname>Cheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hui</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xin</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pei</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhaoyun</forename><surname>Ding</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation. Vancouver, Canada, SemEval &apos;17</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="320" to="325" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b86">
+	<analytic>
+		<title level="a" type="main">Phrase-based translation model for question retrieval in community question answer archives</title>
+		<author>
+			<persName><forename type="first">Guangyou</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kang</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Portland, Oregon, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="653" to="662" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b87">
+	<analytic>
+		<title level="a" type="main">Answer sequence learning with neural networks for answer selection in community question answering</title>
+		<author>
+			<persName><forename type="first">Xiaoqiang</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Baotian</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qingcai</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Buzhou</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaolong</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="713" to="718" />
+		</imprint>
+	</monogr>
+	<note>ACL-IJCNLP &apos;15</note>
+</biblStruct>
+
+<biblStruct xml:id="b88">
+	<analytic>
+		<title level="a" type="main">ICRC-HIT: A deep learning based comment sequence labeling system for answer selection challenge</title>
+		<author>
+			<persName><forename type="first">Xiaoqiang</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Baotian</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiaxin</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Xiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaolong</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation<address><addrLine>Denver, Colorado, USA, SemEval</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="210" to="214" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Overview of Genia Event Task in BioNLP Shared Task 2011</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Jin-Dong</forename><surname>Kim</surname></persName>
+							<email>jdkim@dbcls.rois.ac.jp</email>
+							<affiliation key="aff0">
+								<orgName type="department">Database Center for Life Science</orgName>
+								<address>
+									<addrLine>2-11-16 Yayoi, Bunkyo-ku</addrLine>
+									<settlement>Tokyo</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yue</forename><surname>Wang</surname></persName>
+							<email>wang@dbcls.rois.ac.jp</email>
+							<affiliation key="aff1">
+								<orgName type="department">Database Center for Life Science</orgName>
+								<address>
+									<addrLine>2-11-16 Yayoi, Bunkyo-ku</addrLine>
+									<settlement>Tokyo</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Toshihisa</forename><surname>Takagi</surname></persName>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Tokyo</orgName>
+								<address>
+									<addrLine>5-1-5 Kashiwa-no-ha</addrLine>
+									<settlement>Kashiwa</settlement>
+									<region>Chiba</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Akinori</forename><surname>Yonezawa</surname></persName>
+							<email>yonezawa@dbcls.rois.ac.jp</email>
+							<affiliation key="aff3">
+								<orgName type="department">Database Center for Life Science</orgName>
+								<address>
+									<addrLine>2-11-16 Yayoi, Bunkyo-ku</addrLine>
+									<settlement>Tokyo</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Overview of Genia Event Task in BioNLP Shared Task 2011</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:31+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The Genia event task, a bio-molecular event extraction task, is arranged as one of the main tasks of BioNLP Shared Task 2011. As its second time to be arranged for community-wide focused efforts, it aimed to measure the advance of the community since 2009, and to evaluate generalization of the technology to full text papers. After a 3-month system development period, 15 teams submitted their performance results on test cases. The results show the community has made a significant advancement in terms of both performance improvement and generalization.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The BioNLP Shared Task (BioNLP-ST, hereafter) is a series of efforts to promote a communitywide collaboration towards fine-grained information extraction (IE) in biomedical domain. The first event, BioNLP-ST 2009, introducing a biomolecular event (bio-event) extraction task to the community, attracted a wide attention, with 42 teams being registered for participation and 24 teams submitting final results <ref type="bibr" target="#b10">(Kim et al., 2009)</ref>.</p><p>To establish a community effort, the organizers provided the task definition, benchmark data, and evaluations, and the participants competed in developing systems to perform the task. Meanwhile, participants and organizers communicated to develop a better setup of evaluation, and some provided their tools and resources for other participants, making it a collaborative competition.</p><p>The final results enabled to observe the state-ofthe-art performance of the community on the bioevent extraction task, which showed that the automatic extraction of simple events -those with unary arguments, e.g. gene expression, localization, phosphorylation -could be achieved at the performance level of 70% in F-score, but the extraction of complex events, e.g. binding and regulation, was a lot more challenging, having achieved 40% of performance level.</p><p>After BioNLP-ST 2009, all the resources from the event were released to the public, to encourage continuous efforts for further advancement. Since then, several improvements have been reported <ref type="bibr" target="#b18">(Miwa et al., 2010b;</ref><ref type="bibr" target="#b19">Poon and Vanderwende, 2010;</ref><ref type="bibr" target="#b25">Vlachos, 2010;</ref><ref type="bibr" target="#b17">Miwa et al., 2010a;</ref><ref type="bibr" target="#b1">Björne et al., 2010)</ref>. For example, <ref type="bibr" target="#b18">Miwa et al. (Miwa et al., 2010b)</ref> reported a significant improvement with binding events, achieving 50% of performance level.</p><p>The task introduced in BioNLP-ST 2009 was renamed to Genia event (GE) task, and was hosted again in BioNLP-ST 2011, which also hosted four other IE tasks and three supporting tasks <ref type="bibr" target="#b11">(Kim et al., 2011)</ref>. As the sole task that was repeated in the two events, the GE task was referenced during the development of other tasks, and took the role of connecting the results of the 2009 event to the main tasks of 2011. The GE task in 2011 received final submissions from 15 teams. The results show the community made a significant progress with the task, and also show the technology can be generalized to full papers at moderate cost of performance.</p><p>This paper presents the task setup, preparation, and discusses the results.  <ref type="table">1</ref>: Event types and their arguments for Genia event task. The type of each filler entity is specified in parenthesis. Arguments that may be filled more than once per event are marked with "+".</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Definition</head><p>The GE task follows the task definition of BioNLP-ST 2009, which is briefly described in this section. For more detail, please refer to <ref type="bibr" target="#b10">(Kim et al., 2009)</ref>. Table <ref type="table">1</ref> shows the event types to be addressed in the task. For each event type, the primary and secondary arguments to be extracted with an event are defined. For example, a Phosphorylation event is primarily extracted with the protein to be phosphorylated. As secondary information, the specific site to be phosphorylated may be extracted.</p><p>From a computational point of view, the event types represent different levels of complexity. When only primary arguments are considered, the first five event types in Table <ref type="table">1</ref> are classified as simple event types, requiring only unary arguments. The Binding and Regulation types are more complex: Binding requires detection of an arbitrary number of arguments, and Regulation requires detection of recursive event structure.</p><p>Based on the definition of event types, the entire task is divided to three sub-tasks addressing event extraction at different levels of specificity: Task 1. Core event extraction addresses the extraction of typed events together with their primary arguments.</p><p>Task 2. Event enrichment addresses the extraction of secondary arguments that further specify the events extracted in Task 1.</p><p>Task 3. Negation/Speculation detection addresses the detection of negations and speculations over the extracted events.</p><p>Task 1 serves as the backbone of the GE task and is mandatory for all participants, while the other two are optional. The annotation T1 identifies the entity referred to by the string (p65) between the character offsets, 15 and 18 to be a Protein. T2 identifies the string, translocation, to refer to a Localization event. Entities other than proteins or event type references are classified into a default class Entity, as in T3. E1 then represents the event defined by the three entities, as defined in Table <ref type="table">1</ref>. Note that for Task 1, the entity, T3, does not need to be identified, and the event, E1, may be identified without specification of the secondary argument, ToLoc:T1: E1' Localization:T2 Theme:T1</p><p>Finding the full representation of E1 is the goal of Task 2. In the example, the localization event, E1, is negated as expressed in the failure of . Finding the negation, M1 is the goal of Task 3.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data preparation</head><p>The data sets are prepared in two collections: the abstract and the full text collections. The abstract collection includes the same data used for BioNLP-ST 2009, and is meant to be used to measure the progress of the community. The full text collection includes full papers which are newly annotated, and is meant to be used to measure the generalization of the technology to full papers. Table <ref type="table" target="#tab_2">2</ref> shows the statistics of the annotations in the GE task data sets.</p><p>Since the training data from the full text collection is relatively small despite of the expected rich variety of expressions in full text, it is expected that 'generalization' of a model from the abstract collection to full papers would be a key technique to get a reasonable performance.</p><p>A full paper consists of several sections including the title, abstract, introduction, results, conclusion, methods, and so on. Different sections would be written with different purposes, which may affect the type of information that are found in the sections. Table <ref type="table" target="#tab_4">3</ref>   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participation</head><p>In total, 15 teams submitted final results. All 15 teams participated in the mandatory Task 1, four teams in Task 2, and two teams in Task 3. Only one team, UTurku, completed all the three tasks.</p><p>Table <ref type="table" target="#tab_6">4</ref> shows the profile of the teams, excepting three who chose to remain anonymous. A brief examination on the team organization (the People column) suggests the importance of a computer science background, C and BI, to perform the GE task, which agrees with the same observation made in 2009. It is interpreted as follows: the role of computer scientists may be emphasized in part due to the fact that the task requires complex computational modeling, demanding particular efforts in framework design and implementation and computational resources. The '09 column suggests that previous experience in the task may have affected to the performance of the teams, especially in a complex task like the GE task.</p><p>Table <ref type="table" target="#tab_7">5</ref> shows the profile of the systems. A notable observation is that four teams developed their systems based on the model of UTurku09 <ref type="bibr" target="#b0">(Björne et al., 2009)</ref> which was the winning sys-tem of BioNLP-ST 2009. It may show an influence of the BioNLP-ST series in the task. For syntactic analyses, the prevailing use of Charniak Johnson re-ranking parser <ref type="bibr" target="#b5">(Charniak and Johnson, 2005)</ref> using the self-trained biomedical model from Mc-Closky (2008) (McCCJ) which is converted to Stanford Dependency <ref type="bibr" target="#b6">(de Marneffe et al., 2006</ref>) is notable, which may also be an influence from the results of BioNLP-ST 2009. The last two teams, XABioNLP and HCMUS, who did not use syntactic analyses could not get a performance comparable to the others, which may suggest the importance of using syntactic analyses for a complex IE task like GE task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Task 1</head><p>Table <ref type="table" target="#tab_9">6</ref> shows the final evaluation results of Task 1. For reference, the reported performance of the two systems, UTurku09 and Miwa10 is listed in the top. UTurku09 was the winning system of Task 1 in 2009 <ref type="bibr" target="#b0">(Björne et al., 2009)</ref>, and Miwa10 was the best system reported after BioNLP-ST 2009 <ref type="bibr" target="#b18">(Miwa et al., 2010b</ref>   The best performance in Task 1 this time is achieved by the FAUST system, which adopts a combination model of UMass and Stanford. Its performance on the abstract collection, 56.04%, demonstrates a significant improvement of the community in the repeated GE task, when compared to both UTurku09, 51.95% and Miwa10, 53.29%. The biggest improvement is made to the Regulation events (40.11%→46.97%) which requires a complex modeling for recursive event structure -an event may become an argument of another event. The second ranked system, UMass, shows the best performance on the full paper collection. It suggests that what FAUST obtained from the model combi-nation might be a better optimization to abstracts.</p><p>The ConcordU system is notable as it is the sole rule-based system that is ranked above the average. It shows a performance optimized for precision with relatively low recall. The same tendency is roughly replicated by other rule-based systems, CCP-BTMG, TM-SCS, XABioNLP, and HCMUS. It suggests that a rule-based system might not be a good choice if a high coverage is desired. However, the performance of ConcordU for simple events suggests that a high precision can be achieved by a rule based system with a modest loss of recall. It might be more true when the task is less complex.</p><p>This time, three teams achieved better results than Miwa10, which indicates some role of focused efforts like BioNLP-ST. The comparison between the performance on abstract and full paper collections shows that generalization to full papers is feasible with very modest loss in performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Task 2</head><p>Tables 7 shows final evaluation results of Task 2. For reference, the reported performance of the taskwinning system in 2009, UT+DBCLS09 <ref type="bibr" target="#b22">(Riedel et al., 2009)</ref>, is shown in the top. The first and second ranked system, FAUST and UMass, which share a same author with Riedel09, made a significant improvement over Riedel09 in the abstract collection. UTurku achieved the best performance in finding sites arguments but did not produce location arguments. In table <ref type="table" target="#tab_10">7</ref>, the performance of all the systems in full text collection suggests that finding secondary arguments in full text is much more challenging.</p><p>In detail, a significant improvement was made for Location arguments (36.59%→50.00%). A further breakdown of the results of site extraction, shown in table 8, shows that finding site arguments for Phosphorylation, Binding and Regulation events are all significantly improved, but in different ways. The extraction of protein sites to be phosphorylated is approaching a practical level of performance (84.21%), while protein sites to be bound or to be regulated remains challenging to be extracted.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Task 3</head><p>Table <ref type="table" target="#tab_12">9</ref> shows final evaluation results of Task 3. For reference, the reported performance of the taskwinning system in 2009, Kilicoglu09 <ref type="bibr" target="#b8">(Kilicoglu and Bergler, 2009)</ref>, is shown in the top. Among the two teams participated in the task, UTurku showed a better performance in extracting negated events, while ConcordU showed a better performance in extracting speculated events.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusions</head><p>The Genia event task which was repeated for BioNLP-ST 2009 and 2011 took a role of measuring the progress of the community and generalization IE technology to full papers. The results from 15 teams who made their final submissions to the task show that a clear advance of the community in terms of the performance on a focused domain and also generalization to full papers. To our disappointment, however, an effective use of supporting task results was not observed, which thus remains as future work for further improvement.     </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Event annotation example Figure 1 shows an example of event annotation. The event encoded in the text is represented in a standoff-style annotation as follows: T1 Protein 15 18 T2 Localization 19 32 T3 Entity 40 46 E1 Localization:T2 Theme:T1 ToLoc:T1 M1 Negation E1</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Statistics of annotations in training, development, and test sets</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>shows the distribution of annotations in different sections. It indicates that event mentions, according to the event definition in Table1, in Methods and Captions are much less frequent than in the other TIAB, Intro. and R/D/C sections. Figure2illustrates the different distribution of annotated event types in the five sections. It is notable that the Methods section (depicted in blue) shows very different distribution compared to others: while Regulation and Positive regulation events are not as frequent as in other sections, Negative regulation is relatively much more frequent. It may agree with an intuition that experimental devices, which will be explained in Methods sections, often consists of artificial processes that are designed to cause a negative regulatory effect, e.g. mutation, addition of inhibitor proteins, etc. This observation suggests a different event annotation scheme, or a different event extraction strategy would be required for Methods sections.</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="2">Full Paper</cell><cell></cell><cell></cell></row><row><cell>Item</cell><cell>Abstract</cell><cell>Whole</cell><cell>TIAB</cell><cell>Intro.</cell><cell cols="3">R/D/C Methods</cell><cell>Caption</cell></row><row><cell>Words</cell><cell>267229</cell><cell>80962</cell><cell>3538</cell><cell>7878</cell><cell cols="2">43420</cell><cell>19406</cell><cell>6720</cell></row><row><cell>Proteins</cell><cell>14969</cell><cell>6580</cell><cell>336</cell><cell>597</cell><cell></cell><cell>3980</cell><cell>916</cell><cell>751</cell></row><row><cell>(Density: P / W)</cell><cell>(5.60%)</cell><cell>(8.13%)</cell><cell>(9.50%)</cell><cell>(7.58%)</cell><cell cols="2">(9.17%)</cell><cell cols="2">(4.72%) (11.18%)</cell></row><row><cell>Events</cell><cell>13603</cell><cell>4436</cell><cell>272</cell><cell>427</cell><cell></cell><cell>3234</cell><cell>198</cell><cell>278</cell></row><row><cell>(Density: E / W)</cell><cell>(5.09%)</cell><cell>(5.48%)</cell><cell>(7.69%)</cell><cell>(5.42%)</cell><cell cols="2">(7.51%)</cell><cell>(1.02%)</cell><cell>(4.14%)</cell></row><row><cell>(Density: E / P)</cell><cell cols="8">(90.87%) (67.42%) (80.95%) (71.52%) (81.93%) (21.62%) (37.02%)</cell></row><row><cell>Gene expression</cell><cell>2816</cell><cell>1193</cell><cell>62</cell><cell>98</cell><cell></cell><cell>841</cell><cell>80</cell><cell>112</cell></row><row><cell>Transcription</cell><cell>795</cell><cell>204</cell><cell>7</cell><cell>7</cell><cell></cell><cell>140</cell><cell>30</cell><cell>20</cell></row><row><cell>Protein catabolism</cell><cell>145</cell><cell>3</cell><cell>0</cell><cell>0</cell><cell></cell><cell>3</cell><cell>0</cell><cell>0</cell></row><row><cell>Phosphorylation</cell><cell>355</cell><cell>137</cell><cell>12</cell><cell>12</cell><cell></cell><cell>101</cell><cell>10</cell><cell>2</cell></row><row><cell>Localization</cell><cell>492</cell><cell>47</cell><cell>3</cell><cell>15</cell><cell></cell><cell>22</cell><cell>7</cell><cell>0</cell></row><row><cell>Binding</cell><cell>1485</cell><cell>380</cell><cell>16</cell><cell>74</cell><cell></cell><cell>266</cell><cell>6</cell><cell>18</cell></row><row><cell>Regulation</cell><cell>1426</cell><cell>371</cell><cell>35</cell><cell>30</cell><cell></cell><cell>281</cell><cell>4</cell><cell>21</cell></row><row><cell>Positive regulation</cell><cell>4452</cell><cell>1385</cell><cell>98</cell><cell>131</cell><cell></cell><cell>1087</cell><cell>15</cell><cell>54</cell></row><row><cell>Negative regulation</cell><cell>1637</cell><cell>716</cell><cell>39</cell><cell>60</cell><cell></cell><cell>520</cell><cell>46</cell><cell>51</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>TIAB</cell><cell>Intro.</cell><cell>R/D/C</cell><cell>Methods</cell><cell>Caption</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="3">Gene_expression</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>Neg_regul.</cell><cell></cell><cell></cell><cell cols="2">Transcrip.</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>Pos_regul.</cell><cell></cell><cell></cell><cell cols="2">Binding</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>Regulation</cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="5">Figure 2: Event distribution in different sections</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Statistics of annotations in different sections of text: the Abstract column is of the abstraction collection (1210 titles and abstracts), and the following columns are of full paper collection (14 full papers). TIAB = title and abstract, Intro. = introduction and background, R/D/C = results, discussions, and conclusions, Methods = methods,</figDesc><table /><note>materials, and experimental procedures. Some minor sections, supporting information, supplementary material, and synopsis, are ignored. Density = relative density of annotation (P/W = Protein/Word, E/W = Event/Word, and E/P = Event/Protein).</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head></head><label></label><figDesc>). Particularly, the latter made</figDesc><table><row><cell>Team FAUST UMASS UTurku</cell><cell cols="2">'09 Task √ 12-√ 12-√ 123</cell><cell>People 3C 1C 1BI</cell><cell>reference (Riedel et al., 2011) (Riedel and McCallum, 2011) (Bjrne and Salakoski, 2011)</cell></row><row><cell>MSR-NLP ConcordU UWMadison</cell><cell>√ √</cell><cell>1--1-3 1--</cell><cell>4C 2C 2C</cell><cell>(Quirk et al., 2011) (Kilicoglu and Bergler, 2011) (Vlachos and Craven, 2011)</cell></row><row><cell>Stanford BMI@ASU CCP-BTMG</cell><cell>√ √</cell><cell cols="3">1--3C+1.5L (McClosky et al., 2011) 12-3C (Emadzadeh et al., 2011) 1--3BI (Liu et al., 2011)</cell></row><row><cell>TM-SCS</cell><cell></cell><cell>1--</cell><cell>1C</cell><cell>(Bui and Sloot, 2011)</cell></row><row><cell>XABioNLP</cell><cell></cell><cell>1--</cell><cell>4C</cell><cell>(Casillas et al., 2011)</cell></row><row><cell>HCMUS</cell><cell></cell><cell>1--</cell><cell>6L</cell><cell>(Minh et al., 2011)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Team profiles: The '09 column indicates whether at least one team member participated in BioNLP-ST 2009.</figDesc><table><row><cell cols="7">In People column, C=Computer Scientist, BI=Bioinformatician, B=Biologist, L=Linguist</cell><cell></cell></row><row><cell></cell><cell></cell><cell>NLP</cell><cell></cell><cell>Task</cell><cell></cell><cell cols="2">Other resources</cell></row><row><cell>Team</cell><cell>Lexical Proc.</cell><cell>Syntactic Proc.</cell><cell>Trig.</cell><cell>Arg.</cell><cell>group</cell><cell>Dictionary</cell><cell>Other</cell></row><row><cell>FAUST</cell><cell cols="2">SnowBall, CNLP McCCJ+SD</cell><cell cols="3">Stacking (UMASS + Stanford)</cell><cell></cell><cell></cell></row><row><cell>UMASS</cell><cell cols="2">SnowBall, CNLP McCCJ+SD</cell><cell cols="3">Joint infer., Dual Decomposition</cell><cell></cell><cell></cell></row><row><cell>UTurku</cell><cell>Porter</cell><cell>McCCJ+SD</cell><cell>SVM</cell><cell>SVM</cell><cell>SVM</cell><cell>S. cues</cell><cell></cell></row><row><cell>MSR-NLP</cell><cell>Porter</cell><cell>McCCJ+SD, Enju</cell><cell>SVM</cell><cell>MaxEnt</cell><cell>rules</cell><cell></cell><cell>Coref(Hobbs)</cell></row><row><cell>ConcordU</cell><cell>-</cell><cell>McCCJ+SD</cell><cell>dic</cell><cell>rules</cell><cell>rules</cell><cell>S./N. cues</cell><cell></cell></row><row><cell cols="2">UWMadison Morpha, Porter</cell><cell>MCCCJ+SD</cell><cell cols="3">Joint infer., SEARN</cell><cell></cell><cell></cell></row><row><cell>Stanford</cell><cell>Morpha, CNLP</cell><cell>McCCJ+SD</cell><cell>MaxEnt</cell><cell cols="2">MSTParser</cell><cell></cell><cell>word clusters</cell></row><row><cell>BMI@ASU</cell><cell>Porter, WordNet</cell><cell>Stanford+SD</cell><cell>SVM</cell><cell>SVM</cell><cell>-</cell><cell></cell><cell>MeSH</cell></row><row><cell cols="2">CCP-BTMG Porter, WordNet</cell><cell>Stanford+SD</cell><cell cols="3">Subgraph Isomorphism</cell><cell></cell><cell></cell></row><row><cell>TM-SCS</cell><cell>Stanford</cell><cell>Stanford</cell><cell>dic</cell><cell>rules</cell><cell>rules</cell><cell></cell><cell></cell></row><row><cell>XABioNLP</cell><cell>KAF</cell><cell>-</cell><cell></cell><cell>rules</cell><cell></cell><cell></cell><cell></cell></row><row><cell>HCMUS</cell><cell>OpenNLP</cell><cell>-</cell><cell>dic, rules</cell><cell>rules</cell><cell></cell><cell></cell><cell>UIMA</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5</head><label>5</label><figDesc></figDesc><table><row><cell>: System profiles: SnowBall=SnowBall Stemmer, CNLP=Stanford CoreNLP (tokenization), KAF=Kyoto An-</cell></row><row><cell>notation Format McCCJ=McClosky-Charniak-Johnson Parser, Stanford=Stanford Parser, SD=Stanford Dependency</cell></row><row><cell>Conversion, S.=Speculation, N.=Negation</cell></row><row><cell>an impressive improvement with Binding events</cell></row><row><cell>(44.41%→52.62%).</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head></head><label></label><figDesc>ASU A 58.71 / 78.51 / 67.18 26.22 / 47.40 / 33.77 22.99 / 40.47 / 29.32 36.61 / 57.82 / 44.83 F 72.47 / 72.09 / 72.28 31.94 / 40.71 / 35.80 20.78 / 39.74 / 27.29 37.65 / 53.93 / 44.34 W 53.61 / 75.13 / 62.57 22.61 / 49.12 / 30.96 19.01 / 43.80 / 26.51 31.57 / 58.99 / 41.13 CCP-BTMG A 50.93 / 74.50 / 60.50 25.65 / 53.29 / 34.63 19.54 / 43.47 / 26.96 31.87 / 59.02 / 41.39 F 61.82 / 76.77 / 68.49 15.28 / 37.29 / 21.67 17.83 / 44.63 / 25.48 30.82 / 58.92 / 40.47 W 57.33 / 71.34 / 63.57 34.01 / 44.77 / 38.66 16.39 / 25.37 / 19.91 32.73 / 45.84 / 38.19 TM-SCS A 53.65 / 71.66 / 61.36 36.02 / 49.41 / 41.67 18.29 / 27.07 / 21.83 33.36 / 47.09 / 39.06 F 68.57 / 70.59 / 69.57 29.17 / 35.00 / 31.82 12.20 / 21.02 / 15.44 31.14 / 42.83 / 36.06 W 43.71 / 47.18 / 45.38 05.30 / 50.00 / 09.58 05.79 / 26.94 / 09.54 19.07 / 42.08 / 26.25 XABioNLP A 39.76 / 45.90 / 42.61 06.34 / 56.41 / 11.40 04.72 / 23.21 / 07.84 17.91 / 40.74 / 24.89 F 55.84 / 50.23 / 52.89 02.78 / 30.77 / 05.10 08.18 / 33.89 / 13.17 21.96 / 45.09 / 29.54 W 24.82 / 35.14 / 29.09 04.68 / 12.92 / 06.88 01.63 / 10.40 / 02.81 10.12 / 27.17 / 14.75 HCMUS A 22.42 / 37.38 / 28.03 04.61 / 10.46 / 06.40 01.69 / 10.37 / 02.91 09.71 / 27.30 / 14.33 F 32.21 / 31.16 / 31.67 04.86 / 28.00 / 08.28 01.47 / 10.48 / 02.59 11.14 / 26.89 / 15.75</figDesc><table><row><cell>Team</cell><cell></cell><cell>Simple Event</cell><cell>Binding</cell><cell>Regulation</cell><cell>All</cell></row><row><cell>UTurku09</cell><cell cols="5">A 64.21 / 77.45 / 70.21 40.06 / 49.82 / 44.41 35.63 / 45.87 / 40.11 46.73 / 58.48 / 51.95</cell></row><row><cell>Miwa10</cell><cell>A</cell><cell>70.44</cell><cell>52.62</cell><cell cols="2">40.60 48.62 / 58.96 / 53.29</cell></row><row><cell></cell><cell cols="5">W 68.47 / 80.25 / 73.90 44.20 / 53.71 / 48.49 38.02 / 54.94 / 44.94 49.41 / 64.75 / 56.04</cell></row><row><cell>FAUST</cell><cell cols="5">A 66.16 / 81.04 / 72.85 45.53 / 58.09 / 51.05 39.38 / 58.18 / 46.97 50.00 / 67.53 / 57.46</cell></row><row><cell></cell><cell cols="5">F 75.58 / 78.23 / 76.88 40.97 / 44.70 / 42.75 34.99 / 48.24 / 40.56 47.92 / 58.47 / 52.67</cell></row><row><cell></cell><cell cols="5">W 67.01 / 81.40 / 73.50 42.97 / 56.42 / 48.79 37.52 / 52.67 / 43.82 48.49 / 64.08 / 55.20</cell></row><row><cell>UMass</cell><cell cols="5">A 64.21 / 80.74 / 71.54 43.52 / 60.89 / 50.76 38.78 / 55.07 / 45.51 48.74 / 65.94 / 56.05</cell></row><row><cell></cell><cell cols="5">F 75.58 / 83.14 / 79.18 41.67 / 47.62 / 44.44 34.72 / 47.51 / 40.12 47.84 / 59.76 / 53.14</cell></row><row><cell></cell><cell cols="5">W 68.22 / 76.47 / 72.11 42.97 / 43.60 / 43.28 38.72 / 47.64 / 42.72 49.56 / 57.65 / 53.30</cell></row><row><cell>UTurku</cell><cell cols="5">A 64.97 / 76.72 / 70.36 45.24 / 50.00 / 47.50 40.41 / 49.01 / 44.30 50.06 / 59.48 / 54.37</cell></row><row><cell></cell><cell cols="5">F 78.18 / 75.82 / 76.98 37.50 / 31.76 / 34.39 34.99 / 44.46 / 39.16 48.31 / 53.38 / 50.72</cell></row><row><cell></cell><cell cols="5">W 68.99 / 74.30 / 71.54 42.36 / 40.47 / 41.39 36.64 / 44.08 / 40.02 48.64 / 54.71 / 51.50</cell></row><row><cell>MSR-NLP</cell><cell cols="5">A 65.99 / 74.71 / 70.08 43.23 / 44.51 / 43.86 37.14 / 45.38 / 40.85 48.52 / 56.47 / 52.20</cell></row><row><cell></cell><cell cols="5">F 78.18 / 73.24 / 75.63 40.28 / 32.77 / 36.14 35.52 / 41.34 / 38.21 48.94 / 50.77 / 49.84</cell></row><row><cell></cell><cell cols="5">W 59.99 / 85.53 / 70.52 29.33 / 49.66 / 36.88 35.72 / 45.85 / 40.16 43.55 / 59.58 / 50.32</cell></row><row><cell>ConcordU</cell><cell cols="5">A 56.51 / 84.56 / 67.75 29.97 / 49.76 / 37.41 36.24 / 47.09 / 40.96 43.09 / 60.37 / 50.28</cell></row><row><cell></cell><cell cols="5">F 70.65 / 88.03 / 78.39 27.78 / 49.38 / 35.56 34.58 / 43.22 / 38.42 44.71 / 57.75 / 50.40</cell></row><row><cell></cell><cell cols="5">W 59.67 / 80.95 / 68.70 29.33 / 49.66 / 36.88 34.10 / 49.46 / 40.37 42.56 / 61.21 / 50.21</cell></row><row><cell cols="6">UWMadison A 54.99 / 79.85 / 65.13 34.87 / 56.81 / 43.21 34.54 / 50.67 / 41.08 42.17 / 62.30 / 50.30</cell></row><row><cell></cell><cell cols="5">F 74.03 / 83.58 / 78.51 15.97 / 29.87 / 20.81 33.11 / 46.87 / 38.81 43.53 / 58.73 / 50.00</cell></row><row><cell></cell><cell cols="5">W 65.79 / 76.83 / 70.88 39.92 / 49.87 / 44.34 27.55 / 48.75 / 35.21 42.36 / 61.08 / 50.03</cell></row><row><cell>Stanford</cell><cell cols="5">A 62.61 / 77.57 / 69.29 42.36 / 54.24 / 47.57 28.25 / 49.95 / 36.09 42.55 / 62.69 / 50.69</cell></row><row><cell></cell><cell cols="5">F 75.58 / 75.00 / 75.29 34.03 / 40.16 / 36.84 26.01 / 46.08 / 33.25 41.88 / 57.36 / 48.41</cell></row><row><cell></cell><cell cols="5">W 62.09 / 76.55 / 68.57 27.90 / 44.92 / 34.42 22.30 / 40.26 / 28.70 36.91 / 56.63 / 44.69</cell></row><row><cell>BMI@</cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 6 :68 / 71.85 / 45.86</head><label>6</label><figDesc>Evaluation results (recall / precision / f-score) of Task 1 in (W)hole data set, (A)bstracts only, and (F)ull papers only. Some notable figures are emphasized in bold. / 88.24 / 36.59 32.14 / 72.41 / 44.52 W 32.88 / 70.87 / 44.92 36.36 / 75.00 / 48.98 33.</figDesc><table><row><cell>Team</cell><cell>Sites (222)</cell><cell>Locations (66)</cell><cell>All (288)</cell></row><row><cell cols="4">UT+DBCLS09 A 23.08 FAUST A 43.51 / 71.25 / 54.03 36.92 / 77.42 / 50.00 41.33 / 72.97 / 52.77</cell></row><row><cell></cell><cell>F 17.58 / 69.57 / 28.07</cell><cell>-</cell><cell>17.39 / 66.67 / 27.59</cell></row><row><cell></cell><cell cols="3">W 31.98 / 71.00 / 44.10 36.36 / 77.42 / 49.48 32.99 / 72.52 / 45.35</cell></row><row><cell>UMass</cell><cell cols="3">A 42.75 / 70.00 / 53.08 36.92 / 77.42 / 50.00 40.82 / 72.07 / 52.12</cell></row><row><cell></cell><cell>F 16.48 / 75.00 / 27.03</cell><cell>-</cell><cell>16.30 / 75.00 / 26.79</cell></row><row><cell></cell><cell cols="3">W 32.88 / 62.93 / 43.20 22.73 / 83.33 / 35.71 30.56 / 65.67 / 41.71</cell></row><row><cell>BMI@ASU</cell><cell cols="3">A 37.40 / 67.12 / 48.04 23.08 / 83.33 / 36.14 32.65 / 70.33 / 44.60</cell></row><row><cell></cell><cell>F 26.37 / 55.81 / 35.82</cell><cell>-</cell><cell>26.09 / 55.81 / 35.56</cell></row><row><cell></cell><cell cols="3">W 40.09 / 65.44 / 49.72 00.00 / 00.00 / 00.00 30.90 / 65.44 / 41.98</cell></row><row><cell>UTurku</cell><cell cols="3">A 48.09 / 69.23 / 56.76 00.00 / 00.00 / 00.00 32.14 / 69.23 / 43.90</cell></row><row><cell></cell><cell>F 28.57 / 57.78 / 38.24</cell><cell>-</cell><cell>28.26 / 57.78 / 37.96</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 7 :09.52 / 22.22 / 13.3357 / 89.80 / 83.81 0925.40 / 66.67 / 36.78 17</head><label>7</label><figDesc>Evaluation results of Task 2 in (W)hole data set, (A)bstracts only, and (F)ull papers only 71.43 / 71.43 / 71.43 04.76 / 50.00 / 08.70 12.96 / 58.33 / 21.21 W 71.64 / 84.21 / 77.42 05.95 / 38.46 / 10.31 28.17 / 60.61 / 38.46 FAUST A 71.43 / 81.63 / 76.19 04.76 / 14.29 / 07..35 / 66.67 / 11.59 23.53 / 44.44 / 30.77 W 76.12 / 79.69 / 77.86 04.76 / 36.36 / 08.42 22.54 / 64.00 / 33.33 UMass A 76.79 / 76.79 / 76.79 04.76 / 14.29 / 07.14 22.22 / 70.59 / 33.80 F 72.73 / 100.0 / 84.21 04.76 / 75.00 / 08.96 23.53 / 50.00 / 32.00 W 52.24 / 97.22 / 67.96 20.24 / 53.12 / 29.31 29.58 / 43.75 / 35.29 BMI@ASU A 53.57 / 96.77 / 68.97 31.48 / 51.52 / 39.08 F 45.45 / 100.0 / 62.50 23.81 / 65.22 / 34.88 23.53 / 26.67 / 25.00 .52 / 18.18 / 12.50 31.48 / 54.84 / 40.00 F 63.64 / 100.0 / 77.78 .65 / 21.43 / 19.35</figDesc><table><row><cell>Team</cell><cell>Phospho. (67)</cell><cell>Binding (84)</cell><cell>Reg. (71)</cell></row><row><cell>Riedel'09</cell><cell cols="3">A W 76.12 / 91.07 / 82.93 21.43 / 51.43 / 30.25 28.17 / 44.44 / 34.48</cell></row><row><cell>UTurku</cell><cell>A 78.</cell><cell></cell><cell></cell></row></table><note>14 29.63 / 66.67 / 41.03 F 72.73 / 100.0 / 84.21 06</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8 :</head><label>8</label><figDesc>Evaluation results of Site information for different event types in (A)bstracts</figDesc><table><row><cell>Team</cell><cell>Negation</cell><cell>Speculation</cell><cell>All</cell></row><row><cell cols="4">Kilicoglu09 A 14.98 / 50.75 / 23.13 16.83 / 50.72 / 25.27 15.86 / 50.74 / 24.17</cell></row><row><cell></cell><cell cols="3">W 22.87 / 48.85 / 31.15 17.86 / 32.54 / 23.06 20.30 / 39.67 / 26.86</cell></row><row><cell>UTurku</cell><cell cols="3">A 22.03 / 49.02 / 30.40 19.23 / 38.46 / 25.64 20.69 / 43.69 / 28.08</cell></row><row><cell></cell><cell cols="3">F 25.76 / 48.28 / 33.59 15.00 / 23.08 / 18.18 19.28 / 30.85 / 23.73</cell></row><row><cell></cell><cell cols="3">W 18.77 / 44.26 / 26.36 21.10 / 38.46 / 27.25 19.97 / 40.89 / 26.83</cell></row><row><cell>ConcordU</cell><cell cols="3">A 18.06 / 46.59 / 26.03 23.08 / 40.00 / 29.27 20.46 / 42.79 / 27.68</cell></row><row><cell></cell><cell cols="3">F 21.21 / 38.24 / 27.29 17.00 / 34.69 / 22.82 18.67 / 36.14 / 24.63</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 9 :</head><label>9</label><figDesc></figDesc><table /><note>Evaluation results of Task 3 in (W)hole data set, (A)bstracts only, and (F)ull papers only</note></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This work is supported by the "Integrated Database Project" funded by the Ministry of Education, Culture, Sports, Science and Technology of Japan.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Extracting complex biological events with rich graph-based feature sets</title>
+		<author>
+			<persName><forename type="first">Jari</forename><surname>Björne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juho</forename><surname>Heimonen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antti</forename><surname>Airola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tapio</forename><surname>Pahikkala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tapio</forename><surname>Salakoski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2009 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2009 Workshop Companion Volume for Shared Task<address><addrLine>Boulder, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009-06" />
+			<biblScope unit="page" from="10" to="18" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Complex event extraction at PubMed scale</title>
+		<author>
+			<persName><forename type="first">Jari</forename><surname>Björne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tapio</forename><surname>Jun'ichi Tsujii</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Salakoski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="382" to="390" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Generalizing Biomedical Event Extraction</title>
+		<author>
+			<persName><forename type="first">Jari</forename><surname>Bjrne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tapio</forename><surname>Salakoski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Extracting biological events from text using simple syntactic patterns</title>
+		<author>
+			<persName><forename type="first">Quoc-Chinh</forename><surname>Bui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><forename type="middle">M A</forename><surname>Sloot</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Using Kybots for Extracting Events in Biomedical Texts</title>
+		<author>
+			<persName><forename type="first">Arantza</forename><surname>Casillas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arantza</forename><surname>Daz De Ilarraza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Koldo</forename><surname>Gojenola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maite</forename><surname>Oronoz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">German</forename><surname>Rigau</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Coarseto-Fine n-Best Parsing and MaxEnt Discriminative Reranking</title>
+		<author>
+			<persName><forename type="first">Eugene</forename><surname>Charniak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Johnson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 43rd Annual Meeting of the Association for Computational Linguistics (ACL&apos;05)</title>
+				<meeting>the 43rd Annual Meeting of the Association for Computational Linguistics (ACL&apos;05)</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="173" to="180" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Generating Typed Dependency Parses from Phrase Structure Parses</title>
+		<author>
+			<persName><forename type="first">Marie-Catherine</forename><surname>De Marneffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bill</forename><surname>Maccartney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth International Conference on Language Resources and Evaluation (LREC&apos;06)</title>
+				<meeting>the Fifth International Conference on Language Resources and Evaluation (LREC&apos;06)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="449" to="454" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Double Layered Learning for Biological Event Extraction from Text</title>
+		<author>
+			<persName><forename type="first">Ehsan</forename><surname>Emadzadeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Azadeh</forename><surname>Nikfarjam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Gonzalez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Syntactic dependency based heuristics for biological event extraction</title>
+		<author>
+			<persName><forename type="first">Halil</forename><surname>Kilicoglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Bergler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2009 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2009 Workshop Companion Volume for Shared Task<address><addrLine>Boulder, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009-06" />
+			<biblScope unit="page" from="119" to="127" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Adapting a General Semantic Interpretation Approach to Biological Event Extraction</title>
+		<author>
+			<persName><forename type="first">Halil</forename><surname>Kilicoglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Bergler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Overview of BioNLP&apos;09 Shared Task on Event Extraction</title>
+		<author>
+			<persName><forename type="first">Jin-Dong</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoko</forename><surname>Ohta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshinobu</forename><surname>Kano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Natural Language Processing in Biomedicine (BioNLP) NAACL 2009 Workshop</title>
+				<meeting>Natural Language Processing in Biomedicine (BioNLP) NAACL 2009 Workshop</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Overview of BioNLP Shared Task</title>
+		<author>
+			<persName><forename type="first">Jin-Dong</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoko</forename><surname>Ohta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Bossy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">From graphs to events: A subgraph matching approach for information extraction from biomedical text</title>
+		<author>
+			<persName><forename type="first">Haibin</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ravikumar</forename><surname>Komandur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karin</forename><surname>Verspoor</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Self-Training for Biomedical Parsing</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mcclosky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eugene</forename><surname>Charniak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 46th Annual Meeting of the Association for Computational Linguistics -Human Language Technologies (ACL-HLT&apos;08)</title>
+				<meeting>the 46th Annual Meeting of the Association for Computational Linguistics -Human Language Technologies (ACL-HLT&apos;08)</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="101" to="104" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Event Extraction as Dependency Parsing for BioNLP</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mcclosky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP</title>
+				<meeting>the BioNLP</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Workshop Companion Volume for Shared Task</title>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<pubPlace>Oregon</pubPlace>
+		</imprint>
+	</monogr>
+	<note>Portland</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">A pattern approach for Biomedical Event Annotation</title>
+		<author>
+			<persName><forename type="first">Son</forename><forename type="middle">Nguyen</forename><surname>Quang Le Minh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc Ho</forename><surname>Truong</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">A comparative study of syntactic parsers for event extraction</title>
+		<author>
+			<persName><forename type="first">Makoto</forename><surname>Miwa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tadayoshi</forename><surname>Hara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of BioNLP&apos;10</title>
+				<meeting>BioNLP&apos;10</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="37" to="45" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Event extraction with complex event classification using rich features</title>
+		<author>
+			<persName><forename type="first">Makoto</forename><surname>Miwa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rune</forename><surname>Saetre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jin-Dong</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Bioinformatics and Computational Biology (JBCB)</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="131" to="146" />
+			<date type="published" when="2010-02" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Joint inference for knowledge extraction from biomedical literature</title>
+		<author>
+			<persName><forename type="first">Hoifung</forename><surname>Poon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucy</forename><surname>Vanderwende</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT&apos;10</title>
+				<meeting>NAACL-HLT&apos;10</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="813" to="821" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">MSR-NLP Entry in BioNLP Shared Task</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Quirk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pallavi</forename><surname>Choudhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Gamon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucy</forename><surname>Vanderwend</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Robust Biomedical Event Extraction with Dual Decomposition and Minimal Domain Adaptation</title>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">A markov logic approach to bio-molecular event extraction</title>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hong-Woo</forename><surname>Chun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toshihisa</forename><surname>Takagi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2009 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2009 Workshop Companion Volume for Shared Task<address><addrLine>Boulder, Colorado</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2009-06" />
+			<biblScope unit="page" from="41" to="49" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Model Combination for Event Extraction in BioNLP</title>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mcclosky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Biomedical Event Extraction from Abstracts and Full Papers using Search-based Structured Prediction</title>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Vlachos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Craven</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the BioNLP 2011 Workshop Companion Volume for Shared Task</title>
+				<meeting>the BioNLP 2011 Workshop Companion Volume for Shared Task<address><addrLine>Portland, Oregon</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Two strong baselines for the bionlp 2009 event extraction task</title>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Vlachos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of BioNLP&apos;10</title>
+				<meeting>BioNLP&apos;10</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

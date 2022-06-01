@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2007 Task 08: Metonymy Resolution at SemEval-2007</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Katja</forename><surname>Markert</surname></persName>
+							<email>markert@comp.leeds.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Computing</orgName>
+								<orgName type="institution">University of Leeds</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Malvina</forename><surname>Nissim</surname></persName>
+							<email>malvina.nissim@unibo.it</email>
+							<affiliation key="aff1">
+								<orgName type="department">Dept. of Linguistics and Oriental Studies</orgName>
+								<orgName type="institution">University of Bologna</orgName>
+								<address>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2007 Task 08: Metonymy Resolution at SemEval-2007</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We provide an overview of the metonymy resolution shared task organised within SemEval-2007. We describe the problem, the data provided to participants, and the evaluation measures we used to assess performance. We also give an overview of the systems that have taken part in the task, and discuss possible directions for future work.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Both word sense disambiguation and named entity recognition have benefited enormously from shared task evaluations, for example in the Senseval, MUC and CoNLL frameworks. Similar campaigns have not been developed for the resolution of figurative language, such as metaphor, metonymy, idioms and irony. However, resolution of figurative language is an important complement to and extension of word sense disambiguation as it often deals with word senses that are not listed in the lexicon. For example, the meaning of stopover in the sentence He saw teaching as a stopover on his way to bigger things is a metaphorical sense of the sense "stopping place in a physical journey", with the literal sense listed in WordNet 2.0 but the metaphorical one not being listed. <ref type="bibr">1</ref> The same holds for the metonymic reading of rattlesnake (for the animal's meat) in Roast rattlesnake tastes like chicken. <ref type="bibr">2</ref> Again, the meat read-ing of rattlesnake is not listed in WordNet whereas the meat reading for chicken is.</p><p>As there is no common framework or corpus for figurative language resolution, previous computational works <ref type="bibr" target="#b4">(Fass, 1997;</ref><ref type="bibr" target="#b6">Hobbs et al., 1993;</ref><ref type="bibr">Barnden et al., 2003, among others)</ref> carry out only smallscale evaluations. In recent years, there has been growing interest in metaphor and metonymy resolution that is either corpus-based or evaluated on larger datasets <ref type="bibr" target="#b14">(Martin, 1994;</ref><ref type="bibr" target="#b16">Nissim and Markert, 2003;</ref><ref type="bibr" target="#b15">Mason, 2004;</ref><ref type="bibr" target="#b18">Peirsman, 2006;</ref><ref type="bibr" target="#b1">Birke and Sarkaar, 2006;</ref><ref type="bibr" target="#b8">Krishnakamuran and Zhu, 2007)</ref>. Still, apart from <ref type="bibr" target="#b16">(Nissim and Markert, 2003;</ref><ref type="bibr" target="#b18">Peirsman, 2006)</ref> who evaluate their work on the same dataset, results are hardly comparable as they all operate within different frameworks.</p><p>This situation motivated us to organise the first shared task for figurative language, concentrating on metonymy. In metonymy one expression is used to refer to the referent of a related one, like the use of an animal name for its meat. Similarly, in Ex. 1, Vietnam, the name of a location, refers to an event (a war) that happened there.</p><p>(1) Sex, drugs, and Vietnam have haunted Bill Clinton's campaign.</p><p>In Ex. 2 and 3, BMW, the name of a company, stands for its index on the stock market, or a vehicle manufactured by BMW, respectively.</p><p>(2) BMW slipped 4p to 31p</p><p>(3) His BMW went on to race at Le Mans</p><p>The importance of resolving metonymies has been shown for a variety of NLP tasks, such as ma-chine translation <ref type="bibr" target="#b7">(Kamei and Wakao, 1992)</ref>, question answering <ref type="bibr" target="#b19">(Stallard, 1993)</ref>, anaphora resolution <ref type="bibr" target="#b5">(Harabagiu, 1998;</ref><ref type="bibr" target="#b11">Markert and Hahn, 2002)</ref> and geographical information retrieval <ref type="bibr" target="#b10">(Leveling and Hartrumpf, 2006)</ref>. Although metonymic readings are, like all figurative readings, potentially open ended and can be innovative, the regularity of usage for word groups helps in establishing a common evaluation framework. Many other location names, for instance, can be used in the same fashion as Vietnam in Ex. 1. Thus, given a semantic class (e.g. location), one can specify several regular metonymic patterns (e.g. place-for-event) that instances of the class are likely to undergo. In addition to literal readings, regular metonymic patterns and innovative metonymic readings, there can also be so-called mixed readings, similar to zeugma, where both a literal and a metonymic reading are evoked <ref type="bibr" target="#b17">(Nunberg, 1995)</ref>.</p><p>The metonymy task is a lexical sample task for English, consisting of two subtasks, one concentrating on the semantic class location, exemplified by country names, and another one concentrating on organisation, exemplified by company names. Participants had to automatically classify preselected country/company names as having a literal or non-literal meaning, given a four-sentence context. Additionally, participants could attempt finer-grained interpretations, further specifying readings into prespecified metonymic patterns (such as place-for-event) and recognising innovative readings.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Annotation Categories</head><p>We distinguish between literal, metonymic, and mixed readings for locations and organisations. In the case of a metonymic reading, we also specify the actual patterns. The annotation categories were motivated by prior linguistic research by ourselves <ref type="bibr" target="#b13">(Markert and Nissim, 2006)</ref>, and others <ref type="bibr" target="#b4">(Fass, 1997;</ref><ref type="bibr" target="#b9">Lakoff and Johnson, 1980)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Locations</head><p>Literal readings for locations comprise locative (Ex. 4) and political entity interpretations (Ex. 5).</p><p>(4) coral coast of Papua New Guinea.</p><p>(5) Britain's current account deficit.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Metonymic readings encompass four types:</head><p>-place-for-people a place stands for any persons/organisations associated with it. These can be governments (Ex. 6), affiliated organisations, incl. sports teams (Ex. 7), or the whole population (Ex. 8).</p><p>Often, the referent is underspecified (Ex. 9). ( <ref type="formula">6</ref>) America did once try to ban alcohol.</p><p>(7) England lost in the semi-final.</p><p>(8) <ref type="bibr">[. . . ]</ref> the incarnation was to fulfil the promise to Israel and to reconcile the world with God.</p><p>(</p><formula xml:id="formula_0">)<label>9</label></formula><p>The G-24 group expressed readiness to provide Albania with food aid.</p><p>-place-for-event a location name stands for an event that happened in the location (see Ex. 1).</p><p>-place-for-product a place stands for a product manufactured in the place, as Bordeaux in Ex. 10.</p><p>(10) a smooth Bordeaux that was gutsy enough to cope with our food -othermet a metonymy that does not fall into any of the prespecified patterns, as in Ex. 11, where New Jersey refers to typical local tunes.</p><p>(11)</p><p>The thing about the record is the influences of the music. The bottom end is very New York/New Jersey and the top is very melodic.</p><p>When two predicates are involved, triggering a different reading each <ref type="bibr" target="#b17">(Nunberg, 1995)</ref>, the annotation category is mixed. In Ex. 12, both a literal and a place-for-people reading are involved.</p><p>(12) they arrived in Nigeria, hitherto a leading critic of [. . . ]</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Organisations</head><p>The literal reading for organisation names describes references to the organisation in general, where an organisation is seen as a legal entity, which consists of organisation members that speak with a collective voice, and which has a charter, statute or defined aims. Examples of literal readings include (among others) descriptions of the structure of an organisation (see <ref type="bibr">Ex. 13)</ref> -org-for-product the name of a commercial organisation can refer to its products, as in Ex. 3.</p><p>-org-for-facility organisations can also stand for the facility that houses the organisation or one of its branches, as in the following example.</p><p>(</p><formula xml:id="formula_1">)<label>19</label></formula><p>The opening of a McDonald's is a major event -org-for-index an organisation name can be used for an index that indicates its value (see Ex. 2).</p><p>-othermet a metonymy that does not fall into any of the prespecified patterns, as in Ex. 20, where Barclays Bank stands for an account at the bank.</p><p>(20) funds [. . . ] had been paid into Barclays Bank.</p><p>Mixed readings exist for organisations as well.</p><p>In Ex. 21, both an org-for-index and an org-formembers pattern are invoked.</p><p>(21) Barclays slipped 4p to 351p after confirming 3,000 more job losses.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Class-independent categories</head><p>Apart from class-specific metonymic readings, some patterns seem to apply across classes to all names. In the SemEval dataset, we annotated two of them.</p><p>object-for-name all names can be used as mere signifiers, instead of referring to an object or set of objects. In Ex. 22, both Chevrolet and Ford are used as strings, rather than referring to the companies.</p><p>(22) Chevrolet is feminine because of its sound (it's a longer word than Ford, has an open vowel at the end, connotes Frenchness).</p><p>object-for-representation a name can refer to a representation (such as a photo or painting) of the referent of its literal reading. In Ex. 23, Malta refers to a drawing of the island when pointing to a map.</p><p>(23) This is Malta</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data Collection and Annotation</head><p>We used the CIA Factbook 3 and the Fortune 500 list as sampling frames for country and company names respectively. All occurrences (including plural forms) of all names in the sampling frames were extracted in context from all texts of the BNC, Version 1.0. All samples extracted are coded in XML and contain up to four sentences: the sentence in which the country/company name occurs, two before, and one after. If the name occurs at the beginning or end of a text the samples may contain less than four sentences. For both the location and the organisation subtask, two random subsets of the extracted samples were selected as training and test set, respectively. Before metonymy annotation, samples that were not understood by the annotators because of insufficient context were removed from the datsets. In addition, a sample was also removed if the name extracted was a homonym not in the desired semantic class (for example Mr. Greenland when annotating locations). <ref type="bibr">4</ref> For those names that do have the semantic class location or organisation, metonymy annotation was performed, using the categories described in Section 2. All training set annotation was carried out independently by both organisers. Annotation was highly reliable with a kappa <ref type="bibr" target="#b3">(Carletta, 1996)</ref> of   <ref type="table" target="#tab_1">1 and 2</ref>.</p><p>In addition to a simple text format including only the metonymy annotation, we provided participants with several linguistic annotations of both training and testset. This included the original BNC tokenisation and part-of-speech tags as well as manually annotated dependency relations for each annotated name (e.g. BMW subj-of-slip for Ex. 2).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Submission and Evaluation</head><p>Teams were allowed to participate in the location or organisation task or both. We encouraged supervised, semi-supervised or unsupervised approaches.</p><p>Systems could be tailored to recognise metonymies at three different levels of granu-larity: coarse, medium, or fine, with an increasing number and specification of target classification categories, and thus difficulty. At the coarse level, only a distinction between literal and non-literal was asked for; medium asked for a distinction between literal, metonymic and mixed readings; fine needed a classification into literal readings, mixed readings, any of the class-dependent and class-independent metonymic patterns (Section 2) or an innovative metonymic reading (category othermet).</p><p>Systems were evaluated via accuracy (acc) and coverage (cov), allowing for partial submissions.</p><formula xml:id="formula_2">acc = # correct predictions # predictions cov = # predictions # samples</formula><p>For each target category c we also measured:</p><formula xml:id="formula_3">precision c = # correct assignments of c # assignments of c recall c = # correct assignments of c # dataset instances of c f score c = 2precisioncrecallc precisionc+recallc</formula><p>A baseline, consisting of the assignment of the most frequent category (always literal), was used for each task and granularity level.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Systems and Results</head><p>We received five submissions (FUH, GYDER, up13, UTD-HLT-CG, XRCE-M). All tackled the location task; three (GYDER, UTD-HLT-CG, XRCE-M) also participated in the organisation task. All systems were full submissions (coverage of 1) and participated at all granularity levels.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Methods and Features</head><p>Out of five teams, four (FUH, GYDER, up13, UTD-HLT-CG) used supervised machine learning, including single (FUH,GYDER, up13) as well as multiple classifiers (UTD-HLT-CG). A range of learning paradigms was represented (including instance-based learning, maximum entropy, decision trees, etc.). One participant (XRCE-M) built a hybrid system, combining a symbolic, supervised approach based on deep parsing with an unsupervised distributional approach exploiting lexical information obtained from large corpora.</p><p>Systems up13 and FUH used mostly shallow features extracted directly from the training data (including parts-of-speech, co-occurrences and collo-cations). The other systems made also use of syntactic/grammatical features (syntactic roles, determination, morphology etc.). Two of them (GYDER and UTD-HLT-CG) exploited the manually annotated grammatical roles provided by the organisers.</p><p>All systems apart from up13 made use of external knowledge resources such as lexical databases for feature generalisation (WordNet, FrameNet, VerbNet, Levin verb classes) as well as other corpora (the Mascara corpus for additional training material, the BNC, and the Web).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Performance</head><p>Tables <ref type="table" target="#tab_3">3 and 4</ref> report accuracy for all systems. 6 Table 5 provides a summary of the results with lowest, highest, and average accuracy and f-scores for each subtask and granularity level. <ref type="bibr">7</ref> The task seemed extremely difficult, with 2 of the 5 systems (up13,FUH) participating in the location task not beating the baseline. These two systems relied mainly on shallow features with limited or no use of external resources, thus suggesting that these features might only be of limited use for identifying metonymic shifts. The organisers themselves have come to similar conclusions in their own experiments <ref type="bibr" target="#b12">(Markert and Nissim, 2002)</ref>. The systems using syntactic/grammatical features (GYDER, UTD-HLT-CG, XRCE-M) could improve over the baseline whether using manual annotation or parsing. These systems also made heavy use of feature generalisation. Classification granularity had only a small effect on system performance.</p><p>Only few of the fine-grained categories could be distinguished with reasonable success (see the fscores in Table <ref type="table">5</ref>). These include literal readings, and place-for-people, org-for-members, and org-forproduct metonymies, which are the most frequent categories (see Tables <ref type="table" target="#tab_1">1 and 2</ref>). Rarer metonymic targets were either not assigned by the systems at all ("undef" in Table <ref type="table">5</ref>) or assigned wrongly  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Concluding Remarks</head><p>There is a wide range of opportunities for future figurative language resolution tasks. In the SemEval corpus the reading distribution mirrored the actual distribution in the original corpus (BNC). Although realistic, this led to little training data for several phenomena. A future option, geared entirely towards system improvement, would be to use a stratified corpus, built with different acquisition strategies like active learning or specialised search procedures. There are also several options for expanding the scope of the task, for example to a wider range of semantic classes, from proper names to common nouns, and from lexical samples to an allwords task. In addition, our task currently covers only metonymies and could be extended to other kinds of figurative language.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>, associations between organisations (seeEx. 14)  or relations between organisations and products/services they offer (see Ex. 15).</figDesc><table><row><cell>(13)</cell><cell>NATO countries</cell></row><row><cell>(14)</cell><cell>Sun acquired that part of Eastman-Kodak</cell></row><row><cell></cell><cell>Cos Unix subsidary</cell></row><row><cell>(15)</cell><cell>Intel's Indeo video compression hardware</cell></row><row><cell cols="2">Metonymic readings include six types:</cell></row><row><cell cols="2">-org-for-members an organisation stands for</cell></row><row><cell cols="2">its members, such as a spokesperson or official</cell></row><row><cell cols="2">(Ex. 16), or all its employees, as in Ex. 17.</cell></row><row><cell>(16)</cell><cell>Last February IBM announced [. . . ]</cell></row><row><cell>(17)</cell><cell>It's customary to go to work in black or</cell></row><row><cell></cell><cell>white suits. [. . . ] Woolworths wear them</cell></row><row><cell cols="2">-org-for-event an organisation name is used to re-</cell></row><row><cell cols="2">fer to an event associated with the organisation (e.g.</cell></row><row><cell cols="2">a scandal or bankruptcy), as in Ex. 18.</cell></row><row><cell>(18)</cell><cell>the resignation of Leon Brittan from Trade</cell></row><row><cell></cell><cell>and Industry in the aftermath of Westland.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Reading distribution for locations</figDesc><table><row><cell>reading</cell><cell cols="2">train test</cell></row><row><cell>literal</cell><cell cols="2">737 721</cell></row><row><cell>mixed</cell><cell>15</cell><cell>20</cell></row><row><cell>othermet</cell><cell>9</cell><cell>11</cell></row><row><cell>obj-for-name</cell><cell>0</cell><cell>4</cell></row><row><cell>obj-for-representation</cell><cell>0</cell><cell>0</cell></row><row><cell>place-for-people</cell><cell cols="2">161 141</cell></row><row><cell>place-for-event</cell><cell>3</cell><cell>10</cell></row><row><cell>place-for-product</cell><cell>0</cell><cell>1</cell></row><row><cell>total</cell><cell cols="2">925 908</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell cols="3">: Reading distribution for organisations</cell></row><row><cell>reading</cell><cell cols="2">train test</cell></row><row><cell>literal</cell><cell cols="2">690 520</cell></row><row><cell>mixed</cell><cell>59</cell><cell>60</cell></row><row><cell>othermet</cell><cell>14</cell><cell>8</cell></row><row><cell>obj-for-name</cell><cell>8</cell><cell>6</cell></row><row><cell>obj-for-representation</cell><cell>1</cell><cell>0</cell></row><row><cell>org-for-members</cell><cell cols="2">220 161</cell></row><row><cell>org-for-event</cell><cell>2</cell><cell>1</cell></row><row><cell>org-for-product</cell><cell>74</cell><cell>67</cell></row><row><cell>org-for-facility</cell><cell>15</cell><cell>16</cell></row><row><cell>org-for-index</cell><cell>7</cell><cell>3</cell></row><row><cell>total</cell><cell cols="2">1090 842</cell></row><row><cell cols="3">.88/.89 for locations/organisations. 5 As agreement</cell></row><row><cell cols="3">was established, annotation of the test set was car-</cell></row><row><cell cols="3">ried out by the first organiser. All cases which were</cell></row><row><cell cols="3">not entirely straightforward were then independently</cell></row><row><cell cols="3">checked by the second organiser. Samples whose</cell></row><row><cell cols="3">readings could not be agreed on (after a reconcil-</cell></row><row><cell cols="3">iation phase) were excluded from both training and</cell></row><row><cell cols="3">test set. The reading distributions of training and test</cell></row><row><cell cols="3">sets for both subtasks are shown in Tables</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Accuracy scores for all systems for all the location tasks. 8 task ↓ / system → baseline FUH UTD-HLT-CG XRCE-M GYDER up13</figDesc><table><row><cell>LOCATION-coarse</cell><cell>0.794</cell><cell>0.778</cell><cell>0.841</cell><cell>0.851</cell><cell>0.852</cell><cell>0.754</cell></row><row><cell>LOCATION-medium</cell><cell>0.794</cell><cell>0.772</cell><cell>0.840</cell><cell>0.848</cell><cell>0.848</cell><cell>0.750</cell></row><row><cell>LOCATION-fine</cell><cell>0.794</cell><cell>0.759</cell><cell>0.822</cell><cell>0.841</cell><cell>0.844</cell><cell>0.741</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Accuracy scores for all systems for all the organisation tasks</figDesc><table><row><cell>task ↓ / system →</cell><cell cols="4">baseline UTD-HLT-CG XRCE-M GYDER</cell></row><row><cell>ORGANISATION-coarse</cell><cell>0.618</cell><cell>0.739</cell><cell>0.732</cell><cell>0.767</cell></row><row><cell>ORGANISATION-medium</cell><cell>0.618</cell><cell>0.711</cell><cell>0.711</cell><cell>0.733</cell></row><row><cell>ORGANISATION-fine</cell><cell>0.618</cell><cell>0.711</cell><cell>0.700</cell><cell>0.728</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">This example was taken from the Berkely Master Metaphor list<ref type="bibr" target="#b9">(Lakoff and Johnson, 1980</ref>) .2 From now on, all examples in this paper are taken from the British National Corpus (BNC)<ref type="bibr" target="#b2">(Burnard, 1995)</ref>, but Ex. 23.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://www.cia.gov/cia/publications/ factbook/index.html 4 Given that the task is not about standard Named Entity Recognition, we assume that the general semantic class of the name is already known.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">The training sets are part of the already available Mascara corpus for metonymy<ref type="bibr" target="#b13">(Markert and Nissim, 2006)</ref>. The test sets were newly created for SemEval.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">Due to space limitations we do not report precision, recall, and f-score per class and refer the reader to each system description provided within this volume.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We are very grateful to the BNC Consortium for letting us use and distribute samples from the British National Corpus, version 1.0.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"> <ref type="bibr">7</ref> <p>The value "undef" is used for cases where the system did not attempt any assignment for a given class, whereas the value "0" signals that assignments were done, but were not correct. <ref type="bibr">8</ref> Please note that results for the FUH system are slightly different than those presented in the FUH system description paper. This is due to a preprocessing problem in the FUH system that was fixed only after the run submission deadline. 0.568 0.630 0.608 org-for-event-f 0.000 undef 0.000 org-for-product-f 0.400 0.500 0.458 org-for-facility-f 0.000 0.222 0.141 org-for-index-f 0.000 undef 0.000 obj-for-name-f 0.250 0.800 0.592 obj-for-rep-f undef undef undef othermet-f 0.000 undef 0.000 mixed-f 0.000 0.343 0.135 (low f-scores). An exception is the object-forname pattern, which XRCE-M and UTD-HLT-CG could distinguish with good success. Mixed readings also proved problematic since more than one pattern is involved, thus limiting the possibilities of learning from a single training instance. Only GYDER succeeded in correctly identifiying a variety of mixed readings in the organisation subtask. No systems could identify unconventional metonymies correctly. Such poor performance is due to the nonregularity of the reading by definition, so that approaches based on learning from similar examples alone cannot work too well.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Domain-transcending mappings in a system for metaphorical reasoning</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Barnden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">R</forename><surname>Glasbey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">G</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of EACL-2003</title>
+				<meeting>of EACL-2003</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="57" to="61" />
+		</imprint>
+	</monogr>
+	<note>Wallington</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">A clustering approach for the nearly unsupervised recognition of nonliteral language</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Birke</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sarkaar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of EACL-2006</title>
+				<meeting>of EACL-2006</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Users&apos; Reference Guide</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Burnard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">British National Corpus. BNC Consortium</title>
+		<imprint>
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Assessing agreement on classification tasks: The kappa statistic</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Carletta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="page" from="249" to="254" />
+			<date type="published" when="1996" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Processing Metaphor and Metonymy</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Fass</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Ablex</title>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Deriving metonymic coercions from WordNet</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Harabagiu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Workshop on the Usage of WordNet in Natural Language Processing Systems, COLING-ACL &apos;98</title>
+				<meeting><address><addrLine>Montreal, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="142" to="148" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Interpretation as abduction</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">R</forename><surname>Hobbs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">E</forename><surname>Stickel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">E</forename><surname>Appelt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Martin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">63</biblScope>
+			<biblScope unit="page" from="69" to="142" />
+			<date type="published" when="1993" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Metonymy: Reassessment, survey of acceptability and its treatment in machine translation systems</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kamei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Wakao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of ACL-92</title>
+				<meeting>of ACL-92</meeting>
+		<imprint>
+			<date type="published" when="1992" />
+			<biblScope unit="page" from="309" to="311" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Hunting elusive metaphors using lexical resources</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Krishnakamuran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NAACL 2007 Workshop on Computational Approaches to Figurative Language</title>
+				<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Metaphors We Live By</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Lakoff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Johnson</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1980" />
+			<publisher>Chicago University Press</publisher>
+			<pubPlace>Chicago, Ill</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">On metonymy recognition for gir</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Leveling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hartrumpf</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of GIR-2006: 3rd Workshop on Geographical Information Retrieval</title>
+				<meeting>GIR-2006: 3rd Workshop on Geographical Information Retrieval</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Understanding metonymies in discourse</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Markert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">U</forename><surname>Hahn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">135</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="145" to="198" />
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Metonymy resolution as a classification task</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Markert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nissim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of EMNLP-2002</title>
+				<meeting>of EMNLP-2002</meeting>
+		<imprint>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="204" to="213" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Metonymic proper names: A corpus-based account</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Markert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nissim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Corpora in Cognitive Linguistics</title>
+		<editor>Metaphor and Metonymy. Mouton de Gruyter</editor>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Metabank: a knowledge base of metaphoric language conventions</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Martin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="134" to="149" />
+			<date type="published" when="1994" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Cormet: A computational corpus-based conventional metaphor extraction system</title>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Mason</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="23" to="44" />
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Syntactic features and word similarity for supervised metonymy resolution</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nissim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Markert</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of ACL-2003</title>
+				<meeting>of ACL-2003</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="56" to="63" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Transfers of meaning</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Nunberg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Semantics</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="109" to="132" />
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Example-based metonymy recognition for proper nouns</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Peirsman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Student Session of EACL</title>
+				<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Two kinds of metonymy</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Stallard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of ACL-93</title>
+				<meeting>of ACL-93</meeting>
+		<imprint>
+			<date type="published" when="1993" />
+			<biblScope unit="page" from="87" to="94" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

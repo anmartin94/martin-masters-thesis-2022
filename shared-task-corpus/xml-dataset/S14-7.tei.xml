@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2014 Task 7: Analysis of Clinical Text</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Sameer</forename><surname>Pradhan</surname></persName>
+							<email>sameer.pradhan@childrens.harvard.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Harvard University</orgName>
+								<address>
+									<settlement>Boston</settlement>
+									<region>MA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Noémie</forename><surname>Elhadad</surname></persName>
+							<email>noemie.elhadad@columbia.edu</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Columbia University</orgName>
+								<address>
+									<settlement>New York</settlement>
+									<region>NY</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Wendy</forename><surname>Chapman</surname></persName>
+							<email>wendy.chapman@utah.edu</email>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Utah</orgName>
+								<address>
+									<settlement>Salt Lake City</settlement>
+								</address>
+							</affiliation>
+							<affiliation key="aff3">
+								<orgName type="institution">UT</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Suresh</forename><surname>Manandhar</surname></persName>
+							<email>suresh@cs.york.ac.uk</email>
+							<affiliation key="aff4">
+								<orgName type="institution">University of York</orgName>
+								<address>
+									<settlement>York</settlement>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Guergana</forename><surname>Savova</surname></persName>
+							<email>guergana.savova@childrens.harvard.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Harvard University</orgName>
+								<address>
+									<settlement>Boston</settlement>
+									<region>MA</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2014 Task 7: Analysis of Clinical Text</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the SemEval-2014, Task 7 on the Analysis of Clinical Text and presents the evaluation results. It focused on two subtasks: (i) identification (Task A) and (ii) normalization (Task B) of diseases and disorders in clinical reports as annotated in the Shared Annotated Resources (ShARe) 1 corpus. This task was a follow-up to the ShARe/CLEF eHealth 2013 shared task, subtasks 1a and 1b, 2 but using a larger test set. A total of 21 teams competed in Task A, and 18 of those also participated in Task B. For Task A, the best system had a strict F 1 -score of 81.3, with a precision of 84.3 and recall of 78.6. For Task B, the same group had the best strict accuracy of 74.1. The organizers have made the text corpora, annotations, and evaluation tools available for future research and development at the shared task website. 3 evaluation 3</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>A large amount of very useful information-both for medical researchers and patients-is present in the form of unstructured text within the clinical notes and discharge summaries that form a patient's medical history. Adapting and extending natural language processing (NLP) techniques to mine this information can open doors to better, novel, clinical studies on one hand, and help patients understand the contents of their clinical records on the other. Organization of this shared task helps establish state-of-the-art benchmarks and paves the way for further explorations. It tackles two important sub-problems in NLPnamed entity recognition and word sense disambiguation. Neither of these problems are new to NLP. Research in general-domain NLP goes back to about two decades. For an overview of the development in the field through roughly 2009, we refer the refer to <ref type="bibr" target="#b10">Nadeau and Sekine (2007)</ref>. NLP has also penetrated the field of bimedical informatics and has been particularly focused on biomedical literature for over the past decade. Advances in that sub-field has also been documented in surveys such as one by <ref type="bibr" target="#b7">Leaman and Gonzalez (2008)</ref>. Word sense disambiguation also has a long history in the general NLP domain <ref type="bibr" target="#b11">(Navigli, 2009)</ref>. In spite of word sense annotations in the biomedical literature, recent work by <ref type="bibr" target="#b18">Savova et al. (2008)</ref> highlights the importance of annotating them in clinical notes. This is true for many other clinical and linguistic phenomena as the various characteristics of the clinical narrative present a unique challenge to NLP. Recently various initiatives have led to annotated corpora for clinical NLP research. Probably the first comprehensive annotation performed on a clinical corpora was by <ref type="bibr" target="#b16">Roberts et al. (2009)</ref>, but unfortunately that corpus is not publicly available owing to privacy regulations. The i2b2 initiative 4 challenges have focused on such topics as concept recognition <ref type="bibr" target="#b21">(Uzuner et al., 2011)</ref>, coreference resolution <ref type="bibr" target="#b22">(Uzuner et al., 2012)</ref>, temporal relations <ref type="bibr" target="#b19">(Sun et al., 2013)</ref> and their datasets are available to the community. More recently, the Shared Annotated Resources (ShARe) 1 project has created a corpus annotated with disease/disorder mentions in clinical notes as well as normalized them to a concept unique identifier (CUI) within the SNOMED-CT subset of the Unified Medical Language System 5  (UMLS) <ref type="bibr" target="#b2">(Campbell et al., 1998)</ref>. The task of normalization is a combination of word/phrase sense disambiguation and semantic similarity where a phrase is mapped to a unique concept in an ontology (based on the description of that concept in the ontology) after disambiguating potential ambiguous surface words, or phrases. This is especially true with abbreviations and acronyms which are much more common in clinical text <ref type="bibr" target="#b9">(Moon et al., 2012)</ref>. The SemEval-2014 task 7 was one of nine shared tasks organized at the SemEval-2014.</p><p>It was designed as a follow up to the shared tasks organized during the ShARe/CLEF eHealth 2013 evaluation <ref type="bibr" target="#b14">Pradhan et al., 2014)</ref>. Like the previous shared task, we relied on the ShARe corpus, but with more data for training and a new test set. Furthermore, in this task, we provided the options to participants to utilize a large corpus of unlabeled clinical notes. The rest of the paper is organized as follows. Section 2 describes the characteristics of the data used in the task. Section 3 describes the tasks in more detail. Section 4 explains the evaluation criteria for the two tasks. Section 5 lists the participants of the task. Section 6 discusses the results on this task and also compares them with the ShARe/CLEF eHealth 2013 results, and Section 7 concludes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data</head><p>The ShARe corpus comprises annotations over de-identified clinical reports from a US intensive care department (version 2.5 of the MIMIC II database 6 ) <ref type="bibr" target="#b17">(Saeed et al., 2002</ref> annotate the data.</p><p>• Annotations represent the most specific disorder span. For example, small bowel obstruction is preferred over bowel obstruction. • A disorder mention is a concept in the SNOMED-CT portion of the Disorder semantic group. • Negation and temporal modifiers are not considered part of the disorder mention span. • All disorder mentions are annotated-even the ones related to a person other than the patient and including acronyms and abbreviations. • Mentions of disorders that are coreferential/anaphoric are also annotated.</p><p>Following are a few examples of disorder mentions from the data.</p><p>Patient found to have lower extremity DVT. (E1)</p><p>In example (E1), lower extremity DVT is marked as the disorder. It corresponds to CUI C0340708 (preferred term: Deep vein thrombosis of lower limb). The span DVT can be mapped to CUI C0149871 (preferred term: Deep Vein Thrombosis), but this mapping would be incorrect because it is part of a more specific disorder in the sentence, namely lower extremity DVT.</p><p>A tumor was found in the left ovary.</p><p>In example (E2), tumor ... ovary is annotated as a discontiguous disorder mention. This is the best method of capturing the exact disorder mention in clinical notes and its novelty is in the fact that either such phenomena have not been seen frequently enough in the general domain to gather particular attention, or the lack of a manually curated general domain ontology parallel to the UMLS.</p><p>Patient admitted with low blood pressure.</p><p>There are some disorders that do not have a representation to a CUI as part of the SNOMED CT within the UMLS. However, if they were deemed important by the annotators then they were annotated as CUI-less mentions. In example (E3), low blood pressure is a finding and is normalized as a CUI-less disorder. We constructed the annotation guidelines to require that the disorder be a reasonable synonym of the lexical description of a SNOMED-CT disorder. There are a few instances where the disorders are abbreviated or shortened in the clinical note. One example is w/r/r, which is an abbreviation for concepts wheezing (CUI C0043144), rales (CUI C0034642), and ronchi (CUI C0035508). This abbreviation is also sometimes written as r/w/r and r/r/w. Another is gsw for gunshot wound and tachy for tachycardia. More details on the annotation scheme is detailed in the guidelines 9 and in a forthcoming manuscript. The annotations covered about 336K words. Table <ref type="table" target="#tab_1">1</ref> shows the quantity of the data and the split across the training, development and test sets as well as in terms of the number of notes and the number of words.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Annotation Quality</head><p>Each note in the training and development set was annotated by two professional coders trained for this task, followed by an open adjudication step.</p><p>By the time we reached annotating the test data, the annotators were quite familiar with the annotation and so, in order to save time, we decided to perform a single annotation pass using a senior annotator. This was followed by a correction pass by the same annotator using a checklist of frequent annotation issues faced earlier. Table <ref type="table" target="#tab_4">2</ref> shows the inter-annotator agreement (IAA) statistics for the adjudicated data. For the disorders we measure the agreement in terms of the F 1 -score as traditional agreement measures such as Cohen's kappa and Krippendorf's alpha are not applicable for measuring agreement for entity mention annotation. We computed agreements between the two annotators as well as between each annotator and the final adjudicated gold standard. The latter is to give a sense of the fraction of corrections made in the process of adjudication. The strict criterion considers two mentions correct if they agree in terms of the class and the exact string, whereas the relaxed criteria considers overlapping strings of the   same class as correct. The reason for checking the class is as follows. Although we only use the disorder mention in this task, the corpus has been annotated with some other UMLS types as well and therefore there are instances where a different UMLS type is assigned to the same character span in the text by the second annotator. If exact boundaries are not taken into account then the IAA agreement score is in the mid-90s. For the task of normalization to CUIs, we used accuracy to assess agreement. For the relaxed criterion, all overlapping disorder spans with the same CUI were considered correct. For the strict criterion, only disorder spans with identical spans and the same CUI were considered correct.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>The participants were evaluated on the following two tasks:</p><p>• Task A -Identification of the character spans of disorder mentions.</p><p>• Task B -Normalizing disorder mentions to SNOMED-CT subset of UMLS CUIs.</p><p>For Task A, participants were instructed to develop a system that predicts the spans for disorder mentions. For Tasks B, participants were instructed to develop a system that predicts the UMLS CUI within the SNOMED-CT vocabulary. The input to Task B were the disorder mention predictions from Task A. Task B was optional. System outputs adhered to the annotation format. Each participant was allowed to submit up to three runs. The en-tire set of unlabeled MIMIC clinical notes (excluding the test notes) were made available to the participants for potential unsupervised approaches to enhance the performance of their systems. They were allowed to use additional annotations in their systems, but this counted towards the total allowable runs; systems that used annotations outside of those provided were evaluated separately. The evaluation for all tasks was conducted using the blind, withheld test data. The participants were provided a training set containing clinical text as well as pre-annotated spans and named entities for disorders (Tasks A and B).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Criteria</head><p>The following evaluation criteria were used:</p><p>• Task A -The system performance was evaluated against the gold standard using the F 1 -score of the Precision and Recall values. There were two variations: (i) Strict; and (ii) Relaxed. The formulae for computing these metrics are mentioned below.</p><formula xml:id="formula_2">P recision = P = D tp D tp + D f p (1) Recall = R = D tp D tp + D f n (2)</formula><p>Where, D tp = Number of true positives disorder mentions; D f p = Number of false positives disorder mentions; D f n = Number of false negative disorder mentions. In the strict case, a span was counted as correct if it was identical to the gold standard span, whereas   in the relaxed case, a span overlapping with the gold standard span was also considered correct.</p><p>• Task B -Accuracy was used as the performance measure for Task 1b. It was defined as follows:</p><formula xml:id="formula_3">Accuracy strict = D tp ∩ N correct T g (<label>3</label></formula><formula xml:id="formula_4">)</formula><formula xml:id="formula_5">Accuracy relaxed = D tp ∩ N correct D tp (4)</formula><p>Where, D tp = Number of true positive disorder mentions with identical spans as in the gold standard; N correct = Number of correctly normalized disorder mentions; and T g = Total number of disorder mentions in the gold standard. For Task B, the systems were only evaluated on annotations they identified in Task A. Relaxed accuracy only measured the ability to normalize correct spans. Therefore, it was possible to obtain very high values for this measure by simply dropping any mention with a low confidence span.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participants</head><p>A total of 21 participants from across the world participated in Task A and out of them 18 also participated in Task B. Unfortunately, although interested, the ThinkMiners team <ref type="bibr" target="#b12">(Parikh et al., 2014)</ref> could not participate in Task B owing to some UMLS licensing issues. The participating organizations along with the contact user's User ID and their chosen Team ID are mentioned in Table <ref type="table" target="#tab_5">3</ref>. Eight teams submitted three runs, six submitted two runs and seven submitted just one run. Out of these, only 13 submitted system description papers. We based our analysis on those system descriptions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">System Results</head><p>Tables <ref type="table" target="#tab_7">4 and 6</ref> show the performance of the systems on Tasks A and B. None of the systems used any additional annotated data so we did not have to compare them separately. Both tables mention performance of all the different runs that the systems submitted. Given the many variables, we deliberately left the decision on how many and how to define these runs to the individual participant. They used various different ways to differentiate their runs. Some, for example, UTU <ref type="bibr" target="#b4">(Kaewphan et al., 2014)</ref>, did it based on the composition of training data, i.e., whether they used just the training data or both the training and the development data for training the final system, which highlighted the fact that adding development data to training bumped the F 1 -score on Task A by about 2 percent points. Some participants, however, did not make use of the development data in training their systems. This was partially due to the fact that we had not explicitly mentioned in the task description that participants were allowed to use the development data for training their final models. In order to be fair, we allowed some users an opportunity to submit runs post evaluation where they used the exact same system that they used for evaluation but used the development data as well. We added a column to the results tables showing whether the participant used only the training data (T) or both training and development data (T+D) for training their system. It can be seen that even though the addition of development data helps, there are still systems that perform in the lower percentile who have used both training and development data for training, indicating that both the features and the machine learning classifier contribute to the models. A novel aspect of the SemEval-2014 shared task that differentiates it from the ShARE/CLEF task-other than the fact that it used more data and a new test set-is the fact that SemEval-2014 allowed the use of a much larger set of unlabeled MIMIC notes to inform the models. Surprisingly, only two of the systems (ULisboa <ref type="bibr" target="#b6">(Leal et al., 2014)</ref> and UniPi <ref type="bibr" target="#b0">(Attardi et al., 2014)</ref>) used the unlabeled MIMIC corpus to generalize the lexical features. Another team-UTH CCB <ref type="bibr" target="#b23">(Zhang et al., 2014)</ref>-used off-the-shelf Brown clusters 10 as opposed to training them on the unlabeled MIMIC II data. For Task B, the accuracy of a system using the strict metric was positively correlated with its recall on the disorder mentions that were input to it (i.e., recall for Task A), and did not get penalized for lower precision. Therefore one could essentially gain higher accuracy in Task B by tuning a system to provide the highest mention recall in Task A potentially at the cost of precision and the overall F 1 -score and using those mentions as input for Task B. This can be seen from the fact that the run 2 for UTH CCB <ref type="bibr" target="#b23">(Zhang et al., 2014)</ref> system with the lowest F 1 -score has   the best accuracy for Task B and vice-versa for run 0 with run 1 in between the two. In order to fairly compare the performance between two systems one would have to provide perfect mentions as input to Task B. One of the systems-UWM Ghiasvand and Kate ( <ref type="formula">2014</ref>)-did run some ablation experiments using gold standard mentions as input to Task B and obtained a best performance of 89.5F 1 -score (Table <ref type="table" target="#tab_8">5</ref> of <ref type="bibr" target="#b3">Ghiasvand and Kate (2014)</ref>) as opposed to 62.3 F 1 -score (Table <ref type="table" target="#tab_11">7</ref>) in the more realistic setting which is a huge difference. In the upcoming SemEval-2014 where this same evaluation is going to carried out under Task 14, we plan to perform supplementary evaluation where gold disorder mentions would be input to the system while attempting Task B. An interesting outcome of planning a follow-on evaluation to the ShARe/CLEF eHealth 2013 task was that we could, and did, use the test data from the ShARe/CLEF eHealth 2013 task as the development set for this evaluation. After the main evaluation we asked participants to provide the system performance on the development set using the same number and run convention that they submitted for the main evaluation. These results are presented in Tables <ref type="table" target="#tab_8">5 and 7</ref>. We have inserted the best performing system score from the ShARe/CLEF eHealth 2013 task in these tables. For Task A, referring to Tables <ref type="table" target="#tab_7">4 and 5</ref>, there is a boost of 3.7 absolute percent points for the F 1 -score over the same task (Task 1a) in the ShARe/CLEF eHealth 2013. For Task B, referring to Tables <ref type="table" target="#tab_10">6 and 7</ref>, there is a boost of 13.7 percent points for the F 1 -score over the same task (Task 1b) in the ShARe/CLEF eHealth 2013 evaluation. The participants used various approaches for tackling the tasks, ranging from purely rule-based/unsupervised (RelAgent <ref type="bibr" target="#b15">(Ramanan and Nathan, 2014)</ref>, <ref type="bibr" target="#b8">(Matos et al., 2014)</ref>, KUL 11 ) to a hybrid of rules and machine learning classifiers. The top performing systems typically used the latter. Various versions of the IOB formulation were used for tagging the disorder mentions. None of the standard variations on the IOB formulation were explicitly designed or used to handle discontiguous mentions. Some systems used novel variations on this approach. Probably the simplest variation was applied by the UWM team <ref type="bibr" target="#b3">(Ghiasvand and Kate, 2014)</ref>. In this formulation the following labeled sequence "the/O left/B atrium/I is/O moderately/O dilated/I" can be used to represent the discontiguous mention left atrium...dilated, and can be constructed as such from the output of the classification. The most complex variation was the one used by the UTH CCB team <ref type="bibr" target="#b23">(Zhang et al., 2014)</ref> where they used the following set of tags-B, I, O, DB, DI, HB, HI. This variation encodes discontiguous mentions by adding four more tags to the I, O and B tags. These are variations of the B and I tags with either a D or a H prefix. The prefix H indicates that the word or word sequence is the shared head, and the prefix D indicates otherwise. Another intermediate approach used by the ULisboa team <ref type="bibr" target="#b6">(Leal et al., 2014)</ref> with the tagset-S, B, I, O, E and N. Here, S represents the single token entity to be recognized, E represents the end of an entity (which is part of one of the prior IOB variations) and an N tag to identify non-contiguous mentions. They don't provide an explicit example usage of this tag set in their paper. Yet another variation was used by the SZTE-NLP team <ref type="bibr" target="#b5">(Katona and Farkas, 2014)</ref>. This used tags B, I, L, O and U. Here, L is used for the last token similar to E earlier, and U is used for a unit-token mention, similar to S earlier. We believe that the only approach that can distinguish between discontiguous disorders that share the same head word/phrase is the one used by the UTH CCB team <ref type="bibr" target="#b23">(Zhang et al., 2014)</ref>. The participants used various machine learning classifiers such as MaxEnt, SVM, CRF in combination with rich syntactic and semantic features to capture the disorder mentions. As mentioned earlier, a few participants used the available unlabeled data and also off-the-shelf clusters to better generalize features. The use of vector space models such as cosine similarities as well as continuous distributed word vector representations was useful in the normalization task. They also availed of tools such as MetaMap and cTakes to generate features as well as candidate CUIs during normalizations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>We have created a reference standard with high inter-annotator agreement and evaluated systems on the task of identification and normalization of diseases and disorders appearing in clinical reports. The results have demonstrated that an NLP system can complete this task with reasonably high accuracy. We plan to annotate another evaluation using the same data as part of the in the SemEval-2015, Task 14 12 adding another task of template filling where the systems will identify and normalize ten attributes the identified disease/disorder mentions.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Distribution of data in terms of notes and disorder mentions across the training, development and test sets. The disorders are further split according to two criteria -whether they map to a CUI or whether they are contiguous.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>Inter-annotator (A1 and A2) and gold standard (GS) agreement as F 1 -score for the Disorder mentions and their normalization to the UMLS CUI.</figDesc><table><row><cell>Institution</cell><cell>User ID</cell><cell>Team ID</cell></row><row><cell>University of Pisa, Italy</cell><cell>attardi</cell><cell>UniPI</cell></row><row><cell>University of Lisbon, Portugal</cell><cell>francisco</cell><cell>ULisboa</cell></row><row><cell>University of Wisconsin, Milwaukee, USA</cell><cell>ghiasvand</cell><cell>UWM</cell></row><row><cell>University of Colorado, Boulder, USA</cell><cell>gung</cell><cell>CLEAR</cell></row><row><cell>University of Guadalajara, Mexico</cell><cell>herrera</cell><cell>UG</cell></row><row><cell>Taipei Medical University, Taiwan</cell><cell>hjdai</cell><cell>TMU</cell></row><row><cell>University of Turku, Finland</cell><cell>kaewphan</cell><cell>UTU</cell></row><row><cell>University of Szeged, Hungary</cell><cell>katona</cell><cell>SZTE-NLP</cell></row><row><cell>Queensland University of Queensland, Australia</cell><cell>kholghi</cell><cell>QUT AEHRC</cell></row><row><cell>KU Leuven, Belgium</cell><cell>kolomiyets</cell><cell>KUL</cell></row><row><cell>Universidade de Aveiro, Portugal</cell><cell>nunes</cell><cell>BioinformaticsUA</cell></row><row><cell>University of the Basque Country, Spain</cell><cell>oronoz</cell><cell>IxaMed</cell></row><row><cell>IBM, India</cell><cell>parikh</cell><cell>ThinkMiners</cell></row><row><cell>easy data intelligence, India</cell><cell>pathak</cell><cell>ezDI</cell></row><row><cell>RelAgent Tech Pvt. Ltd., India</cell><cell>ramanan</cell><cell>RelAgent</cell></row><row><cell>Universidad Nacional de Colombia, Colombia</cell><cell>riveros</cell><cell>MindLab-UNAL</cell></row><row><cell>IIT Patna, India</cell><cell>sikdar</cell><cell>IITP</cell></row><row><cell>University of North Texas, USA</cell><cell>solomon</cell><cell>UNT</cell></row><row><cell>University of Illinois at Urbana Champaign, USA</cell><cell>upadhya</cell><cell>CogComp</cell></row><row><cell>The University of Texas Health Science Center at Houston, USA</cell><cell>wu</cell><cell>UTH CCB</cell></row><row><cell>East China Normal University, China</cell><cell>yi</cell><cell>ECNU</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Participant organization and the respective User IDs and Team IDs.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>Performance on test data for participating systems on Task A -Identification of disorder mentions.</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>Task A</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>Strict</cell><cell></cell><cell></cell><cell>Relaxed</cell><cell></cell><cell></cell></row><row><cell>Team ID</cell><cell>User ID</cell><cell>Run</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>Data</cell></row><row><cell></cell><cell></cell><cell></cell><cell>(%)</cell><cell>(%)</cell><cell>(%)</cell><cell>(%)</cell><cell>(%)</cell><cell>(%)</cell><cell></cell></row><row><cell>hjdai</cell><cell>TMU</cell><cell>1</cell><cell>0.687</cell><cell>0.922</cell><cell>0.787</cell><cell>0.952</cell><cell>1.000</cell><cell>0.975</cell><cell>T</cell></row><row><cell>wu</cell><cell>UTH CCB</cell><cell>0</cell><cell>0.877</cell><cell>0.710</cell><cell>0.785</cell><cell>0.962</cell><cell>0.789</cell><cell>0.867</cell><cell>T</cell></row><row><cell>wu</cell><cell>UTH CCB</cell><cell>1</cell><cell>0.828</cell><cell>0.747</cell><cell>0.785</cell><cell>0.941</cell><cell>0.853</cell><cell>0.895</cell><cell>T</cell></row><row><cell cols="3">Best ShARe/CLEF-2013 performance</cell><cell>0.800</cell><cell>0.706</cell><cell>0.750</cell><cell>0.925</cell><cell>0.827</cell><cell>0.873</cell><cell>T</cell></row><row><cell>ghiasvand</cell><cell>UWM</cell><cell>0</cell><cell>0.827</cell><cell>0.675</cell><cell>0.743</cell><cell>0.958</cell><cell>0.799</cell><cell>0.871</cell><cell>T</cell></row><row><cell>pathak</cell><cell>ezDI</cell><cell>0</cell><cell>0.813</cell><cell>0.670</cell><cell>0.734</cell><cell>0.954</cell><cell>0.800</cell><cell>0.870</cell><cell>T</cell></row><row><cell>pathak</cell><cell>ezDI</cell><cell>1</cell><cell>0.809</cell><cell>0.667</cell><cell>0.732</cell><cell>0.954</cell><cell>0.801</cell><cell>0.871</cell><cell>T</cell></row><row><cell>wu</cell><cell>UTH CCB</cell><cell>2</cell><cell>0.657</cell><cell>0.790</cell><cell>0.717</cell><cell>0.806</cell><cell>0.893</cell><cell>0.847</cell><cell>T</cell></row><row><cell>francisco</cell><cell>ULisboa</cell><cell>1</cell><cell>0.803</cell><cell>0.646</cell><cell>0.716</cell><cell>0.954</cell><cell>0.781</cell><cell>0.858</cell><cell>T</cell></row><row><cell>francisco</cell><cell>ULisboa</cell><cell>2</cell><cell>0.803</cell><cell>0.646</cell><cell>0.716</cell><cell>0.954</cell><cell>0.781</cell><cell>0.858</cell><cell>T</cell></row><row><cell>francisco</cell><cell>ULisboa</cell><cell>0</cell><cell>0.796</cell><cell>0.642</cell><cell>0.711</cell><cell>0.959</cell><cell>0.793</cell><cell>0.868</cell><cell>T</cell></row><row><cell>oronoz</cell><cell>IxaMed</cell><cell>0</cell><cell>0.766</cell><cell>0.650</cell><cell>0.703</cell><cell>0.936</cell><cell>0.752</cell><cell>0.834</cell><cell>T</cell></row><row><cell>oronoz</cell><cell>IxaMed</cell><cell>1</cell><cell>0.660</cell><cell>0.721</cell><cell>0.689</cell><cell>0.899</cell><cell>0.842</cell><cell>0.870</cell><cell>T</cell></row><row><cell>hjdai</cell><cell>TMU</cell><cell>0</cell><cell>0.667</cell><cell>0.414</cell><cell>0.511</cell><cell>0.912</cell><cell>0.591</cell><cell>0.717</cell><cell>T</cell></row><row><cell>sikdar</cell><cell>IITP</cell><cell>0</cell><cell>0.525</cell><cell>0.430</cell><cell>0.473</cell><cell>0.862</cell><cell>0.726</cell><cell>0.788</cell><cell>T</cell></row><row><cell>sikdar</cell><cell>IITP</cell><cell>2</cell><cell>0.467</cell><cell>0.440</cell><cell>0.453</cell><cell>0.812</cell><cell>0.775</cell><cell>0.793</cell><cell>T</cell></row><row><cell>sikdar</cell><cell>IITP</cell><cell>1</cell><cell>0.493</cell><cell>0.410</cell><cell>0.448</cell><cell>0.828</cell><cell>0.706</cell><cell>0.762</cell><cell>T</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc></figDesc><table /><note>Performance on development data for participating systems on Task A -Identification of disorder mentions.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 6</head><label>6</label><figDesc></figDesc><table><row><cell cols="6">: Performance on test data for participat-</cell></row><row><cell cols="6">ing systems on Task B -Normalization of disorder</cell></row><row><cell cols="6">mentions to UMLS (SNOMED-CT subset) CUIs.</cell></row><row><cell></cell><cell></cell><cell>Task B</cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell>Strict</cell><cell>Relaxed</cell><cell></cell></row><row><cell>Team ID</cell><cell>User ID</cell><cell>Run</cell><cell>Acc.</cell><cell>Acc.</cell><cell>Data</cell></row><row><cell></cell><cell></cell><cell></cell><cell>(%)</cell><cell>(%)</cell><cell></cell></row><row><cell>TMU</cell><cell>hjdai</cell><cell>0</cell><cell>0.716</cell><cell>0.777</cell><cell>T</cell></row><row><cell>TMU</cell><cell>hjdai</cell><cell>1</cell><cell>0.716</cell><cell>0.777</cell><cell>T</cell></row><row><cell>UTH CCB</cell><cell>wu</cell><cell>2</cell><cell>0.713</cell><cell>0.903</cell><cell>T</cell></row><row><cell>UTH CCB</cell><cell>wu</cell><cell>1</cell><cell>0.680</cell><cell>0.910</cell><cell>T</cell></row><row><cell>UTH CCB</cell><cell>wu</cell><cell>0</cell><cell>0.647</cell><cell>0.910</cell><cell>T</cell></row><row><cell>UWM</cell><cell>ghiasvand</cell><cell>0</cell><cell>0.623</cell><cell>0.923</cell><cell>T</cell></row><row><cell>ezDI</cell><cell>pathak</cell><cell>0</cell><cell>0.603</cell><cell>0.900</cell><cell>T</cell></row><row><cell>ezDI</cell><cell>pathak</cell><cell>1</cell><cell>0.600</cell><cell>0.899</cell><cell>T</cell></row><row><cell cols="3">Best ShARe/CLEF-2013 performance</cell><cell>0.589</cell><cell>0.895</cell><cell>T</cell></row><row><cell>IxaMed</cell><cell>oronoz</cell><cell>0</cell><cell>0.556</cell><cell>0.855</cell><cell>T</cell></row><row><cell>IxaMed</cell><cell>oronoz</cell><cell>1</cell><cell>0.421</cell><cell>0.584</cell><cell>T</cell></row><row><cell>ULisboa</cell><cell>francisco</cell><cell>2</cell><cell>0.388</cell><cell>0.601</cell><cell>T</cell></row><row><cell>ULisboa</cell><cell>francisco</cell><cell>1</cell><cell>0.385</cell><cell>0.596</cell><cell>T</cell></row><row><cell>ULisboa</cell><cell>francisco</cell><cell>0</cell><cell>0.377</cell><cell>0.588</cell><cell>T</cell></row><row><cell>IITP</cell><cell>sikdar</cell><cell>2</cell><cell>0.318</cell><cell>0.724</cell><cell>T</cell></row><row><cell>IITP</cell><cell>sikdar</cell><cell>0</cell><cell>0.312</cell><cell>0.725</cell><cell>T</cell></row><row><cell>IITP</cell><cell>sikdar</cell><cell>1</cell><cell>0.299</cell><cell>0.730</cell><cell>T</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 7</head><label>7</label><figDesc></figDesc><table><row><cell>: Performance on development data</cell></row><row><cell>for some participating systems on Task B -</cell></row><row><cell>Normalization of disorder mentions to UMLS</cell></row><row><cell>(SNOMED-CT subset) CUIs.</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://share.healthnlp.org 2 https://sites.google.com/site/shareclefehealth/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">http://www.i2b2.org 5 https://uts.nlm.nih.gov/home.html</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">The course was available free of charge on the Internet, for example,</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10">Personal conversation with the participants as it was not very clear in the system description paper.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">Personal communication with participant.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="12">http://alt.qcri.org/semeval2015/task14</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We greatly appreciate the hard work and feedback of our program committee members and annotators David Harris, Jennifer Green and Glenn Zaramba. Danielle Mowery, Sumithra Velupillai and Brett South for helping prepare the manuscript by summarizing the approaches used by various systems. This shared task was partially supported by Shared Annotated Resources (ShARe) project NIH 5R01GM090187 and Temporal Histories of Your Medical Events (THYME) project (NIH R01LM010090 and U54LM008748).</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">UniPi: Recognition of mentions of disorders in clinical text</title>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Attardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vitoria</forename><surname>Cozza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Sartiano</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Exploring semantic groups through visual approaches</title>
+		<author>
+			<persName><forename type="first">Olivier</forename><surname>Bodenreider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexa</forename><surname>Mccray</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Biomedical Informatics</title>
+		<imprint>
+			<biblScope unit="volume">36</biblScope>
+			<biblScope unit="page" from="414" to="432" />
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The Unified Medical Language System: Towards a collaborative approach for solving terminologic problems</title>
+		<author>
+			<persName><forename type="first">Keith</forename><forename type="middle">E</forename><surname>Campbell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diane</forename><forename type="middle">E</forename><surname>Oliver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><forename type="middle">H</forename><surname>Shortliffe</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J Am Med Inform Assoc</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="12" to="16" />
+			<date type="published" when="1998" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">UWM: Disorder mention extraction from clinical text using crfs and normalization using learned edit distance patterns</title>
+		<author>
+			<persName><forename type="first">Omid</forename><surname>Ghiasvand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rohit</forename><forename type="middle">J</forename><surname>Kate</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">UTU: Disease mention recognition and normalization with crfs and vector space representations</title>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Suwisa Kaewphan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Hakaka1</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ginter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">SZTE-NLP: Clinical text analysis with named entity recognition</title>
+		<author>
+			<persName><forename type="first">Melinda</forename><surname>Katona</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richárd</forename><surname>Farkas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland, August</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">ULisboa: Identification and classification of medical concepts</title>
+		<author>
+			<persName><forename type="first">André</forename><surname>Leal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diogo</forename><surname>Gonçalves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bruno</forename><surname>Martins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><forename type="middle">M</forename><surname>Couto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Banner: an executable survey of advances in biomedical named entity recognition</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Leaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graciela</forename><surname>Gonzalez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Pacific Symposium on Biocomputing</title>
+				<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="page" from="652" to="663" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">BioinformaticsUA: Concept recognition in clinical narratives using a modular and highly efficient text processing framework</title>
+		<author>
+			<persName><forename type="first">Sérgio</forename><surname>Matos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tiago</forename><surname>Nunes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">José Luís</forename><surname>Oliveira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Automated disambiguation of acronyms and abbreviations in clinical texts: Window and training size considerations</title>
+		<author>
+			<persName><forename type="first">Sungrim</forename><surname>Moon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Serguei</forename><surname>Pakhomov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Genevieve</forename><forename type="middle">B</forename><surname>Melton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">AMIA Annu Symp Proc</title>
+				<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="1310" to="1319" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">A survey of named entity recognition and classification</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Nadeau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Satoshi</forename><surname>Sekine</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Lingvisticae Investigationes</title>
+				<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="page" from="3" to="26" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Word sense disambiguation</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Computing Surveys</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="1" to="69" />
+			<date type="published" when="2009-02" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">ThinkMiners: SemEval-2014 task 7: Analysis of clinical text</title>
+		<author>
+			<persName><forename type="first">Ankur</forename><surname>Parikh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pvs</forename><surname>Avinesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joy</forename><surname>Mustafi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+	<note>Lalit Agarwalla, and Ashish Mungi</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Task 1: ShARe/CLEF eHealth Evaluation Lab</title>
+		<author>
+			<persName><forename type="first">Noémie</forename><surname>Sameer Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brett</forename><surname>Elhadad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>South</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lee</forename><surname>Martinez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amy</forename><surname>Christensen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hanna</forename><surname>Vogel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wendy</forename><forename type="middle">W</forename><surname>Suominen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guergana</forename><surname>Chapman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Savova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Working Notes of CLEF eHealth Evaluation Labs</title>
+				<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Evaluating the state of the art in disorder recognition and normalization of the clinical narrative</title>
+		<author>
+			<persName><forename type="first">Noémie</forename><surname>Sameer Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brett</forename><surname>Elhadad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>South</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lee</forename><surname>Martinez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amy</forename><surname>Christensen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hanna</forename><surname>Vogel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wendy</forename><forename type="middle">W</forename><surname>Suominen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guergana</forename><surname>Chapman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Savova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">In Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>to appear</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">RelAgent: Entity detection and normalization for diseases in clinical records: a linguistically driven approach</title>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">V</forename><surname>Ramanan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Nathan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Building a semantically annotated corpus of clinical texts</title>
+		<author>
+			<persName><forename type="first">Angus</forename><surname>Roberts</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Hepple</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><surname>Demetriou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yikun</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ian</forename><surname>Roberts</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Setzer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J Biomed Inform</title>
+		<imprint>
+			<biblScope unit="volume">42</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="950" to="966" />
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">MIMIC II: a massive temporal ICU patient database to support research in intelligent patient monitoring</title>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Saeed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Lieu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Raber</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">G</forename><surname>Mark</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Comput Cardiol</title>
+		<imprint>
+			<biblScope unit="page">29</biblScope>
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Word sense disambiguation across two domains: Biomedical literature and clinical notes</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Guergana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">R</forename><surname>Savova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><forename type="middle">L</forename><surname>Coden</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Sominsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">V</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">C</forename><surname>Ogren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">G</forename><surname>De Groen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Chute</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J Biomed Inform</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="1088" to="1100" />
+			<date type="published" when="2008" />
+			<publisher>December</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Evaluating temporal relations in clinical text: 2012 i2b2 Challenge</title>
+		<author>
+			<persName><forename type="first">Weiyi</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Rumshisky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Uzuner</forename><surname>Andözlem</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="806" to="813" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Overview of the ShARe/CLEF eHealth evaluation lab</title>
+		<author>
+			<persName><forename type="first">Hanna</forename><surname>Suominen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sanna</forename><surname>Salanterä</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sumithra</forename><surname>Velupillai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wendy</forename><forename type="middle">W</forename><surname>Chapman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guergana</forename><surname>Savova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noemie</forename><surname>Elhadad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brett</forename><forename type="middle">R</forename><surname>South</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danielle</forename><forename type="middle">L</forename><surname>Mowery</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">F</forename><surname>Gareth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johannes</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liadh</forename><surname>Leveling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lorraine</forename><surname>Kelly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Goeuriot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guido</forename><surname>Martinez</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zuccon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Working Notes of CLEF eHealth Evaluation Labs</title>
+				<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">2010 i2b2/VA challenge on concepts, assertions, and relations in clinical text</title>
+		<author>
+			<persName><forename type="first">Ozlem</forename><surname>Uzuner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Brett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuying</forename><surname>South</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott L</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Duvall</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="552" to="556" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Evaluating the state of the art in coreference resolution for electronic medical records</title>
+		<author>
+			<persName><forename type="first">Ozlem</forename><surname>Uzuner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andreea</forename><surname>Bodnari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuying</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tyler</forename><surname>Forbush</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Pestian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brett R</forename><surname>South</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="786" to="791" />
+			<date type="published" when="2012-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">UTH CCB: A report for SemEval 2014 task 7 analysis of clinical text</title>
+		<author>
+			<persName><forename type="first">Yaoyun</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingqi</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Buzhou</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonghui</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Min</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yukun</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Xu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluations</title>
+				<meeting>the International Workshop on Semantic Evaluations<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

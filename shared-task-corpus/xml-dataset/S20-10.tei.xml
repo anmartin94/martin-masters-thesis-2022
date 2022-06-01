@@ -1,0 +1,1121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2020 Task 10: Emphasis Selection for Written Text in Visual Media</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Amirreza</forename><surname>Shirani</surname></persName>
+							<email>ashirani@uh.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Franck</forename><surname>Dernoncourt</surname></persName>
+							<email>franck.dernoncourt@adobe.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Nedim</forename><surname>Lipka</surname></persName>
+							<email>lipka@adobe.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Paul</forename><surname>Asente</surname></persName>
+							<email>asente@adobe.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Jose</forename><surname>Echevarria</surname></persName>
+							<email>echevarr@adobe.com</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+							<email>tsolorio@uh.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Adobe</forename><surname>Research</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Houston</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2020 Task 10: Emphasis Selection for Written Text in Visual Media</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this paper, we present the main findings and compare the results of SemEval-2020 Task 10, Emphasis Selection for Written Text in Visual Media. The goal of this shared task is to design automatic methods for emphasis selection, i.e. choosing candidates for emphasis in textual content to enable automated design assistance in authoring. The main focus is on short text instances for social media, with a variety of examples, from social media posts to inspirational quotes. Participants were asked to model emphasis using plain text with no additional context from the user or other design considerations. SemEval-2020 Emphasis Selection shared task attracted 197 participants in the early phase and a total of 31 teams made submissions to this task. The highest-ranked submission achieved 0.823 Match m score. The analysis of systems submitted to the task indicates that BERT and RoBERTa were the most common choice of pre-trained models used, and part of speech tag (POS) was the most useful feature. Full results can be found on the task's website 1 .</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In visual communication, emphasis is an intentional focus on one or more components to create a main focal point or center of interest with the composition. It has been found that it only takes the human eye 50 milliseconds to form an opinion on a visual composition <ref type="bibr" target="#b15">(Lindgaard et al., 2006)</ref>. Therefore, it is important for a visual element to deliver a clear message by calling attention to specific information. Whether on flyers, posters, ads, social media posts or motivational messages, emphasis is usually designed to grab a viewer's attention by being distinct from the rest of the design elements.</p><p>Thanks to various online platforms, a massive amount of digital text is being generated by users every day. These media are filled with content competing for attention and are usually highly designed to engage viewers' attention to convey their message in the most efficient way. For textual content, word emphasis is used as a powerful tool to better convey the desired meaning of the written text to the audience. Utilizing emphasis techniques can potentially add another dimension to the text through visualization. Emphasis on textual content can be done with colors, backgrounds, or fonts, or with styles like italic and boldface to clarify or even change the meaning of a sentence by drawing attention to some specific information. Figure <ref type="figure" target="#fig_0">1a</ref> shows an example that is aesthetically appealing but fails to effectively communicate its intent. Understanding the text would allow the system to propose a different layout that emphasizes words that contribute more to the communication of the intent, as shown in Figure <ref type="figure" target="#fig_0">1b</ref>.</p><p>In the last few years, we have observed many significant improvements in various platforms for generating, formatting, and editing digital text. For example, some graphic design applications such as Adobe Spark 2 perform automatic text emphasis using templates that include images and text with different design effects. However, the used layout algorithms are often inflexible in that they rigidly emphasize words based on the visual attributes (e.g., word length) of those words, rather than the semantics of the text. As a result, the outcome may fail to accurately communicate the meaning of the written text, resulting in unintended emphasis and the wrong message to the audience. However, an emphasis selection model can potentially make better suggestions by having a better understanding of the input text.</p><p>Task Characteristics This emphasis selection task poses new challenges associated with the nature of the task: (1) No additional context from the user or the rest of the design such as background image is provided. Therefore the proposed task requires a computational understanding of the written text.</p><p>(2)</p><p>The dataset contains very short texts, usually fewer than ten words. Generally, working with short text instances is challenging since the decision needs to be made by only considering a few words.</p><p>(3) Word emphasis patterns are author-and domain-specific, therefore, without knowing the author's intent and only considering the input text, multiple emphasis selections are valid. However, a good model should be able to capture the inter-subjectivity or common sense within given annotations and finally label words according to higher agreements.</p><p>Expected Impact of the Task The ultimate goal is to enable design assistance for authors by suggesting words that are good candidates to emphasize. The typical applications of this task include, but are not limited to, creating flyers, posters, drawings, advertisements and other visual material one may find online and across social media platforms such as Pinterest, Instagram and Snapchat. Moreover, emphasis selection models have applications in many design programs such as Adobe Spark, Apache OpenOffice Impress, GIMP, or Microsoft PowerPoint.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>SemEval Emphasis Selection Task</head><p>In this shared task, we invited research on a novel Natural Language Processing (NLP) task that represents unique algorithmic and modeling challenges due to its nature. We observed a diverse and interesting set of solutions to tackle the existing challenges from a large number of participants, both from academia and industry. As part of this shared task, we released a dataset annotated with word emphases, which served as a benchmark to compare various techniques. Furthermore, we expect the task to be interesting for researchers studying relevant tasks such as machine-human interaction, reading comprehension, graphic design and user experience. In the following sections, we describe the setup, participation, results, and more importantly, the insights gained from the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.1">Task Definition</head><p>Given a sequence of tokens C = {x 1 , ..., x n }, a real number y i ∈ [0, 1] needs to be assigned for each token in the sequence, indicating the degree to which the token needs to be emphasized. In other words, we define the emphasis score y i as the probability or weight of the i th token in the sequence. Finally, during the evaluation, the final set of emphases are generated by selecting tokens with the highest values (described in Section 5).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>We firstly introduced and formulated the task of emphasis selection in <ref type="bibr" target="#b27">(Shirani et al., 2019)</ref> in which an end-to-end label distribution learning (LDL) model in a sequence tagging architecture is proposed to model emphasis. We evaluated the model against different baselines on the Spark dataset (introduced in Section 3). Keyword or key-phrase detection may be the closest topic to emphasis selection. Keywords can capture the main topics described in a given document <ref type="bibr" target="#b32">(Turney, 2002)</ref>. Modeling keywords or key-phrases has been widely addressed in different domains such as news articles <ref type="bibr" target="#b33">(Wan et al., 2007)</ref>, scientific publications <ref type="bibr" target="#b20">(Nguyen and Kan, 2007)</ref> and Twitter data <ref type="bibr" target="#b36">(Zhang et al., 2016;</ref><ref type="bibr" target="#b2">Bellaachia and Al-Dhelaan, 2012)</ref>. Keyword detection mainly focuses on finding important nouns or noun phrases <ref type="bibr" target="#b1">(Augenstein et al., 2017)</ref>. In contrast, emphasis could be applied to a subset of words with different roles in a sentence. Generally, word emphasis may use to express emotions, show contrast, capture a reader's interest or clarify a message. Moreover, emphasis selection in social media posts deals with very short texts and the prediction needs to be made based on a single instance.</p><p>In the context of expressive prosody generation, emphasis has been addressed based on acoustic and prosodic features that exist in spoken data. For example, <ref type="bibr" target="#b19">(Nakajima et al., 2014)</ref> predicted emphasized accent phrases from advertisement text information and <ref type="bibr" target="#b17">(Mass et al., 2018)</ref> modeled word emphasis on audience-addressed speeches.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data Collection</head><p>The data used for this shared task is the integration of two datasets from different sources, which are created from scratch based on texts collected from the Adobe Spark and Wisdom Quotes website. The dataset used for this task can be found in the task's data repository 3 . The following are the descriptions of the two datasets. The Spark dataset is collection of 1,195 instances from Adobe Spark 4 . It contains a variety of subjects featured in flyers, posters, advertisements or motivational memes on social media. The Quotes dataset is a collection of quotes from well-known authors collected from Wisdom Quotes 5 with 2,681 instances.</p><p>Table <ref type="table" target="#tab_0">1</ref> provides details about the length of instances in the datasets. The Emphasis dataset with 3,876 instances, consists of 44,976 words and 4,886 unique words. We used Amazon Mechanical Turk and asked nine annotators to label each piece of text. More precisely, we asked annotators to select word(s) in the given text that should be emphasized. Having nine annotators gives us this ability to capture different viewpoints, each focusing on different parts of the sentence. Figure <ref type="figure" target="#fig_1">2</ref> shows an example of text annotated with nine annotations. In this example, there is more consensus in emphasizing words like "inspiration" and "Genius". On the other hand, words like "is" and "percent" are not good candidates based on general agreement. To ensure high-quality annotation, we included carefully-designed quality questions in 10 percent of the hits. Moreover, we only allowed master annotators to participate.</p><p>The data is split up randomly between training, development and test sets. A training data set of 2,741 instances, development set of 392 instances, and test set of 743 instances were released to the participants. Fleiss' Kappa score (Shrout and Fleiss, 1979) of 24.60 was observed on the data set. Such a Kappa score indicates the existence of multiple perspectives about emphasis in the dataset. Table <ref type="table" target="#tab_1">2</ref> shows an example of a short text annotated with the BIO annotations. As it is shown, words such as "Best" are selected more often for emphasis than other words in the sequence. First, we compute the label distribution for each instance, which corresponds to the count per label normalized by the total number of annotations (shown in "Norm. Freq. column"). Then we compute Emphasis Probabilities for all the words in the sequence. The final evaluation is against ground truth emphasis probabilities (explained in Section 5). </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data Analysis</head><p>Many systems reported performance gain by using Part of Speech Tags (POS) tags in their models. In this section, we analyze the effectiveness of this feature by closely examining the top 20 POS tags in our dataset. We used the Stanford Part-Of-Speech Tagger <ref type="bibr" target="#b31">(Toutanova et al., 2003)</ref> to obtain POS tags for all tokens in our dataset. We divide the emphasis probabilities to four intervals (0-0.25, 0.25-0.50, 0.50-0.75 and 0.75-1.00) and compute how the POS tags are distributed in these four intervals. Figure <ref type="figure" target="#fig_2">3</ref> shows the occurrence of the top 20 POS tags in four emphasis probability intervals for all token labels in our training set. POS tags like ",", ".", "DT" and "PRP" are more favored to have low emphasis probabilities (0-0.25). Interestingly, words with the highest probabilities (0.75-1.00) are usually from "NNP", "NN" and "JJ" word types. As we expected, there are some general trends for emphasized words with respect to the type of words in sentences, which make POS tags a useful feature for modeling emphasis.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation Metric</head><p>The evaluation was performed on the test set. Participants were asked to provide a real value (greater and equal to zero) for each token in the test set that indicates the probability of the token being emphasized. All models were evaluated with Match m metric and ranked based on the averaged values of scores for m=1, 2, 3, 4. </p><formula xml:id="formula_0">Match m := x∈Dtest |S (x) m ∩Ŝ (x) m |/m |D test |</formula><p>Finally, we computed the average value of Match m for all m ∈ {1 . . . 4} and ranked the submitted systems based on this averaged value (RANK). To better handle word duplicates, the computation is based on the position of words in a sentence rather than the actual words. Note that there were many cases where two or more tokens have the exact same probability. In this case, if the model predicts either one of the labels, we considered it as a correct answer. Table <ref type="table" target="#tab_4">5</ref> shows some examples form the dataset, illustrating how the metric is computed.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Baseline Model</head><p>We provided a baseline model for this task. This model (DL-BiLSTM-ELMo) is a sequence-labeling model that essentially utilizes ELMo contextualized embeddings <ref type="bibr" target="#b21">(Peters et al., 2018)</ref> as well as two BiLSTM layers to label emphasis. During the training phase, the Kullback-Leibler Divergence (KL-DIV) <ref type="bibr" target="#b11">(Kullback and Leibler, 1951</ref>) is used as the loss function. More analysis and the complete description of this model is provided in <ref type="bibr" target="#b27">(Shirani et al., 2019)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Systems and Results</head><p>This task attracted 197 participants and a total of 31 teams made submissions to this task. The teams that submitted papers for the SemEval-2020 proceedings are listed in Table <ref type="table" target="#tab_2">3</ref>. In total, 25 teams performed higher than the baseline and six teams performed lower. 13 of the 31 teams also submitted their system description papers.</p><p>The base models used in the task submissions ranged from ELMo (Peters et al., 2018), BERT <ref type="bibr" target="#b5">(Devlin et al., 2018)</ref> and RoBERTa , to state-of-the-art pre-trained models such as ERNIE 2.0 <ref type="bibr" target="#b30">(Sun et al., 2019)</ref>, XLM-RoBERTa , T5 <ref type="bibr" target="#b23">(Raffel et al., 2019)</ref> and ALBERT <ref type="bibr" target="#b13">(Lan et al., 2019)</ref>. Figure <ref type="figure" target="#fig_4">4</ref> shows different pre-trained models used in this task. Among them, BERT and RoBERTa were used most often. Ensemble transformer-based models were one of the most popular approaches (26% of submissions). All submissions applied deep neural network techniques to model emphasis. Moreover, some teams did explore hand-crafted features, such as part-of-speech tags, named entities, valence, arousal, dominance scores to enhance the performance of their models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.1">Top Systems</head><p>The results for each of four scores, as well as the RANK score, are shown in Table <ref type="table" target="#tab_2">3</ref>. The top-3 teams based on the RANK score are ERNIE <ref type="bibr" target="#b9">(Huang et al., 2020)</ref>, Hitachi <ref type="bibr" target="#b18">(Morio et al., 2020)</ref>, IITK <ref type="bibr" target="#b29">(Singhal et al., 2020)</ref>. The top-performing team, ERNIE, achieved the highest Match m score of 0.823, 0.009 points higher than the second team and 0.013 points higher than the third team. ERNIE, achieved the highest score not only in RANK score but across all four scores. The next system on our leader board is Hitachi, with a score of 0.814. And finally, IITK, by achieving 0.810 RANK, stands in third place.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2">Best Paper Awards</head><p>Our shared task awarded several best paper distinctions to complement the top performing systems. Here are the categories of best papers and the winners for each:</p><p>• Best system description paper: IDS <ref type="bibr" target="#b26">(Shin et al., 2020)</ref>, this paper, with interesting analysis components, advances our understanding regarding the effectiveness of pre-trained language models for this specific task.</p><p>• Best result interpretation paper: MIDAS <ref type="bibr" target="#b0">(Anand et al., 2020)</ref>, the authors go the extra mile to analyze the results in this paper.</p><p>• Best negative results paper: UIC-NLP (Hossu and Parde, 2020), the authors performed extensive experiments with non-contextualized pre-trained models as well as a variety of hand-crafted features.</p><p>Through the error analysis, the authors identified a number of common challenging patterns for the model, including late-phrase words, sequences of words, and abnormal/poetic sentence structure.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.3">Top Performing Systems and Novel Architectures</head><p>In this section, we provide a brief description of the best performing and novel approaches. Table <ref type="table" target="#tab_3">4</ref> shows a high level summary of these systems. ERNIE achieved the highest score by fine-tuning ERNIE 2.0 as the base model. They also reported high performance by using other pre-trained models like XLM-RoBERTa, RoBERTa and ALBERT. They further boosted the model by utilizing data augmentation and hand-crafted features like word capitalization and the occurrence of hashtags in instances.</p><p>Hitachi tackled the task by combining rich contextualized embeddings and fine-tuning seven Pre-trained Language Models (PLMs) on the task such as BERT, GPT-2 <ref type="bibr" target="#b22">(Radford et al., 2019)</ref>, RoBERTa, XLM-RoBERTa, XLNet <ref type="bibr" target="#b34">(Yang et al., 2019)</ref>, XLM <ref type="bibr" target="#b12">(Lample and Conneau, 2019)</ref>, and T5. In addition, they added POS tags and token embeddings from a character-level LSTM layer. They introduced a distribution fusion system to fuse the output distributions of the fine-tuned models and find the optimal hyperparameter set. They showed the performance gain of the fusion model over average ensemble as well as individual PLMs. Among all PLMs, BERT and XLNet models were more successful in predicting emphasis individually.</p><p>IITK, the team ranking in third place, proposed an ensemble model where the base models were BERT, RoBERTa, and XLNet. In order to aggregate the outputs, they computed the average of the scores predicted by these models. The authors also provided different baselines from the character-level BiLSTM model with attention to transformer-based models like XLM-RoBERTa, ALBERT and GPT-2. When comparing all individual models, XLNet-Large performed the best. A wide range of novel methods were used to model emphasis. For example, FPAI (Guo et al., 2020) converted the task of emphasis selection to a simplified query-based machine reading comprehension (MRC) task, where the goal was to answer the fixed query, "Find candidates for emphasis".</p><p>To tackle the low inter-annotator agreement in the dataset, Tëxtmarkers (Glocker and Markianos Wright, 2020) attempted to model multiple annotators jointly by adapting a crowd layer architecture <ref type="bibr" target="#b24">(Rodrigues and Pereira, 2018)</ref>, introducing initialization with agreement dependent noise. The crowd layer is intended to help the model to outperform a baseline trained with token level majority voting.</p><p>IDS <ref type="bibr" target="#b26">(Shin et al., 2020)</ref> performed an interesting analysis of pre-trained models to investigate whether PLMs contain enough knowledge to select proper words for emphasis. They compared different zero-shot models in which self-attention distributions of PLMs were used to emphasize words. More precisely, the authors investigated individual attention heads of different models like BERT, DistilBERT, GPT-2, RoBERTa, XLNet, and XLM to probe their ability to identify emphasis without any fine-tuning. Their interesting findings indicate that DistilBERT is more successful in predicting emphasis while XLNet and GPT-2 perform poorly when there is no training for this task.</p><p>The top non-transformer-based model, Procyon (ranked 12th), successfully proposed an ELMo-based multi-modal model with two sub-networks to learn emphasis scores based on word representations and POS tags separately.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.4">Discussion</head><p>To have a better understanding of the challenges of this task, we perform an error analysis to examine where the models succeed and in what situations they face difficulties in selecting emphasis words. More specifically, we compute the average Match m score over all 31 submissions for every example in the test set and examine the challenging cases for all models. Table <ref type="table" target="#tab_4">5</ref> shows some interesting examples from the test set with three Match m scores (m1-m3) from all submissions, where m1 stands for the average score for system predictions obtained by selecting the top word, and m3 stands for results from selecting the top 3. In many cases, selecting emphasis words was unchallenging for most of the systems (e.g., S1 in Table <ref type="table" target="#tab_4">5</ref> with "Imagination" as the top word and "rules" and "world" with same emphasis probability.). In some examples, there is no single token standing out in the sentence, so it was not easy to select one single word with certainty. S2 is a good example with low m1 and high m2 and m3, indicating disagreement between models and annotators for choosing the first word with the highest probability. We also observed many cases where one word clearly stands out of the sentence but it is not clear which words should be selected next. S3 is an example of this where most systems were able to select the top word "talked" correctly, but faced difficulties in predicting other words for that sentence.</p><p>There are some cases where prediction is easy for humans but still poses challenges for models. For example, most annotators agreed on selecting "basketball" with the highest probability in S4; however, many models failed to select this word in the top position, probably due to the unusual structure of the sentence. In this example, "East", "Sleep" and "Watch" have equal probabilities in the annotation. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>This paper summarizes the insights gained from organizing Task 10 at SemEval-2020. Given a short piece of text, the task consists of selecting candidate words to emphasize. We received a good number of system submissions, with 13 teams submitting a system description paper. While there were many differences between individual systems, we observed a strong trend favoring the use of transformer based models as key ingredient in the proposed architectures. Many description papers present valuable analyses of the data and task. We encourage readers interested in this task to take a careful look at these papers for additional inspiration on how to improve results further.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>1Figure 1 :</head><label>1</label><figDesc>Figure 1: Two different text layouts emphasizing different parts of the sentence.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: A short text example from the Quotes dataset along with its nine annotations.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Frequencies of the top 20 POS tags in 0-0.25, 0.25-0.5, 0.5-0.75, 0.75-1.00 intervals of emphasis probabilities. The vertical values correspond to the percentage of tag counts over the total number of words in training set.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Matchm</head><label></label><figDesc>For each instance x in the test set D test , we selected a set S (x) m of m ∈ {1 . . . 4} words with the top m probabilities according to the ground truth. Analogously, we selected a prediction setŜ (x) m for each m, based on the predicted probabilities. We defined the metric Match m as follows:</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 4 :</head><label>4</label><figDesc>Figure 4: Pie chart showing the pre-trained models used in this task.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>Dataset Statistics</figDesc><table><row><cell>Dataset/Text length</cell><cell cols="2">Max Avg. SD</cell></row><row><cell>Spark dataset</cell><cell>29</cell><cell>6.24 4.64</cell></row><row><cell>Quotes dataset</cell><cell>38</cell><cell>13.99 5.47</cell></row><row><cell>Emphasis dataset (combined)</cell><cell>38</cell><cell>11.60 6.33</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>An example from the Spark dataset along with its nine annotations. In this table,"B/I"s and "O"s represent emphasis and non-emphasis words respectively. "B"s indicate the beginning and "I"s indicate the inside of emphasis. "Freq." and "Norm. Freq." columns show the normal and normalized values for label frequencies respectively.</figDesc><table><row><cell cols="13">Words A1 A2 A3 A4 A5 A6 A7 A8 A9 Freq. [B,I,O] Norm. Freq. [B,I,O] Emphasis Probs [B+I]</cell></row><row><cell>Tag</cell><cell>B</cell><cell>O</cell><cell>B</cell><cell>O</cell><cell>B</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>B</cell><cell>[4,0,5]</cell><cell>[0.44,0,0.55]</cell><cell>[0.44]</cell></row><row><cell>Your</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>[0,0,9]</cell><cell>[0,0,1]</cell><cell>[0]</cell></row><row><cell>Best</cell><cell>O</cell><cell>B</cell><cell>B</cell><cell>B</cell><cell>B</cell><cell>B</cell><cell>O</cell><cell>B</cell><cell>B</cell><cell>[7,0,2]</cell><cell>[0.77,0,0.22]</cell><cell>[0.77]</cell></row><row><cell cols="2">Friends O</cell><cell>I</cell><cell>O</cell><cell>O</cell><cell>O</cell><cell>I</cell><cell>B</cell><cell>O</cell><cell>I</cell><cell>[1,3,5]</cell><cell>[0.11,0.33,0.55]</cell><cell>[0.44]</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 3 :</head><label>3</label><figDesc>List of teams that participated in SemEval-2020 Task 10 with their ranks and scores.</figDesc><table><row><cell cols="2"># Rank</cell><cell>Team Name</cell><cell>RANK Score</cell><cell>Score 1</cell><cell>Score 2</cell><cell>Score 3</cell><cell>Score 4</cell></row><row><cell>1</cell><cell>1</cell><cell>ERNIE</cell><cell>0.823</cell><cell>0.724 (1)</cell><cell>0.819 (1)</cell><cell>0.862 (1)</cell><cell>0.887 (1)</cell></row><row><cell>2</cell><cell>2</cell><cell>Hitachi</cell><cell>0.814</cell><cell>0.715 (2)</cell><cell>0.811 (3)</cell><cell>0.851 (6)</cell><cell>0.880 (3)</cell></row><row><cell>3</cell><cell>3</cell><cell>IITK</cell><cell>0.81</cell><cell>0.694 (5)</cell><cell>0.812 (2)</cell><cell>0.854 (3)</cell><cell>0.879 (4)</cell></row><row><cell>4</cell><cell>4</cell><cell>Randomseed19</cell><cell>0.805</cell><cell>0.677 (8)</cell><cell>0.803 (4)</cell><cell>0.858 (2)</cell><cell>0.881 (2)</cell></row><row><cell>5</cell><cell>5</cell><cell>Sherry</cell><cell>0.799</cell><cell>0.677 (8)</cell><cell>0.799 (5)</cell><cell>0.850 (7)</cell><cell>0.870 (7)</cell></row><row><cell>6</cell><cell>5</cell><cell>Sattiy</cell><cell>0.799</cell><cell>0.676 (9)</cell><cell>0.797 (6)</cell><cell>0.850 (7)</cell><cell>0.871 (6)</cell></row><row><cell>7</cell><cell>6</cell><cell>Unixlong</cell><cell>0.798</cell><cell cols="2">0.674 (10) 0.797 (6)</cell><cell>0.852 (5)</cell><cell>0.868 (8)</cell></row><row><cell>8</cell><cell>6</cell><cell>Giftai</cell><cell>0.798</cell><cell cols="2">0.674 (10) 0.793 (7)</cell><cell>0.853 (4)</cell><cell>0.870 (7)</cell></row><row><cell>9</cell><cell>7</cell><cell>FPAI</cell><cell>0.796</cell><cell cols="3">0.690 (7) 0.780 (10) 0.840 (9)</cell><cell>0.873 (5)</cell></row><row><cell>10</cell><cell>7</cell><cell>PAER</cell><cell>0.796</cell><cell>0.699 (3)</cell><cell cols="3">0.782 (8) 0.833 (12) 0.870 (7)</cell></row><row><cell>11</cell><cell>8</cell><cell>YYYY</cell><cell>0.795</cell><cell cols="4">0.694 (5) 0.780 (10) 0.835 (10) 0.871 (6)</cell></row><row><cell>12</cell><cell>9</cell><cell>L2020</cell><cell>0.794</cell><cell>0.696 (4)</cell><cell cols="3">0.781 (9) 0.831 (13) 0.868 (8)</cell></row><row><cell>13</cell><cell>10</cell><cell>BugHunter</cell><cell>0.785</cell><cell cols="3">0.654 (13) 0.775 (12) 0.845 (8)</cell><cell>0.867 (9)</cell></row><row><cell>14</cell><cell>11</cell><cell>Amobee</cell><cell>0.783</cell><cell cols="4">0.692 (6) 0.766 (16) 0.822 (17) 0.853 (17)</cell></row><row><cell>15</cell><cell>11</cell><cell>MIDAS</cell><cell>0.783</cell><cell cols="4">0.650 (16) 0.780 (10) 0.834 (11) 0.868 (8)</cell></row><row><cell>16</cell><cell>12</cell><cell>procyon</cell><cell>0.781</cell><cell cols="4">0.661 (11) 0.777 (11) 0.830 (14) 0.859 (12)</cell></row><row><cell>17</cell><cell>12</cell><cell>new bill</cell><cell>0.781</cell><cell cols="4">0.655 (12) 0.774 (13) 0.834 (11) 0.862 (11)</cell></row><row><cell>18</cell><cell>12</cell><cell>Jupyter</cell><cell>0.781</cell><cell cols="4">0.653 (14) 0.772 (14) 0.835 (10) 0.863 (10)</cell></row><row><cell>19</cell><cell>13</cell><cell>CrazyRock</cell><cell>0.774</cell><cell cols="4">0.651 (15) 0.766 (16) 0.824 (15) 0.857 (14)</cell></row><row><cell>20</cell><cell>14</cell><cell>CLP</cell><cell>0.772</cell><cell cols="4">0.642 (17) 0.763 (17) 0.823 (16) 0.858 (13)</cell></row><row><cell>21</cell><cell>15</cell><cell>TextLearner</cell><cell>0.767</cell><cell cols="4">0.627 (18) 0.769 (15) 0.823 (16) 0.850 (19)</cell></row><row><cell>22</cell><cell>16</cell><cell>Bright</cell><cell>0.758</cell><cell cols="4">0.627 (18) 0.749 (19) 0.809 (20) 0.848 (21)</cell></row><row><cell>23</cell><cell>17</cell><cell>LAST</cell><cell>0.756</cell><cell cols="4">0.610 (20) 0.749 (19) 0.812 (19) 0.853 (17)</cell></row><row><cell>24</cell><cell>18</cell><cell>AP</cell><cell>0.754</cell><cell cols="4">0.612 (19) 0.741 (20) 0.806 (22) 0.855 (16)</cell></row><row><cell>25</cell><cell>18</cell><cell>Tëxtmarkers</cell><cell>0.754</cell><cell cols="4">0.596 (22) 0.752 (18) 0.815 (18) 0.851 (18)</cell></row><row><cell>26</cell><cell>19</cell><cell>Baseline</cell><cell>0.75</cell><cell cols="4">0.608 (21) 0.737 (21) 0.807 (21) 0.849 (20)</cell></row><row><cell>27</cell><cell>20</cell><cell>EL-BERT</cell><cell>0.745</cell><cell cols="4">0.591 (23) 0.726 (22) 0.807 (21) 0.856 (15)</cell></row><row><cell>28</cell><cell>21</cell><cell>David3</cell><cell>0.705</cell><cell cols="4">0.514 (24) 0.693 (23) 0.784 (23) 0.830 (22)</cell></row><row><cell>29</cell><cell>22</cell><cell>SRIB OnDeviceAI</cell><cell>0.659</cell><cell cols="4">0.479 (26) 0.640 (24) 0.732 (24) 0.785 (23)</cell></row><row><cell>30</cell><cell>22</cell><cell>UIC-NLP</cell><cell>0.659</cell><cell cols="4">0.490 (25) 0.638 (25) 0.731 (25) 0.775 (24)</cell></row><row><cell>31</cell><cell>23</cell><cell>IDS</cell><cell>0.629</cell><cell cols="4">0.425 (27) 0.618 (26) 0.716 (26) 0.756 (25)</cell></row><row><cell>32</cell><cell>24</cell><cell>YNU-HPCC</cell><cell>0.401</cell><cell cols="4">0.231 (28) 0.373 (27) 0.467 (27) 0.534 (26)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 4 :</head><label>4</label><figDesc>Main features in participating systems. An 'N/A' in the Ref. column means that we did not receive a system description paper for that entry.</figDesc><table><row><cell cols="2">Rank Team Name</cell><cell>Ref.</cell><cell>Best performing Methods</cell></row><row><cell>1</cell><cell>ERNIE</cell><cell>(Huang et al., 2020)</cell><cell>ERNIE 2.0 + data augmentation + hand-crafted features</cell></row><row><cell></cell><cell></cell><cell></cell><cell>Distribution fusion of BERT, GPT-2, RoBERTa,</cell></row><row><cell>2</cell><cell>Hitachi</cell><cell>(Morio et al., 2020)</cell><cell>XLM-RoBERTa, XLNet, XLM, T5</cell></row><row><cell></cell><cell></cell><cell></cell><cell>+ POS tags and token embeddings</cell></row><row><cell>3</cell><cell>IITK</cell><cell>(Singhal et al., 2020)</cell><cell>Ensemble of BERT, RoBERTa and XLNet</cell></row><row><cell>4</cell><cell cols="2">Randomseed19 (Shatilov et al., 2020)</cell><cell>Ensemble of BERT, RoBERTa and XLNet</cell></row><row><cell>5</cell><cell>Sherry</cell><cell>N/A</cell><cell>Ensemble of Bert, XLM-RoBERTa and RoBERTa + POS tags for adjusting final outputs</cell></row><row><cell>5</cell><cell>Sattiy</cell><cell>N/A</cell><cell>Aggregation of BERT, XLNet and GPT (formulated the task as a 10-class classification task)</cell></row><row><cell>7</cell><cell>FPAI</cell><cell>(Guo et al., 2020)</cell><cell>RoBERTa-base (converted the task to a query-based machine reading comprehension task)</cell></row><row><cell></cell><cell></cell><cell></cell><cell>LSTM model using BERT, POS tags and</cell></row><row><cell>10</cell><cell>BugHunter</cell><cell>N/A</cell><cell>tf-idf features (multi-task framework with</cell></row><row><cell></cell><cell></cell><cell></cell><cell>classification and distribution training objectives)</cell></row><row><cell>11</cell><cell>Amobee</cell><cell>N/A</cell><cell>Combination of BERT and RoBERTa</cell></row><row><cell>11</cell><cell>MIDAS</cell><cell>(Anand et al., 2020)</cell><cell>Ensemble of RoBERTa, BERT and XLNet</cell></row><row><cell>12</cell><cell>Procyon</cell><cell>N/A</cell><cell>ELMo (multi-modal model based on word representations and POS tags)</cell></row><row><cell>12</cell><cell>Jupyter</cell><cell>N/A</cell><cell>BERT + sentiment values such as pleasantness, attention, sensitivity, aptitude and polarity</cell></row><row><cell>13</cell><cell>CrazyRock</cell><cell>N/A</cell><cell>BERT + 4 parallel Bi-GRU + 2 layers of self attention</cell></row><row><cell>14</cell><cell>CLP</cell><cell>N/A</cell><cell>BERT + BiLSTM + hand-crafted features (listwise ranking model)</cell></row><row><cell>15</cell><cell>TextLearner</cell><cell>(Yang et al., 2020)</cell><cell>RoBERTa (two-staged ranking model)</cell></row><row><cell>16</cell><cell>Bright</cell><cell>N/A</cell><cell>BERT and ELMo (Graph neural networks)</cell></row><row><cell>17</cell><cell>LAST</cell><cell>(Bestgen, 2020)</cell><cell>BERT and ELMo with LightGBM</cell></row><row><cell>18</cell><cell>AP</cell><cell>N/A</cell><cell>ELMo with BiLSTM</cell></row><row><cell>18</cell><cell>Tëxtmarkers</cell><cell cols="2">(Glocker and Markianos Wright, 2020) BERT, GRU, attention + crowd layer</cell></row><row><cell>20</cell><cell>EL-BERT</cell><cell>(Kanani et al., 2020)</cell><cell>ELMo + POS + SentBERT + WordBERT</cell></row><row><cell>22</cell><cell>UIC-NLP</cell><cell>(Hossu and Parde, 2020)</cell><cell>GloVe, LSTM, POS and valence, arousal, dominance (VAD) scores</cell></row><row><cell></cell><cell></cell><cell></cell><cell>BERT, DistilBERT, GPT-2, RoBERTa, XLNet, and XLM</cell></row><row><cell>23</cell><cell>IDS</cell><cell>(Shin et al., 2020)</cell><cell>(using self-attention distributions of PLMs</cell></row><row><cell></cell><cell></cell><cell></cell><cell>in a zero-shot setting)</cell></row><row><cell>24</cell><cell>YNU-HPCC</cell><cell>(Liao et al., 2020)</cell><cell>ELMo and BERT (multi-granularity ordinal classification model)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 5 :</head><label>5</label><figDesc>Examples from the test set with averaged Match m scores across all submitted systems. Words with high emphasis probability labels are shown in bold. All successes begin with self-discipline. It starts with you. m1 = 0.0322 S2-2 All successes begin with self-discipline. It starts with you. m2 = 0.8225 S2-3 All successes begin with self-discipline. It starts with you. m3 = 0.9677 Eat . Sleep . Watch Basketball . Repeat . m1 = 0.1290 S4-2 Eat . Sleep . Watch Basketball . Repeat . m2 = 0.6935 S4-3 Eat . Sleep . Watch Basketball . Repeat . m3 = 0.7419</figDesc><table><row><cell>Num Sentence</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://spark.adobe.com</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://github.com/RiTUAL-UH/SemEval2020_Task10_Emphasis_Selection 4 https://spark.adobe.com 5 http://wisdomquotes.com</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">MIDAS at SemEval-2020 task 10: Emphasis selection using label distribution learning and contextual embeddings</title>
+		<author>
+			<persName><forename type="first">Sarthak</forename><surname>Anand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pradyumna</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hemant</forename><surname>Yadav</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Debanjan</forename><surname>Mahata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rakesh</forename><surname>Gosangi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raymond</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rajiv Ratn</forename><surname>Shah</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<author>
+			<persName><forename type="first">Isabelle</forename><surname>Augenstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mrinal</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lakshmi</forename><surname>Vikraman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1704.02853</idno>
+		<title level="m">Scienceie-extracting keyphrases and relations from scientific publications</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">10</biblScope>
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">NE-rank: A novel graph-based keyphrase extraction in Twitter</title>
+		<author>
+			<persName><forename type="first">Abdelghani</forename><surname>Bellaachia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Al-Dhelaan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE/WIC/ACM International Conferences on Web Intelligence and Intelligent Agent Technology</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="372" to="379" />
+			<date type="published" when="2012" />
+			<publisher>IEEE</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">LAST at SemEval-2020 Task 10: Finding tokens to emphasise in short written texts with precomputed embedding models and LightGBM</title>
+		<author>
+			<persName><forename type="first">Yves</forename><surname>Bestgen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Unsupervised cross-lingual representation learning at scale</title>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Conneau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kartikay</forename><surname>Khandelwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vishrav</forename><surname>Chaudhary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Wenzek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1911.02116</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Tëxtmarkers at SemEval-2020 Task 10: Emphasis selection with agreement dependent crowd layers</title>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Glocker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefanos Andreas Markianos</forename><surname>Wright</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">FPAI at SemEval-2020 Task 10: A query enhanced model with RoBERTa for emphasis selection</title>
+		<author>
+			<persName><forename type="first">Chenyang</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaolong</forename><surname>Hou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junsong</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lianxin</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Mo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haiqin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianping</forename><surname>Shen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">UIC-NLP at SemEval-2020 task 10: Exploring an alternate perspective on evaluation</title>
+		<author>
+			<persName><forename type="first">Philip</forename><surname>Hossu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalie</forename><surname>Parde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">ERNIE at SemEval-2020 Task 10: Learning word emphasis selection by pre-trained language model</title>
+		<author>
+			<persName><forename type="first">Zhengjie</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shikun</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weiyue</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuyi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuohuan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiaxiang</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuan</forename><surname>Ouyang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Sun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">EL-BERT at SemEval-2020 Task 10: A multi-embedding ensemble based approach for emphasis selection in visual media</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Chandresh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sriparna</forename><surname>Kanani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpak</forename><surname>Saha</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bhattacharyya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">On information and sufficiency</title>
+		<author>
+			<persName><forename type="first">Solomon</forename><surname>Kullback</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Richard</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Leibler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Annals of Mathematical Statistics</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="79" to="86" />
+			<date type="published" when="1951" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Lample</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Conneau</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1901.07291</idno>
+		<title level="m">Cross-lingual language model pretraining</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">ALBERT: A lite BERT for self-supervised learning of language representations</title>
+		<author>
+			<persName><forename type="first">Zhenzhong</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Goodman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Gimpel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piyush</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1909.11942</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">YNU-HPCC at SemEval-2020 task 10: Using a multi-granularity ordinal classification of the bilstm model for emphasis selection</title>
+		<author>
+			<persName><forename type="first">Dawei</forename><surname>Liao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jin</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuejie</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Attention web designers: You have 50 milliseconds to make a good first impression!</title>
+		<author>
+			<persName><forename type="first">Gitte</forename><surname>Lindgaard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gary</forename><surname>Fernandes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cathy</forename><surname>Dudek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Judith</forename><surname>Brown</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Behaviour &amp; Information Technology</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="115" to="126" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">RoBERTa: A robustly optimized BERT pretraining approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Word emphasis prediction for expressive text to speech</title>
+		<author>
+			<persName><forename type="first">Yosi</forename><surname>Mass</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slava</forename><surname>Shechtman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Moran</forename><surname>Mordechay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ron</forename><surname>Hoory</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><forename type="middle">Sar</forename><surname>Shalom</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guy</forename><surname>Lev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Konopnicki</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Interspeech</title>
+				<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2868" to="2872" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Hitachi at SemEval-2020 Task 10: Emphasis distribution fusion on fine-tuned language models</title>
+		<author>
+			<persName><forename type="first">Gaku</forename><surname>Morio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Terufumi</forename><surname>Morishita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroaki</forename><surname>Ozaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toshinori</forename><surname>Miyoshi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Emphasized accent phrase prediction from text for advertisement text-to-speech synthesis</title>
+		<author>
+			<persName><forename type="first">Hideharu</forename><surname>Nakajima</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hideyuki</forename><surname>Mizuno</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sumitaka</forename><surname>Sakauchi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 28th Pacific Asia Conference on Language, Information and Computing</title>
+				<meeting>the 28th Pacific Asia Conference on Language, Information and Computing</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="170" to="177" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Keyphrase extraction in scientific publications</title>
+		<author>
+			<persName><forename type="first">Thuy</forename><forename type="middle">Dung</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Min-Yen</forename><surname>Kan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Asian Digital Libraries</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="317" to="326" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<author>
+			<persName><forename type="first">E</forename><surname>Matthew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Gardner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zettlemoyer</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1802.05365</idno>
+		<title level="m">Deep contextualized word representations</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Language models are unsupervised multitask learners</title>
+		<author>
+			<persName><forename type="first">Alec</forename><surname>Radford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rewon</forename><surname>Child</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Luan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dario</forename><surname>Amodei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">OpenAI Blog</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page">9</biblScope>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">Exploring the limits of transfer learning with a unified text-to-text transformer</title>
+		<author>
+			<persName><forename type="first">Colin</forename><surname>Raffel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Roberts</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katherine</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sharan</forename><surname>Narang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Matena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yanqi</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter J</forename><surname>Liu</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1910.10683</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Deep learning from crowds</title>
+		<author>
+			<persName><forename type="first">Filipe</forename><surname>Rodrigues</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Francisco</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pereira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Thirty-Second AAAI Conference on Artificial Intelligence</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">2020. randomseed19 at SemEval-2020 Task 10: Emphasis selection for written text in visual media</title>
+		<author>
+			<persName><forename type="first">Aleksandr</forename><surname>Shatilov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Denis</forename><surname>Gordeev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Rey</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">IDS at SemEval-2020 task 10: Does pre-trained language model know what to emphasize?</title>
+		<author>
+			<persName><forename type="first">Jaeyoul</forename><surname>Shin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Taeuk</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sang-Goo</forename><surname>Lee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Learning emphasis selection for written text in visual media from crowd-sourced label distributions</title>
+		<author>
+			<persName><forename type="first">Amirreza</forename><surname>Shirani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Franck</forename><surname>Dernoncourt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Asente</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nedim</forename><surname>Lipka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seokhwan</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jose</forename><surname>Echevarria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1167" to="1172" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<author>
+			<persName><forename type="first">E</forename><surname>Patrick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joseph</forename><forename type="middle">L</forename><surname>Shrout</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Fleiss</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Intraclass correlations: uses in assessing rater reliability</title>
+				<imprint>
+			<date type="published" when="1979" />
+			<biblScope unit="volume">86</biblScope>
+			<biblScope unit="page">420</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">IITK at SemEval-2020 Task 10: Transformers for emphasis selection</title>
+		<author>
+			<persName><forename type="first">Vipul</forename><surname>Singhal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sahil</forename><surname>Dhull</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rishabh</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">ERNIE 2.0: A continual pre-training framework for language understanding</title>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuohuan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yukun</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shikun</forename><surname>Feng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Hao Tian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haifeng</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Wang</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.12412</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Feature-rich part-of-speech tagging with a cyclic dependency network</title>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Klein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Christopher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoram</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Singer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2003 Conference of the North American Chapter of the Association for Computational Linguistics on Human Language Technology</title>
+				<meeting>the 2003 Conference of the North American Chapter of the Association for Computational Linguistics on Human Language Technology</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2003" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="173" to="180" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">Learning to extract keyphrases from text</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Peter</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Turney</surname></persName>
+		</author>
+		<idno>cs/0212013</idno>
+		<imprint>
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Towards an iterative reinforcement approach for simultaneous document summarization and keyword extraction</title>
+		<author>
+			<persName><forename type="first">Xiaojun</forename><surname>Wan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianwu</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianguo</forename><surname>Xiao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 45th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 45th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="552" to="559" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">XL-Net: Generalized autoregressive pretraining for language understanding</title>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Russ</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc V</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Le</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="5754" to="5764" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">TextLearner at SemEval-2020 Task 10: A contextualized ranking system in solving emphasis selection in text</title>
+		<author>
+			<persName><forename type="first">Zhishen</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lars</forename><surname>Wolfsteller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naoaki</forename><surname>Okazaki</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Keyphrase extraction using deep recurrent neural networks on Twitter</title>
+		<author>
+			<persName><forename type="first">Qi</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yeyun</forename><surname>Gong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuanjing</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2016 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="836" to="845" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

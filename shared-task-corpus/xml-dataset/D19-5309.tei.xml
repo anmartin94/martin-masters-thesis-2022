@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">TextGraphs 2019 Shared Task on Multi-Hop Inference for Explanation Regeneration *</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Peter</forename><surname>Jansen</surname></persName>
+							<email>pajansen@email.arizona.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Dmitry</forename><surname>Ustalov</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Data and Web Science Group</orgName>
+								<orgName type="institution">University of Mannheim</orgName>
+								<address>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="department">Yandex, Russian Federation</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="department">School of Information</orgName>
+								<orgName type="institution">University of Arizona</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">TextGraphs 2019 Shared Task on Multi-Hop Inference for Explanation Regeneration *</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>While automated question answering systems are increasingly able to retrieve answers to natural language questions, their ability to generate detailed human-readable explanations for their answers is still quite limited. The Shared Task on Multi-Hop Inference for Explanation Regeneration tasks participants with regenerating detailed gold explanations for standardized elementary science exam questions by selecting facts from a knowledge base of semistructured tables. Each explanation contains between 1 and 16 interconnected facts that form an "explanation graph" spanning core scientific knowledge and detailed world knowledge. It is expected that successfully combining these facts to generate detailed explanations will require advancing methods in multihop inference and information combination, and will make use of the supervised training data provided by the WorldTree explanation corpus. The top-performing system achieved a mean average precision (MAP) of 0.56, substantially advancing the state-of-the-art over a baseline information retrieval model. Detailed extended analyses of all submitted systems showed large relative improvements in accessing the most challenging multi-hop inference problems, while absolute performance remains low, highlighting the difficulty of generating detailed explanations through multihop reasoning.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Multi-hop inference is the task of combining more than one piece of information to solve an inference task, such as question answering. This can take many forms, from combining free-text sentences read from books or the web, to combining linked facts from a structured knowledge base. The * The two authors contributed equally to this work.</p><p>Figure <ref type="figure">1</ref>: The explanation regeneration task supplies a model with a question and its correct answer (top), and the model must successfully regenerate the gold explanation for why the answer to the question is correct by selecting the appropriate set of interconnected facts from a knowledge base (bottom). Gold explanations range from having 1 to over 16 facts, with this example containing 3 facts.</p><p>Shared Task on Explanation Regeneration asks participants to develop methods to reconstruct gold explanations for elementary science questions, using a corpus of explanations that provides supervision and instrumentation for this multi-hop inference task. Each explanation is represented as an "explanation graph", a set of up to 16 atomic facts drawn from a knowledge base of 4,950 facts that, together, form a detailed explanation for the reasoning required to answer a question. The explanations include both core scientific facts as well as detailed world knowledge, integrating aspects of multi-hop reasoning and common-sense inference. It is anticipated that linking these facts to achieve strong performance at rebuilding the gold explanation graphs will require methods to perform multi-hop inference.</p><p>Large language models have recently demonstrated human-level performance on elementary and middle school standardized multiple choice science exams, achieving 90% on the elementary subset, and 92% on middle-school exams <ref type="bibr" target="#b8">(Clark et al., 2019)</ref>. While these models are able to answer most questions correctly, they are generally unable to explain the reasoning behind their answers to a user, for example generating the explanation in Figure <ref type="figure">1</ref>. This inability to perform interpretable, explanation-centered inference places strong limits on the utility of these underlying solution methods. For example, an intelligent tutoring system that provides students correct answers but that is unable to explain why they are correct limits the student's ability to acquire a deep understanding of the subject matter. Similarly, in the medical domain, a system that recommends a patient receive a particular surgery but that is unable to explain why presents challenges towards trusting that the system has made the correct medical decision.</p><p>Multi-hop inference provides a natural mechanism for producing explanations by aggregating multiple facts into an "explanation graph", or a series of facts that were used to perform the inference and arrive at a particular answer. By providing these same facts to a user in the form of a humanreadable explanation, the user is able to inspect the reasoning made by an automated algorithm, both to understand its reasoning and evaluate its soundness. An additional implication of multi-hop inference is the ability to meaningfully combine facts using smaller, human-scale (or child-scale) knowledge resources to perform the inference task. For example, the RoBERTa model <ref type="bibr" target="#b21">(Liu et al., 2019)</ref> used to achieve 90% accuracy on science exam question answering by <ref type="bibr" target="#b8">Clark et al. (2019)</ref> was pre-trained on 160GB of text, while the WorldTree explanation corpus  used here shows these same questions can be answered and provided with detailed explanations using only 500KB of text, a difference of more than 5 orders of magnitude. 1 Unfortunately multi-hop reasoning is currently very challenging, and current methods have strong limitations due to noise in this information aggregation process, the limitations of existing training data, and the ultimate numbers of facts required to build detailed explanations. These contemporary chal- <ref type="bibr">1</ref> The knowledge base in the WorldTree explanation corpus is approximately 500KB, a factor of 320,000 times less than the 160GB of text used to train the RoBERTa language model <ref type="bibr" target="#b21">(Liu et al., 2019)</ref>.</p><p>lenges are briefly described in Section 2.</p><p>We propose "explanation regeneration" as a stepping-stone task on the path towards large-scale multi-hop inference for question answering and explanation generation. Explanation regeneration supplies a model with both a question and correct answer, and asks the model to regenerate a detailed gold explanation (generated by a human annotator) by selecting one or more facts in a knowledge base that the model believes should be in the explanation. As the results of this shared task show, even with the question and correct answer provided, regenerating a detailed explanation proves to be an extremely challenging task, even when the facts are drawn from a comparatively small knowledge base. It is our hope that this stepping-stone task will help inform methods of combining information to support inference, and provide instrumentation to develop algorithms capable of combining large numbers of facts (10+) that appear challenging to reach with current methods for multi-hop inference.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Contemporary Challenges in</head><p>Multi-hop Inference Semantic Drift. One of the central challenges to performing multi-hop inference is that meaningfully combining facts -i.e. traversing from one fact to another in a knowledge graph -is a noisy process, in large part because the signals we have for knowing whether two facts are relevant to answering a question (and can thus be meaningfully combined) are imperfect. Often times those signals are as simple as lexical overlap -two sentences (or nodes) in a knowledge graph sharing one or more of the same words. Sometimes this lexical overlap is a useful traversal mechanism -for example, knowing both "a fly is a kind of [insect]" and "an [insect] has six legs", two facts that connect on the word insect, helps answer the question about insect identification in Figure <ref type="figure">1</ref>. Unfortunately, often times these signals can lead to information that is not on context or relevant to answering a particular question -for example, combining "a [tree] is a kind of living thing" and "[trees] require sunlight to survive" would be unlikely to help answer a question about "Which adaptations help a tree survive the heat of a forest fire?". The observation that chaining facts together on imperfect signals often leads inference to go offcontext and become errorful is the phenomenon of "semantic drift" <ref type="bibr" target="#b12">(Fried et al., 2015)</ref>, and has been Figure <ref type="figure">2</ref>: An example gold explanation graph that contains 11 facts. Top: the question and its correct answer. Bottom: the 11 facts of the gold explanation. Each fact is represented as a row in a semi-structured table, drawn from a knowledge base of 62 tables totalling approximately 4,950 table rows. Colored edges represent how facts interconnect with each other and/or the question or answer text based on lexical overlap (i.e. sharing one or more of the same lemmas). demonstrated across a wide variety of representations and traversal algorithms including words and dependencies <ref type="bibr" target="#b12">(Fried et al., 2015)</ref>, embeddings <ref type="bibr" target="#b25">(Pan et al., 2017)</ref>, sentences and sentence-level graphs <ref type="bibr" target="#b15">(Jansen et al., 2017)</ref>, as well as aggregating entire paragraphs <ref type="bibr" target="#b6">(Clark and Gardner, 2018)</ref>. Typically multi-hop models see small performance benefits (of between 1% to 5%) when aggregating 2 pieces of information, and may see small performance benefits when aggregating 3 pieces of information, then performance decreases as progressively more information is aggregated due to this "semantic drift". <ref type="bibr" target="#b18">Khashabi et al. (2019)</ref> analytically show that semantic drift places strong limits on the amount of information able to be combined for inference.</p><p>Long Inference Chains. <ref type="bibr" target="#b14">Jansen et al. (2016</ref> showed that even inferences for elementary science require aggregating an average of 6 facts (and as many as 16 facts) to answer and explain the reasoning behind those answers when common sense knowledge is included. With contemporary inference models infrequently able to combine more than 2 facts, the current state-of-the-art is still far from being able to meaningfully combine enough information to produce detailed and thorough explanations to 4 th grade science questions.</p><p>Multi-hop methods are not required to answer questions on many "multi-hop" datasets. <ref type="bibr" target="#b5">Chen and Durrett (2019)</ref> show that it is possible to achieve near state-of-the-art performance on two popular multi-hop question answering datasets, WikiHop <ref type="bibr" target="#b30">(Welbl et al., 2018)</ref> and HotPotQA <ref type="bibr" target="#b32">(Yang et al., 2018)</ref>, using baseline models that do not perform multi-hop inference. Because new multi-hop inference algorithms are often characterized using their accuracy on the question answering task as a proxy for their capacity to perform multi-hop inference, rather than explicitly evaluating an algorithm's capacity to aggregate information by controlling the amount of information it can combine (as in <ref type="bibr" target="#b12">Fried et al. (2015)</ref>), we currently do not have well-controlled characterizations of the information aggregation abilities of many proposed multihop algorithms. The WorldTree explanation corpus  used in this dataset provides detailed supervised training and evaluation data Question: A student placed an ice cube on a plate in the sun. Ten minutes later, only water was on the plate.</p><p>Which process caused the ice cube to change to water?  <ref type="bibr">1,</ref><ref type="bibr">7,</ref><ref type="bibr">18,</ref><ref type="bibr">53,</ref><ref type="bibr">102,</ref><ref type="bibr">384,</ref><ref type="bibr">408,</ref><ref type="bibr">858,</ref><ref type="bibr">860,</ref><ref type="bibr">3778,</ref><ref type="bibr">3956</ref> Average precision of ranking: 0.149 Figure <ref type="figure">3</ref>: An example ranking from the tf.idf baseline system for the explanation reconstruction task. Top: the elementary science question and multiple choice answer candidates, with the correct answer highlighted (the correct answer is supplied to the model). Middle: the gold explanation for this question, supplied by the WorldTree corpus. Each fact/sentence is represented as a row in a semi-structured table (see Section 4 for a description of the explanation corpus and knowledge base). Bottom: the baseline system's rankings of the facts in the knowledge base, where facts believed to be in the gold explanation are preferentially ranked to the top of the list.</p><p>for how multiple facts can link to produce detailed explanations, providing a targeted method of instrumenting multi-hop performance.</p><p>Chance Performance on Knowledge Graphs. <ref type="bibr" target="#b13">Jansen (2018)</ref> empirically demonstrated that semantic drift can be overpoweringly large or deceptively low, depending on the text resources used to build the knowledge graph, and the criteria used for selecting nodes. While the chance of hopping to a relevant node on a graph constructed from sentences in an open-domain corpus like Wikipedia can be very small, using a term frequency model can increase this chance performance by orders of magnitude, increasing chance traversal performance beyond the performance of some algorithms reported in the literature. Unfortunately evaluating the chance performance on a knowledge graph is currently a very expensive manual task, and we currently suffer from a methods problem of being able to disentangle the performance of novel multihop algorithms from the chance performance of the knowledge graphs they use.</p><p>Explicit Training Data for Multi-hop Inference and Explanation Construction. Because of the difficulty and expense associated with manually annotating inference paths in a knowledge base, most multi-hop inference algorithms have lacked explicit supervision for the multi-hop inference task. As a result, models have often had to use other latent signals -like answering a question correctly -as a proxy for doing well at the multi-hop inference task, even if they do not have a strong correlation with producing meaningful combinations of information or strong explanations <ref type="bibr" target="#b15">(Jansen et al., 2017)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>The explanation regeneration task supplies both the question and correct answer, and requires a model to build an explanation for why the answer is correct. We consider this a stepping-stone task towards multi-hop inference for question answering as the model (strictly speaking) is only required to perform an explanation construction task, and is not required to perform the question answering task of inferring the correct answer to the question -though models are free to also undertake this step if they wish.</p><p>To encourage a wide variety of techniques both graph-based and otherwise, the evaluation of explanation reconstruction is framed as a ranking task. For a given question, the model is given the question and correct answer text, and must selectively rank a list of knowledge base facts such that those the model believes are a part of a gold explanation for that question are preferentially ranked to the top of a list.</p><p>An example question and gold explanation graph are shown in Figure <ref type="figure">2</ref>. The question asks a student to infer what process causes an ice cube to turn into water when placed in the sun. The detailed explanation is aimed at supplying all facts required to have a detailed understanding of the situation to arrive at the correct answer, and includes both core scientific knowledge (e.g. "if an object absorbs solar energy then that object will increase in temperature") and world knowledge (e.g. "an ice cube is a kind of solid"). This scientific and world knowledge is generally not supplied in the question, but is knowledge a computational algorithm would likely require in order to arrive at a complete explanation that would be meaningful to someone who may not possess that world knowledge. In this way the level of detail in the explanations is aimed at a young child that possesses minimal world knowledge, and the explanations tend to represent instantiated versions of scripts or frames <ref type="bibr" target="#b28">(Schank and Abelson, 1975;</ref><ref type="bibr" target="#b2">Baker et al., 1998)</ref> that a model would have to understand or use to completely reconstruct the explanation.</p><p>An example of the explanation reconstruction task framed as a ranking problem is shown in Figure 3. Here, an example model (the tf.idf baseline) must preferentially rank facts from the knowledge base that it believes are part of the gold explanation to the top of the ranked list. In the case of the example question about ice melting in the sun, only three of the facts listed in the gold explanation are ranked within the top 20 facts (here, "melting is a kind of process" and "an ice cube is a kind of solid", ranked at positions 1 and 7, respectively, as well as the core scientific fact "melting means changing from a solid to a liquid by adding heat energy", ranked at position 18). Explanation reconstruction performance is evaluated in terms of mean average precision (MAP) by comparing the ranked list of facts with the gold explanation. In Section 7, we perform extended analyses that further break down the performance of each system submitted to this shared task using both automated analyses as well as a manual analyses of the relevance of highly ranked explanation sentences.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Training and Evaluation Dataset</head><p>The data used in this shared task comes from the WorldTree explanation corpus . The data includes approximately 2,200 standardized elementary science exam questions 3 rd to 5 th grade drawn from the Aristo Reasoning Challenge (ARC) corpus . 1,657 of these questions include detailed explanations for their answers, in the form of graphs of separate atomic facts that are connected together by having lexical overlap (i.e. shared words) with each other, and/or the question or answer text. For this shared task, the corpus is divided into the standard ARC train, development, and test sets. Considering only questions that contain gold explanations, this results in Figure <ref type="figure">4</ref>: The distribution of explanation lengths in the training set, represented as numbers of discrete facts (or "table rows") in the explanation. On average, each question contains 6.3 facts in its explanation.</p><p>Figure <ref type="figure">5</ref>: The distribution of facts with a given explanatory role, calculated within question. For the average explanation, 61% of explanation facts are labeled as having a central role, while 19% are labeled as grounding, and the remaining 21% as lexical glue. For the average explanation containing 6 facts, approximately 4 of these facts will (on average) be labeled as central, one will be labeled grounding, and one will be labeled as lexical glue. a total of 902 questions for training, 214 for development, and 541 for test. <ref type="bibr">2</ref> The remaining questions that do not have gold explanation graphs required specialized reasoning (e.g. spatial or mathematical reasoning) that did not easily lend itself to the method of textual explanation used in constructing this corpus.</p><p>Each explanation is represented as a reference to one or more facts in a semi-structured knowledge base of tables (the "tablestore"). The tablestore contains 62 tables, each organized around a particular kind of knowledge (e.g. taxonomic knowledge, part-of knowledge, properties, changes, causality, coupled relationships, etc.) developed through a data-driven analysis of understanding the needs 2 A new version of the WorldTree corpus that substantially expands the size of the dataset is anticipated shortly. of elementary science explanations <ref type="bibr" target="#b14">(Jansen et al., 2016)</ref>. Each "fact" is represented as one row in a given table, and can be used as either structured or unstructured text. As a structured representation, each table row represents an n-ary relation whose relational roles are afforded by the columns in each table. As an unstructured representation, each table includes "filler" columns that allow each row to be read off as a human-readable plain text sentence, allowing the same data to be used for both structured and unstructured techniques.</p><p>The WorldTree tablestore contains 4,950 table rows/facts, 3,686 of which are actively used in at least one explanation. Explanation graphs commonly reuse the same knowledge (i.e. the same table row) used in other explanations. The most common fact ("an animal is a kind of organism") is used in 89 different explanations, and approximately 1,500 facts are reused in more than one explanation. Explanations were designed to include detailed world knowledge with the goal of being "meaningful to a 5 year old child", and range from having a single fact to over 16 facts, with the distribution of explanation lengths shown in Figure <ref type="figure">4</ref>. More details, analyses, and summary statistics are included in .</p><p>For each explanation, the WorldTree corpus also includes annotation for how important each fact is towards the explanation. There are three categories of importance, with their distribution within questions shown in Figure <ref type="figure">5</ref>: CENTRAL: These facts are at the core of the explanation, and are often core scientific concepts in elementary science. For example, in a question primarily testing a knowledge of changes of states of matter, "melting means changing from a solid to a liquid by adding heat energy" would be considered having a central role.</p><p>GROUNDING: These facts tend to link core scientific facts in the explanation with specific examples found in the question. For example, a question might require reasoning about ice cubes, butter, ice cream, or other solids melting. These facts (e.g. "ice is a kind of solid") are considered as having a grounding role.</p><p>LEXICAL GLUE: The explanation graphs in WorldTree require each explanation sentence to be explicitly linked to either the question text, answer text, or other explanation sentences based on lexical overlap (i.e. two sentences having one or more shared words). Facts with a "lexical glue" role tend to express synonymy or short definitional relationships, potentially between short multi-word expressions, such as "adding heat means increasing heat energy". These are used to bridge two facts in an explanation together when the facts use different words for similar concepts (e.g. one fact refers to "adding heat", while another fact refers to "increasing heat energy"). These facts are important for computational explanations, allowing explicit linking between referents, but would likely be considered excess detail when delivering explanations to most human users.</p><p>This explanatory role annotation makes it possible to separately evaluate how many central facts, grounding facts, and lexical glue (or synonymy) relations that a given inference method reconstructs. For two algorithms with similar performance, this allows determining whether one primarily reconstructs more of the core "central" facts, making it more likely to be useful to a human user.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Shared Task Online Competition Setup</head><p>Similar to our previous experience in shared task organization <ref type="bibr" target="#b26">(Panchenko et al., 2018)</ref>, we used the CodaLab platform for running the competition online. <ref type="bibr">3</ref> For the convenience of the participants, the shared task was divided into two phases. In the Practice phase which began on May 20, 2019, we released the participant kit that included the full training and development datasets along with the Python code of the scoring program used in the competition and the Scala code for the tf.idf baseline. <ref type="bibr">4</ref> In the Evaluation phase held from July 12 till August 9, 2019, we provided the participants with a masked version of the test set the rankings of which were shuffled randomly. The actual test set was stored on CodaLab and was not available to the participants, who had to upload their own rankings to receive the MAP value computed on CodaLab. Each team was limited to 15 trials; only one result could be published on the leaderboard. The leaderboard performance of the submitted systems for the explanation regeneration task on the held out test set. (* denotes that the team ultimately achieved higher performance post-deadline, and describes this additional in their system description paper.)</p><p>6 System Descriptions and Performance</p><p>The shared task received public entries from 4 participating teams, with the performance of their systems shown in Table <ref type="table">1</ref>. In this section we briefly describe these systems.</p><p>Baseline. A term frequency model that uses a tf.idf weighting scheme (e.g. Ch. 6, <ref type="bibr" target="#b22">Manning et al., 2008)</ref> to determine lexical overlap between each row in the knowledge base with the question and answer text. For each row, the cosine similarity between a vectors representing the question text and row text is calculated, and this process is repeated for the answer text. These two cosine similarities serve as features to an SVM rank ranking classifier <ref type="bibr" target="#b17">(Joachims, 2006)</ref>, <ref type="bibr">5</ref> which, for a given question, produces a ranked list of rows in the knowledge base most likely to be part of the gold explanation for that question.</p><p>Model 1 (JS). The system by D'Souza et al.</p><p>(2019) performs explanation regeneration first by identifying facts that have high matches with questions using a set of overlap criteria, then by ensuring this set of initial facts can meaningfully pair together using a set of coherency criteria. Overlap criteria are evaluated using ConceptNet concepts and triples <ref type="bibr" target="#b20">(Liu and Singh, 2004)</ref>, FrameNet predicates and arguments <ref type="bibr" target="#b2">(Baker et al., 1998)</ref>, OpenIE triples <ref type="bibr" target="#b1">(Angeli et al., 2015)</ref>, as well as lexical features such as words and lemmas. This results in 76 feature categories that are ranked using SVM rank . An error analysis identified 11 common and clear categories of errors that were addressed by reranking candidate rows using a series of hand-crafted rules, such as "if an explanation sentence contains a named entity that is not found in the question or answer, reduce its rank". This rule-based reranking resulted in a large 5% performance boost to the model.</p><p>Model 2 (ASU). The system by Banerjee (2019) models explanation regeneration using a re-ranking paradigm, where a first model is used to provide an initial ranking, and the top-N facts ranked by that system are re-ranked to improve overall performance. Initial ranking was explored using both BERT <ref type="bibr" target="#b10">(Devlin et al., 2019)</ref> and XLNet <ref type="bibr" target="#b31">(Yang et al., 2019)</ref> transformer models, fine-tuned on the supervised explanation reconstruction data provided by the training set. Experiments showed that initial ranking performance was improved when trained with additional contextual information, in the form of including parts of gold explanations with question text when training the row relevance ranking task. The reranking procedure involved evaluating both relevance and cosine similarity between explanation rows in a shortlist of top ranked rows, where a shortlist size of N=15 demonstrated maximum reranking performance.</p><p>Model 3 (RDAI). This series of systems by Chai et al. ( <ref type="formula">2019</ref>) explores fine-tuned variations of tf.idf and BERT-based models. A BERT model is augmented with a regression module trained to predict the relevance score for each (question text, explanation row) pair, where this relevance score is calculated using an improved tf.idf method. Due to the compute time required, the model is used to rerank the top 64 predictions made by the tf.idf module.</p><p>Model 4 (COR). This best-performing system by <ref type="bibr" target="#b9">Das et al. (2019)</ref> presents two models: a BERT baseline that ranks individual facts, and a BERT model that ranks paths of facts. Where other submissions used BERT as a reranking model, here the BERT baseline is used to rank the entire set of facts in the knowledge base, increasing performance to 0.56 MAP on the development set. This team observed that for 76% of questions, all the remaining facts in the explanation are within 1hop of the top 25 candidates returned by a tf.idf model. They then construct a path ranking model, where a BERT model is trained with valid short chains of valid multi-hop facts from the top 25 candidates. Because of the large number of possible permutations of multi-fact combinations, the computational requirements of this chain model are significantly higher, and due to this limitation the chain model was evaluated only using the top 25 or top 50 candidates. While this path ranking model slightly underperformed the BERT baseline, it did so while substantially undersampling the space of possible starting points for chains of reading (top 25 candidate facts vs all 4,950 facts). The team then show how an ensemble method that uses the path ranking model for high-confidence cases, and the BERT baseline for low-confidence cases can achieve higher performance than either model independently.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Extended Evaluation and Analysis</head><p>The annotation in the WorldTree corpus and its supporting structured knowledge base allows performing detailed automated and semi-automated characterizations of model performance. To help assess each model's capacity to perform multi-hop inference, we perform an evaluation of model performance using lexical overlap between questions and facts as a means of determining the necessity of requiring multiple hops to find and preferentially rank a given fact. To mitigate issues with fullyautomated evaluations of explanation regeneration performance, we also include a manual evaluation of the relevance of highly-ranked facts in Table <ref type="table" target="#tab_4">3</ref>. We include additional automated characterizations of performance in Table <ref type="table" target="#tab_5">4</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.1">Performance by Lexical Overlap / Multiple Hops</head><p>Ostensibly the easiest explanatory facts for many models to locate are those that contain a large number of shared words with the question and/or answer text, 6 while those with only a single shared word can be difficult or improbable to locate <ref type="bibr" target="#b13">(Jansen, 2018)</ref>. Those explanatory facts that do not contain shared words with the question or answer require multi-hop methods to locate, traversing from question text through one or more other explanatory facts before ultimately being identified. This distinction is shown in Figure <ref type="figure">6</ref>. Breaking down performance by the amount of lexical overlap (shared words) with the question and/or answer helps characterize how well a given model is performing at the multi-hop inference task. A model particularly able to retrieve facts with a high amount of lexical overlap may show Table <ref type="table">2</ref>: Explanation reconstruction performance broken down by the level of lexical overlap a given fact has with the question and/or answer. 1-hop refers to facts that have at least one shared word with the question or answer. 2+ hops refers to facts that do not have lexical overlap with question or answer text, and must be traversed to from the question text through other facts. Results across all models show that performance at finding facts generally decreases as the proportion of lexical overlap between the question text and a given fact decreases. Performance reflects mean average precision on the explanation regeneration task. Note that average performance in this analysis is normalized by the number of questions a given criterion applies to (N), and not the total number of questions in the evaluation corpus, and as such may vary from lexical overlap results reported in participant papers.</p><p>a large overall performance in explanation reconstruction, but be poor at performing multi-hop inference. Similarly, a model particularly able to perform multi-hop inference without a strong retrieval component may have its multi-hop performance masked by an overall low score at the multi-hop inference task. Performance on identifying facts that do not have lexical overlap with the question or answer is a strong indicator of multi-hop inference performance, as these facts can only be found through indirect means, such as "hopping" to other intermediate facts between them and the question or answer text.</p><p>Model performance broken down by explanation rows that contain lexical overlap with question or answer terms is included in Table <ref type="table">2</ref>. Here, lexical overlap is assessed by the intersection of the set of lemmas in both question and answer text, versus the set of words in a given table row. This means that multiple mentions of the same word, or words that reduce to the same lemma, are considered only a single word of overlap. For example, if the question and answer contained three occurrences of the word "organisms", and a given table row also contained two occurrences of "organism", this would still only count as one word of lexical overlap between question and row text.</p><p>Table <ref type="table">2</ref> shows that for all models submitted to the shared task, the largest contributor to model performance is from locating explanation sentences that have 2 or more shared words with the question or answer. Similarly, models also derive moderate performance from locating explanation sentences that contain only a single word of overlap between question and answer. All models show their lowest performance on locating gold explanation facts that do not contain lexical overlap with the question or answer, ranging from a MAP of nearly zero (for the tf.idf model, which exclusively uses lexical overlap to rank explanation sentences), to a MAP of up to one half of a given model's "2+ shared word" performance, depending on whether only content lemmas (nouns, verbs, adjectives, and adverbs) or all lemmas are considered for lexical overlap.</p><p>Recent work has demonstrated that it is possible for models to achieve high performance on multihop datasets without performing multi-hop inference <ref type="bibr" target="#b5">(Chen and Durrett, 2019;</ref><ref type="bibr" target="#b23">Min et al., 2019)</ref>, highlighting the need to directly instrument multihop performance versus overall performance to gauge progress on this challenging task. The evaluation in Table <ref type="table">2</ref> shows that higher overall explanation regeneration performance does not necessarily imply better multi-hop performance. The best-performing model achieves a MAP of 0.35 on ranking 2+ hop facts, up from the negligible 2+ hop performance of the baseline model. While this 2+ hop performance is low in an absolute sense, it represents a substantial improvement in the stateof-the-art on this dataset.</p><p>It is important to note that examining the performance on facts without lexical overlap is not a complete assessment of multi-hop performance. Indeed, it is common for certain clusters of facts to contain lexical overlap not only with the question and answer, but also with each other. Identify-Question Recycling newspapers is good for the environment because it: Answer: helps conserve resources.</p><p>Gold Explanation Sentences that share 2 or more words with Q or A 1. Recycling resources has a positive impact on the environment and the conservation of those resources.</p><p>Gold Explanation Sentences that share 1 word with Q or A 2. A newspaper is made of paper. 3. Trees are a kind of resource. 4. "To be good for" means "to have a positive impact on".</p><p>Gold Explanation Sentences that do not share words with Q or A 5. Trees are a source of paper.</p><p>Figure <ref type="figure">6</ref>: Example explanation sentences with different degrees of lexical overlap with the question/answer. Top/Middle: gold explanation sentences that have two or more (top) or exactly one (middle) shared words with the question or answer (bolded). Bottom: gold explanation sentences that do not have shared words with the question or answer, and are only connected based on shared words with other explanation sentences (underlined).</p><p>ing this inter-fact cohesion to successfully locate these clusters of explanatory facts is still a form of multi-hop inference, as it requires integrating knowledge from more than one fact -even if each of those facts contains strong retrieval cues such as lexical overlap with question text. As such, assessing performance on facts without lexical overlap with question text is only one method of assessing multi-hop performance on particularly challenging multi-hop problems, and not a complete characterization of multi-hop performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2">Manual Evaluation of Explanation Quality</head><p>For each question in the WorldTree corpus, an annotator has provided a set of gold facts that provide a detailed explanation for why the answer is correct. While this enables supervised training and fully automatic evaluation of explanation generation, the explanation annotation is non-exhaustive -that is, it is possible for there to be facts in the knowledge base that may be relevant to building an explanation for a given question, but that are not included in the gold explanation. This is a pragmatic limitation of the ability to perform entirely automated evaluation using this dataset, as there are often multiple (poten-tially overlapping) ways of building an explanation for the answer to a question. As a result of this limitation, rows ranked highly by some algorithms may be genuinely useful for building explanations, but would be marked incorrect by the automated evaluation, under-estimating performance in some circumstances. Performing a small-scale manual evaluation of explanation quality at regular milestones helps provide a balance between speed of evaluation during model development, and accuracy in model characterization. To address this need in evaluation accuracy, we performed a manual characterization of model performance for each of the 4 shared task model submissions, as well as the baseline model. We performed a manual evaluation of fact relevance for all facts ranked within the top 20 for each model on 14 randomly selected questions 7 in the held-out test set. This resulted in 758 manual evaluations of fact relevance. For a given question, all facts ranked in the top 20 across each model were pooled into a single list such that the annotator was blind to which model(s) selected them. The facts were ranked on a 4 point scale: (1) Gold, (2) Highly Relevant facts that could appear in a gold explanation, (3) Possibly Relevant facts generally on broadly similar topics to the question or entities in the question, and (4) facts that are Not Relevant to the question. <ref type="bibr">8</ref> Examples of these ratings can be found in Figure <ref type="figure">7</ref>.</p><p>The results of this manual analysis are shown in Table <ref type="table" target="#tab_4">3</ref>, presented as proportions of the top-N ranked rows for each model. In Table <ref type="table" target="#tab_4">3</ref>, the proportion marked gold is equivalent to the Precision@N metric in Table <ref type="table" target="#tab_5">4</ref>, but measured using 14 questions instead of the entire test set. Using this as a gauge of accuracy, we observe that there is generally strong agreement between the Precision@N values in this sample of 14 questions as to the entire test set, with values generally within a few percentage points <ref type="bibr">9</ref> . This manual evaluation shows that 7 The 14 questions selected for manual evaluation were the initial questions in the test set.</p><p>8 One of the challenges with such a rating system is its subjectivity. Different explanations can be written for the same question that may contain many of the same facts, or largely different facts. It is also possible that a very detailed explanation that includes a large amount of world knowledge might include more "possibly relevant/topical" facts than a less detailed, more high-level explanation. The methodological issues with manually evaluating explanation quality are left to future work. <ref type="bibr">9</ref> Notable exceptions are the manual evaluations of the Top-5 values for the ASU and RDAI models, which can vary by   <ref type="table" target="#tab_5">4</ref> with 14 samples instead of 541. Results show that generally between 12% and 27% of top-ranked facts that are not marked as gold may also be highly relevant to building an explanation for a given question. This adjusted performance, summing both gold and manually-rated highly relevant facts, is provided as "Manual Relevance@N". Figure <ref type="figure">7</ref>: Example manual ratings of fact relevance for the explanation reconstruction task. "Gold" ratings are automatically determined by whether a fact is marked as gold in the explanation for a given question. For facts not marked as gold, manual ratings of "Highly Relevant", "Possibly Relevant/Topical", and "Not Relevant" were added.</p><p>across all models, between 12% and 27% of the most highly ranked facts may also be highly relevant to building an explanation for the question, but are not included as part of the gold explanation. All in all, this highlights the importance of treating gold explanation annotation as a minimum set as much as ±7% from the full test set. All Top-20 values are within 1% of the full test sample in Table <ref type="table" target="#tab_5">4</ref> of facts for assessing coverage and completeness, but that assessing relevance of highly ranked facts is still best accomplished by including at least a modest manual evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.3">Additional Performance Evaluation</head><p>Additional automatic performance evaluations are shown in  types, and using a Precision@N metric. Note that average performance in this analysis is normalized by the number of questions a given criterion applies to N, and not the total number of questions in the evaluation corpus, and as such may vary from lexical overlap results reported in participant papers. Excluding a small number of missing row references also causes a slight performance increase in some models in the second or third decimal place compared to official leaderboard results.</p><p>explanatory role, table knowledge category, as well as evaluations of model performance using Precision@N that serves as an automated comparison to the manual relevance evaluation in the previous section.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.3.1">Performance by Explanatory Roles</head><p>Table <ref type="table" target="#tab_5">4</ref> shows performance broken down by the explanatory role of the facts being analysed. Here, each model creates a ranked list of facts, and the facts in a given question's gold explanation that do not match a filter (either CENTRAL, GROUND-ING, or LEXICAL GLUE) are removed both from the gold explanation and from the ranked list. Mean average precision is then calculated as normal. This evaluation allows assessing how well each model is able to find facts that provide different roles in an explanation, and whether a given method focuses on core or central scientific facts, or facts that ground entities in the question or answer to those core facts. Similarly, it allows assessing the performance on the "lexical glue" facts that help bridge explanation facts together in computational explanations through synonymy relations, but would likely be considered overly verbose or unnecessary when read by an adult human.</p><p>The evaluation shows that all models generally perform best on identifying core or central facts, while ranking grounding facts less highly. "Lexical glue" facts that serve as the connecting glue between facts that use different words to describe the same concept showed the highest variation in performance, with the baseline model nearly ignoring these facts, while two teams rank these nearly as high as the best performance on the grounding facts.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.3.2">Performance by Table Knowledge Types</head><p>Tables can express very different kinds of knowledge, with varying levels of complexity and roles in an explanation. The tables in the WorldTree corpus are broadly divided into three main types:</p><p>Retrieval Tables: Tables that generally supply taxonomic (kind-of) or property knowledge.</p><p>Inference-Supporting Tables: Tables that include knowledge of actions, object affordances, uses of materials or devices, sources of things, requirements, or affect relationships.</p><p>Complex Inference Tables: Tables that include knowledge of causality, processes, changes, coupled relationships, and if/then relationships.</p><p>Table <ref type="table" target="#tab_5">4</ref> shows explanation reconstruction performance by table knowledge type. Generally for all models submitted to the shared task, performance for retrieval knowledge types was highest, followed by knowledge from inference supporting tables. Knowledge from complex inference tables was the most challenging for models to find and preferentially rank.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>The TextGraphs 2019 Shared Task on Multi-Hop Inference for Explanation Regeneration received four team submissions that exceeded the performance of the baseline system. The systems used a variety of methods from additional knowledge resources (such as ConceptNet or FrameNet) to directly training language models to perform multihop inference by predicting chains of facts. The top-performing system increased baseline performance by nearly a factor of two on this task, achieving a new state-of-the-art.</p><p>Multi-hop performance. In spite of these achievements, our extended analysis shows that the performance on the most challenging multi-hop inference problems -those facts that do not have lexical overlap with question or answer and must be reached by traversing indirectly through other facts -is still low. Though the bulk of the performance of these systems clusters around identifying facts that have large amounts of lexical overlap with the question or answer (i.e. 2 or more facts), we have seen how these easier-to-locate facts can serve as a spring board to launch more targeted searches for other facts in the explanation.</p><p>Language models and training data. The highest performing systems in this shared task made use of language models, which have repeatedly demonstrated record-breaking performance on a wide range of language classification tasks in recent years. These language models tend to have large requirements for supervised training data that are difficult to meet in cases where large-scale manual annotation is required, such as in constructing detailed explanations containing world knowl-edge. The WorldTree explanation corpus provides a unique resource of large, many-fact structured explanations to train the multi-hop inference task, but the manual generation of these explanations means the corpus (at approximately 1.6k explanations) is orders of magnitude smaller than resources that are traditionally used to train language models. In spite of this, teams on this shared task have proposed methods to address training relevance judgements with this scale of data, and achieved state-of-theart results. While it is unlikely that large-scale supervised structured training data resources will soon become available to test the ultimate limits of language models for explanation generation, the results of this shared task naturally pose the question of whether statistical methods will continue to exceed structured knowledge base approaches to explanation generation (using resources such as Con-ceptNet and FrameNet), particularly as the field turns to investigating common sense knowledge and other world-knowledge-centered approaches to inference.</p><p>Explanation Regeneration as a proxy task for multi-hop inference models. While explanation regeneration does not require a model to find a correct answer to a question, it does help distill the problem of multi-hop inference to center on the task of combining multiple facts together in meaningful ways to support explainable inference. Explanation-centered inference and interpretable machine learning currently take on a variety of forms, from using representations amenable to human explanation for the inference process (e.g., <ref type="bibr" target="#b29">Swartout et al., 1991;</ref><ref type="bibr" target="#b0">Abujabal et al., 2017;</ref><ref type="bibr" target="#b19">Li et al., 2018)</ref>, to using black-box systems to arrive at answers that are later mapped onto other, more explainable models (e.g., <ref type="bibr" target="#b27">Ribeiro et al., 2016)</ref>. By focusing on the task of meaningfully combining multiple facts to build explanations, our hope is that explanation regeneration can serve as a steppingstone task toward complex inference systems capable of building long chains of inference that both automatically answer questions while providing detailed human-readable explanations for why their reasoning is correct.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Acknowledgements</head><p>The organizers wish to express their thanks to all shared task teams for their participation. We thank Elizabeth Wainwright and Steven Marmorstein for contributions to the WorldTree explanation corpus, who were funded by the Allen Institute for Artificial Intelligence (AI2). Peter Jansen's work on the shared task was supported by National Science Foundation (NSF Award #1815948, "Explainable Natural Language Inference"). Dmitry Ustalov's work on the shared task at the University of Mannheim was supported by the Deutsche Forschungsgemeinschaft (DFG) foundation under the "JOIN-T" project.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>Question Q: Many grass snakes are green. The color of the snake most likely helps it to: (A) climb tall trees (B) fit into small spaces. (*C) hide when threatened (D) shed its skinManual Relevance Rating Example Row Gold Camouflage is used for protection/hiding by prey from predators. Highly Relevant Camouflage is a kind of adaptation for hiding in an environment. Possibly Relevant/Topical Eyes can sense light energy for seeing. Not Relevant Many animals are herbivores.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Manually rated relevance judgements for the top 5, top 10, and top 20 ranked rows, across 14 randomly sampled questions. Results at top 20 reflect 758 manual judgements. "Marked gold" performance is equivalent to Precision@N performance in Table</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4</head><label>4</label><figDesc>, which includes evaluation by</figDesc><table><row><cell></cell><cell cols="2">Questions Baseline</cell><cell cols="2">Team</cell><cell></cell></row><row><cell>Metric</cell><cell>N</cell><cell>tf.idf</cell><cell cols="3">JS ASU RDAI COR</cell></row><row><cell>Mean Average Precision (MAP)</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>MAP</cell><cell>541</cell><cell>0.30</cell><cell>0.40 0.42</cell><cell>0.48</cell><cell>0.57</cell></row><row><cell>MAP by Explanatory Role</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>CENTRAL rows</cell><cell>531</cell><cell>0.34</cell><cell>0.49 0.42</cell><cell>0.58</cell><cell>0.59</cell></row><row><cell>GROUNDING rows</cell><cell>347</cell><cell>0.19</cell><cell>0.18 0.17</cell><cell>0.23</cell><cell>0.37</cell></row><row><cell>LEXICALGLUE rows</cell><cell>382</cell><cell>0.07</cell><cell>0.12 0.31</cell><cell>0.18</cell><cell>0.32</cell></row><row><cell>MAP by Table Knowledge Types</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Retrieval tables</cell><cell>541</cell><cell>0.31</cell><cell>0.43 0.43</cell><cell>0.46</cell><cell>0.54</cell></row><row><cell>Inference-supporting tables</cell><cell>541</cell><cell>0.26</cell><cell>0.33 0.39</cell><cell>0.42</cell><cell>0.46</cell></row><row><cell>Complex inference tables</cell><cell>541</cell><cell>0.20</cell><cell>0.15 0.28</cell><cell>0.31</cell><cell>0.33</cell></row><row><cell>Precision@N</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Precision@1</cell><cell>541</cell><cell>55%</cell><cell cols="3">67% 63% 79% 79%</cell></row><row><cell>Precision@2</cell><cell>541</cell><cell>43%</cell><cell>49% 47%</cell><cell>63%</cell><cell>69%</cell></row><row><cell>Precision@3</cell><cell>541</cell><cell>36%</cell><cell>44% 44%</cell><cell>54%</cell><cell>59%</cell></row><row><cell>Precision@4</cell><cell>541</cell><cell>31%</cell><cell>37% 41%</cell><cell>48%</cell><cell>53%</cell></row><row><cell>Precision@5</cell><cell>541</cell><cell>27%</cell><cell>32% 39%</cell><cell>43%</cell><cell>48%</cell></row><row><cell>Precision@10</cell><cell>541</cell><cell>17%</cell><cell>21% 27%</cell><cell>29%</cell><cell>34%</cell></row><row><cell>Precision@20</cell><cell>541</cell><cell>11%</cell><cell>13% 18%</cell><cell>18%</cell><cell>21%</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Explanation reconstruction performance broken down by the explanatory role of facts, table knowledge</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://competitions.codalab.org/ competitions/20150 4 https://github.com/umanlp/tg2019task</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">http://svmlight.joachims.org/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6"><ref type="bibr" target="#b13">Jansen (2018)</ref> empirically demonstrated that sentences containing 2 or more shared words with the question and/or answer text can have an extremely high chance performance at being retrieved.</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">QUINT: Interpretable Question Answering over Knowledge Bases</title>
+		<author>
+			<persName><forename type="first">Abdalghani</forename><surname>Abujabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rishiraj</forename><surname>Saha Roy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Yahya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gerhard</forename><surname>Weikum</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D17-2011</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing: System Demonstrations</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing: System Demonstrations<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="61" to="66" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Leveraging Linguistic Structure For Open Domain Information Extraction</title>
+		<author>
+			<persName><forename type="first">Gabor</forename><surname>Angeli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Melvin Jose Johnson</forename><surname>Premkumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/v1/P15-1034</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="344" to="354" />
+		</imprint>
+	</monogr>
+	<note>ACL-IJCNLP 2015</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The Berkeley FrameNet Project</title>
+		<author>
+			<persName><forename type="first">Collin</forename><forename type="middle">F</forename><surname>Baker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charles</forename><forename type="middle">J</forename><surname>Fillmore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">B</forename><surname>Lowe</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/980845.980860</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 36th Annual Meeting of the Association for Computational Linguistics and 17th International Conference on Computational Linguistics</title>
+				<meeting>the 36th Annual Meeting of the Association for Computational Linguistics and 17th International Conference on Computational Linguistics<address><addrLine>Montréal, QC, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="86" to="90" />
+		</imprint>
+	</monogr>
+	<note>ACL &apos;98/COLING &apos;98. Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">TextGraphs-2019 Shared Task: Explanation ReGeneration using Language Models and Iterative Re-Ranking</title>
+		<author>
+			<persName><forename type="first">Pratyay</forename><surname>Banerjee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13, Hong Kong. Association for Computational Linguistics</title>
+				<meeting>the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13, Hong Kong. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Language Model Assisted Explanation Generation TextGraphs-13 Shared Task System Description</title>
+		<author>
+			<persName><surname>Yew Ken</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Chai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Witteveen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Andrews</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13</title>
+				<meeting>the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13<address><addrLine>Hong Kong</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Understanding Dataset Design Choices for Multi-hop Reasoning</title>
+		<author>
+			<persName><forename type="first">Jifan</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Greg</forename><surname>Durrett</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-1405</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, MN, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4026" to="4032" />
+		</imprint>
+	</monogr>
+	<note>NAACL-HLT 2019</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Simple and Effective Multi-Paragraph Reading Comprehension</title>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Gardner</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P18-1078</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Melbourne, VIC, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="845" to="855" />
+		</imprint>
+	</monogr>
+	<note>ACL 2018. Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isaac</forename><surname>Cowhey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Etzioni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tushar</forename><surname>Khot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Sabharwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carissa</forename><surname>Schoenick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oyvind</forename><surname>Tafjord</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1803.05457</idno>
+		<title level="m">Think you have Solved Question Answering? Try ARC, the AI2 Reasoning Challenge</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1909.01958</idno>
+		<title level="m">Regents Science Exams: An Overview of the Aristo Project</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Reasoning over Chains of Facts for Explainable Multi-hop Inference</title>
+		<author>
+			<persName><forename type="first">Rajarshi</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ameya</forename><surname>Godbole</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manzil</forename><surname>Zaheer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shehzaad</forename><surname>Dhuliawala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13</title>
+				<meeting>the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13<address><addrLine>Hong Kong</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/N19-1423</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+		<title level="s">Long and Short Papers</title>
+		<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, MN, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+	<note>NAACL-HLT 2019</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Team SVM rank : Leveraging Featurerich Support Vector Machines for Ranking Explanations to Elementary Science Questions</title>
+		<author>
+			<persName><forename type="first">D'</forename><surname>Jennifer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isaiah</forename><forename type="middle">Onando</forename><surname>Souza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">'</forename><surname>Mulang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sören</forename><surname>Auer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13, Hong Kong. Association for Computational Linguistics</title>
+				<meeting>the Thirteenth Workshop on Graph-Based Methods for Natural Language Processing, TextGraphs-13, Hong Kong. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Higher-order Lexical Semantic Models for Non-factoid Answer Reranking</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Fried</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Jansen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gustave</forename><surname>Hahn-Powell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00133</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="197" to="210" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Multi-hop Inference for Sentencelevel TextGraphs: How Challenging is Meaningfully Combining Information for Science Question Answering?</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Jansen</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W18-1703</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twelfth Workshop on Graph-Based Methods for Natural Language Processing</title>
+				<meeting>the Twelfth Workshop on Graph-Based Methods for Natural Language Processing<address><addrLine>New Orleans, LA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="12" to="17" />
+		</imprint>
+	</monogr>
+	<note type="report_type">TextGraphs-12</note>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">What&apos;s in an Explanation? Characterizing Knowledge and Inference Requirements for Elementary Science Exams</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Jansen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niranjan</forename><surname>Balasubramanian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers, COLING 2016</title>
+				<meeting>COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers, COLING 2016<address><addrLine>Osaka, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2956" to="2965" />
+		</imprint>
+	</monogr>
+	<note>The COLING 2016 Organizing Committee</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Framing QA as Building and Ranking Intersentence Answer Justifications</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Jansen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rebecca</forename><surname>Sharp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/COLI_a_00287</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="407" to="449" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">WorldTree: A Corpus of Explanation Graphs for Elementary Science Questions supporting Multi-hop Inference</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Jansen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elizabeth</forename><surname>Wainwright</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Marmorstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Clayton</forename><surname>Morrison</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eleventh International Conference on Language Resources and Evaluation, LREC 2018</title>
+				<meeting>the Eleventh International Conference on Language Resources and Evaluation, LREC 2018<address><addrLine>Miyazaki, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2732" to="2740" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Training Linear SVMs in Linear Time</title>
+		<author>
+			<persName><forename type="first">Thorsten</forename><surname>Joachims</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/1150402.1150429</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;06</title>
+				<meeting>the 12th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;06<address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="217" to="226" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">On the Capabilities and Limitations of Reasoning for Natural Language Understanding</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Khashabi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tushar</forename><surname>Erfan Sadeqi Azer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Khot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Sabharwal</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Roth</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1901.02522</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">VQA-E: Explaining, Elaborating, and Enhancing Your Answers for Visual Questions</title>
+		<author>
+			<persName><forename type="first">Qing</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qingyi</forename><surname>Tao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shafiq</forename><surname>Joty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianfei</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiebo</forename><surname>Luo</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/978-3-030-01234-2_34</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Computer Vision -ECCV 2018, 15th European Conference</title>
+				<meeting><address><addrLine>Munich, Germany; Cham, Switzerland</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer International Publishing</publisher>
+			<date type="published" when="2018-09-08" />
+			<biblScope unit="page" from="570" to="586" />
+		</imprint>
+	</monogr>
+	<note>Proceedings, Part VII</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Hugo</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Push</forename><surname>Singh</surname></persName>
+		</author>
+		<idno type="DOI">10.1023/B:BTTJ.0000047600.45421.6d</idno>
+	</analytic>
+	<monogr>
+		<title level="j">ConceptNet -A Practical Commonsense Reasoning Tool-Kit. BT Technology Journal</title>
+		<imprint>
+			<biblScope unit="volume">22</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="211" to="226" />
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">RoBERTa: A Robustly Optimized BERT Pretraining Approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Introduction to Information Retrieval</title>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prabhakar</forename><surname>Raghavan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2008" />
+			<publisher>Cambridge University Press</publisher>
+			<pubPlace>New York, NY, USA</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Compositional Questions Do Not Necessitate Multi-hop Reasoning</title>
+		<author>
+			<persName><forename type="first">Sewon</forename><surname>Min</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Wallace</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Gardner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hannaneh</forename><surname>Hajishirzi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P19-1416</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, ACL 2019</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics, ACL 2019</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="4249" to="4257" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Association for Computational Linguistics</title>
+		<author>
+			<persName><forename type="first">Italy</forename><surname>Florence</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<title level="m" type="main">MEMEN: Multi-layer Embedding with Memory Networks for Machine Comprehension</title>
+		<author>
+			<persName><forename type="first">Boyuan</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hao</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhou</forename><surname>Zhao</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1707.09098</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note>Bin Cao, Deng Cai, and Xiaofei He</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">RUSSE&apos;2018: A Shared Task on Word Sense Induction for the Russian Language</title>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Panchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anastasia</forename><surname>Lopukhina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Ustalov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Konstantin</forename><surname>Lopukhin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Arefyev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Leontyev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Loukachevitch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Computational Linguistics and Intellectual Technologies: Papers from the Annual International Conference &quot;Dialogue</title>
+				<meeting><address><addrLine>Moscow, Russia. RSUH</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="547" to="564" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Why Should I Trust You?&quot;: Explaining the Predictions of Any Classifier</title>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Marco Tulio Ribeiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Guestrin</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/2939672.2939778</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 22Nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;16</title>
+				<meeting>the 22Nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;16<address><addrLine>San Francisco, CA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1135" to="1144" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Scripts, Plans, and Knowledge</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Roger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><forename type="middle">P</forename><surname>Schank</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Abelson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth International Joint Conference on Artificial Intelligence, IJCAI-75</title>
+				<meeting>the Fourth International Joint Conference on Artificial Intelligence, IJCAI-75<address><addrLine>Tbilisi, Georgia, USSR</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1975" />
+			<biblScope unit="page" from="151" to="157" />
+		</imprint>
+	</monogr>
+	<note>IJCAI Organization</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Explanations in Knowledge Systems: Design for Explainable Expert Systems</title>
+		<author>
+			<persName><forename type="first">William</forename><surname>Swartout</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cécile</forename><surname>Paris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johanna</forename><surname>Moore</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/64.87686</idno>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Expert</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="58" to="64" />
+			<date type="published" when="1991" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Constructing Datasets for Multi-hop Reading Comprehension Across Documents</title>
+		<author>
+			<persName><forename type="first">Johannes</forename><surname>Welbl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pontus</forename><surname>Stenetorp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00021</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page" from="287" to="302" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Quoc</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Le</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1906.08237</idno>
+		<title level="m">XLNet: Generalized Autoregressive Pretraining for Language Understanding</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">HOTPOTQA: A Dataset for Diverse, Explainable Multi-hop Question Answering</title>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Qi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saizheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><surname>Cohen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1259</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2369" to="2380" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

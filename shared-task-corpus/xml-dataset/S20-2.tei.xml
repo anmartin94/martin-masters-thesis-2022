@@ -1,0 +1,1800 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2020 Task 2: Predicting Multilingual and Cross-Lingual (Graded) Lexical Entailment</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Data and Web Science Group</orgName>
+								<orgName type="institution">University of Mannheim</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="laboratory">Language Technologies Lab, DTAL</orgName>
+								<orgName type="institution">University of Cambridge</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="laboratory">Language Technologies Lab, DTAL</orgName>
+								<orgName type="institution">University of Cambridge</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Data and Web Science Group</orgName>
+								<orgName type="institution">University of Mannheim</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2020 Task 2: Predicting Multilingual and Cross-Lingual (Graded) Lexical Entailment</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Lexical entailment (LE) is a fundamental asymmetric lexico-semantic relation, supporting the hierarchies in lexical resources (e.g., WordNet, ConceptNet) and applications like natural language inference and taxonomy induction. Multilingual and cross-lingual NLP applications warrant models for LE detection that go beyond language boundaries. As part of SemEval 2020, we carried out a shared task (Task 2) on multilingual and cross-lingual LE. The shared task spans three dimensions: (1) monolingual LE in multiple languages versus cross-lingual LE, (2) binary versus graded LE, and (3) a set of 6 diverse languages (and 15 corresponding language pairs). We offered two different evaluation tracks: (a) distributional (Dist): for unsupervised, fully distributional models that capture LE solely on the basis of unannotated corpora, and (b) Any: for externally informed models, allowed to leverage any resources, including lexico-semantic networks (e.g., WordNet or BabelNet). In the Any track, we received system runs that push state-of-the-art across all languages and language pairs, for both binary LE detection and graded LE prediction.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Lexical entailment (LE; hyponymy-hypernymy or is-a relation) is a core asymmetric lexico-semantic relation <ref type="bibr" target="#b8">(Collins and Quillian, 1972;</ref><ref type="bibr" target="#b1">Beckwith et al., 1991)</ref> and a crucial building block of lexico-semantic networks and knowledge bases such as WordNet <ref type="bibr" target="#b15">(Fellbaum, 1998)</ref>, BabelNet <ref type="bibr" target="#b39">(Navigli and Ponzetto, 2012)</ref> or ConceptNet <ref type="bibr" target="#b55">(Speer et al., 2017)</ref>. The ability to reason about concept-level entailment supports a plethora of tasks such as taxonomy induction <ref type="bibr" target="#b54">(Snow et al., 2006;</ref><ref type="bibr" target="#b40">Navigli et al., 2011;</ref><ref type="bibr" target="#b13">Faralli et al., 2017)</ref>, natural language inference <ref type="bibr" target="#b10">(Dagan et al., 2013;</ref><ref type="bibr" target="#b5">Bowman et al., 2015;</ref>, and text generation <ref type="bibr" target="#b2">(Biran and McKeown, 2013)</ref> or metaphor detection <ref type="bibr" target="#b37">(Mohler et al., 2013)</ref>.</p><p>Binary and Graded Lexical Entailment. For this task, we follow the definition of lexical entailment as thoroughly discussed in <ref type="bibr">Vulić et al. (2017, Section 2)</ref>, namely as a taxonomical asymmetric hyponymy-hypernymy or is-a relation. Although commonly treated as a binary relation ("Is X a type of Y?"), cognitive theories of concept (proto)typicality and category vagueness <ref type="bibr" target="#b49">(Rosch, 1975;</ref><ref type="bibr" target="#b27">Kamp and Partee, 1995)</ref> suggest that LE is rather a graded relation: humans can perceive the degree to which the LE relation holds between concepts ("To which degree is X a type of Y?"). <ref type="bibr">1</ref> The graded nature of the LE relation has been empirically validated in human annotations crowdsourced for the HyperLex dataset . Its creation catalyzed research on models for predicting graded LE <ref type="bibr" target="#b42">(Nguyen et al., 2017;</ref><ref type="bibr" target="#b43">Nickel and Kiela, 2017;</ref><ref type="bibr" target="#b56">Tifrea et al., 2019;</ref><ref type="bibr" target="#b31">Le et al., 2019)</ref>.</p><p>Multilingual and Cross-Lingual Lexical Entailment. Despite its potential for a variety of crosslingual and multilingual applications such as multilingual taxonomy construction, machine translation, and multilingual natural language inference <ref type="bibr" target="#b36">(Mihalcea et al., 2010;</ref><ref type="bibr" target="#b41">Negri et al., 2013;</ref><ref type="bibr" target="#b12">Ehrmann et al., 2014;</ref><ref type="bibr" target="#b16">Fu et al., 2014;</ref><ref type="bibr" target="#b4">Bordea et al., 2016;</ref><ref type="bibr">Conneau et al., 2018, inter alia)</ref>, LE detection, especially its graded variant, has so far been predominantly studied in monolingual settings <ref type="bibr" target="#b17">(Geffet and Dagan, 2005;</ref><ref type="bibr" target="#b65">Weeds et al., 2014;</ref><ref type="bibr" target="#b50">Santus et al., 2014;</ref><ref type="bibr" target="#b28">Kiela et al., 2015;</ref><ref type="bibr" target="#b51">Shwartz et al., 2016;</ref><ref type="bibr" target="#b52">Shwartz et al., 2017;</ref><ref type="bibr" target="#b22">Glavaš and Ponzetto, 2017;</ref><ref type="bibr">Roller et al., 2018, inter alia)</ref> with most models and evaluations, unsurprisingly, focusing on English. Existing work on multilingual and cross-lingual LE <ref type="bibr" target="#b63">(Vyas and Carpuat, 2016;</ref><ref type="bibr" target="#b57">Upadhyay et al., 2018;</ref><ref type="bibr" target="#b26">Kamath et al., 2019)</ref> has been rather limited and focused dominantly on major and mutually similar languages and binary LE detection. Shared Task. Aiming to catalyze the development of models for predicting LE, we organized the shared task described in this paper. Our shared task had a broad scope aiming to cover reasoning over lexical entailment from multiple perspectives. Namely, the subtasks covered both monolingual and cross-lingual setups as well as both binary LE detection and graded LE prediction (i.e., prediction of a degree to which LE holds between concepts). Our shared task encompassed a set of 6 etymologically and typologically diverse languages (and 15 corresponding language pairs): English (EN), German (DE), Italian (IT), Croatian (HR), Turkish (TR), and Albanian (SQ). We offered two different evaluation tracks. In the distributional (Dist) track we allowed only for fully distributional systems, capturing LE only on the basis of unannotated corpora. In contrast, the Any track invited systems that exploit any kind of additional external resources, including lexico-semantic networks.</p><p>Overall, we did not observe any empirically confirmed strong systems in the Dist track, further corroborating the findings from prior work that building LE-oriented vectors distributionally is more difficult than for some other relations such as broader semantic relatedness <ref type="bibr" target="#b24">(Henderson and Popa, 2016)</ref>. However, several runs submitted to the Any track pushed the state of the art both in binary LE detection and graded LE prediction, for most of the languages and language pairs in our evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data</head><p>We started from the LE datasets we previously created and published <ref type="bibr" target="#b62">Vulić et al., 2019b)</ref>, covering four languages <ref type="bibr">(EN, DE, IT, HR)</ref> and extended those datasets to two new languages (TR, SQ). For completeness, we describe the details of the annotation process and the creation of final multilingual and cross-lingual datasets for the shared task.</p><p>Starting Point: Graded LE in English. HyperLex  comprises 2,616 English (EN) word pairs (2,163 noun pairs and 453 verb pairs) annotated for the graded LE relation. Unlike in symmetric similarity datasets <ref type="bibr" target="#b25">(Hill et al., 2015;</ref><ref type="bibr" target="#b18">Gerz et al., 2016;</ref><ref type="bibr" target="#b7">Camacho-Collados et al., 2017)</ref>, word order in each pair (X, Y ) is important: this means that pairs (X, Y ) and (Y, X) can obtain drastically different graded LE ratings. The word pairs were first sampled from WordNet to represent a spectrum of different word relations (e.g., hyponymy-hypernymy, meronymy, co-hyponymy, synonymy, antonymy, no relation). The ratings in the [0, 6] interval were then collected through crowdsourcing by posing the graded LE "To what degree is X a type of Y?" question to human subjects, with each pair rated by at least 10 raters: the score of 6 indicates a perfect LE relation between the concepts X and Y (in that order), and 0 indicates absence of the LE relation. The final score was averaged across individual ratings. The final EN HyperLex dataset reveals that gradience effects are indeed present in human annotations: it contains word pairs with ratings distributed across the entire [0, 6] rating interval.</p><p>Word Pair Translation. We first created monolingual HyperLex datasets in three target languages: German (DE), Italian (IT), and Croatian (HR), as described in <ref type="bibr" target="#b62">(Vulić et al., 2019b)</ref>. For this shared task, we repeated the procedure for two more languages: Turkish (TR), and our surprise test language -Albanian (SQ). We first translated word pairs from the EN HyperLex dataset and re-scored the translated pairs in the target language. The translation approach has been selected because (1) the original EN HyperLex pairs were already carefully selected through a controlled sampling procedure (ensuring a wide coverage of diverse relations). Moreover, (2) we wanted the datasets in different languages to be as comparable as possible in terms of concept coverage. The translation approach has been validated in previous work for creating multilingual semantic similarity datasets <ref type="bibr" target="#b32">(Leviant and Reichart, 2015;</ref><ref type="bibr" target="#b7">Camacho-Collados et al., 2017)</ref>. Most importantly, it allows for the automatic construction of cross-lingual graded LE datasets.</p><p>We have followed the standard word pair translation procedure <ref type="bibr" target="#b32">(Leviant and Reichart, 2015;</ref><ref type="bibr" target="#b7">Camacho-Collados et al., 2017</ref>   of the target language. We observed the translation agreement in the range of 80%-90% across the five target languages. Translation disagreements were resolved by a third annotator who selected the better of the two differing translations. We allowed for multi-word translations only if there was no appropriate single word translation, e.g., typewriter (EN) → pisaći stroj (HR).</p><p>Concept Scoring and Cross-Lingual Datasets. The resulting 2,616 concept pairs in all five target languages were annotated using a procedure analogous to that for EN HyperLex: the rating interval was [0, 6], and each word pair was rated by 4 (for DE, IT, HR) or 5 (for TR, SQ) native speakers. We then constructed the cross-lingual datasets automatically, leveraging word pair translations and scores in five target languages. For this, we followed the established methodology, used for creating cross-lingual semantic similarity datasets <ref type="bibr" target="#b6">(Camacho-Collados et al., 2015;</ref><ref type="bibr" target="#b7">Camacho-Collados et al., 2017)</ref>. In short, we first intersect aligned concept pairs (obtained through translation) in two languages: e.g., father-ancestor in English and otac-predak in Croatian are used to create cross-lingual pairs father-predak and otac-ancestor.</p><p>We then computed the graded LE scores of cross-lingual pairs as averages of corresponding monolingual scores. Finally, we retained only cross-lingual pairs for which the corresponding monolingual scores differ by ≤ 1.0: this heuristic (Camacho-Collados et al., 2017) mitigates the undesirable inter-language semantic shift. Table <ref type="table" target="#tab_1">1</ref> shows examples of word pairs with score annotations from monolingual and cross-lingual datasets.</p><p>Final Shared Task Datasets. The obtained monolingual datasets slightly vary in size due to the elimination of unavoidable same-word pairs (i.e., the pairs in which both English words got translated into the same target language word). Cross-lingual datasets additionally vary in size because of the elimination of cross-lingual pairs for which the scores of the corresponding monolingual pairs mutually differed by more than 1.0. For each monolingual and cross-lingual dataset we separated 500 word pairs for the development portions and retained all remaining word pairs for the test portions used in the final evaluation. <ref type="bibr">2</ref> For the  <ref type="figure">1</ref> and Figure <ref type="figure">2</ref>, respectively. The majority of pairs are in the outer intervals (i.e., [0, 1) and <ref type="bibr">[5,</ref><ref type="bibr">6]</ref>), with this being more pronounced for cross-lingual datasets. Nonetheless, the inner interval (i.e., [1, 5)) covers a significant portion (≈ 30%) of (evenly distributed) word pairs, confirming the gradience of the LE relation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Tasks, Subtasks, and Tracks</head><p>Tracks. The participants were asked to designate one of the two evaluation tracks for each of their submitted runs: (1) in the Any track we allowed for any kind of model/system to produce the LE predictions -the participants of this track were allowed to use external resources, including lexico-semantic networks like WordNet <ref type="bibr" target="#b15">(Fellbaum, 1998)</ref> or BabelNet <ref type="bibr" target="#b39">(Navigli and Ponzetto, 2012)</ref>; (2) in contrast, in the Dist track, we allowed only for distributional models relying exclusively on unannotated corpora (of any size). We allowed each participant to submit at most 3 runs in each of the tracks.</p><p>Tasks and Subtasks. We defined four top-level tasks: (1) monolingual graded LE prediction, (2) monolingual binary LE detection, (3) cross-lingual graded LE prediction, and (4) cross-lingual binary LE detection. Each language in (1) and (2) (e.g., graded LE prediction for SQ) and each language-pair in (3) and ( <ref type="formula">4</ref>) (e.g., binary LE detection for HR-TR) instantiates one concrete subtask. We allowed participants to submit their predictions for an arbitrary set of subtasks. Moreover, the participants were allowed to tackle only graded LE prediction or only binary LE detection.</p><p>Evaluation Metrics. For each graded LE prediction subtask, we measured the alignment of predictions and gold LE scores using the Spearman's Rank Correlation Coefficient (Spearman ρ), which is in line with previous work on similar concept pair scoring datasets <ref type="bibr" target="#b25">(Hill et al., 2015;</ref><ref type="bibr" target="#b33">Levy et al., 2015;</ref><ref type="bibr">Vulić et al., 2017, inter alia)</ref>. For the binary LE detection subtasks we resorted to the standard F 1 measure.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participating Systems</head><p>We now describe in more detail the approaches adopted by the three teams who submitted their system description papers. 3</p><p>Team BMEAUT <ref type="bibr" target="#b30">(Kovács et al., 2020)</ref>. The BMEAUT method for LE detection and prediction is a rule-based approach that exploits Wiktionary definitions (Meyer and Gurevych, 2012) and relies on dependency parsing and semantic graphs. In the first step, the authors apply the dict to 4lang tool <ref type="bibr" target="#b47">(Recski et al., 2016)</ref> on Wiktionary definitions of concepts (which can be both unigrams and multi-word expressions, i.e., phrases) in order to induce the directed graphs conforming to the 4lang formalism <ref type="bibr">(Kornai et al., 2015)</ref>. 4lang graphs are directed graphs with concepts as nodes and three types of edges: edges of type 0 denote attribution (cat</p><formula xml:id="formula_0">0 − → four-legged), lexical entailment (cat 0 − → mammal)</formula><p>, or unary predication (cat 0 − → meow); edges of type 1 and 2 denote relations between the predicate and its subject and object, respectively (e.g., cat <ref type="bibr" target="#b30">Kovács et al. (2020)</ref> first extract definitions from Wiktionary using language-specific templates. Each definition is then transformed into a 4lang graph with the help of a language-specific Universal Dependencies <ref type="bibr" target="#b44">(Nivre et al., 2016)</ref> parser. Let (x, y) be the candidate word pair from one of our test sets. <ref type="bibr" target="#b30">Kovács et al. (2020)</ref> then start from the 4lang graph of x and include all concepts to which x has an outgoing edge of type 0. They then iteratively expand this initial 4lang graph of x by adding in each iteration all concepts for which they have an incoming edge of type 0 from any of the nodes already in the graph. If, via this extension, they get to include y into the graph, they conclude (in the binary setup) that x indeed entails y, i.e., that (x, y) is a positive LE instance. Somewhat expectedly, this rule-based approach has a very high precision, but relatively low recall. This is why, in the next step, the authors augment their 4lang graph containing extractions from Wiktionary definitions with the hypernymy pairs from WordNet (for EN and IT they use language-specific WordNets, for DE they translate German terms to English and use English WordNet).</p><formula xml:id="formula_1">1 ← − catch 2 − → mouse). 4</formula><p>The reliance on time-consuming rule-based design of language-specific Wiktionary extractors and language-specific LE detection rules on 4lang graphs prevented the authors from submitting predictions for lower-resource languages (HR, SQ, TR). Also, the authors did not submit any graded LE predictions nor cross-lingual predictions. Building reliable scores on a continuous scale has been proven difficult for semantic similarity <ref type="bibr" target="#b67">(Wu and Palmer, 1994;</ref><ref type="bibr">Lin and others, 1998)</ref> and distributional similarity measures have been shown to perform better. We presume something similar to be the case with LE and the proposed 4lang graphs -it is inherently difficult to create a reliable LE score based on paths and distances in a symbolic representation that is a (directed) graph.</p><p>Team UAlberta <ref type="bibr" target="#b23">(Hauer et al., 2020)</ref>. The approach of UAlberta for cross-lingual binary LE detection combines sentence-level translations (i.e., parallel corpora), distributional word vectors (i.e., word embeddings) and multilingual lexical resources. Their base method, dubbed BITEXT, mines candidates for cross-lingual LE from parallel corpora -they simply run the FastAlign <ref type="bibr" target="#b11">(Dyer et al., 2013)</ref> word alignment algorithm and assume that the LE relation holds between all aligned pairs of words. As clarified by the authors, this will, in most cases, extract cross-lingual synonyms, which, strictly speaking, do satisfy the LE relation; also, in some cases, the alignments will be established between close (e.g., first order) hyponymy-hypernymy pairs -in this case, however, the bitext alignment of words alone does not suggest the direction of the LE relation. The authors simply declare any pair of words from our cross-lingual datasets to stand in the LE relation if they find this pair in the list of generated word alignments. The second run, dubbed VECTORS, extends BITEXT by exploiting similarities between distributional embeddings of words. To paraphrase the authors, the intuition behind VECTORS is that mutually semantically similar concepts tend to entail the same set of other concepts. Let (x, y) be a cross-lingual word alignment generated with BITEXT. Let X = {x 1 , . . . , x n } be the set of terms which are semantically most similar to x in one language and Y = {y 1 , . . . , y m } be the set of terms which are semantically most similar to y in the other language. Note that this does not require a bilingual word embedding space, merely two monolingual word embedding spaces: sets X and Y are obtained by thresholding monolingual word embedding similarities (the threshold value is tuned on the development portions of our LE sets). Finally, all possible pairs (x i , y j ) ∈ X × Y are considered to stand in the LE relation.</p><p>Finally, in the third run, the authors couple the bitext-based FastText aligner with the BABELALIGN algorithm, which aligns concepts across languages based on BabelNet <ref type="bibr" target="#b39">(Navigli and Ponzetto, 2012)</ref>, a massively multilingual lexico-semantic network.</p><p>Team SHIKEBLCU <ref type="bibr" target="#b64">(Wang et al., 2020)</ref>. The approach of <ref type="bibr" target="#b64">Wang et al. (2020)</ref> extends the wellestablished line of work based on specializing (i.e., fine-tuning) distributional word vectors for lexical relations, be it symmetric semantic similarity <ref type="bibr" target="#b14">(Faruqui et al., 2015;</ref><ref type="bibr" target="#b38">Mrkšić et al., 2017;</ref><ref type="bibr" target="#b45">Ponti et al., 2018)</ref> or the asymmetric LE relation <ref type="bibr" target="#b26">Kamath et al., 2019;</ref><ref type="bibr" target="#b62">Vulić et al., 2019b)</ref>, using constraints from external lexico-semantic resources like WordNet for supervision. At the core of the approach is the Lexical-Entailment Attract Repel (LEAR) , a retrofitting model that specializes distributional vectors of words from external constraints (synonyms, antonyms, and LE pairs). <ref type="bibr" target="#b64">Wang et al. (2020)</ref> first LE-specialize with LEAR monolingual word embedding spaces of each language independently using language-specific constraints collected from ConceptNet <ref type="bibr" target="#b55">(Speer et al., 2017)</ref>. The number of constraints they obtain for other languages is, however, significantly smaller than for EN, with especially few constraints obtained for lower-resource languages -HR, TR, and SQ. Because of this, they add additional constraints in target languages by translating EN constraints to target languages via Google Translate. A similar approach of automatic constraint translation has already been proven very effective in the context of symmetric similarity-based specialization of embedding spaces for low-resource languages . This way, <ref type="bibr" target="#b64">Wang et al. (2020)</ref> obtain an LE-specialized embedding space for each language.</p><p>Following that, in the second step, they learn a linear projection mapping between the LE-specialized monolingual spaces with the VecMap tool for inducing bilingual word embedding spaces <ref type="bibr" target="#b0">(Artetxe et al., 2018)</ref>. Recent comparative evaluations <ref type="bibr" target="#b61">Vulić et al., 2019a)</ref> rendered VecMap as one of the most robust algorithms for inducing cross-lingual embedding spaces. The word translations obtained with Google Translate when translating EN constraints are also forwarded to VecMap as supervision for inducing bilingual embedding spaces.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Official Evaluation</head><p>We now report the official results of our evaluation. We first describe the baselines (Section 5.1) and then show the performances for all submitted runs (Section 5.2). 5</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Baselines</head><p>For the Dist track we use simple cosine similarity between distributional word vectors as a baseline. To this end, we use the 300-dimensional FastText embeddings <ref type="bibr" target="#b3">(Bojanowski et al., 2017)</ref> trained on Wikipedias of respective languages. <ref type="bibr">6</ref> For the cross-lingual (sub)tasks we induce the bilingual embedding spaces via the simple Procrustes alignment <ref type="bibr" target="#b53">(Smith et al., 2017)</ref>, using 5K word translation dictionaries, as described in . Since LE is an asymmetric relation and cosine similarity is a symmetric measure, we did not expect this baseline to be particularly competitive and expected most participants to outperform it.</p><p>For the Any track, we used GLEN, our recent neural explicit specialization model for LE  as a competitive baseline. GLEN is a simple feed-forward network that learns to specialize distributional word vectors for LE based on three types of lexico-semantic constraints (originating primarily from WordNet): synonyms, antonyms, and LE constraints. Unlike the standard retrofitting models <ref type="bibr" target="#b14">(Faruqui et al., 2015;</ref><ref type="bibr" target="#b38">Mrkšić et al., 2017;</ref>    <ref type="bibr" target="#b22">(Glavaš and Ponzetto, 2017;</ref> can specialize any distributional vector from the original monolingual space and not just the vectors of words from the constraints, as is the case with classic retrofitting models. We use the pre-trained GLEN instance from our original work, which was trained using only EN constraints. In order to make GLEN applicable in monolingual tasks in other languages as well as in the cross-lingual tasks, we first project monolingual embeddings of other languages to the EN monolingual embedding space. For more details, we refer the reader to the original paper . Both baselines (cosine similarity in the Dist track and GLEN in the Any track) produce real-valued scores which can be directly used for our graded LE evaluations. For the binary LE detection subtasks, we first binarize the scores on some threshold value: for both baselines we tune the threshold value on respective development dataset portions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Results</head><p>Monolingual Results. In Table <ref type="table" target="#tab_5">3</ref> we report the results for all monolingual binary LE detection subtasks. Table <ref type="table" target="#tab_6">4</ref> displays the results for the respective graded LE subtasks. Unfortunately, we have not seen any encouraging results in the Dist track: the two runs submitted for the binary LE detection fail to outperform the simple cosine similarity baseline; 7 and we have not received any submissions for the graded LE prediction for the Dist track. Despite the limited number of overall submissions, this also points to the complexity of graded LE reasoning based solely on raw text data and distributional signal.</p><p>The results in the Any track are, however, much more exciting. Both <ref type="bibr" target="#b64">Wang et al. (2020)</ref> and <ref type="bibr" target="#b30">Kovács et al. (2020)</ref> manage to outperform our competitive baseline GLEN in binary LE detection, in some cases by a fairly wide margin (e.g., BMEAUT for EN and IT, SHIKEBLCU for HR and SQ). The results achieved by SHIKEBLCU in the graded monolingual LE tasks (Table <ref type="table" target="#tab_6">4</ref>) are even more encouraging and truly push the state-of-the-art in graded multilingual LE prediction -the improvements over GLEN are ≥ 20 Spearman correlation points for low-resource languages in our evaluation (TR, HR, SQ). Both BMEAUT and SHIKELBCU use language-specific constraints (BMEAUT by extracting 4LANG graphs from language-specific Wiktionaries and SHIKELBCU by translating the EN constraints from WordNet),   whereas GLEN relies only on EN constraints and then transfers the LE specialization to other languages via cross-lingual word embeddings. The especially good performance of SHIKEBLCU -who translate large constraint sets to target languages -in graded LE is aligned with a similar finding established for the symmetric relation of semantic similarity: (a) translation of constraints and specialization directly in the target language  substantially outperforms (b) the specialization in the source language (EN) followed by a transfer of the specialization model to the target languages via cross-lingual embedding spaces .</p><p>Cross-Lingual Results. The results of our cross-lingual evaluation are shown in Table <ref type="table" target="#tab_8">5</ref> (binary LE detection) and Table <ref type="table" target="#tab_9">6</ref> (graded LE prediction). The results mostly follow the same trends of the monolingual results: we received no successful runs in the Dist track, but we see very encouraging results in the Any track. Similar to the monolingual settings, SHIKEBLCU outperforms the competitive GLEN baseline, although now with somewhat narrower margins and not for all language pairs, especially in the graded LE setup (Table <ref type="table" target="#tab_9">6</ref>). An encouraging finding is that largest gains with SHIKEBLCU over GLEN are for language pairs involving Albanian (SQ), our surprise evaluation language and arguably the most resourcelean language in our evaluation (e.g., the margins in graded LE prediction in favor of SHIKEBLCU are 13%, 19%, and 14% for HR-SQ, IT-SQ, and SQ-TR, respectively). Although none of the UAlberta runs <ref type="bibr" target="#b23">(Hauer et al., 2020)</ref> outperform GLEN, it is encouraging to see that competitive performance can be achieved by simple methods with relatively low-resource demands (e.g., their run-1, which is their VECTORS approach, requires only parallel corpora and monolingual word embedding spaces).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>As a fundamental asymmetric lexico-semantic relation, lexical entailment (LE) supports construction of concept hierarchies and downstream applications that require reasoning and inference. In multilingual and cross-lingual applications we need models that can detect LE across languages. This is why we carried out a SemEval shared task (Task 2) on predicting LE, spanning (1) monolingual vs. cross-lingual LE detection, (2) binary LE detection vs. graded LE prediction, and (3) a set of 6 diverse languages (and 15 language pairs). In the track in which we allowed for any external resources to be used (Any track), we received submissions that substantially push the state of the art across all languages and language pairs, for both binary LE detection and graded LE prediction. We hope that these methodological advances, instigated by the SemEval task and the constructed datasets, will inform and inspire further work in fields such as multilingual taxonomy induction and language inference.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>). Each EN HyperLex pair was first translated independently by two native speakers</figDesc><table><row><cell></cell><cell cols="2">Monolingual Examples</cell><cell></cell><cell></cell><cell cols="2">Cross-Lingual Examples</cell><cell></cell></row><row><cell>EN</cell><cell>portrait</cell><cell>picture</cell><cell>5.90</cell><cell>EN-DE</cell><cell>dinosaur</cell><cell>Kreatur</cell><cell>4.75</cell></row><row><cell>EN</cell><cell>ascend</cell><cell>leave</cell><cell>1.08</cell><cell>EN-IT</cell><cell>eye</cell><cell>viso</cell><cell>0.6</cell></row><row><cell>EN</cell><cell>prestige</cell><cell>status</cell><cell>3.64</cell><cell>EN-HR</cell><cell>belief</cell><cell>religija</cell><cell>4.92</cell></row><row><cell>DE</cell><cell>Jazz</cell><cell>Musik</cell><cell>5.75</cell><cell>EN-SQ</cell><cell>harm</cell><cell>dëmtim</cell><cell>4.49</cell></row><row><cell>DE</cell><cell>Idol</cell><cell>Person</cell><cell>4.0</cell><cell>EN-TR</cell><cell>address</cell><cell>konuşmak</cell><cell>3.62</cell></row><row><cell>DE</cell><cell>erodieren</cell><cell>verschlechtern</cell><cell>0.25</cell><cell>DE-IT</cell><cell>Medikation</cell><cell>trattamento</cell><cell>5.38</cell></row><row><cell>IT</cell><cell>origano</cell><cell>cibo</cell><cell>3.25</cell><cell>DE-HR</cell><cell>Form</cell><cell>prizma</cell><cell>0.0</cell></row><row><cell>IT</cell><cell>sorella</cell><cell>comunità di donne</cell><cell>1.00</cell><cell>DE-SQ</cell><cell>Effekt</cell><cell>reaksion</cell><cell>1.43</cell></row><row><cell>IT</cell><cell>sfrattare</cell><cell>trasferire</cell><cell>2.75</cell><cell>DE-TR</cell><cell>verschwinden</cell><cell>solmak</cell><cell>0.71</cell></row><row><cell>HR</cell><cell>tenis</cell><cell>rekreacija</cell><cell>5.75</cell><cell>IT-HR</cell><cell>aritmetica</cell><cell>matematika</cell><cell>5.5</cell></row><row><cell>HR</cell><cell>iseliti</cell><cell>preseliti</cell><cell>3.00</cell><cell>IT-SQ</cell><cell>galleggiare</cell><cell>rrëshqas</cell><cell>0.6</cell></row><row><cell>SQ</cell><cell>biologji</cell><cell>shkencë</cell><cell>6.00</cell><cell>IT-TR</cell><cell>commedia</cell><cell>trajedi</cell><cell>0.0</cell></row><row><cell>SQ</cell><cell>rregulloj</cell><cell>bashkangjis</cell><cell>1.00</cell><cell cols="2">HR-SQživcirati</cell><cell>ngacmoj</cell><cell>2.45</cell></row><row><cell>TR</cell><cell>püskürmek</cell><cell>patlamak</cell><cell>1.67</cell><cell>HR-TR</cell><cell>terapija</cell><cell>tedavi</cell><cell>3.08</cell></row><row><cell>TR</cell><cell>tutmak</cell><cell>yakalamak</cell><cell>0.67</cell><cell>TR-SQ</cell><cell>alet</cell><cell>bisturi</cell><cell>5.55</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Example pairs with ratings from monolingual and cross-lingual graded LE datasets. Note: for cross-lingual datasets words from each language can be placed as either first or second in the pair.</figDesc><table><row><cell></cell><cell>EN</cell><cell>DE</cell><cell>IT</cell><cell>HR</cell><cell>SQ</cell><cell>TR</cell></row><row><cell>EN</cell><cell>2116 / 1403</cell><cell>2521 / 2149</cell><cell>2841 / 2322</cell><cell>3016 / 2479</cell><cell>2638 / 2020</cell><cell>2616 / 2189</cell></row><row><cell>DE</cell><cell>-</cell><cell>2070 / 1681</cell><cell>2921 / 2614</cell><cell>3028 / 2745</cell><cell>2814 / 2305</cell><cell>2983 / 2662</cell></row><row><cell>IT</cell><cell>-</cell><cell>-</cell><cell>1977 / 1572</cell><cell>3170 / 2801</cell><cell>2757 / 2265</cell><cell>3044 / 2679</cell></row><row><cell>HR</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>2041 / 1645</cell><cell>2787 / 2344</cell><cell>3142 / 2765</cell></row><row><cell>SQ</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>1941 / 1235</cell><cell>2784 / 2281</cell></row><row><cell>TR</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>1972 / 1522</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Sizes of all monolingual (main diagonal) and cross-lingual LE test sets (format: graded/binary).</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>Score distributions (with 1-point wide buckets) for monolingual graded LE test sets. Score distributions for a sample of 6 cross-lingual graded LE test sets. binary LE detection, we created a corresponding binary LE set from each graded LE dataset by (a) taking as positive examples all word pairs with the graded LE score ≥ 4.5, (b) taking as negative examples all word pairs with the graded LE score ≤ 1.5, and (c) eliminating word pairs with scores between 1.5 and 4.5. The sizes of all our final monolingual and cross-lingual test sets (both graded and binary) are shown in Table 2. The distribution of graded LE scores in monolingual test sets and (a sample of) cross-lingual test sets is given by Figure</figDesc><table><row><cell></cell><cell>1000</cell><cell>EN</cell><cell></cell><cell>DE</cell><cell>IT</cell><cell>HR</cell><cell>SQ</cell><cell>TR</cell></row><row><cell>Number of examples</cell><cell>400 600 800</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell>200</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell>[0, 1)</cell><cell>[1, 2)</cell><cell></cell><cell cols="4">[2, 3) Graded LE score range [3, 4)</cell><cell>[4, 5)</cell><cell>[5, 6]</cell></row><row><cell>Number of examples</cell><cell>500 1000 1500 Figure 1: [0, 1) 2000</cell><cell>[1, 2) EN-DE</cell><cell>EN-IT</cell><cell cols="4">[2, 3) Graded LE score range [3, 4) DE-HR IT-SQ</cell><cell>HR-TR</cell><cell>[4, 5) SQ-TR</cell><cell>[5, 6]</cell></row><row><cell></cell><cell>Figure 2:</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>, in explicit retrofitting the constraints are not</figDesc><table><row><cell>Submission</cell><cell>EN</cell><cell>DE</cell><cell>IT</cell><cell>HR</cell><cell>TR</cell><cell>SQ</cell></row><row><cell>Distributional models (DIST track)</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Baseline: Cosine</cell><cell>77.80</cell><cell>52.01</cell><cell>63.27</cell><cell>64.52</cell><cell>58.0</cell><cell>54.11</cell></row><row><cell>AYAH (run 1)</cell><cell>74.63</cell><cell>43.42</cell><cell>54.01</cell><cell>-</cell><cell>46.54</cell><cell>-</cell></row><row><cell>SPON (run 1)</cell><cell>75.27</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>Any resource models (ANY track)</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Baseline: GLEN</cell><cell>79.87</cell><cell>59.88</cell><cell>66.27</cell><cell>64.27</cell><cell>64.35</cell><cell>56.86</cell></row><row><cell>BMEAUT (run 1)</cell><cell>91.77</cell><cell>67.00</cell><cell>81.41</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>FERRYMAN (run 1)</cell><cell>72.13</cell><cell>53.12</cell><cell>62.71</cell><cell>55.62</cell><cell>38.45</cell><cell>38.67</cell></row><row><cell>FERRYMAN (run 2)</cell><cell>72.13</cell><cell>53.2</cell><cell>62.71</cell><cell>55.62</cell><cell>38.45</cell><cell>38.67</cell></row><row><cell>SHIKEBLCU (run 1)</cell><cell>87.90</cell><cell>71.43</cell><cell>75.94</cell><cell>75.37</cell><cell>69.85</cell><cell>72.12</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Monolingual LE results for binary LE detection (F 1 scores).</figDesc><table><row><cell>Submission</cell><cell>EN</cell><cell>DE</cell><cell>IT</cell><cell>HR</cell><cell>TR</cell><cell>SQ</cell></row><row><cell>Distributional models (DIST track)</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Baseline: Cosine</cell><cell>18.59</cell><cell>22.02</cell><cell>12.42</cell><cell>15.5</cell><cell>16.54</cell><cell>26.13</cell></row><row><cell>Any resource models (ANY track)</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Baseline: GLEN</cell><cell>51.24</cell><cell>43.31</cell><cell>43.2</cell><cell>38.29</cell><cell>43.06</cell><cell>32.25</cell></row><row><cell>FERRYMAN (run 2)</cell><cell>34.62</cell><cell>27.59</cell><cell>35.39</cell><cell>24.56</cell><cell>15.39</cell><cell>9.66</cell></row><row><cell>SHIKEBLCU (run 1)</cell><cell>69.63</cell><cell>63.17</cell><cell>63.6</cell><cell>58.85</cell><cell>52.52</cell><cell>56.45</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Monolingual LE results for graded LE prediction (Spearman ρ). used to directly tune the vectors of the words from those constraints, but are rather exploited as training examples to learn a general specialization function (in case of GLEN, a feed-forward network). This way, explicit retrofitting models</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head></head><label></label><figDesc>Submissionde-en de-hr de-it de-sq de-tr en-hr en-it en-sq en-tr hr-it hr-sq hr-tr it-sq it-tr sq-tr</figDesc><table><row><cell cols="3">Distributional models (DIST track)</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Baseline: Cosine</cell><cell cols="13">71.7 57.5 55.6 51.1 54.3 74.0 74.3 66.2 72.3 63.2 57.3 61.5 58.4 60.3 55.3</cell></row><row><cell>AYAH (run 1)</cell><cell>62.4</cell><cell>-</cell><cell>46.5</cell><cell>-</cell><cell cols="3">44.4 42.2 67.8</cell><cell>-</cell><cell cols="2">63.7 -</cell><cell>-</cell><cell>-</cell><cell>-50.5 -</cell></row><row><cell cols="3">Any resources models (ANY track)</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Baseline: GLEN</cell><cell cols="13">74.3 62.6 63.7 58.8 63.2 65.9 77.2 65.7 74.3 61.6 57.6 63.7 59.8 67.6 61.2</cell></row><row><cell cols="14">FERRYMAN (run 1) 66.1 55.7 59.5 46.2 47.1 67.6 71.5 56.9 59.2 60.5 48.8 49.2 51.9 52.6 35.9</cell></row><row><cell cols="14">FERRYMAN (run 2) 66.1 55.7 59.5 46.2 47.1 67.6 71.5 56.9 59.2 60.5 48.8 49.2 51.9 52.6 35.9</cell></row><row><cell cols="14">SHIKEBLCU (run 1) 80.6 64.0 63.8 61.4 62.7 78.8 81.4 74.8 77.8 69.0 63.6 65.0 67.0 67.5 62.2</cell></row><row><cell cols="14">UALBERTA (run 1) 63.1 47.6 49.6 43.2 46.4 64.2 67.9 52.0 61.2 55.4 46.4 44.4 50.7 52.2 43.8</cell></row><row><cell cols="4">UALBERTA (run 2) 65.0 54.7 51.7</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>74.3</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell cols="4">UALBERTA (run 3) 70.7 55.5 56.6</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>75.3</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc>Cross-lingual LE results for binary LE prediction (F 1 scores). 56.7 42.1 45.7 52.9 45.8 49.4 53.2 55.9 51.0 43.2 49.0 38.6 54.4 45.9 51.0</figDesc><table><row><cell>Submission</cell><cell>de-en de-hr de-it de-sq de-tr en-hr en-it en-sq en-tr hr-it hr-sq hr-tr it-sq it-tr sq-tr</cell></row><row><cell cols="2">Distributional models (DIST track)</cell></row><row><cell>Baseline: Cosine</cell><cell>30.5 24.3 22.5 33.5 25.9 26.8 27.1 34.6 34.2 20.1 33.6 23.1 35.2 22.3 36.4</cell></row><row><cell cols="2">Any resources models (ANY track)</cell></row><row><cell>Baseline: GLEN</cell><cell>50.4 40.8 48.8 39.6 46.6 36.8 54.1 39.3 50.4 35.3 36.6 40.2 35.4 47.4 37.2</cell></row><row><cell cols="2">FERRYMAN (run 2) 39.8 30.6 36.3 22.1 21.9 37.6 42.7 26.9 27.2 32.6 18.9 21.9 24.3 23.8 9.8</cell></row><row><cell>SHIKEBLCU (run 1)</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 6 :</head><label>6</label><figDesc>Cross-lingual LE results for graded LE prediction (Spearman ρ scores).</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">We designated Albanian (SQ) to be a surprise language in our evaluation. Thus, we did not release the development portions of the monolingual SQ dataset nor the development portions of any of the five cross-lingual datasets involving Albanian.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">We received partial run submissions from 3 other teams. However, these teams never sent us a short methodological description nor did they submit a system description paper.4  In that sense, edges of type 1 and 2 very much correspond to standard dependency relations of nominal subject and direct object, respectively.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">For completeness, we also report the scores for runs for which we have received no system description papers. 6 https://fasttext.cc/docs/en/pretrained-vectors.html</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">We have not received any system descriptions for these runs.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>We thank all participants for submitting their runs, despite (to put it mildly) less than ideal and extremely uncertain circumstances caused by the COVID-19 pandemic. We thank our annotators, native speakers of German, Italian, Croatian, Turkish, and Albanian for their high-quality and dedicated work on creating datasets for this shared task. Goran Glavaš is supported by the Baden-Württemberg Stiftung (Eliterprogramm, grant AGREE). Simone Paolo Ponzetto is supported by the German Science Foundation (JOIN-T 2 grant). Ivan Vulić and Anna Korhonen are supported by the ERC Consolidator Grant LEXICAL (no. 648909).</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">A robust self-learning method for fully unsupervised cross-lingual mappings of word embeddings</title>
+		<author>
+			<persName><forename type="first">Mikel</forename><surname>Artetxe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gorka</forename><surname>Labaka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="789" to="798" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">WordNet: A lexical database organized on psycholinguistic principles. Lexical acquisition: Exploiting on-line resources to build a lexicon</title>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Beckwith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christiane</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Derek</forename><surname>Gross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">A</forename><surname>Miller</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1991" />
+			<biblScope unit="page" from="211" to="231" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Classifying taxonomic relations between pairs of Wikipedia articles</title>
+		<author>
+			<persName><forename type="first">Or</forename><surname>Biran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kathleen</forename><surname>Mckeown</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of IJCNLP</title>
+				<meeting>IJCNLP</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="788" to="794" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Enriching word vectors with subword information</title>
+		<author>
+			<persName><forename type="first">Piotr</forename><surname>Bojanowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Joulin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the ACL</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="page" from="135" to="146" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Semeval-2016 task 13: Taxonomy extraction evaluation (TExEval-2)</title>
+		<author>
+			<persName><forename type="first">Georgeta</forename><surname>Bordea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Buitelaar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SEMEVAL</title>
+				<meeting>SEMEVAL</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1081" to="1091" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">A large annotated corpus for learning natural language inference</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Samuel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gabor</forename><surname>Bowman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Angeli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Potts</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="632" to="642" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A framework for the construction of monolingual and cross-lingual word similarity datasets</title>
+		<author>
+			<persName><forename type="first">José</forename><surname>Camacho-Collados</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Taher Pilehvar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1" to="7" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Semeval-2017 task 2: Multilingual and cross-lingual semantic word similarity</title>
+		<author>
+			<persName><forename type="first">Jose</forename><surname>Camacho-Collados</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad</forename><forename type="middle">Taher</forename><surname>Pilehvar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nigel</forename><surname>Collier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SEMEVAL</title>
+				<meeting>SEMEVAL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="15" to="26" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Experiments on semantic memory and language comprehension</title>
+		<author>
+			<persName><forename type="first">Allan</forename><forename type="middle">M</forename><surname>Collins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ross</forename><forename type="middle">M</forename><surname>Quillian</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognition in Learning and Memory</title>
+		<imprint>
+			<date type="published" when="1972" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">XNLI: Evaluating cross-lingual sentence representations</title>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Conneau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruty</forename><surname>Rinott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Lample</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adina</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Bowman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Holger</forename><surname>Schwenk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2475" to="2485" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Recognizing textual entailment: Models and applications</title>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Ido Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Roth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabio</forename><forename type="middle">Massimo</forename><surname>Sammons</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zanzotto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Synthesis Lectures on Human Language Technologies</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="1" to="220" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">A simple, fast, and effective reparameterization of IBM Model 2</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Victor</forename><surname>Chahuneau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="644" to="648" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Representing multilingual data as linked data: the case of BabelNet 2.0</title>
+		<author>
+			<persName><forename type="first">Maud</forename><surname>Ehrmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Cecconi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Vannella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Philip Mccrae</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Cimiano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC</title>
+				<meeting>LREC</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="401" to="408" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">The ContrastMedium algorithm: Taxonomy induction from noisy knowledge graphs with just a few links</title>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Faralli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Panchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="590" to="600" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Retrofitting word vectors to semantic lexicons</title>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jesse</forename><surname>Dodge</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sujay</forename><surname>Kumar Jauhar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1606" to="1615" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Christiane</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>MIT Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Learning semantic hierarchies via word embeddings</title>
+		<author>
+			<persName><forename type="first">Ruiji</forename><surname>Fu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiang</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Qin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wanxiang</forename><surname>Che</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haifeng</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1199" to="1209" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">The distributional inclusion hypotheses and lexical entailment</title>
+		<author>
+			<persName><forename type="first">Maayan</forename><surname>Geffet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="107" to="114" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">SimVerb-3500: A large-scale evaluation set of verb similarity</title>
+		<author>
+			<persName><forename type="first">Daniela</forename><surname>Gerz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felix</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2173" to="2182" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Explicit retrofitting of distributional word vectors</title>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="34" to="45" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Generalized tuning of distributional word vectors for monolingual and crosslingual lexical entailment</title>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="4824" to="4830" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">How to (properly) evaluate cross-lingual word embeddings: On strong baselines, comparative analyses, and some misconceptions</title>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Litschko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Ruder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="710" to="721" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Dual tensor model for detecting asymmetric lexico-semantic relations</title>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1758" to="1768" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">UAlberta at SemEval-2020 Task 2: Using translations to predict cross-lingual entailment</title>
+		<author>
+			<persName><forename type="first">Bradley</forename><surname>Hauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmad</forename><surname>Amir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yixing</forename><surname>Habibi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arnob</forename><surname>Luan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Grzegorz</forename><surname>Mallik</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kondrak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SEMEVAL</title>
+				<meeting>SEMEVAL</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">A vector space for distributional semantics for entailment</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Henderson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><forename type="middle">Nicoleta</forename><surname>Popa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2052" to="2062" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">SimLex-999: Evaluating semantic models with (genuine) similarity estimation</title>
+		<author>
+			<persName><forename type="first">Felix</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="665" to="695" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Specializing distributional vectors of all words for lexical entailment</title>
+		<author>
+			<persName><forename type="first">Aishwarya</forename><surname>Kamath</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonas</forename><surname>Pfeiffer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Edoardo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Ponti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Vulić</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th Workshop on Representation Learning for NLP</title>
+				<meeting>the 4th Workshop on Representation Learning for NLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="72" to="83" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Prototype theory and compositionality</title>
+		<author>
+			<persName><forename type="first">Hans</forename><surname>Kamp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Partee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Cognition</title>
+		<imprint>
+			<biblScope unit="volume">57</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="129" to="191" />
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Exploiting image generality for lexical entailment detection</title>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Rimell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Clark</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="119" to="124" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Dávid Márk Nemeskey, Katalin Pajkossy, and Gábor András Recski. 2015. Competence in lexical semantics</title>
+		<author>
+			<persName><forename type="first">András</forename><surname>Kornai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Judit</forename><surname>Acs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Márton</forename><surname>Makrai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of *SEM</title>
+				<meeting>*SEM</meeting>
+		<imprint>
+			<biblScope unit="page" from="165" to="175" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">BMEAUT at SemEval-2020 Task 2: Lexical entailment with semantic graphs</title>
+		<author>
+			<persName><forename type="first">Adám</forename><surname>Kovács</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kinga</forename><surname>Gémes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">András</forename><surname>Kornai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gábor</forename><surname>Recski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SEMEVAL</title>
+				<meeting>SEMEVAL</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Inferring concept hierarchies from text corpora via hyperbolic embeddings</title>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Roller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laetitia</forename><surname>Papaxanthos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maximilian</forename><surname>Nickel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="3231" to="3241" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">Separated by an un-common language: Towards judgment language informed vector space modeling</title>
+		<author>
+			<persName><forename type="first">Ira</forename><surname>Leviant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<idno>abs/1508.00106</idno>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Improving distributional similarity with lessons learned from word embeddings</title>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the ACL</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="211" to="225" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">An information-theoretic definition of similarity</title>
+		<author>
+			<persName><forename type="first">Dekang</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ICML</title>
+				<meeting>ICML</meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="page" from="296" to="304" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Wiktionary: A new rival for expert-built lexicons? exploring the possibilities of collaborative lexicography</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Christian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Meyer</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gurevych</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Electronic Lexicography</title>
+				<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="259" to="291" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Semeval-2010 task 2: Cross-lingual lexical substitution</title>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ravi</forename><forename type="middle">Som</forename><surname>Sinha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Mccarthy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SEMEVAL</title>
+				<meeting>SEMEVAL</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="9" to="14" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Semantic signatures for examplebased linguistic metaphor detection</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Mohler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Bracewell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Tomlinson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Hinote</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Metaphor in NLP</title>
+				<meeting>the First Workshop on Metaphor in NLP</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="27" to="35" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Semantic specialisation of distributional word vector spaces using monolingual and crosslingual constraints</title>
+		<author>
+			<persName><forename type="first">Nikola</forename><surname>Mrkšić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diarmuidó</forename><surname>Séaghdha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ira</forename><surname>Leviant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Milica</forename><surname>Gašić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steve</forename><surname>Young</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the ACL</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="page" from="309" to="324" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Babelnet: The automatic construction, evaluation and application of a wide-coverage multilingual semantic network</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artificial Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">193</biblScope>
+			<biblScope unit="page" from="217" to="250" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">A graph-based algorithm for inducing lexical taxonomies from scratch</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paola</forename><surname>Velardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Faralli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of IJCAI</title>
+				<meeting>IJCAI</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1872" to="1877" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Semeval-2013 task 8: Cross-lingual textual entailment for content synchronization</title>
+		<author>
+			<persName><forename type="first">Matteo</forename><surname>Negri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Marchetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yashar</forename><surname>Mehdad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luisa</forename><surname>Bentivogli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Giampiccolo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SEMEVAL</title>
+				<meeting>SEMEVAL</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="25" to="33" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Hierarchical embeddings for hypernymy detection and directionality</title>
+		<author>
+			<persName><forename type="first">Maximilian</forename><surname>Kim Anh Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Köper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ngoc</forename><forename type="middle">Thang</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Vu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="233" to="243" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Poincaré embeddings for learning hierarchical representations</title>
+		<author>
+			<persName><forename type="first">Maximilian</forename><surname>Nickel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NeurIPS</title>
+				<meeting>NeurIPS</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="6341" to="6350" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Universal Dependencies v1: A multilingual treebank collection</title>
+		<author>
+			<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Catherine</forename><surname>De Marneffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Ginter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Hajic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Silveira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC</title>
+				<meeting>LREC</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1659" to="1666" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Adversarial propagation and zero-shot cross-lingual transfer of word vector specialization</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Edoardo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Ponti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikola</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Mrkšić</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="282" to="293" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Cross-lingual semantic specialization via lexical relation induction</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Edoardo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Ponti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP-IJCNLP</title>
+				<meeting>EMNLP-IJCNLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="2206" to="2217" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Measuring semantic similarity of words using concept networks</title>
+		<author>
+			<persName><forename type="first">Gábor</forename><surname>Recski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eszter</forename><surname>Iklódi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katalin</forename><surname>Pajkossy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andras</forename><surname>Kornai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st Workshop on Representation Learning for NLP</title>
+				<meeting>the 1st Workshop on Representation Learning for NLP</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="193" to="200" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Hearst patterns revisited: Automatic hypernym detection from large text corpora</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Roller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maximilian</forename><surname>Nickel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="358" to="363" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Cognitive representations of semantic categories</title>
+		<author>
+			<persName><forename type="first">Eleanor</forename><forename type="middle">H</forename><surname>Rosch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Experimental Psychology</title>
+		<imprint>
+			<biblScope unit="volume">104</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="192" to="233" />
+			<date type="published" when="1975" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Chasing hypernyms in vector spaces with entropy</title>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qin</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="38" to="42" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Improving hypernymy detection with an integrated pathbased and distributional method</title>
+		<author>
+			<persName><forename type="first">Vered</forename><surname>Shwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2389" to="2398" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">Hypernyms under siege: Linguisticallymotivated artillery for hypernymy detection</title>
+		<author>
+			<persName><forename type="first">Vered</forename><surname>Shwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EACL</title>
+				<meeting>EACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="65" to="75" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Offline bilingual word vectors, orthogonal transformations and the inverted softmax</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Samuel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">P</forename><surname>David</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Turban</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nils</forename><forename type="middle">Y</forename><surname>Hamblin</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hammerla</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ICLR</title>
+				<meeting>ICLR</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">Semantic taxonomy induction from heterogenous evidence</title>
+		<author>
+			<persName><forename type="first">Rion</forename><surname>Snow</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Jurafsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">Y</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="801" to="808" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">ConceptNet 5.5: An open multilingual graph of general knowledge</title>
+		<author>
+			<persName><forename type="first">Robyn</forename><surname>Speer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joshua</forename><surname>Chin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Catherine</forename><surname>Havasi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of AAAI</title>
+				<meeting>AAAI</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="4444" to="4451" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">Poincaré GloVe: Hyperbolic word embeddings</title>
+		<author>
+			<persName><forename type="first">Alexandru</forename><surname>Tifrea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gary</forename><surname>Bécigneul</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Octavian-Eugen</forename><surname>Ganea</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ICLR</title>
+				<meeting>ICLR</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">Robust cross-lingual hypernymy detection using dependency context</title>
+		<author>
+			<persName><forename type="first">Shyam</forename><surname>Upadhyay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yogarshi</forename><surname>Vyas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marine</forename><surname>Carpuat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Roth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="607" to="618" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">Specialising word vectors for lexical entailment</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikola</forename><surname>Mrkšić</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1134" to="1145" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">Hyperlex: A large-scale evaluation of graded lexical entailment</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniela</forename><surname>Gerz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felix</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="781" to="835" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Post-specialisation: Retrofitting vectors of words unseen in lexical resources</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikola</forename><surname>Mrkšić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="516" to="527" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">Do we really need fully unsupervised cross-lingual embeddings?</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roi</forename><surname>Reichart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Korhonen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings EMNLP-IJCNLP</title>
+				<meeting>EMNLP-IJCNLP</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="4398" to="4409" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">Multilingual and cross-lingual graded lexical entailment</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Glavaš</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="4963" to="4974" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">Sparse bilingual word representations for cross-lingual lexical entailment</title>
+		<author>
+			<persName><forename type="first">Yogarshi</forename><surname>Vyas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marine</forename><surname>Carpuat</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="1187" to="1197" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">SHIKEBLCU at SemEval-2020 Task 2: An external knowledge-enhanced matrix for multilingual and cross-lingual lexical entailment</title>
+		<author>
+			<persName><forename type="first">Shike</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuchen</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiangying</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dong</forename><surname>Yu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SEMEVAL</title>
+				<meeting>SEMEVAL</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">Learning to distinguish hypernyms and co-hyponyms</title>
+		<author>
+			<persName><forename type="first">Julie</forename><surname>Weeds</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daoud</forename><surname>Clarke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Reffin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Weir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bill</forename><surname>Keller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING</title>
+				<meeting>COLING</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="2249" to="2259" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title level="a" type="main">A broad-coverage challenge corpus for sentence understanding through inference</title>
+		<author>
+			<persName><forename type="first">Adina</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikita</forename><surname>Nangia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Bowman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1112" to="1122" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">Verbs semantics and lexical selection</title>
+		<author>
+			<persName><forename type="first">Zhibiao</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="1994" />
+			<biblScope unit="page" from="133" to="138" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

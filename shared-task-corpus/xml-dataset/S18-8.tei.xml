@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2018 Task 8: Semantic Extraction from CybersecUrity REports using Natural Language Processing (SecureNLP)</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Peter</forename><surname>Phandi</surname></persName>
+							<email>peterphandi@sutd.edu.sg</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Singapore University of Technology</orgName>
+								<address>
+									<addrLine>Wei Lu 8 Somapah Road</addrLine>
+									<postCode>487372</postCode>
+									<country key="SG">Singapore</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Amila</forename><surname>Silva</surname></persName>
+							<email>amilasilva@sutd.edu.sg</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Singapore University of Technology</orgName>
+								<address>
+									<addrLine>Wei Lu 8 Somapah Road</addrLine>
+									<postCode>487372</postCode>
+									<country key="SG">Singapore</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2018 Task 8: Semantic Extraction from CybersecUrity REports using Natural Language Processing (SecureNLP)</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the SemEval 2018 shared task on semantic extraction from cybersecurity reports, which is introduced for the first time as a shared task on SemEval. This task comprises four SubTasks done incrementally to predict the characteristics of a specific malware using cybersecurity reports. To the best of our knowledge, we introduce the world's largest publicly available dataset of annotated malware reports in this task. This task received in total 18 submissions from 9 participating teams.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>As a result of the world getting more connected and digitized, cyber attacks become increasingly common and pose serious issues for the society. More recently in 2017, a ransomware called Wan-naCry, which has the capability to lock down the data files using strong encryption, spread around the world targeting public utilities and large corporations <ref type="bibr" target="#b20">(Mohurle and Patil, 2017)</ref>. Another example is the botnet known as Mirai, which used infected Internet of Things (IoT) devices to disable Internet access for millions of users in the US West Coast (US-CERT, 2016) through largescale Distributed Denial of Service (DDoS) attacks. The impact levels of these attacks is ranging from simple ransomware on personal laptops <ref type="bibr" target="#b1">(Andronio et al., 2015)</ref> to taking over the control of moving cars <ref type="bibr" target="#b5">(Checkoway et al., 2011)</ref>.</p><p>Along with the importance of cybersecurity in today's context, there is an increasing potential for substantial contribution in cybersecurity using natural language processing (NLP) techniques, even though this has not been significantly addressed. We introduced this task as a shared task on Se-mEval for the first time with the intention of motivating NLP researchers for this critical research area. Even though there exists a large repository of malware related texts online, the sheer volume and diversity of these texts make it difficult for NLP researchers to quickly move to this research field. Another challenge is that most of the data is unannotated. <ref type="bibr" target="#b15">Lim et al. (2017)</ref> has introduced a dataset of annotated malware reports for facilitating future NLP work in cybersecurity. In the light of that, we improved Lim's malware dataset to create, to the best of our knowledge, the world's largest publicly available dataset of annotated malware reports. The aim of our annotation is to mark the words and phrases in malware reports that describe the behaviour and capabilities of the malware and assign them to some certain categories.</p><p>Most of the machine learning efforts in the task of malware detection were based on the system calls. <ref type="bibr" target="#b25">Rieck et al. (2011)</ref> and <ref type="bibr" target="#b0">Alazab et al. (2010)</ref> proposed models using machine learning techniques for detecting and classifying malware through system calls. Previously, our group has proposed models to predict a malware's signatures based on the text describing the malware <ref type="bibr" target="#b15">(Lim et al., 2017)</ref>. We defined the same SubTasks mentioned in this paper and used the proposed models as the standard baselines for the shared task. This shared task is hosted on CodaLab 1 .</p><p>The remainder of this paper is organized as follows: the information regarding the annotated dataset and its statistics, together with the Sub-Tasks are described in Section 2. Information about the evaluation measures and the baselines is described in Section 3. Different approaches used by the participants are described in Section 4. The evaluation scores of the participating systems and rankings are presented and discussed in Section 5. Finally, the paper concludes with an overall assessment of the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data description and Task Definition</head><p>In this shared task we expanded upon our previous work, MalwareTextDB <ref type="bibr" target="#b15">(Lim et al., 2017)</ref>, which was published in ACL 2017. In this paper, we initiated a framework for annotating malware reports and annotated 39 Advanced Persistent Threat (APT) reports (containing 6,819 sentences) with attribute labels from the Malware Attribute Enumeration and Characterization (MAEC) vocabulary <ref type="bibr" target="#b11">(Kirillov et al., 2010)</ref>. An example of such annotation is shown in Figure <ref type="figure" target="#fig_0">1</ref>. During this shared task, we have further annotated 46 APT reports (6,099 sentences), bringing the total number of annotated APT reports to 85 (12,918 sentences). We continue to follow our annotation procedure from the paper, which we will describe in the following subsection.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Annotation Procedure</head><p>This subsection contains the explanation of our annotation procedure.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.1">Data Collection</head><p>The APT reports in our dataset are taken from APTnotes, a GitHub repository of publiclyreleased reports related to APT groups <ref type="bibr" target="#b2">(Blanda, 2016)</ref>. It provides a constant source of APT reports for annotations with consistent updates. At the time this paper was written, the repository contains 488 reports. We have chosen 85 reports from year 2014 and 2015 for annotation. We consulted the cybersecurity team from DSO National Laboratories 2 when selecting the APT reports in order to ensure that the preliminary dataset will be relevant for the cybersecurity community.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.2">Preprocessing</head><p>The APT reports from APTnotes are in PDF format, hence we used the PDFMiner tool <ref type="bibr" target="#b26">(Shinyama, 2004)</ref> to convert the PDF files into plaintext format. We also manually removed the non-sentences, such as the cover page or document header and footer, before the annotation. Hence only complete sentences were considered for subsequent steps.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.3">Annotation</head><p>The annotation was performed using the Brat Rapid Annotation Tool <ref type="bibr" target="#b29">(Stenetorp et al., 2012)</ref> . In this annotation, our aim is to mark the words and phrases that describe malware behaviors and map them to the relevant attribute labels, which are the labels we extracted from the MAEC vocabulary. There are a total of 444 attribute labels, consisting of 211 ActionName labels, 20 Capability labels, 65 StrategicObjectives labels and 148 TacticalObjectives labels. The annotation was performed by a team of research assistants and student interns. The annotation work done by the student interns was further reviewed by the research assistants to ensure the quality.</p><p>The annotation was performed in three main stages:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.4">Stage 1 -Token Labels</head><p>The first stage involves annotating the text with the following token labels, illustrated in Figure <ref type="figure" target="#fig_1">2</ref>:</p><p>Action This refers to an event, such as "implements", "deploy", and "transferred". Subject This refers to the initiator of the Action such as "Babar" and "they". Object This refers to the recipient of the Action such as "an obfuscation technique", "the data", and "privilege escalation tools"; it also refers to word phrases that provide elaboration on the Action such as "hide certain API names" and "external FTP servers". Modifier This refers to the tokens that link to other word phrases that provide elaboration on the Action such as "to".</p><p>This stage helps to identify word phrases that are relevant to the MAEC vocabulary.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.5">Stage 2 -Relation Labels</head><p>The second stage involves annotating the text with the following relation labels:</p><p>SubjAction links an Action with its relevant Subject.  ActionObj links an Action with its relevant Object.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>ActionMod links an Action with its relevant</head><p>Modifier. ModObj links a Modifier with the Object that provides elaboration.</p><p>This stage indicates the links between the labeled tokens. Such annotations are important in cases where an Action has more than one Subjects, Objects or Modifiers. The illustration on how the relation label links token labels is shown in Figure <ref type="figure" target="#fig_1">2</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.6">Stage 3 -Attribute Labels</head><p>The third stage involves annotating the text with the attribute labels extracted from the MAEC vocabulary. We decided to annotate the attribute labels onto the Action tokens tagged in the first stage. This is because Action is usually the main indicator of the malware's behaviour. This scheme requires each Action token to be annotated with at least one attribute label.</p><p>The attribute labels are categorized into four classes: ActionName, Capability, StrategicObjectives and TacticalObjectives. These classes describe different kinds of actions and capabilities of the malware.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.7">Irrelevant Sentences</head><p>The document also contains sentences that provide no indication of malware action or capability. We call these sentences irrelevant sentences and do not annotate them. Examples of such sentences can be seen in Figure <ref type="figure" target="#fig_2">3</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.8">Annotation Challenges</head><p>We took a portion of the dataset and calculated the agreement for the token labels annotation based on Cohen's kappa <ref type="bibr" target="#b6">(Cohen, 1960)</ref>. The agreement between annotators is quite low at 0.36, suggesting that this is a difficult task. The main challenges the annotators faced are:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Multiple ways of annotating the same sentence</head><p>There might be multiple ways of annotating the same sentence that are equally valid. An example of this is demonstrated in Figure <ref type="figure">4</ref>. Both annotations highlight the malware ability to conduct profiling.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Large amount of annotation labels</head><p>There are 444 attribute labels and it is very challenging for the annotators to remember all of them. There are also some attribute labels that are very similar to each other, such as ActionName 084: load library and Action-Name 119: map library into process.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Required special domain knowledge</head><p>The annotation requires the annotator to have some cybersecurity domain knowledge. For example, given the phrase "conduct profiling", the annotator must be able to classify it as Capability 015: probing.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">SubTask Description</head><p>We focus on the evaluations for the following 4 different SubTasks, which are formulated as follows:</p><p>Figure <ref type="figure">4</ref>: Two different ways of annotating an example sentence.</p><p>• SubTask 1: Classify relevant sentences for inferring malware actions and capabilities</p><p>• SubTask 2: Predict token labels for a malware related text</p><p>• SubTask 3: Predict relation labels between tokens for a malware-related text</p><p>• SubTask 4: Predict attribute labels for a malware-related text</p><p>In SubTask 1, participants were asked to solve the challenge of sifting out critical sentences from lengthy malware reports and articles. This is modeled as a binary classification task, where each sentence had to be labeled as either relevent or irrelevant. The participants are provided with a list of sentences.</p><p>In SubTask2, special tokens in a relevant sentence had to be identified and labeled with one of the following token labels (examples are taken from Figure <ref type="figure" target="#fig_1">2</ref>):</p><p>• Action This refers to an event, such as "implements", "deploys", and "transferred".</p><p>• Entity This refers to the initiator of the Action such as "Babar" and "They" or the recipient of the Action such as "an obfuscation technique", "privilege-escalation tools", and "the data"; it also refers to word phrases that provide elaboration on the Action such as "hide certain API names" and "external FTP servers".</p><p>• Modifier This refers to tokens that link to other word phrases that provide elaboration on the Action such as "to".  The formulation is similar to the token labels in section 2.1.4. The only difference is the Entity label, which is a combination of the Subject and Object labels. This is to accommodate cases where a single word-phrase is annotated as both the initiator and the recipient of an Action (as seen in Figure <ref type="figure">5</ref>). This SubTask uses the same list of sentences used in SubTask 1.</p><p>In SubTask 3, participants were asked to identify the relation between the tokens. We decided to provide the gold labels for the tokens here due to the low performance of our initial models on SubTask 2. The relation labels are as we described in section 2.1.5.</p><p>In SubTask 4, participants were asked to label each action token with the corresponding attribute label(s). In our ACL paper, we did the evaluation on token groups (a set of token labels connected by relation labels) instead of action tokens. However, we decided to evaluate on action tokens in order to encourage the participants to make use of the surrounding context, not limiting themselves just to the tokens in the token group. We also provided the gold labels for the token and relation labels here, following the same consideration as we described for SubTask 3.</p><p>In our ACL paper, we also had the experiments Figure <ref type="figure">5</ref>: An example of a token (a cmd.exe process) labelled as both Subject and Object. In the first case, it is the recipient of the Action spawning, while in the latter case, it is the initiator of the Action deleting.  on predicting the malware signatures for each document. The list of malware signatures are taken from Cuckoo Sandbox 3 . We excluded such an evaluation at this stage as precise information like malware signatures might be easily obtained from external resources such as malware information websites.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Data Statistics</head><p>We decided to call the dataset we used for this shared task MalwareTextDBv2.0 4 , which has twice the number of documents compared to Mal-wareTextDB. The total statistics are shown in Table 1. The training data for this shared task contains 9,424 sentences, the dev set contains 1,213 sentences, and each test set has various amount of sentences. SubTask 1 and 2 share the same test set, while SubTask 3 and 4 use different test sets. This is because the gold labels from the previous annotation stages are provided for SubTask 3 and 4.</p><p>The data distribution for SubTask 1, 2, 3, and 4 can be seen in Table <ref type="table" target="#tab_3">2</ref>, 3, 4, and 5 respectively.</p><p>We can see from the distribution of SubTask 1 that the dataset mostly contains irrelevant sentences. This shows the importance of SubTask 1 in which the participants filter out the irrelevant sentences. Our preliminary result in the ACL paper also shows that removing the irrelevant sentences can improve the score for SubTask 2.</p><p>From the distribution of SubTask 2, an interesting observation is that the number of Entity tokens is roughly double the number of Action tokens. This is quite intuitive since Entity token refers to either Subject or Object token and an Action usually has one Subject and one Object.</p><p>In the distribution table for SubTask 3, we can observe that the number of ActionMod is roughly the same as the number of ModObj. This is inline with our observation that a Modifier is usually connected to an Action and an Object.</p><p>For SubTask 4, we can see that the Capability attribute class has the highest count in the dataset. This is also the category that has the least amount of unique labels (with only 20 different labels). On the other hand, ActionName class appears the least in the dataset but has the highest number of unique labels (with 211 different labels).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation Measures and Baselines</head><p>Our baseline and evaluation measures follow our ACL paper <ref type="bibr" target="#b15">(Lim et al., 2017)</ref>. We used F1 score for the evaluation metric for all the Sub-Tasks. Simple baselines were utilized, such as linear support vector machines (SVM) and multinomial Naive Bayes (NB) implementation from the scikit-learn library <ref type="bibr" target="#b22">(Pedregosa et al., 2011)</ref>. For the conditional random fields (CRF) <ref type="bibr" target="#b13">(Lafferty et al., 2001</ref>) models, we used the CRF++ implementation <ref type="bibr" target="#b12">(Kudo, 2005)</ref>. For the feature extraction, we used spaCy 5 to extract the part-of-speech (POS) features and a C++ implementation <ref type="bibr" target="#b14">(Liang, 2005)</ref> of the Brown clustering algorithm.</p><p>For SubTask 1, our baseline models are the SVM and NB baselines with bag-of-words features. We also performed some hyper-parameter tuning based on the development set. Other simple baselines, such as random uniform and stratified, are also included as a comparison.</p><p>For SubTask 2, we used the CRF baseline with unigrams, bigrams, POS, and Brown clustering features <ref type="bibr" target="#b4">(Brown et al., 1992</ref>    the training set. The Brown clustering features for words were trained on the 84 additional unannotated APT reports provided with the training materials.</p><p>For SubTask 3, a simple rule-based model was utilized. The rules are listed in the Appendix section of our ACL paper. They consist of simple rules, such as connecting a Modifier token to the nearest Action token with ActionMod relation.</p><p>Finally, for SubTask 4, we trained SVM and NB model with bag-of-words features. The features for SubTask 4 are extracted from token groups, which are the set of tokens connected via relation labels. In creating the token groups, we only traverse the direction of Action → Subj, Action → Mod, Action → Obj, and Mod → Obj. This will prevent multiple Action tokens from having the same token group when they are connected to a common Subject or Modifier.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participants</head><p>We received 18 submissions from 9 different teams; 9 submissions to SubTask 1, 8 submissions to SubTask 2, and 1 submission to SubTask 4. Unfortunately, none of the teams submitted to Sub-Task 3. Participants generally submitted to both SubTask 1 and 2. Here is the list of the participants who submitted a system description paper together with a brief summary of the method they used:</p><p>Villani <ref type="bibr" target="#b16">(Loyola et al., 2018)</ref> submitted only to SubTask 1. They used word-embeddings initialized using Glove vectors <ref type="bibr" target="#b23">(Pennington et al., 2014)</ref> trained on Wikipedia text to represent the tokens. In addition to that, they also used an LSTM to get another token representation from the characters. After that, they trained a binary classifier using Bi-directional Long Short-Term Memory network (BiLSTM) <ref type="bibr" target="#b9">(Graves et al., 2013)</ref>. They made use of attention mechanism <ref type="bibr" target="#b17">(Luong et al., 2015)</ref> to weigh the importance of the tokens.</p><p>Flytxt NTNU <ref type="bibr" target="#b27">(Sikdar et al., 2018)</ref> submitted to both SubTask 1 and SubTask 2. They constructed an ensemble of CRF and NB classifiers for SubTask 1. The CRF model used lexical-based and context-based features. The same CRF model was also used to predict the answers for SubTask 2. If the CRF predicts any token labels for the sentence, the sentence is considered relevant in SubTask 1. They did SubTask 2 in 2 steps. First, they detect whether a token is either an Action, Entity, or Modifier (Mention identification).</p><p>After that, they classify the tokens into one of the three types (Token identification).</p><p>DM NLP <ref type="bibr" target="#b18">(Ma et al., 2018</ref>) also submitted to SubTask 1 and 2, but focuses on SubTask 2 and just used the predicted output labels from SubTask 2 to get the predictions for SubTask 1. They model this task as a sequence labeling task and used a hybrid approach with BiLSTM-CNN-CRF following the method of <ref type="bibr" target="#b19">Ma and Hovy (2016)</ref>. The CNN layer was used to extract char-level feature representation. They then added other features, such as POS, dependency labels, chunk labels, NER labels, and brown clustering labels as the input to BiLSTM layer. They also made use of word-embeddings, pre-trained using unlabeled data. The output of the BiLSTM layer is then fed into a CRF layer that makes the entity label prediction.</p><p>HCCL <ref type="bibr" target="#b8">(Fu et al., 2018)</ref> submitted to SubTask 1 and 2. They performed a very similar approach to team DM NLP using the same BiLSTM-CNN-CRF architecture. The main difference is that they just used POS features, instead of the more complicated linguistic features used by team DM NLP. They aim to build an end-to-end system that does not require any feature engineering or data preprocessing. Their output for SubTask 1 was also generated from their predictions for SubTask 2.</p><p>Digital Operatives <ref type="bibr" target="#b3">(Brew, 2018)</ref> participated in SubTask 1 and 2. They utilized a passive aggressive classifier <ref type="bibr" target="#b7">(Crammer et al., 2006)</ref>, which has similar cost and performance with the linear SVM classifier, for SubTask 1. The features they used include POS, lemma, dependency links, and bigrams. For SubTask 2, they implemented a linear CRF approach using a window of words and POS tags surrounding the focus token as features.</p><p>TeamDL <ref type="bibr">(R et al., 2018)</ref> made the submissions for SubTask 1 and 2. For SubTask 1, they built a convolutional neural network with original glove embeddings. Their model followed the work of <ref type="bibr" target="#b10">Kim (2014)</ref>. They also used a CRF for SubTask 2 with features like N-grams (N∈{1,2,..6}), POS tags, word lemmas, word shape features, etc. In order to tackle unknown malware entities, they used additional set of features taken from malware documents from the web and the training corpus.</p><p>UMBC <ref type="bibr" target="#b21">(Padia et al., 2018)</ref>  5 Results and Discussion</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">SubTask 1 Results</head><p>Table <ref type="table" target="#tab_10">6</ref> shows the scores of the submissions to SubTask 1. We also added the precision, recall, and accuracy scores as additional metrics. All 9 participating teams submitted to SubTask 1. This might be because SubTask 1 is the simplest and can be done as a by-product of doing SubTask 2. We can see that by guessing randomly we get an F1 score of 25.06%. However, this does not mean that this SubTask is not challenging as we can see that the scores of top systems are far from perfect. We submitted the NB baseline result in the competition page since it achieved a better performance compared to the SVM baseline in the development data.</p><p>Most of the teams used neural network models to tackle this task, which were shown to perform quite well. However, approaches using classifiers such as naive Bayes are still competitive. Team Villani achieved the best F1 score of 57.14% using a neural approach and Flytxt NTNU reached the second place with an F1 score of 56.87% using an ensemble of naive Bayes and CRF approach. Some of the teams utilized their results from SubTask 2 to generate predictions for SubTask 1. This method seems to have performed quite well too, with 3 of the top-5 teams using it. Flytxt NTNU is notable for combining this method with a naive Bayes approach as an ensemble system.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">SubTask 2 Results</head><p>The scores of the submissions for SubTask 2 are shown in Team DM NLP achieved the best F1 score of 29.23%. In addition, we considered a relaxed scoring scheme where predictions are scored at token level instead of phrase level to give credit to the model when the span for a predicted label intersects with the span for the actual label. The model from team DM NLP still achieved the highest F1 score of 39.18% under this scoring scheme. Team HCCL showed significant improvement in their scores for the relaxed scoring schemes for their model based on CNN-BiRNN-CRF architecture.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">SubTask 3 Results</head><p>The results of our baselines for SubTask 3 can be seen in Table <ref type="table" target="#tab_14">8</ref>. As we mentioned in an earlier section, no participant submitted to this SubTask. From our baselines, we can see that this task cannot be done using random prediction. However, our rule-based method still works well on this new test set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">SubTask 4 Results</head><p>We summarized the results for SubTask 4 in Table 9. The main challenges to this SubTask are the data sparsity and the number of attribute labels. The only participant who submitted to this Sub-Task is from team UMBC. They used a domainspecific word embedding model trained on APT reports and their automatically generated text annotations to train an SVM classifier.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion and Future Work</head><p>In this work, we have presented the results of SemEval 2018 shared task on Semantic Extraction from CybersecUrity REports using Natural Language Processing (SecureNLP). This new Se-mEval task attracted 9 participating teams with 18 submissions. We have provided a new dataset on annotated malware report and also the evaluation criteria for the 4 SubTasks that we proposed. We also described the methods that the participants used to tackle this shared task. We hope that this shared task can spark the interest of the research community to use NLP techniques for cybersecurity purposes.</p><p>The participants have improved the state-of-theart results for SubTask 1 and 2. They explored many interesting methods to tackle the SubTasks that we proposed. Since the post evaluation phase is still ongoing on the competition website, hopefully other people will be interested in testing their models.    </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Annotated sentence and sentence fragment from MalwareTextDB. Such annotations provide semantic-level information to the text.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Examples of annotated sentences.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Examples of irrelevant sentences.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Statistics of the MalwareTextDBv2.0.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Data distribution of SubTask 1.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>). CRF model was trained only on the malware related sentences in</figDesc><table><row><cell>Train Dev Test</cell><cell>Action Entity Modifier 3,202 6,875 2,011 12,088 Total 122 254 79 455 125 249 79 453</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Data distribution of SubTask 2.</figDesc><table><row><cell>#Root #ActionMod #ActionObj #ModObj #SubjAction 1,859 2,552 1,760 2,307 11,856 Total Train 3,378 111 74 110 74 82 451 Dev Test 97 52 86 53 72 360</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Data distribution of SubTask 3.</figDesc><table><row><cell>Train Dev Test</cell><cell>#ActName #Capability #StratObj #TactObj Total 1,154 2,817 2,206 1,783 7,960 46 102 77 63 288 34 88 70 64 256</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc></figDesc><table /><note>Data distribution of SubTask 4.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 6 :</head><label>6</label><figDesc>SubTask 1 results sorted by F1 score, the highest score in each column from the baselines and the participants outputs are marked in bold.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 7 .</head><label>7</label><figDesc>This task attracted 8 teams and 4 teams were able to outperform our baseline which is a CRF model with unigrams, bigrams, POS, and Brown clustering features. Though all participants have used the CRF model as the final layer of their models, 3 teams used neural architectures like Bi-LSTM and CNN-BiRNN architectures to generate better embeddings for the features.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 7 :</head><label>7</label><figDesc>SubTask 2 results sorted by F1 score, the highest score in each column from the baselines and the participants outputs are marked in bold.</figDesc><table><row><cell>Rule-based baseline Random uniform baseline</cell><cell cols="3">Prec Recall 85.60 85.83 85.71 F1 3.24 14.17 5.27</cell></row><row><cell>Random stratified baseline</cell><cell>3.14</cell><cell>2.22</cell><cell>2.60</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 8 :</head><label>8</label><figDesc>SubTask 3 baseline results sorted by F1 score.</figDesc><table><row><cell></cell><cell cols="2">Prec Recall</cell><cell>F1</cell></row><row><cell>Our baselines</cell><cell></cell><cell></cell></row><row><cell>SVM baseline NB baseline</cell><cell>40.30 36.77</cell><cell cols="2">31.64 35.45 32.03 34.24</cell></row><row><cell>Participants Outputs</cell><cell></cell><cell></cell></row><row><cell>UMBC</cell><cell>15.23</cell><cell cols="2">26.17 19.25</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 9 :</head><label>9</label><figDesc>SubTask 4 results sorted by F1 score, the highest score in each column from the baselines and the participants outputs are marked in bold.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://competitions.codalab.org/competitions/17262</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://www.dso.org.sg/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://cuckoosandbox.org/ 4 http://www.statnlp.org/research/resources</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">https://spacy.io/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We would like to thank all the teams who participated in this shared task. Special mention to Chris Brew and Arpita Roy for their valuable feedback. We also thank the authors of the ACL 2017 paper: Swee Kiat Lim, Aldrian Obaja Muis for doing the initial work, and Chen Hui Ong from DSO for her feedback during the annotation.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Towards understanding malware behaviour by the extraction of api calls</title>
+		<author>
+			<persName><forename type="first">Mamoun</forename><surname>Alazab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sitalakshmi</forename><surname>Venkataraman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Watters</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of CTC</title>
+				<meeting>of CTC</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="52" to="59" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Heldroid: Dissecting and detecting mobile ransomware</title>
+		<author>
+			<persName><forename type="first">Nicoló</forename><surname>Andronio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Zanero</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Federico</forename><surname>Maggi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of RAID</title>
+				<meeting>of RAID</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="382" to="404" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Kiran</forename><surname>Blanda</surname></persName>
+		</author>
+		<ptr target="https://github.com/aptnotes/" />
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Digital Operatives at SemEval-2018 Task 8: Using dependency features for malware NLP</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Brew</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of SemEval</title>
+				<meeting>of SemEval</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Class-based N-gram Models of Natural Language</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Peter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><forename type="middle">V</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><forename type="middle">L</forename><surname>Desouza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><forename type="middle">J</forename><surname>Mercer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jenifer</forename><forename type="middle">C</forename><surname>Della Pietra</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Comput. Linguist</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="page" from="467" to="479" />
+			<date type="published" when="1992" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Comprehensive experimental analyses of automotive attack surfaces</title>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Checkoway</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Damon</forename><surname>Mccoy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brian</forename><surname>Kantor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danny</forename><surname>Anderson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hovav</forename><surname>Shacham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Savage</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karl</forename><surname>Koscher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexei</forename><surname>Czeskis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Franziska</forename><surname>Roesner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tadayoshi</forename><surname>Kohno</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of USENIX Security Symposium</title>
+				<meeting>of USENIX Security Symposium</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+	<note>San Francisco</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A Coefficient of Agreement for Nominal Scales</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Cohen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Educational and Psychological Measurement</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="37" to="46" />
+			<date type="published" when="1960" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Online passive-aggressive algorithms</title>
+		<author>
+			<persName><forename type="first">Koby</forename><surname>Crammer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ofer</forename><surname>Dekel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joseph</forename><surname>Keshet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shai</forename><surname>Shalev-Shwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoram</forename><surname>Singer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="page" from="551" to="585" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">HCCL at SemEval-2018 Task 8: An Endto-End System for Sequence Labeling from Cybersecurity Reports</title>
+		<author>
+			<persName><forename type="first">Mingming</forename><surname>Fu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuemin</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonghong</forename><surname>Yan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of SemEval</title>
+				<meeting>of SemEval</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Speech recognition with deep recurrent neural networks</title>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Graves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Abdel-Rahman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Hinton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of ICASSP</title>
+				<meeting>of ICASSP</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="6645" to="6649" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Convolutional neural networks for sentence classification</title>
+		<author>
+			<persName><forename type="first">Yoon</forename><surname>Kim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of EMNLP</title>
+				<meeting>of EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">Malware Attribute Enumeration and Characterization. The MITRE Corporation</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Kirillov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Desiree</forename><surname>Beck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Penny</forename><surname>Chase</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Martin</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+	<note type="report_type">Tech. Rep</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Taku</forename><surname>Kudo</surname></persName>
+		</author>
+		<ptr target="https://taku910.github.io/crfpp/" />
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Conditional Random Fields: Probabilistic Models for Segmenting and Labeling Sequence Data</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Lafferty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fernando</forename><surname>Pereira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of ICML</title>
+				<meeting>of ICML</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+			<biblScope unit="page" from="282" to="289" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Semi-supervised learning for natural language</title>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Liang</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+		<respStmt>
+			<orgName>Massachusetts Institute of Technology</orgName>
+		</respStmt>
+	</monogr>
+	<note>Master&apos;s thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">MalwareTextDB: A Database for Annotated Malware Articles</title>
+		<author>
+			<persName><forename type="first">Aldrian</forename><surname>Swee Kiat Lim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Obaja Muis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chen</forename><forename type="middle">Hui</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of ACL</title>
+				<meeting>of ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1557" to="1567" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Villani at SemEval-2018 Task 8: Semantic Extraction from Cybersecurity Reports using Natural Language Processing (Se-cureNLP)</title>
+		<author>
+			<persName><forename type="first">Pablo</forename><surname>Loyola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kugamoorthy</forename><surname>Gajananan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuji</forename><surname>Watanabe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fumiko</forename><surname>Satoh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of SemEval</title>
+				<meeting>of SemEval</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Effective approaches to attention-based neural machine translation</title>
+		<author>
+			<persName><forename type="first">Thang</forename><surname>Luong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hieu</forename><surname>Pham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of EMNLP</title>
+				<meeting>of EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1412" to="1421" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">DM NLP at SemEval-2018 Task 8: neural sequence labeling with linguistic features</title>
+		<author>
+			<persName><forename type="first">Chunping</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huafei</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pengjun</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chen</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Linlin</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Si</forename><surname>Luo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of SemEval</title>
+				<meeting>of SemEval</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">End-to-end sequence labeling via bi-directional lstm-cnns-crf</title>
+		<author>
+			<persName><forename type="first">Xuezhe</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of ACL</title>
+				<meeting>of ACL</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1064" to="1074" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">A brief study of Wannacry Threat: Ransomware Attack</title>
+		<author>
+			<persName><forename type="first">Savita</forename><surname>Mohurle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manisha</forename><surname>Patil</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Advanced Research in Computer Science</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">UMBC at SemEval-2018 Task 8: Understanding Text about Malware</title>
+		<author>
+			<persName><forename type="first">Ankur</forename><surname>Padia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arpita</forename><surname>Roy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Taneeya</forename><surname>Satyapanich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francis</forename><surname>Ferraro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shimei</forename><surname>Pan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anupam</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Finin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of Se-mEval</title>
+				<meeting>of Se-mEval</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Scikit-learn: Machine Learning in Python</title>
+		<author>
+			<persName><forename type="first">Fabian</forename><surname>Pedregosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gaël</forename><surname>Varoquaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Gramfort</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Michel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bertrand</forename><surname>Thirion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olivier</forename><surname>Grisel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mathieu</forename><surname>Blondel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Prettenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ron</forename><surname>Weiss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Dubourg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jake</forename><surname>Vanderplas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Passos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Cournapeau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthieu</forename><surname>Brucher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthieu</forename><surname>Perrot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Duchesnay</forename><surname>Andédouard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="2825" to="2830" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of EMNLP</title>
+				<meeting>of EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">TeamDL at SemEval-2018 Task 8: Cybersecurity Text Analysis using Convolutional Neural Network and Conditional Random Fields</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Manikandan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Krishna</forename><surname>Madgula</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Snehanshu</forename><surname>Saha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of SemEval</title>
+				<meeting>of SemEval</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Automatic analysis of malware behavior using machine learning</title>
+		<author>
+			<persName><forename type="first">Konrad</forename><surname>Rieck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Trinius</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carsten</forename><surname>Willems</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thorsten</forename><surname>Holz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Computer Security</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="page" from="639" to="668" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Yusuke</forename><surname>Shinyama</surname></persName>
+		</author>
+		<ptr target="https://euske.github.io/pdfminer/" />
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Biswanath</forename><surname>Utpal Kumar Sikdar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Björn</forename><surname>Barik</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gambäck</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Flytxt NTNU at SemEval</title>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Task 8: Identifying and Classifying Malware Text Using Conditional Random Fields and Nave Bayes Classifiers</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of SemEval</title>
+				<meeting>of SemEval</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">BRAT: A Web-based Tool for NLPassisted Text Annotation</title>
+		<author>
+			<persName><forename type="first">Pontus</forename><surname>Stenetorp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Topić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoko</forename><surname>Ohta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sophia</forename><surname>Ananiadou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of EACL</title>
+				<meeting>of EACL</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="102" to="107" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">Heightened ddos threat posed by mirai and other botnets</title>
+		<author>
+			<persName><surname>Us-Cert</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

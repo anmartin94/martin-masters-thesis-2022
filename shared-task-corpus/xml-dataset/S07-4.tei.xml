@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2007 Task 04: Classification of Semantic Relations between Nominals</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Roxana</forename><surname>Girju</surname></persName>
+							<email>girju@uiuc.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Univ. of Illinois at Urbana-Champaign Urbana</orgName>
+								<address>
+									<postCode>61801</postCode>
+									<region>IL</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+							<email>nakov@cs.berkeley.edu</email>
+							<affiliation key="aff1">
+								<orgName type="department">Univ. of California at Berkeley Berkeley</orgName>
+								<address>
+									<postCode>94720</postCode>
+									<region>CA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Vivi</forename><surname>Nastase</surname></persName>
+							<email>nastase@eml-research.de</email>
+							<affiliation key="aff2">
+								<orgName type="institution">EML Research gGmbH Heidelberg</orgName>
+								<address>
+									<postCode>69118</postCode>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Stan</forename><surname>Szpakowicz</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="institution">University of Ottawa Ottawa</orgName>
+								<address>
+									<postCode>K1N 6N5</postCode>
+									<region>ON</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Peter</forename><surname>Turney</surname></persName>
+							<email>peter.turney@nrc-cnrc.gc.ca</email>
+							<affiliation key="aff4">
+								<orgName type="department">National Research Council of Canada Ottawa</orgName>
+								<address>
+									<postCode>K1A 0R6</postCode>
+									<region>ON</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Deniz</forename><surname>Yuret</surname></persName>
+							<email>dyuret@ku.edu.tr</email>
+							<affiliation key="aff5">
+								<orgName type="institution">Koç University Istanbul</orgName>
+								<address>
+									<postCode>34450</postCode>
+									<country key="TR">Turkey</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2007 Task 04: Classification of Semantic Relations between Nominals</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The NLP community has shown a renewed interest in deeper semantic analyses, among them automatic recognition of relations between pairs of words in a text. We present an evaluation task designed to provide a framework for comparing different approaches to classifying semantic relations between nominals in a sentence. This is part of SemEval, the 4 th edition of the semantic evaluation event previously known as SensEval. We define the task, describe the training/test data and their creation, list the participating systems and discuss their results. There were 14 teams who submitted 15 systems.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Task Description and Related Work</head><p>The theme of Task 4 is the classification of semantic relations between simple nominals (nouns or base noun phrases) other than named entities -honey bee, for example, shows an instance of the Product-Producer relation. The classification occurs in the context of a sentence in a written English text. Algorithms for classifying semantic relations can be applied in information retrieval, information extraction, text summarization, question answering and so on. The recognition of textual entailment  is an example of successful use of this type of deeper analysis in high-end NLP applications.</p><p>The literature shows a wide variety of methods of nominal relation classification. They depend as much on the training data as on the domain of application and the available resources. <ref type="bibr" target="#b9">Rosario and Hearst (2001)</ref> classify noun compounds from the domain of medicine, using 13 classes that describe the semantic relation between the head noun and the modifier in a given noun compound. <ref type="bibr" target="#b10">Rosario et al. (2002)</ref> classify noun compounds using the MeSH hierarchy and a multi-level hierarchy of semantic relations, with 15 classes at the top level. <ref type="bibr" target="#b7">Nastase and Szpakowicz (2003)</ref> present a two-level hierarchy for classifying noun-modifier relations in base noun phrases from general text, with 5 classes at the top and 30 classes at the bottom; other researchers <ref type="bibr" target="#b13">(Turney and Littman, 2005;</ref><ref type="bibr" target="#b14">Turney, 2005;</ref><ref type="bibr" target="#b8">Nastase et al., 2006)</ref> have used their class scheme and data set. <ref type="bibr" target="#b5">Moldovan et al. (2004)</ref> propose a 35class scheme to classify relations in various phrases; the same scheme has been applied to noun compounds and other noun phrases <ref type="bibr" target="#b1">(Girju et al., 2005)</ref>. <ref type="bibr" target="#b0">Chklovski and Pantel (2004)</ref> introduce a 5-class set, designed specifically for characterizing verb-verb semantic relations. <ref type="bibr" target="#b11">Stephens et al. (2001)</ref> propose 17 classes targeted to relations between genes. <ref type="bibr" target="#b3">Lapata (2002)</ref> presents a binary classification of relations in nominalizations.</p><p>There is little consensus on the relation sets and algorithms for analyzing semantic relations, and it seems unlikely that any single scheme could work for all applications. For example, the gene-gene relation scheme of <ref type="bibr" target="#b11">Stephens et al. (2001)</ref>, with relations like X phosphorylates Y, is unlikely to be transferred easily to general text.</p><p>We have created a benchmark data set to allow the evaluation of different semantic relation classification algorithms. We do not presume to propose a single classification scheme, however alluring it would  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Building the Annotated Data Sets</head><p>Ours is a new evaluation task, so we began with data set creation and annotation guidelines. The data set that <ref type="bibr" target="#b7">Nastase and Szpakowicz (2003)</ref> created had relation labels and part-of-speech and WordNet sense annotations, to facilitate classification. <ref type="bibr" target="#b5">(Moldovan et al., 2004;</ref><ref type="bibr" target="#b1">Girju et al., 2005</ref>) gave the annotators an example of each phrase in a sentence along with WordNet senses and position of arguments. Our annotations include all these, to support a variety of methods (since we work with relations between nominals, the part of speech is always noun). We have used WordNet 3.0 on the Web and sense index tags.</p><p>We chose the following semantic relations: Cause-Effect, Content-Container, Instrument-Agency, Origin-Entity, Part-Whole, Product-Producer and Theme-Tool. We wrote seven detailed definitions, including restrictions and conventions, plus prototypical positive and near-miss negative examples. For each relation separately, we based data collection on wild-card search patterns that Google allows. We built the patterns manually, following <ref type="bibr" target="#b2">Hearst (1992)</ref> and <ref type="bibr" target="#b6">Nakov and Hearst (2006)</ref>. Instances of the relation Content-Container, for example, come up in response to queries such as "* contains *", "* holds *", "the * in the *". Following the model of the Senseval-3 English Lexical Sample Task, we set out to collect 140 training and at least 70 test examples per relation, so we had a number of different patterns to ensure variety. We also aimed to collect a balanced number of positive and negative examples. The use of heuristic patterns to search for both positive and negative examples should naturally result in negative examples that are near misses. We believe that near misses are more useful for supervised learning than negative examples that are generated randomly.</p><p>"Among the contents of the &lt;e1&gt;vessel&lt;/e1&gt; were a set of carpenter's &lt;e2&gt;tools&lt;/e2&gt;, several large storage jars, ceramic utensils, ropes and remnants of food, as well as a heavy load of ballast stones." WordNet(e1) = "vessel%1:06:00::", WordNet(e2) = "tool%1:06:00::", Content-Container(e2, e1) = "true", Query = "contents of the * were a" Figure <ref type="figure">1</ref>: Annotations illustrated Figure <ref type="figure">1</ref> illustrates the annotations. We tag the nominals, so parsing or chunking is not necessary. For Task 4, we define a nominal as a noun or base noun phrase, excluding names entities. A base noun phrase, e.g., lawn or lawn mower, is a noun with premodifiers. We also exclude complex noun phrases (e.g., with attached prepositional phrases -the engine of the lawn mower).</p><p>The procedure was the same for each relation.  <ref type="table" target="#tab_1">1</ref> shows the number of positive and negative ex-amples for each relation. <ref type="bibr">1</ref> The average inter-annotator agreement on relations (true/false) after the independent annotation step was 70.3%, and the average agreement on WordNet sense labels was 71.9%. In the process of arriving at a consensus between annotators, the definition of each relation was revised to cover explicitly cases where there had been disagreement. We expect that these revised definitions would lead to much higher levels of agreement than the original definitions did.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">The Participants</head><p>The task of classifying semantic relations between nominals has attracted the participation of 14 teams who submitted 15 systems. Table <ref type="table">4</ref> lists the systems, the authors and their affiliations, and brief descriptions. The systems' performance information in terms of precision, recall, F -measure and accuracy, macroaveraged over all relations, appears in Table <ref type="table" target="#tab_3">3</ref>. We computed these measures as described in <ref type="bibr" target="#b4">Lewis (1991)</ref>.</p><p>We distinguish four categories of systems based on the type of information used -WordNet senses and/or Google queries: WordNet = "YES" or WordNet = "NO" tells us only whether a system uses the WordNet sense labels in the data sets. A system may use WordNet internally for varied purposes, but ignore our sense labels; such a system would be in category A or C. Based on the input variation, each submitted system may have up to 4 variations -A,B,C,D.</p><formula xml:id="formula_0">A -WordNet =</formula><p>Table <ref type="table" target="#tab_2">2</ref> presents three baselines for a relation. Majority always guesses either "true" or "false", whichever is the majority in the test set (maximizes accuracy). Alltrue always guesses "true" (maximizes recall). Probmatch randomly guesses "true" ("false") with the probability matching the distribution of "true" ("false") in the test dataset (balances precision and recall).</p><p>We present the results in Table <ref type="table" target="#tab_3">3</ref> grouped by category, to facilitate system comparison. <ref type="bibr">1</ref> As this paper serves also as a documentation of the data set, the order of relations in the table is the same as in the data set.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Discussion</head><p>The highest average accuracy on Task 4 was 76.3%. Therefore, the average initial agreement between annotators (70.3%), before revising the definitions, is not an upper bound on the accuracy that can be achieved. That the initial agreement between annotators is not a good indicator of the accuracy that can be achieved is also supported by the low correlation Table <ref type="table">5</ref>: The best results per relation. Precision, recall, F -measure and accuracy macro-averaged over each system's performance on all 7 relations. Base-F shows the baseline F -measure (alltrue), Base-Acc -the baseline accuracy score (majority). The last column shows the average rank for each relation.</p><p>of 0.15 between the Acc column in Table <ref type="table">5</ref> and the Agreement column in Table <ref type="table" target="#tab_1">1</ref>.</p><p>We performed various analyses of the results, which we summarize here in four questions. We write X i to refer to four possible system categories (A i , B i , C i , and D i ) with four possible amounts of training data (X 1 for training examples 1 to 35, X 2 for 1 to 70, X 3 for 1 to 105, and X 4 for 1 to 140).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Does more training data help?</head><p>Overall, the results suggest that more training data improves the performance. There were 17 cases in which we had results for all four possible amounts of training data. All average F -measure differences, F (X 4 )-F (X i ) where X = A to D, i = 1 to 3, for these 17 sets of results are statistically significant: F (X 4 )-F (X 1 ): N = 17, avg = 8.3, std = 5.8, min = 1.1, max = 19.6, t-value = −5.9, p-value = 0.00001. F (X 4 )-F (X 2 ): N = 17, avg = 4.0, std = 3.7, min = −3.5, max = 10.5, t-value = 4.5, p-value = 0.0002. F (X 4 )-F (X 3 ): N = 17, avg = 0.9, std = 1.7, min = −2.6, max = 4.7, t-value = 2.1, p-value = 0.03.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Does WordNet help?</head><p>The statistics show that WordNet is important, although the contribution varies across systems. Three teams submitted altogether 12 results both for A 1 -A 4 and B 1 -B 4 . The average F -measure difference, F (B i )-F (A i ), i = 1 to 4, is significant: F (B i )-F (A i ): N = 12, avg = 6.1, std = 8.4, min = −4.5, max = 21.2, t-value = −2.5, p-value = 0.01.</p><p>The results of the UCD-FC system actually went down when WordNet was used. The statistics for the remaining two teams, however, are a bit better: F (B i )-F (A i ): N = 8, avg = 10.4, std = 6.7, min = −1.0, max = 21.2, t-value = −4.4, p-value = 0.002.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Does knowing the query help?</head><p>Overall, knowing the query did not seem to improve the results. Three teams submitted 12 results both for A 1 -A 4 and C 1 -C 4 . The average F -measure difference, F (C i )-F (A i ) , i = 1 to 4, is not significant: F (C i )-F (A i ): N = 12, avg = 0.9, std = 1.8, min = −2.0, max = 5.0, t-value = −1.6, p-value = 0.06.</p><p>Again, the UCD-FC system differed from the other systems in that the A and C scores were identical, but even averaging over the remaining two systems and 8 cases does not show a statistically significant advantage:</p><formula xml:id="formula_1">F (C i )-F (A i ): N = 8, avg = 1.3, std = 2.2, min = −2.0, max = 5.0, t-value = −1.7, p-value = 0.07.</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Are some relations harder to classify?</head><p>Table <ref type="table">5</ref> shows the best results for each relation in terms of precision, recall, and F -measure, per team and system category. Column Base-F presents the baseline F -measure (alltrue), while Base-Acc the baseline accuracy score (majority). For all seven relations, the best team significantly outperforms the baseline. The category of the best-scoring system in almost every case is B 4 (only the ILK B 4 system scored second on the Origin-Entity relation).</p><p>Table <ref type="table">5</ref> suggests that some relations are more difficult to classify than others. The best F -measure ranges from 83.7 for Product-Producer to 68.6 for Origin-Entity. The difference between the best Fmeasure and the baseline F -measure ranges from 23.3 for Part-Whole to 3.7 for Product-Producer. The difference between the best accuracy and the baseline accuracy ranges from 31.0 for Content-Container to 10.7 for Product-Producer.</p><p>The F column shows the best result for each relation, but similar differences among the relations may be observed when all results are pooled. The Avg. rank column computes the average rank of each relation in the ordered list of relations generated by each system. For example, Product-Producer is often listed as the first or the second easiest relation (with an average rank of 1.7), while Origin-Entity and Theme-Tool are identified as the most difficult relations to classify (with average ranks of 6.0).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>This paper describes a new semantic evaluation task, Classification of Semantic Relations between Nominals. We have accomplished our goal of providing a framework and a benchmark data set to allow for comparisons of methods for this task. The data included different types of information -lexical semantic information, context, query used -meant to facilitate the analysis of useful sources of information for determining the semantic relation between nominals. The results that the participating systems have reported show successful approaches to this difficult task, and the advantages of using lexical semantic information.</p><p>The success of the task -measured in the interest of the community and the results of the participating systems -shows that the framework and the data are useful resources. By making this collection freely accessible, we encourage further research into this domain and integration of semantic relation algorithms in high-end applications.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>Figure1illustrates the annotations. We tag the nominals, so parsing or chunking is not necessary. For Task 4, we define a nominal as a noun or base noun phrase, excluding names entities. A base noun phrase, e.g., lawn or lawn mower, is a noun with premodifiers. We also exclude complex noun phrases (e.g., with attached prepositional phrases -the engine of the lawn mower).The procedure was the same for each relation.One person gathered the sample sentences (aiming approximately for a similar number of positive and negative examples) and tagged the entities; two other people annotated the sentences with WordNet senses and classified the relations. The detailed relation definitions and the preliminary discussions of positive and negative examples served to maximize the agreement between the annotators. They first classified the data independently, then discussed every disagreement and looked for consensus. Only the agreed-upon examples went into the data sets. Next, we split each data set into 140 training and no fewer than 70 test examples. (We published the training set for the Content-Container relation as development data two months before the test set.) Table 1 shows the number of positive and negative ex-</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>NO &amp; Query = NO; B -WordNet = YES &amp; Query = NO; C -WordNet = NO &amp; Query = YES; D -WordNet = YES &amp; Query = YES.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1</head><label>1</label><figDesc></figDesc><table><row><cell>: Data set statistics</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Baselines: precision, recall, F -measure and accuracy averaged over the 7 binary classifications.</figDesc><table><row><cell>Team</cell><cell>P</cell><cell>R</cell><cell>F</cell><cell>Acc</cell></row><row><cell cols="3">A -WordNet = NO &amp; Query = NO</cell><cell></cell><cell></cell></row><row><cell>UCD-FC</cell><cell>66.1</cell><cell>66.7</cell><cell>64.8</cell><cell>66.0</cell></row><row><cell>ILK</cell><cell>60.5</cell><cell>69.5</cell><cell>63.8</cell><cell>63.5</cell></row><row><cell>UCB  †</cell><cell>62.7</cell><cell>63.0</cell><cell>62.7</cell><cell>65.4</cell></row><row><cell>UMELB-B</cell><cell>61.5</cell><cell>55.7</cell><cell>57.8</cell><cell>62.7</cell></row><row><cell>UTH</cell><cell>56.1</cell><cell>57.1</cell><cell>55.9</cell><cell>58.8</cell></row><row><cell>UC3M</cell><cell>48.2</cell><cell>40.3</cell><cell>43.1</cell><cell>49.9</cell></row><row><cell>avg±stdev</cell><cell cols="3">59.2±6.3 58.7±10.5 58.0±8.1</cell><cell>61.1±6.0</cell></row><row><cell cols="3">B -WordNet = YES &amp; Query = NO</cell><cell></cell><cell></cell></row><row><cell>UIUC  †</cell><cell>79.7</cell><cell>69.8</cell><cell>72.4</cell><cell>76.3</cell></row><row><cell>FBK-IRST</cell><cell>70.9</cell><cell>73.4</cell><cell>71.8</cell><cell>72.9</cell></row><row><cell>ILK</cell><cell>72.8</cell><cell>70.6</cell><cell>71.5</cell><cell>73.2</cell></row><row><cell>UCD-S1</cell><cell>69.9</cell><cell>64.6</cell><cell>66.8</cell><cell>71.4</cell></row><row><cell>UCD-PN</cell><cell>62.0</cell><cell>71.7</cell><cell>65.4</cell><cell>67.0</cell></row><row><cell>UC3M</cell><cell>66.7</cell><cell>62.8</cell><cell>64.3</cell><cell>67.2</cell></row><row><cell>CMU-AT</cell><cell>55.7</cell><cell>66.7</cell><cell>60.4</cell><cell>59.1</cell></row><row><cell>UCD-FC</cell><cell>66.4</cell><cell>58.1</cell><cell>60.3</cell><cell>63.6</cell></row><row><cell>UMELB-A</cell><cell>61.7</cell><cell>56.8</cell><cell>58.7</cell><cell>62.5</cell></row><row><cell>UVAVU</cell><cell>56.8</cell><cell>56.3</cell><cell>56.1</cell><cell>57.7</cell></row><row><cell>LCC-SRN</cell><cell>55.9</cell><cell>57.8</cell><cell>51.4</cell><cell>53.7</cell></row><row><cell cols="4">avg ± stdev 65.3±7.7 64.4±6.5 63.6±6.9</cell><cell>65.9±7.2</cell></row><row><cell cols="3">C -WordNet = NO &amp; Query = YES</cell><cell></cell><cell></cell></row><row><cell>UCB  †</cell><cell>64.2</cell><cell>66.5</cell><cell>65.1</cell><cell>67.0</cell></row><row><cell>UCD-FC</cell><cell>66.1</cell><cell>66.7</cell><cell>64.8</cell><cell>66.0</cell></row><row><cell>UC3M</cell><cell>49.4</cell><cell>43.9</cell><cell>45.3</cell><cell>50.1</cell></row><row><cell>avg±stdev</cell><cell cols="3">59.9±9.1 59.0±13.1 58.4±11.3</cell><cell>61.0±9.5</cell></row><row><cell cols="3">D -WordNet = YES &amp; Query = YES</cell><cell></cell><cell></cell></row><row><cell cols="2">UTD-HLT-CG 67.3</cell><cell>65.3</cell><cell>62.6</cell><cell>67.2</cell></row><row><cell>UCD-FC</cell><cell>66.4</cell><cell>58.1</cell><cell>60.3</cell><cell>63.6</cell></row><row><cell>UC3M</cell><cell>60.9</cell><cell>57.8</cell><cell>58.8</cell><cell>62.3</cell></row><row><cell>avg±stdev</cell><cell cols="3">64.9±3.5 60.4±4.2 60.6±1.9</cell><cell>64.4±2.5</cell></row><row><cell cols="2">Systems tagged with</cell><cell></cell><cell></cell><cell></cell></row></table><note>† have a Task 4 organizer as part of the team.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>System performance grouped by category.</figDesc><table><row><cell>Precision, recall, F -measure and accuracy macro-</cell></row><row><cell>averaged over each system's performance on all 7</cell></row><row><cell>relations.</cell></row></table></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We thank Eneko Agirre, Lluís Màrquez and Richard Wicentowski, the organizers of SemEval 2007, for their guidance and prompt support in all organizational matters. We thank Marti Hearst for valuable advice throughout the task description and debates on semantic relation definitions. We thank the anonymous reviewers for their helpful comments.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Verbocean: Mining the web for fine-grained semantic verb relations</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Chklovski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Pantel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Conf. on Empirical Methods in Natural Language Processing, EMNLP-04</title>
+				<meeting>Conf. on Empirical Methods in Natural Language essing, EMNLP-04<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="33" to="40" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">On the semantics of noun compounds</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girju</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Moldovan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Tatu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Antohe</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computer Speech and Language</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="page" from="479" to="496" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Automatic acquisition of hyponyms from large text corpora</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hearst</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. 14th International Conf. on Computational Linguistics (COLING-92)</title>
+				<meeting>14th International Conf. on Computational Linguistics (COLING-92)</meeting>
+		<imprint>
+			<date type="published" when="1992" />
+			<biblScope unit="page" from="539" to="545" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">The disambiguation of nominalizations</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lapata</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="357" to="388" />
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Evaluating text categorization</title>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">D</forename><surname>Lewis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Speech and Natural Language Workshop</title>
+				<meeting>the Speech and Natural Language Workshop</meeting>
+		<imprint>
+			<publisher>Asilomar</publisher>
+			<date type="published" when="1991" />
+			<biblScope unit="page" from="312" to="318" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Models for the semantic classification of noun phrases</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Moldovan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Badulescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Tatu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Antohe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Girju</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Computational Lexical Semantics Workshop at HLT-NAACL 2004</title>
+				<meeting>Computational Lexical Semantics Workshop at HLT-NAACL 2004<address><addrLine>Boston, MA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="60" to="67" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Using verbs to characterize noun-noun relations</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hearst</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Twelfth International Conf. in Artificial Intelligence (AIMSA-06)</title>
+				<meeting>Twelfth International Conf. in Artificial Intelligence (AIMSA-06)<address><addrLine>Varna,Bulgaria</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="233" to="244" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Exploring noun-modifier semantic relations</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Nastase</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Szpakowicz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Fifth International Workshop on Computational Semantics (IWCS-5)</title>
+				<meeting><address><addrLine>Tilburg, The Netherlands</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="285" to="301" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Learning noun-modifier semantic relations with corpus-based and WordNet-based features</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Nastase</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sayyad-Shirabad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Sokolova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Szpakowicz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. 21st National Conf. on Artificial Intelligence (AAAI 2006)</title>
+				<meeting>21st National Conf. on Artificial Intelligence (AAAI 2006)<address><addrLine>Boston, MA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="781" to="787" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Classifying the semantic relations in noun-compounds via domain-specific lexical hierarchy</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Rosario</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hearst</surname></persName>
+		</author>
+		<idno>EMNLP- 01</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. 2001 Conf. on Empirical Methods in Natural Language Processing</title>
+				<meeting>2001 Conf. on Empirical Methods in Natural Language essing</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+			<biblScope unit="page" from="82" to="90" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The descent of hierarchy, and selection in relational semantics</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Rosario</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hearst</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fillmore</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. 40th Annual Meeting of the Association for Computational Linguistics (ACL-02)</title>
+				<meeting>40th Annual Meeting of the Association for Computational Linguistics (ACL-02)<address><addrLine>Philadelphia, PA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2002" />
+			<biblScope unit="page" from="417" to="424" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Detecting gene relations from MEDLINE abstracts</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Stephens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Palakal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mukhopadhyay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Raje</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Sixth Annual Pacific Symposium on Biocomputing</title>
+				<meeting>Sixth Annual Pacific Symposium on Biocomputing</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+			<biblScope unit="page" from="483" to="496" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">A semantic approach to recognizing textual entailment</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Tatu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Moldovan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Human Language Technology Conf. and Conf. on Empirical Methods in Natural Language Processing (HLT/EMNLP 2005)</title>
+				<meeting>Human Language Technology Conf. and Conf. on Empirical Methods in Natural Language essing (HLT/EMNLP 2005)<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="371" to="378" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Corpus-based learning of analogies and semantic relations</title>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">D</forename><surname>Turney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">L</forename><surname>Littman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine Learning</title>
+				<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="volume">60</biblScope>
+			<biblScope unit="page" from="251" to="278" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Measuring semantic similarity by latent relational analysis</title>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">D</forename><surname>Turney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. Nineteenth International Joint Conf. on Artificial Intelligence (IJCAI-05)</title>
+				<meeting>Nineteenth International Joint Conf. on Artificial Intelligence (IJCAI-05)<address><addrLine>Edinburgh, Scotland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="1136" to="1141" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

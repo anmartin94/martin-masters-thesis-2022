@@ -1,0 +1,1437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2020 Task 8: Memotion Analysis-The Visuo-Lingual Metaphor!</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Chhavi</forename><surname>Sharma</surname></persName>
+							<email>chhavi.s@iiits.in</email>
+							<affiliation key="aff0">
+								<orgName type="department">IIIT Sri City</orgName>
+								<address>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Deepesh</forename><surname>Bhageria</surname></persName>
+							<email>deepesh.b17@iiits.in</email>
+							<affiliation key="aff0">
+								<orgName type="department">IIIT Sri City</orgName>
+								<address>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">William</forename><surname>Scott</surname></persName>
+							<email>william18026@iiitd.ac.in</email>
+							<affiliation key="aff1">
+								<orgName type="department">IIIT Delhi</orgName>
+								<address>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Srinivas</forename><surname>Pykl</surname></persName>
+							<email>srinivas.p@iiits.in</email>
+							<affiliation key="aff0">
+								<orgName type="department">IIIT Sri City</orgName>
+								<address>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Amitava</forename><surname>Das</surname></persName>
+							<email>amitava.das2@wipro.com</email>
+							<affiliation key="aff2">
+								<orgName type="institution">Wipro AI Labs</orgName>
+								<address>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Tanmoy</forename><surname>Chakraborty</surname></persName>
+							<email>tanmoy@iiitd.ac.in</email>
+							<affiliation key="aff1">
+								<orgName type="department">IIIT Delhi</orgName>
+								<address>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Viswanath</forename><surname>Pulabaigari</surname></persName>
+							<email>viswanath.p@iiits.in</email>
+							<affiliation key="aff0">
+								<orgName type="department">IIIT Sri City</orgName>
+								<address>
+									<country key="IN">India</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Björn</forename><surname>Gambäck</surname></persName>
+							<email>gamback@ntnu.no</email>
+							<affiliation key="aff3">
+								<orgName type="institution">NTNU</orgName>
+								<address>
+									<country key="NO">Norway</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2020 Task 8: Memotion Analysis-The Visuo-Lingual Metaphor!</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Information on social media comprises of various modalities such as textual, visual and audio. NLP and Computer Vision communities often leverage only one prominent modality in isolation to study social media. However, computational processing of Internet memes needs a hybrid approach. The growing ubiquity of Internet memes on social media platforms such as Facebook, Instagram, and Twitter further suggests that we can not ignore such multimodal content anymore. To the best of our knowledge, there is not much attention towards meme emotion analysis. The objective of this proposal is to bring the attention of the research community towards the automatic processing of Internet memes. The task Memotion analysis released approx 10K annotated memes-with human annotated labels namely sentiment(positive, negative, neutral), type of emotion(sarcastic,funny,offensive, motivation) and their corresponding intensity. The challenge consisted of three subtasks: sentiment (positive, negative, and neutral) analysis of memes, overall emotion (humor, sarcasm, offensive, and motivational) classification of memes, and classifying intensity of meme emotion. The best performances achieved were F 1 (macro average) scores of 0.35, 0.51 and 0.32, respectively for each of the three subtasks.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In the last few years, the growing ubiquity of Internet memes on social media platforms such as Facebook, Instagram, and Twitter has become a topic of immense interest. Memes are one of the most typed English words <ref type="bibr" target="#b38">Sonnad (2018)</ref> in recent times which are often derived from our prior social and cultural experiences such as TV series or a popular cartoon character (think: "One Does Not Simply" -a now immensely popular meme taken from the movie Lord of the Rings). These digital constructs are so deeply ingrained in our Internet culture that to understand the opinion of a community, we need to understand the type of memes it shares. <ref type="bibr" target="#b9">(Gal et al., 2016)</ref> aptly describes them as performative acts, which involve a conscious decision to either support or reject an ongoing social discourse.</p><p>The prevalence of hate speech in online social media is a nightmare and a great societal responsiblity for many social media companies. However, the latest entrant "Internet memes" <ref type="bibr" target="#b45">(Williams et al., 2016)</ref> has doubled the challenge. When malicious users upload something offensive to torment or disturb people, it traditionally has to be seen and flagged by at least one human, either a user or a paid worker. Even today, companies like Facebook and Twitter rely extensively on outside human contractors from different companies. But with the growing volume of multimodal social media it is becoming impossible to scale. The detection of offensive content on online social media is an ongoing struggle. OffenseEval <ref type="bibr" target="#b49">(Zampieri et al., 2019)</ref> is a shared task which is being organized since the last two years at SemEval. But, detecting an offensive meme is more complex than detecting an offensive text -as it involves visual cues and language understanding. This is one of the motivating aspects which encouraged us to propose this task.</p><p>Analogous to textual content on social media, memes also need to be analysed and processed to extract the conveyed message. A few researchers have tried to automate the meme generation <ref type="bibr" target="#b31">(Peirson et al., 2018;</ref><ref type="bibr">oli, )</ref> process, while a few others tried to extract its inherent sentiment <ref type="bibr" target="#b8">(French, 2017)</ref> in the recent past. Nevertheless, a lot more needs to be done to distinguish their finer aspects such as type of humor or offense.</p><p>The paper is organised as follows: Related work is described in Section 2. The proposed task is described in Section 3. Data collection and data distribution is explained in Section 4 while Section 5 demonstrates the baseline model. Section 6 shows the reason for considering Macro F1 as evaluation metric. In Section 7, participants and the top performing models are discussed in detail. Section 8 shows the results, analysis and the takeaway points from Memotion 1.0. Finally, we summarise our work by highlighting the insights derived along-with the further scope and open ended pointers in section 9.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Related Work</head><p>Identifying the text in the image is as important as the context of the image, so we present the related work in two parts, one involving the models used to extract text from the meme and the other on the analysis of memes. <ref type="bibr" target="#b19">(Jaderberg et al., 2014)</ref> proposed one of the first CNN based approach for text recognition to classify words into fixed set of character texts. ( <ref type="formula">2019</ref>) uses an n-gram model to correct the OCR text extracted. <ref type="bibr" target="#b28">(Memon et al., 2020)</ref> performed a comprehensive literature review on handwriting character recognition. A survey analysed in <ref type="bibr" target="#b18">(Islam et al., 2017)</ref> shows an overview of different aspects of OCR and discuss different methods at resolving issues related to OCR. Template matching using contours is used in <ref type="bibr" target="#b30">(Olszewska, 2015)</ref> to recognize visual characters from real-world scenarios.</p><p>While there are not many works involving direct classification of emotions on memes. Early works on the detection of offensive content on online social media is OffenseEval <ref type="bibr" target="#b49">(Zampieri et al., 2019)</ref> shared task, organized at SemEval since 2019. The latest entrant "Internet memes" <ref type="bibr" target="#b45">(Williams et al., 2016)</ref> has doubled the challenge. Detecting an offensive meme is more complex than detecting an offensive text as it involves visual cues and language understanding. Automate of meme generation process are explored in <ref type="bibr" target="#b31">(Peirson et al., 2018;</ref><ref type="bibr">oli, )</ref> while others have sought to extract the memes' inherent sentiment <ref type="bibr" target="#b8">(French, 2017)</ref>. Nevertheless, this challenge proves the necessity of more research in the field of multimodal approaches to detect and classify the sentiments of memes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">The Memotion Analysis Task</head><p>Memes typically induce humor and strive to be relatable. Many of them aim to express solidarity during certain life phases and thus, to connect with their audience. Some memes are directly humorous whereas others go for sarcastic dig at daily life events. Inspired by the various humorous effects of memes, we propose three task as follows:</p><p>• Task A-Sentiment Classification: Given an Internet meme, the first task is to classify it as positive, negative or neutral meme.</p><p>• Task B-Humor Classification: Given an Internet meme, the system has to identify the type of emotion expressed. The categories are sarcastic, humorous, motivation and offensive meme. A meme can have more than one category.</p><p>• Task C-Scales of Semantic Classes: The third task is to quantify the extent to which a particular effect is being expressed. Details of such quantifications is reported in the Table <ref type="table" target="#tab_0">1</ref>.</p><p>We have released 10K human annotated Internet memes labelled with semantic dimensions namely sentiment, and type of humor that is, sarcastic, humorous, or offensive and motivation with their corresponding intensity. The humor types are further quantified on a Likert scale as in  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Dataset</head><p>To understand the complexity of memes, as discussed in the prior sections, it is essential to collect memes from different categories, with varying emotion classes. Details of preparing the data-set is presented below:</p><p>• Data collection: We identified a total of 52 unique and globally popular categories, for example, Hillary, Trump, Minions, Baby godfather, etc., for downloading the meme data. The meme (images) were downloaded using Google images search service, with the help of a browser extension tool called as fatkun batch downloader 1 . It provided a simple yet effective means to scrape a large number of memes, relevant for our purpose. To avoid any copyright issue in this, we have collected memes which are available in public domain along with their URLs, and added that information as additional meta-data in our data-set as well.</p><p>• Filtering: The memes are filtered keeping the following constraints into perspective:</p><p>-The meme must contain clear background picture, along-with an embedded textual content.</p><p>-Memes with only English language text content are considered for this study.</p><p>• Annotation: For getting our data-set of approx 10k samples annotated, we reached out to Amazon Mechanical Turk (AMT) workers, to annotate the emotion class labels as Humorous, Sarcasm, Offensive, Motivation and quantify the intensity to which a particular effect of a class is expressed, along-with the overall sentiments (very negative, negative, neutral, positive, very positive).</p><p>Emotion about memes highly depends upon an individual's perception of an array of aspects within society, and could thus vary from one person to another. This phenomenon is called as "Subjective Perception Problem" as noted in <ref type="bibr" target="#b52">(Zhao et al., 2018)</ref>. To address this challenge, the annotation process is performed multiple times ie. each sample is provided to 5 annotators, and the final annotations are adjudicated based upon majority voting scheme. The filtered and the annotated data-set comprises to the size of 9871 data samples. In addition to these aspects, textual content plays a pivotal role in ascertaining the emotion of a meme.</p><p>To understand the textual content from the memes, text has been extracted using Google vision OCR APIs. The extracted text was not completely accurate, therefore AMT workers were asked to provide the rectified text against the given OCR extracted text, for the inaccurately extracted OCR text.</p><p>Data Distribution: The statistical summaries are provided in Table <ref type="table" target="#tab_2">2 and 3</ref>. It is clear from the distribution of the data that there are significant overlapping emotions for the memes, which essentially validates the challenges discussed at the beginning. It can also be observed that majority of the memes are sarcastic in nature. Interestingly, most of the funny memes fall under the category of sarcastic class. Simultaneously, another noteworthy observation is that a significant number of memes are both motivational and offensive.</p><p>For the challenge, 1K samples were provided as trial data, 6992 samples as training data while 1879 samples as test data.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Baseline Model</head><p>Memes are the types of multi-modal content, wherein the graphical content and textual messages are self-sufficient to convey some meaning. But within the context of their dissemination, it is a specially tailored idea, that is designed to be propagated. Such complex ideas cannot be conveyed as effectively by any of the constituent data modality, as by their combination. In order to fully address the system modeling tasks that use such data, it is imperative to study the efficacy of individual content modality ie. image or text as well as their combination.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Textual cues for Memotion analysis</head><p>A meme can be expressed using varying textual contents, so as to convey different emotions. In some cases, different memes can have same images, but due to the different textual messages embedded in each of them, different sentimental reactions can be induced from all. Recognition of the emotion induced in such memes would require accurate modelling of the textual influence. To evaluate automated emotion recognition from the meme textual content, we built text binary classifier as shown in the bottom half of Fig. <ref type="figure" target="#fig_1">3</ref>, to understand different classes of emotion. We have used 100-D pre-trained Glove word embeddings <ref type="bibr" target="#b32">(Pennington et al., 2014)</ref> to generate word embeddings from text emd(txt). These embeddings Figure <ref type="figure">2</ref>: A Multi-level system for the task of emotion intensity prediction (1×14 dimensional), using the emotion class multi-label output (1×4 dimensional). are given as input x i to the CNN, having 64 filters of size 1×5 with Relu as activation function to extract the textual features. To reduce the dimension of number of parameters generated by CNN layer we have used 1D maxpooling layer of size 2. Weighted CNN output is given as input to LSTM where we get a feature vector s t . s t is fed to fully-connected layer, and activation function sigmoid is used to classify the text with binary cross-entropy as a loss function.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Visual cues for Memotion analysis</head><p>To comprehend the significance of image in deducing the humour of a meme, we have used many pre-trained models like VGG-16 <ref type="bibr" target="#b36">(Simonyan and Zisserman, 2015)</ref>, ResNet-50 <ref type="bibr" target="#b14">(He et al., 2015)</ref>, AlexNet <ref type="bibr" target="#b23">(Krizhevsky et al., 2012)</ref>to extract the features of an image ,but VGG-16 has given better features in comparison to other networks due to it's capability of extracting both high and low level features. To maintain uniformity in images, we have resized the image into 224×224×3 from the original Image I, the resized image X i is fed into vgg16 as input for feature extraction. Extracted feature Y i from vgg16 for the given meme is flattened by flatten layer. Flatten output Y i is fed to a fully connected network, and sigmoid function is used for classification with a loss function of binary cross entropy. The system performs weighted averaging of image-text outputs to evaluate the class-wise scores.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Visuo-Lingual modeling for Memotion analysis</head><p>The information contained within a meme in any mode whether text or image, needs to be analyzed for recognizing the emotion associated with it. Analyses of the results obtained show that features extracted from Section 5.2 or 5.1 alone are not sufficient to recognize the emotion of a meme. So we created the classifier for leveraging the combination of both image and text based model training, by performing weighted averaging as shown in Fig. <ref type="figure" target="#fig_1">3</ref>, which resulted in better predictions. The model, shown in Fig. <ref type="figure" target="#fig_1">3</ref>, predicts the output for each class as I 1 &amp; T 1 for sarcastic, I 2 &amp; T 2 for humour, I 3 &amp; T 3 for offense and I 4 &amp; T 4 for motivation emotions, where I i is for image based model and T i is for text based model. To combine predicted probabilities of image and text, we have used softmax function X i with a weighted average of the obtained probabilities of image and text classifier. In our work we have used weighted average for scaling the predicted output and find the threshold H to generate final 1×4 output vector to show how a meme is classified into multiple classes, where H is the average of image and text based network outputs, across the data-set size. The final output O, which generates a 1×4 vector for a given meme, is used as decision vector to activate the next level of emotion subclass to understand the intensity of emotion with respect to parent class.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Predicting the Intensity of Memes</head><p>To understand the intensity of an individual emotion associated with a meme, we have created a multilabel classifier with two levels where at the first level meme is classified as sarcastic, offensive, motivational and humorous and the second level predicts the intensity of a particular class depending upon the vector generated at the first level, as depicted in Fig. <ref type="figure">2</ref>. Obtain predicted output in a vector form, of size 1×4 from first level, i.e., emotion classification. In Fig. <ref type="figure">2</ref>, the decision system takes decision vector and activates the next multi-class classifier depending upon the value of the corresponding class in the vector. As we have a total of 14 classes (4 each of humour, sarcasm and offense while 2 of motivation), the final output that is the predicted intensity of each class will be a vector of size 1×14.</p><p>The performance of the system is shown in  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation Metric</head><p>The challenge comprises of classifying the sentiment and emotion associated with a meme. The task A is a multi-class problem involved in identifying the sentiment (positive, negative, neutral) associated with a meme while the other 2 tasks B and C are multi-label classification problem associated with emotion detection. There are various evaluation metrics for multi-class and multi-label classification problem such as hamming loss, exact match ratio, macro/micro F1 score etc. The most used metric for this kind of problem is hamming loss which is evaluated as the fraction of wrongly classified label to the total number of labels. As our problem deals with different emotions associated with a meme, we have used macro F1 score that will help us to evaluate and analyse the individual class performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Participation and Top Performing Systems</head><p>The challenge was a great success, involving total of 583 participants, with varying submissions in different tasks comprising of 31, 26 and 23 submissions in Task A, Task B and Task C respectively where in evaluation phase, a user is allowed for 5 submissions per day. 27 teams submitted the system description paper. A brief description of the task wise top performing models is shown below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.1">Top 3 Task A systems @Memotion</head><p>• IITK Vkeswani: Employed wide variety of methods, ranging from a simple linear classifier such as FFNN, Naive Bayes to transformers like MMBT <ref type="bibr">(Rahman et al., 2019)</ref> and BERT <ref type="bibr" target="#b7">(Devlin et al., 2019)</ref>. Implemented the model considering only text and the combination of image and text.</p><p>• Guoym: Used ensembling Method considering the textual features extracted using Bi-GRU, BERT <ref type="bibr" target="#b7">(Devlin et al., 2019)</ref>, or ELMo <ref type="bibr" target="#b33">(Peters et al., 2018)</ref>, image features extracted by Resnet50 <ref type="bibr" target="#b14">(He et al., 2015)</ref> network and fusion features of text and images.</p><p>• Aihaihara: Implemented the model that is a concatenation of visual and textual features obtained from n-gram language model and VGG-16 <ref type="bibr" target="#b36">(Simonyan and Zisserman, 2015)</ref> pretrained model respectively.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2">Top 3 Task B and Task C systems @Memotion</head><p>• UPB George: In order to extract most salient features from text input, they opted to use the AL-BERT <ref type="bibr" target="#b24">(Lan et al., 2019)</ref>model while VGG -16 <ref type="bibr" target="#b36">(Simonyan and Zisserman, 2015)</ref> is used for extracting the visual features from image input. To determine the humour associated with a meme, they have concatenated the visual and textual features followed by an output layer of softmax.</p><p>• Souvik Mishra Kraken: Applied Transfer learning by using hybrid neural Naïve-Bayes Support Vector Machine and logistic regression for solving the task of humour classification and significant score.</p><p>• Hitachi: They have proposed simple but effective MODALITY ENSEMBLE that incorporates visual and textual deep-learning models, which are independently trained, rather than providing a single multi-modal joint network. They fine-tuned four pre-trained visual models (i.e., Inception-ResNet <ref type="bibr" target="#b41">(Szegedy et al., 2016)</ref>, Polynet <ref type="bibr" target="#b51">(Zhang et al., 2016)</ref>, SENet <ref type="bibr" target="#b15">(Hu et al., 2017)</ref>, and PNAS-Net <ref type="bibr" target="#b26">(Liu et al., 2017)</ref>) and four textual models (i.e., BERT <ref type="bibr" target="#b7">(Devlin et al., 2019)</ref>, GPT-2 <ref type="bibr" target="#b34">(Radford et al., 2018)</ref>, Transformer-XL , and XLNet ), followed by the fusion of their predictions by ensemble methods to effectively capture cross-modal correlations.  8 Results, Analysis, and Takeaway points from Memotion 1.0  <ref type="bibr">5, 6 and 7</ref> shows the best scores of the all the participants and the comparison with the baseline model whereas Table <ref type="table" target="#tab_14">8</ref> shows a summary of the models employed by different participants. Some of the noteworthy points regarding various techniques and consideration of different modals is described in the subsequent sections.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.1">Unimodal vs Multi-modal</head><p>• Considering only text: Steve and CSECU KDE MA used only textual features to determine the humour as well as the corresponding intensity. System of steve include a Logistic Regression baseline, a BiLSTM + Attention-based learner and a transfer learning approach with BERT while CSECU KDE MA applied fastext forward embedding followed by convolution layers with multiple kernel sizes and time distribution LSTM with attention mechanism. Results are quite significant but less than the models implemented considering the combination of image and text.</p><p>• Combination of image+text: Most participant's approach include fusion of visual and textual features extracted using different models as shown in Table <ref type="table" target="#tab_14">8</ref>. Teams HonoMi Hitachi, Lisa Bonheme and Yingmei Guo proposed ensemble learning where as teams Sunil, DelaPen and many others have used multimodal approaches, few teams even have performed transfer learning on pre-trained models of BERT <ref type="bibr">(Devlin et al., 2019), VGG-16 (Simonyan and</ref><ref type="bibr" target="#b36">Zisserman, 2015)</ref> , ResNet, etc.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.2">Techniques based on</head><p>• Visual approaches: Pretrained models like Inception-ResNet <ref type="bibr" target="#b14">(He et al., 2015)</ref>,Polynet <ref type="bibr" target="#b51">(Zhang et al., 2016)</ref>, SENet <ref type="bibr" target="#b15">(Hu et al., 2017)</ref> and the popular off-the-shelf systems like VGG-16 <ref type="bibr" target="#b36">(Simonyan and Zisserman, 2015)</ref> and ResNET <ref type="bibr" target="#b14">(He et al., 2015)</ref> are significantly leveraged as part of the visual feature extractors.</p><p>• Textual feature extraction approaches: For modeling the content based on textual format, techniques like BiLSTM, BIGRU, and Attention models are used to perform cross domain suggestion  mining. Besides these, BiLSTM+Attention based learner and a transfer learning approach with BERT <ref type="bibr" target="#b7">(Devlin et al., 2019)</ref> is also used for analysing the text.</p><p>• Approaches to handle categorical imbalance: Interestingly, to address the inherent skewness within the categorical data distribution at different levels, approaches like GMM and Training Signal Annealing (TSA) are used.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.3">Special Mentions</head><p>In addition to the description of top performing models, we have some unique systems implemented by various participants, summarized below:  ous experiments, they have shown that considering either of the text or image performs better than considering the combination of both.</p><formula xml:id="formula_0">• Li</formula><p>• Pradyumn Gupta: Proposed a system which uses different bimodal fusion techniques like GMU, early and late fusion to leverage the inter-modal dependency for sentiment and emotion classification tasks. To extract visual features, they have used facial expression, face emotions and different pretrained deep learning models like ResNet-50 <ref type="bibr" target="#b14">(He et al., 2015)</ref>, AlexNet <ref type="bibr" target="#b23">(Krizhevsky et al., 2012)</ref>.</p><p>To understand the textual information associated with a meme, BiLSTM, RoBERTa are used.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Memotion Analysis -the next Horizon!</head><p>The submissions that we received also came along with their respective analytical reasoning, towards ascertaining whether an image or a text or their combination contributes towards modeling the associated emotions from memes. Most of the analyses provided present conflicting views, regarding the importance of a particular content modality. This essentially reinstates the requirement of further investigations into better approaches towards modeling the affect related information from the multi-modal content like memes. The complexity of understanding the emotions from a meme arises primarily due to the interaction of both image and embedded text. Although, few results reported are better when evaluating over either image or text, a human always attempts to take cognizance of both image and text to understand the meaning intended. The challenge is highlighted more by memes which are domain specific, i.e. based on a popular Movie or TV Show. While there are several State-of-the-Art deep learning based systems that leverage data intensive training approaches, that perform various tasks at par with humans on both image and especially for text, still there is a lot more space for applications involving multi-modality like memes, to drive the required progress. Recently Facebook proposed a challenge <ref type="bibr">(Kiela et al., 2020)</ref> to classify the meme as Hateful and Not Hateful content.</p><p>At present, memes have become one of the most prominent ways of expressing an individual's opinion towards societal issues. Further on classifying the emotion of memes, this work can be extended as follows:</p><p>• Properly annotated meme data is still scarce. We plan to enrich our data-set with annotations for different language memes (Hinglish, Spanglish etc).</p><p>• The success of Memotion 1.0 motivates us to go further and organize similar events in the future.</p><p>• The emotion classification could be further extended to develop a meme recommendation system as well as establishing a AI algorithm that could flag the offensive meme from social media platforms automatically.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Plot depicting category-wise data distribution of meme emotion data-set [For eg. There are approx. 2200 memes in the data-set tagged as "Not funny"].</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Depiction of a multi-label classification system, employed towards emotion class classification. The system performs weighted averaging of image-text outputs to evaluate the class-wise scores.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 .</head><label>1</label><figDesc>The data-set will also contain the extracted captions/texts from the memes.</figDesc><table><row><cell></cell><cell>sarcastic humorous offensive Motivation</cell></row><row><cell>not (0)</cell><cell></cell></row><row><cell>slightly (1)</cell><cell></cell></row><row><cell>mildly (2)</cell><cell>NA</cell></row><row><cell>very (3)</cell><cell>NA</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Semantic classes for the Memotion Analysis</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Distribution of the overall data-set:for categories Humour, Sarcasm, Motivation, Offense and Overall sentiment, along-with their sub-categories (Abbreviations: NF: Not funny, F: Funny, VF: Very Funny, H: Humour; NS:Not Sarcastic, G: General sarcastic, TM: Twisted Meaning, VT: Very Twisted; NM: Not Motivational, M: Motivational; NO: Not Offensive, S: Slightly offensive, VO: Very Offensive, HO: Highly Offensive; VN: Very Negative, N: Negative, Neu: Neutral, P: Positive, VP: Very Positive)</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Distribution of the data-set w.r.t Task 2: for categories Humour, Sarcasm, Motivation, Offense and Overall sentiment clubbed for two sub-categories at lower level of granularity. (NX-Abbreviation implying a 'Not' for a particular category X of emotions)</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4</head><label>4</label><figDesc>considering the image, text and the combination of both image and text.</figDesc><table><row><cell>Task B</cell><cell>Classes</cell><cell cols="3">Macro F1 score Image Text Image+Text</cell></row><row><cell cols="3">Task A Sentiment Analysis 0.18</cell><cell>0.20</cell><cell>0.21</cell></row><row><cell></cell><cell>Humour</cell><cell>0.48</cell><cell>0.49</cell><cell>0.51</cell></row><row><cell></cell><cell>Sarcasm</cell><cell>0.51</cell><cell>0.53</cell><cell>0.50</cell></row><row><cell>Task B</cell><cell>Offense</cell><cell>0.43</cell><cell>0.42</cell><cell>0.49</cell></row><row><cell></cell><cell>Motivation</cell><cell>0.42</cell><cell>0.47</cell><cell>0.49</cell></row><row><cell></cell><cell>Average Score</cell><cell>0.46</cell><cell>0.48</cell><cell>0.50</cell></row><row><cell></cell><cell>Humour</cell><cell>0.21</cell><cell>0.23</cell><cell>0.24</cell></row><row><cell></cell><cell>Sarcasm</cell><cell>0.24</cell><cell>0.25</cell><cell>0.24</cell></row><row><cell>Task C</cell><cell>Offense</cell><cell>0.16</cell><cell>0.19</cell><cell>0.23</cell></row><row><cell></cell><cell>Motivation</cell><cell>0.36</cell><cell>0.42</cell><cell>0.48</cell></row><row><cell></cell><cell>Average Score</cell><cell>0.24</cell><cell>0.27</cell><cell>0.30</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Macro F1 score comparison for task-wise and class-wise (for task B and C) and their averages. The results are reported for evaluations for inputs as: image, text and the combination of both (image+text).</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Team-wise results (Macro-F1) and their comparison with the base-line performance, for Task A-Sentiment Analysis [Comparison color code: Green-ahead of the base-line; Red-behind the baseline].</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table</head><label></label><figDesc></figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 6 :</head><label>6</label><figDesc>Team/Class-wise results (Macro-F1) and their comparison with the base-line performance, for Task B -Humour Classification. Table is arranged in descending order ie. top-most row shows the winner while the 2 nd row tells about the score of 2 nd ranker. The scores and the team names highlighted in pink color shows the class wise best result. [Comparison color code: Green-ahead of the base-line; Red-behind the base-line].</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 7 :</head><label>7</label><figDesc>Team/Class-wise results (Macro-F1) and their comparison with the base-line performance, for Task C-Semantic Classification. Table is arranged in descending order ie. top-most row shows the winner while the 2 nd row tells about the score of 2 nd ranker. The scores and the team names highlighted in pink color shows the class wise best result. [Comparison color code: Green-ahead of the base-line; Red-behind the base-line].</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head></head><label></label><figDesc>Zhen hit-mitlab:  Proposed the usage of multiple ways to handle few minor issues of the task such as imbalance and noise. They used RandAugment to enhance the image, and used Training Signal Annealing (TSA) to handle the imbalance. RandAugment detects data augmentation with a reduced search space. They use pre-trained models ResNet-101 and BERT to handle image and text features respectively. They also extracted effective features of the image considering textual information, and concatenate both the obtained features of image and text.• Bonheme: Analysed the meme by applying Canonical Correlation Analysis (CCA), Deep Canonical Correlation Analysis (DCCA) that shows no statistically significant correlation between image and text and observed that image and text are more complementary than correlated in the case of sentiment analysis of memes. Thus, concluded that alignment based techniques are not suitable for meme analysis. They have used fusion approach with statistical modeling such as random forest and KNN and for the better performance they have used Multi Layer Perceptron(MLP). With vari-</figDesc><table><row><cell>Team</cell><cell>Inception ResNet</cell><cell>BERT XLNet LSTM GRU CNN VGG-16 DenseNet</cell><cell>GloVe</cell></row><row><cell>Hitachi</cell><cell></cell><cell></cell><cell></cell></row><row><cell>YNU-HPCC</cell><cell></cell><cell></cell><cell></cell></row><row><cell>PRHLT-UPV</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Guoym</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Vkeswani IITK</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Memebusters</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Sunil Gundapu</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Suciati Indra</cell><cell></cell><cell></cell><cell></cell></row><row><cell>SESAM Bonheme</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Zehao Liu</cell><cell></cell><cell></cell><cell></cell></row><row><cell>NUAA-QMUL</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Ambuje Gupta</cell><cell></cell><cell></cell><cell></cell></row><row><cell>CN-HIT-MI.T</cell><cell></cell><cell></cell><cell></cell></row><row><cell>KAFK</cell><cell></cell><cell></cell><cell></cell></row><row><cell>NIT-Agartala-NLP-Team</cell><cell></cell><cell></cell><cell></cell></row><row><cell>DSC IIT-ISM</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Sabino Infotech</cell><cell></cell><cell></cell><cell></cell></row><row><cell>UPB</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Sravani IS</cell><cell></cell><cell></cell><cell></cell></row><row><cell>NAYEL</cell><cell></cell><cell></cell><cell></cell></row><row><cell>IIITG-ADBU</cell><cell></cell><cell></cell><cell></cell></row><row><cell>LT3</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Urszula</cell><cell></cell><cell></cell><cell></cell></row><row><cell>CSECU KDE MA</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Ingroj Jonathan</cell><cell></cell><cell></cell><cell></cell></row><row><cell>Adithya Sanath</cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 8 :</head><label>8</label><figDesc>Checklist of pre-trained models and techniques, implemented by different teams in their work.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://chrome.google.com/webstore/detail/fatkun-batch-download-ima/nnjjahlikiabnchcpehcpkdeckfgnohf?hl=en</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Memotion Analysis at SemEval-2020 Task 8: Memes Classification using Hybrid classifier</title>
+		<author>
+			<persName><forename type="first">Kataria</forename><surname>Gupta Ambuje</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mishra</forename><surname>Harsh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Souvik</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+	<note>Badal Tapas, and Mishra Vipul. Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Iiitg-adbu at semeval-2020 task 8: A multimodal approach to detect offensive, sarcastic and humorous memes</title>
+		<author>
+			<persName><forename type="first">Arup</forename><surname>Baruah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ferdous</forename><forename type="middle">Ahmed</forename><surname>Kaushik Amar Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kuntal</forename><surname>Barbhuiya</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dey</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">SemEval-2020 Task 8: An Overview of Simple Text Classification Methods for Meme</title>
+		<author>
+			<persName><forename type="first">Manish Varma Vasudeva</forename><surname>Boinepelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sravani</forename><surname>Shrivastava</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">SESAM at SemEval-2020 Task 8: Investigating the relationship between image and text in sentiment analysis of memes</title>
+		<author>
+			<persName><forename type="first">Lisa</forename><surname>Bonheme</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marek</forename><surname>Grzes</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Using the google web 1t 5-gram corpus for ocr error correction</title>
+		<author>
+			<persName><forename type="first">Jorge Ramón Fonseca</forename><surname>Cacho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kazem</forename><surname>Taghva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Alvarez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">16th International Conference on Information Technology-New Generations (ITNG 2019)</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="505" to="511" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">CSECU KDE MA at SemEval-2020 task 8: A neural attention model for memotion analysis</title>
+		<author>
+			<persName><surname>Abu Nowshed Chy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Masaki</forename><surname>Umme Aymun Siddiqua</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Aono</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Transformer-xl: Attentive language models beyond a fixed</title>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc</forename><forename type="middle">V</forename><surname>Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>length context</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019-06" />
+			<publisher>Association for Computational Linguistics</publisher>
+			<biblScope unit="page" from="4171" to="4186" />
+			<pubPlace>Minneapolis, Minnesota</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Image-based memes as sentiment predictors</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Jean</surname></persName>
+		</author>
+		<author>
+			<persName><surname>French</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2017 International Conference on Information Society (i-Society)</title>
+				<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="80" to="85" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Gal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Limor</forename><surname>Shifman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zohar</forename><surname>Kampf</surname></persName>
+		</author>
+		<title level="m">it gets better&quot;: Internet memes and the construction of collective identity. New Media &amp; Society</title>
+				<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="page" from="1698" to="1714" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">PRHLT-UPV at SemEval-2020 Task 8: Study of Multimodal Techniques for Memes Analysis</title>
+		<author>
+			<persName><forename type="first">Liz</forename><surname>De La Gretel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sarracén</forename><surname>Peña</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rosso</forename><surname>Paolo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giachanou</forename><surname>Anastasia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Deep Learning and Text Categorization approach for Memes classification at SemEval-2020 Task 8: Memotion Analysis</title>
+		<author>
+			<persName><forename type="first">Ruiz</forename><surname>Guillermo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tellez</forename><surname>Eric</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Moctezuma</forename><surname>Daniela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miranda-Jiménez</forename><surname>Sabino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graff</forename><surname>Tania</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mario</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">2020. gundapusunil at SemEval-2020 Task 8: Multimodal Memotion Analysis</title>
+		<author>
+			<persName><forename type="first">Sunil</forename><surname>Gundapu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radhika</forename><surname>Mamidi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">DSC IIT-ISM at SemEval-2020 Task 8: Bi-Fusion Techniques for Deep Meme Emotion Analysis</title>
+		<author>
+			<persName><forename type="first">Pradyumna</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Himanshu</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aman</forename><surname>Sinha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Deep residual learning for image recognition</title>
+		<author>
+			<persName><forename type="first">Kaiming</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiangyu</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shaoqing</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Sun</surname></persName>
+		</author>
+		<idno>abs/1512.03385</idno>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Squeeze-and-excitation networks</title>
+		<author>
+			<persName><forename type="first">Jie</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Shen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gang</forename><surname>Sun</surname></persName>
+		</author>
+		<idno>abs/1709.01507</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">NLP UIOWA at SemEval-2020 Task 8: You&apos;re not the only one cursed with knowledge -Multi branch model memotion analysis</title>
+		<author>
+			<persName><forename type="first">Shrestha</forename><surname>Ingroj</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rusert</forename><surname>Jonathan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">MemoSYS at SemEval-2020 Task 8: Memotion Analysis</title>
+		<author>
+			<persName><forename type="first">Bejan</forename><surname>Irina</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>Sep. Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">A survey on optical character recognition system</title>
+		<author>
+			<persName><forename type="first">Noman</forename><surname>Islam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zeeshan</forename><surname>Islam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nazia</forename><surname>Noor</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1710.05703</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<author>
+			<persName><forename type="first">Max</forename><surname>Jaderberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Karen</forename><surname>Simonyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Vedaldi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Zisserman</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1406.2227</idno>
+		<title level="m">Synthetic data and artificial neural networks for natural scene text recognition</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">KAFK at SemEval-2020 Task 8: Extracting Features From Pre-trained Neural Networks To Classify Internet Memes</title>
+		<author>
+			<persName><forename type="first">Das</forename><surname>Kaushik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Baruah</forename><surname>Amar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbhuiya</forename><surname>Arup</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmed</forename><surname>Ferdous</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dey</forename><surname>Kuntal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">IITK at SemEval-2020 Task 8: Unimodal and Bimodal Sentiment Analysis of Internet Memes</title>
+		<author>
+			<persName><forename type="first">Vishal</forename><surname>Keswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sakshi</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suryansh</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Pratik Ringshia, and Davide Testuggine. 2020. The hateful memes challenge: Detecting hate speech in multimodal memes</title>
+		<author>
+			<persName><forename type="first">Douwe</forename><surname>Kiela</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hamed</forename><surname>Firooz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aravind</forename><surname>Mohan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vedanuj</forename><surname>Goswami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amanpreet</forename><surname>Singh</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Imagenet classification with deep convolutional neural networks</title>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Krizhevsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><forename type="middle">E</forename><surname>Hinton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems</title>
+				<editor>
+			<persName><forename type="first">F</forename><surname>Pereira</surname></persName>
+			<persName><forename type="first">C</forename><forename type="middle">J C</forename><surname>Burges</surname></persName>
+			<persName><forename type="first">L</forename><surname>Bottou</surname></persName>
+			<persName><forename type="first">K</forename><forename type="middle">Q</forename><surname>Weinberger</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Curran Associates, Inc</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="page" from="1097" to="1105" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">Albert: A lite bert for self-supervised learning of language representations</title>
+		<author>
+			<persName><forename type="first">Zhenzhong</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mingda</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Goodman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Gimpel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piyush</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">YNU-HPCC at SemEval-2020 Task 8: Using a Parallel-Channel Model for Memotion Analysis</title>
+		<author>
+			<persName><forename type="first">Yuan</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wang</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhang</forename><surname>Xuejie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Chenxi</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barret</forename><surname>Zoph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathon</forename><surname>Shlens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Hua</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li-Jia</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Fei-Fei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><forename type="middle">L</forename><surname>Yuille</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Murphy</surname></persName>
+		</author>
+		<idno>abs/1712.00559</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Progressive neural architecture search. CoRR</title>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Memebusters at SemEval-2020 Task 8: Feature Fusion Model for Sentiment Analysis on Memes using Transfer Learning</title>
+		<author>
+			<persName><forename type="first">Kandasamy</forename><surname>Sharma Mayukh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ilanthenral</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">B</forename><surname>Vasantha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Handwritten optical character recognition (ocr): A comprehensive systematic literature review (slr)</title>
+		<author>
+			<persName><forename type="first">Jamshed</forename><surname>Memon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maira</forename><surname>Sami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rizwan Ahmed</forename><surname>Khan</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2001.00139</idno>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Hitachi at SemEval-2020 Task 8: Simple but Effective Modality Ensemble for Meme Emotion Recognition</title>
+		<author>
+			<persName><forename type="first">Terufumi</forename><surname>Morishita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gaku</forename><surname>Morio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shota</forename><surname>Horiguchi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroaki</forename><surname>Ozaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toshinori</forename><surname>Miyoshi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Active contour based optical character recognition for automated scene understanding</title>
+		<author>
+			<persName><forename type="first">Joanna</forename><forename type="middle">Isabelle</forename><surname>Olszewska</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Neurocomputing</title>
+		<imprint>
+			<biblScope unit="volume">161</biblScope>
+			<biblScope unit="page" from="65" to="71" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<author>
+			<persName><surname>V Peirson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E Meltem</forename><surname>Abel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Tolunay</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1806.04510</idno>
+		<title level="m">Dank learning: Generating memes using deep neural networks</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christoper</forename><surname>Manning</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="page">1</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<author>
+			<persName><forename type="first">Matthew</forename><forename type="middle">E</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Gardner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<title level="m">Deep contextualized word representations</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<title level="m" type="main">Language models are unsupervised multitask learners</title>
+		<author>
+			<persName><forename type="first">Alec</forename><surname>Radford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rewon</forename><surname>Child</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Luan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dario</forename><surname>Amodei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<author>
+			<persName><forename type="first">Wasifur</forename><surname>Rahman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Md Kamrul</forename><surname>Hasan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amir</forename><surname>Zadeh</surname></persName>
+		</author>
+		<title level="m">Louis-Philippe Morency, and Mohammed Ehsan Hoque. 2019. M-bert: Injecting multimodal information in the bert structure</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<title level="m" type="main">Very deep convolutional networks for large-scale image recognition</title>
+		<author>
+			<persName><forename type="first">Karen</forename><surname>Simonyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Zisserman</surname></persName>
+		</author>
+		<idno>abs/1409.1556</idno>
+		<imprint>
+			<date type="published" when="2015" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">LT3 at SemEval-2020 Task 8: Multi-Modal Multi-Task Learning for Memotion Analysis</title>
+		<author>
+			<persName><forename type="first">Pranaydeep</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Bauwelinck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<title level="m" type="main">The world&apos;s biggest meme is the word &quot;meme&quot; itself</title>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Sonnad</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<title level="m" type="main">UI at SemEval-2020 Task 8: Text-Image Fusion for Sentiment Classi</title>
+		<author>
+			<persName><forename type="first">Andi</forename><surname>Suciati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Indra</forename><surname>Budi</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+	<note>U+FB01]cation</note>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Nitagartala-nlp-team at semeval-2020 task 8: Building multimodal classifiers to tackle internet humor</title>
+		<author>
+			<persName><forename type="first">Steve</forename><forename type="middle">Durairaj</forename><surname>Swamy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shubham</forename><surname>Laddha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Basil</forename><surname>Abdussalam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Debayan</forename><surname>Datta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anupam</forename><surname>Jamatia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<title level="m" type="main">Inception-v4, inception-resnet and the impact of residual connections on learning</title>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Szegedy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergey</forename><surname>Ioffe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Vanhoucke</surname></persName>
+		</author>
+		<idno>abs/1602.07261</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Urszula Walinska at SemEval-2020 Task 8: Memotion Analysis</title>
+		<author>
+			<persName><forename type="first">Walinska</forename><surname>Urszula</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Potoniec</forename><surname>Jedrzej</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Upb at semeval-2020 task 8: Joint textual and visual modeling in a multi-task learning architecture for memotion analysis</title>
+		<author>
+			<persName><forename type="first">George-Alexandru</forename><surname>Vlad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George-Eduard</forename><surname>Zaharia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dumitru-Clementin</forename><surname>Cercel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Costin-Gabriel</forename><surname>Chiru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefan</forename><surname>Trausan-Matu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020-12" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Urszula Walinska at SemEval-2020 Task 8: Memotion Analysis</title>
+		<author>
+			<persName><forename type="first">Urszula</forename><surname>Walinska</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jedrzej</forename><surname>Potoniec</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Racial microaggressions and perceptions of internet memes</title>
+		<author>
+			<persName><forename type="first">Amanda</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Clio</forename><surname>Oliver</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katherine</forename><surname>Aumer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chanel</forename><surname>Meyers</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computers in Human Behavior</title>
+		<imprint>
+			<biblScope unit="volume">63</biblScope>
+			<biblScope unit="page" from="424" to="432" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">NUAA-QMUL at SemEval 2020 Task 8:Utilizing BERT and DenseNet for Internet Meme Emotion Analysis</title>
+		<author>
+			<persName><forename type="first">Guo</forename><surname>Xiaoyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ma</forename><surname>Jing</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zubiaga</forename><surname>Arkaitz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<title level="m" type="main">Xlnet: Generalized autoregressive pretraining for language understanding</title>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><forename type="middle">G</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruslan</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Quoc</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Le</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1906" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">2020. guoym at SemEval-2020 Task 8: Ensemblebased Classification of Visuo-Lingual Metaphor in Memes</title>
+		<author>
+			<persName><forename type="first">Guo</forename><surname>Yingmei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huang</forename><surname>Jinfa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dong</forename><surname>Yanlong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xu</forename><surname>Mingxing</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">SemEval-2019 Task 6: Identifying and categorizing offensive language in social media (OffensEval)</title>
+		<author>
+			<persName><forename type="first">Marcos</forename><surname>Zampieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shervin</forename><surname>Malmasi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noura</forename><surname>Farra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ritesh</forename><surname>Kumar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">13th International Workshop on Semantic Evaluation</title>
+				<imprint>
+			<publisher>ACL</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="75" to="86" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Semeval-2020 task 8: Gaussian mixture modelling (gmm)based sampling approach for multi-modal memotion analysis</title>
+		<author>
+			<persName><forename type="first">Liu</forename><surname>Zehao</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Osei-Brefo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chen</forename><surname>Emmanuel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liang</forename><surname>Siyuan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Huizhi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<monogr>
+		<title level="m" type="main">Polynet: A pursuit of structural diversity in very deep networks</title>
+		<author>
+			<persName><forename type="first">Xingcheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhizhong</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chen</forename><forename type="middle">Change</forename><surname>Loy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dahua</forename><surname>Lin</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<monogr>
+		<title level="m" type="main">Affective image content analysis: A comprehensive survey</title>
+		<author>
+			<persName><forename type="first">Sicheng</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guiguang</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tat-Seng</forename><surname>Chua</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Björn</forename><surname>Schuller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kurt</forename><surname>Keutzer</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page">7</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">CN-HIT-MI.T at SemEval-2020 Task 8: Memotion Analysis Based on BERT</title>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Zhen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhang</forename><surname>Yaojie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xu</forename><surname>Bing</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhao</forename><surname>Tiejun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation (SemEval-2020)</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation (SemEval-2020)<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

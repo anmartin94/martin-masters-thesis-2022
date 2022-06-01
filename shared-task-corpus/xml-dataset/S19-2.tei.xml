@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2019 Task 2: Unsupervised Lexical Frame Induction</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Behrang</forename><surname>Qasemizadeh</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Miriam</forename><forename type="middle">R L</forename><surname>Petruck</surname></persName>
+							<email>miriamp@icsi.berkeley.edu</email>
+						</author>
+						<author>
+							<persName><roleName>HHUD</roleName><forename type="first">Regina</forename><surname>Stodden</surname></persName>
+							<email>stodden@phil.hhu.de</email>
+						</author>
+						<author>
+							<persName><surname>Germany</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Laura</forename><surname>Kallmeyer</surname></persName>
+							<email>kallmeyer@phil.hhu.de</email>
+						</author>
+						<author>
+							<persName><forename type="first">Marie</forename><surname>Candito</surname></persName>
+							<email>marie.candito@linguist.univ-paris-diderot.fr</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<address>
+									<postCode>SFB991</postCode>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">HHUD</orgName>
+								<address>
+									<postCode>SFB991</postCode>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="institution">Paris Diderot University -CNRS</orgName>
+								<address>
+									<country key="FR">France</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2019 Task 2: Unsupervised Lexical Frame Induction</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>This paper presents Unsupervised Lexical</head><p>Frame Induction, Task 2 of the International Workshop on Semantic Evaluation in 2019. Given a set of prespecified syntactic forms in context, the task requires that verbs and their arguments be clustered to resemble semantic frame structures. Results are useful in identifying polysemous words, i.e., those whose frame structures are not easily distinguished, as well as discerning semantic relations of the arguments. Evaluation of unsupervised frame induction methods fell into two tracks: Task A) Verb Clustering based on FrameNet 1.7; and B) Argument Clustering, with B.1) based on FrameNet's core frame elements, and B.2) on VerbNet 3.2 semantic roles. The shared task attracted nine teams, of whom three reported promising results. This paper describes the task and its data, reports on methods and resources that these systems used, and offers a comparison to human annotation.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>SemEval 2019 Task 2 focused on the unsupervised semantic labeling of a set of prespecified (semantically) unlabeled structures (Figure <ref type="figure" target="#fig_1">1</ref>). Unsupervised learning methods analyze these structures (Figure <ref type="figure" target="#fig_1">1a</ref>) to augment them with semantic labels (Figure <ref type="figure" target="#fig_1">1b</ref>). The shape of the manually labeled input frames is constrained to an acyclic connected tree of lexical items (words and multi-word units) of maximum depth 1, where just one root governs several arguments. The task used Berkeley FrameNet (FN) <ref type="bibr" target="#b35">(Ruppenhofer et al., 2016)</ref> and Q. <ref type="bibr" target="#b32">Zadeh and Petruck (2019)</ref>, guidelines for this task, to determine the arguments and label them with semantic information.</p><p>We compared the proposed system results for unsupervised semantic tagging with that of human annotated <ref type="bibr">(or, gold-standard)</ref> data in three different subtasks (Figure <ref type="figure" target="#fig_2">2</ref>). To evaluate the systems, we computed distributional similarities between  their generated unsupervised labeled data and human annotated reference data. For computing similarities we used general purpose numeral methods of text clustering, in particular BCUBED F-SCORE <ref type="bibr" target="#b4">(Bagga and Baldwin, 1998)</ref> as the single figure of merit to rank the systems.</p><p>The most important result of the shared task is the creation of a benchmark for a future complex task. This benchmark includes a moderately sized, manually annotated set of frames, where only the verbs of each were included, along with their core frame elements (which uniquely define a frame as <ref type="bibr">Ruppenhofer et al. describe)</ref>. To complement FN's core frame elements that have highly specific meanings, the benchmark also includes the annotated argument structures of the verbs based on the generic semantic roles proposed for verb classes in VerbNet 3.2 <ref type="bibr" target="#b20">(Kipper et al., 2000;</ref><ref type="bibr" target="#b29">Palmer et al., 2017)</ref>. The benchmark comes with simplified annotation guidelines and a modular annotation sys-tem with browsing and editing capabilities. <ref type="bibr">1</ref> Complementing the benchmarking are several state-ofthe-art competing baselines, from the participants, that serve as a point of departure for improvements in the future. <ref type="bibr">2</ref> The rest of this paper is organized as follows: Section 2 contextualizes this task; Section 3 offers a detailed task-description; Section 4 describes the data; Section 5 introduces the evaluation metrics and baselines; Section 6 characterizes the participating systems and unsupervised methods that participants used; Section 7 provides evaluation scores and additional insight about the data; and Section 8 presents concluding remarks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Background</head><p>Frame Semantics <ref type="bibr" target="#b10">(Fillmore, 1976)</ref> and other theories <ref type="bibr" target="#b12">(Gamerschlag et al., 2014</ref>) that adopt typed feature structures for representing knowledge and linguistic structures have developed in parallel over several decades in theoretical linguistic studies about the syntax-semantics interface, as well as in empirical corpus-driven applications in natural language processing. Building repositories of (lexical) semantic frames is a core component in all of these efforts. In formal studies, lexical semantic frame knowledge bases instantiate foundational theories with tangible examples, e.g., to provide supporting evidence for the theory. Practically, frame semantic repositories play a pivotal role in natural language understanding and semantic parsing, both as inspiration for a representation format and for training data-driven machine learning systems, which is required for tasks such as information extraction, question-answering, text summarization, among others.</p><p>However, manually developing frame semantic databases and annotating corpus-derived illustrative examples to support analyses of frames are resource-intensive tasks. The most well-known frame semantic (lexical) resource is FrameNet <ref type="bibr" target="#b35">(Ruppenhofer et al., 2016)</ref>, which only covers a (relatively) small set of the vocabulary of contemporary English. While NLP research has integrated FrameNet data into semantic parsing, e.g., <ref type="bibr" target="#b38">Swayamdipta et al. (2018)</ref>, these methods cannot extend beyond previously seen training labels, tagging out-of-domain semantics as unknown at best. This limitation does not hinder unsupervised methods, which will port and extend the coverage of semantic parsers, a common challenge in semantic parsing <ref type="bibr" target="#b16">(Hartmann et al., 2017)</ref>.</p><p>Unsupervised frame induction methods can serve as an assistive semantic analytic tool, to build language resources and facilitate linguistic studies. Since the focus is usually to build language resources, most systems <ref type="bibr" target="#b31">(Pennacchiotti et al. (2008)</ref>; <ref type="bibr" target="#b14">Green et al. (2004)</ref>) have used a lexical semantic resource like WordNet <ref type="bibr" target="#b25">(Miller, 1995)</ref> to extend coverage of a resource like FrameNet. Some methods, e.g., <ref type="bibr" target="#b26">Modi et al. (2012)</ref> and <ref type="bibr" target="#b19">Kallmeyer et al. (2018)</ref>, tried to extract FrameNetlike resources automatically without additional semantic information. Others <ref type="bibr" target="#b39">(Ustalov et al. (2018)</ref>; <ref type="bibr" target="#b23">Materna (2012)</ref>) addressed frame induction only for verbs with two arguments.</p><p>Lastly, unsupervised frame induction methods can also facilitate linguistic investigations by capturing information about the reciprocal relationships between statistical features and linguistic or extra-linguistic observations (e.g., <ref type="bibr" target="#b33">Reisinger et al. (2015)</ref>). This task aimed to benchmark a class of such unsupervised frame induction methods.  The ambitious goal of this task was the unsupervised induction of frame semantic structures from tokenized and morphosyntacally labeled text corpora. We sought to achieve this goal by building an evaluation benchmark for three tasks. Task A dealt with unsupervised labeling of verb lemmas with their frame meaning. Task B involved unsupervised argument role labeling, where B.1 benchmarked unsupervised labeling of frame-specific frame elements (FEs) based on FN, and B.2 benchmarked unsupervised role labeling of arguments in Case Grammar terms <ref type="bibr" target="#b11">(Fillmore, 1968)</ref> and against a set of generic semantic roles, taken primarily from VerbNet.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>The task was unsupervised in that it forbade the use of any explicit semantic annotation (only permitting morphosyntactic annotation). Instead, we encouraged the use of unsupervised representation learning methods (e.g., word embeddings, brown clusters) to obtain semantic information. Hence, systems learn and assign semantic labels to test records without appealing to any explicit training labels. For development purposes, developers received a small labeled development set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Task A: Clustering Verbs</head><p>The goal of this task was to identify verbs that evoke the same frame. The task involved labeling verb uses in context to resemble their categorization based on Frame Semantics (Figure <ref type="figure" target="#fig_2">2a</ref>). Here, we used FN 1.7 as the reference for frame definitions. Hence, the task constituted the unsupervised induction of FN's lexical units, where a lexical unit (LU) is a pairing of a lemma and a frame. For example, we expected that the LUs auction.v, retail.v, sell.v, etc., which evoke the typed situation of COMMERCE SELL, be labeled with the same unsupervised tag. <ref type="bibr">3</ref> The task resembles word sense induction in that it assigns a class (or sense) label to a verb. In word sense induction (WSI), labels are determined and evaluated on word forms (lemma + part-ofspeech e.g., sell.v or auction.n). WSI evaluations assume that the inventory of senses (set S i s) for different word forms f is devised independently. For instance, assuming f 1 is labeled with the set of senses S 1 and f 2 with S 2 , then S 1 ∩ S 2 = φ only if f 1 = f 2 ; and, if f 1 = f 2 then S 1 ∩ S 2 = φ (as in other SemEval benchmarks, including <ref type="bibr" target="#b0">Agirre and Soroa (2007)</ref>; <ref type="bibr" target="#b22">Manandhar et al. (2010)</ref>;</p><p>3 Dark red small caps indicate FN frames. <ref type="bibr" target="#b18">Jurgens and Klapaftis (2013)</ref>; <ref type="bibr" target="#b27">Navigli and Vannella (2013)</ref>). For instance, in WSI evaluations based on OntoNotes <ref type="bibr" target="#b17">(Hovy et al., 2006)</ref>, six different labels from S sell are assigned to the lemma sell.v, and one label s is assigned to auction.v, knowing that s / ∈ S sell . Typically, lexical semantic relationships among members of S i s (e.g., synonymy, antonymy) are then analyzed independently of WSI (e.g., <ref type="bibr" target="#b21">Lenci and Benotto (2012)</ref>; <ref type="bibr" target="#b13">Girju et al. (2007)</ref>; <ref type="bibr" target="#b24">McCarthy and Navigli (2007)</ref>). In contrast, this task assumes that the sense inventory is defined independent of word forms.</p><p>This task involves uncovering mapping between word forms f and members of S such that different word forms (i.e., f i = f j ) can be mapped to the same meaning (label), and the same meaning (label) can be mapped to several word forms. We defined S with respect to FrameNet and assumed that its typed-situation frames are units of meaning. So, COMMERCE SELL captures the meaning associated with both sell.v and auction.v., as well as other selling-related words. Hence, in some sense, Task A goes beyond the ordinary WSI task as it also demands identifying (unspecified) lexical semantic relationships between verbs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Task B.1: Unsupervised Frame Semantic</head><p>Argument Labeling</p><p>Taking the frames as primary and defining roles relative to each frame, the aim of Task B.1 was to cluster prespecified verb-headed argument structures according to the principles of Frame Semantics, where FrameNet served as the reference for evaluation. This task amounted to unsupervised labeling of frames and core FEs (Figure <ref type="figure" target="#fig_2">2b</ref>). Because FrameNet defines FEs frame-specifically, Task B.1 entails Task A. Given a set of semantically-unlabelled arguments as input (e.g., Figure <ref type="figure" target="#fig_1">1a</ref>), the root nodes (i.e., verbs) are clustered and assigned to a set of unsupervised frame labels π i (1 ≤ i ≤ n, where n is the number of latent frames). Then, the arguments are labeled with semantic role labels (FEs) interpreted locally given the frame. That is, for any pair of π x and π y , the set of assigned roles R x to arguments under π x are assumed to be independent from R y labels for π y (R x ∩ R y = φ).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Task B.2: Unsupervised Case Role Labeling</head><p>We defined Subtask B.2 in parallel to Subtask B.1 and involved an idea from Case Grammar. The ar-guments of a verb in a set of prespecified subcategorization frames were clustered according to a common set of generic semantic roles (Figure <ref type="figure" target="#fig_2">2c</ref>).</p><p>Here, the task assumed that semantic roles are universal and generic (e.g., Agent, Patient). Their configuration determines the argument structure of verb-headed phrases. We evaluated this unsupervised labeling of arguments with semantic roles independently of the class, sense, and word form of a verb. We compared the role labels against a set of semantic roles from VerbNet 3.2 <ref type="bibr" target="#b20">(Kipper et al., 2000)</ref>. Given a verb instance, no guarantee exists that input argument structures for B.2 and B.1 would be the same.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Dataset</head><p>The dataset consists of manual annotations for verb-headed frame structures anchored in tokenized sentences. These frame structures were manually annotated using the guidelines for this task (Q. Zadeh and Petruck, 2019). For example, as already illustrated, the verb come from.v is annotated in terms of FN's ORIGIN frame and its core FEs, as Example 1 shows.</p><p>(1)</p><p>Criticism of futures COMES FROM Wall Street.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Criticism come from Wall Street</head><p>ORIGIN ENTITY ORIGIN Also, using the set of 32 generic semantic role labels in VerbNet 3.2 and two additional roles, COG-NIZER and CONTENT, we annotated arguments of the verb as the following graphic shows.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Criticism come from Wall Street THEME SOURCE</head><p>We assumed unique identifiers for sentences, e.g., #s1 for Example 1. The evaluation record for come from.v (Task A) appears below, where #s1 4 5 specifies the position of the verb in the sentence (Example 1). We stripped off the manually asserted labels from the records and passed them to systems for assigning unsupervised labels. Evidently, later a scorer program (Section 5) compared system-generated labels with the manually assigned labels.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Data Sampling</head><p>We sampled data from the Wall Street Journal (WSJ) corpus of the Penn Treebank. <ref type="bibr" target="#b19">Kallmeyer et al. (2018)</ref> provided frame annotations similar to those in this task for a portion of WSJ sentences, using SemLink  and EngVallex <ref type="bibr" target="#b8">(Cinková et al., 2014)</ref> to generate frame semantic annotations semi-automatically. That work was based on FrameNet and the Prague Dependency Treebank (PSD) <ref type="bibr" target="#b15">(Hajič et al., 2012)</ref> from the Broad-coverage Semantic Dependency resource <ref type="bibr" target="#b28">(Oepen et al., 2016)</ref>. We started by annotating a portion of the records in <ref type="bibr" target="#b19">Kallmeyer et al. (2018)</ref>, and later deviated from this subset to create a more representative sample of the overall diversity and distribution of verbs in the WSJ corpus using a stratified random sampling method.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Guidelines</head><p>The annotation guidelines for this task were slightly different from those of FrameNet and various semantic dependency treebanks. In contrast to FN, which annotates a full span of text as an argument filler, or PropBank, which annotates syntactic constituents of arguments of verbs <ref type="bibr" target="#b30">(Palmer et al., 2005)</ref>, we identified the text spans and only annotated a single word or a multi-word unit (MWU), i.e., the semantic head of the span, like annotations in <ref type="bibr" target="#b28">Oepen et al. (2016)</ref> and Abstract Meaning Representation <ref type="bibr" target="#b5">(Banarescu et al., 2013)</ref>. To illustrate, in Example 1, FN would annotate Criticism of futures as filling the FE ENTITY. We only annotated Criticism, understanding it as the LU that evokes JUDGMENT COMMUNICATION, which in turn represents the meaning of the whole text span. Thus, we assumed that another frame f a fills an argument of a frame. We annotated only the main content word(s) that evoke(s) f a ; these main words are the semantic heads. <ref type="bibr">4</ref> Multi-word unit semantic heads (e.g., named entities, word form combinations) are annotated as if a single word form, such as Wall Street (# 1), excluding modifiers. In contrast to semantic depen-dency structures (e.g., DELPH-IN MRS-Derived Semantic Dependencies, Enju PredicateArgument Structures, and Tectogramatical Representation in PSD <ref type="bibr" target="#b28">(Oepen et al., 2016</ref>)), we did not commit to the underlying syntactic structure of the sentence since we were not obliged to relabel only syntactic structures. Rather, we annotated words and MWUs if the frame analysis permitted doing so. 5</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Annotation Procedure</head><p>We annotated the data in a modular manner and in a semi-controlled environment using an annotation system developed for this purpose. The procedure consisted of four steps: 1) Reading and Comprehension; 2) Choosing a Frame; 3) Annotating Arguments; and 4) Rating, Commenting, or Revising. We tracked and logged all changes in the data as well as annotator interaction with the annotation system upon starting to annotate. The tool measured the time that annotators spent on each record and each annotation step, as well as how annotators moved between steps.</p><p>In Step 1, annotators viewed a sentence with one highlighted verb, as in Example 2.</p><p>(2) Criticism of futures COMES from Wall Street.</p><p>The goal of this step was understanding the meaning of the verb and its semantic function, and identifying semantic heads of arguments and their associated words or MWUs. To continue, an annotator must confirm the understanding of the verb's meaning of the verb, and can identify its semantic arguments. Without confirmation, an annotator would terminate the annotation process for that input sentence and go to the next one.</p><p>If confirmed, Step 2 required the annotator to choose the frame that the verb evoked. This step may have included annotating multi-word phrasal verbs, e.g., COMES+FROM (Example 2). The annotation system assisted by providing a list of likely frames for the verb, including a LU lookup function (as in FN), an extended set of LUs derived via statistical methods, and previously logged annotations. After reviewing the definitions of the proposed frames, annotators chose one, or annotated the verb form with a different existing FN frame. Otherwise, the annotator terminated the process and the record moved to the list of "skipped items".</p><p>The annotation of arguments, Step 3, required 5 Q. Zadeh and Petruck describe the issues in detail.</p><p>that annotators label the core FEs of the chosen frame by first identifying their semantic head, which first may have required marking MWUs, e.g., Wall+Street in Example 3, below.</p><p>(3) Criticism of futures comes from Wall Street.</p><p>The tool lists the core FEs and their definitions, and checks the integrity of record annotations to ensure that each core FE is annotated only once. In parallel, annotators add the verb's subcategorization frame and its semantic role. We did not annotate null instantiated FEs (but FN does). During step 3, annotators could go back to the previous step and change their choice of frame type.</p><p>For</p><p>Step 4, annotators rated their annotation, stating their opinion on how well the annotated instance fit FrameNet's definition and how it compared to other annotated instances. In a sense, annotators measured their confidence in the assigned labels. They did so by selecting a number on a scale from 1 to 5, with 1 not confident at all and 5 the most confident, i.e., the annotation fit perfectly to the chosen FrameNet frame, its definition, and examples. Annotators had the option to add free text comments on each record.</p><p>The annotation procedure was rarely straightforward. Given the interdependence of Steps 2 and 3, annotators usually moved back and forth between them. In Step 2 an annotator might believe that a target verb did not belong in any existing FN frame. Likewise, annotators could terminate the annotation process even upon reaching the last step.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3.1">Quality Control</head><p>At least two annotators verified all annotation used in the evaluation. A main annotator annotated all records in the dataset; two other annotators verified or disputed those annotations. If annotators could not reach an agreement, we removed the record from the SemEval dataset.</p><p>A full analysis of annotator disagreement goes beyond the scope of this work. While the source of annotator disagreement may seem trivial and simple (e.g., only one annotator understood the sentence correctly), we believe that some sentences may have more than one interpretation, all of which are plausible. Like the disagreement resulting from incorrect frame assignment, deciding what frame a verb evokes may be challenging; and resolving the dilemma is not always simple. Choosing between two related frames (e.g., BUILDING vs. INTENTIONALLY CREATE, related via Inheritance in FN), or identifying metaphorical and non-metaphorical uses of a verb requires subtle and sophisticated understanding of the semantics of the language, and of Frame Semantics. At times, disagreements pointed to more complex linguistic issues that remain in debate, e.g., choosing the semantic head of a syntactically complex argument, treating quantifiers, conjunctions, etc.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Summary statistics</head><p>Table <ref type="table" target="#tab_2">1</ref> shows a statistical summary of the annotation task. The SemEval column reports the statistics for the final set of records, i.e., gold records with double-agreement between annotators, and which we used to evaluate the systems. Total reports the statistics of all analyzed records, from which we chose our SemEval data. Skipped and InProg show the statistics for discarded records and records without a final decision, respectively. Dev shows the statistics for the development set.</p><p>Each of the rows reports a value of a component of the data or annotator interaction with the data. Records indicates the number of annotated verbs and their arguments. Sentences and Tokens indicate the size of the sub-corpus of the annotated records. VF is the number of distinct verb lemmas (273), mapped to the number of distinct frames that the Frames-Type row shows (149) (Figure <ref type="figure" target="#fig_5">3</ref>   Confidence reports the average of annotatorassigned confidence scores for annotations per record. Although interpreting this measure demands more work, the averages appear to be as expected. Specifically, SemEval is higher in value than both InProg and Skipped, facts that we associate with double agreement and the choice reviewing process. Still, many records with high confidence scores remained as InProg given the lack of double agreement. Table <ref type="table" target="#tab_9">5</ref> (Appendix A.1) lists the top 10 frames annotated with their respective highest and lowest confidence ratings averaged by their frequency in SemEval.</p><p>The last two rows of Table <ref type="table" target="#tab_2">1</ref> are meta-data on the annotation process. Time reports the total time annotators spent in active annotation, engaged in the steps described above (742 hours), excluding the reviewing process (Section 4.3.1) and including the time to annotate MWUs. Total-Move is the total number of logical moves for frame annotation between annotators and the annotation system, i.e., logged changes in the process of frame and core FE annotation. This number excludes annotation of verb subcategorization with generic semantic roles. <ref type="bibr">6</ref> In SemEval, annotated frames had an average of 2.15 arguments, requiring a minimum of five logical moves to annotate (MWU-less sentences). However, on average, each SemEval record required 14.8 moves. This number is even higher for InProg (18.2); we believe that it indicates the complexity of the annotation task. Table <ref type="table" target="#tab_7">4</ref> (Appendix A.1) further details annotator activity, with time spent and moves per annotation step. As expected, frame annotation of verbs (Step 2), was the most time consuming part of the task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.5">Development Dataset</head><p>Shared task participants received a development set consisting of 600 records from a total of 4,620 records, where Table <ref type="table" target="#tab_7">4</ref> shows the statistics. The development set contained gold annotations for all three subtasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation Metrics</head><p>For all subtasks, as figure of merit, here we report the performance of participating systems with measures for evaluating text clustering techniques, including the classic measures of Purity (PU), inverse-Purity (IPU), and their harmonic mean (PIF) <ref type="bibr" target="#b37">(Steinbach et al., 2000)</ref>, as well as the harmonic mean for BCubed precision and recall (i.e., BCP, BCR, and BCF, respectively) <ref type="bibr" target="#b4">(Bagga and Baldwin, 1998)</ref>.</p><p>To compute these measures for the pairing of reference-labeled data and unsupervised-labeled data (with each having an exact set of annotated items), we built a contingency table T with rows for gold labels and columns for unsupervised system labels. We filled the table with the number of intersecting items, as done in cross-tabulation of results in classification tasks to compute precision and recall. For Task A (Section 3), T tracks the unsupervised system labels and the gold reference labels assigned to verbs. For Task B.1, we labeled the rows and columns of T with tuples (l v , l a ), where l v labels the frame evoking verb and l a labels the FE filler. For Task B.2, the rows and columns in T track the unsupervised system labels and the gold reference labels (generic semantic roles) assigned to arguments.</p><p>These performance measures reflect a notion of similarity between the distribution of unsupervised labels and that of the gold reference labels, given certain criteria. Specifically, they define the notions of consistency and completeness of automatically generated clusters based on the evaluation data. Each method measures consistency and completeness in its own way, and alone may lack sufficient information for a clear understanding and analysis of system performance <ref type="bibr" target="#b1">(Amigó et al., 2009)</ref>. But, as the single metric for system ranking, we used the BCF measure, given its satisfactory behavior in certain situations. Note that we modeled the task and its evaluation as hard clustering, where a record receives only one label, without overlap in any generated category of items.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Baselines</head><p>Similar to other clustering tasks, we use baselines of random, all-in-one-cluster (AIN1), and one-cluster-per-instance (1CPI). Additionally, we adapted the baseline of the most frequent sense in WSI for these tasks by introducing the one-cluster-per-head (1CPH) baseline in Task A, and one-cluster-per-syntactic-category (1CPG) for verb argument clustering in Task B.2. 7 For Task B.1, we built a baseline, 1CPGH for labeling verbs with their lemmas (as in 1CPH) and FEs with grammatical relation to their heads (as in 1CPG). We included two more labels lcmpx and rcmpx for frame fillers with no direct syntactic relation to the head verb, if occurring left of or right of the verb, respectively.</p><p>Both 1CPH and 1CPG (and their combination for Task B.1) are hard to beat because of the longtailed distribution of the frequency of our test data. E.g., most verbs frequently instantiate one particular frame and rarely other ones. Similarly, a particular role (FE) frequently is filled by words that have a particular grammatical relation to its governing verb; e.g., most subjects of most verb forms receive the agent label in their subcategorization frame (or, an agent-like element in their Frame Semantics representations). Evidently the chosen labels for grammatical relations influences 1CPG and 1CPHG scores. Values reported later (specifically, Tables <ref type="table" target="#tab_4">6 and 2</ref>) could be improved by employing heuristics, e.g., relabeling enhanced dependencies using a few rules.</p><p>We also employed one unsupervised and a second supervised system baselines. For the unsupervised one, we trained the system with data from <ref type="bibr" target="#b19">Kallmeyer et al. (2018)</ref>. For the supervised one, we used OPEN-SESAME, a state-of-the-art supervised FrameNet tagger <ref type="bibr" target="#b38">(Swayamdipta et al., 2018)</ref>. After converting its output to the format of the present task, we evaluated it similar to other systems. Both systems were trained out-of-thebox with no additional tuning.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">System Descriptions</head><p>We received submissions from nine teams (13 participants). Only three chose to submit system description papers.  provided a solution for Task A and Task B.2, using both sets of these results to address Task B.1. Task A used language models and Hearst-like patterns to tune and obtain contextualized vector representations for the verbs in the test set. A hierarchical agglomerative clustering method followed, where hyperparameters were set with labeled and unlabeled records from the development and test sets. Task B.2 employed a logistic regression trained over the development set to identify only the most frequent labels. The classifier was based on features obtained from a language model and hand-crafted rules. Using logistic regression and training this algorithm with the development set remains an issue of concern, given the intended unsupervised scenario. While we objected to using the development set to train a supervised system for this subtask, we still report its scores. The differences between its results and those of the other systems may be informative. Still, we considered Arefyev et al.'s results for Task B only complementarily, not to rank the systems. <ref type="bibr" target="#b2">Anwar et al. (2019)</ref> proposed a method that was similar to that of . Arefyev et al. used contextualized word embeddings from the BERT language modeling tool <ref type="bibr" target="#b9">Devlin et al. (2018)</ref>, whereas Anwar et al. used pre-trained embeddings. They merged the outputs of Tasks A and B.2 for Task B.1. Task A used agglomerative clustering of vectors with concatenated verb representation vectors and vectors that represent usage context. Task B.2 employed hand crafted features, a method to encode syntactic information, and again an agglomerative clustering method. <ref type="bibr" target="#b34">Ribeiro et al. (2019)</ref> also reported results for all subtasks using similar techniques to those reported in the other two submitted papers. <ref type="bibr" target="#b34">Ribeiro et al. (2019)</ref> used the bidirectional neural language model BERT, which  also used. Task A employed contextualized word representations proposed in <ref type="bibr" target="#b39">(Ustalov et al., 2018)</ref>, and Biemann's clustering algorithm <ref type="bibr" target="#b6">(Biemann, 2006)</ref>. Compared to the two other systems, <ref type="bibr" target="#b34">Ribeiro et al. (2019)</ref> exploited input structures, weighted them, and used them elegantly in its algorithm. With the same method but different hyper-parameters for B.2 along with combining results from Task A, <ref type="bibr" target="#b34">Ribeiro et al. (2019)</ref> offered a solution to B.1.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Results and Data Analysis</head><p>Table <ref type="table" target="#tab_4">2</ref> reports the BCF scores for system submissions along with a baseline for each task. <ref type="bibr">8</ref> As the table shows, each system performs best only in one of the tasks. We report Arefyev et al.'s submission for Tasks B.1 and B.2 only to show the benefit of using a small amount of training data and a supervised method together with a clustering algorithm, provided that such training data is available. As readers know, finding the optimal (actual) number of clusters is an open research area. Participants knew the number of clusters: whereas <ref type="bibr">Arefyev et al. and Anwar et al. used this information, Ribeiro et al. opted</ref> for a statistical method tuned with data that we provided.</p><p>The baseline systems, the unsupervised method of <ref type="bibr" target="#b19">Kallmeyer et al. (2018)</ref>   of all systems regarding BCF. This result is not surprising since that work did not effectively handle MWUs in the test, where only the head of the MWU was kept. However, the output of Open-SESAME, and its low BCF was indeed surprising.</p><p>We fed Open-SESAME the sentences from the test set; it identified approximately 5k frames. However, the overlap with the test set was only 1,216 records (identification problem in Open-SESAME). These 1,216 records exhibit a mismatch between 536 of the arguments and their respective target verbs. We ignored the system's extra or incorrectly generated arguments, and replaced the missing items with those of the 1CPHG baseline records. We then used the resulting records for evaluation against the task's gold data as did the task's participants. As Table <ref type="table" target="#tab_6">3</ref> shows, the unsupervised method outperforms the supervised system for all tasks by a wide margin, i.e.,the unsupervised label set can carry more information than does the supervised label set.  We compared results for confidence measure that annotators assigned to records. First, we split the evaluation records according to their assigned confidence value into five subsets E i , 1 ≤ i ≤ 5, such that subset E 1 contained only records with confidence value 1, E 2 contained only record with confidence value 2, etc.. Then we evaluated system outputs on each subset E i and logged that BCF. Later, we performed this evaluation cumulatively using subsets E i s by adding records from all E j s to E i where i &lt; j. Interpreting the obtained values requires careful attention (e.g., changes in the prior probabilities of gold clusters and their cardinality must be taken into account), overall, we observed a similar trend for all systems: as expected, namely a positive correlation between the confidence value and BCF. Thus, what human annotators usually found hard to annotate, automatic systems also found hard to cluster. (The reverse relation does not hold). Or, pessimistically, the level of noise in annotation increases as their associated confidence decreases. (Table <ref type="table" target="#tab_11">7</ref> in Appendix A.2 details the results.) Finally, we wanted to identify the frames that machines found difficult to cluster. To estimate difficulty we used the differences in BCF under the following conditions. We repeated the evaluation process 1 ≤ i ≤ n times (where n is the number of gold labels for a task) for each system. In each iteration i, we removed all data items of a gold category i. We measured and noted the resulting BCF in the given iteration; we deduced the score from the system performance over the entire gold set. To cancel frequency effects, we normalized the differences by the number of gold data instances. We removed all records annotated as COMMERCE SELL from the evaluation set E to form E . We computed the BCF of the systems over E (E ⊂ E), and measured d = E BCF − E BCF . We interpreted a positive difference as an easy to cluster gold category i, and a negative difference as a hard to cluster gold category i.</p><p>The heat maps in Table <ref type="table">8</ref> and Table <ref type="table">9</ref> show a summary of the results for Task A and Task B.2, respectively. All systems performed similarly for approximately 30% of the gold classes. Comparing differences across systems and the baselines of 1CPH and 1CPG reveals (possibly) interesting information. Thus, for example, in Task A, most systems found COMMERCE SELL hard and COMMERCE BUY easy to cluster. Interestingly, a set of six verbs evokes each frame: buy, purchase, buy back, buy up, buy out, buy into for COMMERCE BUY; and sell, retail, auction, place, deal, resell for COMMERCE SELL. From these two sets of verbs, three are polysemous: buy in the former, and place and deal in the latter. Does the morphology of the verbs (e.g., buy-back, resell) make one easy to cluster? Alternatively, are other factors at play, such as the number of verb instances? How these factors might influence the proposed naive BCF-difference model is an open question.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Concluding Remarks</head><p>We have presented the SemEval 2019 task on unsupervised lexical frame induction. We described the task in detail, provided a summary of methods that participants developed, and compared the results. Although much room for improvement of the task remains, we consider it a step forward. It employed a well-motivated typology of lexical frames to distinguish lexical frame induction tasks. The evaluation data derived from annotations of a well-known resource, namely a portion of WSJ sentences, perhaps the most annotated corpus of English. These features provide opportunities for future investigation, in particular in studies related to reciprocal relations between syntactic and lexical semantic frame structures.</p><p>One reason to promote using unsupervised methods is their inherent flexibility to embrace unknown data. These methods have a high margin of tolerance for noise, and perform better than supervised method with insufficient training data. For unsupervised data, obtaining or generating training data is easier than doing so with supervised methods because they simply do not require annotation. For example, all participant systems could collect similar unlabeled training data from only syntactically annotated corpora to generate more unlabeled records. Ultimately, such methods can achieve respectable performance, and produce clusters which are both more informative than the unlabeled input and supervised categories (under certain situations). As shown, unsupervised methods can even outperform a state-of-the-art Frame Semantics parser by a wide margin (Section 7), while a very large gap remains for improvements in future work.         </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>Output: Semantic Frame Tagging using labels learned by Unsupervised methods.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Given semantically unlabeled structures (1a), annotate the input with semantic information learned via unsupervised methods (1b).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Subtasks of SemEval 2019 Task 2.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>A</head><label></label><figDesc>[ #s1 4 5 come from.ORIGIN] Similarly, for Task B.1 and Task B.2, respectively, the evaluation records are as follows here. B.1 [#s1 4 5 come from.ORIGIN Criticism-:-1-:-ENTITY Wall Street-:-6 7-:-ORIGIN] B.2 [#s1 4 5 come from.NA Criticism-:-1-:-THEME Wall Street-:-6 7-:-SOURCE]</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 3</head><label>3</label><figDesc>Figure3plots the frequency distribution of the annotated frames in the gold data (SemEval).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head></head><label></label><figDesc>in Appendix A.1 plots their frequency distribution.) FElements reports the number of annotated FEs categorized under the number of FE types shown in the FE-Type row. Sem-Arg shows the number of annotated verb arguments with VerbNet-like semantic roles, classified into 32 of 41 possible semantic role categories. Multiword lists the number of annotated MWUs</figDesc><table><row><cell></cell><cell cols="2">SemEval Total</cell><cell cols="3">Skipped InProg Dev</cell></row><row><cell>Records</cell><cell>4,620</cell><cell>5,637</cell><cell>301</cell><cell>716</cell><cell>594</cell></row><row><cell>Sentences</cell><cell>3,346</cell><cell>3,803</cell><cell>294</cell><cell>675</cell><cell>582</cell></row><row><cell>Tokens</cell><cell>90,460</cell><cell cols="2">102,067 8,329</cell><cell>19,151</cell><cell>15198</cell></row><row><cell cols="2">Verb-Forms 273</cell><cell>373</cell><cell>93</cell><cell>210</cell><cell>35</cell></row><row><cell cols="2">Frame-Type 149</cell><cell>234</cell><cell>75</cell><cell>185</cell><cell>37</cell></row><row><cell>#FEs</cell><cell>9,510</cell><cell>11,269</cell><cell>373</cell><cell>1,386</cell><cell>1,128</cell></row><row><cell>FE-Type</cell><cell>198</cell><cell>270</cell><cell>64</cell><cell>197</cell><cell>62</cell></row><row><cell>Sem-Arg</cell><cell>9,466</cell><cell>11,215</cell><cell>370</cell><cell>1,379</cell><cell>1,079</cell></row><row><cell cols="2">Multi-word 2,366</cell><cell>2,773</cell><cell>61</cell><cell>346</cell><cell>368</cell></row><row><cell>Confidence</cell><cell>3.30</cell><cell>3.2</cell><cell>2.41</cell><cell>2.5</cell><cell>3.34</cell></row><row><cell>Time</cell><cell>539h</cell><cell>742h</cell><cell>25h</cell><cell>177h</cell><cell>19h</cell></row><row><cell>Total-Move</cell><cell>68,784</cell><cell>83,753</cell><cell>1,903</cell><cell>13,066</cell><cell>4,406</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Annotation and Data Statistical Summary    </note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>performed the worst</figDesc><table><row><cell>System</cell><cell>BCF</cell><cell>BCF</cell><cell>BCF</cell></row><row><cell cols="2">Arefyev et al. 70.70</cell><cell>63.12</cell><cell>64.09</cell></row><row><cell>Anwar et al.</cell><cell>68.10</cell><cell>49.49</cell><cell>42.1</cell></row><row><cell>Ribeiro et al.</cell><cell>65.32</cell><cell>42.75</cell><cell>45.65</cell></row><row><cell>BASELINE</cell><cell>65.35</cell><cell>45.79</cell><cell>39.03</cell></row><row><cell>Task A</cell><cell></cell><cell>B.1</cell><cell>B.2</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc>Summary of Results. The BASELINE for Task A is 1CPH, and for B.1 and B.2 is 1CPHG. Best results appear in bold face; discarded results are crossed out. Table 6 lists all other baselines.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>Open-SESAME Performance</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4</head><label>4</label><figDesc>shows the amount of effort to develop the SemEval dataset in terms of time and moves that the annotation system recorded. 4.4).</figDesc><table><row><cell>Annotator Activity</cell><cell cols="2">Time Moves</cell></row><row><cell>Reading and Comprehension</cell><cell>78</cell><cell>4,795</cell></row><row><cell>Choosing a Frame</cell><cell>177</cell><cell>9,737</cell></row><row><cell>Annotating Arguments</cell><cell>81</cell><cell>19,510</cell></row><row><cell cols="2">Rating, Revising, Commenting 115</cell><cell>25,793</cell></row><row><cell>Multi-word Unit Annotation</cell><cell>89</cell><cell>8,949</cell></row><row><cell>Total</cell><cell>539</cell><cell>68,784</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>Total hours and number of moves for each annotation step for the 4,620 record dataset.</figDesc><table><row><cell>A.1.2 Plot of frequency of annotated frames</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 lists</head><label>5</label><figDesc>FN frames annotated with the highest and lowest confidence.Table 4 details hours spent to derive the evaluation data set. Section 4.3 discusses both tables. The full list of annotations in human readable form is available to browse and comment on at http://corpora.phil. hhu.de/fi/frames.html. A.2 Appendix II: Statistical Summary of Evaluation and System Submissions A.2.1 Unabridged Results Table</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 6 extends</head><label>6</label><figDesc>Table 2. Section 5 defines the abbreviations. A horizontal line separates participating systems and the baselines.</figDesc><table><row><cell>A.2.2 Confidence Measures and BCF</cell></row><row><cell>Performance</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 7</head><label>7</label><figDesc>shows system BCF scores for confidence. The table shows changes in the BCF of systems when altering the evaluation set based on the assigned confidence for an annotated record. (See Section 7 for an explanation).</figDesc><table><row><cell>Frame Type</cell><cell cols="3">#VF #Rec Conf</cell></row><row><cell>DECIDING</cell><cell>1</cell><cell>13</cell><cell>4.31</cell></row><row><cell cols="2">AGREE OR REFUSE TO ACT 1</cell><cell>15</cell><cell>4.13</cell></row><row><cell>TAKE PLACE OF</cell><cell>1</cell><cell>11</cell><cell>4</cell></row><row><cell>BEING EMPLOYED</cell><cell>1</cell><cell>6</cell><cell>4</cell></row><row><cell>STATEMENT</cell><cell>8</cell><cell>149</cell><cell>3.97</cell></row><row><cell>TAKING SIDES</cell><cell>3</cell><cell>16</cell><cell>3.88</cell></row><row><cell>ACTIVITY STOP</cell><cell>4</cell><cell>16</cell><cell>3.88</cell></row><row><cell>COMMERCE SELL</cell><cell>6</cell><cell>168</cell><cell>3.82</cell></row><row><cell>BRINGING</cell><cell>1</cell><cell>5</cell><cell>3.8</cell></row><row><cell>GIVE IMPRESSION</cell><cell>4</cell><cell>39</cell><cell>3.79</cell></row><row><cell cols="4">(a) Frames with Highest Average Confidence</cell></row><row><cell>Frame Type</cell><cell cols="3">#VF #Rec Conf</cell></row><row><cell>BEING IN CONTROL</cell><cell>2</cell><cell>5</cell><cell>1.6</cell></row><row><cell>COMING TO BE</cell><cell>2</cell><cell>5</cell><cell>1.8</cell></row><row><cell>OPERATING A SYSTEM</cell><cell>2</cell><cell>10</cell><cell>1.8</cell></row><row><cell>AWARENESS</cell><cell>1</cell><cell>6</cell><cell>1.83</cell></row><row><cell>REMOVING</cell><cell>3</cell><cell>8</cell><cell>1.88</cell></row><row><cell cols="2">INTENTIONALLY CREATE 6</cell><cell>19</cell><cell>1.95</cell></row><row><cell>CERTAINTY</cell><cell>1</cell><cell>68</cell><cell>2.03</cell></row><row><cell>OPINION</cell><cell>2</cell><cell>91</cell><cell>2.1</cell></row><row><cell>THWARTING</cell><cell>2</cell><cell>22</cell><cell>2.32</cell></row><row><cell>FIRST RANK</cell><cell>1</cell><cell>21</cell><cell>2.38</cell></row><row><cell cols="4">(b) Frames with Lowest Average Confidence</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 5 :</head><label>5</label><figDesc>Frame types with the highest (5a) and the lowest (5b) confidence (Conf) by number of records (#Rec) with double annotator agreement. #VF reports the number of distinct verb forms that evoke a frame.</figDesc><table><row><cell>Cnf</cell><cell>#I</cell><cell cols="3">Arefyev Anwar Ribeiro</cell><cell>Cnf</cell><cell>#I</cell><cell cols="3">Arefyev Anwar Ribeiro</cell></row><row><cell>1</cell><cell>4620</cell><cell>70.7</cell><cell>68.10</cell><cell>65.32</cell><cell>1</cell><cell>286</cell><cell>73.79</cell><cell>70.57</cell><cell>67.70</cell></row><row><cell>2</cell><cell>4334</cell><cell>71.87</cell><cell>69.28</cell><cell>66.57</cell><cell>2</cell><cell>677</cell><cell>66.45</cell><cell>63.80</cell><cell>60.46</cell></row><row><cell>3</cell><cell>3657</cell><cell>74.64</cell><cell>72.22</cell><cell>70.17</cell><cell>3</cell><cell>1,115</cell><cell>76.71</cell><cell>75.98</cell><cell>70.01</cell></row><row><cell>4</cell><cell>2542</cell><cell>76.46</cell><cell>73.82</cell><cell>73.43</cell><cell>4</cell><cell>2,458</cell><cell>76.65</cell><cell>74.05</cell><cell>73.45</cell></row><row><cell>5</cell><cell>84</cell><cell>86.14</cell><cell>84.65</cell><cell>85.13</cell><cell>5</cell><cell>84</cell><cell>86.14</cell><cell>84.65</cell><cell>85.13</cell></row><row><cell></cell><cell></cell><cell>Task A</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>Task A</cell><cell></cell><cell></cell></row><row><cell>Cnf</cell><cell>#I</cell><cell cols="3">Arefyev Anwar Ribeiro</cell><cell>Cnf</cell><cell>#I</cell><cell cols="3">Arefyev Anwar Ribeiro</cell></row><row><cell>1</cell><cell>9,510</cell><cell>63.12</cell><cell>49.52</cell><cell>42.75</cell><cell>1</cell><cell>493</cell><cell>68.57</cell><cell>55.37</cell><cell>51.84</cell></row><row><cell>2</cell><cell>9017</cell><cell>64.20</cell><cell>50.44</cell><cell>43.61</cell><cell>2</cell><cell>1,411</cell><cell>59.86</cell><cell>49.08</cell><cell>42.16</cell></row><row><cell>3</cell><cell>7,606</cell><cell>67.18</cell><cell>53.40</cell><cell>46.42</cell><cell>3</cell><cell>2,250</cell><cell>70.67</cell><cell>57.97</cell><cell>47.60</cell></row><row><cell>4</cell><cell>5,356</cell><cell>68.70</cell><cell>55.99</cell><cell>49.20</cell><cell>4</cell><cell>5,187</cell><cell>68.70</cell><cell>56.01</cell><cell>49.24</cell></row><row><cell>5</cell><cell>169</cell><cell>85.16</cell><cell>81.85</cell><cell>65.60</cell><cell>5</cell><cell>169</cell><cell>85.16</cell><cell>81.85</cell><cell>65.60</cell></row><row><cell></cell><cell></cell><cell>Task B.1</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>Task B.1</cell><cell></cell><cell></cell></row><row><cell>Cnf</cell><cell>#I</cell><cell cols="3">Arefyev Anwar Ribeiro</cell><cell>Cnf</cell><cell>#I</cell><cell cols="3">Arefyev Anwar Ribeiro</cell></row><row><cell>1</cell><cell>9,466</cell><cell>64.09</cell><cell>42.12</cell><cell>45.65</cell><cell>1</cell><cell>553</cell><cell>52.69</cell><cell>39.82</cell><cell>38.21</cell></row><row><cell>2</cell><cell>8,911</cell><cell>64.98</cell><cell>42.32</cell><cell>46.27</cell><cell>2</cell><cell>1,385</cell><cell>58.36</cell><cell>40.99</cell><cell>41.55</cell></row><row><cell>3</cell><cell>7,528</cell><cell>66.47</cell><cell>42.67</cell><cell>47.52</cell><cell>3</cell><cell>2,236</cell><cell>69.01</cell><cell>48.07</cell><cell>49.4</cell></row><row><cell>4</cell><cell>5,292</cell><cell>65.71</cell><cell>40.67</cell><cell>46.95</cell><cell>4</cell><cell>5,125</cell><cell>65.44</cell><cell>40.37</cell><cell>46.72</cell></row><row><cell>5</cell><cell>167</cell><cell>77.19</cell><cell>55.18</cell><cell>56.58</cell><cell>5</cell><cell>167</cell><cell>77.19</cell><cell>55.18</cell><cell>56.58</cell></row><row><cell></cell><cell></cell><cell>Task B.2</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>Task B.2</cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell cols="2">Cumulative</cell><cell></cell><cell></cell><cell></cell><cell cols="2">Stratified</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 7 :</head><label>7</label><figDesc>Changes in BCF score of systems relative to changes in evaluation records based on assigned confidence measure.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://sfa.phil.hhu.de/.2 See https://competitions.codalab.org/ competitions/19159 for accessing the task's language resources, tools, and further technical details.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">The annotation guidelines (Q. Zadeh and Petruck, 2019) discuss decisions about marking semantic heads and the complex situations resulting from it for argument annotation.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">With the exception of a few verbs, annotators rarely changed the annotation system's rule-based suggestions of VerbNet semantic roles.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">We use syntactic dependencies of the Enhanced Universal Dependencies formalism<ref type="bibr" target="#b36">(Schuster and Manning, 2016)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">The full list of baselines and performance measures appear in Table6of the Appendix.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>This research was funded by DFG -SFB991. We thank Timm Lichte, Rainer Oswald, Curt Anderson, and Kurt Erbach. We also thank the LDC for its generous support, and the NVIDIA Corporation for the Titan Xp GPU used in this work.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0" />			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Semeval-2007 task 02: Evaluating word sense induction and discrimination systems</title>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Soroa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th International Workshop on Semantic Evaluation, Se-mEval &apos;07</title>
+				<meeting>the 4th International Workshop on Semantic Evaluation, Se-mEval &apos;07<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="7" to="12" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">A comparison of extrinsic clustering evaluation metrics based on formal constraints</title>
+		<author>
+			<persName><forename type="first">Enrique</forename><surname>Amigó</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julio</forename><surname>Gonzalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Javier</forename><surname>Artiles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felisa</forename><surname>Verdejo</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s10791-008-9066-8</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Inf. Retr</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="461" to="486" />
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Hm 2 at semeval 2019 task 2: Unsupervised frame induction using contextualized and uncontextualized word embeddings</title>
+		<author>
+			<persName><forename type="first">Saba</forename><surname>Anwar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Ustalov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Arefyev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Panchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 13th International Workshop on Semantic Evaluation</title>
+				<meeting>The 13th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Neural granny at semeval 2019 task 2: A combined approach for better modeling of semantic relationships in semantic frame induction</title>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Arefyev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Boris</forename><surname>Sheludko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adis</forename><surname>Davletov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Kharchev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Nevidomsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Panchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 13th International Workshop on Semantic Evaluation</title>
+				<meeting>The 13th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Entitybased cross-document coreferencing using the vector space model</title>
+		<author>
+			<persName><forename type="first">Amit</forename><surname>Bagga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Breck</forename><surname>Baldwin</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/980451.980859</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th International Conference on Computational Linguistics</title>
+				<meeting>the 17th International Conference on Computational Linguistics<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1998" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="79" to="85" />
+		</imprint>
+	</monogr>
+	<note>COLING &apos;98. Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Abstract meaning representation for sembanking</title>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Banarescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claire</forename><surname>Bonial</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shu</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Madalina</forename><surname>Georgescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kira</forename><surname>Griffitt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ulf</forename><surname>Hermjakob</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Knight</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Koehn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nathan</forename><surname>Schneider</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th Linguistic Annotation Workshop and Interoperability with Discourse</title>
+				<meeting>the 7th Linguistic Annotation Workshop and Interoperability with Discourse</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="178" to="186" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Chinese whispers -an efficient graph clustering algorithm and its application to natural language processing problems</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of TextGraphs: the First Workshop on Graph Based Methods for Natural Language Processing</title>
+				<meeting>TextGraphs: the First Workshop on Graph Based Methods for Natural Language Processing</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="73" to="80" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Renewing and revising semlink</title>
+		<author>
+			<persName><forename type="first">Claire</forename><surname>Bonial</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Stowe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Workshop on Linked Data in Linguistics (LDL-2013): Representing and linking lexicons, terminologies and other language data</title>
+				<meeting>the 2nd Workshop on Linked Data in Linguistics (LDL-2013): Representing and linking lexicons, terminologies and other language data<address><addrLine>Pisa, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="9" to="17" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">EngVallex -English valency lexicon. LINDAT/CLARIN digital library at the Institute of Formal and Applied Linguistics</title>
+		<author>
+			<persName><forename type="first">Silvie</forename><surname>Cinková</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eva</forename><surname>Fučíková</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+		<respStmt>
+			<orgName>Charles University</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1810.04805</idno>
+		<title level="m">Bert: Pre-training of deep bidirectional transformers for language understanding</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Frame Semantics and the Nature of Language</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">J</forename><surname>Fillmore</surname></persName>
+		</author>
+		<idno type="DOI">10.1111/j.1749-6632.1976.tb25467.x</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Origins and Evolution of Language and Speech</title>
+		<imprint>
+			<biblScope unit="volume">280</biblScope>
+			<biblScope unit="page" from="20" to="32" />
+			<date type="published" when="1976" />
+		</imprint>
+	</monogr>
+	<note>Annals of the New York Academy of Sciences</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">The case for case</title>
+		<author>
+			<persName><forename type="first">Charles</forename><forename type="middle">J</forename><surname>Fillmore</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Universals in Linguistic Theory</title>
+				<meeting><address><addrLine>New York</addrLine></address></meeting>
+		<imprint>
+			<publisher>Holt Rinehart and Winston</publisher>
+			<date type="published" when="1968" />
+			<biblScope unit="page" from="1" to="88" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">General Introduction</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Gamerschlag</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Doris</forename><surname>Gerland</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rainer</forename><surname>Osswald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wiebke</forename><surname>Petersen</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/978-3-319-01541-5_1</idno>
+		<imprint>
+			<date type="published" when="2014" />
+			<publisher>Springer International Publishing</publisher>
+			<pubPlace>Cham</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Semeval-2007 task 04: Classification of semantic relations between nominals</title>
+		<author>
+			<persName><forename type="first">Roxana</forename><surname>Girju</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vivi</forename><surname>Nastase</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stan</forename><surname>Szpakowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Turney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deniz</forename><surname>Yuret</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth International Workshop on Semantic Evaluation</title>
+				<meeting>the Fourth International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="13" to="18" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Inducing frame semantic verb classes from WordNet and LDOCE</title>
+		<author>
+			<persName><forename type="first">Rebecca</forename><surname>Green</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bonnie</forename><forename type="middle">J</forename><surname>Dorr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philip</forename><surname>Resnik</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/1218955.1219003</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 42Nd Annual Meeting on Association for Computational Linguistics, ACL &apos;04</title>
+				<meeting>the 42Nd Annual Meeting on Association for Computational Linguistics, ACL &apos;04<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Announcing prague czech-english dependency treebank 2.0</title>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Hajič</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eva</forename><surname>Hajičová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jarmila</forename><surname>Panevová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Petr</forename><surname>Sgall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ondřej</forename><surname>Bojar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silvie</forename><surname>Cinková</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eva</forename><surname>Fučíková</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie</forename><surname>Mikulová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Petr</forename><surname>Pajas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jan</forename><surname>Popelka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiří</forename><surname>Semecký</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Janašindlerová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Janštěpánek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zdeňka</forename><surname>Toman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zdeněkžabokrtský</forename><surname>Urešová</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth International Conference on Language Resources and Evaluation</title>
+				<meeting>the Eighth International Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Out-of-domain framenet semantic role labeling</title>
+		<author>
+			<persName><forename type="first">Silvana</forename><surname>Hartmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilia</forename><surname>Kuznetsov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Teresa</forename><surname>Martin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics</title>
+				<meeting>the 15th Conference of the European Chapter of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="471" to="482" />
+		</imprint>
+	</monogr>
+	<note>Long Papers</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">OntoNotes: The 90% solution</title>
+		<author>
+			<persName><forename type="first">Eduard</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitchell</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lance</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralph</forename><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Human Language Technology Conference of the NAACL, Companion Volume: Short Papers, NAACL-Short &apos;06</title>
+				<meeting>the Human Language Technology Conference of the NAACL, Companion Volume: Short Papers, NAACL-Short &apos;06<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="57" to="60" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Semeval-2013 task 13: Word sense induction for graded and non-graded senses</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Jurgens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ioannis</forename><surname>Klapaftis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="290" to="299" />
+		</imprint>
+	</monogr>
+	<note>Second Joint Conference on Lexical and Computational Semantics (* SEM)</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Coarse lexical frame acquisition at the syntax-semantics interface using a latentvariable pcfg model</title>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Kallmeyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Behrang</forename><surname>Qasemizadeh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jackie Chi Kit</forename><surname>Cheung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh Joint Conference on Lexical and Computational Semantics</title>
+				<meeting>the Seventh Joint Conference on Lexical and Computational Semantics<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="130" to="141" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Class-based construction of a verb lexicon</title>
+		<author>
+			<persName><forename type="first">Karin</forename><surname>Kipper</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hoa</forename><forename type="middle">Trang</forename><surname>Dang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventeenth National Conference on Artificial Intelligence and Twelfth Conference on Innovative Applications of Artificial Intelligence</title>
+				<meeting>the Seventeenth National Conference on Artificial Intelligence and Twelfth Conference on Innovative Applications of Artificial Intelligence</meeting>
+		<imprint>
+			<publisher>AAAI Press</publisher>
+			<date type="published" when="2000" />
+			<biblScope unit="page" from="691" to="696" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Identifying hypernyms in distributional semantic spaces</title>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giulia</forename><surname>Benotto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Association for Computational Linguistics</title>
+				<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="75" to="79" />
+		</imprint>
+	</monogr>
+	<note>SemEval 2012</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Semeval-2010 task 14: Word sense induction &amp; disambiguation</title>
+		<author>
+			<persName><forename type="first">Suresh</forename><surname>Manandhar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ioannis</forename><surname>Klapaftis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmitriy</forename><surname>Dligach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Pradhan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Workshop on Semantic Evaluation</title>
+				<meeting>the 5th International Workshop on Semantic Evaluation<address><addrLine>Uppsala, Sweden</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="63" to="68" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Lda-frames: An unsupervised approach togenerating semantic frames</title>
+		<author>
+			<persName><forename type="first">Jiří</forename><surname>Materna</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/978-3-642-28604-9_31</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Computational Linguistics and Intelligent Text Processing</title>
+				<meeting><address><addrLine>Berlin, Heidelberg; Berlin Heidelberg</addrLine></address></meeting>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="376" to="387" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Semeval-2007 task 10: English lexical substitution task</title>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth International Workshop on Semantic Evaluation (SemEval-2007)</title>
+				<meeting>the Fourth International Workshop on Semantic Evaluation (SemEval-2007)</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2007" />
+			<biblScope unit="page" from="48" to="53" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">WordNet: A lexical database for English</title>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">A</forename><surname>Miller</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/219717.219748</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Commun. ACM</title>
+		<imprint>
+			<biblScope unit="volume">38</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="39" to="41" />
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Unsupervised induction of frame-semantic representations</title>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Titov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Klementiev</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NAACL-HLT Workshop on the Induction of Linguistic Structure</title>
+				<meeting>the NAACL-HLT Workshop on the Induction of Linguistic Structure<address><addrLine>Montréal, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="1" to="7" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Semeval-2013 task 11: Word sense induction and disambiguation within an end-user application</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Navigli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniele</forename><surname>Vannella</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="193" to="201" />
+		</imprint>
+	</monogr>
+	<note>Second Joint Conference on Lexical and Computational Semantics (*SEM). Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Towards comparability of linguistic graph banks for semantic parsing</title>
+		<author>
+			<persName><forename type="first">Stephan</forename><surname>Oepen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Kuhlmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yusuke</forename><surname>Miyao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Zeman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silvie</forename><surname>Cinkova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Flickinger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">LREC 2016</title>
+				<meeting><address><addrLine>Paris, France. ELRA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Angelina Ivanova, and Zdenka Uresova</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Verbnet: Verbnet: Capturing english verb behavior, meaning, and usage</title>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claire</forename><surname>Bonial</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jena</forename><surname>Hwang</surname></persName>
+		</author>
+		<idno type="DOI">10.1093/oxfordhb/9780199842193.013.15</idno>
+	</analytic>
+	<monogr>
+		<title level="m">The Oxford Handbook of Cognitive Science</title>
+				<imprint>
+			<publisher>Oxford Press</publisher>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">The proposition bank: An annotated corpus of semantic roles</title>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Gildea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Kingsbury</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/0891201053630264</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Comput. Linguist</title>
+		<imprint>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="71" to="106" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Automatic induction of framenet lexical units</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Pennacchiotti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diego</forename><forename type="middle">De</forename><surname>Cao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>Basili</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Croce</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Roth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;08</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing, EMNLP &apos;08<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="457" to="465" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">Guidelines for the semantic frame annotation system. corpus annotation guidelines TR.9</title>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Behrang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miriam</forename><forename type="middle">R L</forename><surname>Zadeh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Petruck</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page">B991</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Semantic proto-roles</title>
+		<author>
+			<persName><forename type="first">Drew</forename><surname>Reisinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Rudinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francis</forename><surname>Ferraro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Craig</forename><surname>Harman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyle</forename><surname>Rawlins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Van Durme</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">3</biblScope>
+			<biblScope unit="page" from="475" to="488" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">L2F/INESC-ID at SemEval-2019 Task 2: Unsupervised Lexical Semantic Frame Induction using Contextualized Word Representations</title>
+		<author>
+			<persName><forename type="first">Eugénio</forename><surname>Ribeiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vânia</forename><surname>Mendonça</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ricardo</forename><surname>Ribeiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Martins De Matos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Sardinha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ana</forename><forename type="middle">Lúcia</forename><surname>Santos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luísa</forename><surname>Coheur</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 13th International Workshop on Semantic Evaluation</title>
+				<meeting>The 13th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Ruppenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Ellsworth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miriam</forename><forename type="middle">R L</forename><surname>Petruck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">R</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Collin</forename><forename type="middle">F</forename><surname>Baker</surname></persName>
+		</author>
+		<title level="m">FrameNet II: Extended Theory and Practice. ICSI</title>
+				<meeting><address><addrLine>Berkeley</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Enhanced English Universal Dependencies: An improved representation for natural language understanding tasks</title>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Schuster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC 2016)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC 2016)<address><addrLine>Paris, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">A comparison of document clustering techniques</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Steinbach</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Karypis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Kumar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">KDD Workshop on Text Mining</title>
+				<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Syntactic scaffolds for semantic structures</title>
+		<author>
+			<persName><forename type="first">Swabha</forename><surname>Swayamdipta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Thomson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Dyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="3772" to="3782" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Unsupervised semantic frame induction using triclustering</title>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Ustalov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Panchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrey</forename><surname>Kutuzov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simone</forename><forename type="middle">Paolo</forename><surname>Ponzetto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ACL</title>
+				<meeting><address><addrLine>Melbourne, Australia. ACL</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="55" to="62" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

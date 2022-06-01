@@ -1,0 +1,1611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">The CoNLL 2007 Shared Task on Dependency Parsing</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+							<email>joakim.nivre@lingfil.uu.se</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Mathematics and Systems Engineering</orgName>
+								<orgName type="institution">Växjö University</orgName>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="department">Dept. of Linguistics and Philology</orgName>
+								<orgName type="institution">Uppsala University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Johan</forename><surname>Hall</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">School of Mathematics and Systems Engineering</orgName>
+								<orgName type="institution">Växjö University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+							<email>skuebler@indiana.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Ryan</forename><surname>Mcdonald</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">School of Mathematics and Systems Engineering</orgName>
+								<orgName type="institution">Växjö University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Jens</forename><surname>Nilsson</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">School of Mathematics and Systems Engineering</orgName>
+								<orgName type="institution">Växjö University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sebastian</forename><surname>Riedel</surname></persName>
+							<email>s.r.riedel@sms.ed.ac.uk</email>
+							<affiliation key="aff0">
+								<orgName type="department">School of Mathematics and Systems Engineering</orgName>
+								<orgName type="institution">Växjö University</orgName>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="department">Dept. of Linguistics and Philology</orgName>
+								<orgName type="institution">Uppsala University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Deniz</forename><surname>Yuret</surname></persName>
+							<email>dyuret@ku.edu.tr</email>
+							<affiliation key="aff1">
+								<orgName type="department">Dept. of Linguistics and Philology</orgName>
+								<orgName type="institution">Uppsala University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="department">Department of Linguistics</orgName>
+								<orgName type="institution">Indiana University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff3">
+								<orgName type="department">Google Inc</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff4">
+								<orgName type="department">School of Informatics</orgName>
+								<orgName type="institution">University of Edinburgh</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff5">
+								<orgName type="department">Dept. of Computer Engineering</orgName>
+								<orgName type="institution">Koç University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">The CoNLL 2007 Shared Task on Dependency Parsing</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The Conference on Computational Natural Language Learning features a shared task, in which participants train and test their learning systems on the same data sets. In 2007, as in 2006, the shared task has been devoted to dependency parsing, this year with both a multilingual track and a domain adaptation track. In this paper, we define the tasks of the different tracks and describe how the data sets were created from existing treebanks for ten languages. In addition, we characterize the different approaches of the participating systems, report the test results, and provide a first analysis of these results.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Previous shared tasks of the Conference on Computational Natural Language Learning (CoNLL) have been devoted to chunking <ref type="bibr">(1999,</ref><ref type="bibr">2000)</ref>, clause identification (2001), named entity recognition <ref type="bibr">(2002,</ref><ref type="bibr">2003)</ref>, and semantic role labeling <ref type="bibr">(2004,</ref><ref type="bibr">2005)</ref>. In 2006 the shared task was multilingual dependency parsing, where participants had to train a single parser on data from thirteen different languages, which enabled a comparison not only of parsing and learning methods, but also of the performance that can be achieved for different languages <ref type="bibr" target="#b16">(Buchholz and Marsi, 2006)</ref>.</p><p>In dependency-based syntactic parsing, the task is to derive a syntactic structure for an input sentence by identifying the syntactic head of each word in the sentence. This defines a dependency graph, where the nodes are the words of the input sentence and the arcs are the binary relations from head to dependent. Often, but not always, it is assumed that all words except one have a syntactic head, which means that the graph will be a tree with the single independent word as the root. In labeled dependency parsing, we additionally require the parser to assign a specific type (or label) to each dependency relation holding between a head word and a dependent word.</p><p>In this year's shared task, we continue to explore data-driven methods for multilingual dependency parsing, but we add a new dimension by also introducing the problem of domain adaptation. The way this was done was by having two separate tracks: a multilingual track using essentially the same setup as last year, but with partly different languages, and a domain adaptation track, where the task was to use machine learning to adapt a parser for a single language to a new domain. In total, test results were submitted for twenty-three systems in the multilingual track, and ten systems in the domain adaptation track (six of which also participated in the multilingual track). Not everyone submitted papers describing their system, and some papers describe more than one system (or the same system in both tracks), which explains why there are only (!) twenty-one papers in the proceedings.</p><p>In this paper, we provide task definitions for the two tracks (section 2), describe data sets extracted from available treebanks (section 3), report results for all systems in both tracks (section 4), give an overview of approaches used (section 5), provide a first analysis of the results (section 6), and conclude with some future directions (section 7).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Definition</head><p>In this section, we provide the task definitions that were used in the two tracks of the CoNLL 2007 Shard Task, the multilingual track and the domain adaptation track, together with some background and motivation for the design choices made. First of all, we give a brief description of the data format and evaluation metrics, which were common to the two tracks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Data Format and Evaluation Metrics</head><p>The data sets derived from the original treebanks (section 3) were in the same column-based format as for the 2006 shared task <ref type="bibr" target="#b16">(Buchholz and Marsi, 2006)</ref>. In this format, sentences are separated by a blank line; a sentence consists of one or more tokens, each one starting on a new line; and a token consists of the following ten fields, separated by a single tab character:</p><p>1. ID: Token counter, starting at 1 for each new sentence.</p><p>2. FORM: Word form or punctuation symbol.</p><p>3. LEMMA: Lemma or stem of word form, or an underscore if not available.</p><p>4. CPOSTAG: Coarse-grained part-of-speech tag, where the tagset depends on the language.</p><p>5. POSTAG: Fine-grained part-of-speech tag, where the tagset depends on the language, or identical to the coarse-grained part-of-speech tag if not available.</p><p>6. FEATS: Unordered set of syntactic and/or morphological features (depending on the particular language), separated by a vertical bar (|), or an underscore if not available.</p><p>7. HEAD: Head of the current token, which is either a value of ID or zero (0). Note that, depending on the original treebank annotation, there may be multiple tokens with HEAD=0.</p><p>8. DEPREL: Dependency relation to the HEAD. The set of dependency relations depends on the particular language. Note that, depending on the original treebank annotation, the dependency relation when HEAD=0 may be meaningful or simply ROOT.</p><p>9. PHEAD: Projective head of current token, which is either a value of ID or zero (0), or an underscore if not available.</p><p>10. PDEPREL: Dependency relation to the PHEAD, or an underscore if not available.</p><p>The PHEAD and PDEPREL were not used at all in this year's data sets (i.e., they always contained underscores) but were maintained for compatibility with last year's data sets. This means that, in practice, the first six columns can be considered as input to the parser, while the HEAD and DEPREL fields are the output to be produced by the parser. Labeled training sets contained all ten columns; blind test sets only contained the first six columns; and gold standard test sets (released only after the end of the test period) again contained all ten columns. All data files were encoded in UTF-8. The official evaluation metric in both tracks was the labeled attachment score (LAS), i.e., the percentage of tokens for which a system has predicted the correct HEAD and DEPREL, but results were also reported for unlabeled attachment score (UAS), i.e., the percentage of tokens with correct HEAD, and the label accuracy (LA), i.e., the percentage of tokens with correct DEPREL. One important difference compared to the 2006 shared task is that all tokens were counted as "scoring tokens", including in particular all punctuation tokens. The official evaluation script, eval07.pl, is available from the shared task website. 1</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Multilingual Track</head><p>The multilingual track of the shared task was organized in the same way as the 2006 task, with annotated training and test data from a wide range of languages to be processed with one and the same parsing system. This system must therefore be able to learn from training data, to generalize to unseen test data, and to handle multiple languages, possibly by adjusting a number of hyper-parameters. Participants in the multilingual track were expected to submit parsing results for all languages involved.</p><p>One of the claimed advantages of dependency parsing, as opposed to parsing based on constituent analysis, is that it extends naturally to languages with free or flexible word order. This explains the interest in recent years for multilingual evaluation of dependency parsers. Even before the 2006 shared task, the parsers of <ref type="bibr" target="#b23">Collins (1997)</ref> and <ref type="bibr" target="#b19">Charniak (2000)</ref>, originally developed for English, had been adapted for dependency parsing of Czech, and the parsing methodology proposed by <ref type="bibr" target="#b37">Kudo and Matsumoto (2002)</ref> and <ref type="bibr" target="#b65">Yamada and Matsumoto (2003)</ref> had been evaluated on both Japanese and English. The parser of  had been applied to English, Czech and Danish, and the parser of  to ten different languages. But by far the largest evaluation of multilingual dependency parsing systems so far was the 2006 shared task, where nineteen systems were evaluated on data from thirteen languages <ref type="bibr" target="#b16">(Buchholz and Marsi, 2006)</ref>.</p><p>One of the conclusions from the 2006 shared task was that parsing accuracy differed greatly between languages and that a deeper analysis of the factors involved in this variation was an important problem for future research. In order to provide an extended empirical foundation for such research, we tried to select the languages and data sets for this year's task based on the following desiderata:</p><p>• The selection of languages should be typologically varied and include both new languages and old languages (compared to 2006).</p><p>• The creation of the data sets should involve as little conversion as possible from the original treebank annotation, meaning that preference should be given to treebanks with dependency annotation.</p><p>• The training data sets should include at least 50,000 tokens and at most 500,000 tokens. 2</p><p>The final selection included data from Arabic, Basque, Catalan, Chinese, Czech, English, Greek, Hungarian, Italian, and Turkish. The treebanks from <ref type="bibr">2</ref> The reason for having an upper bound on the training set size was the fact that, in 2006, some participants could not train on all the data for some languages because of time limitations. Similar considerations also led to the decision to have a smaller number of languages this year (ten, as opposed to thirteen).</p><p>which the data sets were extracted are described in section 3.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Domain Adaptation Track</head><p>One well known characteristic of data-driven parsing systems is that they typically perform much worse on data that does not come from the training domain <ref type="bibr" target="#b31">(Gildea, 2001)</ref>. Due to the large overhead in annotating text with deep syntactic parse trees, the need to adapt parsers from domains with plentiful resources (e.g., news) to domains with little resources is an important problem. This problem is commonly referred to as domain adaptation, where the goal is to adapt annotated resources from a source domain to a target domain of interest.</p><p>Almost all prior work on domain adaptation assumes one of two scenarios. In the first scenario, there are limited annotated resources available in the target domain, and many studies have shown that this may lead to substantial improvements. This includes the work of <ref type="bibr" target="#b55">Roark and Bacchiani (2003)</ref>, <ref type="bibr" target="#b30">Florian et al. (2004)</ref>, <ref type="bibr" target="#b20">Chelba and Acero (2004)</ref>, <ref type="bibr" target="#b26">Daumé and Marcu (2006)</ref>, and <ref type="bibr" target="#b61">Titov and Henderson (2006)</ref>. Of these, <ref type="bibr" target="#b55">Roark and Bacchiani (2003)</ref> and <ref type="bibr" target="#b61">Titov and Henderson (2006)</ref> deal specifically with syntactic parsing. The second scenario assumes that there are no annotated resources in the target domain. This is a more realistic situation and is considerably more difficult. Recent work by <ref type="bibr" target="#b44">McClosky et al. (2006)</ref> and <ref type="bibr" target="#b13">Blitzer et al. (2006)</ref> have shown that the existence of a large unlabeled corpus in the new domain can be leveraged in adaptation. For this shared-task, we are assuming the latter setting -no annotated resources in the target domain.</p><p>Obtaining adequate annotated syntactic resources for multiple languages is already a challenging problem, which is only exacerbated when these resources must be drawn from multiple and diverse domains. As a result, the only language that could be feasibly tested in the domain adaptation track was English.</p><p>The setup for the domain adaptation track was as follows. Participants were provided with a large annotated corpus from the source domain, in this case sentences from the Wall Street Journal. Participants were also provided with data from three different target domains: biomedical abstracts (development data), chemical abstracts (test data 1), and parentchild dialogues (test data 2). Additionally, a large unlabeled corpus for each data set (training, development, test) was provided. The goal of the task was to use the annotated source data, plus any unlabeled data, to produce a parser that is accurate for each of the test sets from the target domains. <ref type="bibr">3</ref> Participants could submit systems in either the "open" or "closed" class (or both). The closed class requires a system to use only those resources provided as part of the shared task. The open class allows a system to use additional resources provided those resources are not drawn from the same domain as the development or test sets. An example might be a part-of-speech tagger trained on the entire Penn Treebank and not just the subset provided as training data, or a parser that has been hand-crafted or trained on a different training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Treebanks</head><p>In this section, we describe the treebanks used in the shared task and give relevant information about the data sets created from them.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Multilingual Track</head><p>Arabic The analytical syntactic annotation of the Prague Arabic Dependency Treebank (PADT) <ref type="bibr" target="#b32">(Hajič et al., 2004</ref>) can be considered a pure dependency annotation. The conversion, done by Otakar Smrz, from the original format to the column-based format described in section 2.1 was therefore relatively straightforward, although not all the information in the original annotation could be transfered to the new format. PADT was one of the treebanks used in the 2006 shared task but then only contained about 54,000 tokens. Since then, the size of the treebank has more than doubled, with around 112,000 tokens. In addition, the morphological annotation has been made more informative. It is also worth noting that the parsing units in this treebank are in many cases larger than conventional sentences, which partly explains the high average number of tokens per "sentence" <ref type="bibr" target="#b16">(Buchholz and Marsi, 2006)</ref>.</p><p>Basque For Basque, we used the 3LB Basque treebank <ref type="bibr" target="#b10">(Aduriz et al., 2003)</ref>. At present, the treebank consists of approximately 3,700 sentences, 334 of which were used as test data. The treebank comprises literary and newspaper texts. It is annotated in a dependency format and was converted to the CoNLL format by a team led by Koldo Gojenola.</p><p>Catalan The Catalan section of the CESS-ECE Syntactically and Semantically Annotated Corpora <ref type="bibr" target="#b43">(Martí et al., 2007)</ref>  Chinese The Chinese data are taken from the Sinica treebank <ref type="bibr" target="#b21">(Chen et al., 2003)</ref>, which contains both syntactic functions and semantic functions. The syntactic head was used in the conversion to the CoNLL format, carried out by Yu-Ming Hsieh and the organizers of the 2006 shared task, and the syntactic functions were used wherever it was possible. The training data used is basically the same as for the 2006 shared task, except for a few corrections, but the test data is new for this year's shared task. It is worth noting that the parsing units in this treebank are sometimes smaller than conventional sentence units, which partly explains the low average number of tokens per "sentence" <ref type="bibr" target="#b16">(Buchholz and Marsi, 2006)</ref>.</p><p>Czech The analytical syntactic annotation of the Prague Dependency Treebank (PDT) <ref type="bibr" target="#b14">(Böhmová et al., 2003)</ref> is a pure dependency annotation, just as for PADT. It was also used in the shared task 2006, but there are two important changes compared to last year. First, version 2.0 of PDT was used instead of version 1.0, and a conversion script was created by Zdenek Zabokrtsky, using the new XMLbased format of PDT 2.0. Secondly, due to the upper bound on training set size, only sections 1-3 of PDT constitute the training data, which amounts to some 450,000 tokens. The test data is a small subset of the development test set of PDT.</p><p>English For English we used the Wall Street Journal section of the Penn Treebank <ref type="bibr" target="#b41">(Marcus et al., 1993)</ref>. In particular, we used sections 2-11 for training and a subset of section 23 for testing. As a preprocessing stage we removed many functions tags from the non-terminals in the phrase structure representation to make the representations more uniform with out-of-domain test sets for the domain adaptation track (see section 3.2). The resulting data set was then converted to dependency structures using the procedure described in <ref type="bibr" target="#b35">Johansson and Nugues (2007a)</ref>. This work was done by Ryan McDonald.</p><p>Greek The Greek Dependency Treebank (GDT) <ref type="bibr" target="#b53">(Prokopidis et al., 2005)</ref> adopts a dependency structure annotation very similar to those of PDT and PADT, which means that the conversion by Prokopis Prokopidis was relatively straightforward. GDT is one of the smallest treebanks in this year's shared task (about 65,000 tokens) and contains sentences of Modern Greek. Just like PDT and PADT, the treebank contains more than one level of annotation, but we only used the analytical level of GDT.</p><p>Hungarian For the Hungarian data, the Szeged treebank <ref type="bibr" target="#b25">(Csendes et al., 2005)</ref> was used. The treebank is based on texts from six different genres, ranging from legal newspaper texts to fiction. The original annotation scheme is constituent-based, following generative principles. It was converted into dependencies by Zóltan Alexin based on heuristics.</p><p>Italian The data set used for Italian is a subset of the balanced section of the Italian Syntactic-Semantic Treebank (ISST) <ref type="bibr" target="#b48">(Montemagni et al., 2003)</ref> and consists of texts from the newspaper Corriere della Sera and from periodicals. A team led by Giuseppe Attardi, Simonetta Montemagni, and Maria Simi converted the annotation to the CoNLL format, using information from two different annotation levels, the constituent structure level and the dependency structure level.</p><p>Turkish For Turkish we used the METU-Sabancı Turkish Treebank <ref type="bibr" target="#b52">(Oflazer et al., 2003)</ref>, which was also used in the 2006 shared task. A new test set of about 9,000 tokens was provided by Gülşen Eryigit <ref type="bibr" target="#b29">(Eryigit, 2007)</ref>, who also handled the conversion to the CoNLL format, which means that we could use all the approximately 65,000 tokens of the original treebank for training. The rich morphology of Turkish requires the basic tokens in parsing to be inflectional groups (IGs) rather than words. IGs of a single word are connected to each other deterministically using dependency links labeled DERIV, referred to as word-internal dependencies in the following, and the FORM and the LEMMA fields may be empty (they contain underscore characters in the data files). Sentences do not necessarily have a unique root; most internal punctuation and a few foreign words also have HEAD=0.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Domain Adaptation Track</head><p>As mentioned previously, the source data is drawn from a corpus of news, specifically the Wall Street Journal section of the Penn Treebank <ref type="bibr" target="#b41">(Marcus et al., 1993)</ref>. This data set is identical to the English training set from the multilingual track (see section 3.1).</p><p>For the target domains we used three different labeled data sets. The first two were annotated as part of the PennBioIE project <ref type="bibr" target="#b38">(Kulick et al., 2004)</ref> and consist of sentences drawn from either biomedical or chemical research abstracts. Like the source WSJ corpus, this data is annotated using the Penn Treebank phrase structure scheme. To convert these sets to dependency structures we used the same procedure as before <ref type="bibr" target="#b35">(Johansson and Nugues, 2007a)</ref>. Additional care was taken to remove sentences that contained non-WSJ part-of-speech tags or non-terminals (e.g., HYPH part-of-speech tag indicating a hyphen). Furthermore, the annotation scheme for gaps and traces was made consistent with the Penn Treebank wherever possible. As already mentioned, the biomedical data set was distributed as a development set for the training phase, while the chemical data set was only used for final testing.</p><p>The third target data set was taken from the CHILDES database <ref type="bibr" target="#b39">(MacWhinney, 2000)</ref>, in particular the EVE corpus <ref type="bibr" target="#b15">(Brown, 1973)</ref>, which has been annotated with dependency structures. Unfortunately the dependency labels of the CHILDES data were inconsistent with those of the WSJ, biomedical and chemical data sets, and we therefore opted to only evaluate unlabeled accuracy for this data set. Furthermore, there was an inconsistency in how main and auxiliary verbs were annotated for this data set relative to others. As a result of this, submitting  1.0 % Non-proj. arcs 0.4 2.9 0.1 0.0 1.9 0.3 1.1 2.9 0.5 5.5 0.4 % Non-proj. sent.</p><p>10 Finally, a large corpus of unlabeled in-domain data was provided for each data set and made available for training. This data was drawn from the WSJ, PubMed.com (specific to biomedical and chemical research literature), and the CHILDES data base. The data was tokenized to be as consistent as possible with the WSJ training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Overview</head><p>Table <ref type="table" target="#tab_2">1</ref> describes the characteristics of the data sets. For the multilingual track, we provide statistics over the training and test sets; for the domain adaptation track, the statistics were extracted from the development set. Following last year's shared task practice <ref type="bibr" target="#b16">(Buchholz and Marsi, 2006)</ref>, we use the following definition of projectivity: An arc (i, j) is projective iff all nodes occurring between i and j are dominated by i (where dominates is the transitive closure of the arc relation).</p><p>In the table, the languages are abbreviated to their first two letters. Language families are: Semitic, Isolate, Romance, Sino-Tibetan, Slavic, Germanic, Hellenic, Finno-Ugric, and Turkic. The type of the original annotation is either constituents plus (some) functions (c+f) or dependencies (d). For the training data, the number of words and sentences are given in multiples of thousands, and the average length of a sentence in words (including punctuation tokens). The following rows contain information about whether lemmas are available, the number of coarse-and fine-grained part-of-speech tags, the number of feature components, and the number of dependency labels. Then information is given on how many different dependency labels can co-occur with HEAD=0, the percentage of HEAD=0 dependencies, and the percentage of heads preceding (left) or succeeding (right) a token (giving an indication of whether a language is predominantly head-initial or head-final). This is followed by the average number of HEAD=0 dependencies per sentence and the percentage of non-projective arcs and sentences. The last two rows show whether punctuation tokens are attached as dependents of other tokens (A=Always, S=Sometimes) and specify the number of dependency labels that exist for punctuation tokens. Note that punctuation is defined as any token belonging to the UTF-8 category of punctuation. This means, for example, that any token having an underscore in the FORM field (which happens for word-internal IGs in Turkish) is also counted as punctuation here.</p><p>For the test sets, the number of words and sentences as well as the ratio of words per sentence are listed, followed by the percentage of new words and lemmas (if applicable). For the domain adaptation sets, the percentage of new words is computed with regard to the training set (Penn Treebank).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Submissions and Results</head><p>As already stated in the introduction, test runs were submitted for twenty-three systems in the multilingual track, and ten systems in the domain adaptation track (six of which also participated in the multilingual track). In the result tables below, systems are identified by the last name of the team member listed first when test runs were uploaded for evaluation. In general, this name is also the first author of a paper describing the system in the proceedings, but there are a few exceptions and complications. First of all, for four out of twenty-seven systems, no paper was submitted to the proceedings. This is the case for the systems of Jia, Maes et al., Nash, and Zeman, which is indicated by the fact that these names appear in italics in all result tables. Secondly, two teams submitted two systems each, which are described in a single paper by each team. Thus, the systems called "Nilsson" and "Hall, J." are both described in <ref type="bibr" target="#b33">Hall et al. (2007a)</ref>, while the systems called "Duan (1)" and "Duan (2)" are both described in <ref type="bibr" target="#b28">Duan et al. (2007)</ref>. Finally, please pay attention to the fact that there are two teams, where the first author's last name is Hall. Therefore, we use "Hall, J." and "Hall, K.", to disambiguate between the teams involving Johan Hall <ref type="bibr" target="#b33">(Hall et al., 2007a)</ref> and Keith Hall <ref type="bibr" target="#b34">(Hall et al., 2007b)</ref>, respectively.</p><p>Tables <ref type="table" target="#tab_3">2 and 3</ref> give the scores for the multilingual track in the CoNLL 2007 shared task. The Average column contains the average score for all ten languages, which determines the ranking in this track. Table <ref type="table" target="#tab_4">4</ref> presents the results for the domain adaptation track, where the ranking is determined based on the PCHEM results only, since the CHILDES data set was optional. Note also that there are no labeled  attachment scores for the CHILDES data set, for reasons explained in section 3.2. The number in parentheses next to each score gives the rank. A star next to a score indicates that the difference with the next lower rank is significant at the 5% level using a ztest for proportions. A more complete presentation of the results, including the significance results for all the tasks and their p-values, can be found on the shared task website. <ref type="bibr">4</ref> Looking first at the results in the multilingual track, we note that there are a number of systems performing at almost the same level at the top of the ranking. For the average labeled attachment score, the difference between the top score (Nilsson) and the fifth score (Hall, J.) is no more than half a percentage point, and there are generally very few significant differences among the five or six best systems, regardless of whether we consider labeled or unlabeled attachment score. For the closed class of the domain adaptation track, we see a very similar pattern, with the top system (Sagae) being followed very closely by two other systems. For the open class, the results are more spread out, but then there are very few results in this class. It is also worth noting that the top scores in the closed class, somewhat unexpectedly, are higher than the top scores in the open class. But before we proceed to a more detailed analysis of the results (section 6), we will make an attempt to characterize the approaches represented by the different systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Approaches</head><p>In this section we give an overview of the models, inference methods, and learning methods used in the participating systems. For obvious reasons the discussion is limited to systems that are described by a paper in the proceedings. But instead of describing the systems one by one, we focus on the basic methodological building blocks that are often found in several systems although in different combinations. For descriptions of the individual systems, we refer to the respective papers in the proceedings.</p><p>Section 5.1 is devoted to system architectures. We then describe the two main paradigms for learning and inference, in this year's shared task as well as in last year's, which we call transition-based parsers (section 5.2) and graph-based parsers (section 5.3), adopting the terminology of <ref type="bibr" target="#b45">McDonald and Nivre (2007)</ref>. <ref type="bibr">5</ref> Finally, we give an overview of the domain adaptation methods that were used (section 5.4).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Architectures</head><p>Most systems perform some amount of pre-and post-processing, making the actual parsing component part of a sequential workflow of varying length and complexity. For example, most transitionbased parsers can only build projective dependency graphs. For languages with non-projective dependencies, graphs therefore need to be projectivized for training and deprojectivized for testing <ref type="bibr" target="#b33">(Hall et al., 2007a;</ref><ref type="bibr" target="#b36">Johansson and Nugues, 2007b;</ref><ref type="bibr" target="#b62">Titov and Henderson, 2007)</ref>.</p><p>Instead of assigning HEAD and DEPREL in a single step, some systems use a two-stage approach for attaching and labeling dependencies <ref type="bibr" target="#b22">(Chen et al., 2007;</ref><ref type="bibr" target="#b27">Dredze et al., 2007)</ref>. In the first step unlabeled dependencies are generated, in the second step these are labeled. This is particularly helpful for factored parsing models, in which label decisions cannot be easily conditioned on larger parts of the structure due to the increased complexity of inference. One system <ref type="bibr" target="#b34">(Hall et al., 2007b</ref>) extends this two-stage approach to a three-stage architecture where the parser and labeler generate an n-best list of parses which in turn is reranked. <ref type="bibr">6</ref> In ensemble-based systems several base parsers provide parsing decisions, which are added together for a combined score for each potential dependency arc. The tree that maximizes the sum of these combined scores is taken as the final output parse. This technique is used by <ref type="bibr" target="#b57">Sagae and Tsujii (2007)</ref> and in the Nilsson system <ref type="bibr" target="#b33">(Hall et al., 2007a)</ref>. It is worth noting that both these systems combine transitionbased base parsers with a graph-based method for parser combination, as first described by <ref type="bibr" target="#b56">Sagae and Lavie (2006)</ref>.</p><p>Data-driven grammar-based parsers, such as Bick ( <ref type="formula">2007</ref>), <ref type="bibr" target="#b59">Schneider et al. (2007)</ref>, and <ref type="bibr" target="#b63">Watson and Briscoe (2007)</ref>, need pre-and post-processing in order to map the dependency graphs provided as training data to a format compatible with the grammar used, and vice versa.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Transition-Based Parsers</head><p>Transition-based parsers build dependency graphs by performing sequences of actions, or transitions. Both learning and inference is conceptualized in <ref type="bibr">6</ref> They also flip the order of the labeler and the reranker.</p><p>terms of predicting the correct transition based on the current parser state and/or history. We can further subclassify parsers with respect to the model (or transition system) they adopt, the inference method they use, and the learning method they employ.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.1">Models</head><p>The most common model for transition-based parsers is one inspired by shift-reduce parsing, where a parser state contains a stack of partially processed tokens and a queue of remaining input tokens, and where transitions add dependency arcs and perform stack and queue operations. This type of model is used by the majority of transition-based parsers <ref type="bibr" target="#b11">(Attardi et al., 2007;</ref><ref type="bibr" target="#b28">Duan et al., 2007;</ref><ref type="bibr" target="#b33">Hall et al., 2007a;</ref><ref type="bibr" target="#b36">Johansson and Nugues, 2007b;</ref><ref type="bibr" target="#b40">Mannem, 2007;</ref><ref type="bibr" target="#b62">Titov and Henderson, 2007;</ref><ref type="bibr" target="#b64">Wu et al., 2007)</ref>. Sometimes it is combined with an explicit probability model for transition sequences, which may be conditional <ref type="bibr" target="#b28">(Duan et al., 2007)</ref> or generative <ref type="bibr" target="#b62">(Titov and Henderson, 2007)</ref>.</p><p>An alternative model is based on the list-based parsing algorithm described by <ref type="bibr" target="#b24">Covington (2001)</ref>, which iterates over the input tokens in a sequential manner and evaluates for each preceding token whether it can be linked to the current token or not. This model is used by <ref type="bibr" target="#b42">Marinov (2007)</ref> and in component parsers of the Nilsson ensemble system <ref type="bibr" target="#b33">(Hall et al., 2007a)</ref>. Finally, two systems use models based on LR parsing <ref type="bibr" target="#b57">(Sagae and Tsujii, 2007;</ref><ref type="bibr" target="#b63">Watson and Briscoe, 2007)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.2">Inference</head><p>The most common inference technique in transitionbased dependency parsing is greedy deterministic search, guided by a classifier for predicting the next transition given the current parser state and history, processing the tokens of the sentence in sequential left-to-right order 7 <ref type="bibr" target="#b33">(Hall et al., 2007a;</ref><ref type="bibr" target="#b40">Mannem, 2007;</ref><ref type="bibr" target="#b42">Marinov, 2007;</ref><ref type="bibr" target="#b64">Wu et al., 2007)</ref>. Optionally multiple passes over the input are conducted until no tokens are left unattached <ref type="bibr" target="#b11">(Attardi et al., 2007)</ref>.</p><p>As an alternative to deterministic parsing, several parsers use probabilistic models and maintain a heap or beam of partial transition sequences in order to pick the most probable one at the end of the sentence <ref type="bibr" target="#b28">(Duan et al., 2007;</ref><ref type="bibr" target="#b36">Johansson and Nugues, 2007b;</ref><ref type="bibr" target="#b57">Sagae and Tsujii, 2007;</ref><ref type="bibr" target="#b62">Titov and Henderson, 2007)</ref>.</p><p>One system uses as part of their parsing pipeline a "neighbor-parser" that attaches adjacent words and a "root-parser" that identifies the root word(s) of a sentence <ref type="bibr" target="#b64">(Wu et al., 2007)</ref>. In the case of grammarbased parsers, a classifier is used to disambiguate in cases where the grammar leaves some ambiguity <ref type="bibr" target="#b59">(Schneider et al., 2007;</ref><ref type="bibr" target="#b63">Watson and Briscoe, 2007)</ref> </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.3">Learning</head><p>Transition-based parsers either maintain a classifier that predicts the next transition or a global probabilistic model that scores a complete parse. To train these classifiers and probabilitistic models several approaches were used: SVMs <ref type="bibr" target="#b28">(Duan et al., 2007;</ref><ref type="bibr" target="#b33">Hall et al., 2007a;</ref><ref type="bibr" target="#b57">Sagae and Tsujii, 2007)</ref>, modified finite Newton SVMs <ref type="bibr" target="#b64">(Wu et al., 2007)</ref>, maximum entropy models <ref type="bibr" target="#b57">(Sagae and Tsujii, 2007)</ref>, multiclass averaged perceptron <ref type="bibr" target="#b11">(Attardi et al., 2007)</ref> and maximum likelihood estimation <ref type="bibr" target="#b63">(Watson and Briscoe, 2007)</ref>.</p><p>In order to calculate a global score or probability for a transition sequence, two systems used a Markov chain approach <ref type="bibr" target="#b28">(Duan et al., 2007;</ref><ref type="bibr" target="#b57">Sagae and Tsujii, 2007)</ref>. Here probabilities from the output of a classifier are multiplied over the whole sequence of actions. This results in a locally normalized model. Two other entries used MIRA <ref type="bibr" target="#b40">(Mannem, 2007)</ref> or online passive-aggressive learning <ref type="bibr" target="#b36">(Johansson and Nugues, 2007b)</ref> to train a globally normalized model. <ref type="bibr" target="#b62">Titov and Henderson (2007)</ref> used an incremental sigmoid Bayesian network to model the probability of a transition sequence and estimated model parameters using neural network learning.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Graph-Based Parsers</head><p>While transition-based parsers use training data to learn a process for deriving dependency graphs, graph-based parsers learn a model of what it means to be a good dependency graph given an input sentence. They define a scoring or probability function over the set of possible parses. At learning time they estimate parameters of this function; at parsing time they search for the graph that maximizes this function. These parsers mainly differ in the type and structure of the scoring function (model), the search algorithm that finds the best parse (infer-ence), and the method to estimate the function's parameters (learning).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3.1">Models</head><p>The simplest type of model is based on a sum of local attachment scores, which themselves are calculated based on the dot product of a weight vector and a feature representation of the attachment. This type of scoring function is often referred to as a firstorder model. <ref type="bibr">8</ref> Several systems participating in this year's shared task used first-order models <ref type="bibr" target="#b58">(Schiehlen and Spranger, 2007;</ref><ref type="bibr" target="#b50">Nguyen et al., 2007;</ref><ref type="bibr" target="#b60">Shimizu and Nakagawa, 2007;</ref><ref type="bibr" target="#b34">Hall et al., 2007b)</ref>. <ref type="bibr" target="#b17">Canisius and Tjong Kim Sang (2007)</ref> cast the same type of arc-based factorization as a weighted constraint satisfaction problem.</p><p>Carreras ( <ref type="formula">2007</ref>) extends the first-order model to incorporate a sum over scores for pairs of adjacent arcs in the tree, yielding a second-order model. In contrast to previous work where this was constrained to sibling relations of the dependent , here head-grandchild relations can be taken into account.</p><p>In all of the above cases the scoring function is decomposed into functions that score local properties (arcs, pairs of adjacent arcs) of the graph. By contrast, the model of <ref type="bibr" target="#b49">Nakagawa (2007)</ref> considers global properties of the graph that can take multiple arcs into account, such as multiple siblings and children of a node.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3.2">Inference</head><p>Searching for the highest scoring graph (usually a tree) in a model depends on the factorization chosen and whether we are looking for projective or non-projective trees. Maximum spanning tree algorithms can be used for finding the highest scoring non-projective tree in a first-order model <ref type="bibr" target="#b34">(Hall et al., 2007b;</ref><ref type="bibr" target="#b50">Nguyen et al., 2007;</ref><ref type="bibr" target="#b17">Canisius and Tjong Kim Sang, 2007;</ref><ref type="bibr" target="#b60">Shimizu and Nakagawa, 2007)</ref>, while Eisner's dynamic programming algorithm solves the problem for a first-order factorization in the projective case <ref type="bibr" target="#b58">(Schiehlen and Spranger, 2007)</ref>. <ref type="bibr" target="#b18">Carreras (2007)</ref> employs his own extension of Eisner's algorithm for the case of projective trees and second-order models that include headgrandparent relations.</p><p>The methods presented above are mostly efficient and always exact. However, for models that take global properties of the tree into account, they cannot be applied. Instead <ref type="bibr" target="#b49">Nakagawa (2007)</ref> uses Gibbs sampling to obtain marginal probabilities of arcs being included in the tree using his global model and then applies a maximum spanning tree algorithm to maximize the sum of the logs of these marginals and return a valid cycle-free parse.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3.3">Learning</head><p>Most of the graph-based parsers were trained using an online inference-based method such as passiveaggressive learning <ref type="bibr" target="#b50">(Nguyen et al., 2007;</ref><ref type="bibr" target="#b58">Schiehlen and Spranger, 2007)</ref>, averaged perceptron <ref type="bibr" target="#b18">(Carreras, 2007)</ref>, or MIRA <ref type="bibr" target="#b60">(Shimizu and Nakagawa, 2007)</ref>, while some systems instead used methods based on maximum conditional likelihood <ref type="bibr" target="#b49">(Nakagawa, 2007;</ref><ref type="bibr" target="#b34">Hall et al., 2007b)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Domain Adaptation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4.1">Feature-Based Approaches</head><p>One way of adapting a learner to a new domain without using any unlabeled data is to only include features that are expected to transfer well <ref type="bibr" target="#b27">(Dredze et al., 2007)</ref>. In structural correspondence learning a transformation from features in the source domain to features of the target domain is learnt <ref type="bibr" target="#b60">(Shimizu and Nakagawa, 2007)</ref>. The original source features along with their transformed versions are then used to train a discriminative parser. <ref type="bibr" target="#b27">Dredze et al. (2007)</ref> trained a diverse set of parsers in order to improve cross-domain performance by incorporating their predictions as features for another classifier. Similarly, two parsers trained with different learners and search directions were used in the co-learning approach of <ref type="bibr" target="#b57">Sagae and Tsujii (2007)</ref>. Unlabeled target data was processed with both parsers. Sentences that both parsers agreed on were then added to the original training data. This combined data set served as training data for one of the original parsers to produce the final system. In a similar fashion, <ref type="bibr" target="#b63">Watson and Briscoe (2007)</ref> used a variant of self-training to make use of the unlabeled target data. <ref type="bibr" target="#b11">Attardi et al. (2007)</ref> learnt tree revision rules for the target domain by first parsing unlabeled target data using a strong parser; this data was then combined with labeled source data; a weak parser was applied to this new dataset; finally tree correction rules are collected based on the mistakes of the weak parser with respect to the gold data and the output of the strong parser.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4.2">Ensemble-Based Approaches</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4.3">Other Approaches</head><p>Another technique used was to filter sentences of the out-of-domain corpus based on their similarity to the target domain, as predicted by a classifier <ref type="bibr" target="#b27">(Dredze et al., 2007)</ref>. Only if a sentence was judged similar to target domain sentences was it included in the training set.</p><p>Bick ( <ref type="formula">2007</ref>) used a hybrid approach, where a datadriven parser trained on the labeled training data was given access to the output of a Constraint Grammar parser for English run on the same data. Finally, <ref type="bibr" target="#b59">Schneider et al. (2007)</ref> learnt collocations and relational nouns from the unlabeled target data and used these in their parsing algorithm.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Analysis</head><p>Having discussed the major approaches taken in the two tracks of the shared task, we will now return to the test results. For the multilingual track, we compare results across data sets and across systems, and report results from a parser combination experiment involving all the participating systems (section 6.1). For the domain adaptation track, we sum up the most important findings from the test results (section 6.2).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Multilingual Track</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1.1">Across Data Sets</head><p>The average LAS over all systems varies from 68.07 for Basque to 80.95 for English. Top scores vary from 76.31 for Greek to 89.61 for English. In general, there is a good correlation between the top scores and the average scores. For Greek, Italian, and Turkish, the top score is closer to the average score than the average distance, while for Czech, the distance is higher. The languages that produced the most stable results in terms of system ranks with respect to LAS are Hungarian and Italian. For UAS, Catalan also falls into this group. The language that  For Turkish, scores with punctuation also include word-internal dependencies.</p><p>produced the most unstable results with respect to LAS is Turkish.</p><p>In comparison to last year's languages, the languages involved in the multilingual track this year can be more easily separated into three classes with respect to top scores:</p><p>• Low (76.31-76.94):</p><p>Arabic, Basque, Greek It is interesting to see that the classes are more easily definable via language characteristics than via characteristics of the data sets. The split goes across training set size, original data format (constituent vs. dependency), sentence length, percentage of unknown words, number of dependency labels, and ratio of (C)POSTAGS and dependency labels. The class with the highest top scores contains languages with a rather impoverished morphology. Medium scores are reached by the two agglutinative languages, Hungarian and Turkish, as well as by Czech.</p><p>The most difficult languages are those that combine a relatively free word order with a high degree of inflection. Based on these characteristics, one would expect to find Czech in the last class. However, the Czech training set is four times the size of the training set for Arabic, which is the language with the largest training set of the difficult languages. However, it would be wrong to assume that training set size alone is the deciding factor. A closer look at table 1 shows that while Basque and Greek in fact have small training data sets, so do Turkish and Italian. Another factor that may be associated with the above classification is the percentage of new words (PNW) in the test set. Thus, the expectation would be that the highly inflecting languages have a high PNW while the languages with little morphology have a low PNW. But again, there is no direct correspondence. Arabic, Basque, Catalan, English, and Greek agree with this assumption: Catalan and English have the smallest PNW, and Arabic, Basque, and Greek have a high PNW. But the PNW for Italian is higher than for Arabic and Greek, and this is also true for the percentage of new lemmas. Additionally, the highest PNW can be found in Hungarian and Turkish, which reach higher scores than Arabic, Basque, and Greek. These considerations suggest that highly inflected languages with (relatively) free word order need more training data, a hypothesis that will have to be investigated further.</p><p>There are four languages which were included in the shared tasks on multilingual dependency parsing both at CoNLL 2006 and at CoNLL 2007: Arabic, Chinese, Czech, and Turkish. For all four languages, the same treebanks were used, which allows a comparison of the results. However, in some cases the size of the training set changed, and at least one treebank, Turkish, underwent a thorough correction phase. Table <ref type="table" target="#tab_5">5</ref> shows the top scores for LAS. Since the official scores excluded punctuation in 2006 but includes it in 2007, we give results both with and without punctuation for both years.</p><p>For Arabic and Turkish, we see a great improvement of approximately 9 and 6 percentage points. For Arabic, the number of tokens in the training set doubled, and the morphological annotation was made more informative. The combined effect of these changes can probably account for the substantial improvement in parsing accuracy. For Turkish, the training set grew in size as well, although only by 600 sentences, but part of the improvement for Turkish may also be due to continuing efforts in error cor-rection and consistency checking. We see that the choice to include punctuation or not makes a large difference for the Turkish scores, since non-final IGs of a word are counted as punctuation (because they have the underscore character as their FORM value), which means that word-internal dependency links are included if punctuation is included. 9 However, regardless of whether we compare scores with or without punctuation, we see a genuine improvement of approximately 6 percentage points.</p><p>For Chinese, the same training set was used. Therefore, the drop from last year's top score to this year's is surprising. However, last year's top scoring system for Chinese <ref type="bibr" target="#b54">(Riedel et al., 2006)</ref>, which did not participate this year, had a score that was more than 3 percentage points higher than the second best system for Chinese. Thus, if we compare this year's results to the second best system, the difference is approximately 2 percentage points. This final difference may be attributed to the properties of the test sets. While last year's test set was taken from the treebank, this year's test set contains texts from other sources. The selection of the textual basis also significantly changed average sentence length: The Chinese training set has an average sentence length of 5.9. Last year's test set also had an average sentence length of 5.9. However, this year, the average sentence length is 7.5 tokens, which is a significant increase. Longer sentences are typically harder to parse due to the increased likelihood of ambiguous constructions.</p><p>Finally, we note that the performance for Czech is almost exactly the same as last year, despite the fact that the size of the training set has been reduced to approximately one third of last year's training set. It is likely that this in fact represents a relative improvement compared to last year's results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1.2">Across Systems</head><p>The LAS over all languages ranges from 80.32 to 54.55. The comparison of the system ranks averaged over all languages with the ranks for single lan-guages show considerably more variation than last year's systems. <ref type="bibr" target="#b16">Buchholz and Marsi (2006)</ref> report that "[f]or most parsers, their ranking differs at most a few places from their overall ranking". This year, for all of the ten best performing systems with respect to LAS, there is at least one language for which their rank is at least 5 places different from their overall rank. The most extreme case is the top performing Nilsson system <ref type="bibr" target="#b33">(Hall et al., 2007a)</ref>, which reached rank 1 for five languages and rank 2 for two more languages. Their only outlier is for Chinese, where the system occupies rank 14, with a LAS approximately 9 percentage points below the top scoring system for Chinese <ref type="bibr" target="#b57">(Sagae and Tsujii, 2007)</ref>. However, <ref type="bibr" target="#b33">Hall et al. (2007a)</ref> point out that the official results for Chinese contained a bug, and the true performance of their system was actually much higher. The greatest improvement of a system with respect to its average rank occurs for English, for which the system by <ref type="bibr" target="#b50">Nguyen et al. (2007)</ref> improved from the average rank 15 to rank 6. Two more outliers can be observed in the system of Johansson and Nugues (2007b), which improves from its average rank 12 to rank 4 for Basque and Turkish. The authors attribute this high performance to their parser's good performance on small training sets. However, this hypothesis is contradicted by their results for Greek and Italian, the other two languages with small training sets. For these two languages, the system's rank is very close to its average rank.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1.3">An Experiment in System Combination</head><p>Having the outputs of many diverse dependency parsers for standard data sets opens up the interesting possibility of parser combination. To combine the outputs of each parser we used the method of <ref type="bibr" target="#b56">Sagae and Lavie (2006)</ref>. This technique assigns to each possible labeled dependency a weight that is equal to the number of systems that included the dependency in their output. This can be viewed as an arc-based voting scheme. Using these weights it is possible to search the space of possible dependency trees using directed maximum spanning tree algorithms <ref type="bibr" target="#b47">(McDonald et al., 2005)</ref>. The maximum spanning tree in this case is equal to the tree that on average contains the labeled dependencies that most systems voted for. It is worth noting that variants of this scheme were used in two of the participating  <ref type="bibr" target="#b33">(Hall et al., 2007a)</ref> and the system of <ref type="bibr" target="#b57">Sagae and Tsujii (2007)</ref>. Figure <ref type="figure">1</ref> plots the labeled and unlabeled accuracies when combining an increasing number of systems. The data used in the plot was the output of all competing systems for every language in the multilingual track. The plot was constructed by sorting the systems based on their average labeled accuracy scores over all languages, and then incrementally adding each system in descending order. <ref type="bibr">10</ref> We can see that both labeled and unlabeled accuracy are significantly increased, even when just the top three systems are included. Accuracy begins to degrade gracefully after about ten different parsers have been added. Furthermore, the accuracy never falls below the performance of the top three systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Domain Adaptation Track</head><p>For this task, the results are rather surprising. A look at the LAS and UAS for the chemical research abstracts shows that there are four closed systems that outperform the best scoring open system. The best system <ref type="bibr" target="#b57">(Sagae and Tsujii, 2007)</ref> reaches an LAS of 81.06 (in comparison to their LAS of 89.01 for the English data set in the multilingual track). Considering that approximately one third of the words of the chemical test set are new, the results are noteworthy.</p><p>The next surprise is to be found in the relatively low UAS for the CHILDES data. At a first glance, this data set has all the characteristics of an easy <ref type="bibr">10</ref> The reason that there is no data point for two parsers is that the simple voting scheme adopted only makes sense with at least three parsers voting. set; the average sentence is short (12.9 words), and the percentage of new words is also small (6.10%). Despite these characteristics, the top UAS reaches 62.49 and is thus more than 10 percentage points below the top UAS for the chemical data set. One major reason for this is that auxiliary and main verb dependencies are annotated differently in the CHILDES data than in the WSJ training set. As a result of this discrepancy, participants were not required to submit results for the CHILDES data. The best performing system on the CHILDES corpus is an open system <ref type="bibr" target="#b12">(Bick, 2007)</ref>, but the distance to the top closed system is approximately 1 percentage point. In this domain, it seems more feasible to use general language resources than for the chemical domain. However, the results prove that the extra effort may be unnecessary.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>Two years of dependency parsing in the CoNLL shared task has brought an enormous boost to the development of dependency parsers for multiple languages (and to some extent for multiple domains). But even though nineteen languages have been covered by almost as many different parsing and learning approaches, we still have only vague ideas about the strengths and weaknesses of different methods for languages with different typological characteristics. Increasing our knowledge of the multi-causal relationship between language structure, annotation scheme, and parsing and learning methods probably remains the most important direction for future research in this area. The outputs of all systems for all data sets from the two shared tasks are freely available for research and constitute a potential gold mine for comparative error analysis across languages and systems.</p><p>For domain adaptation we have barely scratched the surface so far. But overcoming the bottleneck of limited annotated resources for specialized domains will be as important for the deployment of human language technology as being able to handle multiple languages in the future. One result from the domain adaptation track that may seem surprising at first is the fact that closed class systems outperformed open class systems on the chemical abstracts. However, it seems that the major problem in adapting pre-existing parsers to the new domain was not the domain as such but the mapping from the native output of the parser to the kind of annotation provided in the shared task data sets. Thus, finding ways of reusing already invested development efforts by adapting the outputs of existing systems to new requirements, without substantial loss in accuracy, seems to be another line of research that may be worth pursuing.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>.8 36.5 58.4 41.5 46.9 46.9 68.0 29.6 83.4 46.0 HEAD=0/sentence 3.3 1.5 1.0 1.0 2.0 1.0 2.0 1.0 1.2 1.5</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head></head><label></label><figDesc>Figure 1: System Combination</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Characteristics of the data sets for the 10 languages of the multilingual track and the development set and the two test sets of the domain adaptation track. results for the CHILDES data was considered optional. Like the chemical data set, this data set was only used for final testing.</figDesc><table><row><cell></cell><cell cols="10">.1 26.2 2.9 0.0 23.2 6.7 20.3 26.4 7.4 33.3</cell><cell>8.0</cell></row><row><cell>Punc. attached</cell><cell>S</cell><cell>S</cell><cell>A</cell><cell>S</cell><cell>S</cell><cell>A</cell><cell>S</cell><cell>A</cell><cell>A</cell><cell>S</cell><cell>A</cell></row><row><cell cols="2">DEPRELS for punc. 10</cell><cell>13</cell><cell>6</cell><cell cols="4">29 16 13 15</cell><cell>1</cell><cell>10</cell><cell>12</cell><cell>8</cell></row><row><cell></cell><cell></cell><cell></cell><cell cols="2">Test data</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="2">PCHEM CHILDES</cell></row><row><cell>Tokens</cell><cell cols="11">5124 5390 5016 5161 4724 5003 4804 7344 5096 4513 5001</cell><cell>4999</cell></row><row><cell>Sentences</cell><cell cols="10">131 334 167 690 286 214 197 390 249 300</cell><cell>195</cell><cell>666</cell></row><row><cell>Tokens/sentence</cell><cell cols="10">39.1 16.1 30.0 7.5 16.5 23.4 24.4 18.8 20.5 15.0</cell><cell>25.6</cell><cell>12.9</cell></row><row><cell>% New words</cell><cell cols="11">12.44 24.98 4.35 9.70 12.58 3.13 12.43 26.10 15.07 36.29 31.33</cell><cell>6.10</cell></row><row><cell>% New lemmas</cell><cell cols="10">2.82 11.13 3.36 n/a 5.28 n/a 5.82 14.80 8.24 9.95</cell><cell>n/a</cell><cell>n/a</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Unlabeled attachment scores (UAS) for the multilingual track in the CoNLL 2007 shared task. Teams are denoted by the last name of their first member, with italics indicating that there is no corresponding paper in the proceedings. The number in parentheses next to each score gives the rank. A star next to a score in the Average column indicates a statistically significant difference with the next lower rank.</figDesc><table><row><cell></cell><cell>LAS</cell><cell>UAS</cell><cell></cell></row><row><cell>Team</cell><cell cols="4">PCHEM-c PCHEM-o PCHEM-c PCHEM-o CHILDES-c CHILDES-o</cell></row><row><cell>Sagae</cell><cell>81.06(1)</cell><cell>83.42(1)</cell><cell></cell></row><row><cell cols="2">Attardi 80.40(2)</cell><cell>83.08(3)</cell><cell>58.67(3)</cell></row><row><cell cols="2">Dredze 80.22(3)</cell><cell>83.38(2)</cell><cell>61.37(1)</cell></row><row><cell cols="2">Nguyen 79.50(4)*</cell><cell>82.04(4)*</cell><cell></cell></row><row><cell>Jia</cell><cell>76.48(5)*</cell><cell>78.92(5)*</cell><cell>57.43(5)</cell></row><row><cell>Bick</cell><cell cols="3">71.81(6)* 78.48(1)* 74.71(6)* 81.62(1)* 58.07(4)</cell><cell>62.49(1)</cell></row><row><cell cols="3">Shimizu 64.15(7)* 63.49(2) 71.25(7)* 70.01(2)*</cell><cell></cell></row><row><cell>Zeman</cell><cell>50.61(8)</cell><cell>54.57(8)</cell><cell>58.89(2)</cell></row><row><cell>Schneider</cell><cell>63.01(3)*</cell><cell>66.53(3)*</cell><cell></cell><cell>60.27(2)</cell></row><row><cell>Watson</cell><cell>55.47(4)</cell><cell>62.79(4)</cell><cell></cell><cell>45.61(3)</cell></row><row><cell>Wu</cell><cell></cell><cell></cell><cell>52.89(6)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Labeled (LAS) and unlabeled (UAS) attachment scores for the closed (-c) and open (-o) classes of the domain adaptation track in the CoNLL 2007 shared task. Teams are denoted by the last name of their first</figDesc><table /><note>member, with italics indicating that there is no corresponding paper in the proceedings. The number in parentheses next to each score gives the rank. A star next to a score in the PCHEM columns indicates a statistically significant difference with the next lower rank.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 5 :</head><label>5</label><figDesc>A comparison of the LAS top scores from 2006 and 2007. Official scoring conditions in boldface.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://depparse.uvt.nl/depparse-wiki/SoftwarePage</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">Note that annotated development data for the target domain was only provided for the development domain, biomedical abstracts. For the two test domains, chemical abstracts and parentchild dialogues, the only annotated data sets were the gold standard test sets, released only after test runs had been submitted.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">http://nextens.uvt.nl/depparse-wiki/AllScores</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">This distinction roughly corresponds to the distinction made by<ref type="bibr" target="#b16">Buchholz and Marsi (2006)</ref> between "stepwise" and "all-pairs" approaches.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">For diversity in parser ensembles, right-to-left parsers are also used.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">It is also known as an edge-factored model.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">The decision to include word-internal dependencies in this way can be debated on the grounds that they can be parsed deterministically. On the other hand, they typically correspond to regular dependencies captured by function words in other languages, which are often easy to parse as well. It is therefore unclear whether scores are more inflated by including wordinternal dependencies or deflated by excluding them.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>First and foremost, we want to thank all the people and organizations that generously provided us with treebank data and helped us prepare the data sets and without whom the shared task would have been literally impossible: Otakar Smrz, Charles University, and the LDC (Arabic); Maxux Aranzabe, Kepa Bengoetxea, Larraitz Uria, Koldo Gojenola, and the University of the Basque Country (Basque); Ma. Antònia Martí Antonín, Lluís Màrquez, Manuel Bertran, Mariona Taulé, Difda Monterde, Eli Comelles, and CLiC-UB (Catalan); Shih-Min Li, Keh-Jiann Chen, Yu-Ming Hsieh, and Academia Sinica (Chinese); Jan Hajič, Zdenek Zabokrtsky, Charles University, and the LDC (Czech); Brian MacWhinney, Eric Davis, the CHILDES project, the Penn BioIE project, and the LDC (English); Prokopis Prokopidis and ILSP (Greek); Csirik János and Zoltán Alexin (Hungarian); Giuseppe Attardi, Simonetta Montemagni, Maria Simi, Isidoro Barraco, Patrizia Topi, Kiril Ribarov, Alessandro Lenci, Nicoletta Calzolari, ILC, and ELRA (Italian); Gülşen Eryigit, Kemal Oflazer, and Ruket Ç akıcı (Turkish).</p><p>Secondly, we want to thank the organizers of last year's shared task, Sabine Buchholz, Amit Dubey, Erwin Marsi, and Yuval Krymolowski, who solved all the really hard problems for us and answered all our questions, as well as our colleagues who helped review papers: Jason Baldridge, Sabine Buchholz, James Clarke, Gülşen Eryigit, Kilian Evang, Julia Hockenmaier, Yuval Krymolowski, Erwin Marsi, Beáta Megyesi, Yannick Versley, and Alexander Yeh. Special thanks to Bertjan Busser and Erwin Marsi for help with the CoNLL shared task website and many other things, and to Richard Johansson for letting us use his conversion tool for English.</p><p>Thirdly, we want to thank the program chairs for EMNLP-CoNLL 2007, Jason Eisner and Taku Kudo, the publications chair, Eric Ringger, the SIGNLL officers, Antal van den Bosch, Hwee Tou Ng, and Erik Tjong Kim Sang, and members of the LDC staff, Tony Castelletto and Ilya Ahtaridis, for great cooperation and support.</p><p>Finally, we want to thank the following people, who in different ways assisted us in the organization of the CoNLL 2007 shared task: Giuseppe Attardi, Eckhard Bick, Matthias Buch-Kromann, Xavier Carreras, Tomaz Erjavec, Svetoslav Marinov, Wolfgang Menzel, Xue Nianwen, Gertjan van Noord, Petya Osenova, Florian Schiel, Kiril Simov, Zdenka Uresova, and Heike Zinsmeister.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">(2) 75.91(10) Hall</title>
+		<idno>84.69(1) 74.83(8) 89.01(2) 73.58(8) 79.53(2) 83.91</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Nakagawa</title>
+		<editor>Average Arabic Basque Catalan Chinese Czech English Greek Hungarian Italian Turkish Nilsson</editor>
+		<imprint>
+			<biblScope unit="volume">74</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page">80</biblScope>
+		</imprint>
+	</monogr>
+	<note>J. 79.. 5)* 74.75(3) 74.99(5) 87.74(4) 83.51(3) 77.22(6) 85.81(12) 74.21(6) 78.09(3) 82.48(5) 79.24(3</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title/>
+		<idno>78.06(8) 74.65(5) 72.39</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Carreras</title>
+		<imprint>
+			<biblScope unit="volume">75</biblScope>
+			<biblScope unit="issue">9</biblScope>
+		</imprint>
+	</monogr>
+	<note>7) 76.81(7) 81.34(8) 76.. 3) 75.34(10) 82.04(7) 76.31(9</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Duan</surname></persName>
+		</author>
+		<idno>75.03</idno>
+		<imprint>
+			<biblScope unit="volume">71</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">K</forename><surname>Hall</surname></persName>
+		</author>
+		<idno>73.02(14)* 66.16(14) 70.71(10) 81.44(15) 74.69(16) 66.72(16) 79.49(18) 70.63(14) 69.08(15) 78.79(12) 72.52</idno>
+		<imprint>
+			<biblScope unit="volume">76</biblScope>
+		</imprint>
+	</monogr>
+	<note>46(4) Mannem 74.54(13)* 71.55(10) 65.64(15) 84.</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title/>
+		<idno>54.55(20)* 54.00(19) 51.24(19) 69.42(18) 49.87(21) 53.47(19) 52.11(23) 54.33(20) 44.47(21) 59.75(20) 56.88</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Marinov</title>
+		<imprint>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">The number in parentheses next to each score gives the rank. A star next to a score in the Average column indicates a statistically significant difference with the next lower rank. Team Average Arabic Basque Catalan Chinese Czech English Greek Hungarian Italian Turkish Nakagawa 86</title>
+		<idno>81.93(2) 93.40(1) 87.91</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Labeled attachment score (LAS) for the multilingual track in the CoNLL 2007 shared task. Teams are denoted by the last name of their first member, with italics indicating that there is no corresponding paper in the proceedings</title>
+				<meeting><address><addrLine>Sagae</addrLine></address></meeting>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+		</imprint>
+	</monogr>
+	<note>3) 84.52(12) 83.59(4) 88.93(5) 81.22(4) 83.55(1) 87.77(2) 85.. 29(4)* 84.04(4) 81.19(3) 93.34(2) 88.94(1) 81.27(8) 89.87(3) 80.37(11) 83.51(2) 87.68(3) 82.72(9</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">41(10) Hall</title>
+		<idno>81.71(6) 86.26(5) 85.04(5) Attardi 83.96(7)* 82.53(8) 76.88(11) 91.41(7) 86.73(8) 83.40(5) 86.99(10) 80.75(8) 81.81(5) 85.54(8) 83.56</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Carreras</title>
+		<imprint>
+			<biblScope unit="volume">87</biblScope>
+			<biblScope unit="issue">9</biblScope>
+		</imprint>
+	</monogr>
+	<note>J.. 91(13) 81.16(6) 79.25(11) 85.91(7) 81.92(12</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">K</forename><surname>Hall</surname></persName>
+		</author>
+		<idno>87.80(15) 87.91(3) 78.47(12) 83.21(15) 82.04(2) 79.34</idno>
+		<imprint>
+			<biblScope unit="volume">78</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">53(15) 81.55(15) 84.80(6) Mannem 80.30(13) 81</title>
+		<author>
+			<persName><surname>Duan</surname></persName>
+		</author>
+		<idno>18)* 76.89(15) 70.17(17) 81.64(18) 74.81(19) 72.12(17) 78.23(19) 72.46(18) 67.80(19) 79.08(17) 75.14</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Canisius</title>
+		<imprint>
+			<biblScope unit="volume">81</biblScope>
+			<biblScope unit="issue">1</biblScope>
+		</imprint>
+	</monogr>
+	<note>36(14) 75.96(17) Wu 78.44(16)* 77.05(14) 75.77(12) 85.85(16) 79.71(16) 73.07(16) 81.69(17. Zeman 62.02(19)* 58.55(20) 57.42(20) 68.50(20) 62.93(20) 59.19(20) 58.33(22) 62.89(19) 59.78(20) 68.27(19) 64.30(19</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Treebanks: Building and Using Parsed Corpora</title>
+		<editor>A. Abeillé</editor>
+		<imprint>
+			<date type="published" when="2003" />
+			<publisher>Kluwer</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Construction of a Basque dependency treebank</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Aduriz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">J</forename><surname>Aranzabe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Arriola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Atutxa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Diaz De Ilarraza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Garmendia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Oronoz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 2nd Workshop on Treebanks and Linguistic Theories (TLT)</title>
+				<meeting>of the 2nd Workshop on Treebanks and Linguistic Theories (TLT)</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Multilingual dependency parsing and domain adaptation using desr</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Attardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Dell'orletta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Simi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Chanev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ciaramita</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Hybrid ways to improve domain independence in an ML dependency parser</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Bick</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Domain adaptation with structural correspondence learning</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Blitzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pereira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Conf. on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>of the Conf. on Empirical Methods in Natural Language essing (EMNLP)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">The PDT: a 3-level annotation scenario</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Böhmová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hajič</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hajičová</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Hladká</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Abeillé</title>
+				<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="103" to="127" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">A First Language: The Early Stages</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Brown</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1973" />
+			<publisher>Harvard University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">CoNLL-X shared task on multilingual dependency parsing</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Buchholz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Marsi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Tenth Conf. on Computational Natural Language Learning (CoNLL)</title>
+				<meeting>of the Tenth Conf. on Computational Natural Language Learning (CoNLL)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">A constraint satisfaction approach to dependency parsing</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Canisius</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tjong Kim</forename><surname>Sang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Experiments with a high-order projective dependency parser</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Carreras</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL 2007 Shared Task. EMNLP-CoNLL</title>
+				<meeting>of the CoNLL 2007 Shared Task. EMNLP-CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">A maximum-entropy-inspired parser</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Charniak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the First Meeting of the North American Chapter of the Association for Computational Linguistics (NAACL)</title>
+				<meeting>of the First Meeting of the North American Chapter of the Association for Computational Linguistics (NAACL)</meeting>
+		<imprint>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Adaptation of maximum entropy capitalizer: Little data can help a lot</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Chelba</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Acero</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Conf. on Empirical Methods in Natural Language Processing</title>
+				<meeting>of the Conf. on Empirical Methods in Natural Language essing</meeting>
+		<imprint>
+			<publisher>EMNLP</publisher>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Sinica treebank: Design criteria, representational issues and implementation</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Gao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Abeillé</title>
+				<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="page" from="231" to="248" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">A two-stage parser for multilingual dependency parsing</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Isahara</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Three generative, lexicalised models for statistical parsing</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Collins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 35th Annual Meeting of the Association for Computational Linguistics (ACL)</title>
+				<meeting>of the 35th Annual Meeting of the Association for Computational Linguistics (ACL)</meeting>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">A fundamental algorithm for dependency parsing</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">A</forename><surname>Covington</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 39th Annual ACM Southeast Conf</title>
+				<meeting>of the 39th Annual ACM Southeast Conf</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<author>
+			<persName><forename type="first">D</forename><surname>Csendes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Csirik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Gyimóthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kocsor</surname></persName>
+		</author>
+		<title level="m">The Szeged Treebank</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Domain adaptation for statistical classifiers</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Daumé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Marcu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="page" from="101" to="126" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Frustratingly hard domain adaptation for dependency parsing</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Dredze</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Blitzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">P</forename><surname>Talukdar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Ganchev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Graca</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pereira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Probabilistic parsing action models for multi-lingual dependency parsing</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Duan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Xu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">ITU validation set for Metu-Sabancı Turkish Treebank</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Eryigit</surname></persName>
+		</author>
+		<ptr target="http://www3.itu.edu.tr/∼gulsenc/papers/validationset.pdf" />
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">A statisical model for multilingual entity detection and tracking</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Florian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Hassan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ittycheriah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Jing</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Kambhatla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Nicolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Roukos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Human Language Technology Conf. and the Annual Meeting of the North American Chapter of the Association for Computational Linguistics (HLT/NAACL)</title>
+				<meeting>of the Human Language Technology Conf. and the Annual Meeting of the North American Chapter of the Association for Computational Linguistics (HLT/NAACL)</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Corpus variation and parser performance</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Gildea</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Conf. on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>of the Conf. on Empirical Methods in Natural Language essing (EMNLP)</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Prague Arabic dependency treebank: Development in data and tools</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hajič</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Smrž</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Zemánek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Šnaidauf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Beška</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the NEMLAR Intern. Conf. on Arabic Language Resources and Tools</title>
+				<meeting>of the NEMLAR Intern. Conf. on Arabic Language Resources and Tools</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Single malt or blended? A study in multilingual parser optimization</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Nilsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Nivre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Eryigit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Megyesi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nilsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saers</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Log-linear models of non-projective trees, k-best MST parsing and tree-ranking</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Hall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Havelka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Extended constituent-to-dependency conversion for English</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Johansson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Nugues</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 16th Nordic Conf. on Computational Linguistics (NODALIDA)</title>
+				<meeting>of the 16th Nordic Conf. on Computational Linguistics (NODALIDA)</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Incremental dependency parsing using online learning</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Johansson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Nugues</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Japanese dependency analysis using cascaded chunking</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Kudo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Matsumoto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Sixth Conf. on Computational Language Learning (CoNLL)</title>
+				<meeting>of the Sixth Conf. on Computational Language Learning (CoNLL)</meeting>
+		<imprint>
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Integrated annotation for biomedical information extraction</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kulick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Bies</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Liberman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Mandel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mc-Donald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Schein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ungar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Human Language Technology Conf. and the Annual Meeting of the North American Chapter of the Association for Computational Linguistics (HLT/NAACL)</title>
+				<meeting>of the Human Language Technology Conf. and the Annual Meeting of the North American Chapter of the Association for Computational Linguistics (HLT/NAACL)</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<title level="m" type="main">The CHILDES Project: Tools for Analyzing Talk</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Macwhinney</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2000" />
+			<publisher>Lawrence Erlbaum</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Online learning for deterministic dependency parsing</title>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">R</forename><surname>Mannem</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL 2007 Shared Task. EMNLP-CoNLL</title>
+				<meeting>of the CoNLL 2007 Shared Task. EMNLP-CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Building a large annotated corpus of English: the Penn Treebank</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Santorini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marcinkiewicz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="313" to="330" />
+			<date type="published" when="1993" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Covington variations</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Marinov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL 2007 Shared Task. EMNLP-CoNLL</title>
+				<meeting>of the CoNLL 2007 Shared Task. EMNLP-CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title level="m" type="main">CESS-ECE: A multilingual and multilevel annotated corpus</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">A</forename><surname>Martí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Taulé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bertran</surname></persName>
+		</author>
+		<ptr target="http://www.lsi.upc.edu/∼mbertran/cess-ece/" />
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Reranking and self-training for parser adaptation</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Mcclosky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Charniak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Johnson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 21st International Conference on Computational Linguistics and 44th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 21st International Conference on Computational Linguistics and 44th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Characterizing the errors of data-driven dependency parsing models</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Nivre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Joint Conf. on Empirical Methods in Natural Language Processing and Computational Natural Language Learning (EMNLP-CoNLL)</title>
+				<meeting>of the Joint Conf. on Empirical Methods in Natural Language essing and Computational Natural Language Learning (EMNLP-CoNLL)</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Online learning of approximate dependency parsing algorithms</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pereira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 11th Conf. of the European Chapter of the Association for Computational Linguistics (EACL)</title>
+				<meeting>of the 11th Conf. of the European Chapter of the Association for Computational Linguistics (EACL)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Non-projective dependency parsing using spanning tree algorithms</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pereira</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Ribarov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hajič</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Human Language Technology Conf. and the Conf. on Empirical Methods in Natural Language Processing</title>
+				<meeting>of the Human Language Technology Conf. and the Conf. on Empirical Methods in Natural Language essing</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Building the Italian Syntactic-Semantic Treebank</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Montemagni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Barsotti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Battista</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Calzolari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Corazzari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lenci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zampolli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Fanciulli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Massetani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Raffaelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Basili</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">T</forename><surname>Pazienza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Saracino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Zanzotto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Nana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Pianesi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Delmonte</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Abeillé</title>
+				<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="189" to="210" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Multilingual dependency parsing using Gibbs sampling</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Nakagawa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL 2007 Shared Task. EMNLP-CoNLL</title>
+				<meeting>of the CoNLL 2007 Shared Task. EMNLP-CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">A multilingual dependency analysis system using online passive-aggressive learning</title>
+		<author>
+			<persName><forename type="first">L.-M</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T.-P</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Shimazu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Malt-Parser: A language-independent system for datadriven dependency parsing</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Nivre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Nilsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Chanev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Eryigit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Marinov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Marsi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="page" from="95" to="135" />
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">Building a Turkish treebank</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Oflazer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Say</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Hakkani-Tür</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Tür</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Abeillé</title>
+				<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="261" to="277" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Theoretical and practical issues in the construction of a Greek dependency treebank</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Prokopidis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Desypri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Koutsombogera</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Papageorgiou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Piperidis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 4th Workshop on Treebanks and Linguistic Theories (TLT)</title>
+				<meeting>of the 4th Workshop on Treebanks and Linguistic Theories (TLT)</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">Multilingual dependency parsing with incremental integer linear programming</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Riedel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Meza-Ruiz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Tenth Conf. on Computational Natural Language Learning (CoNLL)</title>
+				<meeting>of the Tenth Conf. on Computational Natural Language Learning (CoNLL)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">Supervised and unsupervised PCFG adaptation to novel domains</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Roark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bacchiani</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Human Language Technology Conf. and the Annual Meeting of the North American Chapter of the Association for Computational Linguistics (HLT/NAACL)</title>
+				<meeting>of the Human Language Technology Conf. and the Annual Meeting of the North American Chapter of the Association for Computational Linguistics (HLT/NAACL)</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">Parser combination by reparsing</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Sagae</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lavie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Human Language Technology Conf. of the North American Chapter of the Association of Computational Linguistics (HLT/NAACL)</title>
+				<meeting>of the Human Language Technology Conf. of the North American Chapter of the Association of Computational Linguistics (HLT/NAACL)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">Dependency parsing and domain adaptation with LR models and parser ensembles</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Sagae</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">Global learning of labelled dependency trees</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Schiehlen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Spranger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">Pro3Gres parser in the CoNLL domain adaptation shared task</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Schneider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Kaljurand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Rinaldi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Kuhn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Structural correspondence learning for dependency parsing</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Shimizu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Nakagawa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">Porting statistical parsers with data-defined kernels</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Titov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Henderson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Tenth Conf. on Computational Natural Language Learning (CoNLL)</title>
+				<meeting>of the Tenth Conf. on Computational Natural Language Learning (CoNLL)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<analytic>
+		<title level="a" type="main">Fast and robust multilingual dependency parsing with a generative latent variable model</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Titov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Henderson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">Adapting the RASP system for the CoNLL07 domain-adaptation task</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Watson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Briscoe</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">Multilingual deterministic dependency parsing framework using modified finite Newton method support vector machines</title>
+		<author>
+			<persName><forename type="first">Y.-C</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J.-C</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y.-S</forename><surname>Lee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the CoNLL</title>
+				<meeting>of the CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>Shared Task. EMNLP-CoNLL</note>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">Statistical dependency analysis with support vector machines</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Yamada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Matsumoto</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. 8th International Workshop on Parsing Technologies (IWPT)</title>
+				<meeting>8th International Workshop on Parsing Technologies (IWPT)</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

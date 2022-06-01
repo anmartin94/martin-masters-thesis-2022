@@ -1,0 +1,1056 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2016 Task 7: Determining Sentiment Intensity of English and Arabic Phrases</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+							<email>svetlana.kiritchenko@nrc-cnrc.gc.ca</email>
+						</author>
+						<author>
+							<persName><forename type="first">Saif</forename><forename type="middle">M</forename><surname>Mohammad</surname></persName>
+							<email>saif.mohammad@nrc-cnrc.gc.ca</email>
+						</author>
+						<author>
+							<persName><forename type="first">Mohammad</forename><surname>Salameh</surname></persName>
+							<email>msalameh@ualberta.ca</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<address>
+									<addrLine>June 16-17</addrLine>
+									<postCode>2016</postCode>
+									<settlement>San Diego</settlement>
+									<region>California</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">National Research Council</orgName>
+								<address>
+									<country key="CA">Canada</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Alberta</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2016 Task 7: Determining Sentiment Intensity of English and Arabic Phrases</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We present a shared task on automatically determining sentiment intensity of a word or a phrase. The words and phrases are taken from three domains: general English, English Twitter, and Arabic Twitter. The phrases include those composed of negators, modals, and degree adverbs as well as phrases formed by words with opposing polarities. For each of the three domains, we assembled the datasets that include multi-word phrases and their constituent words, both manually annotated for real-valued sentiment intensity scores. The three datasets were presented as the test sets for three separate tasks (each focusing on a specific domain). Five teams submitted nine system outputs for the three tasks. All datasets created for this shared task are freely available to the research community.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Words have prior associations with sentiment. For example, honest and competent are associated with positive sentiment, whereas dishonest and dull are associated with negative sentiment. Further, the degree of positivity (or negativity), also referred to as intensity, can vary. For example, most people will agree that succeed is more positive (or less negative) than improve, and fail is more negative (or less positive) than setback. We present a shared task where automatic systems are asked to predict a prior sentiment intensity score for a word or a phrase. The words and phrases are taken from three domains: general English, English Twitter, and Arabic Twitter.</p><p>For each domain, a separate task with its own development and test sets was set up. The phrases include those composed of negators (e.g., nothing wrong), modals (e.g., might be fun), and degree adverbs (e.g., fairly important) as well as phrases formed by words with opposing polarities (e.g., lazy sundays).</p><p>Lists of words and their associated sentiment are commonly referred to as sentiment lexicons. They are used in sentiment analysis. For example, a number of unsupervised classifiers rely primarily on sentiment lexicons to determine whether a piece of text is positive or negative. Supervised classifiers also often use features drawn from sentiment lexicons <ref type="bibr" target="#b33">Pontiki et al., 2014)</ref>. Sentiment lexicons are also beneficial in stance <ref type="bibr">detection (Mohammad et al., 2016a;</ref>, literary analysis <ref type="bibr" target="#b10">(Hartner, 2013;</ref><ref type="bibr" target="#b19">Kleres, 2011;</ref><ref type="bibr" target="#b29">Mohammad, 2012)</ref>, and for detecting personality traits <ref type="bibr" target="#b23">(Minamikawa and Yokoyama, 2011;</ref>.</p><p>Existing manually created sentiment lexicons tend to provide only lists of positive and negative words <ref type="bibr" target="#b12">(Hu and Liu, 2004;</ref><ref type="bibr" target="#b41">Wilson et al., 2005;</ref><ref type="bibr" target="#b25">Mohammad and Turney, 2013)</ref>. The coarse-grained distinctions may be less useful in downstream applications than having access to fine-grained (realvalued) sentiment association scores. Most of the existing sentiment resources are available only for English. Non-English resources are scarce and often based on automatic translation of the English lexicons <ref type="bibr" target="#b0">(Abdul-Mageed and Diab, 2014;</ref><ref type="bibr" target="#b7">Eskander and Rambow, 2015)</ref>. Manually created sentiment lexicons usually include only single words. Yet, the sentiment of a phrase can differ markedly from the sentiment of its constituent words. Sentiment composition is the determining of sentiment of a multiword linguistic unit, such as a phrase or a sentence, from its constituents. Lexicons that include sentiment associations for phrases and their constituents are useful in studying sentiment composition. We refer to them as sentiment composition lexicons.</p><p>Automatically created lexicons often have realvalued sentiment association scores, have a high coverage, can include longer phrases, and can easily be collected for a specific domain. However, due to the lack of manually annotated real-valued sentiment lexicons the quality of automatic lexicons are often assessed only extrinsically through their use in sentence-level sentiment prediction. In this shared task, we intrinsically evaluate automatic methods that estimate sentiment association scores for terms in English and Arabic. For this, we assembled three datasets of phrases and their constituent single words manually annotated for sentiment with realvalued scores <ref type="bibr" target="#b16">Kiritchenko and Mohammad, 2016c)</ref>.</p><p>We first introduced this task as part of the SemEval-2015 Task 10 'Sentiment Analysis in Twitter' Subtask E <ref type="bibr" target="#b36">(Rosenthal et al., 2015)</ref>. The 2015 test set was restricted to English single words and simple two-word negated expressions commonly found in tweets. This year (2016), we broadened the scope of the task and included three different domains. Furthermore, we shifted the focus from single words to longer, more complex phrases to explore sentiment composition.</p><p>Five teams submitted nine system outputs for the three tasks. All submitted outputs correlated strongly with the gold term rankings (Kendall's rank correlation above 0.35). The best results on all tasks were achieved with supervised methods by exploiting a variety of sentiment resources. The highest rank correlation was obtained by team ECNU on the General English test set (τ = 0.7). On the other two domains, the results were lower (τ of 0.4-0.5).</p><p>All datasets created as part of this shared task are freely available through the task website. 1 For ease of exploration, we also created online interactive visualizations for the two English datasets. 2 1 http://alt.qcri.org/semeval2016/task7/ 2 http://www.saifmohammad.com/WebPages/SCL.html</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>The task is formulated as follows: given a list of terms (single words and multi-word phrases), an automatic system needs to provide a score between 0 and 1 that is indicative of the term's strength of association with positive sentiment. A score of 1 indicates maximum association with positive sentiment (or least association with negative sentiment) and a score of 0 indicates least association with positive sentiment (or maximum association with negative sentiment). If a term is more positive than another, then it should have a higher score than the other.</p><p>There are three tasks, one for each of the three domains:</p><p>• General English Sentiment Modifiers Set:</p><p>This dataset comprises English single words and multi-word phrases from the general domain. The phrases are formed by combining a word and a modifier, where a modifier is a negator, an auxilary verb, a degree adverb, or a combination of those, for example, would be very easy, did not harm, and would have been nice. The single word terms are chosen from the set of words that are part of the multi-word phrases, for example, easy, harm, and nice.</p><p>• English Twitter Mixed Polarity Set: This dataset focuses on English phrases made up of opposing polarity terms, for example, phrases such as lazy sundays, best winter break, happy accident and couldn't stop smiling. The dataset also includes single word terms (as separate entries). These terms are chosen from the set of words that are part of the multi-word phrases.</p><p>The multi-word phrases and single-word terms are drawn from a corpus of tweets, and include a small number of hashtag words (e.g., #wantit) and creatively spelled words (e.g., plssss). However, a majority of the terms are those that one would use in everyday English.</p><p>• Arabic Twitter Set: This dataset includes single words and phrases commonly found in Arabic tweets. The phrases in this set are formed only by combining a negator and a word.</p><p>Teams could participate in any one, two, or all three tasks; however, only one submission was al-  lowed per task. For each task, the above description and a development set (200 terms) were provided to the participants in advance; there were no training sets. The three test sets, one for each task, were released at the start of the evaluation period. The test sets and the development sets have no terms in common. The participants were allowed to use the development sets in any way (for example, for tuning or training), and they were allowed to use any additional manually or automatically generated resources.</p><p>In 2015, the task was set up similarly <ref type="bibr" target="#b36">(Rosenthal et al., 2015)</ref>. Single words and multi-word phrases from English Twitter comprised the development and test sets (1,515 terms in total). The phrases were simple two-word negated expressions (e.g., cant waitttt). Participants were allowed to use these datasets for the development of their systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Datasets of English and Arabic Terms</head><p>Annotated for Sentiment Intensity</p><p>The three datasets, General English Sentiment Modifiers Set, English Twitter Mixed Polarity Set, and Arabic Twitter Set, were created through manual annotation using an annotation scheme known as Best-Worst Scaling (described below in Section 3.1). The terms for each set (domain) were chosen as described in Sections 3.2, 3.3, and 3.4, respectively. Note that the exact sources of data and the term selection procedures were not known to the participants. The total number of words and phrases included in each of the datasets can be found in Table 1. Table <ref type="table" target="#tab_3">2</ref> shows a few example entries from each set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Best-Worst Scaling Method of Annotation</head><p>Best-Worst Scaling (BWS), also sometimes referred to as Maximum Difference Scaling (MaxDiff), is an annotation scheme that exploits the comparative approach to annotation (Louviere and Woodworth,   <ref type="bibr" target="#b21">1990;</ref><ref type="bibr" target="#b2">Cohen, 2003;</ref><ref type="bibr" target="#b22">Louviere et al., 2015)</ref>. Annotators are given four items (4-tuple) and asked which item is the Best (highest in terms of the property of interest) and which is the Worst (least in terms of the property of interest). These annotations can then be easily converted into real-valued scores of association between the items and the property, which eventually allows for creating a ranked list of items as per their association with the property of interest. The Best-Worst Scaling method has been shown to produce reliable annotations of terms for sentiment .</p><p>Given n terms to be annotated, the first step is to randomly sample this set (with replacement) to obtain sets of four terms each, 4-tuples, that satisfy the following criteria:</p><p>1. no two 4-tuples have the same four terms; 2. no two terms within a 4-tuple are identical;</p><p>3. each term in the term list appears approximately in the same number of 4-tuples;</p><p>4. each pair of terms appears approximately in the same number of 4-tuples.</p><p>The terms for the three tasks were annotated separately. For each task, 2 × n 4-tuples were generated, where n is the total number of terms in the task.</p><p>Next, the sets of 4-tuples were annotated through a crowdsourcing platform, CrowdFlower. The annotators were presented with four terms at a time, and asked which term is the most positive (or least negative) and which is the most negative (or least positive). Below is an example annotation question. 3 (The Arabic data was annotated through a similar questionnaire in Arabic.) Focus terms: 1. shameless self promotion 2. happy tears 3. hug 4. major pain Q1: Identify the term that is associated with the most amount of positive sentiment (or least amount of negative sentiment) -the most positive term:</p><p>1. shameless self promotion 2. happy tears 3. hug 4. major pain Q2: Identify the term that is associated with the most amount of negative sentiment (or least amount of positive sentiment) -the most negative term:</p><p>1. shameless self promotion 2. happy tears 3. hug 4. major pain Each 4-tuple was annotated by at least eight respondents. Let majority answer refer to the option most chosen for a question. For all three datasets, at least 80% of the responses matched the majority answer. The responses were then translated into realvalued scores and also a ranking of terms by sentiment for all the terms through a simple counting procedure: For each term, its score is calculated as the percentage of times the term was chosen as the most positive minus the percentage of times the term was chosen as the most negative <ref type="bibr" target="#b31">(Orme, 2009;</ref><ref type="bibr" target="#b9">Flynn and Marley, 2014)</ref>. For this competition, we converted the scores into the range from 0 (the least positive) to 1 (the most positive). The resulting rankings constituted the gold annotations for the three datasets. Finally, random samples of 200 terms from each dataset with the corresponding gold annotations were released to the participants as development sets for the three tasks. The rest of the terms were kept as test sets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">General English Sentiment Modifiers Dataset</head><p>The terms for this dataset were taken from the Sentiment Composition Lexicon for Negators, Modals, and Degree Adverbs (SCL-NMA) ). 4 SCL-NMA includes all 1,621 positive and negative words from Osgood's seminal study on word meaning <ref type="bibr" target="#b32">(Osgood et al., 1957)</ref> available in General Inquirer <ref type="bibr" target="#b39">(Stone et al., 1966)</ref>. In addition, it includes 1,586 high-frequency phrases formed by the Osgood words in combination with simple negators such as no, don't, and never, modals such as can, might, and should, or degree adverbs such as very and fairly. <ref type="bibr">5</ref> The eligible adverbs were chosen manually from adverbs that appeared in combination with an Osgood word at least ten times in the British National Corpus (BNC) <ref type="bibr">6</ref> . Each phrase includes at least one modal, one negator, or one adverb; a phrase can include several modifiers (e.g., would be very happy). Sixty-four different (single or multi-word) modifiers were used in the dataset. For this shared task, we removed terms that were used in the SemEval-2015 dataset. The final SemEval-2016 General English Sentiment Modifiers dataset contains 2,999 terms.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">English Twitter Mixed Polarity Dataset</head><p>The terms for this dataset were taken in part from the Sentiment Composition Lexicon for Opposing Polarity Phrases (SCL-OPP) (Kiritchenko and Moham-mad, 2016c). 7 SCL-OPP was created as follows. We polled the Twitter API (from 2013 to 2015) to collect a corpus of tweets that contain emoticons: ':)' or ':('. From this corpus, we selected bigrams and trigrams that had at least one positive word and at least one negative word. The polarity labels (positive or negative) of the words were determined by simple look-up in existing sentiment lexicons: Hu and Liu lexicon <ref type="bibr" target="#b12">(Hu and Liu, 2004)</ref>, NRC Emotion lexicon (Mohammad and Turney, 2013), MPQA lexicon <ref type="bibr" target="#b41">(Wilson et al., 2005)</ref>, and NRC's Twitterspecific lexicon <ref type="bibr" target="#b18">(Kiritchenko et al., 2014)</ref>. <ref type="bibr">8</ref> Apart from the requirement of having at least one positive and at least one negative word, an n-gram must satisfy the following criteria:</p><p>• the n-gram must have a clear meaning on its own, (for example, the n-gram should not start or end with 'or', 'and', etc.);</p><p>• the n-gram should not include a named entity;</p><p>• the n-gram should not include obscene language.</p><p>In addition, we ensured that there was a good variety of phrases-for example, even though there were a large number of bigrams of the form super w, where w is a negative adjective, only a small number of such bigrams were included. Finally, we aimed to achieve a good spread in terms of degree of sentiment association (from very negative terms to very positive terms, and all the degrees of polarity in between). For this, we estimated the sentiment score of each phrase using an automatic PMI-based method described in <ref type="bibr" target="#b18">(Kiritchenko et al., 2014)</ref>. Then, the full range of sentiment values was divided into 5 bins, and approximately the same number of terms were selected from each bin. <ref type="bibr">9</ref> In total, 851 n-grams (bigrams and trigrams) were selected. We also chose for annotation all unigrams that appeared in the selected set of bigrams and trigrams. There were 810 such unigrams.</p><p>When selecting the terms, we used sentiment associations obtained from both manual and automatic lexicons. As a result, some unigrams had erroneous sentiment associations. After manually annotating the full set of 1,661 terms (that include unigrams, bigrams, and trigrams), we found that 114 bigrams and 161 trigrams had all their comprising unigrams of the same polarity. These 275 n-grams were discarded from SCL-OPP but are included in this task dataset. Further, for this task we removed terms that were used in the SemEval-2015 dataset or in the General English set. The final SemEval-2016 English Twitter Mixed Polarity dataset contains 1,269 terms.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Arabic Twitter Dataset</head><p>Mohammad et al. ( <ref type="formula">2015</ref>) automatically generated three high-coverage sentiment lexicons from Arabic tweets using hashtags and emoticons: Arabic Emoticon Lexicon, Arabic Hashtag Lexicon, and Dialectal Arabic Hashtag Lexicon. <ref type="bibr">10</ref> In addition to Modern Standard Arabic (MSA), these three lexicons comprise terms in Dialectal Arabic as well as hashtagged compound words, e.g., # (#MaritalHappiness), which do not usually appear in manually created lexicons. Apart from unigrams, they also include entries for bigrams. From these lexicons, we selected single words as well as bigrams representing negated expressions in the form of 'negator w', where negator is a negation trigger from a list of 16 common Arabic negation words. <ref type="bibr">11</ref> Words used in negated expressions, but missing from the original list were also included. The selected terms satisfied the following criteria:</p><p>• the terms must occur frequently in tweets;</p><p>• the terms should not be highly ambiguous.</p><p>We also wanted the set of terms as a whole to have these properties:</p><p>• the set should have a good spread in terms of degree of sentiment association (from very</p><p>Team ID Affiliation ECNU <ref type="bibr" target="#b40">(Wang et al., 2016)</ref> East China Normal University, China iLab-Edinburgh <ref type="bibr" target="#b35">(Refaee and Rieser, 2016)</ref> Heriot-Watt University, UK LSIS <ref type="bibr" target="#b11">(Htait et al., 2016)</ref> Aix-Marseille University, France NileTMRG <ref type="bibr" target="#b5">(El-Beltagy, 2016a)</ref> Nile University, Egypt UWB <ref type="bibr" target="#b20">(Lenc et al., 2016)</ref> University of West Bohemia, Czech Republic negative terms to very positive terms, and all the degrees of polarity in between);</p><p>• the set should include both standard and dialectal Arabic, Romanized words, misspellings, hashtags, and other categories frequently used in Twitter. (We chose not to include URLs, user mentions, named entities, and obscene terms.)</p><p>The final SemEval-2016 Arabic Twitter dataset contains 1,366 terms.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation</head><p>Sentiment association scores are most meaningful when compared to each other; they indicate which term is more positive than the other. Therefore, the automatic systems were evaluated in terms of their abilities to correctly rank the terms by the degree of sentiment association.</p><p>For each task, the predicted sentiment intensity scores submitted by the participated systems were evaluated by first ranking the terms according to the proposed sentiment scores and then comparing this ranked list to the gold rankings. We used Kendall's rank correlation coefficient (Kendall's τ ) as the official evaluation metric to determine the similarity between the ranked lists <ref type="bibr" target="#b13">(Kendall, 1938)</ref>:</p><formula xml:id="formula_0">τ = c − d n(n − 1)/2</formula><p>where c is the number of concordant pairs, i.e., pairs of terms w i and w j for which both the gold ranked list and the predicted ranked list agree (either both lists rank w i higher than w j or both lists rank w i lower than w j ); d is the number of discordant pairs, i.e., pairs of terms w i and w j for which the gold ranked list and the predicted ranked list disagree (one list ranks w i higher than w j and the other list ranks w i lower than w j ); and n is the total number of terms. If any list ranks two terms w i and w j the same, this pair of terms is considered neither concordant nor discordant. The values of Kendall's τ range from -1 to 1.</p><p>We also calculated scores for Spearman's rank correlation <ref type="bibr" target="#b37">(Spearman, 1904)</ref>, as an additional (unofficial) metric.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participated Systems</head><p>There were nine submissions from five teams-three submissions for each task. The team affiliations are shown in Table <ref type="table" target="#tab_4">3</ref>.</p><p>Tables <ref type="table" target="#tab_6">4 and 5</ref> summarize the approaches and resources used by the participants in the (two) English and (one) Arabic tasks, respectively. Most teams applied supervised approaches and trained regression classifiers using a variety of features. Team ECNU treated the task as a rank prediction task instead of regression and trained a pair-wise ranking model with the Random Forest algorithm.</p><p>The development data available for each task was used as the training data by some teams. However, these data were limited (200 instances per task); therefore, other manually labeled resources were also explored. One commonly used resource was the LabMT lexicon-a set of over 100,000 frequent single words from 10 languages, including English and Arabic (about 10,000 words in each language), manually annotated for happiness through Mechanical Turk <ref type="bibr" target="#b3">(Dodds et al., 2011;</ref><ref type="bibr" target="#b4">Dodds et al., 2015)</ref>. For the Arabic task, two teams took advantage of the Arabic Twitter corpus collected by <ref type="bibr" target="#b34">Refaee and Rieser (2014)</ref>. The features employed include sentiment scores obtained from different sentiment lexicons, general and sentiment-specific word embeddings, pointwise mutual information (PMI) scores between terms (single words and multi-word phrases) and sentiment classes, as well as lists of negators, intensifiers, and diminishers.   Only one team, LSIS, employed an unsupervised approach to all three tasks. To predict a sentiment intensity score for a term, they used the following three sources: existing sentiment lexicons, PMI scores between terms and sentiment classes computed on sentiment-annotated corpora, and PMI scores between terms and words poor and excellent computed on Google search results.</p><p>All teams heavily relied on existing sentiment lexicons: AFINN <ref type="bibr" target="#b30">(Nielsen, 2011</ref><ref type="bibr">), ArabSenti (Abdul-Mageed et al., 2011</ref><ref type="bibr" target="#b12">), Hu and Liu (Hu and Liu, 2004</ref>, Dialectal Arabic Lexicon <ref type="bibr" target="#b34">(Refaee and Rieser, 2014)</ref>, JRC <ref type="bibr" target="#b38">(Steinberger et al., 2012)</ref>, MPQA <ref type="bibr" target="#b41">(Wilson et al., 2005)</ref>, NRC Emoticon (a.k.a. Senti-ment140) <ref type="bibr" target="#b18">(Kiritchenko et al., 2014)</ref>, NRC Emotion (Mohammad and Turney, 2013), NileULex (El-Beltagy, 2016b), and SentiWordNet <ref type="bibr" target="#b8">(Esuli and Sebastiani, 2006)</ref>. (Note that even though the NRC Emotion Lexicon was created for English terms, its translations in close to 40 languages, including Arabic, are available. 12 )    constituent words <ref type="bibr" target="#b17">(Kiritchenko and Mohammad, 2016d)</ref>. For example, a positive adjective and a negative noun can form either a positive phrase (e.g., happy tears) or a negative phrase (e.g., great loss).</p><p>• The results achieved on the Arabic Twitter test set are substantially lower than the results achieved on a similar English Twitter data used in the 2015 competition.</p><p>• For most teams, the results obtained on single words are noticeably higher than the corresponding results on multi-word phrases. This is especially apparent on the Arabic Twitter data. The possible reason for this outcome is the lack of sufficient training data for phrases; none of the existing manually created English or Arabic real-valued sentiment lexicons provide annotations for multi-word phrases. Overall, we observe strong correlations between the predicted and gold term rankings for terms in the general English domain as well as for single words in the other two domains. However, for multi-word phrases in the English Mixed Polarity set and Ara-bic Twitter set the correlations are markedly weaker, especially for the Arabic language. We hope that the availability of these datasets will foster further research towards automatic methods for sentiment composition in English and other languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusions</head><p>We have created three sentiment composition lexicons that provide real-valued sentiment association scores for multi-word phrases and their constituent single words in three domains: the General English Sentiment Modifiers Set, the English Twitter Mixed Polarity Set, and the Arabic Twitter Set. The terms were annotated manually using the Best-Worst Scaling method of annotation. We included phrases composed of negators, modals, and degree adverbs-categories known to be challenging for sentiment analysis. Furthermore, we included phrases formed by words with opposing polarities. As future work, we would like to extend the task to cover more domains (e.g., biomedical, legal) and more languages. All datasets are freely available to the research community.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>The number of single-word and multi-word terms in the development and test sets.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Examples of entries with real-valued sentiment scores from the three datasets.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>The participated teams and their affiliations.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Summary of the approaches for the two English-language tasks.</figDesc><table><row><cell>Team name iLab-Edinburgh</cell><cell cols="5">Supervision Algorithm supervised linear regress., LabMT, Arabic ArabSenti, MPQA, 9K tweets (manually Training data Sentiment External corpora and lexicons used other resources used manual rules Twitter corpus Dialectal Arabic labeled for sentiment)</cell></row><row><cell>LSIS</cell><cell cols="2">unsupervised PMI</cell><cell>-</cell><cell>NRC Emotion</cell><cell>12K tweets (manually labeled for sentiment), 63K book reviews (5-star ratings)</cell></row><row><cell cols="2">NileTMRG supervised</cell><cell>regression, PMI</cell><cell>dev. data, Arabic Twitter corpus</cell><cell>NileULex</cell><cell>250K tweets (unlabeled), pre-trained sentiment classifier</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Summary of the approaches for the Arabic-language task.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head></head><label></label><figDesc>Spearman's ρ Kendall's τ Spearman's ρ Kendall's τ Spearman's ρ</figDesc><table><row><cell>Team Kendall's τ ECNU Overall 0.704 UWB 0.659 LSIS 0.350</cell><cell>0.863 0.854 0.508</cell><cell>Single words 0.734 0.884 0.644 0.846 0.421 0.599</cell><cell>Multi-word phrases 0.686 0.845 0.657 0.849 0.324 0.462</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 6 :</head><label>6</label><figDesc>Results for General English Sentiment Modifiers test set. The systems are ordered by their overall Kendall's τ score, which was the official competition metric. The highest score is shown in bold. Spearman's ρ Kendall's τ Spearman's ρ Kendall's τ Spearman's ρ</figDesc><table><row><cell>Team Kendall's τ ECNU Overall 0.523 LSIS 0.422 UWB 0.414</cell><cell>0.674 0.591 0.578</cell><cell>Single words 0.601 0.747 0.384 0.543 0.564 0.752</cell><cell>Multi-word phrases 0.494 0.646 0.423 0.593 0.366 0.524</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 7 :</head><label>7</label><figDesc>Results for English Twitter Mixed Polarity test set. The systems are ordered by their overall Kendall's τ score, which was the official competition metric. The highest score is shown in bold.</figDesc><table><row><cell>Team iLab-Edinburgh NileTMRG LSIS</cell><cell>Overall Kendall's τ Spearman's ρ Kendall's τ Spearman's ρ Kendall's τ Spearman's ρ Single words Multi-word phrases 0.536 0.680 0.592 0.739 -0.046 -0.069 0.475 0.658 0.510 0.701 0.078 0.118 0.424 0.583 0.478 0.646 0.059 0.088</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8 :</head><label>8</label><figDesc>Results for Arabic Twitter test set. The systems are ordered by their overall Kendall's τ score, which was the official competition metric. The highest score is shown in bold.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">The full sets of instructions for both English and Arabic datasets are available on the shared task website: http://alt.qcri.org/semeval2016/task7/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">www.saifmohammad.com/WebPages/SCL.html#NMA5  The complete lists of negators, modals, and degree adverbs used in this dataset are available on the task website: http://alt.qcri.org/semeval2016/task7/6  The British National Corpus, version 3 (BNC XML Edition). 2007. Distributed by Oxford University Computing Services on behalf of the BNC Consortium. URL: http://www.natcorp.ox.ac.uk/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">www.saifmohammad.com/WebPages/SCL.html#OPP 8 If a word was marked with conflicting polarity in two lexicons, then that word was not considered as positive or negative. For example, the word defeat is marked as positive in Hu and Liu lexicon and marked as negative in MPQA; therefore, we did not select any phrases with this word.9 Fewer terms were selected from the middle bin that contained phrases with very weak association to sentiment (e.g., phrases like cancer foundation, fair game, and a long nap).</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10">http://saifmohammad.com/WebPages/ArabicSA.html11  The complete list of Arabic negators is available on the task website: http://alt.qcri.org/semeval2016/task7/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="12">http://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm</note>
+		</body>
+		<back>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Results</head><p>The results for the three tasks are presented in Tables 6, 7, and 8. Team ECNU showed the best performance in both English-language tasks. In the Arabic task, the best performing system was developed by iLab-Edinburgh.</p><p>A few observations can be made from the results:</p><p>• On all three datasets, the team rankings based on the two metrics, Kendall's τ and Spearman's ρ, are the same.</p><p>• For most of the teams, the results obtained on the General English Sentiment Modifiers set are markedly higher than the results obtained on the other datasets.</p><p>• The English Twitter Mixed Polarity set proved to be a challenging task for all teams. We have further analyzed regularities present in different kinds of mixed polarity phrases and concluded that for most phrases the sentiment of the phrase cannot be reliably predicted only from the parts of speech and polarities of their</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">SANA: A large scale multi-genre, multi-dialect lexicon for Arabic subjectivity and sentiment analysis</title>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Abdul-Mageed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><surname>Diab</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Language Resources and Evaluation Conference (LREC)</title>
+				<meeting>the Language Resources and Evaluation Conference (LREC)</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Subjectivity and sentiment analysis of Modern Standard Arabic</title>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Abdul-Mageed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mona</forename><forename type="middle">T</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Korayem</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics (ACL)</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics (ACL)</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="587" to="591" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">Maximum difference scaling: Improved measures of importance and preference for segmentation</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Steven</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cohen</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2003" />
+			<publisher>Sawtooth Software, Inc</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<author>
+			<persName><forename type="first">Kameron Decker</forename><surname>Peter Sheridan Dodds</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isabel</forename><forename type="middle">M</forename><surname>Harris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Catherine</forename><forename type="middle">A</forename><surname>Kloumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">M</forename><surname>Bliss</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Danforth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Temporal patterns of happiness and information in a global social network: Hedonometrics and Twitter</title>
+				<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="page">e26752</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Human language reveals a universal positivity bias</title>
+		<author>
+			<persName><forename type="first">Eric</forename><forename type="middle">M</forename><surname>Peter Sheridan Dodds</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suma</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Morgan</forename><forename type="middle">R</forename><surname>Desu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">J</forename><surname>Frank</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jake</forename><forename type="middle">Ryland</forename><surname>Reagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lewis</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kameron Decker</forename><surname>Mitchell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isabel</forename><forename type="middle">M</forename><surname>Harris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><forename type="middle">P</forename><surname>Kloumann</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bagrow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Proceedings of the National Academy of Sciences</title>
+		<imprint>
+			<biblScope unit="volume">112</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="2389" to="2394" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">NileTMGR at SemEval-2016 Task 7: Deriving prior polarities for Arabic sentiment terms</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Samhaa</surname></persName>
+		</author>
+		<author>
+			<persName><surname>El-Beltagy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation (SemEval)</title>
+				<meeting>the International Workshop on Semantic Evaluation (SemEval)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">NileULex: A phrase and word level sentiment lexicon for Egyptian and Modern Standard Arabic</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Samhaa</surname></persName>
+		</author>
+		<author>
+			<persName><surname>El-Beltagy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Language Resources and Evaluation (LREC)</title>
+				<meeting>the International Conference on Language Resources and Evaluation (LREC)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">SLSA: A sentiment lexicon for Standard Arabic</title>
+		<author>
+			<persName><forename type="first">Ramy</forename><surname>Eskander</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Owen</forename><surname>Rambow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing (EMNLP)<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="2545" to="2550" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">SENTI-WORDNET: A publicly available lexical resource for opinion mining</title>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Esuli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabrizio</forename><surname>Sebastiani</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th Conference on Language Resources and Evaluation (LREC)</title>
+				<meeting>the 5th Conference on Language Resources and Evaluation (LREC)</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="417" to="422" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Best-worst scaling: theory and methods</title>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">N</forename><surname>Flynn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A J</forename><surname>Marley</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Handbook of Choice Modelling</title>
+				<editor>
+			<persName><forename type="first">Stephane</forename><surname>Hess</surname></persName>
+			<persName><forename type="first">Andrew</forename><surname>Daly</surname></persName>
+		</editor>
+		<imprint>
+			<publisher>Edward Elgar Publishing</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="178" to="201" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The lingering after-effects in the reader&apos;s mind -an investigation into the affective dimension of literary reading</title>
+		<author>
+			<persName><forename type="first">Marcus</forename><surname>Hartner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Literary Theory Online</title>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">LSIS at SemEval-2016 Task 7: Using web search engines for English and Arabic unsupervised sentiment intensity prediction</title>
+		<author>
+			<persName><forename type="first">Amal</forename><surname>Htait</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastien</forename><surname>Fournier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrice</forename><surname>Bellot</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation (SemEval)</title>
+				<meeting>the International Workshop on Semantic Evaluation (SemEval)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Mining and summarizing customer reviews</title>
+		<author>
+			<persName><forename type="first">Minqing</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD)</title>
+				<meeting>the 10th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD)<address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="168" to="177" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">A new measure of rank correlation</title>
+		<author>
+			<persName><forename type="first">Maurice</forename><forename type="middle">G</forename><surname>Kendall</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Biometrika</title>
+		<imprint>
+			<biblScope unit="page" from="81" to="93" />
+			<date type="published" when="1938" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Capturing reliable fine-grained sentiment associations by crowdsourcing and best-worst scaling</title>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mohammad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 15th Annual Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL)</title>
+				<meeting>The 15th Annual Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">The effect of negators, modals, and degree adverbs on sentiment composition</title>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mohammad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis (WASSA)</title>
+				<meeting>the Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis (WASSA)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Happy accident: A sentiment composition lexicon for opposing polarity phrases</title>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mohammad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference on Language Resources and Evaluation (LREC)</title>
+				<meeting>the International Conference on Language Resources and Evaluation (LREC)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Sentiment composition of words with opposing polarities</title>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mohammad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 15th Annual Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL)</title>
+				<meeting>The 15th Annual Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL)<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Sentiment analysis of short informal texts</title>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodan</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saif</forename><forename type="middle">M</forename><surname>Mohammad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">50</biblScope>
+			<biblScope unit="page" from="723" to="762" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Emotions and narrative analysis: A methodological approach</title>
+		<author>
+			<persName><forename type="first">Jochen</forename><surname>Kleres</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal for the Theory of Social Behaviour</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="182" to="202" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">UWB at SemEval-2016 Task 7 : Novel method for automatic sentiment intensity determination</title>
+		<author>
+			<persName><forename type="first">Ladislav</forename><surname>Lenc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pavel</forename><surname>Krl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vclav</forename><surname>Rajtmajer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation (SemEval)</title>
+				<meeting>the International Workshop on Semantic Evaluation (SemEval)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Best-worst analysis. Working Paper. Department of Marketing and Economic Analysis</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Jordan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">G</forename><surname>Louviere</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Woodworth</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1990" />
+		</imprint>
+		<respStmt>
+			<orgName>University of Alberta</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<author>
+			<persName><forename type="first">Jordan</forename><forename type="middle">J</forename><surname>Louviere</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Terry</forename><forename type="middle">N</forename><surname>Flynn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A J</forename><surname>Marley</surname></persName>
+		</author>
+		<title level="m">Best-Worst Scaling: Theory, Methods and Applications</title>
+				<imprint>
+			<publisher>Cambridge University Press</publisher>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Personality estimation based on weblog text classification</title>
+		<author>
+			<persName><forename type="first">Atsunori</forename><surname>Minamikawa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroyuki</forename><surname>Yokoyama</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Modern Approaches in Applied Intelligence</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="89" to="97" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Using hashtags to capture fine emotion categories from tweets</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kiritchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">31</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="301" to="326" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Crowdsourcing a word-emotion association lexicon</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><forename type="middle">D</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Turney</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Intelligence</title>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="436" to="465" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">NRC-Canada: Building the state-of-theart in sentiment analysis of tweets</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodan</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation (SemEval)</title>
+				<meeting>the International Workshop on Semantic Evaluation (SemEval)<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013-06" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">How translation alters sentiment</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Salameh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kiritchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artificial Intelligence Research</title>
+		<imprint>
+			<biblScope unit="volume">55</biblScope>
+			<biblScope unit="page" from="95" to="130" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Parinaz Sobhani, Xiaodan Zhu, and Colin Cherry</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kiritchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of 10th edition of the the Language Resources and Evaluation Conference (LREC)</title>
+				<meeting>10th edition of the the Language Resources and Evaluation Conference (LREC)<address><addrLine>Portorož, Slovenia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>A dataset for detecting stance in tweets</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">From once upon a time to happily ever after: Tracking emotions in mail and books</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Parinaz</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Sobhani</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kiritchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Special Section of the ACM Transactions on Internet Technology on Argumentation in Social Media</title>
+		<imprint>
+			<biblScope unit="volume">53</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="730" to="741" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+	<note>Decision Support Systems</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">A new ANEW: Evaluation of a word list for sentiment analysis in microblogs</title>
+		<author>
+			<persName><forename type="first">Finnårup</forename><surname>Nielsen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the ESWC-2011 Workshop on &apos;Making Sense of Microposts&apos;: Big things come in small packages</title>
+				<meeting>the ESWC-2011 Workshop on &apos;Making Sense of Microposts&apos;: Big things come in small packages</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="93" to="98" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title level="m" type="main">Maxdiff analysis: Simple counting, individual-level logit, and HB</title>
+		<author>
+			<persName><forename type="first">Bryan</forename><surname>Orme</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+			<publisher>Sawtooth Software, Inc</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">The measurement of meaning</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Charles</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><forename type="middle">J</forename><surname>Osgood</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Percy</forename><surname>Suci</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Tannenbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1957" />
+			<publisher>University of Illinois Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">SemEval-2014 Task 4: Aspect based sentiment analysis</title>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Pontiki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Harris</forename><surname>Papageorgiou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Dimitrios Galanis, Ion Androutsopoulos, John Pavlopoulos, and Suresh Manandhar</title>
+				<meeting><address><addrLine>Se-mEval; Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the 8th International Workshop on Semantic Evaluation</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">An Arabic Twitter corpus for subjectivity and sentiment analysis</title>
+		<author>
+			<persName><forename type="first">Eshrag</forename><surname>Refaee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Verena</forename><surname>Rieser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Conference on Language Resources and Evaluation (LREC)</title>
+				<meeting>the 9th International Conference on Language Resources and Evaluation (LREC)</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">iLab-Edinburgh at SemEval-2016 Task 7: A hybrid approach for determining sentiment intensity of Arabic Twitter phrases</title>
+		<author>
+			<persName><forename type="first">Eshrag</forename><surname>Refaee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Verena</forename><surname>Rieser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation</title>
+				<meeting>the International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>SemEval</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">SemEval-2015 Task 10: Sentiment analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saif</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Workshop on Semantic Evaluation (SemEval)</title>
+				<meeting>the 9th International Workshop on Semantic Evaluation (SemEval)<address><addrLine>Denver, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="450" to="462" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<monogr>
+		<title level="m" type="main">The proof and measurement of association between two things. The American Journal of Psychology</title>
+		<author>
+			<persName><forename type="first">Charles</forename><surname>Spearman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1904" />
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="page" from="72" to="101" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Creating sentiment dictionaries via triangulation</title>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Steinberger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohamed</forename><surname>Ebrahim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maud</forename><surname>Ehrmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ali</forename><surname>Hurriyetoglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mijail</forename><surname>Kabadjov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Polina</forename><surname>Lenkova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralf</forename><surname>Steinberger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hristo</forename><surname>Tanev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silvia</forename><surname>Vázquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vanni</forename><surname>Zavarella</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Decision Support Systems</title>
+		<imprint>
+			<biblScope unit="volume">53</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="689" to="694" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<title level="m" type="main">The General Inquirer: A Computer Approach to Content Analysis</title>
+		<author>
+			<persName><forename type="first">Philip</forename><surname>Stone</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Dexter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marshall</forename><forename type="middle">S</forename><surname>Dunphy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><forename type="middle">M</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ogilvie</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Associates</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1966" />
+			<publisher>The MIT Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">ECNU at SemEval-2016 Task 7: An enhanced supervised learning method for lexicon sentiment intensity ranking</title>
+		<author>
+			<persName><forename type="first">Feixiang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhihua</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Man</forename><surname>Lan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Workshop on Semantic Evaluation (SemEval)</title>
+				<meeting>the International Workshop on Semantic Evaluation (SemEval)</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Recognizing contextual polarity in phrase-level sentiment analysis</title>
+		<author>
+			<persName><forename type="first">Theresa</forename><surname>Wilson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Janyce</forename><surname>Wiebe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Hoffmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Human Language Technology and Empirical Methods in Natural Language Processing</title>
+				<meeting>the Conference on Human Language Technology and Empirical Methods in Natural Language Processing<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="347" to="354" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

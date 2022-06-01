@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2015 Task 6: Clinical TempEval</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+							<email>bethard@cis.uab.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Alabama at Birmingham Birmingham</orgName>
+								<address>
+									<postCode>35294</postCode>
+									<region>AL</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">University of Sheffield Sheffield</orgName>
+								<address>
+									<postCode>S1 4DP</postCode>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Guergana</forename><surname>Savova</surname></persName>
+							<email>guergana.savova@childrens.harvard.edu</email>
+							<affiliation key="aff2">
+								<orgName type="department">Harvard Medical School Boston</orgName>
+								<address>
+									<postCode>02115</postCode>
+									<region>MA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+							<email>jamesp@cs.brandeis.edu</email>
+							<affiliation key="aff3">
+								<orgName type="institution">Brandeis University Waltham</orgName>
+								<address>
+									<postCode>02453</postCode>
+									<region>MA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="institution">Brandeis University Waltham</orgName>
+								<address>
+									<postCode>02453</postCode>
+									<region>MA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2015 Task 6: Clinical TempEval</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Clinical TempEval 2015 brought the temporal information extraction tasks of past Temp-Eval campaigns to the clinical domain. Nine sub-tasks were included, covering problems in time expression identification, event expression identification and temporal relation identification. Participant systems were trained and evaluated on a corpus of clinical notes and pathology reports from the Mayo Clinic, annotated with an extension of TimeML for the clinical domain. Three teams submitted a total of 13 system runs, with the best systems achieving near-human performance on identifying events and times, but with a large performance gap still remaining for temporal relations.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The TempEval shared tasks have, since 2007, provided a focus for research on temporal information extraction <ref type="bibr" target="#b6">(Verhagen et al., 2007;</ref><ref type="bibr" target="#b6">Verhagen et al., 2010;</ref><ref type="bibr" target="#b5">UzZaman et al., 2013)</ref>. Participant systems compete to identify critical components of the timeline of a text, including time expressions, event expressions and temporal relations. However, the Temp-Eval campaigns to date have focused primarily on in-document timelines derived from news articles.</p><p>Clinical TempEval brings these temporal information extraction tasks to the clinical domain, using clinical notes and pathology reports from the Mayo Clinic. This follows recent interest in temporal information extraction for the clinical domain, e.g., the i2b2 2012 shared task <ref type="bibr">(Sun et al., 2013)</ref>, and broadens our understanding of the language of time beyond newswire expressions and structure.</p><p>Clinical TempEval focuses on discrete, welldefined tasks which allow rapid, reliable and repeatable evaluation. Participating systems are expected to take as input raw text such as:</p><p>April 23, 2014: The patient did not have any postoperative bleeding so we will resume chemotherapy with a larger bolus on Friday even if there is slight nausea.</p><p>And output annotations over the text that capture the following kinds of information: That is, the systems should identify the time expressions, event expressions, attributes of those expressions, and temporal relations between them.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data</head><p>The Clinical TempEval corpus was based on a set of 600 clinical notes and pathology reports from cancer patients at the Mayo Clinic. These notes were manually de-identified by the Mayo Clinic to replace names, locations, etc. with generic placeholders, but time expressions were not altered. The notes were then manually annotated by the THYME project (thyme.healthnlp.org) using an extension of ISO-TimeML for the annotation of times, events and temporal relations in clinical notes <ref type="bibr" target="#b3">(Styler et al., 2014b)</ref>. This extension includes additions such as new time expression types (e.g., PREPOSTEXP for expressions like postoperative), new EVENT attributes (e.g., DE-GREE=LITTLE for expressions like slight nausea), and an increased focus on temporal relations of type CONTAINS (a.k.a. INCLUDES).</p><p>The annotation procedure was as follows:</p><p>1. Annotators identified time and event expressions, along with their attributes 2. Adjudicators revised and finalized the time and event expressions and their attributes 3. Annotators identified temporal relations between pairs of events and events and times</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">Adjudicators revised and finalized the temporal relations</head><p>More details on the corpus annotation process are documented in a separate article <ref type="bibr" target="#b2">(Styler et al., 2014a)</ref>.</p><p>Because the data contained incompletely deidentified clinical data (the time expressions were retained), participants were required to sign a data use agreement with the Mayo Clinic to obtain the raw text of the clinical notes and pathology reports. <ref type="bibr">1</ref> The event, time and temporal relation annotations were distributed separately from the text, in an open source repository 2 using the Anafora standoff format <ref type="bibr" target="#b0">(Chen and Styler, 2013)</ref>. <ref type="bibr">1</ref> The details of this process are described at http://thyme.  The corpus was split into three portions: Train (50%), Dev (25%) and Test (25%). For Clinical TempEval 2015, the Train portion was used for training and the Dev portion was used for testing. The Test portion was not distributed, and was reserved as a test set for a future iteration of the shared task. Table <ref type="table" target="#tab_1">1</ref> shows the number of documents, event expressions (EVENT annotations), time expressions (TIMEX3 annotations) and narrative container relations (TLINK annotations with TYPE=CONTAINS attributes) in the Train and Dev portions of the corpus.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Tasks</head><p>A total of nine tasks were included, grouped into three categories:  <ref type="bibr" target="#b1">(Pustejovsky and Stubbs, 2011)</ref> between events and/or times, represented by TLINK annotations with TYPE=CONTAINS in the THYME corpus</p><formula xml:id="formula_0">•</formula><p>The evaluation was run in two phases:</p><p>1. Systems were given access only to the raw text, and were asked to identify time expressions, event expressions and temporal relations 2. Systems were given access to the raw text and the manual event and time annotations, and were asked to identify only temporal relations</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Metrics</head><p>All of the tasks were evaluated using the standard metrics of precision (P ), recall (R) and F 1 :</p><formula xml:id="formula_1">P = |S ∩ H| |S| R = |S ∩ H| |H| F 1 = 2 • P • R P + R</formula><p>where S is the set of items predicted by the system and H is the set of items manually annotated by the humans. Applying these metrics to the tasks only requires a definition of what is considered an "item" for each task.</p><p>• For evaluating the spans of event expressions or time expressions, items were tuples of (begin, end) character offsets. Thus, systems only received credit for identifying events and times with exactly the same character offsets as the manually annotated ones.</p><p>• For evaluating the attributes of event expressions or time expressions -Class, Contextual</p><p>Modality, Degree, Polarity and Type -items were tuples of (begin, end, value) where begin and end are character offsets and value is the value that was given to the relevant attribute. Thus, systems only received credit for an event (or time) attribute if they both found an event (or time) with the correct character offsets and then assigned the correct value for that attribute.</p><p>• For relations between events and the document creation time, items were tuples of (begin, end, value), just as if it were an event attribute. Thus, systems only received credit if they found a correct event and assigned the correct relation (BEFORE, OVERLAP, BEFORE-OVERLAP or AFTER) between that event and the document creation time. Note that in the second phase of the evaluation, when manual event annotations were given as input, precision, recall and F 1 are all equivalent to standard accuracy.</p><p>• For narrative container relations, items were tuples of ((begin 1 , end 1 ), (begin 2 , end 2 )), where the begins and ends corresponded to the character offsets of the events or times participating in the relation. Thus, systems only received credit for a narrative container relation if they found both events/times and correctly assigned a CONTAINS relation between them.</p><p>For attributes, an additional metric measures how accurately a system predicts the attribute values on just those events or times that the system predicted. The goal here is to allow a comparison across systems for assigning attribute values, even when different systems produce very different numbers of events and times. This is calculated by dividing the F 1 on the attribute by the F 1 on identifying the spans:</p><formula xml:id="formula_2">A = attribute F 1 span F 1</formula><p>For the narrative container relations, additional metrics were included that took into account temporal closure, where additional relations can be deterministically inferred from other relations (e.g., A CON-TAINS B and B CONTAINS C, so A CONTAINS C):</p><formula xml:id="formula_3">P closure = |S ∩ closure(H)| |S| R closure = |closure(S) ∩ H| |H| F closure = 2 • P closure • R closure P closure + R closure</formula><p>These measures take the approach of prior work (Uz-Zaman and Allen, 2011) and TempEval 2013 (UzZaman et al., 2013), following the intuition that precision should measure the fraction of system-predicted relations that can be verified from the human annotations (either the original human annotations or annotations inferred from those through closure), and that recall should measure the fraction of humanannotated relations that can be verified from the system output (either the original system predictions or predictions inferred from those through closure).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Baseline Systems</head><p>Two rule-based systems were used as baselines to compare the participating systems against.</p><p>memorize For all tasks but the narrative container task, a memorization-based baseline was used.</p><p>To train the model, all phrases annotated as either events or times in the training data were collected. All exact character matches for these phrases in the training data were then examined, and only phrases that were annotated as events or times greater than 50% of the time were retained. For each phrase, the most frequently annotated type (event or time) and attribute values for instances of that phrase were determined.</p><p>To predict with the model, the raw text of the test data was searched for all exact character matches of any of the memorized phrases, preferring longer phrases when multiple matches overlapped. Wherever a phrase match was found, an event or time with the memorized (most frequent) attribute values was predicted.</p><p>closest For the narrative container task, a proximitybased baseline was used. Each time expression was predicted to be a narrative container, containing only the closest event expression to it in the text.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Participating Systems</head><p>Three research teams submitted a total of 13 runs: </p><formula xml:id="formula_4">BluLab</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Human Agreement</head><p>We also give two types of human agreement on the task, measured with the same evaluation metrics as the systems:</p><p>ann-ann Inter-annotator agreement between the two independent human annotators who annotated each document. This is the most commonly reported type of agreement, and often considered to be an upper bound on system performance.</p><p>adj-ann Inter-annotator agreement between the adjudicator and the two independent annotators. This is usually a better bound on system performance in adjudicated corpora, since the models are trained on the adjudicated data, not on the individual annotator data.  Precision and recall are not reported in these scenarios since they depend on the arbitrary choice of one annotator as the "human" (H) and the other as the "system" (S). Note that since temporal relations between events and the document creation time were annotated at the same time as the events themselves, agreement for this task is only reported in phase 1 of the evaluation. Similarly, since narrative container relations were only annotated after events and times had been adjudicated, agreement for this task is only reported in phase 2 of the evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Evaluation Results</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.1">Time Expressions</head><p>Table <ref type="table" target="#tab_4">2</ref> shows results on the time expression tasks. The BluLab system achieved the best F 1 at identifying time expressions, 0.725. The other machine learning systems (KPSCMI run 2-3 and UFPRSheffield-SVM run 1-2) achieved F 1 in the 0.690-0.700 range. The rule-based systems (KPSCMI run 1 and UFPRSheffield-Hynx run 1-5) all achieved higher recall than the machine learning systems, but at substantial costs to precision. All systems outperformed the memorization baseline in terms of recall, and all machine-learning systems outperformed it in terms of F 1 , but only the BluLab system outperformed the baseline in terms of precision.</p><p>The BluLab system also achieved the best F 1 for predicting the classes of time expressions, though this is primarily due to achieving a higher F 1 at identifying time expressions in the first place. UFPRSheffield-Hynx run 5 achieved the best accuracy on predicting classes for the time expressions it found, 0.978, though on this metric it only outperformed the memorization baseline by 0.004.</p><p>Across the time expression tasks, systems did not quite achieve performance at the level of human agreement. For the spans of time expressions, the top system achieved 0.725 F 1, compared to 0.774 adjudicator-annotator F 1 , though almost half of the systems exceeded the lower annotator-annotator F 1 of 0.690. For the classes of time expressions, the story was similar for F 1 , though several models exceeded the adjudicator-annotator accuracy of 0.965 on just the time expressions predicted by the system.  one exception was the semantic type of the event, where the memorization baseline had a better precision and also a better accuracy on the classes of the events that it identified. The BluLab system got close to the level of adjudicator-annotator agreement on identifying the spans of event expressions (0.875 vs. 0.880 F 1 ), identifying the degree of events (0.870 vs. 0.877 F 1 ), and identifying the polarity of events (0.857 vs. 0.869 F 1 ), and it generally met or exceeded the lower annotator-annotator agreement on these tasks. There is a larger gap (3+ points of F 1 ) between the system performance and adjudicator-annotator agreement for event modality and event type, though only a small gap (&lt;1 point of F 1 ) for the lower annotatorannotator agreement on these tasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.2">Event Expressions</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.3">Temporal Relations</head><p>Table <ref type="table" target="#tab_7">4</ref> shows performance on the temporal relation tasks. In detecting the relations between events and the document creation time, the BluLab system substantially outperformed the memorization baseline, achieving F 1 of 0.702 on system-predicted events (phase 1) and F 1 of 0.791 on manually annotated events (phase 2). In identifying narrative container relations, the best BluLab system (run 2) outperformed the proximity-based baseline when using systempredicted events (F closure of 0.123 vs. 0.106) but not when using manually annotated events (F closure of 0.181 vs. 0.260). Across both phase 1 and phase 2 for narrative container relations, the top BluLab system always had the best recall, while the baseline system always had the best precision.</p><p>Annotator agreement was higher than system performance on all temporal relation tasks. For relations between events and the document creation time, adjudicator-annotator agreement was 0.761 F 1 , compared to the best system's 0.702 F 1 , though this system did exceed the lower annotator-annotator agreement of 0.628 F 1 . For narrative container relations using manually annotated EVENTs and TIMEX3s, the gap was much greater, with adjudicator-annotator agreement at 0.672 F closure , and the top system (the baseline system) at 0.260 F closure . Even the lower annotator-annotator agreement of 0.475 F closure was much higher than the system performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">Discussion</head><p>The results of Clinical TempEval 2015 suggest that a small number of temporal information extraction tasks are solved by current state-of-the-art systems, but for the majority of tasks, there is still room for improvement. Identifying events, their degrees and their polarities were the easiest tasks for the participants, with the best systems achieving within about 0.01 of human agreement on the tasks. Systems for identifying event modality and event type were not far behind, achieving within about 0.03 of human agree-  ment. Time expressions and relations to the document creation time were at the next level of difficulty, with a gap of about 0.05 from human agreement.</p><p>Identifying narrative container relations was by far the most difficult task, with the best systems down by more than 0.40 from human agreement. In absolute terms, performance on narrative container relations was also quite low, with system F closure scores in the 0.10-0.12 range on system-generated events and times, and in the 0.12-0.26 range on manually-annotated events and times. For comparison, in TempEval 2013, which used newswire data, F closure scores were in the 0.24-0.36 range on systemgenerated events and times and in the 0.35-0.56 range on manually-annotated events and times <ref type="bibr" target="#b5">(UzZaman et al., 2013)</ref>. One major difference between the corpora is that the narrative container relations in the clinical domain often span many sentences, while almost all of the relations in TempEval 2013 were either within the same sentence or across adjacent sentences. Most past research systems have also focused on identifying within-sentence and adjacent-sentence relations. This focus on local relations might explain the poor performance on the more distant relations in the THYME corpus. But further investigation is needed to better understand the challenge here.</p><p>In almost all tasks, the submitted systems substantially outperformed the baselines. The one exception to this was the narrative containers task. The baseline there -which simply predicted that each time expression contained the nearest event expression to it in the text -achieved 4 times the precision of the best submitted system and consequently achieved the best F 1 by a large margin. This suggests that future systems may want to incorporate better measures of proximity that can capture some of what the baseline is finding.</p><p>While machine learning methods were overall the most successful, for time expression identification, the submitted rule-based systems achieved the best recall. This is counter to the usual assumption that rule-based systems will be more precise, and that machine learning systems will sacrifice precision to increase recall. The difference is likely that the rulebased systems were aiming for good coverage, trying to find all potential time expressions, but had too few constraints to discard such phrases in inappropriate contexts. The baseline system is suggestive of this possibility: it has a constraint to only memorize phrases that corresponded with time expressions more than 50% of the time, and it has high precision (0.743) and low recall (0.372) as is typically expected of a rule-based system, but if the constraint is removed, it has low precision (0.126) and high recall (0.521) like the participant rule-based systems.</p><p>Clinical TempEval was the first TempEval exercise to use narrative containers, a significant shift from prior exercises. Annotator agreement in the dataset is moderate, but needs to be further improved. Similar agreement scores were found when annotating temporal relations in prior corpora (for TempEval or using TimeML), although these typically involved the application of more complex temporal relation ontologies. The narrative container approach is comparatively simple. The low annotator-adjudicator scores (i.e. below 0.90, a score generally recognized to indicate a production-quality resource) suggests that annotation is difficult independent of the number of potential temporal relation types. Difficulty may lie in the comprehension and reification of the potentially complex temporal structures described in natural language text. Nevertheless, systems did well on the DCT task, achieving high scores -similar to the pattern seen in Task D of TempEval-2, which had a comparable scoring metric.</p><p>Though the results of Clinical TempEval 2015 are encouraging, they were limited somewhat by the small number of participants in the task. There are two likely reasons for this. First, there were many different sub-tasks for Clinical TempEval, meaning that to compete in all sub-tasks, a large number of sub-systems had to be developed in a limited amount of time (six months or less). This relatively high barrier for entry meant that of the 15 research groups that managed to sign a data use agreement and obtain the data before the competition, only 3 submitted systems to compete. Second, the data use agreement process was time consuming, and more than 10 research groups who began the data use agreement process were unable to complete it before the evaluation.</p><p>In future iterations of Clinical TempEval, we expect these issues to be reduced. The next Clinical TempEval will use the current Train and Dev data as the training set, and as these data are already available, this leaves research teams with a year or more to develop systems. Furthermore, arrangements with the Mayo Clinic have been made to further expedite the data use agreement process, which should significantly reduce the wait time for new participants.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>•</head><label></label><figDesc>April 23, 2014: TIMEX3 -TYPE=DATE • postoperative: TIMEX3 -TYPE=PREPOSTEXP -CONTAINS • bleeding: EVENT -POLARITY=NEG -BEFORE document creation time • resume: EVENT -TYPE=ASPECTUAL -AFTER document creation time • chemotherapy: EVENT -AFTER document creation time • bolus: EVENT -AFTER document creation time • Friday: TIMEX3 -TYPE=DATE -CONTAINS • nausea: EVENT -DEGREE=LITTLE -MODALITY=HYPOTHETICAL -AFTER document creation time</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>: run 1 0.732 0.661 0.695 0.712 0.643 0.676 0.977 UFPRSheffield-SVM: run 2 0.741 0.655 0.695 0.723 0.640 0.679 0.950 UFPRSheffield-Hynx: run 1 0.479 0.747 0.584 0.455 0.709 0.555 0.952 UFPRSheffield-Hynx: run 2 0.494 0.770 0.602 0.470 0.733 0.573 0.951 UFPRSheffield-Hynx: run 3 0.311 0.794 0.447 0.296 0.756 0.425 0.951 UFPRSheffield-Hynx: run 4 0.311 0.795 0.447 0.296 0.756 0.425 0.952 UFPRSheffield-Hynx: run 5 0.411 0.795 0.542 0.391 0.756 0.516 0</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Number of documents, event expressions, time expressions and narrative container relations in the training and development portions of the THYME data. (Dev is the Clinical TempEval 2015 test set.)</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>System performance and annotator agreement on TIMEX3 tasks: identifying the time expression's span (character offsets) and class (DATE, TIME, DURATION, QUANTIFIER, PREPOSTEXP or SET). The best system score from each column is in bold. The three BluLab runs are combined because they all have identical performance (since they only differ in their approach to narrative container relations).</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3</head><label>3</label><figDesc>shows results on the event expression tasks. .876 0.810 0.842 0.810 0.749 0.778 0.924 0.871 0.806 0.838 0.995</figDesc><table><row><cell>The BluLab system outperformed the memorization</cell></row><row><cell>baseline on almost every metric on every task. The</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3</head><label>3</label><figDesc></figDesc><table><row><cell>: System performance and annotator agreement on EVENT tasks: identifying the event expression's span</cell></row><row><cell>(character offsets), contextual modality (ACTUAL, HYPOTHETICAL, HEDGED or GENERIC), degree (MOST, LITTLE or</cell></row><row><cell>N/A), polarity (POS or NEG) and type (ASPECTUAL, EVIDENTIAL or N/A). The best system score from each column</cell></row><row><cell>is in bold.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 4 :</head><label>4</label><figDesc>System performance and annotator agreement on temporal relation tasks: identifying relations between events and the document creation time (DOCTIMEREL), and identifying narrative container relations (CONTAINS). The best system score from each column is in bold.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">Normalized time values (e.g. 2015-02-05) were originally planned, but annotation was not completed in time.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">https://ctakes.apache.org 5 https://code.google.com/p/heideltime/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>This work was partially supported by funding from R01LM010090 (THYME) from the National Library of Medicine and from the European Union's Seventh Framework Programme (grant No. 611233, PHEME).</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Anafora: A webbased general purpose annotation tool</title>
+		<author>
+			<persName><forename type="first">Wei-Te</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Will</forename><surname>Styler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2013 NAACL HLT Demonstration Session</title>
+				<meeting>the 2013 NAACL HLT Demonstration Session<address><addrLine>Atlanta, Georgia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013-06" />
+			<biblScope unit="page" from="14" to="19" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Increasing informativeness in temporal annotation</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amber</forename><surname>Stubbs</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th Linguistic Annotation Workshop</title>
+				<meeting>the 5th Linguistic Annotation Workshop<address><addrLine>Portland, Oregon, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011-06" />
+			<biblScope unit="page" from="152" to="160" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Temporal annotation in the clinical domain</title>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">F</forename><surname>Styler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Iv</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sean</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Finan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piet</forename><surname>Pradhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brad</forename><surname>De Groen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Erickson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chen</forename><surname>Miller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guergana</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Savova</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="143" to="154" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">THYME annotation guidelines, 2. Weiyi Sun, Anna Rumshisky, and Ozlem Uzuner</title>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">F</forename><surname>Styler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guergana</forename><surname>Iv</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Savova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O'</forename><surname>Tim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piet</forename><forename type="middle">C</forename><surname>Gorman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>De Groen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="806" to="813" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+	<note>Evaluating temporal relations in clinical text: 2012 i2b2 challenge</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Temporal evaluation</title>
+		<author>
+			<persName><forename type="first">Naushad</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Portland, Oregon, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011-06" />
+			<biblScope unit="page" from="351" to="356" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">SemEval-2013 Task 1: TempEval-3: Evaluating Time Expressions, Events, and Temporal Relations</title>
+		<author>
+			<persName><forename type="first">Naushad</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hector</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013-06" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+	<note>Second Joint Conference on Lexical and Computational Semantics (*SEM)</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Marc Verhagen, Roser Sauri, Tommaso Caselli, and James Pustejovsky</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Schilder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Hepple</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Katz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth International Workshop on Semantic Evaluations (SemEval-2007)</title>
+				<meeting>the Fourth International Workshop on Semantic Evaluations (SemEval-2007)<address><addrLine>Prague, Czech Republic; Uppsala, Sweden</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007-06" />
+			<biblScope unit="page" from="57" to="62" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the 5th International Workshop on Semantic Evaluation</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

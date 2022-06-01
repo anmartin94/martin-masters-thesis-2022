@@ -1,0 +1,1328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2020 Task 7: Assessing Humor in Edited News Headlines</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Nabil</forename><surname>Hossain</surname></persName>
+							<email>nhossain@cs.rochester.edu</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution" key="instit1">University of Rochester ‡ Microsoft Research AI</orgName>
+								<orgName type="institution" key="instit2">Microsoft Corporation</orgName>
+								<address>
+									<settlement>Redmond</settlement>
+									<region>WA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">John</forename><surname>Krumm</surname></persName>
+							<email>jckrumm@microsoft.com</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution" key="instit1">University of Rochester ‡ Microsoft Research AI</orgName>
+								<orgName type="institution" key="instit2">Microsoft Corporation</orgName>
+								<address>
+									<settlement>Redmond</settlement>
+									<region>WA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Michael</forename><surname>Gamon</surname></persName>
+							<email>mgamon@microsoft.com</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution" key="instit1">University of Rochester ‡ Microsoft Research AI</orgName>
+								<orgName type="institution" key="instit2">Microsoft Corporation</orgName>
+								<address>
+									<settlement>Redmond</settlement>
+									<region>WA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Henry</forename><surname>Kautz</surname></persName>
+							<email>kautz@cs.rochester.edu</email>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution" key="instit1">University of Rochester ‡ Microsoft Research AI</orgName>
+								<orgName type="institution" key="instit2">Microsoft Corporation</orgName>
+								<address>
+									<settlement>Redmond</settlement>
+									<region>WA</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2020 Task 7: Assessing Humor in Edited News Headlines</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the SemEval-2020 shared task "Assessing Humor in Edited News Headlines." The task's dataset contains news headlines in which short edits were applied to make them funny, and the funniness of these edited headlines was rated using crowdsourcing. This task includes two subtasks, the first of which is to estimate the funniness of headlines on a humor scale in the interval 0-3. The second subtask is to predict, for a pair of edited versions of the same original headline, which is the funnier version. To date, this task is the most popular shared computational humor task, attracting 48 teams for the first subtask and 31 teams for the second.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>1 Introduction  Humor is an important ingredient of human communication, and every automatic system aiming at emulating human intelligence will eventually have to develop capabilities to recognize and generate humorous content. In the artificial intelligence community, research on humor has been progressing slowly but steadily. As an effort to boost research and spur new ideas in this challenging area, we created a competitive task for automatically assessing humor in edited news headlines.</p><p>Like other AI tasks, automatic humor recognition depends on labeled data. Nearly all existing humor datasets are annotated to study the binary task of whether a piece of text is funny <ref type="bibr" target="#b26">(Mihalcea and Strapparava, 2005;</ref><ref type="bibr" target="#b20">Kiddon and Brun, 2011;</ref><ref type="bibr" target="#b3">Bertero and Fung, 2016;</ref><ref type="bibr" target="#b37">Raz, 2012;</ref><ref type="bibr" target="#b10">Filatova, 2012;</ref><ref type="bibr" target="#b47">Zhang and Liu, 2014;</ref><ref type="bibr" target="#b38">Reyes et al., 2012;</ref><ref type="bibr" target="#b2">Barbieri and Saggion, 2014)</ref>. Such categorical data does not capture the non-binary character of humor, which makes it difficult to develop models that can predict a level of funniness.</p><p>Humor occurs in various intensities, and certain jokes are much funnier than others, including the supposedly funniest joke in the world <ref type="bibr" target="#b45">(Wiseman, 2011)</ref>. A system's ability to assess the degree of humor makes it useful in various applications, such as in humor generation where such a system can be used in a generate-and-test scheme to generate many potentially humorous texts and rank them by funniness, for example, to automatically fill in the blanks in Mad Libs R for humorous effects <ref type="bibr" target="#b12">(Hossain et al., 2017;</ref><ref type="bibr">Garimella et al., 2020)</ref>.</p><p>For our SemEval task, we provided a dataset that contains news headlines with short edits applied to them to make them humorous (see Table <ref type="table">1</ref>). This dataset was annotated as described in <ref type="bibr" target="#b13">Hossain et al. (2019)</ref> using Amazon Mechanical Turk, where qualified human workers edited headlines to make them funny and the quality of humor in these headlines was assessed by a separate set of qualified human judges on a 0-3 funniness scale (see Figure <ref type="figure" target="#fig_1">1</ref>). This method of quantifying humor enables the development of systems for automatically estimating the degree of humor in text. Our task is comprised of two Subtasks: Table <ref type="table">1</ref>: Edited headlines from our dataset and their funniness rating. We report the mean of the estimated ratings from the top 20 ranked participating systems (Est.) and its difference from the true rating (Err.).</p><p>• Subtask 1: Estimate the funniness of an edited headline on a 0-3 humor scale.</p><p>• Subtask 2: Given two edited versions of the same headline, determine which one is funnier.</p><p>Inviting multiple participants to a shared task contrasts with most current work on computational humor, which consists of standalone projects, each exploring a different genre or type of humor. Such projects typically involve gathering new humor data and applying machine learning to solve a particular problem. Repeated attempts at the same problem are rare, hindering incremental progress, which emphasizes the need for unified, shared humor tasks.</p><p>Recently, competitive humor tasks including shared data have been posed to the research community. One example is #HashtagWars <ref type="bibr" target="#b35">(Potash et al., 2017)</ref>, a SemEval task from 2017 that attracted eight distinct teams, where the focus was on ranking the funniness of tweets from a television show. The HAHA competition <ref type="bibr" target="#b5">(Chiruzzo et al., 2019)</ref> had 18 participants who detected and rated humor in Spanish language tweets. There were 10 entries in a SemEval task from 2017 that looked at the automatic detection, location, and interpretation of puns <ref type="bibr" target="#b28">(Miller et al., 2017)</ref>. Finally, a related SemEval 2018 task involved irony detection in tweets <ref type="bibr" target="#b43">(Van Hee et al., 2018)</ref>.</p><p>Ours is the largest shared humor task to date in terms of participation. More than 300 participants signed up, 86 teams participated in the development phase, and 48 and 31 teams participated, respectively, in the two subtasks in the evaluation phase. By creating an intense focus on the same humor task from so many points of view, we were able to clearly understand how well these systems work as a function of different dimensions of humor, including which type of humor appears easiest to rate automatically.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Datasets</head><p>The data 1 for this task 2 is the Humicroedit dataset described in our previous work <ref type="bibr" target="#b13">(Hossain et al., 2019)</ref>. This dataset contains about 5,000 original headlines, each having three modified, potentially funny versions for a total of 15,095 edited headlines. The original headlines were collected from Reddit (reddit.com) via the popular subreddits r/worldnews and r/politics, where headlines from professional news sources are posted everyday. These headlines were published between 01/2017 and 05/2018, they are between 4-20 words long, and they are sampled from headlines written by 25 major English news sources.</p><p>The data was annotated using workers from Amazon Mechanical Turk, who were screened using a qualification phase to find expert headline editors and judges of humor. The editors were instructed to make a headline as funny as possible to a generic wide audience by applying a micro-edit, which is a replacement of a verb/noun/entity in the headline with a single word. Examples are shown in Table <ref type="table">1</ref>. By allowing only small edits, researchers can examine humor at the atomic level where the constrained degrees of freedom are likely to simplify analysis, understanding, and eventually generation.</p><p>Five judges were asked to rate the funniness of each edited headline using the following humor scale:</p><formula xml:id="formula_0">0 -Not funny 1 -Slightly funny 2 -Moderately funny 3 -Funny</formula><p>The funniness of an edited headline is the mean of the ratings from its five judges. For further details and analysis of the dataset, we refer the reader to <ref type="bibr" target="#b13">Hossain et al. (2019)</ref>.  For our task, we randomly sampled the Humicroedit dataset into train (64%), dev (16%) and test (20%) sets such that all edited versions of an original headline reside in exactly one of these sets, as opposed to the sampling in <ref type="bibr" target="#b13">Hossain et al. (2019)</ref> which allowed overlap of original versions of headlines among its dataset partitions for a slightly different humorous headline classification task.</p><p>We also provided additional training data 3 from FunLines 4 <ref type="bibr" target="#b14">(Hossain et al., 2020)</ref>, a competition that we hosted to collect humorous headlines at a very low cost. The data collection approach for Humicroedit and FunLines are mostly similar, but FunLines additionally includes headlines from the news categories sports, entertainment and technology, and its headlines were published between 05/2019 and 01/2020, for a total of 8,248 annotated headlines. More than 40% of the participating teams, including the winning team, made use of the FunLines data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Description</head><p>The objective of this shared task is to build systems for rating a humorous effect that is caused by small changes in text. To this end, we focus on humor obtained by applying micro-edits to news headlines.</p><p>Editing headlines presents a unique opportunity for humor research since headlines convey substantial information using only a few words. This creates a rich background against which a micro-edit can lead to a humorous effect. With that data, a computational humor model can focus on the exact localized cause of the humorous effect in a short textual context.</p><p>We split our task into two subtasks. The dataset statistics for these subtasks are shown in Table <ref type="table" target="#tab_2">2</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Subtask 1: Funniness Regression</head><p>In this task, given the original and the edited versions of a headline, the participant has to estimate the mean funniness of the edited headline on the 0-3 humor scale. Systems tackling this task can be useful in a humor generation scenario where generated candidates are ranked according to expected funniness.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Subtask 2: Funnier of the Two</head><p>In this task, given the original headline and two of its edited versions, the participating system has to predict which edited version is the funnier of the two. Consequently, by looking at gaps between the funniness ratings, we can begin to understand the minimal discernible difference between funny headlines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Metrics</head><p>For Subtask 1, systems are ranked using the root mean squared error (RMSE) between the mean of the five annotators' funniness ratings and the rating estimated by the system for the headlines. Given N test samples, and given the ground truth funniness y i and the predicted funninessŷ i for the i-th sample:</p><formula xml:id="formula_1">RM SE = N i=1 (y i −ŷ i ) 2 N</formula><p>For Subtask 2, which attempts to find the funnier of the two modified versions of a headline, the evaluation metric is classification accuracy. We also report another auxiliary metric called the reward. Given N test samples with C correct predictions, and given the i-th sample, the funniness ratings of its two edited headlines f</p><p>(1) i and f</p><p>(2) i , its ground truth label y i and its predicted labelŷ i :</p><formula xml:id="formula_2">Accuracy = C N Reward = 1 N N i=1 (1ŷ i =y i − 1ŷ i =y i )|f (1) i − f (2) i |</formula><p>In other words, for a larger funniness difference between the two edited headlines in a pair, the reward (or penalty) is higher for a correct classification (or misclassification). We ignore cases where the two edited versions of a headline have the same ground truth funniness.  We provide several benchmarks in Table <ref type="table" target="#tab_4">3</ref> to compare against participating systems:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Benchmarks</head><p>1. BASELINE: assigns the mean rating (Subtask 1) or the majority label (Subtask 2) from the training set. 2. CBOW: the context independent word representations obtained using the pretrained GloVe word vectors with 300d embeddings and a dictionary of 2.2M words. 3. BERT: a regressor based on BERT base model embeddings <ref type="bibr" target="#b7">(Devlin et al., 2019)</ref>. 4. RoBERTa: same regressor as above but uses RoBERTa embeddings <ref type="bibr" target="#b21">(Liu et al., 2019)</ref>.</p><p>For a thorough discussion of these benchmarks, we refer the reader to the Duluth system , who performed these ablation experiments. In summary, each benchmark result uses the edited headline, CONTEXT implies using the headline's context (with the replaced word substituted with [MASK]), ORIG implies using the original headline, FT refers to finetuning, FREEZE implies feature extraction (no finetuning) and FUNLINES refers to using the FunLines training data.</p><p>The results for Subtask 2 were obtained by using the model trained for Subtask 1 to assign funniness ratings to both the edited versions of a headline and then choosing the version scoring higher.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Results</head><p>The official results for Subtasks 1 and 2 are shown, respectively, in Tables <ref type="table" target="#tab_6">4 and 5</ref>, including the performance of the benchmarks. There were 48 participants for Subtask 1, while Subtask 2 attracted 31 participants. For both subtasks, the best performing system was Hitachi, achieving an RMSE of 0.49725 (a 13.5% improvement over BASELINE) for Subtask 1, and an accuracy of 67.43% (a 17.93 increase in percentage points over BASELINE) for Subtask 2.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Overview of Participating Systems</head><p>The dominant teams made use of pre-trained language models (PLM), namely BERT, RoBERTa, ELMo (Peters et al., 2018), GPT-2 <ref type="bibr" target="#b36">(Radford et al., 2019)</ref> and XLNet <ref type="bibr" target="#b46">(Yang et al., 2019)</ref>. Context-independent word embeddings, such as Word2Vec <ref type="bibr" target="#b27">(Mikolov et al., 2013)</ref>, FastText <ref type="bibr" target="#b17">(Joulin et al., 2017)</ref> and GloVe word vectors <ref type="bibr" target="#b33">(Pennington et al., 2014)</ref>, were also useful. The winning teams combined the predictions of several hyperparameter-tuned versions of these models using regression in an ensemble learner to arrive at the final prediction. Next, we summarize the top systems and other notable approaches.  First, we note that for Subtask 2, most systems relied on the model they developed for Subtask 1. This involved using the model to estimate a real number funniness rating for each of the two edited headlines, and selecting the one which achieved the higher estimated rating. As a result, there was a strong correlation between teams' placements in Subtask 1 and Subtask 2, with the top 3 teams in both tasks being the same.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">The Hitachi System</head><p>The winner of both tasks, Hitachi <ref type="bibr" target="#b30">(Morishita et al., 2020)</ref>, formulated the problem as sentence pair regression and exploited an ensemble of the PLMs BERT, GPT-2, RoBERTa, XLNet, Transformer-XL and XLM. Their training data uses the pairs of headlines, with the replacement word marked with special tokens, and they fine-tune 50 instances per PLM, each having a unique hyperparameter setting. After applying 5-fold cross validation, they selected the 20 best performing settings per PLM, for a total of 700 PLMs (7 PLMs × 20 hyperparameters × 5 folds). They combined the predictions of these models via Ridge regression in the ensemble to predict final funniness scores. Hitachi uses the additional training data from FunLines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">The Amobee System</head><p>Amobee <ref type="bibr" target="#b39">(Rozental et al., 2020)</ref> was the 2nd placed team for both Subtasks. Using PLM token embeddings, they trained 30 instances of BERT, RoBERTa and XLNet, combining them for an ensemble of 90 models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">The YNU-HPCC System</head><p>Unlike the top two systems, the 3rd placed YNU-HPCC (Tomasulo et al., 2020) employed an ensemble method that uses only the edited headlines. They used multiple pre-processing methods (e.g., cased vs uncased, with or without punctuation), and they encoded the edited headlines using FastText, Word2Vec, ELMo and BERT encoders. The final ensemble consists of 11 different encodings (four FastText, two W2V, four Bert, one ELMo). For each of these encodings, a bidirectional GRU was trained using the encoded vectors. In the ensemble, the GRU predictions were concatenated and fed to an XGBoost regressor.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4.1">MLEngineer</head><p>The MLEngineer <ref type="bibr" target="#b40">(Shatnawi et al., 2020)</ref> team also used only the edited headlines. They fine-tune and combine four BERT sentence regression models to estimate a rating, and they combine it with the estimated rating from a model that incorporates RoBERTa embeddings and a Naïve Bayes regressor to generate the final rating.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.5">The LMML and ECNU Systems</head><p>These systems <ref type="bibr" target="#b1">(Ballapuram, 2020;</ref> estimate the funniness of headlines using a neural architecture that focuses on the importance of the replaced and replacement words against the contextual words in the headline. They use BERT embeddings and compute feature vectors based on the global attention between the contextual words and the replaced (and replacement) word. These two vectors and the vectors of the replaced and replacement are combined, and the resulting vector is passed through a multi-layer perceptron to estimate the headline's funniness.  ECNU used sentiment and humor lexicons, respectively, to extract polarities and humor rating features of headlines. They also used the average, minimum and maximum humor ratings of replaced/replacement words from the training set as additional features. LT3 <ref type="bibr">(Vanroy et al., 2020</ref>) created an entirely featureengineered baseline which obtained an RMSE of 0.572. It uses lexical, entity, readability, length, positional, word embedding similarity, perplexity and string similarity features.</p><p>IRLab DAIICT trained five BERT classifiers, one for each of the five ratings for a headline, and calculated the mean of the five classifiers' outputs. This mean was further averaged with the output of a BERT regression model which predicts the overall mean rating.</p><p>Buhscitu (Jensen et al., 2020) used knowledge bases (e.g. WordNet), a language model and hand-crafted features (e.g. phoneme level distances). Their neural model combines feature, knowledge and word (replaced/replacement) encoders.</p><p>Hasyarasa (Desetty et al., 2020) used a word embedding and knowledge graph based approach to build a contextual neighborhood of words to exploit entity interrelationships and to capture contextual absurdity. Features from this and semantic distance based features are finally combined with headline representations from a Bi-LSTM.</p><p>UTFPR <ref type="bibr" target="#b32">(Paetzold, 2020</ref>) is a minimalist unsupervised approach that uses word co-occurrence features derived from news and EU parliament transcripts to capture unexpectedness.</p><p>Some noteworthy pre-processing techniques included non-word symbol removal, word segmentation, manually removing common text extensions in headlines (e.g. "-live updates"). Finally, notable datasets used were the iWeb corpus 5 and a news headline corpus 6 .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.7">General Trends</head><p>Here we discuss the relative merits of the different systems, with respect to the participants' findings.</p><p>Table <ref type="table" target="#tab_4">3</ref> suggests that contextual information is useful in our humor recognition tasks, since the context independent GloVe embeddings (CBOW) led to weaker performance compared to using the contextsensitive BERT and RoBERTa embeddings.</p><p>According to ablation experiments by Hitachi <ref type="bibr" target="#b30">(Morishita et al., 2020)</ref>, the ranking of best performing to least superior individual PLM are as follows: RoBERTa, GPT-2, BERT, XLM, XLNet and Transformer-XL.</p><p>Analysis performed by several task participants indicates that the neural embeddings were unable to recognize humor where a rich set of common sense and/or background knowledge is required, for example, in the case of irony.</p><p>Lastly, a few systems had quite low accuracy for Subtask 2. They reported having bugs that caused them to submit a random baseline, which has about a 33% chance of success (since the possible predictions were "headline 1 is funnier", "headline 2 is funnier" and "both headlines have equal funniness").</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Analysis and Discussion</head><p>The outputs of 48 participating systems for Subtask 1 and 31 for Subtask 2 present an opportunity to not only study individual solutions and numeric results, but to also take a deeper qualitative look at the output of these systems. Here, we collectively analyze the performance of the top 20 systems per subtask to find aggregate trends that characterize the general approaches and the challenges of assessing humor itself.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Subtask 1 (Regression)</head><p>Figure <ref type="figure">2</ref>: Mean absolute error per funniness bin of width 0.2 for the top 20 systems aggregated, the best system (Hitachi), the 19 other systems and BASE-LINE for Subtask 1. The blue curve shows the normalized headline frequency for each funniness bin.</p><p>To better understand which funniness ranges are particularly hard for systems to assess, we study the performance of the systems as a function of ground truth funniness. As shown in Figure <ref type="figure">2</ref>, we grouped the edited headlines into funniness bins of width 0.2. For each bin, we plotted the mean absolute regression errors for the top 20 systems aggregated (max RMSE = 0.547), the winning Hitachi system (RMSE = 0.497), the 19 other systems and BASELINE (RMSE = 0.575).</p><p>In general, all these systems have their minimum error at a funniness score of about 1.0. While the Hitachi system stands out somewhat in its superior performance at the two extremes of the funniness scale, the other systems follow generally the same pattern, and none appear to be outliers. Assessing more extreme humor (or lack thereof) appears to be harder since all the systems have larger errors toward the extremes of the funniness scale. This may also be due to the non-uniform distribution of ground truth funniness scores in the dataset (shown as the blue curve), with the extreme values being less frequent. Figure <ref type="figure" target="#fig_2">3</ref> shows the systems' antipodal RMSE, an auxiliary metric for Subtask 1, which we calculated by considering only the X% most funny headlines and X% least funny headlines, for X ∈ {10, 20, 30, 40} in the RMSE metric. The systems are ranked by their overall RMSE for Subtask 1. It appears that some of the systems further down the ranking are doing much better at estimating the funniness of the extremes in the dataset than their superiors. For example, the large dip shows the system ranked 41 (Hahackathon) is performing better at estimating the funniness of the top 10-40% most/least funny headlines than several systems ranked before it. This sug-gests that combining these approaches can yield better results, for example, using some selected systems to rank certain subsets of headlines.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1.1">Antipodal RMSEs</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1.2">Systematic Estimation Errors</head><p>We now analyze headlines for which the ratings from the top 20 systems were all either underestimates or overestimates. Table <ref type="table">1</ref> shows examples of these headlines, their ground truth funniness rating, the mean of the estimated ratings of the top 20 systems and its difference from the ground truth.</p><p>Lack of understanding of world knowledge (Headline R1), cultural references (R2) and sarcasm (R3, R4 and R5) are clearly hurting these systems. The models are having difficulty recognizing the effects of negative sentiments on humor (R7 and R8) and the complex boundaries between negative sentiment and sarcastic humor (R4 and R8 both discuss death but R4 does it in a funny way). A better understanding of common sense could have helped resolve these subtleties. R3 also has the humorous effect brought about by a tension relief, which is a complex phenomenon to model. Finally, the systems are not expected to infer that bathroom humor (R6) was purposely annotated as "not funny" in the data <ref type="bibr" target="#b13">(Hossain et al., 2019)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Subtask 2 (Classification)</head><p>Here we examine the top 20 aggregate system performances on Subtask 2. These 20 systems have at least 59.7% classification accuracy, much higher than the 49.5% accuracy of BASELINE.</p><p>First, we analyze the difficulty of the classification by calculating the percentage of headline pairs correctly classified by exactly N systems, for 0 ≤ N ≤ 20, as shown in the blue curve in Figure <ref type="figure">4</ref>(a). As an example, there is a subset of about 3% of the headline pairs that were correctly classified by 10 of the top 20 systems. The curve rises rapidly to the right, indicating that a large fraction of the pairs can be correctly classified by 16 or more systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.1">Incongruity at Play</head><p>We investigate to what extent the participating systems model incongruity as a cause of humor, as postulated in the incongruity theory of humor <ref type="bibr" target="#b31">(Morreall, 2016)</ref>. This theory claims that jokes set up an expectation that they violate later, triggering surprise and thereby generating humor. We test this hypothesis by examining the cosine distances between the GloVe vectors of the original word and each replacement word. We assume that the larger this distance is, the higher is the expected incongruity.</p><p>The dashed curve in Figure <ref type="figure">4</ref>(a) shows the incongruity measure obtained using GloVe word distances:</p><p>incongruity difference = distance(orig, edit 2 ) -distance(orig, edit 1 ) incongruity measure = correlation(incongruity difference, ground truth label ∈ {1, 2})</p><p>This rising curve implies that the funnier headline in a pair is recognized by more systems if its replacement word is more distant from the original word compared to the distance between the original word and the less funny headline's replacement word. This indicates that these systems are possibly detecting which headline in the pair is more incongruous compared to the original headline. Moreover, for the headline  Table <ref type="table">6</ref>: Examples from Subtask 2 where the top 20 systems collectively either failed () or succeeded () in recognizing the funnier headline. On the overall dataset, these were the extreme headline pairs, having either the largest or the smallest differences in funniness between their headlines. We also report the GloVe word vector distances, mapped to the range 0-2, between the replaced and replacement words.</p><p>pairs which were incorrectly classified by all systems, the incongruity measure is around -0.6, implying that in these headline pairs, the less incongruous (i.e., more coherent) version is the funnier of the two. This further indicates that these systems are mostly recognizing incongruity and they tend to fail where incongruity is not the cause of humor.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.2">Funniness Gaps</head><p>Next, we inspect whether the funniness difference between the two headlines in a pair affects classification accuracy. We calculate the mean absolute funniness difference between the headline pairs within each of the N bins of systems that correctly classified them, as shown in Figure <ref type="figure">4</ref>(b). For example, the funniness difference between the two headlines in the pairs, which were correctly classified by all 20 systems, was around 0.8 on average. The rising trend in the curve suggests that, in general, more systems are able to correctly classify headline pairs having larger differences in humor. This helps confirm the annotation quality in the dataset, showing that humans and machines both agree on the intensity of humor in the dataset, and both can distinguish between slight humor and extreme humor. Recall also from Section 5.1 that most of the systems for Subtask 2 were simply applying the systems from Subtask 1 to find the funnier of the two headlines by comparing their funniness scores. Pairs with widely different funniness would less likely have overlapping uncertainty, leading to more accurate pairwise rankings.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.3">Extreme Examples</head><p>We discuss the collective top 20 system performance on edge case examples, with references to Table <ref type="table">6:</ref> • C1: Among all the test examples which were correctly classified by the 20 systems, E1 has the largest funniness difference between its pair of headlines. "Secret service" and "secret police" are quite natural in text and substituting one with the other barely changes the headline's meaning. However, using "secret santa" clearly raises the surprise. All classifiers were able to assess this relatively easy example.</p><p>• C2: This is the example with the largest funniness difference which all 20 systems incorrectly classified. This could be because "puppies" is semantically more distant from "billions" than "pennies" (according to GloVe). Although both headline substitutions are funny and incongruous, the antonym effect of the "pennies" version triggers a further sarcastic humor, since "pennies" is numerically much less than the original word "billions", but still in the category of money. Lacking world knowledge of this numerical difference, the systems award the more incongruous "puppies" the higher ranking. As mentioned in 6.2.1, these systems are especially sensitive to general incongruity as a source of humor and they are likely less aware of other causes of humor, such as meaning reversal.</p><p>• C3: This example has the smallest funniness difference of the sentences that were correctly classified by all 20 systems. Its less funny headline is sarcastic and most likely all classifiers were unable to recognize sarcasm and thus correctly chose the other headline as the funnier. If this is true, then ignorance about sarcasm was a lucky benefit in this case.</p><p>• C4: This was one of the examples with the smallest funniness differences which was misclassified by all systems. Both its headlines are quite funny and they are similar as they both discuss cleaning spaces. However, all systems found bedroom cleaning as a funnier reference than floor cleaning, likely because floor cleaning occurs much more frequently in our day-to-day conversations, making bedroom cleaning a more incongruous substitution to the classifiers, as indicated by the semantic distances in Table <ref type="table">6</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3">Quirks of the Dataset</head><p>It is challenging to effectively construct a dataset that depends on human creativity, such as humor. Not only generating high quality humor requires more effort from humans making the process expensive, but also reliably assessing the level of humor is challenging as humor understanding is subjective.</p><p>Although we carefully annotated our dataset, we have observed some quirks. Some of our headlines showed lack of sufficient agreement between judges. For example, in the headline C2 in Table <ref type="table">6</ref>, the standard deviation in judges' ratings for the "puppies" version (σ = 0.9) was much higher than that in the "pennies" version (σ = 0.4), implying that using more judges for the "puppies" version could have given it a more reliable funniness rating. However, ensuring such quality control would make the data collection process more expensive.</p><p>Additionally, some participating teams reported the frequent mention of President Trump in the dataset, and that there were a non-trivial number of headlines that mentioned both "Trump" and "hair", and these headlines had received high humor scores, adding certain biases on the data.</p><p>Although the FunLines training data was useful, it was annotated using a different set of judges. It is reasonable to expect that the rating scales of FunLines and our task dataset are not calibrated, and a proper calibration could have possibly increased the value of the FunLines data. However, we have not seen any participating system trying to address this problem, for example, by using a standardization technique to unify the two funniness scales.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion and Future Perspectives</head><p>We provided 15,095 edited and humor-rated, potentially funny headlines and defined subtasks for (1) rating the funniness of each one and (2) determining the funnier headline from a pair that came from editing the same original headline. Both humor subtasks were popular, attracting 48 and 31 teams respectively, showing that shared tasks can unify the relatively smaller humor research community.</p><p>For both subtasks, the highly rated solutions show that pre-trained language models work well for rating humor. For Subtask 2, nearly all the participating teams used their solution from Subtask 1 for ranking the two headlines. For Subtask 2, we found that larger disparities in ground truth funniness made ranking easier and that incongruity in a headline was positively correlated with more accurate ranking of humor. For Subtask 1, we discovered that, over the range of funniness scores, the top systems were most accurate at rating humor near the middle of the funniness range where we had the most training data.</p><p>For future contests like this, we advocate for more uniformly labeled humor data, though that can be hard and expensive to collect. Another direction worth pursuing is humor recognition in a closed setting such as reading comprehension, where both annotators and systems make judgments based only on a limited amount of provided contextual information. This would constrain the problem, setting a well-defined scope, and potentially lead to stronger annotator agreements.</p><p>We also believe that focusing on specific labeled forms of humor, such as incongruity, sarcasm, irony, puns, and superiority would be advantageous. This could help to better understand how different modeling strategies can identify different root causes of humor. We would also want to design Subtask 2 to be more independent of Subtask 1 to encourage fresh approaches for Subtask 2. Finally, improving the common sense and world knowledge understanding capabilities of AI systems will be crucial for substantially improving the performance of computational humor systems. We hope that both the current results and the dataset in this task provide a stepping stone towards this goal.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: The funny headline data annotation interfaces. When editing, only the underlined tokens are replaceable.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Overall and antipodal RMSE of the ranked participating systems and BASELINE for Subtask 1.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head></head><label></label><figDesc>(a) Classification vs. incongruity.(b) Funniness gaps vs. classification.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>ID Original Headline (replaced word in bold) Substitute Rating Est. Err. R1 CNN 's Jake Tapper to interview Paul Ryan following retirement announcement wrestle 2.8 1.17 -1.63 R2 4 arrested in Sydney raids to stop terrorist attack kangaroo 2.6 1.06 -1.54 R3 Man Sets Off Explosive Device at L.A.-Area Cheesecake Factory, no Injuries complaints 2.4 0.80 -1.60 R4 5 dead, 9 injured in shooting at Fort Lauderdale Airport delay 1.2 0.49 -0.71 R5 Congress Struggles to Confront Sexual Harassment as Stories Pile Up increase 1.2 0.66 -0.54 R6 Congress Achieves the Impossible on Tax Reform toilet 0.8 1.35 +0.55 R7 Overdoses now leading cause of death of Americans under 50</figDesc><table><row><cell></cell><cell>sign</cell><cell>0.0</cell><cell>0.52 +0.52</cell></row><row><cell>R8 Noor Salman, widow of Orlando massacre shooter Omar Mateen, arrested</cell><cell>columnist</cell><cell>0.0</cell><cell>0.43 +0.43</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Summary of the subtasks and their datasets.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Benchmarks on the test set. The best within each model type is bolded, and the overall best is underlined.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Official results and benchmarks for Subtask 1.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 :</head><label>5</label><figDesc>Official results and benchmarks for Subtask 2.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">Task dataset: https://zenodo.org/record/3969509#.XyWh6fhKh24 2 Task competition page: https://competitions.codalab.org/competitions/20970</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">FunLines dataset: https://cs.rochester.edu/u/nhossain/funlines.html 4 FunLines game website: https://funlines.co</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">https://www.english-corpora.org/iweb/ 6 https://www.kaggle.com/snapcrack/all-the-news</note>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">UniTuebingenCL at SemEval-2020 task 7: Humor detection in news headlines</title>
+		<author>
+			<persName><forename type="first">Charlotte</forename><forename type="middle">Sophie</forename><surname>Ammer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lea</forename><forename type="middle">Hannah</forename><surname>Grüner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">LMML at SemEval-2020 task 7: Siamese transformers for rating humor in edited news headlines</title>
+		<author>
+			<persName><forename type="first">Pramodith</forename><surname>Ballapuram</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Automatic detection of irony and humour in twitter</title>
+		<author>
+			<persName><forename type="first">Francesco</forename><surname>Barbieri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Horacio</forename><surname>Saggion</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICCC</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="155" to="162" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">A long short-term memory framework for predicting humor in dialogues</title>
+		<author>
+			<persName><forename type="first">Dario</forename><surname>Bertero</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pascale</forename><surname>Fung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>San Diego, California</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016-06" />
+			<biblScope unit="page" from="130" to="135" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Ferryman at SemEval-2020 task 7: Ensemble model for assessing humor in edited news headlines</title>
+		<author>
+			<persName><forename type="first">Weilong</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jipeng</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chenghao</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Bai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yanru</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yan</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Overview of haha at iberlef 2019: Humor analysis based on human annotation</title>
+		<author>
+			<persName><forename type="first">Luis</forename><surname>Chiruzzo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Santiago</forename><surname>Castro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mathias</forename><surname>Etcheverry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diego</forename><surname>Garat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan José</forename><surname>Prada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aiala</forename><surname>Rosá</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Iberian Languages Evaluation Forum</title>
+				<meeting>the Iberian Languages Evaluation Forum<address><addrLine>Bilbao, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019-09" />
+		</imprint>
+	</monogr>
+	<note>CEUR Workshop Proceedings</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Hasyarasa at SemEval-2020 task 7: Quantifying humor as departure from expectedness</title>
+		<author>
+			<persName><forename type="first">Ranit</forename><surname>Ravi Theja Desetty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Smita</forename><surname>Chatterjee</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ghaisas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019-06" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">HumorAAC at SemEval-2020 task 7: Assessing the funniness of edited news headlines through regression and Trump mentions</title>
+		<author>
+			<persName><forename type="first">Anna-Katharina</forename><surname>Dick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charlotte</forename><surname>Weirich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alla</forename><surname>Kutkina</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Docekal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Fajcik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Josef</forename><surname>Jon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pavel</forename><surname>Smrz</surname></persName>
+		</author>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>JokeMeter at SemEval-2020 task 7: Convolutional humor. SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Irony and sarcasm: Corpus generation and analysis using crowdsourcing</title>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Filatova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Lrec</title>
+				<imprint>
+			<publisher>Citeseer</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="392" to="398" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Nabil Hossain, and Rada Mihalcea. 2020</title>
+		<author>
+			<persName><forename type="first">Aparna</forename><surname>Garimella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carmen</forename><surname>Banea</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2006.00578</idno>
+	</analytic>
+	<monogr>
+		<title level="m">YodaLib: A demographic-aware humor generation framework</title>
+				<imprint/>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+	<note>Judge me by my size (noun), do you</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Filling the blanks (hint: plural noun) for mad Libs humor</title>
+		<author>
+			<persName><forename type="first">Nabil</forename><surname>Hossain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Krumm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lucy</forename><surname>Vanderwende</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Horvitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henry</forename><surname>Kautz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017-09" />
+			<biblScope unit="page" from="638" to="647" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">President vows to cut &lt;taxes&gt; hair&quot;: Dataset and analysis of creative text editing for humorous headlines</title>
+		<author>
+			<persName><forename type="first">Nabil</forename><surname>Hossain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Krumm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Gamon</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long and Short Papers</publisher>
+			<date type="published" when="2019-06" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="133" to="142" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Stimulating creativity with funlines: A case study of humor generation in headlines</title>
+		<author>
+			<persName><forename type="first">Nabil</forename><surname>Hossain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Krumm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tanvir</forename><surname>Sajed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henry</forename><surname>Kautz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL 2020, System Demonstrations</title>
+				<meeting>ACL 2020, System Demonstrations<address><addrLine>Seattle, Washington</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-07" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Buhscitu at SemEval-2020 task 7: Assessing humour in edited news headlines using hand-crafted features and online knowledge bases</title>
+		<author>
+			<persName><forename type="first">Nicolaj</forename><surname>Kristian Nørgaard Jensen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thai</forename><surname>Filrup Rasmussen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Placenti</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Plank</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Duluth at SemEval-2020 task 7: Using surprise as a key to unlock humorous headlines</title>
+		<author>
+			<persName><forename type="first">Shuning</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yue</forename><surname>Yin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiane</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ted</forename><surname>Pedersen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Bag of tricks for efficient text classification</title>
+		<author>
+			<persName><forename type="first">Armand</forename><surname>Joulin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Piotr</forename><surname>Bojanowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Conference of the European Chapter</title>
+				<meeting>the 15th Conference of the European Chapter<address><addrLine>Valencia, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017-04" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="427" to="431" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">SSN NLP at SemEval-2020 task 7: Detecting funniness level using traditional learning with sentence embeddings</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Kayalvizhi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aravindan</forename><surname>Thenmozhi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Chandrabose</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">ELMo-NB at SemEval-2020 task 7: Assessing sense of humor in edited news headlines using ELMo and NB</title>
+		<author>
+			<persName><forename type="first">Enas</forename><surname>Khwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muntaha</forename><surname>Al</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">That&apos;s what she said: double entendre identification</title>
+		<author>
+			<persName><forename type="first">Chloe</forename><surname>Kiddon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuriy</forename><surname>Brun</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies: short papers</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies: short papers</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="89" to="94" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<author>
+			<persName><forename type="first">Yinhan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jingfei</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mandar</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqi</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Omer</forename><surname>Levy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mike</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1907.11692</idno>
+		<title level="m">RoBERTa: A robustly optimized bert pretraining approach</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">2020. funny3 at SemEval-2020 task 7: Humor detection of edited headlines with LSTM and TFIDF neural network system</title>
+		<author>
+			<persName><forename type="first">Xuefeng</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kuan</forename><surname>Tang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint/>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">XSYSIGMA at SemEval-2020 task 7: Method for predicting headlines&apos; humor based on auxiliary sentences with EI-Bert</title>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Ma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shu-Yi</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mei-Zhi</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lian-Xin</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yang</forename><surname>Mo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian-Ping</forename><surname>Shen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">LRG at SemEval-2020 task 7: Assessing the ability of BERT and derivative models to perform short-edits based humor grading</title>
+		<author>
+			<persName><forename type="first">Siddhant</forename><surname>Mahurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rajaswa</forename><surname>Patil</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Smash at SemEval-2020 task 7: Optimizing the hyperparameters of ERNIE 2.0 for humor ranking and rating</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">A</forename><surname>Meaney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><forename type="middle">R</forename><surname>Wilson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walid</forename><surname>Magdy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Making computers laugh: Investigations in automatic humor recognition</title>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlo</forename><surname>Strapparava</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Human Language Technology Conference and Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>Human Language Technology Conference and Conference on Empirical Methods in Natural Language Processing<address><addrLine>Vancouver, British Columbia, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2005-10" />
+			<biblScope unit="page" from="531" to="538" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Distributed representations of words and phrases and their compositionality</title>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Greg</forename><forename type="middle">S</forename><surname>Corrado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeff</forename><surname>Dean</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="3111" to="3119" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">SemEval-2017 task 7: Detection and interpretation of English puns</title>
+		<author>
+			<persName><forename type="first">Tristan</forename><surname>Miller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Hempelmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017)</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation (SemEval-2017)<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2017-08" />
+			<biblScope unit="page" from="58" to="68" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">KdeHumor at SemEval-2020 task 7: A neural network model for detecting funniness in dataset humicroedit</title>
+		<author>
+			<persName><forename type="first">Rida</forename><surname>Miraj</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Masaki</forename><surname>Aono</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Hitachi at SemEval-2020 task 7: Stacking at scale with heterogeneous language models for humor recognition</title>
+		<author>
+			<persName><forename type="first">Terufumi</forename><surname>Morishita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gaku</forename><surname>Morio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroaki</forename><surname>Ozaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toshinori</forename><surname>Miyoshi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title level="m" type="main">Philosophy of humor</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Morreall</surname></persName>
+		</author>
+		<editor>Edward N. Zalta</editor>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+		<respStmt>
+			<orgName>The Stanford Encyclopedia of Philosophy. Metaphysics Research Lab, Stanford University</orgName>
+		</respStmt>
+	</monogr>
+	<note>winter 2016 edition</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">UTFPR at SemEval-2020 task 7: Using co-occurrence frequencies to capture unexpectedness</title>
+		<author>
+			<persName><forename type="first">Gustavo</forename><forename type="middle">H</forename><surname>Paetzold</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)<address><addrLine>Doha, Qatar</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2014-10" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Deep contextualized word representations</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Gardner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018-06" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="2227" to="2237" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Semeval-2017 task 6:# hashtagwars: Learning a sense of humor</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Potash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexey</forename><surname>Romanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Rumshisky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="49" to="57" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Language models are unsupervised multitask learners</title>
+		<author>
+			<persName><forename type="first">Alec</forename><surname>Radford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rewon</forename><surname>Child</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Luan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dario</forename><surname>Amodei</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">OpenAI Blog</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page">9</biblScope>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Automatic humor classification on twitter</title>
+		<author>
+			<persName><forename type="first">Yishay</forename><surname>Raz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2012 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies: Student Research Workshop</title>
+				<meeting>the 2012 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies: Student Research Workshop</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="66" to="70" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">From humor recognition to irony detection: The figurative language of social media</title>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Reyes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Davide</forename><surname>Buscaldi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Data &amp; Knowledge Engineering</title>
+		<imprint>
+			<biblScope unit="volume">74</biblScope>
+			<biblScope unit="page" from="1" to="12" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Amobee at SemEval-2020 task 7: Regularization of language model based classifiers</title>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Rozental</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dadi</forename><surname>Biton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Blank</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">MLEngineer at SemEval-2020 task 7: BERTflair based humor detection model (BFHumor)</title>
+		<author>
+			<persName><forename type="first">Farah</forename><surname>Shatnawi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Malak</forename><surname>Abdullah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mahmoud</forename><surname>Hammad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">SO at SemEval-2020 task 7: DeepPavlov logistic regression with BERT embeddings vs SVR at funniness evaluation</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint/>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">YNU-HPCC at SemEval-2020 task 7: Using an ensemble biGRU model to evaluate the humor of edited news titles</title>
+		<author>
+			<persName><forename type="first">Joseph</forename><forename type="middle">J</forename><surname>Tomasulo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jin</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuejie</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Semeval-2018 task 3: Irony detection in english tweets</title>
+		<author>
+			<persName><forename type="first">Cynthia</forename><surname>Van Hee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Els</forename><surname>Lefever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th International Workshop on Semantic Evaluation</title>
+				<meeting>The 12th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="39" to="50" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Els Lefever, and Véronique Hoste. 2020. LT3 at SemEval-2020 task 7: Comparing feature-based and transformer-based approaches to detect funny headlines</title>
+		<author>
+			<persName><forename type="first">Bram</forename><surname>Vanroy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sofie</forename><surname>Labat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olha</forename><surname>Kaminska</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint/>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Wiseman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Laughlab. Arrow</title>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Xlnet: Generalized autoregressive pretraining for language understanding</title>
+		<author>
+			<persName><forename type="first">Zhilin</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zihang</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiming</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jaime</forename><surname>Carbonell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Russ</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc V</forename><surname>Salakhutdinov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Le</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in neural information processing systems</title>
+				<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="5754" to="5764" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Recognizing humor on twitter</title>
+		<author>
+			<persName><forename type="first">Renxian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naishi</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd ACM International Conference on Conference on Information and Knowledge Management</title>
+				<meeting>the 23rd ACM International Conference on Conference on Information and Knowledge Management</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="889" to="898" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">WUY at SemEval-2020 task 7: Combining BERT and Naïve Bayes-SVM for humor assessment in edited news headlines</title>
+		<author>
+			<persName><forename type="first">Cheng</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hayato</forename><surname>Yamana</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">ECNU at SemEval-2020 task 7: Assessing humor in edited news headlines using biLSTM with attention</title>
+		<author>
+			<persName><forename type="first">Tiantian</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhixuan</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Man</forename><surname>Lan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>SemEval-2020</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

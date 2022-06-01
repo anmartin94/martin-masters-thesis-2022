@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">CLPsych 2018 Shared Task: Predicting Current and Future Psychological Health from Childhood Essays</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Veronica</forename><forename type="middle">E</forename><surname>Lynn</surname></persName>
+							<email>velynn@cs.stonybrook.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Stony Brook University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Alissa</forename><surname>Goodman</surname></persName>
+							<email>alissa.goodman@ucl.ac.uk</email>
+							<affiliation key="aff1">
+								<orgName type="institution">University College London</orgName>
+								<address>
+									<addrLine>3 Circadia Labs, 4 Qntfy</addrLine>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Kate</forename><surname>Niederhoffer</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Kate</forename><surname>Loveys</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Philip</forename><surname>Resnik</surname></persName>
+							<email>resnik@umd.edu</email>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Maryland</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">H</forename><forename type="middle">Andrew</forename><surname>Schwartz</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">Stony Brook University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">CLPsych 2018 Shared Task: Predicting Current and Future Psychological Health from Childhood Essays</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:31+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We describe the shared task for the CLPsych 2018 workshop, which focused on predicting current and future psychological health from an essay authored in childhood. Language-based predictions of a person's current health have the potential to supplement traditional psychological assessment such as questionnaires, improving intake risk measurement and monitoring. Predictions of future psychological health can aid with both early detection and the development of preventative care. Research into the mental health trajectory of people, beginning from their childhood, has thus far been an area of little work within the NLP community. This shared task represents one of the first attempts to evaluate the use of early language to predict future health; this has the potential to support a wide variety of clinical health care tasks, from early assessment of lifetime risk for mental health problems, to optimal timing for targeted interventions aimed at both prevention and treatment.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The ability to accurately predict current and future psychological health could be transformative in providing more personalized and efficient mental health care. Currently, the mental health care industry is strained and overworked, and many conditions are on the rise among certain populations. For example, suicide rates are climbing among veterans (USDVA, 2016) and youths <ref type="bibr">(CDC, 2017)</ref>.</p><p>Data-driven linguistic analysis offers a particularly attractive complement or alternative to traditional risk assessments, particularly in a clinical setting. Language analysis is often relatively fast and easy to conduct at scale. Further, whereas traditional risk assessments are typically limited to capturing one or a few psychological factors, language analysis has the advantage of being theoretically unlimited in what it can capture. By evaluating the relationship between linguistic markers and lifetime health outcomes, such research may provide benefits for intake assessment, monitoring, and preventative care.</p><p>Computational linguistics has now shown strong potential for aiding in mental health assessment and treatment. With few exceptions <ref type="bibr">(e.g. De Choudhury et al. (2016)</ref>, <ref type="bibr" target="#b22">Sadeque et al. (2016)</ref>), work thus far from the NLP community has focused on predicting current mental health from language, and most exceptions have still only looked at the short-term future. While such research is valuable, predictions about the long-term future can aid with another class of applications: the understanding of early life markers and development of preventative care.</p><p>Here we describe the CLPsych 2018 shared task, the purpose of which is to evaluate multiple methods for analyzing linguistic markers as a signal for current and future psychological outcomes (i.e. risk assessment). We present three tasks centered around this goal: Task A focuses on cross-sectional psychological health at age 11, based on essays written at childhood. Task B uses these childhood essays to measure psychological distress across multiple life stages. Finally, the Innovation Challenge seeks to predict language used forty years in the future.</p><p>The data for this work comes from the National Child Development Study <ref type="bibr" target="#b20">(Power and Elliott, 2006</ref>), a unique British study which follows a single, nationally-representative cohort of individuals over a sixty-year period starting at birth. The data available to shared task participants includes over ten thousand anonymized childhood essays, measures of psychological health taken at regular intervals, and adult writing at age 50, all collected as part of the NCDS study.</p><p>Related Work. Relatively little work has been done on future mental health predictions. De <ref type="bibr" target="#b1">Choudhury et al. (2013)</ref> examine depression in individuals by analyzing social media signals up to a year in advance of its reported onset. <ref type="bibr">Similarly, De Choudhury et al. (2016)</ref> aims to identify individuals who are likely to engage in suicidal ideation in the future. <ref type="bibr" target="#b22">Sadeque et al. (2016)</ref> predict whether posters on a mental health forum will leave the forum within a particular (one, six, or twelve month) time frame. In addition to these cases, some have used temporal information within cross-sectional analyses. <ref type="bibr" target="#b27">Zirikly et al. (2016)</ref>, for example, use timestamp data to help classify the severity levels of posts to a mental health forum. <ref type="bibr" target="#b11">Loveys et al. (2017)</ref> explore mental health within the context of micropatterns, or sequences of posts occurring within a small time frame. The goal of this shared task is to predict mental health not only at the time of writing, but years or decades into the future.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data Set</head><p>This shared task seeks to use childhood language to predict aspects of mental health at ages 11, 23, 33, 42, and 50. The data for this task comes from the National Child Development Study <ref type="bibr" target="#b20">(Power and Elliott, 2006)</ref> -also known as the 1958 British Birth Cohort Study -which follows a cohort of all children born in a single week in Great Britain, beginning in March 1958 and continuing until the present day. The study additionally includes a number of children who were born during the target week and who immigrated to Great Britain at or before age 16. This cohort has been followed since their birth and have been surveyed at various points in their life to monitor their progress across a wide range of life domains including their mental health.</p><p>Psychological health at age 11. The measure of psychological health at age 11 selected for this task was the Bristol Social Adjustment Guide (BSAG) <ref type="bibr" target="#b26">(Stott, 1963;</ref><ref type="bibr" target="#b7">Ghodsian, 1977)</ref>, as reported by the participants' teachers. The BSAG includes twelve subscales, plus a total score, that measure different aspects of childhood behavior. For example, teachers were asked if the stu-Figure <ref type="figure">1</ref>: Example of an essay written by an NCDS participant at age 11, imagining where they saw themself at age 25.</p><p>dents displayed characteristics such as "does not know what to do with himself, can never stick at anything long" or "miserable, depressed, seldom smiles". For the purposes of the shared task, we focused on the total BSAG score, as well as anxiety and depression subscales in order to mirror previous CLPsych tasks.</p><p>Psychological distress across the lifetime. The Malaise Inventory <ref type="bibr" target="#b21">(Rutter et al., 1970</ref>) is a measure of psychological distress, used to measure mental health of the cohort participants as adults, at ages 23, 33, 42, and 50. These scores represent the total score on a 9-item scale, where a value at or above 4 is the commonly adopted cutoff indicative of depression. The 9 items are:  These essays, in which childhood language captures the author's thoughts towards the future, are the primary focus for predicting lifetime mental health in this shared task. At age 50, participants were given a similar prompt to write about where they saw themselves at age 60; these were included as part of the Innovation Challenge described in Section 3. Figure <ref type="figure">1</ref> shows an example of the age 11 essays. Below is an excerpt from one of the digitally entered age 50 essays.</p><p>Hopefully I will still be in good health. I will have moved to a smaller property and will have paid off my mortgage. Making my financial position more comfortable. I anticipate I will still be working, probably still full time.</p><p>Controls. Two non-linguistic variables were included as controls -variables known to be important for childhood language and also to relate to current and future mental health which, therefore, are desirable to out-predict. These included biological sex and childhood social class, according to the father's occupation <ref type="bibr" target="#b4">(Elliott and Lawrence, 2014)</ref>. The NCDS data is rich with other childhood variables (such as cognitive exams). However, as we ultimately hope this task motivates more and more development of language-based assessments, we decided not to start with a "highbar" in terms of controls to out-predict, but rather controls that are almost always available in some form.</p><p>Table <ref type="table" target="#tab_1">1</ref> shows the size of the training and test sets across all outcomes. This dataset was chosen such that all instances contained an age 11 essay with at least 50 words, but one or more mental health outcomes may be missing. The test set was selected randomly and was released to shared task participants approximately one month after the training set with one week to produce predictions.</p><p>Privacy Considerations. Every effort had been made in the original study to anonymize the data. However, even de-identified data used for research purposes must obtain human subjects review at one's home institution. In the US, many university ethics boards already specifically list the NCDS data as "exempt" under the revised common rule, but only an institutional review board (IRB) can make the final decision. 1 Within manuscript submissions, all participants were required to affirm that they have had an appropriate review completed at their home organization. Participants were provided with a Template Letter containing information about the dataset in order to make the IRB process smooth for those who had not previously done research involving human subjects review. The Stony Brook University Institutional Review Board found the research analyses conducted by the authors of this manuscript to qualify as exempt.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Task Definitions</head><p>The shared task consisted of two subtasks, Task A (Cross-Sectional Psychological Health) and Task B (Future Psychological Health), which were designed to target both latitudinal (i.e. at the same time, across individuals) and longitudinal (i.e. assessed in the future) mental health prediction. In addition, teams were given the option to participate in the Innovation Challenge on Future Psychological Language Generation. Participants could choose which tasks to submit to.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Task A: Cross-Sectional Psychological Health</head><p>Task A involves an essay-based psychological assessment of a person's mental health at the time of writing, answering the question of what a person's language says about their current psychological health. For this task, participants were asked to predict the age 11 anxiety, depression, and total BSAG scores. They were provided with the age 11 essays and the socio-demographic controls (gender and social class), as well as the BSAG scores of the training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Task B: Future Psychological Health</head><p>Task B addresses the question of how well one predict, based on the childhood essays written at age 11, what a person's psychological health will be at different stages of life. Shared task participants were asked to predict the age 23, 33, 42, and 50 psychological distress scores. As in Task A, they were provided with the age 11 essays and socio-demographic controls. However, although they were given the training set psychological distress scores at ages 23, 33, and 42, the scores at age 50 were intentionally withheld. This was done in order to create an outcome that was out-of-sample across both people and time, roughly simulating a situation where one makes future predictions (i.e. forecasts) when the outcome has not yet happened.</p><p>Participants were given the option of whether or not to submit age 50 predictions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Innovation Challenge: Future Language Generation</head><p>One of the limitations of traditional psychological assessments is that they typically only capture one or a few psychological factors. In contrast, language has been shown to capture many aspects of an individual <ref type="bibr" target="#b18">(Pennebaker, 2011;</ref><ref type="bibr" target="#b0">Coppersmith et al., 2014;</ref><ref type="bibr" target="#b23">Schwartz and Ungar, 2015;</ref><ref type="bibr" target="#b9">Kern et al., 2016)</ref>, making language-based assessments an attractive compliment or alternative. Language generation tools for mental health could indicate whether an individual is likely to produce signs of mental distress in future, e.g. "I want to end my life." Should language generation tools be adequately reliable and valid indicators of future mental health states, these tools could serve as a means of identifying individuals who could be targeted for early intervention or preventative treatments. The Innovation Challenge is a difficult task intended to motivate methods that move the field towards using more open-vocabulary outputs in psychological predictions. At age 50, the NCDS participants were asked to write a short essay on where they saw themselves ten years in the future -similar to the essays they wrote at age 11. The goal of the Innovation Challenge is to use the age 11 essays to generate the language used in the age 50 essays. Shared task participants were provided with the age 11 essays and controls of the training and testing instances, as well as the age 50 essays from the training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation</head><p>In this section, we describe the official metrics used for evaluating the shared task. We also present the baseline systems developed by the shared task organizers against which to compare the participants.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Tasks A and B</head><p>For Tasks A and B, the official metric used for ranking submissions was a disattenuated correlation based on the Pearson Product-Moment Correlation Coefficient <ref type="bibr" target="#b25">(Spearman, 1904)</ref> between the predicted and actual mental health outcomes. This metric, though isomorphic to a Pearson correlation, accounts for measurement error and therefore produces values with larger variance, making it easier to draw comparisons between system performances. We take the measurement error from literature on the reliability of the adult psychological distress measure (r meas1 = 0.77; <ref type="bibr" target="#b19">Ploubidis et al. (2017)</ref>) and of similar, languagebased prediction measures (r meas2 = 0.70; <ref type="bibr">Park et al. (2015)</ref>). The metric is thus:</p><formula xml:id="formula_0">r dis = r P earson √ r meas1 • r meas2</formula><p>In addition to the disattenuated correlation, we also report the Mean Absolute Error (MAE) for all outcomes, as it is common to use methods that optimize error-based metrics. MAE provides another interpretation of accuracy -on average, how far were predictions off from the real predictions (see Table <ref type="table" target="#tab_1">1</ref> for descriptives; a 9-point scale in the case of Task B).</p><p>For Task A, participants were asked to predict the age 11 anxiety, depression, and total BSAG scores. The disattenuated Pearson correlation of the total BSAG score was used for overall system  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Innovation Challenge</head><p>To evaluate the Innovation Challenge we compute the BLEU Score <ref type="bibr" target="#b14">(Papineni et al., 2002)</ref>, a measure commonly used for evaluating machine translation models, between the generated age 50 essay and the actual essay. We then report the average BLEU score across all documents. However, BLEU is not a perfect metric for this task. First, it was intended to be used to compare entire corpora, not individual documents as we do here. Second, this score was designed for machine translation, which our task is not. Instead, we are trying to predict a person's response to an open-ended prompt, based on their response to a similar prompt forty years prior. For these reasons, we employ a second metric for evaluation based on the semantic similarity between the predicted and actual essays. Here, we represent each age 50 essay using document-level embeddings -computed as the average embedding for all words in the document -and measure the cosine similarity between the generated essay's embedding and that of the actual essay. The word-level embeddings are Word2Vec <ref type="bibr" target="#b12">(Mikolov et al., 2013)</ref> embeddings learned from the age 50 essay training set; words that appeared less than ten times were replaced with an out-of-vocabulary token. This approach is similar to that of <ref type="bibr" target="#b6">Garten et al. (2017)</ref>, which uses embeddings to capture semantic similarity when applying psychological lexica. It's also similar in motivation to metrics like TERp <ref type="bibr" target="#b24">(Snover et al., 2009)</ref> and ME-TEOR (Denkowski and Lavie, 2014) which leverage semantic similarity for evaluating language generation. For this metric, we report the average cosine similarity across all essays.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Baseline Systems</head><p>For Tasks A and B, we used a Ridge Regression model trained over unigrams extracted from the age 11 essays to predict each of the psychologi-  In addition to the unigrams baseline, we train Ridge Regression models using only the sociodemographic control variables. We produce gender, social class, and gender + social class baselines against which to compare. We encode social class both using a six-point scale and as one-hot features. To produce the age 50 baseline predictions, where no training data was provided, we used the average of the age 23, 33, and 42 predictions.</p><note type="other">Total Anxiety Depression R</note><p>We used the OpenNMT-py library <ref type="bibr" target="#b10">(Klein et al., 2017)</ref> to train a baseline model for the Innovation Challenge. This model, an LSTM Encoder/Decoder, used 2048-dimensional word embeddings and hidden states, but otherwise used the library default settings. 500 instances from the training set were held out for parameter tuning.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participant Approaches and Results</head><p>This section summarizes the approaches taken by participants for each of the tasks, as well as the results obtained by each. Participants were allowed to submit up to two times per task. Overall, there were twenty submissions across eight teams. 2</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Task A</head><p>Seven teams participated in Task A, with two teams submitting twice, for a total of nine submissions. An overview of the approaches taken is provided in Table <ref type="table" target="#tab_3">2</ref>. Most teams used some form of regularized linear regression in their models, though using an ensemble of techniques was common. Neural networks were also tried, though typically in conjunction with linear models.</p><p>Table <ref type="table" target="#tab_5">3</ref> shows the results of Task A. Despite the complexity of some of the submitted systems, the top performing team, Çöltekin et al., simply used regularized linear regression with characterand word-level n-gram features. From the participant system descriptions, we believe this was the only system to use character n-grams in addition to word n-grams.</p><p>The second place system, UGent -IDLab 1, is an ensemble of many different techniques: ridge regression, SVMs, boosting, and CNNs, RNNs, and feed-forward neural networks. They considered multiple feature types, including TF-IDF, number of spelling mistakes, average word length,   <ref type="table">4</ref>: Results for Task B, measured using both the Disattenuated Pearson R and the Mean Absolute Error. The official ranking metric is the average Disattenuated R across ages 23, 33, and 42. Bold indicates the best result among participants for each column. *Participants were not required to submit predictions for age 50, for which no training data was provided to simulate a true prospective prediction. and sentiment. Like this UGent -IDLab team, many of the top systems used ensemble techniques; their strong performance is likely due to using a combination of models that were able to pick up on different signals in the data.</p><p>The results for depression generally followed a similar ordering to the total scores, with teams that performed better at predicting the total BSAG scores also doing well at predicting the depression scores. However, this was not the case for anxiety. There, the performance was somewhat random across the teams, with the top performing system for anxiety, Guntuku et al., having the lowest performance for the total scores.</p><p>Out of the nine submissions, six systems beat our Ridge-Unigrams baseline for total BSAG, three for anxiety, and two for depression. The socio-demographic control baselines performed significantly worse than the language-based systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Task B</head><p>Task B received nine submissions from seven teams. An overview of the participant systems is shown in Table <ref type="table" target="#tab_3">2</ref> and the results are in Table <ref type="table">4</ref>.</p><p>The top performing system was submitted by Çöltekin et al. As with Task A, they trained a lin-ear regression model with L2 regularization over character and word n-gram features. Their system obtained the highest average disattenuated R for ages 23, 33, and 42, as well as the highest R-Dis for age 33 itself. Çöltekin et al. indicated that this model was actually intended to be their 'baseline system', but they found it to out-predict more sophisticated models such as Poisson regression and deep networks. This is also supported by the overall results in that submissions indicating use of neural nets (CNNs, RNNs, or FFNNs) came in lower positions but still mostly within the upperhalf of rankings.</p><p>TTU had the highest R-Dis for age 23, as well as the second-best performing system overall. They used a linear mixed-effects regression model with intercepts based on the gender and social class controls. Their features included a number of lexica including LIWC <ref type="bibr" target="#b17">(Pennebaker et al., 2015)</ref>, the Moral Foundations Dictionary <ref type="bibr" target="#b8">(Graham et al., 2009)</ref>, and LDA-derived terms. Of significance, this was the only system that did not simply treat the controls as additional features. Instead, by using intercepts based on the controls, their model focused on using the essays to predict what was not accounted for by the controls.</p><p>Overall, our baselines were very strong, BLEU W2V Sim.  with Gender, Gender+Social Class, and Ridge-Unigrams all performing competitively with the participant systems. Surprisingly, the Gender baseline produced the single best result across all systems at age 42.</p><p>The age 50 predictions were challenging, as they were out-of-sample across both time and people. A common technique was to simply reuse the age 42 predictions or, in the case of our baseline model, to take the average across the age 23, 33, and 42 predictions. In contrast, Simchon &amp; Gilead used time series analysis to produce the age 50 predictions, which ultimately ended up significantly outperforming the other systems. As one might expect, the performance of all systems generally worsened the farther in the future they were asked to predict. However, the strong performance of Simchon &amp; Gilead's approach suggests that this task is still doable.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Innovation Challenge</head><p>The results for the Innovation Challenge are shown in Table <ref type="table" target="#tab_9">5</ref>. There were two submissions, both by Liu et al. This was a very difficult task, both due to the very small training set size (by deep learning standards) and the difficulty of predicting the answer to an open-ended question forty years in the future.</p><p>The top submission, Liu et al. 1, generates the age 50 essays using an RNN. The generated essays are coherent, using full sentences and reasonable grammar. However, these outputs suffer from a common problem with deep learning approaches to language generation: the model has simply memorized the training set, rather than learning to produce novel text. A comparison between the generated essays from Liu et al. 1 and the training set shows that 99.6% of trigrams ap-pearing in the generated essays also appear in the training set. In addition, 31.9% of the generated essays appear in their entirety in the training set.</p><p>The second submission, Liu et al. 2, uses both RNNs and LSTMs for generation. It's not surprising that this more complicated model would perform worse than the simpler Liu et al. 1, given that the overall training set size is quite small. Unlike the previous submission, the generated essays from this model are often nonsensical, with outputs such as: still working in the same as i am still working and enjoying my children and enjoy my children and enjoy my children and enjoy my children... This repetition of words or phrases is another common problem in language generation, often stemming from a lack of training data.</p><p>Despite obtaining a decent BLEU score, our baseline system suffers from a similar repetition problem. The limitations of BLEU, as outlined in Section 4.2, are evidenced by the inflated score for the baseline system. The Embedding Similarity score more reasonably reflects the quality of the generated essays, based on our own observations. Instead of attempting to generate the age 50 essays themselves, an alternative would be to predict the relative frequency of words deemed psychologically relevant according to literature (e.g. singular versus plural pronouns; 'excited', 'hate', 'friends'). This problem is likely simpler, as it can be approached using regression instead of generation, but would still capture meaningful aspects of language for further analysis. We also suggest future systems consider pretraining or creating embeddings using deep learning over a larger data set of childhood writing and then fitting such models to this specific data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Discussion</head><p>Considering the results in relation to the clinical use of childhood essays to assess mental health, several points are of significance. First, we saw a gradual trend of psychological outcomes becoming more difficult to predict, with age 11 BSAG scores being easiest (though a different type of outcome) and age 42 psychological distress being the hardest. This suggests that, as one might expect, the difficulty of a mental health prediction increases as its temporal distance from the observed language increases. Still, age 50 psychological distress was predicted better than 42.</p><p>Predominantly, essay-based predictions were more accurate than those from gender and social class alone. Thus, such assessments seem at least valuable in situations where mental health assessments are not easily available. They also suggest promise in situations where thorough mental health assessment is already available, but it is not clear if there is an incremental advantage at this point. For example, a Ridge Regression model trained on age 11 anxiety, depression, and total BSAG scores, along with the gender and social class controls, obtained an average R-Dis of .348 for predicting psychological distress at ages 23, 33, and 42, which slightly outperformed participating systems that were based only on the essays, gender, and social class. This result provides a good target for future researchers to work towards.</p><p>Based on the current results, essay-based assessments may be most valuable where administering detailed assessments is particularly costly or burdensome (relative to the cost or burden of collecting open text), or where a wider set of nontheory driven information is likely to be especially valuable. In the end, we see this consistent result, across all teams using a variety of approaches, as evidence for the strength of language-based assessments for current and future mental health.</p><p>We suggest next steps toward clinical use include: (1) continued improvement of model predictive accuracy, (2) further evaluation of the statistical and psychometric properties of such assessments in comparison to existing standards, and (3) careful trial deployment of language-based assessments in clinical practices -only seen by trained and experienced mental health professionals who would evaluate their utility and ultimately guide us toward a randomized controlled trial of language-based assessments within clinical treatment regimens.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>The CLPsych 2018 shared task sought to examine the power of childhood essays as a predictor of lifetime mental health. Task A took a crosssectional approach, using essays written at age 11 to predict mental well-being outcomes from the same age. Looking towards the long term, Task B used the age 11 essays to estimate psychologi-cal distress across multiple life stages. The Innovation Challenge, which tasked participants with generating language forty years in the future, was intended to motivate a more open-vocabulary approach to psychological health predictions. The unique data for this task, following a nationally representative cohort of over 10,000 children over their lifetimes, is made available via the UK Data Service for further research use, 3 thus providing a resource for making further advances towards effective clinical use of computational linguistics.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1</head><label>1</label><figDesc></figDesc><table><row><cell>: Number of training and testing instances</cell></row><row><cell>available across all outcomes. Age 11 essays were</cell></row><row><cell>provided for all instances. Mean (along with stan-</cell></row><row><cell>dard deviation) is based on the test data. Partici-</cell></row><row><cell>pants were not provided with training data for age</cell></row><row><cell>50 distress in order to measure out-of-sample per-</cell></row><row><cell>formance.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Attributes of participant systems for Tasks A and B. Overall, there were eighteen submissions from eight teams. Methods used are Neural Networks (NN), Regularized (i.e. Ridge, Lasso, ElasticNet) Linear Regression (LR), Support Vector Regression (SVR) and Ensemble Techniques (E). rankings. For Task B, participants predicted the psychological distress scores at ages 23, 33, 42, and, optionally, 50. In order to rank participants, we took the mean of the disattenuated Pearson correlation across the age 23, 33, and 42 predictions.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Results for Task A, measured using both the Disattenuated Pearson R and the Mean Absolute Error. The Total Disattenuated R is the official ranking metric. Bold indicates the best result among participants for each column. cal health outcomes. Unigrams were restricted to those used by at least 1% of users (roughly 1,000 unigrams) and encoded as both booleans and relative frequencies. The ridge penalty was tuned using cross validation over the entire training set.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head></head><label></label><figDesc>Dis MAE R-Dis MAE R-Dis MAE R-Dis MAE R-Dis MAE Baselines Gender 0.282 1.19 0.366 1.13 0.262 1.10 0.217 1.35 0.236 1.33 Social Class 0.088 1.22 0.168 1.17 0.126 1.10 -0.029 1.39 0.079 1.36</figDesc><table><row><cell>Avg. 23-42</cell><cell>Age 23</cell><cell>Age 33</cell><cell>Age 42</cell><cell>Age 50*</cell></row><row><cell cols="6">R-Gender+Soc. Class 0.293 1.18 0.404 1.11 0.284 1.09 0.192 1.35 0.247 1.33</cell></row><row><cell cols="6">Ridge-Unigrams 0.295 1.20 0.406 1.14 0.283 1.09 0.197 1.37 0.257 1.34</cell></row><row><cell cols="6">Participant Systems Çöltekin et al. 0.319 1.09 0.443 1.01 0.318 0.99 0.196 1.28 TTU 0.314 1.18 0.457 1.09 0.277 1.09 0.208 1.35 UKNLP 1 0.306 1.09 0.431 1.01 0.290 0.98 0.198 1.28 0.231 1.30 ----</cell></row><row><cell cols="6">Guntuku et al. 0.290 1.12 0.387 1.06 0.271 1.01 0.211 1.28 0.008 1.42 Simchon &amp; Gilead 0.276 1.08 0.454 0.99 0.246 0.95 0.128 1.31 0.301 1.29 Radford et al. 1 0.230 1.17 0.396 1.08 0.105 1.08 0.189 1.34 0.209 1.39</cell></row><row><cell cols="6">UKNLP 2 0.226 1.15 0.378 1.04 0.188 0.99 0.112 1.42 0.168 1.35</cell></row><row><cell cols="4">Liu et al. 0.202 1.39 0.227 1.45 0.233 1.18 0.146 1.55</cell><cell>-</cell><cell>-</cell></row><row><cell cols="6">Radford et al. 2 0.179 1.17 0.368 1.09 -0.040 1.10 0.210 1.33 0.214 1.37</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table</head><label></label><figDesc></figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5</head><label>5</label><figDesc></figDesc><table><row><cell>: Results for the Innovation Challenge,</cell></row><row><cell>measured using the BLEU score and the cosine</cell></row><row><cell>similarity between document word embeddings.</cell></row><row><cell>Bold indicates the best result among participants</cell></row><row><cell>for each column.</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://www.hhs.gov/ohrp/regulations-andpolicy/regulations/finalized-revisions-commonrule/index.html</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">Twenty teams signed up to participate but only 8 teams submitted predictions in the end. Some teams that did not submit cited the tight timeline and being dissatisfied with results as reasons for dropping out.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3"> www.ukdataservice.ac.uk, www.cls.ioe.  ac.uk/page.aspx?&amp;sitesectionid=724   </note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We thank the UK ESRC for their support of essay transcriptions and initial analyses. We also thank Deven Shah, Anvesh Myla, Youngseo Son, Kiranmayi Kasarapu, Keshav Gupta, Neelaabh Gupta, and Deepak Gupta for their assistance with establishing baselines.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Quantifying mental health signals in Twitter</title>
+		<author>
+			<persName><forename type="first">Glen</forename><surname>Coppersmith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Dredze</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Craig</forename><surname>Harman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Computational Linguistics and Clinical Psychology: From Linguistic Signal to Clinical Reality</title>
+				<meeting>the Workshop on Computational Linguistics and Clinical Psychology: From Linguistic Signal to Clinical Reality</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="51" to="60" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Predicting depression via social media</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Munmun De Choudhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott</forename><surname>Gamon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Counts</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Horvitz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Conference on Weblogs and Social Media</title>
+				<meeting>the AAAI Conference on Weblogs and Social Media</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Discovering shifts to suicidal ideation from mental health content in social media</title>
+		<author>
+			<persName><forename type="first">Emre</forename><surname>Munmun De Choudhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Kiciman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Glen</forename><surname>Dredze</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mrinal</forename><surname>Coppersmith</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kumar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CHI Conference on Human Factors in Computing Systems</title>
+				<meeting>the CHI Conference on Human Factors in Computing Systems</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="2098" to="2110" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Meteor universal: Language specific translation evaluation for any target language</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Denkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alon</forename><surname>Lavie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Ninth Workshop on Statistical Machine Translation</title>
+				<meeting>the Ninth Workshop on Statistical Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="376" to="380" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Refining Childhood Social Class Measures in the</title>
+		<author>
+			<persName><forename type="first">Jane</forename><surname>Elliott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jon</forename><surname>Lawrence</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">British Birth Cohort Study. Centre for Longitudinal Studies</title>
+		<imprint>
+			<date type="published" when="1958" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Quickstats: Suicide rates for teens aged 15-19 years, by sex -United States</title>
+	</analytic>
+	<monogr>
+		<title level="j">Morbidity and Mortality Weekly Report</title>
+		<imprint>
+			<date type="published" when="1975" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Dictionaries and distributions: Combining expert knowledge and large scale textual data content analysis</title>
+		<author>
+			<persName><forename type="first">Justin</forename><surname>Garten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joe</forename><surname>Hoover</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kate</forename><forename type="middle">M</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reihane</forename><surname>Boghrati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carol</forename><surname>Iskiwitch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Morteza</forename><surname>Dehghani</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Children&apos;s behaviour and the bsag: Some theoretical and statistical considerations</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ghodsian</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">British Journal of Clinical Psychology</title>
+		<imprint>
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="23" to="28" />
+			<date type="published" when="1977" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Liberals and conservatives rely on different sets of moral foundations</title>
+		<author>
+			<persName><forename type="first">Jesse</forename><surname>Graham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Haidt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brian</forename><forename type="middle">A</forename><surname>Nosek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Personality and Social Psychology</title>
+		<imprint>
+			<biblScope unit="volume">96</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page">1029</biblScope>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Gaining insights from social media language: Methodologies and challenges</title>
+		<author>
+			<persName><forename type="first">Margaret</forename><forename type="middle">L</forename><surname>Kern</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gregory</forename><surname>Park</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johannes</forename><forename type="middle">C</forename><surname>Eichstaedt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">Andrew</forename><surname>Schwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maarten</forename><surname>Sap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><forename type="middle">K</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lyle</forename><forename type="middle">H</forename><surname>Ungar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Psychological Methods</title>
+		<imprint>
+			<biblScope unit="volume">21</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page">507</biblScope>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Open-NMT: Open-source toolkit for neural machine translation</title>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Klein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoon</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuntian</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Senellart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><forename type="middle">M</forename><surname>Rush</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Small but mighty: Affective micropatterns for quantifying mental health from social media language</title>
+		<author>
+			<persName><forename type="first">Kate</forename><surname>Loveys</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Crutchley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emily</forename><surname>Wyatt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Glen</forename><surname>Coppersmith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Computational Linguistics and Clinical Psychology: From Linguistic Signal to Clinical Reality</title>
+				<meeting>the Workshop on Computational Linguistics and Clinical Psychology: From Linguistic Signal to Clinical Reality</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="85" to="95" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Distributed representations of words and phrases and their compositionality</title>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Greg</forename><surname>Corrado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Dean</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NIPS</title>
+				<meeting>NIPS</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Department of Veterans Affairs. Office of Mental Health and Suicide Prevention</title>
+		<author>
+			<persName><forename type="first">U</forename><forename type="middle">S</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Suicide among veterans and other Americans</title>
+				<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">BLEU: a method for automatic evaluation of machine translation</title>
+		<author>
+			<persName><forename type="first">Kishore</forename><surname>Papineni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Salim</forename><surname>Roukos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Todd</forename><surname>Ward</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei-Jing</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Association for Computational Linguistics</title>
+				<meeting>the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Gregory</forename><surname>Park</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">Andrew</forename><surname>Schwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johannes</forename><forename type="middle">C</forename><surname>Eichstaedt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Margaret</forename><forename type="middle">L</forename><surname>Kern</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michal</forename><surname>Kosinski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>David</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Automatic personality assessment through social media language</title>
+		<author>
+			<persName><forename type="first">Lyle</forename><forename type="middle">H</forename><surname>Stillwell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><forename type="middle">E P</forename><surname>Ungar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Seligman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Personality and Social Psychology</title>
+		<imprint>
+			<biblScope unit="volume">108</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page">934</biblScope>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">W</forename><surname>Pennebaker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">J</forename><surname>Booth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">L</forename><surname>Boyd</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">E</forename><surname>Francis</surname></persName>
+		</author>
+		<title level="m">Linguistic inquiry and word count</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page">C2015</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">The Secret Life of Pronouns: What Our Words Say About Us</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pennebaker</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011" />
+			<publisher>Bloomsbury Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Psychological distress in mid-life: Evidence from the 1958 and 1970 British birth cohorts</title>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">B</forename><surname>Ploubidis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sullivan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Brown</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Goodman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Psychological Medicine</title>
+		<imprint>
+			<biblScope unit="volume">47</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="291" to="303" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Cohort profile: 1958 British birth cohort (National Child Development Study)</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Power</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Elliott</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Epidemiology</title>
+		<imprint>
+			<biblScope unit="volume">35</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="34" to="41" />
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">A Neuropsychiatric Study in Childhood</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Rutter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philip</forename><surname>Graham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><surname>Yule</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Clinics in Developmental Medicine. Heinemann Medical Books</title>
+		<imprint>
+			<date type="published" when="1970" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Why do they leave: Modeling participation in online depression forums</title>
+		<author>
+			<persName><forename type="first">Farig</forename><surname>Sadeque</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ted</forename><surname>Pedersen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thamar</forename><surname>Solorio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prasha</forename><surname>Shrestha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicolas</forename><surname>Rey-Villamizar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The Fourth International Workshop on Natural Language Processing for Social Media</title>
+				<meeting>The Fourth International Workshop on Natural Language Processing for Social Media</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="14" to="19" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Datadriven content analysis of social media: a systematic overview of automated methods</title>
+		<author>
+			<persName><forename type="first">H</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Schwartz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lyle</forename><forename type="middle">H</forename><surname>Ungar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The ANNALS of the American Academy of Political and Social Science</title>
+		<imprint>
+			<biblScope unit="volume">659</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="78" to="94" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Fluency, adequacy, or HTER?: Exploring different human judgments with a tunable MT metric</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Snover</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nitin</forename><surname>Madnani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bonnie</forename><surname>Dorr</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Schwartz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Workshop on Statistical Machine Translation</title>
+				<meeting>the Fourth Workshop on Statistical Machine Translation</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="259" to="268" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">The proof and measurement of association between two things</title>
+		<author>
+			<persName><forename type="first">Charles</forename><surname>Spearman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">American Journal of Psychology</title>
+		<imprint>
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="72" to="101" />
+			<date type="published" when="1904" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">The Social Adjustment of Children: Manual of the Bristol Social Adjustment Guides</title>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">H</forename><surname>Stott</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1963" />
+			<publisher>University of London Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">The GW/UMD CLPsych 2016 shared task system</title>
+		<author>
+			<persName><forename type="first">Ayah</forename><surname>Zirikly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Varun</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philip</forename><surname>Resnik</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Computational Lingusitics and Clinical Psychology</title>
+				<meeting>the Workshop on Computational Lingusitics and Clinical Psychology</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="166" to="170" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

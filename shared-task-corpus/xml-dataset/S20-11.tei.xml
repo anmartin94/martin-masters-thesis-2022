@@ -1,0 +1,2538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2020 Task 11: Detection of Propaganda Techniques in News Articles</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Giovanni</forename><surname>Da</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">San</forename><surname>Martino</surname></persName>
+							<email>gmartino@hbku.edu.qa</email>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Qatar Computing Research Institute</orgName>
+								<orgName type="institution" key="instit2">HBKU</orgName>
+								<address>
+									<country key="QA">Qatar</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Università di Bologna</orgName>
+								<address>
+									<settlement>Forlì</settlement>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Henning</forename><surname>Wachsmuth</surname></persName>
+							<email>henningw@upb.de</email>
+							<affiliation key="aff2">
+								<orgName type="institution">Paderborn University</orgName>
+								<address>
+									<settlement>Paderborn</settlement>
+									<country key="DE">Germany</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Rostislav</forename><surname>Petrov</surname></persName>
+							<email>rostislav.petrov@adata.pro</email>
+							<affiliation key="aff3">
+								<orgName type="institution">A Data Pro</orgName>
+								<address>
+									<settlement>Sofia</settlement>
+									<country key="BG">Bulgaria</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+							<email>pnakov@hbku.edu.qa</email>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Qatar Computing Research Institute</orgName>
+								<orgName type="institution" key="instit2">HBKU</orgName>
+								<address>
+									<country key="QA">Qatar</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2020 Task 11: Detection of Propaganda Techniques in News Articles</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We present the results and the main findings of SemEval-2020 Task 11 on Detection of Propaganda Techniques in News Articles. The task featured two subtasks. Subtask SI is about Span Identification: given a plain-text document, spot the specific text fragments containing propaganda. Subtask TC is about Technique Classification: given a specific text fragment, in the context of a full document, determine the propaganda technique it uses, choosing from an inventory of 14 possible propaganda techniques. The task attracted a large number of participants: 250 teams signed up to participate and 44 made a submission on the test set. In this paper, we present the task, analyze the results, and discuss the system submissions and the methods they used. For both subtasks, the best systems used pre-trained Transformers and ensembles.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Propaganda aims at influencing people's mindset with the purpose of advancing a specific agenda. It can hide in news published by both established and non-established outlets, and, in the Internet era, it has the potential of reaching very large audiences <ref type="bibr" target="#b64">(Muller, 2018;</ref><ref type="bibr" target="#b78">Tardáguila et al., 2018;</ref><ref type="bibr" target="#b33">Glowacki et al., 2018)</ref>. Propaganda is most successful when it goes unnoticed by the reader, and it often takes some training for people to be able to spot it. The task is way more difficult for inexperienced users, and the volume of text produced on a daily basis makes it difficult for experts to cope with it manually. With the recent interest in "fake news", the detection of propaganda or highly biased texts has emerged as an active research area. However, most previous work has performed analysis at the document level only <ref type="bibr" target="#b72">(Rashkin et al., 2017;</ref> or has analyzed the general patterns of online propaganda <ref type="bibr" target="#b32">(Garimella et al., 2015;</ref><ref type="bibr" target="#b13">Chatfield et al., 2015)</ref>.</p><p>SemEval-2020 Task 11 offers a different perspective: a fine-grained analysis of the text that complements existing approaches and can, in principle, be combined with them. Propaganda in text (and in other channels) is conveyed through the use of diverse propaganda techniques <ref type="bibr" target="#b62">(Miller, 1939)</ref>, which range from leveraging on the emotions of the audience -such as using loaded language or appeals to fearto using logical fallacies -such as straw men (misrepresenting someone's opinion), hidden ad-hominem fallacies, and red herring (presenting irrelevant data). Some of these techniques have been studied in tasks such as hate speech detection <ref type="bibr" target="#b31">(Gao et al., 2017)</ref> and computational argumentation <ref type="bibr" target="#b39">(Habernal et al., 2018)</ref>.</p><p>Figure <ref type="figure">1</ref> shows the fine-grained propaganda identification pipeline, including the two targeted subtasks. Our goal is to facilitate the development of models capable of spotting text fragments where propaganda techniques are used. The task featured the following subtasks: Subtask SI (Span Identification): Given a plain-text document, identify those specific fragments that contain at least one propaganda technique. (This is a binary sequence tagging task.)</p><p>Subtask TC (Technique Classification): Given a propagandistic text snippet and its document context, identify the propaganda technique used in that snippet. (This is a multi-class classification problem.)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Span Identification Technique Classification</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Task 1</head><p>Task 2 Input Output</p><p>Figure <ref type="figure">1</ref>: The full propaganda identification pipeline, including the two subtasks: Span Identification and Technique Classification.</p><p>A total of 250 teams registered for the task, 44 of them made an official submission on the test set (66 submissions for both subtasks), and 32 of the participating teams submitted a system description paper.</p><p>The rest of the paper is organized as follows. Section 2 introduces the propaganda techniques we considered in this shared task. Section 3 describes the organization of the task, the corpus and the evaluation measures. An overview of the participating systems is given in Section 4, while Section 5 discusses the evaluation results. Related work is described in Section 6. Finally, Section 7 draws some conclusions, and discusses some directions for future work.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Propaganda and its Techniques</head><p>Propaganda comes in many forms, but it can be recognized by its persuasive function, sizable target audience, the representation of a specific group's agenda, and the use of faulty reasoning and/or emotional appeals <ref type="bibr" target="#b62">(Miller, 1939)</ref>. The term propaganda was coined in the 17th century, and initially referred to the propagation of the Catholic faith in the New World <ref type="bibr">(Jowett and O'Donnell, 2012a, p. 2)</ref>. It soon took a pejorative connotation, as its meaning was extended to also mean opposition to Protestantism. In more recent times, the Institute for Propaganda Analysis <ref type="bibr" target="#b45">(Ins, 1938)</ref> proposed the following definition:</p><p>Propaganda. Expression of opinion or action by individuals or groups deliberately designed to influence opinions or actions of other individuals or groups with reference to predetermined ends. Recently, <ref type="bibr" target="#b12">Bolsover and Howard (2017)</ref> dug deeper into this definition identifying its two key elements: (i) trying to influence opinion, and (ii) doing so on purpose.</p><p>Propaganda is a broad concept, which runs short for the aim of annotating specific propaganda fragments. Yet, influencing opinions is achieved through a series of rhetorical and psychological techniques, and in the present task, we focus on identifying the use of such techniques in text. Whereas the definition of propaganda is widely accepted in the literature, the set of propaganda techniques considered, and to some extent their definition, differ between different scholars <ref type="bibr" target="#b83">(Torok, 2015)</ref>. For instance, <ref type="bibr" target="#b62">Miller (1939)</ref> considers seven propaganda techniques, whereas <ref type="bibr" target="#b88">Weston (2000)</ref> lists at least 24 techniques, and the Wikipedia article on the topic includes 67. <ref type="bibr">1</ref> Below, we describe the propaganda techniques we consider in the task: a curated list of fourteen techniques derived from the aforementioned studies. We only include techniques that can be found in journalistic articles and can be judged intrinsically, without the need to retrieve supporting information from external resources. For example, we do not include techniques such as card stacking <ref type="bibr">(Jowett and O'Donnell, 2012b, p. 237)</ref>, since it would require comparing multiple sources. Note that our list of techniques was initially longer than fourteen, but we decided, after the annotation phase, to merge similar techniques with very low frequency in the corpus. A more detailed list with definitions and examples is available online 2 and in Appendix C, and examples are shown in Table <ref type="table" target="#tab_0">1</ref>. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Repetition.</head><p>Repeating the same message over and over again, so that the audience will eventually accept it <ref type="bibr" target="#b83">(Torok, 2015;</ref><ref type="bibr" target="#b62">Miller, 1939)</ref>. 4. Exaggeration or minimization. Either representing something in an excessive manner: making things larger, better, worse or making something seem less important or smaller than it actually is <ref type="bibr">(Jowett and O'Donnell, 2012b, pag. 303)</ref>. 5. Doubt. Questioning the credibility of someone or something. 6. Appeal to fear/prejudice. Seeking to build support for an idea by instilling anxiety and/or panic in the population towards an alternative, possibly based on preconceived judgments. 7. Flag-waving. Playing on strong national feeling (or with respect to any group, e.g., race, gender, political preference) to justify or promote an action or idea <ref type="bibr" target="#b42">(Hobbs and Mcgee, 2008)</ref>. 8. Causal oversimplification. Assuming a single cause or reason when there are multiple causes behind an issue. We include in the definition also scapegoating, e.g., transferring the blame to one person or group of people without investigating the complexities of an issue. 9. Slogans. A brief and striking phrase that may include labeling and stereotyping. Slogans tend to act as emotional appeals <ref type="bibr" target="#b21">(Dan, 2015)</ref>. 10. Appeal to authority. Stating that a claim is true simply because a valid authority or expert on the issue supports it, without any other supporting evidence <ref type="bibr" target="#b34">(Goodwin, 2011)</ref>. We include in this technique the special case in which the reference is not an authority or an expert, although it is referred to as testimonial in the literature <ref type="bibr">(Jowett and O'Donnell, 2012b, pag. 237)</ref>. 11. Black-and-white fallacy, dictatorship. Presenting two alternative options as the only possibilities, when in fact more possibilities exist <ref type="bibr" target="#b83">(Torok, 2015)</ref>. Dictatorship is an extreme case: telling the audience exactly what actions to take, eliminating any other possible choice.</p><p>12. Thought-terminating cliché. Words or phrases that discourage critical thought and meaningful discussion on a topic. They are typically short, generic sentences that offer seemingly simple answers to complex questions or that distract attention away from other lines of thought <ref type="bibr">(Hunter, 2015, p. 78)</ref>. 13. Whataboutism, straw man, red herring. Here we merge together three techniques, which are relatively rare taken individually: (i) Whataboutism: Discredit an opponent's position by charging them with hypocrisy without directly disproving their argument <ref type="bibr" target="#b73">(Richter, 2017)</ref>. (ii) Straw man: When an opponent's proposition is substituted with a similar one, which is then refuted instead of the original <ref type="bibr" target="#b87">(Walton, 2013)</ref>. <ref type="bibr">Weston (2000, p. 78)</ref> specifies the characteristics of the substituted proposition: "caricaturing an opposing view so that it is easy to refute". (iii) Red herring: Introducing irrelevant material to the issue being discussed, so that everyone's attention is diverted away from the points made <ref type="bibr">(Weston, 2000, p. 78</ref>).</p><p>14. Bandwagon, reductio ad hitlerum. Here we merge together two techniques, which are relatively rare taken individually: (i) Bandwagon. Attempting to persuade the target audience to join in and take the course of action because "everyone else is taking the same action" <ref type="bibr" target="#b42">(Hobbs and Mcgee, 2008)</ref>. (ii) Reductio ad hitlerum: Persuading an audience to disapprove an action or idea by suggesting that it is popular with groups hated in contempt by the target audience. It can refer to any person or concept with a negative connotation <ref type="bibr" target="#b79">(Teninbaum, 2009)</ref>. We provided the definitions, together with some examples and an annotation schema, to professional annotators, and we asked them to manually annotate selected news articles. The annotators worked with an earlier version of the annotation schema, which contained eighteen techniques . As some of these techniques were quite rare, which could cause data sparseness issues for the participating systems, for the purpose of the present SemEval-2020 task 11, we decided to get rid of the four rarest techniques. In particular, we merged Red herring and Straw man with Whataboutism (under technique 13), since all three techniques are trying to divert the attention to an irrelevant topic and away from the actual argument. We further merged Bandwagon with Reductio ad hitlerum (under technique 14), since they both try to approve/disapprove an action or idea by pointing to what is popular/unpopular. Finally, we dropped one rare technique, which we could not easily merge with other techniques: Obfuscation, Intentional vagueness, Confusion. As a result, we reduced the eighteen original propaganda techniques to fourteen.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation Framework</head><p>The SemEval 2020 Task 11 evaluation framework consists of the PTC-SemEval20 corpus and the evaluation measures for both the span identification and the technique classification subtasks. We describe the organization of the task in Section 3.3; here, we focus on the dataset, the evaluation measure, and the organization setup.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">The PTC-SemEval20 Corpus</head><p>In order to build the PTC-SemEval20 corpus, we retrieved a sample of news articles from the period starting in mid-2017 and ending in early 2019. We selected 13 propaganda and 36 non-propaganda news media outlets, as labeled by Media Bias/Fact Check, 3 and we retrieved articles from these sources. We deduplicated the articles on the basis of word n-gram matching (Barrón-Cedeño and Rosso, 2009), and we discarded faulty entries, e.g., empty entries from blocking websites.</p><p>The annotation job consisted of both spotting a propaganda snippet and, at the same time, labeling it with a specific propaganda technique. The annotation guidelines are shown in Appendix C; they are also available online. <ref type="bibr">4</ref> We ran the annotation in two phases: (i) two annotators labeled an article independently, and (ii) the same two annotators gathered together with a consolidator to discuss dubious instances, e.g., spotted only by one annotator, boundary discrepancies, label mismatch, etc. This protocol was designed after a pilot annotation stage, in which a relatively large number of snippets had been spotted by one annotator only.</p><p>Manchin says Democrats acted like babies at the SOTU In a glaring sign of just how stupid and petty things have become in Washington these days <ref type="bibr">[...]</ref> State of the Union speech not looking as though Trump killed his grandma. <ref type="bibr">[...]</ref>  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Input article Annotation file</head><p>Article ID Technique Start End  The annotation team consisted of six professional annotators from A Data Pro, 5 trained to spot and to label the propaganda snippets in free text. The job was carried out on an instance of the Anafora annotation platform <ref type="bibr" target="#b15">(Chen and Styler, 2013)</ref>, which we tailored for our propaganda annotation task. Figure <ref type="figure">2</ref> shows an example of an article and its annotations.</p><p>We evaluated the quality of the annotation process in terms of γ agreement <ref type="bibr" target="#b59">(Mathet et al., 2015)</ref> between each of the annotators and the final gold labels. The γ agreement on the annotated articles is on average 0.6; see  for a more detailed discussion of inter-annotator agreement. The training and the development part of the PTC-SemEval20 corpus are the same as the training and the testing datasets described in . The test part of the PTC-SemEval20 corpus consists of 90 additional articles selected from the same sources as for training and development. For the test articles, we further extended the annotation process by adding one extra consolidation step: we revisited all the articles in that partition and we performed the necessary adjustments to the spans and to the labels as necessary, after a thorough discussion and convergence among at least three experts who were not involved in the initial annotations.</p><p>Table <ref type="table" target="#tab_3">2</ref> shows some statistics about the corpus we use for the task. It is worth noting that a number of propaganda snippets of different classes overlap. Hence, the number of snippets for the span identification subtask is smaller (e.g., 1,405 for the span identification subtask vs. 1,790 for the technique classification subtask on the test set). The full collection of 536 articles contains 8,981 propaganda text snippets, belonging to one of the above-described fourteen classes. Figure <ref type="figure" target="#fig_0">3</ref> zooms into such snippets and shows the number of instances and the mean length for each class. We can see that, by a large margin, the most common propaganda technique in our news articles is Loaded Language, which is about twice as frequent as the second most frequent technique: Name Calling or Labeling. Whereas these two techniques are among the ones that are expressed in the shortest spans, other propaganda techniques such as Exaggeration, Causal Oversimplification, and Slogans tend to be the longest.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Evaluation Measures</head><p>Subtask SI Evaluating subtask SI requires us to match text spans. Our SI evaluation function gives credit to partial matches between gold and predicted spans. Let d be a news article in a set D. A gold span t is a sequence of contiguous indices of the characters composing a text fragment t ⊆ d. For example, in Figure <ref type="figure" target="#fig_2">4</ref> (top-left) the gold fragment "stupid and petty" is represented by the set of indices t 1 = <ref type="bibr">[4,</ref><ref type="bibr">19]</ref>. We denote with T d = {t 1 , . . . , t n } the set of all gold spans for an article d and with T = {T d } d the set of all gold annotated spans in D. Similarly, we define S d = {s 1 , . . . , s m } and S to be the set of predicted spans for an article d and a dataset D, respectively. We compute precision P and recall R by adapting the formulas in <ref type="bibr" target="#b70">(Potthast et al., 2010)</ref>:</p><formula xml:id="formula_0">P (S, T ) = 1 |S| • d∈D s∈S d ,t∈T d |(s ∩ t)| |t| ,<label>(1)</label></formula><formula xml:id="formula_1">R(S, T ) = 1 |T | • d∈D s∈S d ,t∈T d |(s ∩ t)| |s| .<label>(2)</label></formula><p>We define Eq. (1) to be zero when |S| = 0 and Eq. (2) to be zero when |T | = 0. Notice that the predicted spans may overlap, e.g., spans s 3 and s 4 in Figure <ref type="figure" target="#fig_2">4</ref>. Therefore, in order for Eq. 1 and Eq. 2 to get values lower than or equal to 1, all overlapping annotations, independently of their techniques, are merged first. For example, s 3 and s 4 are merged into one single annotation, corresponding to s 4 .   Finally, the evaluation measure for subtask SI is the F 1 score, defined as the harmonic mean between P (S, T ) and R(S, T ):</p><formula xml:id="formula_2">F1(S, T ) = 2 • P (S, T ) • R(S, T ) P (S, T ) + R(S, T ) .<label>(3)</label></formula><p>Subtask TC Given a propaganda snippet in an article, subtask TC asks to identify the technique in it. Since there are identical spans annotated with different techniques (around 1.8% of the total annotations), formally this is a multi-label multi-class classification problem. However, we decided to consider the problem as a single-label multi-class one, by performing the following adjustments: (i) whenever a span is associated with multiple techniques, the input file will have multiple copies of such fragments and (ii) the evaluation function ensures that the best match between the predictions and the gold labels for identical spans is used for the evaluation. In other words, the evaluation score is not affected by the order in which the predictions for identical spans are submitted.</p><p>The evaluation measure for subtask TC is micro-average F 1 . Note that as we have converted this into a single-label task, micro-average F 1 is equivalent to Accuracy (as well as to Precision and to Recall).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Task Organization</head><p>We ran the shared task in two phases: Phase 1. Only training and development data were made available, and no gold labels were provided for the latter. The participants competed against each other to achieve the best performance on the development set. A live leaderboard was made available to keep track of all submissions.</p><p>Phase 2. The test set was released and the participants were given just a few days to submit their final predictions. The release of the test set was done task-by-task, since giving access to the input files for the TC subtask would have disclosed the gold spans for the SI subtask.</p><p>In phase 1, the participants could make an unlimited number of submissions on the development set, and they could see the outcomes in their private space. The best team score, regardless of the submission time, was also shown in a public leaderboard. As a result, not only could the participants observe the impact of various modifications in their own systems, but they could also compare against the results by other participating teams. In phase 2, the participants could again submit multiple runs, but they did not get any feedback on their performance. Only the last submission of each team was considered official and was used for the final team ranking.</p><p>In phase 1, a total of 47 teams made submissions on the development set for the SI subtask, and 46 teams submitted for the TC subtask. In phase 2, the number of teams who made official submissions on the test set for subtasks SI and TC was 35 and 31, respectively: this is a total of 66 submissions for the two subtasks, which were made by 44 different teams.</p><p>Note that we left the submission system open for submissions on the development set (phase 1) after the competition was over. The up-to-date leaderboards can be found on the website of the competition. 6</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1384">4 Participating Systems</head><p>In this section, we focus on a general description of the systems participating on both the SI and the TC subtasks. We pay special attention to the most successful approaches. The subindex on the right of each team represents their official rank in the subtasks. Appendix A includes brief descriptions of all systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Span Identification Subtask</head><p>Table <ref type="table" target="#tab_7">3</ref> shows a quick overview of the systems that took part in the SI subtask. <ref type="bibr">7</ref> All systems in the top-10 positions relied on some kind of Transformer, in combination with an LSTM or a CRF. In most cases, the Transformer-generated representations were complemented by engineered features, such as named entities and the presence of sentiment and subjectivity clues.</p><p>Team Hitachi(SI:1) achieved the top performance in this subtask <ref type="bibr" target="#b63">(Morio et al., 2020)</ref>. They used a BIO encoding, which is typical for related segmentation and labeling tasks (e.g., named entity recognition). They relied upon a complex heterogeneous multi-layer neural network, trained end-to-end. The network uses pre-trained language models, which generate a representation for each input token. They further added part-of-speech (PoS) and named entity (NE) embeddings. As a result, there are three representations for each token, which are concatenated and used as an input to bi-LSTMs. At this moment, the network branches, as it is trained with three objectives: (i) the main BIO tag prediction objective and two auxiliary ones, namely (ii) token-level technique classification, and (iii) sentence-level classification. There is one Bi-LSTM for objectives (i) and (ii), and there is another Bi-LSTM for objective (iii). For the former, they used an additional CRF layer, which helps improve the consistency of the output. A number of architectures were trained independently -using BERT, GPT-2, XLNet, XLM, RoBERTa, or XLM-RoBERTa-, and the resulting models were combined in ensembles.</p><p>Team ApplicaAI(SI:2) <ref type="bibr" target="#b49">(Jurkiewicz et al., 2020)</ref> based its success on self-supervision using the RoBERTa model. They used a RoBERTa-CRF architecture trained on the provided data and used it to iteratively produce silver data by predicting on 500k sentences and retraining the model with both gold and silver data. The final classifier was an ensemble of models trained on the original corpus, re-weighting, and a model trained also on silver data. ApplicaAI was not the only team that reported performance boost when using additional data. Team UPB(SI:5) (Paraschiv and Cercel, 2020) decided not to stick to the pre-trained models from BERT-base alone and used masked language modeling to domain-adapt it using 9M articles containing fake, suspicious, and hyperpartisan news articles. Team DoNotDistribute(SI:22) (Kranzlein et al., 2020) also opted for generating silver data, but with a different strategy. They report a 5% performance boost when adding 3k new silver training instances. To produce them, they used a library to create near-paraphrases of the propaganda snippets by randomly substituting certain PoS words. Team SkoltechNLP(SI:25) <ref type="bibr" target="#b24">(Dementieva et al., 2020)</ref> performed data augmentation based on distributional semantics. Finally, team WMD(SI:33) (Daval-Frerot and Yannick, 2020) applied multiple strategies to augment the data such as back translation, synonym replacement and TF.IDF replacement (replace unimportant words, based on TF.IDF score, by other unimportant words).</p><p>Closing the top-three submissions, Team aschern(SI:3) (Chernyavskiy et al., 2020) fine-tuned an ensemble of two differently intialized RoBERTa models, each with an attached CRF for sequence labeling and span character boundary post-processing.</p><p>There have been several other promising strategies. Team LTIatCMU(SI:4) (Khosla et al., 2020) used a multi-granular BERT BiLSTM model with additional syntactic and semantic features at the word, sentence and document level, including PoS, named entities, sentiment, and subjectivity. It was trained jointly for token and sentence propaganda classification, with class balancing. They further fine-tuned BERT on persuasive language using 10,000 articles from propaganda websites, which turned out to be important. Team PsuedoProp(SI:14) (Chauhan and Diddee, 2020) built a preliminary sentence-level classifier using an ensemble of XLNet and RoBERTa, before it fine-tuned a BERT-based CRF sequence tagger to identify the exact spans. Team BPGC(SI:21) <ref type="bibr" target="#b67">(Patil et al., 2020)</ref> went beyond these multigranularity approaches. Information both at the article and at the sentence level was considered when classifying each word as propaganda or not, by computing and concatenating vectorial representations for the three inputs.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Technique Classification Subtask</head><p>The same trends as for the snippet identification subtask can be observed in the approaches used for the technique classification subtask: practically, all top-performing approaches used representations produced by some kind of Transformer.</p><p>Team ApplicaAI(TC:1) achieved the top performance for this subtask <ref type="bibr" target="#b49">(Jurkiewicz et al., 2020)</ref>. As in their approach to subtask SI, ApplicaAI produced additional silver data for training. This time, they ran their high-performing SI model to spot new propaganda snippets in free text and applied their preliminary TC model to produce extra silver-labeled instances. Their final classifier consisted of an ensemble of models trained on the original corpus, re-weighting, and a model trained also on silver data. In all cases, the input to the classifiers consisted of propaganda snippets and their context.   Team aschern(TC:2) (Chernyavskiy et al., 2020) was the second best, and it based its success on a RoBERTa ensemble with several interesting techniques. They treated the task as one of sequence classification, using an average embedding of the surrounding tokens and the length of the span as contextual features. They further incorporated knowledge from the span identification task, using transfer learning: namely, they first pre-trained their model for the SI task, and then continued training for the TC task. Finally, they performed task-specific postprocessing in order to increase the consistency for the repetition technique spans and to avoid insertions of techniques inside other techniques.</p><p>Team Hitachi(TC:3) (Morio et al., 2020) used two distinct feed-forward neural networks (FFNs). The first one is for sentence representation, whereas the second one is for the representation of the tokens in the propaganda span. The propaganda span representation is obtained by concatenating the representation of the begin-of-sentence token, the span start token, the span end token, and the aggregated representation obtained using attention and max-pooling. As for their winning approach to SI, team Hitachi trained on the TC subtask independently with different large-scale pre-trained state-of-the-art language models (BERT, GPT-2, XLNet, XLM, RoBERTa, or XLM-RoBERTa), and then combined the resulting models in an ensemble.</p><p>As the top-performing models to subtask TC show, while the two subtasks can be seen as fairly independent, combining them in a reasonable way pays back. Additionally, the context of a propaganda snippet is important to identify the specific propaganda technique it uses. Indeed, other teams tried to make context play a role in their models with certain success. For instance, team newsSweeper(TC:5) <ref type="bibr" target="#b67">(Singh et al., 2020)</ref> used RoBERTa to obtain and to concatenate representations for both the propaganda snippet and its context (i.e., sentence). Team SocCogCom(TC:13) <ref type="bibr" target="#b54">(Krishnamurthy et al., 2020)</ref> reduced the context to a window of three words before and after the propaganda snippet.</p><p>As in the SI subtask, a number of teams achieved sizable improvements when using various features. For instance, team BPGC(TC:18) <ref type="bibr" target="#b67">(Patil et al., 2020)</ref> included TF.IDF vectors of words and character n-grams, topic modeling, and sentence-level polarity, among others, to their ensemble model that used BERT and logistic regression. Team SocCogCom(TC:13) (Krishnamurthy et al., 2020) integrated semantic-level emotional salience features from CrystalFeel (Gupta and Yang, 2018) and word-level psycholinguistic features from LIWC <ref type="bibr" target="#b68">(Pennebaker et al., 2015)</ref>. Team CyberWallE(TC:8) (Blaschke et al., 2020) added named entities, rhetorical, and question features, while taking special care of repetitions as part of a complex ensemble architecture. According to team UNTLing(TC:27) (Petee and Palmer, 2020), considering NEs is particularly useful for propaganda techniques such as Loaded Language and Flag Waving (e.g., the latter usually includes references to idealized entities) and VAD features were useful for emotion-related propaganda techniques such as Appeal to fear/prejudice and Doubt. Team DiSaster(TC:11) (Kaas et al., 2020) combined BERT with features including frequency of the fragment in the article and in the sentence it appears in, and the inverse uniqueness of words in a span. The goal of these features was to compensate the inability of BERT to deal with distant context, specifically to target the technique Repetition. Team Solomon(TC:4) also targeted Repetition by using dynamic least common sub-sequence, which they used to score the similarity between the fragment and the context. Then, the fragment was considered to be a repetition if the score was greater than a threshold heuristically set with respect to the length of the fragment.</p><p>Some other teams decided to perform a normalization of the input texts, thus trying to reduce the representation diversity. This was the case of team DUTH(TC:10) <ref type="bibr" target="#b4">(Bairaktaris et al., 2020)</ref>, which mapped certain words into classes using named entity recognition with focus on person names and gazetteers containing names and variations of names of countries (255 entries), religions (35 entries), political ideologies (23 entries), and slogans (41 entries). The recognized categories were replaced by the category name in the input, before passing the input to BERT.</p><p>As the class distribution for subtask TC is heavily skewed, some teams tried balancing techniques. For example, team Inno(TC:7) (Grigorev and Ivanov, 2020) experimented with undersampling (i.e. removing some examples from the bigger classes), team syrapropa(TC:20) applied a cost adjustment to their BERT-based model, and team UMSIForeseer(TC:17) (Jiang et al., 2020) used a mix of oversampling and undersampling, which they combined using a bagging ensemble.</p><p>Finally, some teams used an overriding strategy on top of the output of their supervised models. For example, team CyberWallE(TC:8) (Blaschke et al., 2020) performed a rule-based label post-processing, and team syrapropa(TC:20) applied syntactic rules based on part of speech.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results and Discussion</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Results on the Span Identification Subtask</head><p>Table <ref type="table" target="#tab_11">5</ref> shows the performance of the participating systems both on the testing and on the development partitions on the SI subtask. The baseline for subtask SI is a simple system that randomly generates spans, by first selecting the starting character of a span and then its length. As mentioned in Section 4, practically all approaches relied on Transformers to produce representations and then plugged their output into a sequential model, at the token level. It is worth observing that only three of the top-5 systems on the development set appear also among the top-5 systems on the test set. Indeed, teams syrapropa and PALI felt down from positions 1 and 2 on the development set to positions 25 and 18 on the test set, which suggests possible overfitting. The performance for the final top-3 systems on the test partition -Hitachi, ApplicaAI, and aschernreflects robust systems that seem to generalize much better.</p><p>Figure <ref type="figure">5</ref>: SI Subtask: performance (P, R, F 1 ) when combining the output of the top-7 systems using union, intersection, and majority voting. The bottom plots show the number of characters deemed propagandistic in each combination.</p><p>Figure <ref type="figure">5</ref> shows the performance evolution when combining the output of the top-performing systems on the test set. All operations are carried out at the character level, i.e., we label characters as propagandistic or not, and then we combine into spans the longest possible sequences of neighboring characters that we labeled as propagandistic. The union and the intersection use the corresponding set operations. In union, a character is considered propagandistic if at least one of the participating systems has recognized it as part of a propaganda span. In intersection, a character is considered propagandistic if all systems have included it as part of a propaganda span. For majority voting, we consider a character propagandistic if more than 50% of the participating systems had included it as part of a propaganda span. We can see in Figure <ref type="figure">5</ref> that the precision and the recall trends behave just as we expected: a lower precision (higher recall) is observed when more systems are combined with a union operation, and the opposite is true for the intersection. Despite the loss in terms of precision, computing the union of the top-[2, 3] systems results in a better performance than what each of the top systems could achieve on its own. Such a combination gathers large ensembles of Transformer representations together with self-supervision to produce additional training data and boundary post-processing. If we are interested in a high-precision model, applying the intersection would make more sense, as it reaches a precision of 66.95 when combining the top-2 systems; however, this comes at the cost of a sizable lost of spans, which results in considerable drop in recall. The majority voting combination lies somewhere in between: keeping reasonable levels for both the precision and the recall.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Results on the Technique Classification Subtask</head><p>Table <ref type="table" target="#tab_12">6</ref> shows the performance of the participating systems on the test set for the TC subtask, and Table <ref type="table" target="#tab_14">7</ref> reports the results on the development set. The baseline system for subtask TC is a logistic regression classifier using one feature only: the length of the fragment. A similar pattern as for the SI subtask is observed: only two of the top-5 systems on the development set appear among the top-5 systems on the test set, which is a sign of possible overfitting for some of the systems. At the same time, systems that appeared to have a modest performance on the development set could eventually reach a higher position on test. For instance, team Hitachi, which was ranked 8th on the development set, ended up in the third position on the test set.</p><p>The tables further show the performance for each of the 14 propaganda techniques. In general, the systems show reasonably good performance when predicting Loaded Language and Name Calling or Labeling. These two classes are the most frequent ones, by a margin, and are also among the shortest ones on average (cf. Figure <ref type="figure" target="#fig_0">3</ref>). On the other hand, techniques 13 (Straw man, red herring) and 14 (Bandwagon, reduction ad hitlerum, whataboutism) are among the hardest to identify. They are also among the least frequent ones. Once again, we studied the performance when combining more approaches. Figure <ref type="figure" target="#fig_5">6</ref> shows the performance evolution when combining different numbers of top-performing systems on the test set. As this is a multi-class problem, we combine the systems only on the basis of majority voting. In case of a tie, we prefer the more frequent propaganda technique on the training set. When looking at the overall picture, the performance evolution when adding more systems is fairly flat, reaching the top performance when combining the top-3 systems: an F 1 score of 63.63, which represents more than 1.5 points of absolute improvement over the top-1 system. When zooming into each of the fourteen propaganda techniques, we observe that in general the performance peak is indeed reached when considering three systems, e.g., for Appeal to fear-prejudice, Exaggeration, minimisation, or Causal oversimplification. Still for Doubt, which is the hardest class to recognize, as many as 13 systems are necessary in order to reach a (still discrete) peak performance of 17.78. Finally, note that there are other classes, such as Black-and-white fallacy or Whatabaotism, straw men, red herring, for which system combinations do not help.       The systems are ordered based on the final ranking on the test set (cf. Table <ref type="table" target="#tab_12">6</ref>), whereas the ranking is the one on the development set. Columns 1 to 14 show the performance on each class (cf. Section 2). The best score for each class is bold.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Related Work</head><p>Propaganda is particularly visible in the context of "fake news" on social media, which have attracted a lot of research recently <ref type="bibr" target="#b75">(Shu et al., 2017)</ref>.  surveyed fact-checking approaches to fake news and related problems, and <ref type="bibr" target="#b57">Li et al. (2016)</ref> focused on truth discovery in general. Two recent articles in Science offered a general discussion on the science of "fake news" <ref type="bibr" target="#b55">(Lazer et al., 2018)</ref> and the process of proliferation of true and false news online <ref type="bibr" target="#b85">(Vosoughi et al., 2018)</ref>.</p><p>We are particularly interested here in how different forms of propaganda are manifested in text. So far, the computational identification of propaganda has been tackled mostly at the article level. Rashkin et al. ( <ref type="formula">2017</ref>) created a corpus, where news articles are labeled as belonging to one of the following four categories: propaganda, trusted, hoax, or satire. The articles came from eight sources, two of which were propagandistic. The labels were obtained using distant supervision, assuming that all articles from a given news source share the label of that source, which introduces noise <ref type="bibr" target="#b43">(Horne et al., 2018)</ref>.  experimented with a binary version of the problem: propaganda vs. no propaganda. See (Da San Martino et al., 2020a) for a recent survey on computational propaganda detection.</p><p>In general, propaganda techniques serve as a means to persuade people, often in argumentative settings. While they may increase the rhetorical effectiveness of arguments, they naturally harm other aspects of argumentation quality <ref type="bibr" target="#b86">(Wachsmuth et al., 2017)</ref>. In particular, many of the span propaganda techniques considered in this shared task relate to the notion of fallacies, i.e. arguments whose reasoning is flawed in some way, often hidden and often on purpose <ref type="bibr" target="#b82">(Tindale, 2007)</ref>. Some recent work in computational argumentation has dealt with such fallacies. Among these, <ref type="bibr" target="#b39">Habernal et al. (2018)</ref> presented and analyzed a corpus of web forum discussions with Ad hominem fallacies, and <ref type="bibr" target="#b38">Habernal et al. (2017)</ref> introduced Argotario, a game that educates people to recognize fallacies. Argotario also had a corpus as a by-product, with 1.3k arguments annotated for five fallacies, including Ad hominem, Red herring, and Irrelevant authority, which are related to some of our propaganda techniques (cf. Section 2). Unlike these corpora, the news articles in our corpus are annotated with fourteen propaganda techniques. Moreover, instead of labeling entire arguments, our annotation aims at identifying the minimal text spans related to a technique.</p><p>In the present SemEval task, we departed from the eighteen propaganda techniques and the corpus described in <ref type="bibr" target="#b89">Yu et al., 2019)</ref>. <ref type="bibr">8</ref> We used the news articles included in that corpus in a pilot task that ran in January 2019, the Hack the News Datathon, 9 as well as in a previous shared task, held as part of the 2019 Workshop on NLP4IF: Censorship, Disinformation, and Propaganda. 10 Both the datathon and the shared task tackled the identification of propaganda techniques as one overall task (along with a binary sentence-level propaganda classification task), i.e. without splitting it into subtasks as we did here. As detailed in the overview paper of Da San , the best-performing systems in the shared task used BERT-based contextual representations. Other systems used contextual representations based on RoBERTa, Grover, and ELMo, or context-independent representations based on lexical, sentiment, readability, and TF-IDF features. As in the task at hand, ensembles were also popular. Still, the most successful submissions achieved an F 1 -score of 24.88 only (and only 10.43 in the datathon). This is why, here we decided to split the task into subtasks in order to allow researchers to focus on one subtask at a time. Moreover, we merged some of the original 18 propaganda techniques to reduce data sparseness issues.</p><p>Other related shared tasks include the FEVER 2018 and 2019 tasks on Fact Extraction and VERification , the SemEval 2017 and 2019 tasks on determining the veracity of rumors <ref type="bibr" target="#b25">(Derczynski et al., 2017;</ref><ref type="bibr" target="#b35">Gorrell et al., 2019)</ref> and the SemEval 2019 task on Fact-Checking in Community Question Answering Forums <ref type="bibr" target="#b60">(Mihaylova et al., 2019)</ref>. Also, the CLEF 2018-2020 CheckThat! labs' shared tasks <ref type="bibr" target="#b28">Elsayed et al., 2019a;</ref><ref type="bibr" target="#b29">Elsayed et al., 2019b;</ref><ref type="bibr" target="#b20">Barrón-Cedeño et al., 2020b)</ref>, which featured tasks on automatic identification <ref type="bibr">verification (Barrón-Cedeño et al., 2018;</ref><ref type="bibr" target="#b40">Hasanain et al., 2019;</ref><ref type="bibr" target="#b74">Shaar et al., 2020)</ref> of claims in political debates and in social media.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion and Future Work</head><p>We have described SemEval-2020 Task 11 on Detection of Propaganda Techniques in News Articles. The task attracted the interest of a number of researchers: 250 teams signed up to participate, and 44 made submissions on the test dataset. We received 35 and 31 submissions for subtask SI and subtask TC, respectively. Overall, subtask SI (segment identification) was easier and all systems managed to improve over the baseline. However, subtask TC (technique classification) proved to be much more challenging, and some teams could not improve over our baseline.</p><p>In future work, we plan to extend the dataset to cover more examples as well as more propaganda techniques. We further plan to develop similar datasets for other languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Summary of all Submitted Systems</head><p>This appendix includes a brief summary of all systems for both subtasks. We present the teams in alphabetical order. The subindex on the right of each team represents its official test rank in the subtasks. The teams appearing in Tables <ref type="table" target="#tab_11">5, 6</ref>, or 7 but not here did not submit a paper describing their approach.</p><p>Team 3218IR (Dewantara et al., 2020)(SI:31) used a one-dimensional convolutional neural network (CNN) with word embeddings, whose number of layers and filters as well as kernel and pooling sizes were all tuned empirically.</p><p>Team ApplicaAI <ref type="bibr" target="#b49">(Jurkiewicz et al., 2020)</ref>(SI: 2, TC: 1) applied self-supervision using the RoBERTa model. For the SI subtask, they used a RoBERTa-CRF architecture. The model trained using this architecture was then iteratively used to produce silver data by predicting on 500k sentences and retraining the model with both gold and silver data. As for subtask TC, ApplicaAI opted for feeding their models with propagandas snippets in context. Full sentences are shaped as the input with the specific propaganda in them. Once again, silver data was used, taking advantage of the spans detected by their SI model and labeling with their preliminary TC model. The final classifier was an ensemble of models trained on the original corpus, re-weighting, and a model trained also on silver data.</p><p>Team aschern <ref type="bibr">(Chernyavskiy et al., 2020)</ref>(SI: 3, TC: 2) tackled both subtasks. For SI, they fine-tuned an ensemble of two differently intialized RoBERTa models, each with an attached CRF for sequence labeling and simple span character boundary post-processing. A RoBERTa ensemble was also used for TC, treating the task as sequence classification but using an average embedding of the surrounding tokens and the length of a span as contextual features. They further used transfer learning, to pass knowledge about the SI subtask to help the TC subtask. Finally, specific postprocessing was done to increase the consistency of the repetition technique spans and to avoid insertions of techniques in other techniques.</p><p>Team BPGC <ref type="bibr" target="#b67">(Patil et al., 2020)</ref>(SI: 21, TC: 18) used a multi-granularity approach to address subtask SI. Information about the article and the sentence was considered when classifying each word as propaganda or not, by means of computing and concatenating vectorial representations for the three inputs. For subtask TC, they used an ensemble of BERT and logistic regression, complemented with engineered features which, as stated by the authors, were particularly useful for the smaller classes. Such features include TF.IDF vectors of words and character n-grams, topic modeling, and sentence-level polarity, among others. Different learning models were explored for both tasks, including LSTM and CNN, together with diverse Transformers to build ensembles of classifiers.</p><p>Team CyberWallE <ref type="bibr" target="#b11">(Blaschke et al., 2020)</ref>(SI: 8, TC: 8) used BERT embeddings for subtask SI, as well as manual features modeling sentiment, rhetorical structure, and POS tags, which were eventually fed into a bi-LSTM to produce IO labels, followed by some post-processing to merge neighboring spans. For subtask TC, they extracted the pre-softmax layer of BERT and further added extra features (rhetorical, named entities, question), while taking special care of repetitions as part of a complex ensemble architecture, followed by label post-processing.</p><p>Team DiSaster (Kaas et al., 2020)(TC:11) used a combination of BERT and hand-crafted features, including frequency of the fragment in the article and in the sentence it appears in and the inverse uniqueness of words in a span. The goal of the features is to compensate the inability of BERT to deal with distant context, specifically to target the technique Repetition. Team DUTH <ref type="bibr" target="#b4">(Bairaktaris et al., 2020)</ref>(TC:10) pre-processed the input including URL normalization, number and punctuation removal, as well as lowercasing. They further mapped certain words into classes using named entity recognition with focus on person names and gazetteers containing names and variations of names of countries (255 entries), religions (35 entries), political ideologies (23 entries), and slogans (41 entries). The recognized categories were replaced by the category name in the input, before passing the input to BERT.</p><p>Team Hitachi <ref type="bibr" target="#b63">(Morio et al., 2020)</ref>(SI: 1, TC: 3) used BIO encoding for subtask SI, which is typical for related segmentation and labeling tasks such as named entity recognition. They used a complex heterogeneous multi-layer neural network, trained end-to-end. The network used a pre-trained language model, which generates a representation for each input token. To this were added part-of-speech (PoS) and named entity (NE) embeddings. As a result, there were three representations for each token, which were concatenated and used as an input to bi-LSTMs. At this moment, the network branches as it is trained with three objectives: (i) the main BIO tag prediction objective, and two auxiliary objectives, namely (ii) token-level technique classification, and (iii) sentence-level classification. There is one Bi-LSTM for objectives (i) and (ii), and there is another Bi-LSTM for objective (iii). For the former, there is an additional CRF layer, which helps improve the consistency of the output. For subtask TC, there are two distinct FFNs, feeding input representation, which are obtained in the same manner as for subtask SI. One of the two FFNs is for sentence representation, and the other one is for the representation of tokens in the propaganda span. The propaganda span representation is obtained by concatenating representation of the begin-of-sentence token, span start token, span end token, and aggregated representation by attention and max-pooling. For both subtasks, these architectures were trained independently with different BERT, GPT-2, XLNet, XLM, RoBERTa, or XLM-RoBERTa Transformers; and the resulting models were combined in ensembles.</p><p>Team Inno (Grigorev and Ivanov, 2020)(TC:7) used RoBERTa with cost-sensitive learning for subtask TC. They experimented with undersampling, i.e. removing examples from the bigger classes, as well as with modeling the context. They also tried various pre-trained Transformers, but obtained worse results.</p><p>Team JUST (Altiti et al., 2020)(TC:15) based its approach to the task on the BERT uncased pre-trained language model, which used 12 transformer layers that were trained for 15 epochs.</p><p>Team LTIatCMU <ref type="bibr" target="#b51">(Khosla et al., 2020)</ref>(SI:4) used a multi-granular BERT BiLSTM for subtask SI. It used additional syntactic, semantic and pragmatic affect features at the word, sentence and document level. It was jointly trained on token and sentence propaganda classification, with class balancing. In addition, BERT was fine-tuned to persuasive language on about 10,000 articles from propaganda websites, which turned out to be important in their experiments.</p><p>Team newsSweeper <ref type="bibr" target="#b67">(Singh et al., 2020</ref>)(SI: 13, TC: 5) used BERT with BIOE encoding for subtask SI. For the TC subtask, their official run used RoBERTa to obtain representations for the span and for the sentence, which they concatenated. The team further experimented (i) with other Transformers (BERT, RoBERTa, SpanBERT, and GPT-2), (ii) with other sequence labeling schemes (P/NP, BIO, BIOES), (iii) with concatenating different hidden layers of BERT to obtain a token representation, and (iv) with POS tags, as well as (v) with different neural architectures.</p><p>Team NLFIIT <ref type="bibr" target="#b58">(Martinkovic et al., 2020)</ref>(SI: 17, TC: 16) used various combinations of neural architecture and embeddings and found out that ELMo combined with BiLSTM (and self attention for subtask TC) yielded the best performance.</p><p>Team NoPropaganda <ref type="bibr" target="#b27">(Dimov et al., 2020)</ref>(SI: 7, TC: 6) used the LasetTagger model with the BERTbase encoder for subtask SI. R-BERT was used for subtask TC.</p><p>Team NTUAAILS (Arsenos and Siolas, 2020)(SI: 27, TC: 25) used a residual biLSTM fed with pretrained ELMo embeddigns for subtask SI. A biLSTM was used for subtask TC as well, but this time fed with GloVe word embeddings Team PsuedoProp (Chauhan and Diddee, 2020)(SI:14) focused on subtask SI. They pre-classified sentences as propaganda or not using an ensemble of XLNet and RoBERTa, before fine-tuning a BERTbased CRF sequence tagger to identify the exact spans. Team SocCogCom (Krishnamurthy et al., 2020)(TC:13) approached subtask TC using BERT/ALBERT together with (i) semantic-level emotional salience features from CrystalFeel (Gupta and Yang, 2018), and (ii) word-level psycholinguistic features from the LIWC lexicon <ref type="bibr" target="#b68">(Pennebaker et al., 2015)</ref>. They further modeled the context, i.e. three words before and after the target propaganda snippet.</p><p>Team Solomon (TC:4) addressed subtask TC with a system that combines a transfer learning model based on fine-tuned RoBERTa (integrating fragment and context information), an ensemble of binary classifiers for the smaller classes and a novel system to specifically handle Repetition: they used dynamic least common sub-sequence to assess the similarity between the fragment and the context, and then the fragment was considered to be a repetition if the score was greater than a threshold heuristically set with respect to the length of the fragment.</p><p>Team syrapropa (Li and Xiao, 2020)(SI: 25, TC: 20) fine-tuned SpanBERT, a variant of BERT for span detection, on the context of spans in terms of the surrounding non-propaganda text for subtask SI. For subtask TC, they used a hybrid model that consists of several submodels, each specializing in some of the relations. These models include (i) BERT, (ii) BERT with cost adjustment to address class imbalance, and (iii) feature-rich logistic regression. The latter uses features such as length, TF.IDF-weighted words, repetitions, superlatives, and lists of fixed phrases targeting specific propaganda techniques. The output from the hybrid model was further post-processed using some syntactic rules based on part of speech.</p><p>Team Transformers (Verma et al., 2020)(SI: 9, TC: 29) explored a manifold of models to address the SI subtask. They considered residual biLSTMs fed with ELMo representations as well as different variations of BERT and RoBERTa with CNNs Team TTUI (Kim and Bethard, 2020)(SI: 20, TC: 14) proposed an ensemble of fine-tuned BERT and RoBERTa models. They observed that feeding as input to the neural network a chunk of multiple, possibly overlapping sentences yielded the best performance. Moreover, for subtask SI, they applied a post-processing to remove gaps in the predictions between adjacent words. For subtask TC, they showed that modeling the context did not help in their experiments.</p><p>Team UAIC1860 (Ermurachi and Gifu, 2020)(SI: 28, TC: 26) used traditional text representation techniques: character n-grams, word2vec embeddings, and TF.IDF-weighted word-based features. For both subtasks, these features were used in a Random Forest classifier. Additional experiments with Naïve Bayes, Logistic Regression and SVMs yielded worse results.</p><p>Team UMSIForeseer Jiang et al. (2020)(TC:17) focused on subtask TC. They fine-tuned BERT on the labeled training spans, using a mix of oversampling and undersampling that is leveraged using a bagging ensemble learner.</p><p>Team UNTLing (Petee and Palmer, 2020)(TC:27) used a logistic regression classifier for subtask TC with a number of features, including bag-of-words, embeddings, NE and VAD lexicon features. Their analysis highlights that NE are useful for Loaded Language and Flag Waving. The VAD features were useful for emotion-related techniques such as Appeal to fear/prejudice and Doubt. They performed some experiments on the development set for subtask SI after the deadline. They used CRF with a number of features including PoS, syntactic dependency between the token and the previous/next word, BoW of preceding/following tokens, and the GloVe embedding of the token.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B Errata</head><p>After the shared task has ended, we found a bug in the code for our evaluation tools, which affected both subtasks. Overall, its impact was limited, and the ranking computed with the fixed code did not change substantially, in particular for the top-ranked teams. Tables <ref type="table" target="#tab_16">8 and 9</ref> show the corrected scores on the test sets for subtasks SI and TC, respectively. Any reference to the task results should refer to these numbers.   show the performance for each of the fourteen propaganda techniques (cf. Section 2). The best score for each technique is shown in bold.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>1406</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C Annotation Instructions</head><p>Below, we show a series of snapshots of the actual annotation instructions and propaganda techniques definitions and examples that we showed to the human annotators. These are also available online:</p><p>• http://propaganda.qcri.org/annotations/ • https://propaganda.qcri.org/annotations/definitions.html  </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Statistics about the propaganda snippets in the different partitions of the PTC-SemEval20 corpus. Top: number of instances per class. Bottom: mean snippet length per class.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>s t u p i d a n d p e t t y t h i n g s h o w s t u p i d a n d p e t t y t h i n g s h o w s t u p i d a n d p e t t y t h i n g s</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 4 :</head><label>4</label><figDesc>Figure 4: Example of equivalent annotations for the Span Identification subtask.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head></head><label></label><figDesc>1.<ref type="bibr" target="#b63">(Morio et al., 2020)</ref> 2.<ref type="bibr" target="#b49">(Jurkiewicz et al., 2020)</ref> 3.(Chernyavskiy et al., 2020)   4.<ref type="bibr" target="#b51">(Khosla et al., 2020)</ref> 5. 7.<ref type="bibr" target="#b27">(Dimov et al., 2020)</ref> 8.<ref type="bibr" target="#b11">(Blaschke et al., 2020)</ref> 9.<ref type="bibr" target="#b84">(Verma et al., 2020)</ref> 11.<ref type="bibr" target="#b77">(Tao and Zhou, 2020)</ref> 13.<ref type="bibr" target="#b67">(Singh et al., 2020)</ref> 14.<ref type="bibr" target="#b14">(Chauhan and Diddee, 2020)</ref> 16. 17.<ref type="bibr" target="#b58">(Martinkovic et al., 2020)</ref> 20.<ref type="bibr" target="#b52">(Kim and Bethard, 2020)</ref> 21.<ref type="bibr" target="#b67">(Patil et al., 2020)</ref> 22.<ref type="bibr" target="#b53">(Kranzlein et al., 2020)</ref> 23. 25.<ref type="bibr" target="#b56">(Li and Xiao, 2020)</ref> 26.<ref type="bibr" target="#b24">(Dementieva et al., 2020)</ref> 27.<ref type="bibr" target="#b1">(Arsenos and Siolas, 2020)</ref> 28.<ref type="bibr" target="#b30">(Ermurachi and Gifu, 2020)</ref> 31.<ref type="bibr" target="#b26">(Dewantara et al., 2020)</ref> 33. -<ref type="bibr" target="#b54">(Krishnamurthy et al., 2020)</ref> </figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head></head><label></label><figDesc>1.<ref type="bibr" target="#b49">(Jurkiewicz et al., 2020)</ref> 2.(Chernyavskiy et al., 2020)   3.<ref type="bibr" target="#b63">(Morio et al., 2020)</ref> 4. 5.<ref type="bibr" target="#b67">(Singh et al., 2020)</ref> 6.<ref type="bibr" target="#b27">(Dimov et al., 2020)</ref> 7.<ref type="bibr" target="#b36">(Grigorev and Ivanov, 2020)</ref> 8.<ref type="bibr" target="#b11">(Blaschke et al., 2020)</ref> 10.<ref type="bibr" target="#b4">(Bairaktaris et al., 2020)</ref> 11.<ref type="bibr" target="#b50">(Kaas et al., 2020)</ref> 13.<ref type="bibr" target="#b54">(Krishnamurthy et al., 2020)</ref> 14.<ref type="bibr" target="#b52">(Kim and Bethard, 2020)</ref> 15.<ref type="bibr" target="#b0">(Altiti et al., 2020)</ref> 16.<ref type="bibr" target="#b58">(Martinkovic et al., 2020)</ref> 17.<ref type="bibr" target="#b46">(Jiang et al., 2020)</ref> 18.<ref type="bibr" target="#b67">(Patil et al., 2020)</ref> 19. 20.<ref type="bibr" target="#b56">(Li and Xiao, 2020)</ref> 21. 22. 24.<ref type="bibr" target="#b53">(Kranzlein et al., 2020)</ref> 25.<ref type="bibr" target="#b1">(Arsenos and Siolas, 2020)</ref> 26.<ref type="bibr" target="#b30">(Ermurachi and Gifu, 2020)</ref> 27.<ref type="bibr" target="#b69">(Petee and Palmer, 2020)</ref> 29.<ref type="bibr" target="#b84">(Verma et al., 2020)</ref> </figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 6 :</head><label>6</label><figDesc>Figure6: F 1 performance for the technique classification subtask when combining the top-20 systems with majority voting. The plots show the overall F 1 performance (top left) as well as the F 1 performance for each of the 14 propaganda techniques.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>1</head><label></label><figDesc>performance on the test set. The systems are ordered on the basis of the final ranking. Columns 1 to 14show the performance for each of the propaganda techniques (cf. Section 2). The best score for each technique appears highlighted. (Note: We found a bug in the evaluation script after the end of the competition. The correct ranking, shown in Appendix B, does not differ substantially from above.)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head></head><label></label><figDesc>Team DoNotDistribute<ref type="bibr" target="#b53">(Kranzlein et al., 2020)</ref>(SI: 22, TC: 24) opted for a combination of BERTbased models and engineered features (e.g., PoS, NEs, frequency within propaganda snippets in the training set). A reported performance increase of 5% was obtained by producing 3k new silver training instances. A library was used to create near-paraphrases of the propaganda snippets by randomly substituting certain PoS words.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head></head><label></label><figDesc>Team SkoltechNLP<ref type="bibr" target="#b24">(Dementieva et al., 2020)</ref>(SI: 25, TC: 26) fine-tuned BERT for SI, expanding the original training set through data augmentation techniques based on distributional semantics.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_10"><head>Figure 7 :</head><label>7</label><figDesc>Figure 7: Instruction for the annotators.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_11"><head>Figure 8 :</head><label>8</label><figDesc>Figure 8: Annotation instructions: hierarchical diagram to guide the choice of technique.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 1 :</head><label>1</label><figDesc>The 14 propaganda techniques with examples, where the propaganda span is shown in bold.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell>: Statistics about the train/dev/test parts of the PTC-SemEval20 corpus, including the number</cell></row><row><cell>of articles, their average lengths in terms of characters and tokens, and the total number of propaganda</cell></row><row><cell>snippets they contain.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 3 :</head><label>3</label><figDesc>Overview of the approaches to the span identification subtask. =part of the official submission; =considered in internal experiments. The references to the description papers appear at the bottom.A large number of the participating teams built systems that rely heavily on engineered features. For instance, Team CyberWallE(SI:8) (Blaschke et al., 2020) used features modeling sentiment, rhetorical structure, and POS tags, while team UTMN(SI:23) injected the sentiment intensity from VADER and it was among the only teams not relying on deep learning architectures to produce a computationally affordable model.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 4 :</head><label>4</label><figDesc>Overview of the approaches to the technique classification subtask. =part of the official submission; =considered in internal experiments. The references to the description papers appear at the bottom.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 5 :</head><label>5</label><figDesc></figDesc><table><row><cell>Overall 1 2 3 4 5 6 7 8 9 10 11 12 13 14</cell><cell>62.07 77.12 74.38 54.55 33.59 56.23 45.49 69.43 22.73 51.28 48.15 49.02 39.22 25.00 8.33</cell><cell>62.01 77.02 75.65 53.38 32.65 59.44 41.78 66.35 25.97 54.24 35.29 53.57 42.55 18.87 14.93</cell><cell>61.73 75.64 74.20 37.88 34.58 63.43 38.94 68.02 36.62 45.61 40.00 47.92 29.41 26.92 4.88</cell><cell>58.94 74.66 70.75 42.53 28.44 61.82 39.39 61.84 19.61 50.75 26.67 42.00 38.10 0.00 4.88</cell><cell>58.44 75.32 74.23 20.69 37.10 56.55 42.80 60.53 19.72 50.75 41.67 25.00 21.62 8.00 13.04</cell><cell>58.27 77.17 73.90 42.71 37.99 56.27 38.02 59.30 12.12 42.42 23.26 8.70 23.26 0.00 0.00</cell><cell>57.99 73.31 74.30 24.89 35.39 58.65 45.09 59.41 24.32 43.75 43.14 40.40 29.63 19.36 10.71</cell><cell>57.37 74.68 70.92 47.68 28.34 58.65 39.84 54.38 15.39 39.39 14.63 23.68 23.81 0.00 12.25</cell><cell>57.32 74.29 69.09 24.56 28.57 58.97 36.59 61.62 30.59 39.22 27.59 39.62 40.82 20.90 28.57</cell><cell>57.21 73.71 71.41 20.10 28.24 59.16 33.33 58.95 26.23 34.78 44.44 33.33 27.03 17.78 9.30</cell><cell>56.65 74.49 68.10 20.44 30.64 59.12 35.25 58.25 14.63 42.55 51.16 26.67 19.05 4.35 20.41</cell><cell>56.54 73.21 68.38 29.75 31.42 60.00 33.65 56.19 22.79 30.77 37.50 43.81 27.91 18.87 20.83</cell><cell>55.81 72.18 67.34 18.88 34.86 60.40 31.62 54.26 6.35 40.91 28.57 26.51 23.53 10.00 9.76</cell><cell>55.64 73.22 68.49 21.18 32.20 57.40 41.48 61.68 23.08 37.50 28.24 35.29 25.00 20.29 24.56</cell><cell>55.31 71.96 64.73 21.94 29.57 58.26 37.10 62.56 27.27 33.33 48.89 28.89 31.82 28.57 24.49</cell><cell>55.25 72.55 69.30 21.55 30.30 55.66 24.89 63.32 0.00 41.67 29.63 32.10 13.64 0.00 9.30</cell><cell>55.14 73.02 70.79 21.49 28.57 57.21 31.97 56.14 0.00 39.22 29.41 0.00 14.29 0.00 9.76</cell><cell>54.81 71.58 67.51 23.74 33.47 53.78 33.65 58.93 24.18 40.00 30.77 40.00 20.69 20.90 12.50</cell><cell>54.30 70.09 68.86 20.00 30.62 52.55 30.00 55.87 16.95 34.62 20.00 19.72 22.86 4.88 0.00</cell><cell>54.25 71.47 68.44 30.77 28.10 56.14 29.77 57.02 21.51 29.03 31.58 30.61 28.57 9.09 19.61</cell><cell>52.01 69.33 64.67 13.89 25.46 53.94 29.20 52.08 5.71 6.90 7.14 0.00 7.41 0.00 5.00</cell><cell>50.50 68.08 62.33 17.72 21.54 51.04 26.40 55.56 3.45 27.59 29.79 38.38 17.78 15.00 13.79</cell><cell>49.94 68.23 66.88 27.96 25.44 44.99 22.75 53.14 3.74 41.38 12.77 11.27 28.57 3.70 0.00</cell><cell>49.72 68.44 60.65 19.44 27.23 46.25 29.75 53.76 14.89 28.07 22.64 24.49 12.25 9.68 4.55</cell><cell>46.37 65.79 54.55 18.43 29.66 48.75 28.31 46.47 0.00 13.79 36.36 0.00 11.43 4.08 9.76</cell><cell>41.17 62.33 42.97 11.16 21.01 36.41 22.12 38.78 7.60 11.43 17.39 2.90 5.56 4.26 9.76</cell><cell>39.11 62.57 36.74 7.78 11.82 32.65 5.29 40.48 2.86 17.65 4.35 0.00 0.00 0.00 0.00</cell><cell>37.10 58.59 15.82 2.09 23.81 31.76 11.83 29.95 7.84 4.55 6.45 8.00 0.00 0.00 0.00</cell><cell>26.54 47.55 24.06 2.86 0.00 0.98 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>25.20 46.48 0.00 19.26 14.42 29.14 3.68 6.20 11.56 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>20.39 37.74 15.49 5.83 6.39 12.81 6.32 4.95 7.41 0.00 3.92 2.27 0.00 6.78 0.00</cell><cell>19.72 38.07 14.70 4.92 8.23 15.47 7.07 8.57 2.27 0.00 0.00 0.00 0.00 0.00 0.00</cell></row><row><cell></cell><cell>1 ApplicaAI</cell><cell>2 aschern</cell><cell>3 Hitachi</cell><cell>4 Solomon</cell><cell>5 newsSweeper</cell><cell>6 NoPropaganda</cell><cell>7 Inno</cell><cell>8 CyberWallE</cell><cell>9 PALI</cell><cell>10 DUTH</cell><cell>11 DiSaster</cell><cell>12 djichen</cell><cell>13 SocCogCom</cell><cell>14 TTUI</cell><cell>15 JUST</cell><cell>16 NLFIIT</cell><cell>17 UMSIForeseer</cell><cell>18 BPGC</cell><cell>19 UPB</cell><cell>20 syrapropa</cell><cell>21 WMD</cell><cell>22 YNUHPCC</cell><cell>23 UESTCICSA</cell><cell>24 DoNotDistribute</cell><cell>25 NTUAAILS</cell><cell>26 UAIC1860</cell><cell>27 UNTLing</cell><cell>28 HunAlize</cell><cell>29 Transformers</cell><cell>30 Baseline</cell><cell>31 Entropy</cell><cell>32 IJSE8</cell></row></table><note>Subtask 1: Span Identification (SI) performance on test and development. The highest scores for each measure are highlighted. (Note: We found a bug in the evaluation script after the end of the competition. The correct ranking, shown in Appendix B, does not differ substantially from above.) Rnk Team</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 6 :</head><label>6</label><figDesc>Technique classification F</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head></head><label></label><figDesc>80.00 73.85 67.39 59.36 66.19 45.24 74.25 30.44 63.89 28.57 32.43 33.33 38.46 40.00 8 Hitachi 65.19 77.99 71.16 46.98 56.58 62.96 36.96 81.40 50.00 67.61 12.50 22.22 19.05 40.91 75.00 78.01 76.34 61.59 48.61 58.46 40.45 79.53 42.11 58.33 41.67 35.56 45.71 75.08 71.00 32.07 41.96 56.92 34.69 77.53 33.33 50.00 16.22 19.05 20.69 29.09 66.67 24 JUST 57.67 74.97 72.36 23.64 49.64 48.75 31.07 73.75 23.81 29.03 74.46 70.48 33.33 41.48 53.13 35.14 75.00 34.29 60.53 13.33 27.78 24.24 24.14 60.00 19 UMSIForeseer 58.70 74.44 70.95 31.76 51.80 47.95 31.58 75.86 52.63</figDesc><table><row><cell>70.46 80.42 74.11 70.67 60.93 63.57 48.49 82.56 47.06 62.65 42.86 20.00 43.48 41.67 80.00</cell><cell>2 aschern 68.11 16 Solomon 59.55 75.92 71.98 33.48 49.65 51.28 39.08 74.68 34.29 45.90 0.00 20.83 32.26 20.83 0.00</cell><cell>5 FakeSolomon 67.17 79.29 74.38 66.04 50.75 61.22 42.72 74.36 31.25 70.00 9.52 18.75 43.48 6.25 88.89</cell><cell>10 newsSweeper 62.75 76.23 71.35 45.14 55.32 56.94 44.90 74.29 47.83 60.53 16.67 6.90 16.67 6.45 57.14</cell><cell>11 NoPropaganda 60.68 77.06 72.49 47.69 38.71 50.36 33.33 75.74 48.00 53.17 0.00 0.00 8.33 0.00 0.00</cell><cell>13 Inno 60.11 76.57 70.62 34.67 43.75 52.86 40.82 77.97 34.15 59.70 11.77 35.71 18.18 15.39 61.54</cell><cell>7 CyberWallE 66.42 76.62 81.00 73.29 52.70 53.85 30.61 73.68 21.05 51.35 18.18 21.43 17.39 0.00 22.22</cell><cell>6 PALI 66.89 27.03 75.00</cell><cell>23 DUTH 57.86 76.12 70.32 23.08 46.15 48.72 34.41 64.43 42.86 55.39 9.52 11.11 15.39 11.11 50.00</cell><cell>9 DiSaster 62.84 76.73 77.33 47.11 48.28 56.21 35.29 75.15 23.08 35.09 30.00 0.00 9.09 5.56 28.57</cell><cell>26 djichen 57.57 76.04 70.53 24.89 44.60 48.28 36.78 76.36 31.82 51.43 13.33 20.00 10.81 4.55 0.00</cell><cell>28 SocCogCom 57.01 70.65 64.38 31.78 45.67 53.99 32.91 77.11 28.57 30.19 0.00 21.43 12.90 6.45 57.14</cell><cell>17 TTUI 58.98 0.00 0.00 0.00 5.88 0.00</cell><cell>20 NLFIIT 58.51 43.33 10.00 0.00 0.00 10.00 0.00</cell><cell>18 BPGC 58.80 75.45 70.05 29.75 49.64 52.86 32.43 75.82 27.03 52.31 19.05 18.75 23.08 9.52 0.00</cell><cell>21 UPB 58.33 74.02 71.64 24.16 50.00 46.15 29.89 70.73 34.29 50.00 7.41 8.70 0.00 6.06 57.14</cell><cell>3 syrapropa 67.83 77.24 77.00 70.12 51.39 56.74 40.82 78.89 41.86 68.49 20.00 13.79 26.09 24.24 60.00</cell><cell>33 WMD 52.31 71.57 57.70 40.00 35.12 39.77 26.83 63.10 6.90 15.69 19.05 0.00 0.00 0.00 40.00</cell><cell>29 YNUHPCC 56.16 70.57 69.45 29.75 36.36 51.39 26.09 73.05 27.27 40.58 6.45 18.18 26.09 21.05 54.55</cell><cell>25 UESTCICSA 57.57 74.15 65.04 48.37 39.66 46.48 38.71 63.23 26.67 58.82 0.00 0.00 36.36 9.52 0.00</cell><cell>30 DoNotDistribute 54.00 71.20 67.33 29.38 31.93 45.95 25.58 72.61 25.00 28.99 0.00 0.00 22.86 9.76 0.00</cell><cell>32 NTUAAILS 53.25 69.76 59.90 27.19 43.64 51.61 21.33 73.03 17.14 27.12 6.67 7.14 0.00 8.00 44.44</cell><cell>34 UAIC1860 43.84 57.88 40.37 14.12 23.66 42.03 7.02 60.00 0.00 4.55 10.53 0.00 0.00 0.00 33.33</cell><cell>37 UNTLing 40.92 59.45 33.33 11.83 12.28 35.42 11.94 51.70 26.67 25.00 8.33 0.00 0.00 5.88 0.00</cell><cell>36 HunAlize 41.02 56.13 40.75 5.32 22.22 41.18 9.23 53.50 33.33 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>41 Transformers 30.10 48.50 28.62 12.31 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 4.88 0.00</cell><cell>43 Baseline 26.53 40.58 0.00 38.50 11.68 19.20 9.38 8.28 7.23 0.00 0.00 0.00 0.00 0.00 0.00</cell><cell>27 Entropy 57.10 75.22 66.50 28.19 45.16 53.60 31.11 74.85 29.27 46.88 13.33 18.18 20.00 10.00 0.00</cell><cell>4 FLZ 67.17 81.09 71.12 70.78 23.38 65.46 20.00 64.08 46.15 64.00 44.44 37.04 28.57 6.67 75.00</cell><cell>12 Fragarach 60.49 77.12 70.50 38.21 50.69 51.03 40.91 74.12 34.04 45.71 14.29 12.90 16.67 6.06 57.14</cell><cell>14 NerdyBirdies 59.83 76.23 73.55 33.05 48.65 52.06 36.04 70.30 47.62 48.57 15.39 8.70 20.00 13.33 0.00</cell><cell>15 CUNLP 59.55 74.38 73.30 47.62 43.66 50.69 34.29 71.90 35.90 55.07 16.22 15.79 19.51 8.89 25.00</cell><cell>22 Tianyi 58.23 75.39 71.22 26.43 44.72 50.36 34.57 75.61 28.57 49.32 13.33 11.77 0.00 0.00 57.14</cell><cell>31 Murgila 53.53 71.21 66.14 24.55 42.55 37.29 22.47 69.51 30.00 40.58 17.65 13.33 31.58 22.64 44.44</cell><cell>35 hseteam 7.69 26.67 0.00 7.27 0.00 4.76 42.86 41.40 63.65 42.82 22.40 32.26 26.29 11.11 57.52</cell><cell>38 HenryAtDuderstadt 34.15 52.97</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 7 :</head><label>7</label><figDesc>Technique classification F 1 performance on the development set.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_16"><head>Table 8 :</head><label>8</label><figDesc>Subtask 1: Span Identification (SI) performance on the test set using the fixed scorer. The highest score for each measure is highlighted.</figDesc><table><row><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>6.78</cell></row><row><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell></row><row><cell>0.00 2.86 32.65 11.82 40.48 62.57 36.74 7.78 17.65</cell><cell>8.00 7.84 31.76 23.81 29.95 58.59 15.82 2.09 4.55</cell><cell>0.00 0.00 0.98 0.00 0.00 47.55 24.06 2.86 0.00</cell><cell>0.00 11.56 29.14 14.42 6.20 46.48 0.00 19.26 0.00</cell><cell>0.00 2.27 17.07 10.70 8.57 39.32 15.39 4.92 0.00</cell><cell>2.27 7.41 12.81 6.39 4.95 38.02 15.14 5.83 0.00</cell></row><row><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell><cell>0.00</cell></row><row><cell>4.35 5.29</cell><cell>6.45 11.83</cell><cell>0.00 0.00</cell><cell>0.00 3.68</cell><cell>0.00 7.07</cell><cell>3.92 7.12</cell></row><row><cell>39.11</cell><cell>37.10</cell><cell>26.54</cell><cell>25.20</cell><cell>20.62</cell><cell>20.50</cell></row><row><cell></cell><cell>28 HunAlize</cell><cell>29 Transformers</cell><cell>30 Baseline</cell><cell>31 IJSE8</cell><cell>32 Entropy</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_17"><head>Table 9 :</head><label>9</label><figDesc>Technique classification F 1 performance on the test set using the fixed scorer. The systems are ordered based on the final ranking. Columns 1 to 14</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://en.wikipedia.org/wiki/Propaganda_techniques; last visit February 2019. 2 http://propaganda.qcri.org/annotations/definitions.html</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">An initiative where professional journalists profile news outlets; https://mediabiasfactcheck.com. 4 https://propaganda.qcri.org/annotations/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">https://www.aiidatapro.com</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">http://propaganda.qcri.org/semeval2020-task11/leaderboard.php</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">Tables3 and 4only include the systems for which a description paper was submitted.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">You can also try the Prta system (Da San Martino et al., 2020b) online at: http://www.tanbih.org/prta 9 http://www.datasciencesociety.net/hack-news-datathon/ 10 http://www.netcopia.net/nlp4if/2019/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">http://propaganda.qcri.org 12 http://tanbih.qcri.org</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We thank the anonymous reviewers for their constructive comments and suggestions, which have helped us improve the final version of this paper. We further thank Anton Chernyavskiy for pointing us to the bug in the evaluation script.</p><p>The task is organized within the Propaganda Analysis Project, 11 part of the Tanbih project. 12 Tanbih aims to limit the effect of "fake news", propaganda, and media bias by making users aware of what they are reading, thus promoting media literacy and critical thinking.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">JUST at SemEval-2020 Task 11: Detecting propaganda techniques using BERT pretrained model</title>
+		<author>
+			<persName><forename type="first">Ola</forename><surname>Altiti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Malak</forename><surname>Abdullah</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rasha</forename><surname>Obiedat</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">NTUAAILS at SemEval-2020 Task 11: Propaganda detection and classification with biLSTMs and ELMo</title>
+		<author>
+			<persName><forename type="first">Anastasios</forename><surname>Arsenos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgios</forename><surname>Siolas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Overview of the CLEF-2018 CheckThat! lab on automatic identification and verification of political claims, task 1: Check-worthiness</title>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Atanasova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wajdi</forename><surname>Zaghouani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Spas</forename><surname>Kyuchukov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CLEF 2018 Working Notes</title>
+				<meeting><address><addrLine>Avignon, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Overview of the CLEF-2019 CheckThat! Lab on automatic identification and verification of claims. Task 1: Check-worthiness</title>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Atanasova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgi</forename><surname>Karadzhov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitra</forename><surname>Mohtarami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni Da San</forename><surname>Martino</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CLEF 2019 Working Notes</title>
+				<meeting><address><addrLine>Lugano, Switzerland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">DUTH at SemEval-2020 Task 11: BERT with entity mapping for propaganda classification</title>
+		<author>
+			<persName><forename type="first">Anastasios</forename><surname>Bairaktaris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Symeon</forename><surname>Symeonidis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Avi</forename><surname>Arampatzis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Overview of the CLEF-2018 CheckThat! lab on automatic identification and verification of political claims, task 2: Factuality</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Atanasova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wajdi</forename><surname>Zaghouani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Spas</forename><surname>Kyuchukov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CLEF 2018 Working Notes</title>
+				<meeting><address><addrLine>Avignon, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">On automatic plagiarism detection based on n-grams comparison</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 31th European Conference on IR Research, ECIR &apos;09</title>
+				<meeting>the 31th European Conference on IR Research, ECIR &apos;09<address><addrLine>Toulouse, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="696" to="700" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Proppy: A system to unmask propaganda in online news</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Israa</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Jaradat</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirty-Third AAAI Conference on Artificial Intelligence, AAAI&apos;19</title>
+				<meeting>the Thirty-Third AAAI Conference on Artificial Intelligence, AAAI&apos;19<address><addrLine>Honolulu, HI, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="9847" to="9848" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">Proppy: Organizing the news based on their propagandistic content. Information Processing and Management</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Israa</forename><surname>Jaradat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019-09" />
+			<biblScope unit="volume">56</biblScope>
+			<biblScope unit="page" from="1849" to="1864" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Overview of CheckThat! 2020 -automatic identification and verification of claims in social media</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Hasanain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fatima</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Haouari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bayan</forename><surname>Babulkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Hamdan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shaden</forename><surname>Nikolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zien Sheikh</forename><surname>Shaar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ali</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Conference of the CLEF Association: Experimental IR Meets Multilinguality, Multimodality, and Interaction, CLEF &apos;2020</title>
+				<meeting>the 11th International Conference of the CLEF Association: Experimental IR Meets Multilinguality, Multimodality, and Interaction, CLEF &apos;2020<address><addrLine>Thessaloniki, Greece</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Reem Suwaileh, and Fatima Haouari. 2020b. CheckThat! at CLEF 2020: Enabling the automatic identification and verification of claims in social media</title>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hasanain</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 42nd European Conference on Information Retrieval, ECIR &apos;20</title>
+				<meeting>the 42nd European Conference on Information Retrieval, ECIR &apos;20<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<biblScope unit="page" from="499" to="507" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">CyberWallE at SemEval-2020 Task 11: An analysis of feature engineering for ensemble models for propaganda detection</title>
+		<author>
+			<persName><forename type="first">Verena</forename><surname>Blaschke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maxim</forename><surname>Korniyenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Tureski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Computational propaganda and political big data: Toward a more critical research agenda</title>
+		<author>
+			<persName><forename type="first">Howard</forename><surname>Bolsover</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Big Data</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="273" to="276" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Tweeting propaganda, radicalization and recruitment: Islamic state supporters multi-sided Twitter networks</title>
+		<author>
+			<persName><forename type="first">Akemi Takeoka</forename><surname>Chatfield</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">G</forename><surname>Reddick</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Uuf</forename><surname>Brajawidagda</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 16th Annual International Conference on Digital Government Research</title>
+				<meeting>the 16th Annual International Conference on Digital Government Research<address><addrLine>Phoenix, AZ, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="239" to="249" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">PsuedoProp at SemEval-2020 Task 11: Propaganda span detection using BERT-CRF and ensemble sentence level classifier</title>
+		<author>
+			<persName><forename type="first">Aniruddha</forename><surname>Chauhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Harshita</forename><surname>Diddee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Anafora: A web-based general purpose annotation tool</title>
+		<author>
+			<persName><forename type="first">Wei-Te</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Will</forename><surname>Styler</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2013 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Demonstration Session), NAACL-HLT &apos;13</title>
+				<meeting>the 2013 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Demonstration Session), NAACL-HLT &apos;13<address><addrLine>Atlanta, GA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="14" to="19" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">2020. aschern at SemEval-2020 Task 11: It takes three to tango: RoBERTa, CRF, and transfer learning</title>
+		<author>
+			<persName><forename type="first">Anton</forename><surname>Chernyavskiy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Ilvovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Findings of the NLP4IF-2019 shared task on fine-grained propaganda detection</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Second Workshop on Natural Language Processing for Internet Freedom: Censorship, Disinformation, and Propaganda, NLP4IF &apos;19</title>
+				<meeting>the Second Workshop on Natural Language Processing for Internet Freedom: Censorship, Disinformation, and Propaganda, NLP4IF &apos;19<address><addrLine>Hong Kong, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="162" to="170" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Fine-grained analysis of propaganda in news articles</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seunghak</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rostislav</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Petrov</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing, EMNLP-IJCNLP &apos;19</title>
+				<meeting>the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing, EMNLP-IJCNLP &apos;19<address><addrLine>Hong Kong, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="5636" to="5646" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">A survey on computational propaganda detection</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Cresci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seunghak</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roberto</forename><forename type="middle">Di</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Pietro</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 29th International Joint Conference on Artificial Intelligence and the 17th Pacific Rim International Conference on Artificial Intelligence, IJCAI-PRICAI &apos;20</title>
+				<meeting>the 29th International Joint Conference on Artificial Intelligence and the 17th Pacific Rim International Conference on Artificial Intelligence, IJCAI-PRICAI &apos;20<address><addrLine>Yokohama, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="4826" to="4832" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Prta: A system to support the analysis of propaganda techniques in the news</title>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shaden</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yifan</forename><surname>Shaar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seunghak</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: System Demonstrations, ACL &apos;20</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics: System Demonstrations, ACL &apos;20</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="287" to="293" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Techniques for the translation of advertising slogans</title>
+		<author>
+			<persName><forename type="first">Lavinia</forename><surname>Dan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference Literature, Discourse and Multicultural Dialogue</title>
+				<meeting>the International Conference Literature, Discourse and Multicultural Dialogue<address><addrLine>Tirgu-Mures, Mures</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="13" to="23" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">YNU-HPCC at SemEval-2020 Task 11: LSTM network for detection of propaganda techniques in news articles</title>
+		<author>
+			<persName><forename type="first">Jiaxu</forename><surname>Dao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jin</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuejie</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">WMD at SemEval-2020 Tasks 7 and 11: Assessing humor and propaganda using unsupervised data augmentation</title>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Daval</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">-Frerot</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weis</forename><surname>Yannick</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">SkoltechNLP at SemEval-2020 Task 11: Exploring unsupervised text augmentation for propaganda detection</title>
+		<author>
+			<persName><forename type="first">Daryna</forename><surname>Dementieva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Igor</forename><surname>Markov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Panchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">SemEval-2017 Task 8: RumourEval: Determining rumour veracity and support for rumours</title>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geraldine</forename><surname>Wong Sak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arkaitz</forename><surname>Hoi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zubiaga</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th International Workshop on Semantic Evaluation, SemEval &apos;17</title>
+				<meeting>the 11th International Workshop on Semantic Evaluation, SemEval &apos;17<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="60" to="67" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">3218IR at SemEval-2020 Task 11: Conv1D and word embedding in propaganda span identification at news articles</title>
+		<author>
+			<persName><forename type="first">Indra</forename><surname>Dimas Sony Dewantara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhammad Okky</forename><surname>Budi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Ibrohim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">NoPropaganda at SemEval-2020 Task 11: A borrowed approach to sequence tagging and text classification</title>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Dimov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vladislav</forename><surname>Korzun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Smurov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">CheckThat! at CLEF 2019: Automatic identification and verification of claims</title>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Hasanain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 41st European Conference on Information Retrieval, ECIR &apos;19</title>
+				<meeting>the 41st European Conference on Information Retrieval, ECIR &apos;19<address><addrLine>Cologne, Germany</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="309" to="315" />
+		</imprint>
+	</monogr>
+	<note>Giovanni Da San Martino, and Pepa Atanasova</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Overview of the CLEF-2019 CheckThat!: Automatic identification and verification of claims</title>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Hasanain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Atanasova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th International Conference of the CLEF Association, CLEF &apos;19</title>
+				<meeting>the 10th International Conference of the CLEF Association, CLEF &apos;19<address><addrLine>Lugano, Switzerland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="301" to="321" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">UAIC1860 at SemEval-2020 Task 11: Detection of propaganda techniques in news articles</title>
+		<author>
+			<persName><forename type="first">Vlad</forename><surname>Ermurachi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniela</forename><surname>Gifu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, Sem-Eval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, Sem-Eval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Recognizing explicit and implicit hate speech using a weakly supervised two-path bootstrapping approach</title>
+		<author>
+			<persName><forename type="first">Lei</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Kuppersmith</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruihong</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth International Joint Conference on Natural Language Processing, IJCNLP &apos;17</title>
+				<meeting>the Eighth International Joint Conference on Natural Language Processing, IJCNLP &apos;17<address><addrLine>Taipei, Taiwan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="774" to="782" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Quantifying controversy in social media</title>
+		<author>
+			<persName><forename type="first">Kiran</forename><surname>Garimella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gianmarco</forename><surname>De Francisci</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Morales</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Aristides Gionis, and Michael Mathioudakis</title>
+				<imprint>
+			<date type="published" when="2015-01" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1" to="27" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">News and political information consumption in Mexico: Mapping the 2018 Mexican presidential election on Twitter and Facebook</title>
+		<author>
+			<persName><forename type="first">Monika</forename><surname>Glowacki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vidya</forename><surname>Narayanan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Maynard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gustavo</forename><surname>Hirsch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bence</forename><surname>Kollanyi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lisa-Maria</forename><surname>Neudert</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Phil</forename><surname>Howard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Lederer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vlad</forename><surname>Barash</surname></persName>
+		</author>
+		<idno>COMPROP DATA MEMO 2018.2</idno>
+		<imprint>
+			<date type="published" when="2018-06" />
+			<pubPlace>Oxford, UK</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Oxford University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Accounting for the force of the appeal to authority</title>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Goodwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Conference of the Ontario Society for the Study of Argumentation</title>
+				<meeting>the 9th International Conference of the Ontario Society for the Study of Argumentation<address><addrLine>Windsor, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">SemEval-2019 task 7: RumourEval, determining rumour veracity and support for rumours</title>
+		<author>
+			<persName><forename type="first">Genevieve</forename><surname>Gorrell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmet</forename><surname>Aker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Kochkina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arkaitz</forename><surname>Zubiaga</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th International Workshop on Semantic Evaluation, SemEval &apos;19</title>
+				<meeting>the 13th International Workshop on Semantic Evaluation, SemEval &apos;19<address><addrLine>Minneapolis, MN, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="845" to="854" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Inno at SemEval-2020 Task 11: Leveraging pure transfomer for multi-class propaganda detection</title>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Grigorev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vladimir</forename><surname>Ivanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">CrystalFeel at SemEval-2018 task 1: Understanding and detecting emotion intensity using affective lexicons</title>
+		<author>
+			<persName><forename type="first">Raj</forename><surname>Kumar Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yinping</forename><surname>Yang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 12th International Workshop on Semantic Evaluation, SemEval &apos;18</title>
+				<meeting>the 12th International Workshop on Semantic Evaluation, SemEval &apos;18<address><addrLine>New Orleans, LA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="256" to="263" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Argotario: Computational argumentation meets serious games</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Habernal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raffael</forename><surname>Hannemann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Pollak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Klamm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Pauli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing: System Demonstrations, EMNLP &apos;17</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing: System Demonstrations, EMNLP &apos;17<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="7" to="12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Before name-calling: Dynamics and triggers of ad hominem fallacies in web argumentation</title>
+		<author>
+			<persName><forename type="first">Ivan</forename><surname>Habernal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henning</forename><surname>Wachsmuth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iryna</forename><surname>Gurevych</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT &apos;18</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT &apos;18<address><addrLine>New Orleans, LA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="386" to="396" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Overview of the CLEF-2019 CheckThat! Lab on automatic identification and verification of claims. Task 2: Evidence and factuality</title>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Hasanain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CLEF 2019 Working Notes</title>
+				<meeting><address><addrLine>Lugano, Switzerland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Overview of CheckThat! 2020 Arabic: Automatic identification and verification of claims in social media</title>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Hasanain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fatima</forename><surname>Haouari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zien</forename><surname>Sheikh Ali</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bayan</forename><surname>Hamdan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Working Notes of CLEF 2020, CLEF &apos;2020</title>
+				<meeting><address><addrLine>Thessaloniki, Greece</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Teaching about Propaganda: An Examination of the Historical Roots of Media Literacy</title>
+		<author>
+			<persName><forename type="first">Renee</forename><surname>Hobbs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Mcgee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Media Literacy Education</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">62</biblScope>
+			<biblScope unit="page" from="56" to="67" />
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Sampling the news producers: A large news and feature data set for the study of the complex media landscape</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Benjamin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Horne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sibel</forename><surname>Khedr</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Adali</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twelfth International Conference on Web and Social Media, ICWSM &apos;18</title>
+				<meeting>the Twelfth International Conference on Web and Social Media, ICWSM &apos;18<address><addrLine>Stanford, CA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="518" to="527" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<monogr>
+		<title level="m" type="main">Brainwashing in a large group awareness training? The classical conditioning hypothesis of brainwashing</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Hunter</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+			<pubPlace>South Africa</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>University of Kwazulu-Natal</orgName>
+		</respStmt>
+	</monogr>
+	<note>Master&apos;s thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">How to detect propaganda</title>
+		<author>
+			<persName><surname>Ins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Publications of the Institute for Propaganda Analysis</title>
+				<meeting><address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1938" />
+			<biblScope unit="volume">I</biblScope>
+			<biblScope unit="page" from="210" to="218" />
+		</imprint>
+	</monogr>
+	<note>Propaganda Analysis</note>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">UMSIForeseer at SemEval-2020 Task 11: Propaganda detection by fine-tuning BERT with resampling and ensemble learning</title>
+		<author>
+			<persName><forename type="first">Yunzhe</forename><surname>Jiang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Gârbacea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiaozhu</forename><surname>Mei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<monogr>
+		<title level="m" type="main">Propaganda and Persuasion</title>
+		<author>
+			<persName><forename type="first">Garth</forename><forename type="middle">S</forename><surname>Jowett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O'</forename><surname>Victoria</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Donnell</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<pubPlace>SAGE, Los Angeles, CA, USA</pubPlace>
+		</imprint>
+	</monogr>
+	<note>5th edition</note>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<monogr>
+		<title level="m" type="main">What is propaganda, and how does it differ from persuasion? In Propaganda and Persuasion</title>
+		<author>
+			<persName><forename type="first">Garth</forename><forename type="middle">S</forename><surname>Jowett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O'</forename><surname>Victoria</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Donnell</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<publisher>Sage Publishing</publisher>
+			<biblScope unit="page" from="1" to="48" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">ApplicaAI at SemEval-2020 Task 11: On RoBERTa-CRF, Span CLS and whether self-training helps them</title>
+		<author>
+			<persName><forename type="first">Dawid</forename><surname>Jurkiewicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Łukasz</forename><surname>Borchmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Izabela</forename><surname>Kosmala</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filip</forename><surname>Graliński</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Team DiSaster at SemEval-2020 Task 11: Combining BERT and hand-crafted features for identifying propaganda techniques in news</title>
+		<author>
+			<persName><forename type="first">Anders</forename><surname>Friis Kaas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Viktor Torp Thomsen</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Plank</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">LTIatCMU at SemEval-2020 Task 11: Incorporating multi-level features for multi-granular propaganda span identification</title>
+		<author>
+			<persName><forename type="first">Sopan</forename><surname>Khosla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rishabh</forename><surname>Joshi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ritam</forename><surname>Dutt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><forename type="middle">W</forename><surname>Black</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yulia</forename><surname>Tsvetkov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">TTUI at SemEval-2020 Task 11: Propaganda detection with transfer learning and ensembles</title>
+		<author>
+			<persName><forename type="first">Moonsung</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, Sem-Eval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, Sem-Eval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<analytic>
+		<title level="a" type="main">Team DoNotDistribute at SemEval-2020 Task 11: Features, finetuning, and data augmentation in neural models for propaganda detection in news articles</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Kranzlein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shabnam</forename><surname>Behzad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nazli</forename><surname>Goharian</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">SocCogCom at SemEval-2020 Task 11: Detecting propaganda techniques in news articles using semantic-level emotional salience features</title>
+		<author>
+			<persName><forename type="first">Gangeshwar</forename><surname>Krishnamurthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raj</forename><forename type="middle">Kumar</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yinping</forename><surname>Yangi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<analytic>
+		<title level="a" type="main">The science of fake news</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">J</forename><surname>David</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><forename type="middle">A</forename><surname>Lazer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yochai</forename><surname>Baum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><forename type="middle">J</forename><surname>Benkler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kelly</forename><forename type="middle">M</forename><surname>Berinsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filippo</forename><surname>Greenhill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miriam</forename><forename type="middle">J</forename><surname>Menczer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Brendan</forename><surname>Metzger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gordon</forename><surname>Nyhan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Pennycook</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Rothschild</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><forename type="middle">A</forename><surname>Schudson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cass</forename><forename type="middle">R</forename><surname>Sloman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emily</forename><forename type="middle">A</forename><surname>Sunstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Duncan</forename><forename type="middle">J</forename><surname>Thorson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><forename type="middle">L</forename><surname>Watts</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zittrain</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">359</biblScope>
+			<biblScope unit="issue">6380</biblScope>
+			<biblScope unit="page" from="1094" to="1096" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">HybridPro at SemEval-2020 Task 11: A hybrid model for propagandistic technique classification in news articles</title>
+		<author>
+			<persName><forename type="first">Jinfen</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lu</forename><surname>Xiao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<analytic>
+		<title level="a" type="main">A survey on truth discovery</title>
+		<author>
+			<persName><forename type="first">Yaliang</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jing</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chuishi</forename><surname>Meng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qi</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lu</forename><surname>Su</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiawei</forename><surname>Han</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">SIGKDD Explor. Newsl</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="1" to="16" />
+			<date type="published" when="2016-02" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">NLFIIT at SemEval-2020 Task 11: Neural network architectures for detection of propaganda techniques in news articles</title>
+		<author>
+			<persName><forename type="first">Matej</forename><surname>Martinkovic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Samuel</forename><surname>Pecar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marian</forename><surname>Simko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">The unified and holistic method gamma (γ) for inter-annotator agreement measure and alignment</title>
+		<author>
+			<persName><forename type="first">Yann</forename><surname>Mathet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antoine</forename><surname>Widlöcher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean-Philippe</forename><surname>Métivier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="437" to="479" />
+			<date type="published" when="2015-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">SemEval-2019 task 8: Fact checking in community question answering forums</title>
+		<author>
+			<persName><forename type="first">Tsvetomila</forename><surname>Mihaylova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgi</forename><surname>Karadzhov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Atanasova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramy</forename><surname>Baly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitra</forename><surname>Mohtarami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 13th International Workshop on Semantic Evaluation, SemEval &apos;19</title>
+				<meeting>the 13th International Workshop on Semantic Evaluation, SemEval &apos;19<address><addrLine>Minneapolis, MN, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="860" to="869" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">UTMN at SemEval-2020 task 11: A kitchen solution to automatic propaganda detection</title>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Mikhalkova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nadezhda</forename><surname>Ganzherli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Glazkova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yulia</forename><surname>Bidulia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<monogr>
+		<title level="m" type="main">The Techniques of Propaganda. From &quot;How to Detect and Analyze Propaganda,&quot; an address given at Town Hall. The Center for learning</title>
+		<author>
+			<persName><forename type="first">Clyde</forename><forename type="middle">R</forename><surname>Miller</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1939" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">Hitachi at SemEval-2020 Task 11: An empirical study of pre-trained transformer family for propaganda detection</title>
+		<author>
+			<persName><forename type="first">Gaku</forename><surname>Morio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Terufumi</forename><surname>Morishita</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hiroaki</forename><surname>Ozaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toshinori</forename><surname>Miyoshi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<monogr>
+		<title level="m" type="main">Indictment of Internet Research Agency</title>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Muller</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1" to="37" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">Overview of the CLEF-2018 CheckThat! lab on automatic identification and verification of political claims</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wajdi</forename><surname>Zaghouani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pepa</forename><surname>Atanasova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Spas</forename><surname>Kyuchukov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni Da San</forename><surname>Martino</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Ninth International Conference of the CLEF Association: Experimental IR Meets Multilinguality, Multimodality, and Interaction, CLEF &apos;18</title>
+				<meeting>the Ninth International Conference of the CLEF Association: Experimental IR Meets Multilinguality, Multimodality, and Interaction, CLEF &apos;18<address><addrLine>Avignon, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="372" to="387" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<analytic>
+		<title level="a" type="main">UPB at SemEval-2020 Task 11: Propaganda detection with domain-specific trained BERT</title>
+		<author>
+			<persName><forename type="first">Andrei</forename><surname>Paraschiv</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dumitru-Clementin</forename><surname>Cercel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">BPGC at SemEval-2020 Task 11: Propaganda detection in news articles with multi-granularity knowledge sharing and linguistic features based ensemble learning</title>
+		<author>
+			<persName><forename type="first">Rajaswa</forename><surname>Patil</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Somesh</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Swati</forename><surname>Agarwal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<monogr>
+		<author>
+			<persName><forename type="first">James</forename><forename type="middle">W</forename><surname>Pennebaker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><forename type="middle">L</forename><surname>Boyd</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kayla</forename><surname>Jordan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kate</forename><surname>Blackburn</surname></persName>
+		</author>
+		<title level="m">The development and psychometric properties of LIWC2015</title>
+				<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<analytic>
+		<title level="a" type="main">UNTLing at SemEval-2020 Task 11: Detection of propaganda techniques in news articles</title>
+		<author>
+			<persName><forename type="first">Maias</forename><surname>Petee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Palmer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<analytic>
+		<title level="a" type="main">An evaluation framework for plagiarism detection</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Potthast</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paolo</forename><surname>Rosso</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd International Conference on Computational Linguistics, COL-ING &apos;10</title>
+				<meeting>the 23rd International Conference on Computational Linguistics, COL-ING &apos;10<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="997" to="1005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<analytic>
+		<title level="a" type="main">Solomon at SemEval-2020 Task 11: Novel ensemble architechture for fine-tuned propaganda detection in news articles</title>
+		<author>
+			<persName><forename type="first">Mayank</forename><surname>Raj</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ajay</forename><surname>Jaiswal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rohit</forename><forename type="middle">R R</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankita</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sudeep</forename><surname>Sahoo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vertika</forename><surname>Srivastava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kim Yeon</forename><surname>Hyang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<analytic>
+		<title level="a" type="main">Truth of varying shades: Analyzing language in fake news and political fact-checking</title>
+		<author>
+			<persName><forename type="first">Eunsol</forename><surname>Hannah Rashkin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jin</forename><forename type="middle">Yea</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svitlana</forename><surname>Jang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yejin</forename><surname>Volkova</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Choi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="2931" to="2937" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<monogr>
+		<title level="m" type="main">The Kremlin&apos;s platform for &apos;useful idiots&apos; in the West: An overview of RT&apos;s editorial strategy and evidence of impact. Kremlin Watch</title>
+		<author>
+			<persName><forename type="first">Monika</forename><forename type="middle">L</forename><surname>Richter</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page">53</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<analytic>
+		<title level="a" type="main">Overview of CheckThat! 2020 English: Automatic identification and verification of claims in social media</title>
+		<author>
+			<persName><forename type="first">Shaden</forename><surname>Shaar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Nikolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Babulkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Firoj</forename><surname>Alam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Barrón-Cedeño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamer</forename><surname>Elsayed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maram</forename><surname>Hasanain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Suwaileh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fatima</forename><surname>Haouari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Working Notes of CLEF 2020, CLEF &apos;2020</title>
+				<meeting><address><addrLine>Thessaloniki, Greece</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<analytic>
+		<title level="a" type="main">Fake news detection on social media: A data mining perspective</title>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Shu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amy</forename><surname>Sliva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Suhang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiliang</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huan</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">SIGKDD Explor. Newsl</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="22" to="36" />
+			<date type="published" when="2017-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<analytic>
+		<title level="a" type="main">2020. newsSweeper at SemEval-2020 Task 11: Context-aware rich feature representations for propaganda classification</title>
+		<author>
+			<persName><forename type="first">Paramansh</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siraj</forename><surname>Sandhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Subham</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ashutosh</forename><surname>Modi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<analytic>
+		<title level="a" type="main">YNUtaoxin at SemEval-2020 Task 11: Identification fragments of propaganda technique by neural sequence labeling models with different tagging schemes and pre-trained language model</title>
+		<author>
+			<persName><forename type="first">Xin</forename><surname>Tao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaobing</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<monogr>
+		<title level="m" type="main">Fake news is poisoning brazilian politics. WhatsApp can stop it</title>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Tardáguila</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabrício</forename><surname>Benevenuto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pablo</forename><surname>Ortellado</surname></persName>
+		</author>
+		<ptr target="https://www.nytimes.com/2018/10/17/opinion/brazil-election-fake-news-whatsapp.html" />
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<monogr>
+		<title level="m" type="main">Reductio ad hitlerum: Trumping the judicial Nazi card. Michigan State Law Review</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Gabriel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Teninbaum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<analytic>
+		<title level="a" type="main">Automated fact checking: Task formulations, methods and future directions</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Thorne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Vlachos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 27th International Conference on Computational Linguistics, COLING &apos;18</title>
+				<meeting>the 27th International Conference on Computational Linguistics, COLING &apos;18<address><addrLine>Santa Fe, NM, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="3346" to="3359" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<analytic>
+		<title level="a" type="main">FEVER: a large-scale dataset for fact extraction and VERification</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Thorne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Vlachos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christos</forename><surname>Christodoulopoulos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arpit</forename><surname>Mittal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT &apos;18</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT &apos;18<address><addrLine>New Orleans, LA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="809" to="819" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<monogr>
+		<title level="m" type="main">Fallacies and Argument Appraisal. Critical Reasoning and Argumentation</title>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">W</forename><surname>Tindale</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007" />
+			<publisher>Cambridge University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<analytic>
+		<title level="a" type="main">Symbiotic radicalisation strategies: Propaganda tools and neuro linguistic programming</title>
+		<author>
+			<persName><forename type="first">Robyn</forename><surname>Torok</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Australian Security and Intelligence Conference</title>
+				<meeting>the Australian Security and Intelligence Conference<address><addrLine>Perth, Australia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="58" to="65" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<analytic>
+		<title level="a" type="main">Transformers at SemEval-2020 Task 11: Propaganda fragment detection using diversified bert architectures based ensemble learning</title>
+		<author>
+			<persName><forename type="first">Ekansh</forename><surname>Verma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vinodh</forename><surname>Motupalli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Souradip</forename><surname>Chakraborty</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation, SemEval &apos;20</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation, SemEval &apos;20<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b85">
+	<analytic>
+		<title level="a" type="main">The spread of true and false news online</title>
+		<author>
+			<persName><forename type="first">Soroush</forename><surname>Vosoughi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deb</forename><surname>Roy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sinan</forename><surname>Aral</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">359</biblScope>
+			<biblScope unit="issue">6380</biblScope>
+			<biblScope unit="page" from="1146" to="1151" />
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b86">
+	<analytic>
+		<title level="a" type="main">Computational argumentation quality assessment in natural language</title>
+		<author>
+			<persName><forename type="first">Henning</forename><surname>Wachsmuth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nona</forename><surname>Naderi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yufang</forename><surname>Hou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yonatan</forename><surname>Bilu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vinodkumar</forename><surname>Prabhakaran</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><forename type="middle">Alberdingk</forename><surname>Thijm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graeme</forename><surname>Hirst</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Benno</forename><surname>Stein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics, EACL &apos;17</title>
+				<meeting>the 15th Conference of the European Chapter of the Association for Computational Linguistics, EACL &apos;17<address><addrLine>Valencia, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="176" to="187" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b87">
+	<analytic>
+		<title level="a" type="main">The straw man fallacy</title>
+		<author>
+			<persName><forename type="first">Douglas</forename><surname>Walton</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Methods of Argumentation</title>
+				<imprint>
+			<publisher>Cambridge University Press</publisher>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="249" to="286" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b88">
+	<monogr>
+		<title level="m" type="main">A Rulebook for Arguments</title>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Weston</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2000" />
+			<publisher>Hackett Student Handbooks</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b89">
+	<analytic>
+		<title level="a" type="main">Experiments in detecting persuasion techniques in the news</title>
+		<author>
+			<persName><forename type="first">Seunghak</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Da San</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Martino</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nakov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the NeurIPS 2019 Joint Workshop on AI for Social Good, NeurIPS &apos;19</title>
+				<meeting>the NeurIPS 2019 Joint Workshop on AI for Social Good, NeurIPS &apos;19<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019-12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b90">
+	<monogr>
+		<title level="m" type="main">TC: 19) used models based on BERT-base. Rather than just using the pre-trained models, they used masked language models to domain-adapt it with 9M-articles with fake, suspicious, and hyperpartisan news articles. They used the same domain-adapted model for both subtasks. They further used CRF for subtask SI, and a softmax for subtask TC</title>
+		<author>
+			<persName><forename type="first">Upb</forename><surname>Team</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cercel</forename><surname>Paraschiv</surname></persName>
+		</author>
+		<idno>SI: 5</idno>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b91">
+	<monogr>
+		<title level="m" type="main">SI:23) addressed subtask SI by representing the texts as a concatenation of tokens and context embeddings, together with sentiment intensity from VADER. They avoided deep learning architectures in order to produce a computationally affordable model</title>
+		<author>
+			<persName><forename type="first">Utmn (</forename><surname>Team</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mikhalkova</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>namely logistic regression</note>
+</biblStruct>
+
+<biblStruct xml:id="b92">
+	<monogr>
+		<title level="m" type="main">TC: 21) used an ensemble of BERT-based models, LSTMs, SVMs, gradient boosting, and random forest together with character and word-level embeddings. In addition, they used a number of techniques for data augmentation: back-translation, synonym replacement and TF.IDF replacement, i.e., replacing unimportant words</title>
+		<author>
+			<persName><forename type="first">Wmd (daval-Frerot</forename><surname>Team</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannick</forename></persName>
+		</author>
+		<idno>SI: 33</idno>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>according to their TF.IDF score, with other unimportant words</note>
+</biblStruct>
+
+<biblStruct xml:id="b93">
+	<monogr>
+		<author>
+			<persName><forename type="first">Ynu-Hpcc (</forename><surname>Team</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dao</surname></persName>
+		</author>
+		<title level="m">SI: 16, TC: 22) participated in both subtasks using GloVe and BERT embeddings in combination with LSTMs, BiLSTMs, and XGBoost</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b94">
+	<analytic>
+		<title level="a" type="main">SI:11) used BERT, RoBERTa and XLNet on subtask SI</title>
+	</analytic>
+	<monogr>
+		<title level="j">Team YNUtaoxin (Tao and Zhou</title>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

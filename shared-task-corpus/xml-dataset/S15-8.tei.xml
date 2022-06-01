@@ -1,0 +1,967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2015 Task 8: SpaceEval</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+							<email>jamesp@brandeis.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<settlement>Waltham</settlement>
+									<region>MA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Parisa</forename><surname>Kordjamshidi</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Katholieke Universiteit Leuven</orgName>
+								<address>
+									<country>Belgium (</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Illinois</orgName>
+								<address>
+									<settlement>Urbana/Champaign</settlement>
+									<region>IL</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Marie-Francine</forename><surname>Moens</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Katholieke Universiteit Leuven</orgName>
+								<address>
+									<country>Belgium (</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Aaron</forename><surname>Levine</surname></persName>
+							<email>aclevine@brandeis.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<settlement>Waltham</settlement>
+									<region>MA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Seth</forename><surname>Dworman</surname></persName>
+							<email>sdworman@brandeis.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<settlement>Waltham</settlement>
+									<region>MA</region>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Zachary</forename><surname>Yocum</surname></persName>
+							<email>zyocum@brandeis.edu</email>
+							<affiliation key="aff0">
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<settlement>Waltham</settlement>
+									<region>MA</region>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2015 Task 8: SpaceEval</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Human languages exhibit a variety of strategies for communicating spatial information, including toponyms, spatial nominals, locations that are described in relation to other locations, and movements along paths. SpaceEval is a combined information extraction and classification task with the goal of identifying and categorizing such spatial information. In this paper, we describe the SpaceEval task, annotation schema, and corpora, and evaluate the performance of several supervised and semi-supervised machine learning systems developed with the goal of automating this task.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>SpaceEval builds on the Spatial Role Labeling (SpRL) task introduced in SemEval 2012 <ref type="bibr" target="#b16">(Kordjamshidi et al., 2012)</ref> and used in SemEval 2013 <ref type="bibr" target="#b12">(Kolomiyets et al., 2013)</ref>. The base annotation scheme of the previous tasks was introduced in <ref type="bibr" target="#b14">(Kordjamshidi et al., 2010)</ref>, with empirical practices in <ref type="bibr" target="#b15">(Kordjamshidi et al., 2011;</ref><ref type="bibr" target="#b13">Kordjamshidi and Moens, 2015)</ref>. While those previous tasks are similar in their goal, SpacEval adopts the annotation specification from ISOspace <ref type="bibr" target="#b29">(Pustejovsky et al., 2011a;</ref><ref type="bibr" target="#b21">Moszkowicz and Pustejovsky, 2010</ref>; ISO/TC 37/SC 4/WG 2, 2014), a new standard for capturing spatial information. The SpRL in SemEval 2012 had a focus on the main roles of trajectors, landmarks, spatial indicators, and the links between these roles which form spatial relations. The formal semantics of the relations were considered at a course-grained level, consisting of three types: directional, regional (topological), and distal. The related annotated data, CLEF IAPR TC-12 Image Benchmark <ref type="bibr" target="#b7">(Grubinger et al., 2006)</ref>, contained mostly static spatial relations. In SemEval 2013, the SpRL task was extended to the recognition of motion indicators and paths, which are applied to the more dynamic spatial relations. Accordingly, the data set was expanded and the text from the Degree Confluence Project <ref type="bibr" target="#b10">(Jarrett, 2013)</ref> webpages were annotated.</p><p>SpaceEval extends the task in several dimensions, first by enriching the granularity of the semantics in both static and dynamic spatial configurations, and secondly by broadening the variety of annotated data and the domains considered. In SpaceEval the concept of place is distinguished from the concept of spatial entity as a fundamental typing distinction. That is, the roles of trajector (figure) and landmark (ground) are roles that are assigned to spatial entities and places when occurring in spatial relations. Places, however, are inherently typed as such, and remain places, regardless of what spatial roles they may occupy. Obviously, an individual may assume multiple role assignments, and in both ISOspace and SpRL this is assumed to be the case. However, because SpRL focuses on role assignment, it does not introduce the general concept of spatial entity.</p><p>There are other differences in the relational schemas of SpRL and SpaceEval which can be easily mapped to each other. For example, in SpRL the general concept of spatial relation is defined and the semantics of the relationship (e.g., directional, regional) is added as an attribute of the relation while in SpceEval these semantics introduce new types of relations (e.g., QSLINK and OLINK). In addition to the variations in relational schemas, there are some additional extensions in the SpaceEval annotation. These include augmenting the main elements with more fine-grained attributes. These attributes, in turn, impact the way the spatial semantics are interpreted. For example, the spatial entities are described with their dimensionality, form, etc. SpaceEval, also strongly highlights the concepts involved in dynamic spatial relations by introducing movelink relations and motion tags for annotating motion verbs or nominal motion events and their category from the perspective of spatial semantics. These fine-grained annotations of all the relevant concepts that contribute to grasping spatial semantics makes this scheme and the accompanying corpus unique. The details of the task, including the annotation schema, evaluation configurations, breakdown of the sub-tasks, data set, participant systems, and evaluation results are described in the rest of the paper.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">The Task</head><p>The goals of SpaceEval include identifying and classifying items from an inventory of spatial concepts: </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">The SpaceBank Corpus</head><p>The data for this task are comprised of annotated textual descriptions of spatial entities, places, paths, motions, localized non-motion events, and spatial relations. The data set selected for this task, a subset of the SpaceBank corpus first described in (Pustejovsky and Yocum, 2013), consists of submissions retrieved from the Degree Confluence Project (DCP) <ref type="bibr" target="#b10">(Jarrett, 2013)</ref>, Berlitz Travel Guides retrieved from the American National Corpus (ANC) <ref type="bibr" target="#b33">(Reppen et al., 2005)</ref>, and entries retrieved from a travel weblog, Ride for Climate (RFC) <ref type="bibr" target="#b17">(Kroosma, 2012)</ref>. The DCP documents are the same set as those annotated with Spatial Role Labeling (SpRL) for SemEval-2013 Task 3 <ref type="bibr" target="#b12">(Kolomiyets et al., 2013)</ref>, however, for this task, the DCP texts were re-annotated according to ISO-Space.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Annotation Schema</head><p>The annotation of spatial information in text involves at least the following: a PLACE tag (for locations and regions participating in spatial relations); a PATH tag (for paths and boundaries between regions); a SPATIAL ENTITY tag (for spatial objects whose location changes over time); link tags (for topological relations, direction and orientation, frames of reference, and motion event participants); and signal tags (for spatial prepositions) 1 . ISO-Space has been designed to capture both spatial and spatio-temporal information as expressed in natural language texts <ref type="bibr" target="#b31">(Pustejovsky et al., 2012)</ref>. We have followed a strict methodology of specification development, as adopted by ISO TC37/SC4 and outlined in <ref type="bibr" target="#b0">(Bunt, 2010)</ref> and <ref type="bibr" target="#b8">(Ide and Romary, 2004)</ref>, and as implemented with the development of ISO-TimeML <ref type="bibr" target="#b28">(Pustejovsky et al., 2005)</ref> and others in the family of SemAF standards.</p><p>SpaceEval's three link tags are as follows:</p><p>1. MOVELINK -for movement relations; 2. OLINK -orientation relations; 3. QSLINK -qualitative spatial relations;</p><p>QSLINKs are used in ISO-Space to capture topological relationships between tagged elements. The relType attribute values come from an extension to the RCC8 set of relations that was first used by <ref type="bibr">SpatialML (Mani et al., 2010)</ref>. The possible RCC8+ values include the RCC8 values <ref type="bibr" target="#b32">(Randell et al., 1992)</ref>, in addition to IN, a disjunction of TPP and NTPP.</p><p>Orientation links describe non-topological relationships. A SPATIAL SIGNAL with a DIRECTIONAL semantic type triggers such a link. In contrast to topological spatial relations, OLINK relations are built around a specific frame of reference type and a reference point. The referencePt value depends on the frame type of the link. The ABSO-LUTE frame type stipulates that the referencePt is a cardinal direction. For INTRINSIC OLINKs, the referencePt is the same identifier that is given in the landmark attribute. For OLINKs with a RELATIVE frame of reference, the identifier for the viewer should be provided as to the referencePt.</p><p>The following samples from the RFC and ANC sub-corpora have been annotated with a subset of ISO-Space for the SpaceEval task 2 : Since SpaceEval is building on the SpRL shared tasks, we opted to retain the trajector and landmark attributes for labeling the participants in QSLINK and OLINK relations. This is a deviation from the ISO-Space <ref type="bibr" target="#b30">(Pustejovsky et al., 2011b)</ref> standard, which specifies figure and ground labels based on cognitive-semantic categories explored in the semantics of motion and location by Leonard Talmy <ref type="bibr">(Talmy, 1978;</ref><ref type="bibr">Talmy, 2000)</ref> and others. ISO-Space adopted the figure/ground terminology to identify the potentially asymmetric roles played by participants within spatial relations. For MOVELINKs, however, we distinguish the notion of a figure/trajector with the ISO-Space mover attribute label.</p><formula xml:id="formula_0">1. [Arrivingm1] [inms1] the [town of Juanjui pl1 ],</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Corpus Statistics</head><p>Table <ref type="table" target="#tab_3">1</ref> includes corpus statistics broken down into the ANC, DCP, and RFC sub-corpora in addition to the train:test partition (∼3:1). The counts of document, sentence, and lexical tokens are tabulated as well as counts of each annotation tag type.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Annotation and Adjudication</head><p>All annotations for this task were of English language texts and all annotations were created and adjudicated by native English speakers. Due to dependencies of link tag elements on extent tag elements, the annotation and adjudication tasks were broken down into the following phases:</p><p>Phase 1 Extent tag span and attribute annotation.  Phase 2 Extent tag adjudication.</p><p>Phase 3 Link tag argument and attribute annotation.</p><p>Phase 4 Link tag adjudication.</p><p>Phases 2 and 4 produced gold standards from annotations in the preceding annotation phases. This annotation strategy ensured that the intermediate gold standard extent tag set was adjudicated before any link tag annotations were performed.</p><p>The annotation and adjudication effort was conducted at Brandeis University using Multidocument Annotation Environment (MAE) and Multi-annotator Adjudication Interface (MAI) <ref type="bibr" target="#b34">(Stubbs, 2011)</ref>. We used MAE to perform each phase of the annotation procedure and MAI to adjudicate and produce gold standard standoff annotations in XML format. In addition to the ISO-Space annotation tags and attributes, as a post-process, we also provided sentence and lexical tokenization as a separate standoff annotation layer in the XML data for the training and test sets.</p><p>Each document was covered by a minimum of three annotators for each annotation phase (though not necessarily the same annotators per phase). As such, we report inter-annotator agreement (IAA) as a mean Fleiss's κ coefficient for all extent tag types annotated in Phase 1, and individual kappa scores for each of the three link tag types annotated in Phase 3 in Table <ref type="table" target="#tab_5">2</ref>. The scores for extent tags and MOVELINK indicate high agreement, however link tag annotation was less consistent for the remaining link tags. Though the OLINK and QSLINK tag agreement is better than chance, it is not high. We believe the lower agreement for these link tags reflects the complexity of the annotation task.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Submissions and Results</head><p>In this section we evaluate results from runs of five systems. Three systems were submitted by outside groups including Honda Research Institute Japan (HRIJP-CRF-VW), Ixa Group in the University of the Basque Country (IXA), and University of Texas, Dallas (UTD) 3 . We also present results for two systems developed internally at Brandeis University: a suite of logistic regression classifiers with minimal feature engineering intended as a performance baseline covering all sub-tasks in addition to a CRF system with more advanced features, but limited to subtasks 1a and 1b for Configuration 1.</p><p>BASELINE A suite of logistic regression models using Scikit-learn <ref type="bibr" target="#b25">(Pedregosa et al., 2011)</ref> with simple bag-of-words and n-gram features. 4</p><p>BRANDEIS-CRF A system using a conditional random field (CRF) model <ref type="bibr" target="#b22">(Okazaki, 2007)</ref> with features including Stanford POS and NER tags <ref type="bibr" target="#b35">(Toutanova et al., 2003</ref>) <ref type="bibr" target="#b6">(Finkel et al., 2005)</ref> in combination with Sparser <ref type="bibr" target="#b20">(McDonald, 1996)</ref> tags. 5</p><p>HRIJP-CRF-VW A system using a CRF model using CoreNLP, , CRF-Suite <ref type="bibr" target="#b22">(Okazaki, 2007)</ref> and Vowpal Wabbit <ref type="bibr" target="#b18">(Langford et al., 2007)</ref> with lemmatization, POS, NER, GloVe word vector <ref type="bibr" target="#b26">(Pennington et al., 2014)</ref> and dependency parse features.</p><p>IXA X-Space: A system using a binary support vector machine model from SVM-light <ref type="bibr" target="#b11">(Joachims, 1999)</ref> and a pipeline architecture using ClearNLP (Choi and Adviser- <ref type="bibr" target="#b1">Palmer, 2012</ref><ref type="bibr" target="#b23">), OpenNLP (OpenNLP, 2014</ref>, and leveraging computational linguistic resources including WordNet <ref type="bibr">(Fellbaum, 1998)</ref>, PropBank <ref type="bibr" target="#b24">(Palmer et al., 2003)</ref> and the Predicate Matrix (de la <ref type="bibr" target="#b2">Calle et al., 2014)</ref>.</p><p>UTD A suite of 13 classifiers for classifying spatial roles and relations including classifiers for stationary spatial relations and their participants in addition to classification of participants of motion events and their attributes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Baseline</head><p>Our baseline classification system (BASE-LINE) consists of a suite of 47 classifiers built from Scikit-learn's <ref type="bibr" target="#b25">(Pedregosa et al., 2011)</ref> sklearn.linear model logistic regression package. The system builds a collection of extent objects from the annotation and lexical tokenizations provided in the SpaceEval XML distribution data. Each extent instance has attributes for further feature and label extraction: the target chunk used to form the extent instance; any annotation tag associated with the chunk; lists of all surrounding tokens in the sentence, split between tokens preceding the target and those following, and a pointer to the original annotation XML for the purposes of global feature extraction and generating new XML tags based on the eventual model predictions. Some extent attributes are optional, depending on the sub-task. E.g., in sub-task 1a, no attributes are required since this sub-task is a simple classification task. For link tags, extent objects are instantiated using the text chunks associated with the extent tags that serve as the link trigger. After pre-processing, the system has a complete collection of extent instances for the corpus.</p><p>Subsequent to pre-processing, the extent data are further processed for label and feature extraction. The label and feature extractors were hand-tweaked for each sub-task:</p><p>• For extent tag identification, the label extractor checks if a given token occurs at the end of a chunk, and the feature extractors include capitalization and POS tags. • For classifying extent tag types, the feature extractors include the target chunk string, POS tag, and a seven-token context window (bounded by the sentence) centered on the target token. • For extent tag attribute classification, the only feature extracted was the text of the chunk associated with the target tag. • For link tag identification, a heuristic system was developed to select candidate extent tags for the trigger argument. The remaining arguments in the relation were identified by their distance and direction from the trigger. Feature extractors for this process included the text of the trigger chunk, a count of the tags in local context (the same sentence) before and after the trigger, and the types of the extent tags that occur in the context. • For open-class link tag attributes, feature extractors included the count of extent tags before and after the trigger tag in the sentence.</p><p>For closed-class link tag attributes feature extractors were limited to the text of the trigger chunk and the trigger tag type. 6 • For link tag arguments that take an IDREF as a value, a unique label function was created that extracts the offsets of the candidate extent tags in the same sentence as the trigger.</p><p>The label and feature vectors were maintained using the DictVectorizer from Scikit-learn's feature extraction module. To train the system, the vectors were used to fit the model to the training data. For decoding, the tag labels and attributes from the test data were discarded and the remaining feature vectors were transformed into a hypothesis index based on the model, which was translated to a final value using a codebook. The hypotheses were then written out to XML in accordance to the task DTD.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Brandeis CRF</head><p>In addition to the BASELINE system, we also developed a more advanced pipeline (BRANDEIS-CRF) to automate the SpaceEval sub-tasks 1a and 1b using a linear-chain conditional random field model using lexical, part-of-speech (POS), named-entityrecognition (NER), and semantic labels. We report overall F1 measures of 0.83 and 0.77 for tasks 1a and 1b, respectively, which are comparable to other top results (cf. Section 5.3). Our implementation used the CRFSuite <ref type="bibr" target="#b22">(Okazaki, 2007)</ref> open source package, which facilitated rapid training and model inspection. The hypotheses were written out to XML in accordance to the task DTD.</p><p>We used a small set of 9 core features, augmented with bigram contexts, resulting in a total of 27 features. These features consist of lexical, syntactic, and semantic information, many of which have been applied successfully in a variety of information extraction tasks <ref type="bibr" target="#b3">(Fei Huang et al., 2014)</ref>, such as named entity recognition <ref type="bibr" target="#b37">(Vilain et al., 2009b)</ref> or coreference resolution <ref type="bibr" target="#b5">(Fernandes et al., 2014)</ref>. The complete set of features are outlined in Table <ref type="table" target="#tab_6">3</ref>.</p><formula xml:id="formula_1">Type Id Value Lexical word[-1,0,1] string isupper[-1,0,1] binary wordlen[-1,0,1] ternary 7 Syntactic pos[-1,0,1] POS tag Semantic ner[-1,0,1] NER tag Sparser CATEGORY[-1,0,1] Sparser category FORM[-1,0,1] Sparser form LCATEGORY[-1,0,1] Sparser category LFORM[-1,0,1]</formula><p>Sparser form For part-of-speech (POS) and named entity (NE) tags, we used the Stanford Log-linear Part-of-Speech Tagger <ref type="bibr" target="#b35">(Toutanova et al., 2003)</ref> and the Stanford Named Entity Recognizer <ref type="bibr" target="#b6">(Finkel et al., 2005)</ref>. Additionally, we made use of Sparser <ref type="bibr" target="#b20">(McDonald, 1996)</ref>, a rule-based natural language parser in order to provide rich semantic features. Sparser parses unstructured text in cycles, where a variety of handwritten rules apply given the applications of previous rules or the current parse of the text. After parsing, Sparser provides a set of edges, which provide both semantic and syntactic information. For our purposes, we used the CATEGORY and FORM attributes of the resulting edges. Table <ref type="table" target="#tab_8">4</ref> shows that the Sparser features can be informative for this task, as five of the top ten positive weights are from Sparser. As a disclaimer, we acknowledge that model weights are not always sufficient for determining the most informative features <ref type="bibr" target="#b36">(Vilain et al., 2009a)</ref>.</p><p>However, there were several problems using Sparser. One issue is that Sparser performs its own internal tokenization and chunking, as it expects unstructured text as input, i.e. a string. To align the already tokenized sentences with a Sparser parse, we used a matching algorithm that aligned a token with its corresponding Sparser edge. A second problem was that Sparser frequently fails on inputs, and the points of failure can be difficult to identify due to the interaction of its various phases and context based <ref type="bibr">7</ref> Token character length is ≤ 5, (5..10], or &gt; 10.  rules. Thus, we were not able to get CATEGORY and FORM for all tokens. As a remedy, we included local forms of these Sparser features (prefixed with L), which were collected by inputting tokens by themselves to Sparser. This suggests that word lists could be very informative for this task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Evaluation Results</head><p>Table <ref type="table" target="#tab_9">5</ref> shows mean precision (P), recall (R), F1, and accuracy (ACC) scores for each group for each evaluation configuration and sub-task that was attempted. The overall precision and recall measures we report are the arithmetic means of the precision and recall for each tag label or attribute in the corresponding sub-task. The overall, macro-average F1 measures we report are the harmonic mean of the overall P and R. Accuracy is computed as the number of correctly classified labels or attributes divided by the total number of labels or attributes in the gold standard. Overall accuracy and F1 are plotted in Appendix A.</p><p>Not all groups attempted all of the evaluation configurations 8 . The HRIJP-CRF-VW system was evaluated only for Configuration 1 tasks 1a, 1b, 1d, and 1e (not 1c), and Configuration 3 sub-tasks 3a and 3b. HRIJP-CRF-VW was not evaluated for Configuration 2 since those sub-tasks were not attempted. The UTD submission only covered Configuration 3, thus was only evaluated for sub-tasks 3a and 3b.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusion</head><p>It is clear from the participating system results that recognizing spatial entities as a sub-task is a fairly well-understood area, with reasonable performance. All systems using CRF models for recognizing places, paths, motion and non-motion events, and spatial entities performed well. Furthermore, MOVELINK recognition results were extremely promising, due to the general tendency for movement to be accompanied by recognizable clues. The overall poor performance for recognition of spatial relations between entities, on the other hand (QSLINKs and OLINKs) indicates that these are difficult relational identification tasks, reflected in the lower IAA scores for these relations as well.</p><p>For the next SpaceEval evaluation, we believe that a more focused task, possibly embedded within an application, would lower the barrier to entry in the competition. It would also permit us to use an extrinsic evaluation for performance of the systems. We also hope to release the SpaceBank corpus through LDC later this year. This would enable the commu-nity to become more familiar with the dataset and specification.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Corpus Statistics</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell>: Overall Fleiss's κ Scores</cell></row><row><cell>4 Evaluation</cell></row><row><cell>Participant systems were evaluated for each enumer-</cell></row><row><cell>ated configuration as follows:</cell></row><row><cell>1 a. SE.a precision, recall, and F1.</cell></row><row><cell>b. SE.b precision, recall, and F1 for each</cell></row><row><cell>type, and an overall precision, recall, and</cell></row><row><cell>F1.</cell></row><row><cell>c. SE.c precision, recall, and F1 for each at-</cell></row><row><cell>tribute, and an overall precision, recall,</cell></row><row><cell>and F1.</cell></row><row><cell>d. MoveLink.a, QSLink.a, OLink.a preci-</cell></row><row><cell>sion, recall, and F1.</cell></row><row><cell>e. MoveLink.b, QSLink.b, OLink.b preci-</cell></row><row><cell>sion, recall, and F1 for each attribute, and</cell></row><row><cell>an overall precision, recall, and F1.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>BRANDEIS-CRF Features</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>Top Ten Positive Feature Weights</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 5 :</head><label>5</label><figDesc></figDesc><table /><note>Overall Performance</note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">For more information, cf.<ref type="bibr" target="#b31">(Pustejovsky et al., 2012)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">The MEASURE and MLINK tags were not a part of this task.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">a. SE.b and SE.c precision, recall, and F1 for each type and its attributes, and an overall precision, recall, and F1. b. MoveLink.a, QSLink.a, OLink.a precision, recall, and F1. c. MoveLink.b, QSLink.b, OLink.b precision, recall, and F1 for each attribute, and an overall precision, recall, and F1. 3 a. MoveLink.a, QSLink.a, OLink.a precision, recall, and F1. b. MoveLink.b, QSLink.b, OLink.b precision, recall, and F1 for each attribute, and an overall precision, recall, and F1.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">UTD submitted three runs, however, after evaluating all the data, all three runs achieved similar scores; the results reported here are for their third and final submitted run.4  These baseline classifiers were developed at Brandeis University by Aaron Levine and Zachary Yocum. Cf. Section 5.1 for full description.5  This system was developed at Brandeis University by Seth Dworman. Cf. Section 5.2 for full description.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">We experimented with additional features for attribute classification, such as counting tags and their types in the local context of the trigger, however additional features all resulted in performance decreases.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="8">The IXA system was the only one to complete all evaluation configurations.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>This research was supported by grants from NSF's IIS-1017765 and NGA's NURI HM1582-08-1-0018. We would like to acknowledge all the annotators and adjudicators who have contributed to the Space-Bank annotation effort, including Adam Berger, Alexander Elias, Alison Marqusee, April Dobkin, Benjamin Beaudett, Eric Benzschawel, Heather Friedman, Katie Glanbock, Keelan Armstrong, Kenyon Branan, Kiera Sarill, Lauren Weber, Martha Schwarz, Meital Singer, Rebecca Loewenstein-Harting, Sean Bethard, and Stephanie Grinley.</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Performance Plots</head></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">A methodology for designing semantic annotation languages exploiting syntactic-semantic iso-morphisms</title>
+		<author>
+			<persName><forename type="first">Harry</forename><surname>Bunt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ICGL 2010, Second International Conference on Global Interoperability for Language Resources</title>
+				<meeting>ICGL 2010, Second International Conference on Global Interoperability for Language Resources</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Optimization of natural language processing components for robustness and scalability</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Jinho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Adviser-Palmer</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">First steps towards a predicate matrix</title>
+		<author>
+			<persName><forename type="first">Egoitz</forename><surname>Maddalen López De La Calle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">German</forename><surname>Laparra</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Rigau</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Global WordNet Conference (GWC 2014)</title>
+				<meeting>the Global WordNet Conference (GWC 2014)<address><addrLine>Tartu, Estonia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014-01" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Learning representations for weakly supervised natural language processing tasks</title>
+		<author>
+			<persName><forename type="first">Arun Ahuja Fei</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Doug</forename><surname>Downey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuhong</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Yates</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">40</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="85" to="120" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Wordnet: an electronic lexical database</title>
+		<editor>Christiane Fellbaum</editor>
+		<imprint>
+			<date type="published" when="1998" />
+			<publisher>MIT Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Latent trees for coreference resolution</title>
+		<author>
+			<persName><forename type="first">Cícero</forename><surname>Eraldo Rezende Fernandes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Santos</forename><surname>Nogueira Dos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruy Luiz</forename><surname>Milidiú</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">40</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="801" to="835" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Incorporating non-local information into information extraction systems by gibbs sampling</title>
+		<author>
+			<persName><forename type="first">Jenny</forename><forename type="middle">Rose</forename><surname>Finkel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Trond</forename><surname>Grenager</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 43rd Annual Meeting on Association for Computational Linguistics</title>
+				<meeting>the 43rd Annual Meeting on Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="363" to="370" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">The IAPR benchmark: A new evaluation resource for visual information systems</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Grubinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Clough</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Henning</forename><surname>Müller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Deselaers</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Int. Conf. on Language Resources and Evaluation, LREC&apos;06</title>
+				<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">International standard for a linguistic annotation framework</title>
+		<author>
+			<persName><forename type="first">Nancy</forename><surname>Ide</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laurent</forename><surname>Romary</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="issue">3-4</biblScope>
+			<biblScope unit="page" from="211" to="225" />
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Project leaders: James Pustejovsky</title>
+		<author>
+			<persName><forename type="first">Kiyong</forename><surname>Lee</surname></persName>
+		</author>
+		<idno>ISO/TC 37/SC 4/WG 2</idno>
+		<ptr target="ISO/TC37/SC4/WG2" />
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note>Iso 24617-7:2014 language resource management -part 7: Spatial information (isospace</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">The degree confluence project</title>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Jarrett</surname></persName>
+		</author>
+		<ptr target="http://www.confluence.org" />
+		<imprint>
+			<date type="published" when="2013-08" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">Svmlight: Support vector machine</title>
+		<author>
+			<persName><forename type="first">Thorsten</forename><surname>Joachims</surname></persName>
+		</author>
+		<ptr target="http://svmlight.joachims.org/" />
+		<imprint>
+			<date type="published" when="1999" />
+			<biblScope unit="volume">19</biblScope>
+		</imprint>
+		<respStmt>
+			<orgName>University of Dortmund</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">SVM-Light Support Vector Machine</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Semeval-2013 task 3: Spatial role labeling</title>
+		<author>
+			<persName><forename type="first">Oleksandr</forename><surname>Kolomiyets</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Parisa</forename><surname>Kordjamshidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Francine</forename><surname>Moens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the seventh international workshop on semantic evaluation</title>
+				<meeting>the seventh international workshop on semantic evaluation</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="255" to="266" />
+		</imprint>
+	</monogr>
+	<note>Second joint conference on lexical and computational semantics (* SEM)</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Global machine learning for spatial ontology population</title>
+		<author>
+			<persName><forename type="first">Parisa</forename><surname>Kordjamshidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Francine</forename><surname>Moens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Web Semantics: Science, Services and Agents on the World Wide Web</title>
+		<imprint>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="issue">0</biblScope>
+			<biblScope unit="page" from="3" to="21" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+	<note>Semantic Search</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Spatial role labeling: task definition and annotation scheme</title>
+		<author>
+			<persName><forename type="first">Parisa</forename><surname>Kordjamshidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Francine</forename><surname>Moens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martijn</forename><surname>Van Otterlo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of LREC 2010 -The sevent international conference on langauge resources and evaluation</title>
+				<meeting>LREC 2010 -The sevent international conference on langauge resources and evaluation</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Spatial role labeling: towards extraction of spatial relations from natural language</title>
+		<author>
+			<persName><forename type="first">Parisa</forename><surname>Kordjamshidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Francine</forename><surname>Martijn Van Otterlo</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Moens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM -Transactions on Speech and Language Processing</title>
+		<imprint>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page" from="1" to="36" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Semeval-2012 task 3: Spatial role labeling</title>
+		<author>
+			<persName><forename type="first">Parisa</forename><surname>Kordjamshidi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marie-Francine</forename><surname>Moens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Joint Conference on Lexical and Computational Semantics</title>
+				<meeting>the First Joint Conference on Lexical and Computational Semantics</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="365" to="373" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the Sixth International Workshop on Semantic Evaluation</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">Ride for climate</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Kroosma</surname></persName>
+		</author>
+		<ptr target="http://rideforclimate.com/blog/" />
+		<imprint>
+			<date type="published" when="2012-09" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">Spatialml: annotation scheme, resources, and evaluation. Language Resources and Evaluation</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Langford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Strehl</surname></persName>
+		</author>
+		<ptr target="https://github.com/JohnLangford/vowpalwabbit/wiki.InderjeetMani" />
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="volume">44</biblScope>
+			<biblScope unit="page" from="263" to="280" />
+			<pubPlace>Christy Doran, Dave Harris, Janet Hitzeman, Rob Quimby, Justin Richer, Ben Wellner, Scott Mardis, and Seamus Clancy</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">The Stanford CoreNLP natural language processing toolkit</title>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mihai</forename><surname>Surdeanu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Bauer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jenny</forename><surname>Finkel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steven</forename><forename type="middle">J</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mcclosky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of 52nd Annual Meeting of the Association for Computational Linguistics: System Demonstrations</title>
+				<meeting>52nd Annual Meeting of the Association for Computational Linguistics: System Demonstrations</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="55" to="60" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Internal and external evidence in the identification and semantic categorization of proper names. Corpus processing for lexical acquisition</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Mcdonald</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1996" />
+			<biblScope unit="page" from="21" to="39" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">Iso-space: towards a spatial annotation framework for natural language. Processing Romanian in Multilingual</title>
+		<author>
+			<persName><forename type="first">Jessica</forename><forename type="middle">L</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+		<respStmt>
+			<orgName>Interoperational and Scalable Environments</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Crfsuite: a fast implementation of conditional random fields (crfs)</title>
+		<author>
+			<persName><forename type="first">Naoaki</forename><surname>Okazaki</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">Apache software foundation</title>
+		<author>
+			<persName><forename type="first">Apache</forename><surname>Opennlp</surname></persName>
+		</author>
+		<ptr target="http://opennlp.apache.org" />
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<title level="m" type="main">The proposition bank: an annotated corpus of semantic roles</title>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Gildea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Kingsbury</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2003" />
+			<publisher>Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Scikit-learn: Machine learning in python</title>
+		<author>
+			<persName><forename type="first">Fabian</forename><surname>Pedregosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gaël</forename><surname>Varoquaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Gramfort</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Michel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bertrand</forename><surname>Thirion</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olivier</forename><surname>Grisel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mathieu</forename><surname>Blondel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Prettenhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ron</forename><surname>Weiss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vincent</forename><surname>Dubourg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="2825" to="2830" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Empiricial Methods in Natural Language Processing</title>
+				<meeting>the Empiricial Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page">12</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Capturing motion in iso-spacebank</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zachary</forename><surname>Yocum</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Workshop on Interoperable Semantic Annotation</title>
+				<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page">25</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<title level="m" type="main">Temporal and event information in natural language text. Language Resources and Evaluation</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Knippen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><surname>Littman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roser</forename><surname>Saurí</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005-05" />
+			<biblScope unit="volume">39</biblScope>
+			<biblScope unit="page" from="123" to="164" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Iso-space: the annotation of spatial information in language</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><forename type="middle">L</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ISA-6: ACL-ISO International Workshop on Semantic Annotation</title>
+				<meeting>ISA-6: ACL-ISO International Workshop on Semantic Annotation<address><addrLine>Oxford, England</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011-01" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Iso-space: The annotation of spatial information in language</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><forename type="middle">L</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ISA-6: ACL-ISO International Workshop on Semantic Annotation</title>
+				<meeting>ISA-6: ACL-ISO International Workshop on Semantic Annotation<address><addrLine>Oxford, England</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011-01" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">A linguistically grounded annotation language for spatial information</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">TAL</title>
+		<imprint>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">53</biblScope>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">A spatial logic based on regions and connections</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Randell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhan</forename><surname>Cui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Cohn</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 3rd Internation Conference on Knowledge Representation and REasoning</title>
+				<editor>
+			<persName><forename type="first">Morgan</forename><surname>Kaufmann</surname></persName>
+		</editor>
+		<meeting>the 3rd Internation Conference on Knowledge Representation and REasoning<address><addrLine>San Mateo</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1992" />
+			<biblScope unit="page" from="165" to="176" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">American national corpus (anc)</title>
+		<author>
+			<persName><forename type="first">Randi</forename><surname>Reppen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nancy</forename><surname>Ide</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Keith</forename><surname>Suderman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+			<pubPlace>Philadelphia</pubPlace>
+		</imprint>
+	</monogr>
+	<note>Linguistic Data Consortium. Second release</note>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Mae and mai: Lightweight annotation and adjudication tools</title>
+		<author>
+			<persName><forename type="first">Amber</forename><surname>Stubbs</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th Linguistic Annotation Workshop</title>
+				<meeting>the 5th Linguistic Annotation Workshop</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="129" to="133" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Feature-rich part-of-speech tagging with a cyclic dependency network</title>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Klein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Christopher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoram</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Singer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2003 Conference of the North American Chapter of the Association for Computational Linguistics on Human Language Technology</title>
+				<meeting>the 2003 Conference of the North American Chapter of the Association for Computational Linguistics on Human Language Technology</meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="173" to="180" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Vilain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Huggins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Wellner</surname></persName>
+		</author>
+		<title level="m">Proceedings of the Thirteenth Conference on Computational Natural Language Learning</title>
+				<meeting>the Thirteenth Conference on Computational Natural Language Learning</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="192" to="200" />
+		</imprint>
+	</monogr>
+	<note>chapter A simple feature-copying approach for longdistance dependencies</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Sources of performance in crf transfer training: a business name-tagging case study</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Vilain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonathan</forename><surname>Huggins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ben</forename><surname>Wellner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference RANLP-2009</title>
+				<meeting>the International Conference RANLP-2009</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="465" to="470" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

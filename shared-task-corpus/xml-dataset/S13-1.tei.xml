@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2013 Task 1: TEMPEVAL-3: Evaluating Time Expressions, Events, and Temporal Relations</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Naushad</forename><surname>Uzzaman</surname></persName>
+							<email>naushad@cs.rochester.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Hector</forename><surname>Llorens</surname></persName>
+							<email>hllorens@dlsi.ua.es</email>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Alicante</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Sheffield</orgName>
+								<address>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+							<affiliation key="aff3">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Rochester</orgName>
+								<address>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2013 Task 1: TEMPEVAL-3: Evaluating Time Expressions, Events, and Temporal Relations</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Within the SemEval-2013 evaluation exercise, the TempEval-3 shared task aims to advance research on temporal information processing. It follows on from TempEval-1 and -2, with: a three-part structure covering temporal expression, event, and temporal relation extraction; a larger dataset; and new single measures to rank systems -in each task and in general. In this paper, we describe the participants' approaches, results, and the observations from the results, which may guide future research in this area.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The TempEval task <ref type="bibr" target="#b23">(Verhagen et al., 2009)</ref> was added as a new task in <ref type="bibr">SemEval-2007</ref>. The ultimate aim of research in this area is the automatic identification of temporal expressions (timexes), events, and temporal relations within a text as specified in TimeML annotation <ref type="bibr" target="#b14">(Pustejovsky et al., 2005)</ref>. However, since addressing this aim in a first evaluation challenge was deemed too difficult a staged approach was suggested.</p><p>TempEval (henceforth TempEval-1) was an initial evaluation exercise focusing only on the categorization of temporal relations and only in English. It included three relation types: event-timex, event-dct, 1 and relations between main events in consecutive sentences.</p><p>TempEval-2 <ref type="bibr" target="#b24">(Verhagen et al., 2010)</ref> extended TempEval-1, growing into a multilingual task, and consisting of six subtasks rather than three. This included event and timex extraction, as well as the three relation tasks from TempEval-1, with the addition of a relation task where one event subordinates another. <ref type="bibr">TempEval-3 (UzZaman et al., 2012b</ref>) is a follow-up to TempEval 1 and 2, covering English and Spanish. TempEval-3 is different from its predecessors in a few respects:</p><p>1 DCT stands for document creation time Size of the corpus: the dataset used has about 600K word silver standard data and about 100K word gold standard data for training, compared to around 50K word corpus used in TempEval 1 and 2. Temporal annotation is a time-consuming task for humans, which has limited the size of annotated data in previous TempEval exercises. Current systems, however, are performing close to the inter-annotator reliability, which suggests that larger corpora could be built from automatically annotated data with minor human reviews. We want to explore whether there is value in adding a large automatically created silver standard to a hand-crafted gold standard.</p><p>End-to-end temporal relation processing task: the temporal relation classification tasks are performed from raw text, i.e. participants need to extract their own events and temporal expressions first, determine which ones to link and then obtain the relation types. In previous Tem-pEvals, gold timexes, events, and relations (without category) were given to participants.</p><p>Temporal relation types: the full set of temporal relations in TimeML are used, rather than the reduced set used in earlier TempEvals.</p><p>Platinum test set: A new test dataset has been developed for this edition. It is based on manual annotations by experts over new text (unseen in previous editions).</p><p>Evaluation: we report a temporal awareness score for evaluating temporal relations, which helps to rank systems with a single score.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data</head><p>In TempEval-3, we reviewed and corrected existing corpora, and also released new corpora.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Reviewing Existing Corpora</head><p>We considered the existing TimeBank <ref type="bibr" target="#b13">(Pustejovsky et al., 2003)</ref> and AQUAINT 2 data for TempEval-3. TempEval-   1 and TempEval-2 had the same documents as TimeBank but different relation types and events.</p><p>For both TimeBank and AQUAINT, we, (i) cleaned up the formatting for all files making it easy to review and read, (ii) made all files XML and TimeML schema compatible, (iii) added some missing events and temporal expressions. In TimeBank, we, (i) borrowed the events from the TempEval-2 corpus and (ii) borrowed the temporal relations from TimeBank corpus, which contains a full set of temporal relations. In AQUAINT, we added the temporal relations between event and DCT (document creation time), which was missing for many documents in that corpus. These existing corpora comprised the highquality component of our training set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">New Corpora</head><p>We created two new datasets: a small, manuallyannotated set over new text (platinum); and a machineannotated, automatically-merged dataset based on outputs of multiple systems (silver).</p><p>The TempEval-3 platinum evaluation corpus was annotated/reviewed by the organizers, who are experts in the area. This process used the TimeML Annotation Guidelines v1.2.1 <ref type="bibr" target="#b16">(Saurí et al., 2006)</ref>. Every file was annotated independently by at least two expert annotators, and a third was dedicated to adjudicating between annotations and merging the final result. Some annotators based their work on TIPSem annotation suggestions . The GATE Annotation Diff tool was used for merging <ref type="bibr" target="#b2">(Cunningham et al., 2013)</ref>, a custom TimeML validator ensured integrity, <ref type="bibr">3</ref> and CAVaT <ref type="bibr" target="#b3">(Derczynski and Gaizauskas, 2010)</ref> was used to determine various modes of TimeML mis-annotation and inconsistency that are inexpressable via XML schema. Post-exercise, that corpus (TempEval-3 Platinum with around 6K tokens, on completely new text) is released for the community to review and improve. <ref type="bibr">4</ref> Inter-annotator agreement (measured with F1, as per <ref type="bibr" target="#b6">Hripcsak and Rothschild (2005)</ref>) and the number of annotation passes per document were higher than in existing TimeML corpora, hence the name. Details are given in Table <ref type="table" target="#tab_1">1</ref>. Attribute value scores are given based on the agreed entity set. These are for exact matches.</p><p>The TempEval-3 silver evaluation corpus is a 600K word corpus collected from Gigaword <ref type="bibr" target="#b12">(Parker et al., 2011)</ref>. We automatically annotated this corpus by TIPSem, TIPSem-B  and TRIOS (UzZaman and <ref type="bibr" target="#b18">Allen, 2010)</ref>. These systems were retrained on the corrected TimeBank and AQUAINT corpus to generate the original TimeML temporal relation set. We then merged these three state-of-the-art system outputs using our merging algorithm . In our selected merged configuration all entities and relations suggested by the best system (TIPSem) are added in the merged output. Suggestions from other systems (TRIOS and TIPSem-B) are added in the merged output, only if they are also supported by another system. The weights considered in our configuration are: TIPSem 0.36, TIPSemB 0.32, TRIOS 0.32.</p><p>For Spanish, Spanish TimeBank 1.0 corpus <ref type="bibr" target="#b15">(Saurí and Badia, 2012)</ref> wads used. It is the same corpus that was used in TempEval-2, with a major review of entity annotation and an important improvement regarding temporal relation annotation. For TempEval-3, we converted ES-TimeBank link types to the TimeML standard types based on Allen's temporal relations <ref type="bibr" target="#b0">(Allen, 1983)</ref>.</p><p>Table <ref type="table" target="#tab_2">2</ref> summarizes our released corpora, measured with PTB-scheme tokens as words. All data produced was annotated using a well-defined subset of TimeML, designed for easy processing, and for reduced ambiguity compared to standard TimeML. Participants were encouraged to validate their submissions using a purposebuilt tool to ensure that submitted runs were legible. We called this standard TimeML-strict, and release it separately <ref type="bibr" target="#b5">(Derczynski et al., 2013)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Tasks</head><p>The three main tasks proposed for TempEval-3 focus on TimeML entities and relations:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Task A (Timex extraction and normalization)</head><p>Determine the extent of the timexes in a text as defined by the TimeML TIMEX3 tag. In addition, determine the value of the features TYPE and VALUE. The possible values of TYPE are time, date, duration, and set; VALUE is a normalized value as defined by the TIMEX3 standard.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Task B (Event extraction and classification)</head><p>Determine the extent of the events in a text as defined by the TimeML EVENT tag and the appropriate CLASS.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Task ABC (Annotating temporal relations)</head><p>This is the ultimate task for evaluating an end-to-end system that goes from raw text to TimeML annotation of entities and links. It entails performing tasks A and B. From raw text extract the temporal entities (events and timexes), identify the pairs of temporal entities that have a temporal link (TLINK) and classify the temporal relation between them. Possible pair of entities that can have a temporal link are: (i) main events of consecutive sentences, (ii) pairs of events in the same sentence, (iii) event and timex in the same sentence and ( <ref type="formula">iv</ref> In addition to this main tasks, we also include two extra temporal relation tasks:</p><p>Task C (Annotating relations given gold entities) Given the gold entities, identify the pairs of entities that have a temporal link (TLINK) and classify the temporal relations between them. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation Metrics</head><p>The metrics used to evaluate the participants are:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Temporal Entity Extraction</head><p>To evaluate temporal entities (events and temporal expressions), we need to evaluate, (i) How many entities are correctly identified, (ii) If the extents for the entities are correctly identified, and (iii) How many entity attributes are correctly identified. We use classical precision and recall for recognition.</p><p>How many entities are correctly identified: We evaluate our entities using the entity-based evaluation with the equations below.</p><p>P recision =</p><formula xml:id="formula_0">|Sysentity∩Refentity| |Sysentity| Recall = |Sysentity∩Refentity| |Refentity|</formula><p>where, Sys entity contains the entities extracted by the system that we want to evaluate, and Ref entity contains the entities from the reference annotation that are being compared.</p><p>If the extents for the entities are correctly identified: We compare our entities with both strict match and relaxed match. When there is a exact match between the system entity and gold entity then we call it strict match, e.g. "sunday morning" vs "sunday morning". When there is a overlap between the system entity and gold entity then we call it relaxed match, e.g. "sunday" vs "sunday morning". When there is a relaxed match, we compare the attribute values.</p><p>How many entity attributes are correctly identified: We evaluate our entity attributes using the attribute F1-score, which captures how well the system identified both the entity and attribute (attr) together.</p><p>Attribute Recall =</p><formula xml:id="formula_1">|{∀x | x∈(Sysentity∩Refentity)∧Sysattr(x)==Refattr(x)}| |Refentity| Attribute Precision = |{∀x | x∈(Sysentity∩Refentity)∧Sysattr(x)==Refattr(x)}| |Sysentity|</formula><p>Attribute F1-score = 2 * p * r p+r Attribute (Attr) accuracy, precision and recall can be calculated as well from the above information. Attr Accuracy = Attr F1 / Entity Extraction F1 Attr R = Attr Accuracy * Entity R Attr P = Attr Accuracy * Entity P</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Temporal Relation Processing</head><p>To evaluate relations, we use the evaluation metric presented by UzZaman and <ref type="bibr">Allen (2011). 5</ref> This metric captures the temporal awareness of an annotation in terms of precision, recall and F1 score. Temporal awareness is defined as the performance of an annotation as identifying and categorizing temporal relations, which implies the correct recognition and classification of the temporal entities involved in the relations. Unlike TempEval-2 relation score, where only categorization is evaluated for relations, this metric evaluates how well pairs of entities are identified, how well the relations are categorized, and how well the events and temporal expressions are extracted.</p><p>P recision =</p><formula xml:id="formula_2">|Sys − relation ∩Ref + relation | |Sys − relation | Recall = |Ref − relation ∩Sys + relation | |Ref − relation |</formula><p>where, G + is the closure of graph G and G − is the reduced of graph G, where redundant relations are removed. <ref type="bibr">6</ref> We  . This metric evaluates Task ABC together. For Task C and Task C -relation only, all the gold annotation entities were provided and then evaluated using the above metric.</p><p>Our evaluation toolkit that evaluated TempEval-3 participants is available online. 7</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation Results</head><p>The aim of this evaluation is to provide a meaningful report of the performance obtained by the participants in the tasks defined in Section 3.</p><p>Furthermore, the results include TIPSem as reference for comparison. This was used as a pre-annotation system in some cases. TIPSem obtained the best results in event processing task in TempEval-2 and offered very competitive results in timex and relation processing. The best timex processing system in TempEval-2 (HeidelTime) is participating in this edition as well, therefore we included TIPSem as a reference in all tasks.</p><p>We only report results in main measures. Results are divided by language and shown per task. Detailed scores can be found on the task website. 8</p><p>7 See http://www.cs.rochester.edu/u/naushad/temporal 8 See http://www.cs.york.ac.uk/semeval-2013/task1/ 5.1 Results for English</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.1">Task A: Timexes</head><p>We had nine participants and 21 unique runs for temporal expression extraction task, Task A. Table <ref type="table" target="#tab_4">3</ref> shows the results. Details about participants' approaches can be found in Table <ref type="table" target="#tab_6">4</ref>.</p><p>We rank the participants for Task A on the F1 score of most important timex attribute -Value. To get the attribute Value correct, a system needs to correctly normalise the temporal expression. This score (Value F1) captures the performance of extracting the timex and identifying the attribute Value together (Value F1 = Timex F1 * Value Accuracy).</p><p>Participants approached the temporal expression extraction task with rule-engineered methods, machine learning methods and also hybrid methods. For temporal expression normalization (identifying the timex attribute value), all participants used rule-engineered approaches.</p><p>Observations: We collected the following observations from the results and from participants' experiments.</p><p>Strategy: Competition was close for timex recognition and the best systems all performed within 1% of each other. On our newswire corpus, statistical systems (ClearTK) performed best at strict matching, and ruleengineered system best at relaxed matching (NavyTime, SUTime, HeidelTime).</p><p>Strategy: post-processing, on top of machine learningbase temporal expression extraction, provided a statistically significant improvement in both precision and recall (ManTIME).</p><p>Data: using the large silver dataset, alone or together with human annotated data, did not give improvements in performance for Task A. Human-annotated gold standard data alone provided the best performance (ManTIME).</p><p>Data: TimeBank alone was better than TimeBank and AQUAINT together for Task A (ClearTK).</p><p>Features: syntactic and gazetteers did not provide any statistically significant increment of performance with respect to the morphological features alone (ManTIME).</p><p>Regarding the two sub-tasks of timex annotation, recognition and interpretation/normalisation, we noticed a shift in the state of the art. While normalisation is currently (and perhaps inherently) done best by ruleengineered systems, recognition is now done well by a variety of methods. Where formerly, rule-engineered timex recognition always outperformed other classes of approach, now it is clear that rule-engineering and machine learning are equally good at timex recognition.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.2">Task B: Events</head><p>For event extraction (Task B) we had seven participants and 10 unique runs. The results for this task can be found in Table <ref type="table" target="#tab_8">6</ref>. We rank the participants for TaskB on the F1 score of most important event attribute -Class. Class</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Strategy</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>System</head><p>Training data Classifier used Data-driven ATT-1, 2, 3 TBAQ + TE3Silver     F1 captures the performance of extracting the event and identifying the attribute Class together (Class F1 = Event F1 * Class Accuracy).</p><p>All the participants except one used machine learning approaches. Details about the participants' approaches and the linguistic knowledge 9 used to solve this problem, and training data, are in Table <ref type="table" target="#tab_7">5</ref>.</p><p>Observations: We collected the following observations from the results and from participants' experiments.</p><p>Strategy: All the high performing systems for event extraction (Task B) are machine learning-based.</p><p>Data: Systems using silver data, along with the human annotated gold standard data, performed very well (top three participants in the task -ATT, KUL, KUL-TE3RunABC). Additionally, TimeBank and AQUAINT together performed better than just TimeBank alone (NavyTime-1, ClearTK-3,4).</p><p>Linguistic Features: Semantic features (ls and ss) have played an important role, since the best systems (TIPSem, ATT1 and KUL) include them. However, these three are not the only systems using semantic features.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.3">Task C: Relation Evaluation</head><p>For complete temporal annotation from raw text (Task ABC -Task C from raw text) and for temporal relation only tasks (Task C, Task C relation only), we had five participants in total.</p><p>For relation evaluation, we primarily evaluate on Task ABC (Task C from raw text), which requires joint entity extraction, link identification and relation classification.</p><p>The results for this task can be found in Table <ref type="table" target="#tab_9">7</ref>.</p><p>While TIPSem obtained the best results in task ABC, especially in recall, it was used by some annotators to pre-label data. In the interest of rigour and fairness, we separate out this system.</p><p>For task C, for provided participants with entities and participants identified: between which entity pairs a relation exists (link identification); and the class of that relation. Results are given in Table <ref type="table" target="#tab_11">8</ref>. We also evaluate the participants on the relation by providing the entities and the links (performance in Table <ref type="table" target="#tab_12">9</ref>) -TIPSem could not be evaluated in this setting since the system is not prepared to do categorization only unless the relations are divided as in TempEval-2. For these Task C related tasks, we had only one new participant, who didn't participate in Task A and B: UTTime.</p><p>Identifying which pair of entities to consider for temporal relations is a new task in this TempEval challenge. The participants approached the problems in data-driven, rule-based and also in hybrid ways (Table <ref type="table" target="#tab_1">10</ref>    the other hand, all the participants used data-driven approaches for temporal relations (Table <ref type="table" target="#tab_1">11</ref>).</p><p>Observations: We collected the following observations from the results and from participants' experiments.</p><p>Strategy: For relation classification, all participants used partially or fully machine learning-based systems.</p><p>Data: None of the participants implemented their systems training on the silver data. Most of the systems use the combined TimeBank and AQUAINT (TBAQ) corpus.</p><p>Data: Adding additional high-quality relations, either Philippe Muller's closure-based inferences or the verb clause relations from <ref type="bibr" target="#b1">Bethard et al. (2007)</ref>, typically increased recall and the overall performance (ClearTK runs two and four).</p><p>Features: Participants mostly used the morphosyntactic and lexical semantic information. The best performing systems from TempEval-2 (TIPSem and TRIOS) additionally used sentence level semantic information. One participant in TempEval-3 (UTTime) also did deep parsing for the sentence level semantic features.</p><p>Features: Using more Linguistic knowledge is important for the task, but it is more important to execute it properly. Many systems performed better using less linguistic knowledge. Hence a system (e.g. ClearTK) with basic morphosyntactic features is hard to beat with more semantic features, if not used properly.   Classifier: Across the various tasks, ClearTK tried Mallet CRF, Mallet MaxEnt, OpenNLP MaxEnt, and LI-BLINEAR (SVMs and logistic regression). They picked the final classifiers by running a grid search over models and parameters on the training data, and for all tasks, a LIBLINEAR model was at least as good as all the other models. As an added bonus, it was way faster to train than most of the other models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Evaluation Results (Spanish)</head><p>There were two participants for Spanish. Both participated in task A and only one of them in task B. In this   case, TIPSemB-Freeling is provided as a state-of-the-art reference covering all the tasks. TIPSemB-Freeling is the Spanish version of TIPSem with the main difference that it does not include semantic roles. Furthermore, it uses Freeling <ref type="bibr" target="#b11">(Padró and Stanilovsky, 2012</ref>) to obtain the linguistic features automatically.</p><p>Table <ref type="table" target="#tab_1">12</ref> shows the results obtained for task A. As it can be observed HeidelTime obtains the best results. It improves the previous state-of-the-art results (TIPSemB-F), especially in normalization (value F1).</p><p>Table <ref type="table" target="#tab_1">13</ref> shows the results from event extraction. In this case, the previous state-of-the-art is not improved.</p><p>Table <ref type="table" target="#tab_1">14</ref> only shows the results obtained in temporal awareness by the state-of-the-art system since there were not participants on this task. We observe that TIPSemB-F approach offers competitive results, which is comparable to results obtained in TE3 English test set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Comparison with TempEval-2</head><p>TempEval-2 Spanish test set is included as a subset of this TempEval-3 test set. We can therefore compare the performance across editions. Furthermore, we can include the full-featured TIPSem <ref type="bibr" target="#b7">(Llorens et al., 2010)</ref>, which unlike TIPSemB-F used the AnCora <ref type="bibr" target="#b17">(Taulé et al., 2008)</ref> corpus annotations as features including semantic roles.</p><p>For timexes, as can be seen in Table <ref type="table" target="#tab_1">15</ref>, the original TIPSem obtains better results for timex extraction, which favours the hypothesis that machine learning systems are very well suited for this task (if the training data is sufficiently representative). However, for normalization (value F1), HeidelTime -a rule-engineered systemobtains better results. This indicates that rule-based approaches have the upper hand in this task. TIPSem uses  a partly data-driven normalization approach which, given the small amount of training data available, seemed less suited to the task.</p><p>Table <ref type="table" target="#tab_1">16</ref> shows event extraction performance in TE2 test set. TIPSemB-F and TIPSem obtained a similar performance. TIPSemB-F performed better in extraction and TIPSem better in attribute classification.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>In this paper, we described the TempEval-3 task within the SemEval 2013 exercise. This task involves identifying temporal expressions (timexes), events and their temporal relations in text. In particular participating systems were required to automatically annotate raw text using TimeML annotation scheme This is the first time end-to-end systems are evaluated with a new single score (temporal awareness). In TempEval-3 participants had to obtain temporal relations from their own extracted timexes and events which is a very challenging task and was the ultimate evaluation aim of TempEval. It was proposed at TempEval-1 but has not been carried out until this edition.</p><p>The newly-introduced silver data proved not so useful for timex extraction or relation classification, but did help with event extraction. The new single-measure helped to rank systems easily.</p><p>Future work could investigate temporal annotation in specific applications. Current annotations metrics evaluate relations for entities in the same consecutive sentence. For document-level understanding we need to understand discourse and pragmatic information. Temporal question answering-based evaluation (UzZaman et al., 2012a) can help us to evaluate participants on document level temporal information understanding without creating any additional training data. Also, summarisation, machine translation, and information retrieval need temporal annotation. Application-oriented challenges could further research in these areas.</p><p>From a TimeML point of view, we still haven't tackled subordinate relations (TimeML SLINKs), aspectual relations (TimeML ALINKs), or temporal signal annotation <ref type="bibr" target="#b4">(Derczynski and Gaizauskas, 2011)</ref>. The critical questions of which links to annotate, and whether the current set of temporal relation types are appropriate for linguistic annotation, are still unanswered.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>) event and document creation time. In TempEval-3, TimeML relation are used, i.e.: BEFORE, AFTER, INCLUDES, IS-INCLUDED, DURING, SIMULTANEOUS, IMMEDIATELY AFTER, IMMEDIATELY BEFORE, IDENTITY, BEGINS, ENDS, BEGUN-BY and ENDED-BY.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>Task C relation only (Annotating relations given gold entities and related pairs) Given the temporal entities and the pair of entities that have a temporal link, classify the temporal relation between them.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Platinum corpus entity inter-annotator agreement.</figDesc><table><row><cell>Corpus</cell><cell># of words</cell><cell>Standard</cell></row><row><cell>TimeBank</cell><cell>61,418</cell><cell>Gold</cell></row><row><cell>AQUAINT</cell><cell>33,973</cell><cell>Gold</cell></row><row><cell>TempEval-3 Silver</cell><cell>666,309</cell><cell>Silver</cell></row><row><cell>TempEval-3 Eval</cell><cell cols="2">6,375 Platinum</cell></row><row><cell>TimeBank-ES Train</cell><cell>57,977</cell><cell>Gold</cell></row><row><cell>TimeBank-ES Eval</cell><cell>9,833</cell><cell>Gold</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Corpora used in TempEval-3.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head></head><label></label><figDesc>calculate the P recision by checking the number of reduced system relations (Sys − relation ) that can be verified from the reference annotation temporal closure graph (Ref + relation ), out of number of temporal relations in the</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>strict</cell><cell>value</cell></row><row><cell></cell><cell>F1</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>F1</cell></row><row><cell>HeidelTime-t</cell><cell cols="4">90.30 93.08 87.68 81.34</cell><cell>77.61</cell></row><row><cell>HeidelTime-bf</cell><cell cols="4">87.31 90.00 84.78 78.36</cell><cell>72.39</cell></row><row><cell>HeidelTime-1.2</cell><cell cols="4">86.99 89.31 84.78 78.07</cell><cell>72.12</cell></row><row><cell>NavyTime-1,2</cell><cell cols="2">90.32 89.36</cell><cell>91.30</cell><cell>79.57</cell><cell>70.97</cell></row><row><cell>ManTIME-4</cell><cell cols="4">89.66 95.12 84.78 74.33</cell><cell>68.97</cell></row><row><cell>ManTIME-6</cell><cell cols="4">87.55 98.20 78.99 73.09</cell><cell>68.27</cell></row><row><cell>ManTIME-3</cell><cell cols="4">87.06 94.87 80.43 69.80</cell><cell>67.45</cell></row><row><cell>SUTime</cell><cell cols="2">90.32 89.36</cell><cell>91.30</cell><cell>79.57</cell><cell>67.38</cell></row><row><cell>ManTIME-1</cell><cell cols="4">87.20 97.32 78.99 70.40</cell><cell>67.20</cell></row><row><cell>ManTIME-5</cell><cell cols="4">87.20 97.32 78.99 69.60</cell><cell>67.20</cell></row><row><cell>ManTIME-2</cell><cell cols="4">88.10 97.37 80.43 72.22</cell><cell>66.67</cell></row><row><cell>ATT-2</cell><cell cols="4">85.25 98.11 75.36 78.69</cell><cell>65.57</cell></row><row><cell>ATT-1</cell><cell cols="2">85.60 99.05</cell><cell cols="2">75.36 79.01</cell><cell>65.02</cell></row><row><cell>ClearTK-1,2</cell><cell cols="4">90.23 93.75 86.96 82.71</cell><cell>64.66</cell></row><row><cell>JU-CSE</cell><cell cols="4">86.38 93.28 80.43 75.49</cell><cell>63.81</cell></row><row><cell>KUL</cell><cell cols="4">83.67 92.92 76.09 69.32</cell><cell>62.95</cell></row><row><cell cols="5">KUL-TE3RunABC 82.87 92.04 75.36 73.31</cell><cell>62.15</cell></row><row><cell>ClearTK-3,4</cell><cell cols="4">87.94 94.96 81.88 77.04</cell><cell>61.48</cell></row><row><cell>ATT-3</cell><cell cols="4">80.85 97.94 68.84 72.34</cell><cell>60.43</cell></row><row><cell>FSS-TimEx</cell><cell cols="4">85.06 90.24 80.43 49.04</cell><cell>58.24</cell></row><row><cell>TIPSem (TE2)</cell><cell cols="4">84.90 97.20 75.36 81.63</cell><cell>65.31</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Task A -Temporal Expression Performance. reduced system relations (Sys − relation ). Similarly, we calculate the Recall by checking the number of reduced reference annotation relations (Ref − relation ) that can be verified from the system output's temporal closure graph (Sys + relation ), out of number of temporal relations in the reduced reference annotation (Ref − relation )</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Automated approaches for TE3 Timex Extraction</figDesc><table><row><cell>Strategy</cell><cell>System</cell><cell>Training data</cell><cell cols="2">Classifier used Linguistic</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>Knowledge</cell></row><row><cell cols="2">Data-driven ATT-1, 2, 3</cell><cell cols="2">TBAQ + TE3Silver MaxEnt</cell><cell>ms, ss</cell></row><row><cell></cell><cell>ClearTK-1, 2</cell><cell>TimeBank</cell><cell>SVM, Logit</cell><cell>ms</cell></row><row><cell></cell><cell>ClearTK-3, 4</cell><cell>TBAQ</cell><cell>SVM, Logit</cell><cell>ms</cell></row><row><cell></cell><cell>JU-CSE</cell><cell>TBAQ</cell><cell>CRF</cell></row><row><cell></cell><cell>KUL</cell><cell cols="2">TBAQ +TE3Silver Logit</cell><cell>ms, ls</cell></row><row><cell></cell><cell>KUL-TE3RunABC</cell><cell cols="2">TBAQ +TE3Silver Logit</cell><cell>ms, ls</cell></row><row><cell></cell><cell>NavyTime-1</cell><cell>TBAQ</cell><cell>MaxEnt</cell><cell>ms, ls</cell></row><row><cell></cell><cell>NavyTime-2</cell><cell>TimeBank</cell><cell>MaxEnt</cell><cell>ms, ls</cell></row><row><cell></cell><cell>Temp : ESAfeature</cell><cell>TBAQ</cell><cell>MaxEnt</cell><cell>ms, ls, ss</cell></row><row><cell></cell><cell cols="2">Temp : WordNetfeature TBAQ</cell><cell>MaxEnt</cell><cell>ms, ls</cell></row><row><cell></cell><cell>TIPSem (TE2)</cell><cell>TBAQ</cell><cell>CRF/SVM</cell><cell>ms, ls, ss</cell></row><row><cell cols="2">Rule-based FSS-TimEx (EN)</cell><cell>None</cell><cell>None</cell><cell>ls, ms</cell></row><row><cell></cell><cell>FSS-TimEx (ES)</cell><cell>None</cell><cell>None</cell><cell>ls, ms</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 5 :</head><label>5</label><figDesc>Automated approaches for Event Extraction</figDesc><table><row><cell></cell><cell>F1</cell><cell>P</cell><cell>R</cell><cell>class F1</cell></row><row><cell>ATT-1</cell><cell>81.05</cell><cell cols="2">81.44 80.67</cell><cell>71.88</cell></row><row><cell>ATT-2</cell><cell cols="3">80.91 81.02 80.81</cell><cell>71.10</cell></row><row><cell>KUL</cell><cell cols="3">79.32 80.69 77.99</cell><cell>70.17</cell></row><row><cell>ATT-3</cell><cell cols="2">78.63 81.95</cell><cell>75.57</cell><cell>69.55</cell></row><row><cell>KUL-TE3RunABC</cell><cell cols="3">77.11 77.58 76.64</cell><cell>68.74</cell></row><row><cell>ClearTK-3,4</cell><cell cols="3">78.81 81.40 76.38</cell><cell>67.87</cell></row><row><cell>NavyTime-1</cell><cell cols="3">80.30 80.73 79.87</cell><cell>67.48</cell></row><row><cell>ClearTK-1,2</cell><cell cols="3">77.34 81.86 73.29</cell><cell>65.44</cell></row><row><cell>NavyTime-2</cell><cell cols="3">79.37 80.52 78.26</cell><cell>64.81</cell></row><row><cell>Temp:ESAfeature</cell><cell cols="3">68.97 78.33 61.61</cell><cell>54.55</cell></row><row><cell>JU-CSE</cell><cell cols="3">78.62 80.85 76.51</cell><cell>52.69</cell></row><row><cell cols="4">Temp:WordNetfeature 63.90 78.90 53.69</cell><cell>50.00</cell></row><row><cell>FSS-TimEx</cell><cell cols="3">65.06 63.13 67.11</cell><cell>42.94</cell></row><row><cell>TIPSem (TE2)</cell><cell cols="3">82.89 83.51 82.28</cell><cell>75.59</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6 :</head><label>6</label><figDesc>Task B -Event Extraction Performance.</figDesc><table><row><cell></cell><cell>F1</cell><cell>P</cell><cell>R</cell></row><row><cell>ClearTK-2</cell><cell>30.98</cell><cell>34.08</cell><cell>28.40</cell></row><row><cell>ClearTK-1</cell><cell>29.77</cell><cell>34.49</cell><cell>26.19</cell></row><row><cell>ClearTK-3</cell><cell cols="3">28.62 30.94 26.63</cell></row><row><cell>ClearTK-4</cell><cell cols="3">28.46 29.73 27.29</cell></row><row><cell>NavyTime-1</cell><cell cols="3">27.28 31.25 24.20</cell></row><row><cell>JU-CSE</cell><cell cols="3">24.61 19.17 34.36</cell></row><row><cell>NavyTime-2</cell><cell cols="3">21.99 26.52 18.78</cell></row><row><cell cols="4">KUL-TE3RunABC 19.01 17.94 20.22</cell></row><row><cell>TIPSem (TE2)</cell><cell cols="3">42.39 38.79 46.74</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 7 :</head><label>7</label><figDesc></figDesc><table /><note>Task ABC -Temporal Awareness Evaluation (Task C evaluation from raw text).</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8 :</head><label>8</label><figDesc>Task C -TLINK Identification and Classification.</figDesc><table><row><cell></cell><cell>F1</cell><cell>P</cell><cell>R</cell></row><row><cell cols="4">UTTime-1, 4 56.45 55.58 57.35</cell></row><row><cell cols="4">UTTime-3, 5 54.70 53.85 55.58</cell></row><row><cell>UTTime-2</cell><cell cols="3">54.26 53.20 55.36</cell></row><row><cell>NavyTime-1</cell><cell cols="3">46.83 46.59 47.07</cell></row><row><cell>NavyTime-2</cell><cell cols="3">43.92 43.65 44.20</cell></row><row><cell>JU-CSE</cell><cell cols="3">34.77 35.07 34.48</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 9 :</head><label>9</label><figDesc></figDesc><table /><note>Task C -relation only: Relation Classification.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 10 :</head><label>10</label><figDesc>Automated approaches for TE3 TLINK Identification</figDesc><table><row><cell>Strategy</cell><cell>System</cell><cell>Training data</cell><cell>Classifier used</cell><cell>Linguistic</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>Knowledge</cell></row><row><cell cols="2">Data-driven ClearTK-1</cell><cell>TimeBank</cell><cell>SVM, Logit</cell><cell>ms, ls</cell></row><row><cell></cell><cell>ClearTK-2</cell><cell>TimeBank + Bethard et al. (2007)</cell><cell>SVM, Logit</cell><cell>ms, ls</cell></row><row><cell></cell><cell>ClearTK-3</cell><cell>TBAQ</cell><cell>SVM, Logit</cell><cell>ms, ls</cell></row><row><cell></cell><cell>ClearTK-4</cell><cell>TBAQ + Muller's inferences</cell><cell>SVM, Logit</cell><cell>ms, ls</cell></row><row><cell></cell><cell>JU-CSE</cell><cell>TBAQ</cell><cell>CRF</cell><cell></cell></row><row><cell></cell><cell>KULRunABC</cell><cell>TBAQ</cell><cell>SVM, Logit</cell><cell>ms</cell></row><row><cell></cell><cell>NavyTime-1</cell><cell>TBAQ</cell><cell>MaxEnt</cell><cell>ms, ls</cell></row><row><cell></cell><cell>NavyTime-2</cell><cell>TimeBank</cell><cell>MaxEnt</cell><cell>ms, ls</cell></row><row><cell></cell><cell>UTTime-1,4, 2</cell><cell>TBAQ</cell><cell>Logit</cell><cell>ms, ls, ss</cell></row><row><cell></cell><cell>UTTime-3,5</cell><cell>TBAQ + inverse relations</cell><cell>Logit</cell><cell>ms, ls, ss</cell></row><row><cell></cell><cell cols="2">TIPSem (TE-2) TBAQ</cell><cell>CRF/SVM</cell><cell>ms, ls, ss</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_15"><head>Table 11 :</head><label>11</label><figDesc>Automated approaches for Relation Classification</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_17"><head>Table 12 :</head><label>12</label><figDesc>Task A: Temporal Expression (Spanish).</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="3">class tense aspect</cell></row><row><cell></cell><cell>F1</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>F1</cell><cell>F1</cell></row><row><cell>FSS-TimEx</cell><cell cols="3">57.6 89.8 42.4</cell><cell>24.9</cell><cell>-</cell><cell>-</cell></row><row><cell cols="2">TIPSemB-F 88.8</cell><cell cols="2">91.7 86.0</cell><cell>57.6</cell><cell>41.0</cell><cell>36.3</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_18"><head>Table 13 :</head><label>13</label><figDesc>Task B: Event Extraction (Spanish).</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_19"><head>Table 14 :</head><label>14</label><figDesc>Task ABC: Temporal Awareness (Spanish).</figDesc><table><row><cell></cell><cell></cell><cell cols="2">entity extraction</cell><cell></cell><cell cols="2">attributes</cell></row><row><cell></cell><cell>strict</cell><cell></cell><cell>relaxed</cell><cell></cell><cell>val</cell><cell>type</cell></row><row><cell></cell><cell>F1</cell><cell>F1</cell><cell>P</cell><cell>R</cell><cell>F1</cell><cell>F1</cell></row><row><cell>HeidelTime</cell><cell>86.4</cell><cell cols="5">89.8 94.0 85.9 87.5 89.8</cell></row><row><cell>FSS-TimEx</cell><cell>42.1</cell><cell cols="5">68.4 86.7 56.5 48.7 65.8</cell></row><row><cell>TIPSem</cell><cell>86.9</cell><cell cols="5">93.7 98.8 89.1 75.4 88.0</cell></row><row><cell cols="2">TIPSemB-F 84.3</cell><cell cols="5">89.9 93.0 87.0 82.0 86.5</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_20"><head>Table 15 :</head><label>15</label><figDesc>Task A: TempEval-2 test set (Spanish).</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_22"><head>Table 16 :</head><label>16</label><figDesc></figDesc><table /><note>Task B: TempEval-2 test set (Spanish).</note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">See http://timeml.org/site/timebank/timebank.html</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">See https://github.com/hllorens/TimeML-validator</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">In the ACL data and code repository, reference ADCR2013T001. See also https://bitbucket.org/leondz/te3-platinum</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">We used a minor variation of the formula, where we consider the reduced graph instead of all system or reference relations. Details can be found in Chapter 6 of UzZaman (2012).6  A relation is redundant if it can be inferred through other relations.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">Abbreviations used in the table: TBAQ -TimeBank + AQUAINT corpus ms -morphosyntactic information, e.g. POS, lexical information, morphological information and syntactic parsing related features; ls -lexical semantic information, e.g. WordNet synsets; ss -sentencelevel semantic information, e.g. Semantic Role labels.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="10">New abbreviation in the table, e-attr -entity attributes, e.g. event class, tense, aspect, polarity, modality; timex type, value.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We thank the participants -especially Steven Bethard, Jannik Strötgen, Nate Chambers, Oleksandr Kolomiyets, Michele Filannino, Philippe Muller and others -who helped us to improve TempEval-3 with their valuable feedback. The third author also thanks Aarhus University, Denmark who kindly provided facilities.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Maintaining knowledge about temporal intervals</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">F</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Communications of the ACM</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="832" to="843" />
+			<date type="published" when="1983" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Timelines from text: Identication of syntactic temporal relations</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bethard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">H</forename><surname>Martin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Klingenstein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of IEEE International Conference on Semantic Computing</title>
+				<meeting>IEEE International Conference on Semantic Computing</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Getting More Out of Biomedical Documents with GATE&apos;s Full Lifecycle Open Source Text Analytics</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Cunningham</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Tablan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Roberts</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Bontcheva</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">PLoS computational biology</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">e1002854</biblScope>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Analysing Temporally Annotated Corpora with CAVaT</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gaizauskas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 7th International Conference on Language Resources and Evaluation</title>
+				<meeting>the 7th International Conference on Language Resources and Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="398" to="404" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">A Corpus-based Study of Temporal Signals</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gaizauskas</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th Corpus Linguistics Conference</title>
+				<meeting>the 6th Corpus Linguistics Conference</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">TimeMLstrict: clarifying temporal annotation</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<idno>abs/1304</idno>
+		<imprint>
+			<date type="published" when="2013" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Agreement, the fmeasure, and reliability in information retrieval</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Hripcsak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">S</forename><surname>Rothschild</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="296" to="298" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">TIPSem (English and Spanish): Evaluating CRFs and Semantic Roles in TempEval-2</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Saquete</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Navarro</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Workshop on Semantic Evaluation</title>
+				<meeting>the 5th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="284" to="291" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Merging Temporal Annotations</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the TIME Conference</title>
+				<meeting>the TIME Conference</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Automatic system for identifying and categorizing temporal relations in natural language</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Saquete</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Navarro-Colorado</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International Journal of Intelligent Systems</title>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="issue">7</biblScope>
+			<biblScope unit="page" from="680" to="703" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Applying Semantic Knowledge to the Automatic Processing of Temporal Expressions and Events in Natural Language</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Saquete</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Navarro-Colorado</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">formation Processing &amp; Management</title>
+				<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">49</biblScope>
+			<biblScope unit="page" from="179" to="197" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Freeling 3.0: Towards wider multilinguality</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Padró</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Stanilovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Language Resources and Evaluation Conference (LREC 2012)</title>
+				<meeting>the Language Resources and Evaluation Conference (LREC 2012)<address><addrLine>Istanbul, Turkey, May. ELRA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">English Gigaword Fifth Edition. LDC catalog ref</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Parker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Graff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Kong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Maeda</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="C2011T" to="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">The TimeBank corpus</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>See</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Setzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Radev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Sundheim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Day</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ferro</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Corpus Linguistics</title>
+				<imprint>
+			<date type="published" when="2003" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">The specification language TimeML. The Language of Time: A reader</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Ingria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Castano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Littman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Setzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Katz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Mani</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="545" to="557" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Badia</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+	<note>Spanish TimeBank 1.0. LDC catalog ref. LDC2012T12.</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">TimeML Annotation Guidelines Version 1.2.1</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Littman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Knippen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Setzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Ancora: Multilevel annotated corpora for catalan and spanish</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Taulé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">A</forename><surname>Martı</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Recasens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 6th International Conference on Language Resources and Evaluation (LREC-2008)</title>
+				<meeting>the 6th International Conference on Language Resources and Evaluation (LREC-2008)</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">TRIPS and TRIOS system for TempEval-2: Extracting temporal information from text</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Workshop on Semantic Evaluation</title>
+				<meeting>the 5th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="276" to="283" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Temporal Evaluation</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>The 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Evaluating temporal information understanding with temporal question answering</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of IEEE International Conference on Semantic Computing</title>
+				<meeting>IEEE International Conference on Semantic Computing</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">TempEval-3: Evaluating Events, Time Expressions, and Temporal Relations</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">F</forename><surname>Allen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<ptr target="CoRR,abs/1206.5333" />
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Interpreting the Temporal Aspects of Language</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<pubPlace>Rochester, NY</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>University of Rochester</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">The TempEval challenge: identifying temporal relations in text</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Schilder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Hepple</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Language Resources and Evaluation</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="161" to="179" />
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">SemEval-2010 task 13: TempEval-2</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Caselli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Workshop on Semantic Evaluation</title>
+				<meeting>the 5th International Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="57" to="62" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

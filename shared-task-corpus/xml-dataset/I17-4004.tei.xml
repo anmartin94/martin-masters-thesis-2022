@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">IJCNLP-2017 Task 4: Customer Feedback Analysis</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Chao-Hong</forename><surname>Liu</surname></persName>
+							<email>chaohong.liu@adaptcentre.ie</email>
+							<affiliation key="aff0">
+								<orgName type="department">ADAPT Centre</orgName>
+								<orgName type="institution">Dublin City University</orgName>
+								<address>
+									<country key="IE">Ireland</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yasufumi</forename><surname>Moriya</surname></persName>
+							<email>yasufumi.moriya@adaptcentre.ie</email>
+							<affiliation key="aff0">
+								<orgName type="department">ADAPT Centre</orgName>
+								<orgName type="institution">Dublin City University</orgName>
+								<address>
+									<country key="IE">Ireland</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Alberto</forename><surname>Poncelas</surname></persName>
+							<email>alberto.poncelas@adaptcentre.ie</email>
+							<affiliation key="aff0">
+								<orgName type="department">ADAPT Centre</orgName>
+								<orgName type="institution">Dublin City University</orgName>
+								<address>
+									<country key="IE">Ireland</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Declan</forename><surname>Groves</surname></persName>
+							<email>degroves@microsoft.com</email>
+							<affiliation key="aff1">
+								<orgName type="institution">Microsoft Ireland Leopardstown</orgName>
+								<address>
+									<settlement>Dublin 18</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">IJCNLP-2017 Task 4: Customer Feedback Analysis</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:31+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This document introduces the IJCNLP 2017 Shared Task on Customer Feedback Analysis. In this shared task we have prepared corpora of customer feedback in four languages, i.e. English, French, Spanish and Japanese. They were annotated in a common meanings categorization, which was improved from an ADAPT-Microsoft pivot study on customer feedback. Twenty teams participated in the shared task and twelve of them have submitted prediction results. The results show that performance of prediction meanings of customer feedback is reasonable well in four languages. Nine system description papers are archived in the shared tasks proceeding.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In this paper we introduce the results of IJCNLP 2017 Shared Task on Customer Feedback Analysis. The shared task is a follow-up of an ADAPT-Microsoft joint pilot study on multilingual customer feedback analysis. We have improved the categorization and the classes (tags) used in the corpora are the five-class "comment", "request", "bug", "complaint", "meaningless", and the "undetermined" tag. By undetermined we mean that the feedback could be annotated as one of the five classes but due to lack of contexts it was annotated as undetermined. Table <ref type="table">1</ref> shows the numbers of customer feedback sentences curated in the corpora and how many they are grouped into training, development and test sets. We also provided unannotated customer feedback sentences in the corpora. Table <ref type="table">2</ref> shows the statistics of each class in the meaning categorization in the training set. Noted we cannot find "meaningless" feedback sentence in Japanese corpus. On the contrary, there is no "undetermined" feedback sentence in Spanish corpus. These might reflect some linguistic and/or cultural differences in the curated customer feedback corpora. Abbreviations EN, ES, FR and JP are used interchangeably with English, Spanish, French and Japanese where applicable.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Lang.</head><p>Train The purpose of the shared task is to try to answer the question that if we need to 1) train native systems for different languages (using the same meanings categorization of customer feedback), or it is good enough to 2) use Machine Translation (MT) to translate customer feedback in other languages into English and use English based systems to do the detection of meanings of customer feedback. If the answer is 1, we will have to prepare corpora for different languages using the same categorization. If the answer is 2, then it would be more reasonable to put more efforts to enhance the performance of English based systems and try to further improve the quality of MT results.</p><p>There are several categorizations that could be used for customer feedback analysis. First, different kinds of sentiment categorizations that were used in sentiment analysis in Microsoft Office and many other institutions <ref type="bibr" target="#b14">(Salameh et al., 2015)</ref> Customer feedback analysis is now an industry in its own right <ref type="bibr">(Freshdesk, 2016;</ref><ref type="bibr" target="#b2">Burns, 2016)</ref>. One commonly used categorization is the Excellent-Good-Average-Fair-Poor and its various kinds of variants <ref type="bibr" target="#b18">(Yin et al., 2016;</ref><ref type="bibr">Survey-Monkey, 2016)</ref>. <ref type="bibr">(Freshdesk, 2016)</ref> and <ref type="bibr">(Keatext, 2016)</ref> used a combined categorization of Positive-Neutral-Negative-Answered-Unanswered. <ref type="bibr">(Sift, 2016)</ref> has the Refund-Complaint-Pricing-Tech Support-Store Locator-Feedback-Warranty Info categorization in seven classes. We can also have observed that there are many other categorizations that are not publicly available <ref type="bibr">(Equiniti, 2016;</ref><ref type="bibr">UseResponse, 2016;</ref><ref type="bibr">Inmoment, 2016)</ref>.</p><p>In this shared task, we followed <ref type="bibr" target="#b3">(Liu et al., 2017)</ref>'s five-class customer feedback meanings categorization which is generalized from English, Spanish and Japanese customer feedback, add an "undetermined" class and prepared the corpora in four languages (English, French, Spanish and Japanese). The resulting categorization is as follows.</p><p>1. Comment 2. Request 3. Bug 4. Complaint 5. Meaningless 6. Undetermined</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Measures</head><p>In this shared task, we concluded the results in four different measures. The details of the results can be download from the shared task website.</p><p>• Exact-match Accuracy: Feedback is considered correct only when "all its oracle tags" are predicted correctly. • Partial-match Accuracy: Feedback is considered correct if 'any' of its oracle tags is predicted. • Micro-Average of Precision, Recall and F1 • Macro-Average of Precision, Recall and F1: As the number of instances of each tag varies a lot this measure might not be suitable for comparisons in the shared task.</p><p>In this paper we show mainly the results of 1) Exact-match Accuracy and 2) Micro-Average of Precision, Recall and F1, which are more suitable measures in our consideration.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Baseline and Submitted Systems</head><p>A baseline system was implemented using similarity based method. It uses trigrams to calculate the similarity of an input sentence and all the annotated customer feedback sentences in the corpora and uses the annotation of the one (in the annotated training corpora) with highest similarity score as the input sentence's predicted annotation.</p><p>The baseline system is referred to as "Baseline-Similarity" in this paper.</p><p>In this shared task, an initial team name was given to each team in the release of results. For example, TA was used to designate Team A. In the report of these results, i.e. this paper, a team name is revealed only when consent from its corresponding team is granted.</p><p>The mapping of each team name and its corresponding system description paper is shown as follows. Please refer to each paper for details of the system/method they used for the problem of customer feedback analysis </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Results in Exact-Match Accuracy</head><p>Tables <ref type="table">3-6</ref> shows the results of each team-method in exact-match accuracy in English, Spanish, French and Japanese, respectively. The details of each method implemented by each team are described in their associated system description papers. The method denoted as "entrans" is the one that used machine translated sentences to do the prediction of meanings of customer feedback. For example, in the "Plank-entrans" system in Table <ref type="table">4</ref>, the sentences in Spanish test set are machine translated from Spanish to English using Google Translate, and then use Plank's English based system to predict their tags.</p><p>It is observed that for exact-accuracy, the best performers of submitted systems can achieve 71.00%, 88.63%, 73.75% and 75.00% in English, Spanish, French and Japanese, respectively. First, we can observe that the task seems to be easier in Spanish which is the same phenomenon reported in <ref type="bibr" target="#b3">(Liu et al., 2017)</ref>. Second, performances in English, French and Japanese are also good and around the same level. Third, using machine translation the systems can achieve comparable results for Spanish and French, which are only 4 and 2 points behind native systems, respectively. For Japanese there is about 12 points behind the best native system.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>English</head><p>Exact </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results in Micro-Average Precision, Recall and F1 measures</head><p>Likewise, Tables 7-10 show the results of each team-method in micro-average precision, recall and F1 measures in English, Spanish, French and Japanese, respectively. For micro-average F1, the best systems achieved 75.57%, 88.63%, 76.59% and 77.05% in English, Spanish, French and Japanese, respectively. The results in Spanish exhibit the same phenomenon as in exact-match accuracy results and in <ref type="bibr" target="#b3">(Liu et al., 2017)</ref>. The performances in English, French and Japanese are also good and around the same level. Using machine translation, the systems can also achieve comparable results in this measure for Spanish and French, which are 4 and 2 points behind native systems, respectively. There is 11 points behind in Japanese in this regard. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>English</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusions</head><p>In this shared task, we address the problem if we should 1) train native systems for different languages, or 2) use MT to translate customer feedback into English and use English based systems to predict meanings of customer feedback. By using the same categorization, we concluded that using native systems, the performances in the four languages are all good. For Spanish and French, using MT can achieve comparable results as using native systems. Therefore, we would suggest improving English based systems and probably preparing the corpora in finer categorizations that would help us understand customer feedbacks.</p><p>However, for Japanese or other languages where MT still does not produce high quality translations, preparing native corpora and building native systems are still highly recommended.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>•</head><label></label><figDesc>ADAPT:<ref type="bibr" target="#b11">(Lohar et al., 2017)</ref> • Bingo:<ref type="bibr" target="#b7">(Elfardy et al., 2017)</ref> • IIIT-H:<ref type="bibr" target="#b13">(Danda et al., 2017)</ref> • OhioState:<ref type="bibr" target="#b4">(Dhyani, 2017)</ref> • Plank: (Plank, 2017) • SentiNLP:<ref type="bibr" target="#b15">(Lin et al., 2017)</ref> • YNU-HPCC:<ref type="bibr" target="#b10">(Wang et al., 2017)</ref> </figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>:</head><label></label><figDesc>Statistics of the curated CustomerFeedback Analysis Corpora for the shared task.</figDesc><table><row><cell></cell><cell cols="2">. Dev.</cell><cell cols="3">Test Unanno.</cell></row><row><cell>English</cell><cell>3,065</cell><cell cols="2">500</cell><cell>500</cell><cell>12,838</cell></row><row><cell>French</cell><cell>1,950</cell><cell cols="2">400</cell><cell>400</cell><cell>5,092</cell></row><row><cell>Spanish</cell><cell>1,631</cell><cell cols="2">301</cell><cell>299</cell><cell>6,035</cell></row><row><cell>Japanese</cell><cell>1,526</cell><cell cols="2">250</cell><cell>300</cell><cell>4,873</cell></row><row><cell>TOTAL</cell><cell cols="4">8,172 1,451 1,499</cell><cell>28,838</cell></row><row><cell cols="3">Table 1EN</cell><cell>FR</cell><cell>ES</cell><cell>JP</cell></row><row><cell>Comment</cell><cell></cell><cell>276</cell><cell>259</cell><cell>224</cell><cell>142</cell></row><row><cell>Request</cell><cell></cell><cell>21</cell><cell>6</cell><cell>12</cell><cell>22</cell></row><row><cell>Bug</cell><cell></cell><cell>21</cell><cell>13</cell><cell>5</cell><cell>18</cell></row><row><cell cols="2">Complaint</cell><cell>148</cell><cell>112</cell><cell>39</cell><cell>73</cell></row><row><cell cols="2">Meaningless</cell><cell>48</cell><cell>36</cell><cell>1</cell><cell>0</cell></row><row><cell cols="2">Undetermined</cell><cell>3</cell><cell>1</cell><cell>0</cell><cell>9</cell></row><row><cell cols="6">Table 2: Numbers of customer feedback tags</cell></row><row><cell cols="5">that were annotated in the training set.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>:</head><label></label><figDesc>Resulting scores of each team-method in exact-match accuracy in Spanish.</figDesc><table><row><cell>TF-ss-lr</cell><cell>57.19%</cell><cell>OhioState-biLSTM2 IIIT-H-biLSTM</cell><cell>61.60% 56.67%</cell></row><row><cell>Table 4French</cell><cell>Exact-Accuracy</cell><cell>IITP-RNN YNU-HPCC-hotelNoATT OhioState-biLSTM1 Bingo-logistic-reg OhioState-CNN IIIT-H-SVM OhioState-biLSTM1 OhioState-biLSTM2</cell><cell>61.40% 61.20% 61.20% 55.80% 56.67% 56.33% 56.33% 56.33%</cell></row><row><cell>Plank-monolingual</cell><cell>73.75%</cell><cell>Bingo-lstm IITP-RNN</cell><cell>54.40% 56.00%</cell></row><row><cell>IITP-CNN-entrans</cell><cell>71.75%</cell><cell>OhioState-CNN OhioState-biLSTM3</cell><cell>54.20% 56.00%</cell></row><row><cell>Plank-multilingual</cell><cell>71.50%</cell><cell>TD-M1 OhioState-FastText</cell><cell>52.20% 56.00%</cell></row><row><cell>OhioState-biLSTM1</cell><cell>70.00%</cell><cell>TF-nn TF-nn</cell><cell>51.20% 55.67%</cell></row><row><cell>IIIT-H-SVM</cell><cell>-Accuracy 69.75%</cell><cell>Baseline-Similarity TF-ss-svm</cell><cell>48.80% 55.00%</cell></row><row><cell>YNU-HPCC-glove ADAPT-Run1</cell><cell>71.00% 69.50%</cell><cell>Bingo-rf TF-ss-nb</cell><cell>47.40% 55.00%</cell></row><row><cell>YNU-HPCC-EmbedCon-IITP-CNN</cell><cell>71.00% 69.00%</cell><cell>TF-ss-svm TF-ss</cell><cell>41.00% 55.00%</cell></row><row><cell>catNoWeight SentiNLP-bilstmcnn OhioState-biLSTM2 SentiNLP-bilstm Plank-entrans SentiNLP-bicnn IITP-RNN-entrans IITP-CNN IITP-RNN SentiNLP-cnnlstm OhioState-FastText Plank-monolingual TB-fr-run1 Plank-multilingual ADAPT-Run2 IIIT-H-biLSTM</cell><cell>68.50% 70.80% 68.25% 70.40% 68.25% 70.20% 68.25% 70.00% 68.00% 69.00% 66.75% 68.80% 66.75% 68.60% 65.25%</cell><cell cols="2">TF-ss-lr IITP-CNN TF-ss-nb TF-cnn-entrans TF-ss TF-ss-lr-entrans TB-en-run2 Bingo-lstm TB-en-run1 Bingo-rf TB-en-run3 TF-ss-lr Table 3: Resulting scores of each team-method in 41.00% 54.00% 40.40% 53.33% 40.40% 53.00% 38.80% 53.00% 37.40% 45.00% 37.00% 28.67% Table 6: Resulting scores of each team-method in exact-match accuracy in English. exact-match accuracy in Japanese.</cell></row><row><cell>YNU-HPCC-EmbedCon-OhioState-biLSTM3</cell><cell>68.60% 65.00%</cell><cell></cell><cell></cell></row><row><cell cols="2">catWeight SentiNLP-cnn OhioState-CNN TJ-single-cnn TB-fr-run4 IIIT-H-SVM TB-fr-run3 TJ-ensemble-sentiment Bingo-lstm ADAPT-Run3 TB-fr-run2 IIIT-H-biLSTM Bingo-logistic-reg TJ-ensemble-2 Baseline-Similarity YNU-HPCC-hotelWeight Bingo-rf TJ-ensemble-epoch5 TF-ss-nb TJ-ensemble-7 TF-ss-lr TJ-ensemble-1 TF-nn2 TJ-ensemble-epoch10 TF-nn TJ-ensemble-5 TF-ss YNU-HPCC-hotel TF-nn3 YNU-HPCC-gloveWeight Table 5: Resulting scores of each team-method in 65.00% 68.20% 63.50% 67.40% 62.25% 65.60% 61.25% 65.40% 60.50% 65.40% 59.00% 65.20% 54.75% 65.20% 48.75% 65.00% 48.25% 64.60% 48.25% 64.60% 47.75% 64.60% 47.25% 64.40% 44.50% 64.20% 39.00% 64.00% 64.00% TJ-ensemble-epoch5n10 exact-match accuracy in French. 64.00% ADAPT-Run2 64.00% TJ-ensemble-8 Japanese Exact-Accuracy 63.80% TJ-ensemble-6 Plank-multilingual 75.00% 63.80% TJ-ensemble-3 Plank-monolingual 73.33% 63.80% TJ-ensemble-4 ADAPT-Run1 67.67% 63.60% OhioState-FastText Plank-entrans 63.67% 63.40% ADAPT-Run1 IITP-CNN-entrans 63.00% 63.40% YNU-HPCC-SVM Bingo-logistic-reg 60.67% 63.00% OhioState-biLSTM3 IITP-RNN-entrans 58.67% 62.80% YNU-HPCC-bayes ADAPT-Run2 57.67% 62.60% TJ-single-cbow 62.00% Baseline-Similarity 56.67%</cell><cell>Spanish Plank-multilingual Plank-monolingual IIIT-H-biLSTM IITP-RNN OhioState-biLSTM2 Plank-entrans IITP-CNN IIIT-H-SVM ADAPT-Run1 OhioState-FastText IITP-CNN-entrans OhioState-biLSTM1 IITP-RNN-entrans ADAPT-Run2 OhioState-CNN OhioState-biLSTM3 Baseline-Similarity TF-ss-lr-entrans Bingo-rf Bingo-logistic-reg Bingo-lstm TF-ss TF-cnn-entrans TF-nn TF-ss-svm TF-ss-nb</cell><cell>Exact-Accuracy 88.63% 88.29% 86.29% 85.62% 85.28% 84.62% 84.62% 84.62% 83.61% 82.94% 82.61% 82.61% 81.94% 81.61% 81.27% 79.93% 77.26% 76.25% 75.92% 72.91% 71.57% 62.21% 60.54% 59.53% 57.19% 57.19%</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 10 :</head><label>10</label><figDesc>Resulting scores of each team-method in micro-average precision (A.P), recall (A.R) and F1 (A.F1) measures in Japanese.</figDesc><table><row><cell></cell><cell>A.P</cell><cell>A.R</cell><cell>A.F1</cell></row><row><cell>SentiNLP-</cell><cell cols="3">74.86% 76.30% 75.57%</cell></row><row><cell>bilstmcnn</cell><cell></cell><cell></cell></row><row><cell>SentiNLP-</cell><cell>73.83%</cell><cell cols="2">76.11% 74.95%</cell></row><row><cell>bicnn</cell><cell></cell><cell></cell></row><row><cell>SentiNLP-</cell><cell>73.77%</cell><cell cols="2">75.34% 74.55%</cell></row><row><cell>bilstm</cell><cell></cell><cell></cell></row><row><cell>SentiNLP-</cell><cell>72.12%</cell><cell cols="2">74.76% 73.42%</cell></row><row><cell>cnn</cell><cell></cell><cell></cell></row></table></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>This research is supported by the ADAPT Centre for Digital Content Technology, funded under the Science Foundation Ireland (SFI) Research Centres Programme (Grant 13/RC/2106). We are grateful to ADAPT colleagues Anna Kostekidou, Julie Connelly, Clare Conran, among others, for their support to the project. We would like to thank Ms Sara Garvey and Ms Rachel Costello of Trinity College Dublin who prepared the English and French parts of corpora and helped improve the categorization. They also built an initial system using a nascent version of the corpora to help understand the performance that might be in both English and French. Special thanks to Dr Barbara Plank and Ms Shuying Lin for spotting the bug in the calculation of exact-match accuracy. Barbara also provided helpful comments on the use of these measures, among others, which are much appreciated. We are also grateful to Dr Heba Elfardy and her team from Amazon who identified several issues of the corpora and helped improve the corpora for the shared task. Finally, all participants are much appreciated to take part of this shared task and together help us better understand the task questions.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">All-In-1 at IJCNLP-2017 Task 4: Short Text Classification with One Model for All Languages</title>
+	</analytic>
+	<monogr>
+		<title level="m">the Proceedings of IJCNLP, Shared Tasks</title>
+				<meeting><address><addrLine>Barbara Plank</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="143" to="148" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Giving Voice to Office Customers: Best Practices in How Office Handles Verbatim Text Feedback</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Bentley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Soumya</forename><surname>Batra</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE International Conference on Big Data</title>
+				<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="3826" to="3832" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">Kampyle Introduces the NebulaCX Experience Optimizer</title>
+		<author>
+			<persName><forename type="first">Michelle</forename><surname>Burns</surname></persName>
+		</author>
+		<ptr target="http://www.kampyle.com/kampyle-in-troduces-the-nebulacx-experience-optimizer/" />
+		<imprint>
+			<date type="published" when="2016-02" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Understanding Meanings in Multilingual Customer Feedback</title>
+		<author>
+			<persName><forename type="first">Chao-Hong</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Declan</forename><surname>Groves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Akira</forename><surname>Hayakawa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alberto</forename><surname>Poncelas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qun</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">the Proceedings of First Workshop on Social Media and User Generated Content Machine Translation</title>
+				<meeting><address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">OhioState at IJCNLP-2017 Task 4: Exploring Neural Architectures for Multilingual Customer Feedback Analysis</title>
+		<author>
+			<persName><forename type="first">Dushyanta</forename><surname>Dhyani</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">the Proceedings of IJCNLP, Shared Tasks</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="170" to="173" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Complaints Management</title>
+		<author>
+			<persName><surname>Equiniti</surname></persName>
+		</author>
+		<ptr target="https://www.equiniticharter.com/ser-vices/complaints-management/#.WOH5X2_yt0w" />
+		<imprint>
+			<date type="published" when="2017-04" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Creating and sending the Satisfaction Survey</title>
+		<author>
+			<persName><forename type="first">Freshdesk</forename><surname>Inc</surname></persName>
+		</author>
+		<ptr target="https://sup-port.freshdesk.com/support/solutions/arti-cles/37886-creating-and-sending-the-satisfaction-survey" />
+		<imprint>
+			<date type="published" when="2017-02" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Bingo at IJCNLP-2017 Task 4: Augmenting Data using Machine Translation for Cross-linguistic Customer Feedback Classification</title>
+		<author>
+			<persName><forename type="first">Heba</forename><surname>Elfardy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manisha</forename><surname>Srivastava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jared</forename><surname>Kramer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tarun</forename><surname>Agarwal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">the Proceedings of IJCNLP, Shared Tasks</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="59" to="66" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">Software to Improve and Optimize the Customer Experience</title>
+		<author>
+			<persName><surname>Inmoment</surname></persName>
+		</author>
+		<ptr target="http://www.inmoment.com/products/" />
+		<imprint>
+			<date type="published" when="2017-04" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Text Analytics Made Easy</title>
+		<ptr target="http://www.keatext.ai/" />
+		<imprint>
+			<date type="published" when="2016-09" />
+			<publisher>Keatext Inc</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">YNU-HPCC at IJCNLP-2017 Task 4: Attention-based Bi-directional GRU Model for Customer Feedback Analysis Task of English</title>
+		<author>
+			<persName><forename type="first">Nan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jin</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuejie</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">the Proceedings of IJCNLP, Shared Tasks</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="174" to="179" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">ADAPT at IJCNLP-2017 Task 4: A Multinomial Naive Bayes Classification Approach for Customer Feedback Analysis task</title>
+		<author>
+			<persName><forename type="first">Pintu</forename><surname>Lohar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Haithem</forename><surname>Koel Dutta Chowdhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammed</forename><surname>Afli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andy</forename><surname>Hasanuzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Way</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">the Proceedings of IJCNLP, Shared Tasks</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="161" to="169" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Juggling the Jigsaw: Towards Automated Problem Inference from Network Trouble Tickets</title>
+		<author>
+			<persName><forename type="first">Rahul</forename><surname>Potharaju</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Navendu</forename><surname>Jain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cristina</forename><surname>Nita-Rotaru</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">10 th USENIX Symposium on Network Systems Design and Implementation (NSDI 13)</title>
+				<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="127" to="141" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">IIIT-H at IJCNLP-2017 Task 4: Customer Feedback Analysis using Machine Learning and Neural Network Approaches</title>
+		<author>
+			<persName><forename type="first">Prathyusha</forename><surname>Danda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pruthwik</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silpa</forename><surname>Kanneganti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Soujanya</forename><surname>Lanka</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">the Proceedings of IJCNLP, Shared Tasks</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="155" to="160" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Sentiment after translation: A case-study on Arabic social media posts</title>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Salameh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kiritchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Annual Conference of the North American Chapter of the ACL</title>
+				<meeting>the 2015 Annual Conference of the North American Chapter of the ACL</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="767" to="777" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<author>
+			<persName><forename type="first">Shuying</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huosheng</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liang-Chih</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K. Robert</forename><surname>Lai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">SentiNLP at IJCNLP-2017 Task 4: Customer Feedback Analysis Using a Bi-LSTM-CNN Model</title>
+				<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="149" to="154" />
+		</imprint>
+	</monogr>
+	<note>the Proceedings of IJCNLP, Shared Tasks</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">Customer Service and Satisfaction Survey</title>
+		<author>
+			<persName><forename type="first">Surveymonkey</forename><surname>Inc</surname></persName>
+		</author>
+		<ptr target="https://www.surveymonkey.com/r/BHM_Survey" />
+		<imprint>
+			<date type="published" when="2017-04" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">Customer Service &amp; Customer Support are best when automated</title>
+		<author>
+			<persName><surname>Useresponse</surname></persName>
+		</author>
+		<ptr target="https://www.useresponse.com/" />
+		<imprint>
+			<date type="published" when="2017-04" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Ranking relevance in yahoo search</title>
+		<author>
+			<persName><forename type="first">Dawei</forename><surname>Yin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuening</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiliang</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tim</forename><surname>Daly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mianwei</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Ouyang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jianhui</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Changsung</forename><surname>Kang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongbo</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chikashi</forename><surname>Nobata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean-Mark</forename><surname>Langlois</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Chang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</title>
+				<meeting>the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="323" to="332" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

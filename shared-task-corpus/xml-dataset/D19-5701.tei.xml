@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">PharmaCoNER: Pharmacological Substances, Compounds and proteins Named Entity Recognition track</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Aitor</forename><surname>Gonzalez-Agirre</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Centro Nacional de Investigaciones Oncológicas (CNIO) Barcelona Supercomputing Center (BSC)</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Montserrat</forename><surname>Marimon</surname></persName>
+							<email>montserrat.marimon@bsc.es</email>
+							<affiliation key="aff1">
+								<orgName type="department">Centro Nacional de Investigaciones Oncológicas (CNIO) Barcelona Supercomputing Center (BSC)</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Ander</forename><surname>Intxaurrondo</surname></persName>
+							<email>ander.intxaurrondo@bsc.es</email>
+							<affiliation key="aff2">
+								<orgName type="department">Centro Nacional de Investigaciones Oncológicas (CNIO) Barcelona Supercomputing Center (BSC)</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Obdulia</forename><surname>Rabal</surname></persName>
+							<email>orabal@unav.es</email>
+							<affiliation key="aff3">
+								<orgName type="department">Center for Applied Medical Research (CIMA)</orgName>
+								<orgName type="institution">University of Navarra</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Marta</forename><surname>Villegas</surname></persName>
+							<email>marta.villegas@bsc.es</email>
+							<affiliation key="aff4">
+								<orgName type="department">Centro Nacional de Investigaciones Oncológicas (CNIO) Barcelona Supercomputing Center (BSC)</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Martin</forename><surname>Kralligner</surname></persName>
+							<email>martin.krallinger@bsc.es</email>
+							<affiliation key="aff5">
+								<orgName type="department">Centro Nacional de Investigaciones Oncológicas (CNIO) Barcelona Supercomputing Center (BSC)</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">PharmaCoNER: Pharmacological Substances, Compounds and proteins Named Entity Recognition track</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:30+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>One of the biomedical entity types of relevance for medicine or biosciences are chemical compounds and drugs. The correct detection these entities is critical for other text mining applications building on them, such as adverse drug-reaction detection, medicationrelated fake news or drug-target extraction. Although a significant effort was made to detect mentions of drugs/chemicals in English texts, so far only very limited attempts were made to recognize them in medical documents in other languages. Taking into account the growing amount of medical publications and clinical records written in Spanish, we have organized the first shared task on detecting drug and chemical entities in Spanish medical documents. Additionally, we included a clinical concept-indexing sub-track asking teams to return SNOMED-CT identifiers related to drugs/chemicals for a collection of documents. For this task, named PharmaCoNER, we generated annotation guidelines together with a corpus of 1,000 manually annotated clinical case studies. A total of 22 teams participated in the sub-track 1, (77 system runs), and 7 teams in the sub-track 2 (19 system runs). Top scoring teams used sophisticated deep learning approaches yielding very competitive re-sults with F-measures above 0.91. These results indicate that there is a real interest in promoting biomedical text mining efforts beyond English. We foresee that the PharmaCoNER annotation guidelines, corpus and participant systems will foster the development of new resources for clinical and biomedical text mining systems of Spanish medical data.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Efficient access to mentions of drugs, medications and chemical entities contained in clinical texts, scientific articles, patents or even the web is a pressing need shared by biomedical researchers and clinicians . Biomedical text mining is one of the most prolific application domains of natural language processing technologies <ref type="bibr" target="#b15">(Zweigenbaum et al., 2007)</ref>. The recognition of pharmaceutical drugs/chemical entities is a critical step required for the subsequent detection of relations with other biomedically relevant entities such as genes/proteins, diseases or adverse reactions <ref type="bibr" target="#b13">(Vazquez et al., 2011)</ref>. Text mining and information extraction systems were published that tried to find protein-drug relations (including ligand-protein interactions and pharmacogenomics information), medication-related al-lergies, chemical metabolic reactions, drug-drug interactions <ref type="bibr" target="#b2">(Herrero-Zazo et al., 2013)</ref>, diseasedrug relations, as well as drug safety-related issues. The correct identification of drug mentions is also needed for other complex relation types like drug dosage recognition, duration of medical treatments or drug repurposing.</p><p>The importance of chemical and drug name recognition motivated several-shared tasks in the past, such as the CHEMDNER tracks <ref type="bibr" target="#b4">(Krallinger et al., 2015)</ref> or the i2b2 medication challenge <ref type="bibr">(Uzuner et al., 2010b,a)</ref>, with a considerable number of participants and impact <ref type="bibr" target="#b1">(Doan et al., 2010;</ref><ref type="bibr" target="#b14">Yang, 2010)</ref>.</p><p>Currently, most of the biomedical and clinical NLP research, is done on English documents, while only few tasks were carried out using non-English texts, or were multilingual. Nonetheless, it is important to highlight that there is a considerable amount of biomedically relevant content published in other languages than English, and particularly clinical texts are entirely written in the native language of each country.</p><p>Spanish is a language spoken by more than 572 million people in the world today, either as a native, second or foreign language. It is the second language in the world by number of native speakers with more than 477 million people. According to results derived from WHO statistics, just in Spain there are over 180 thousand practicing physicians, more than 247 thousand nursing and midwifery personnel or 55 thousand pharmaceutical personnel. These facts, and the extrapolation to other Spanish speaking countries explains why a considerable subset of the PubMed database records corresponds to Spanish medical articles. Moreover, PubMed does only contain a part of the medical literature originally published in Spanish, which is also stored in other resources such as MEDES, SciELO, IBECS or CUIDEN.</p><p>Following the outline of previous chemical/drug NER efforts, in particular the BioCreative CHEMDNER tracks, we have carried out the first task on chemical and drug mention recognition from Spanish medical texts, namely from a corpus of Spanish clinical case studies. Thus, this track addressed the automatic extraction of chemical, drug, gene/protein mentions from clinical case studies written in Spanish. The main aim was to promote the development of named entity recognition tools of practical relevance, that is, chemi-cal and drug mentions in non-English content, determining the current-state-of-the art, identifying challenges and comparing the strategies and results to those published for English data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Methods</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Track Description</head><p>The PharmaCoNER track was one of the six tracks of the BioNLP-OST 2019 / EMNLP-IJCNLP workshop 1 . It was the first community challenge track devoted to the recognition of pharmaceutical drugs and chemical entities in medical texts in Spanish.</p><p>For this track, two scenarios or sub-tracks were proposed:</p><p>• NER offset and entity classification. The first sub-track focused on the recognition and classification of entities.</p><p>• Concept indexing. The second sub-track consisted of concept indexing, where, for each document, the participating teams had to generate the list of the unique SNOMED-CT concept identifiers, which were compared to the manually annotated concept IDs corresponding to the pharmaceutical drugs and chemical entities.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Track data</head><p>We prepared a manually classified collection of clinical case report sections derived from open access Spanish medical publications, named the Spanish Clinical Case Corpus (SPACCC) 2 . The corpus contained a total of 1,000 clinical cases / 396,988 words. It is noteworthy that this kind of narrative shows properties of both the biomedical and medical literature, as well as clinical records.</p><p>Case reports are considered as the scientific paper of a single clinical observation. Moreover, the clinical cases were not restricted to a single medical discipline, covering a variety of medical disciplines, including oncology, urology, cardiology, pneumology or infectious diseases. This is key to cover a diverse set of chemicals and drugs. The PharmaCoNER corpus had a total of 7,624 entity mentions, corresponding to four different mention types 3 . Figure <ref type="figure" target="#fig_0">1</ref> shows a screenshot of a clinical case annotated using the BRAT tool. The overall annotation statistics were:</p><p>• NORMALIZABLES (normalizable): 4,398 mentions of chemicals that could be manually normalized to a unique concept identifier (primarily SNOMED-CT).</p><p>• NO NORMALIZABLES (not normalizable): 50 mentions of chemicals that could not be normalized manually to a unique concept identifier.</p><p>• PROTEINAS (proteins): 3,009 mentions of proteins and genes following an adaptation of the BioCreative GPRO track annotation guidelines. This class included also peptides, peptide hormones and antibodies. The annotation process of the PharmaCoNER corpus was inspired by previous annotation schemes and corpora used for the BioCreative CHEMDNER <ref type="bibr" target="#b4">(Krallinger et al., 2015)</ref> and GPRO tracks <ref type="bibr" target="#b7">(Pérez-Pérez et al., 2017)</ref>, translating the guidelines used for these tracks into Spanish and adapting them to the characteristics and needs of clinically oriented documents by modifying the annotation criteria and rules to cover medical information needs. This adaptation was carried out in collaboration with practicing physicians and medicinal chemistry experts. The adaptation, translation and refinement of the guidelines <ref type="bibr" target="#b8">(Rabal et al., 2018)</ref> was done on a sample set of the SPACCC corpus and linked to an iterative process of annotation consistency analysis through interannotator agreement (IAA) studies until a high annotation quality in terms of IAA was reached. The final, IAA measure obtained for this corpus was calculated on a set of 50 records that were double annotated (blinded) by two different expert annotators, reaching a pairwise agreement of 93% on the exact entity mention comparison level and 76% agreement when also the entity concept normalization was taken into account. Entity normalization was carried out primarily against the SNOMED-CT knowledge base. Note that there is a SNOMED-CT version directly released by the Spanish Ministry of Health twice a year.</p><p>The PharmaCoNER corpus was randomly sampled into three subsets: the train set (500 clinical cases), and the development and test sets (250 clinical cases each). These clinical cases were manually annotated using a customized version of AnnotateIt. Then, the BRAT annotation toolkit <ref type="bibr" target="#b10">(Stenetorp et al., 2012)</ref> was used to correct errors and add missing annotations. The statistics of the number of label for each datasets are shown in Table 1. Together with the test set, we released an additional collection of 3,501 documents (background set 5 ) to make sure that participating teams were not able to do manual corrections and also to promote that these systems would potentially be able to scale to larger data collections.</p><p>Moreover, we provided also the following resources: (1) Spanish medical text tokenizer, sentence splitter, lemmatizer and POS tagger; (2) Dictionary of chemicals, compounds and drugs in Spanish; (3) Sense inventory of Spanish medical abbreviation and their long forms; (4) Spanish drug naming file with prefixes and suffixes rules; and (5) a large background set of medical and health documents in Spanish.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Evaluation metrics</head><p>We released an evaluation script that supported the evaluation of the predictions of the participating teams. For both sub-tracks, the primary evaluation metrics used consisted of standard measures from the NLP community, namely micro-averaged precision, recall, and balanced F-score, the last one being the official evaluation measure:</p><formula xml:id="formula_0">Precision: P = T P T P +F P Recall: R = T P T P +F N F-score: F 1 = 2 * (P * R) (P +R)</formula><p>where TP = true positives, FP = false positive and FN = false negative.</p><p>Teams could submit up to five prediction files (or system runs) in a predefined prediction format: BRAT, for sub-track 1, and TSV files, for sub-track 2.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Participation and Results</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Participation</head><p>To participate in the PharmaCoNER track it was necessary to register both on the official website 6 and in the CodaLab competition <ref type="bibr">7</ref> . Training and development sets were made available for download on the official website 8 , and the evaluation script was uploaded to GitHub 9 , to ensure a transparent evaluation.</p><p>As we already said, submissions had to be provided in a predefined prediction format: BRAT, for sub-track 1, and TSV files, for sub-track 2. Additionally we plan to release the corpus also in the popular PubAnnotation format <ref type="bibr" target="#b3">(Kim and Wang, 2012)</ref>.</p><p>The participants had a period of almost two months to develop their system. In the middle of this period, the test and background sets were released with the 3,751 documents that the participants had to process and label, although the final evaluation was done only on the 250 documents corresponding to the test set. The intention was to use the background set to enable the construction of participant-generated Silver Standard corpus. As we have mentioned, the participants could submit a maximum of 5 system runs, and, once the submission deadline expired, we published the Gold Standard annotations of the test set, in order to ensure a transparent evaluation process and help participants to carry out a more detailed error analysis.</p><p>A total of 22 teams participated in the sub-track 1, submitting a total of 77 systems, and 7 teams in the sub-track 2, submitting a total of 19 runs. Teams from eleven different nationalities participated in the track: seven teams from Spain, three from China, and one team from each: Finland, France, India, Japan, Romania, Russia, United Kingdom and the United States. Three participants belong to a commercial institution. Table 2 summarizes the most relevant information about the participants (we lack the information from two of the teams, because they registered at CodaLab, but not at our website).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Baseline system</head><p>We produced three baseline systems for the track:</p><p>The first one is a very simple baseline based on vocabulary transfer, and the other two baseline systems are competitive baselines based on the Phar-maCoNER Tagger (Armengol-Estapé et al., 2019), a deep learning-based tool for automatically finding chemicals and drugs in Spanish medical texts.</p><p>In the vocabulary transfer approach, each annotation from the train and development datasets was transferred to the test dataset using strict string matching. For those cases where the text was the same, but the entity type was different, we decided to annotate all entity types that matched that text.</p><p>In the two baselines based on the Pharma-CoNER Tagger, we used the default parameters, a hidden layer of size 300, and early stop (best model at epoch 35). The models were trained using the GloVe embeddings (Pennington et al., 2014) from SBWC 10 (from now on baseline-glove) and the Medical Word Embeddings for Spanish  (from now on baseline-med). The corpus was tokenized using spaCy.</p><p>10 https://github.com/dccuchile/ spanish-word-embeddings</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Results</head><p>Table <ref type="table" target="#tab_3">3</ref> shows the results for sub-track 1 (NER offset and entity type classification), ordered by team performance (first column), then system performance (second column).</p><p>The top scoring system was submitted by xiongying, with an F-score of 0.91052, being relatively close to the next two participants: FSL, ranked 2nd with a F-score of 0.90968, and mstoeckel, ranked 3rd with a F-score of 0.89888. Participant Edson submitted five systems that scored almost zero. Once he noticed the error, he submitted two fixed submissions. These submissions were made after the publication of the results but before the release of the test set with GS annotations. These late submissions of Edson are marked with an asterisks in the table, including the hypothetical ranking of his team/systems.</p><p>Note that all of the teams were well above the baseline based on vocabulary transfer, which would rank last if we ignored the submission with errors. The competitive baseline trained with the GloVe embeddings would rank 16, and the one trained with embeddings that are specific for clinical texts in Spanish would rank 13. It is remarkable that 12 teams out of 20 managed to beat a very competitive baseline based on a well known Deep Learning tool.</p><p>Table <ref type="table" target="#tab_4">4</ref> shows the results for sub-track 2 (Concept Indexing), ordered by team performance (first   column), then system performance (second column). The top scoring system for sub-track 2 was submitted by FSL, with a F-score of 0.91593, showing a significantly better result when compared to the second best submission (more than 6 points) provided by ixamed, with a F-score of 0.85347. The third team was xiongying, the best participant in the sub-track 1, with a F-score of 0.83914. Some statistics of the results are shown in Table <ref type="table" target="#tab_6">6</ref>. There was a high variability among the systems, with a difference of 6 point between the best system and the median for sub-track 1, and of 10 points for sub-track 2. The difference between the best system and the mean of all system was still higher. This proved that the task, was quite difficult.</p><p>As additional analysis, results by category, including the best teams for category and metric, are shown in Table <ref type="table" target="#tab_5">5</ref>. The performance of the systems was systematically better for the NORMAL-IZABLES category, 4-9 points better in respect with the PROTEINAS category. Surprisingly, the median for the NO NORMALIZABLES category was 0, suggesting that at least half of the systems ignored this category.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Combination of systems</head><p>In this section, we present an experiment we performed to combine the systems submitted to the track to see if we could improve the results. We combined the systems using a voting scenario: we accepted as good the annotations that had been predicted by N systems.</p><p>The first system accepted all the annotations predicted by, at least, one of the systems, while the last one accepted only the annotations that were predicted by, at least, N systems. The results of this experiment are shown in Table <ref type="table" target="#tab_7">7</ref>.</p><p>As expected, as the value of N increased (the number of required votes was increased), the recall got worse and the precision improved. Based on the maximum value of F-score for sub-track 1 on the train and development sets we selected 20 as the optimum value for combining systems (Fscore of 0.98408). We used this value for N on the test set, obtaining an F-score of 0.92355, 1.3 points better than the best system. This score was lower than the best one that could be obtained for the test set (0.92426, with N = 18), but the difference was (in practice) negligible.</p><p>The combined systems did not improve the results for sub-track 2. The maximum value of Fscore on the train and development sets was obtained combining 6-7 systems (F-score of 0.97352 in the Dev set for N = 6). This scored 0.87073 in the test set, 4.5 points below the best system. This was probably a consequence of amount of systems and the performance gap between the best systems and the others. For the future, we will combine the system using more sophisticated approaches.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Discussion and Conclusions</head><p>The results of the first chemical and drug named entity recognition track from clinical case reports in Spanish are very encouraging, both in terms of the number of participants, not only from Spanishspeaking countries, as well as in terms of the obtained system results, which are already reaching a level of performance that would make the resulting tools very valuable resources for processing the vast amount of medical data generated worldwide in Spanish.</p><p>We had structured the track into two sub-tracks to cover different practical aspects of the resulting systems. The named entity recognition track of chemicals/drugs had the aim of serving as a building block task for future down-stream text mining of more complex information types, including the detection of medication duration, dosage, drug-drug-interactions, therapeutic target relations and drug/chemical induced adverse effects. The concept-indexing sub-track was more concerned with the development of sophisticated semantic retrieval engines and the exploitation of high impact normative terminologies such as SNOMED CT. Most of the participating systems were based on the use of sophisticated deep learning and neural net approaches, which are becoming the state of the art methods for named entity recognition tasks also in specialized domains such as biomedicine or for non-English data.</p><p>When analyzing the more difficult mention types for participating teams, it is still clear that very short abbreviations (1-2 letters) are cumbersome to recognize correctly, due to their high level of implicit ambiguity. Solving such cases would probably require larger manually annotated corpora or the generation of other complementary resources specifically suited for the recognition and resolution of short abbreviations. We did not observe any particular issues related to the clinical disciplines of the case reports, thus it seems that drug NER systems should work well across all medical specialties. It is important to place the very competitive results obtained for Pharma-CoNER into its context, in terms data collections used. When compared to the biomedical literature or medicinal chemistry patents, clinical case reports show a lower degree of variability in terms of the chemicals and drug mentions used, as in the clinic only a limited number of medications and chemical entities are being used for treatment, biochemical testing or explored in clinical settings and analysis.</p><p>The construction of high quality Gold Standard manually annotated corpora can be considered one of the major bottlenecks for the development of biomedical named entity recognition systems. During this task, we have promoted the collaborative generation of a larger Silver Standard corpus generated through the predictions of all the participating teams. A more detailed examination of this resource and approaches on how to optimally merge/combine multiple annotations and in turn train new systems using this silver standard dataset might give new insights on how to speed up the creation of new NER tools/annotated datasets.</p><p>One of the difficulties we have also encountered during this task was due to the use of a very popular third party platform for organizing online shared tasks on data mining tasks, including text mining and NLP. The explored resource, Codalab, had a server crash, and no proper up to date backup system in place (including user registration info, as well as data collections). Thus, the use of resources with a more focused support for biomedical text mining datasets, corpora, services and shared task organization, such as PubAnnotation would have been a better choice for hosting all the relevant data and predictions for biomedical shared tasks.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: PharmaCoNER annotation example.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Distribution of labels in the PharmaCoNER datasets.</figDesc><table><row><cell>Label</cell><cell cols="4">Train Dev Test Overall</cell></row><row><cell cols="5">NORMALIZABLES 2,304 1,121 973 4,398</cell></row><row><cell cols="2">NO NORMALIZABLES 24</cell><cell>16</cell><cell>10</cell><cell>50</cell></row><row><cell>PROTEINAS</cell><cell cols="4">1,405 745 859 3,009</cell></row><row><cell>UNCLEAR</cell><cell>89</cell><cell>44</cell><cell>34</cell><cell>167</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Overview of Team Participation in the PharmaCoNER track.</figDesc><table><row><cell>Username</cell><cell>Organization/Institution/Company</cell><cell>Members</cell><cell>Country</cell><cell>Comm.</cell></row><row><cell>alily</cell><cell>Carlos III University of Madrid</cell><cell>3</cell><cell>Spain</cell><cell>No</cell></row><row><cell>ayan7246</cell><cell>Unaffiliated</cell><cell>1</cell><cell>India</cell><cell>No</cell></row><row><cell>chaanim</cell><cell>University of Turku</cell><cell>2</cell><cell>Finland</cell><cell>No</cell></row><row><cell>CongSun</cell><cell>Dalian University of Technology</cell><cell>3</cell><cell>China</cell><cell>No</cell></row><row><cell>Edson</cell><cell>University of Côte d'Azur</cell><cell>4</cell><cell>France</cell><cell>No</cell></row><row><cell>foxlf823</cell><cell>UMASS Lowell</cell><cell>3</cell><cell>United States</cell><cell>No</cell></row><row><cell>FSL</cell><cell>Unaffiliated</cell><cell>2</cell><cell>Spain</cell><cell>No</cell></row><row><cell>ghada.alfattni</cell><cell>University of Manchester</cell><cell>3</cell><cell cols="2">United Kingdom No</cell></row><row><cell>ixamed</cell><cell>University of the Basque Country</cell><cell>5</cell><cell>Spain</cell><cell>No</cell></row><row><cell>JoyHan</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>lluisp</cell><cell>Universitat Politècnica de Catalunya</cell><cell>1</cell><cell>Spain</cell><cell>No</cell></row><row><cell>lukas.lange</cell><cell>Bosch Center for Artificial Intelligence</cell><cell>3</cell><cell>Germany</cell><cell>Yes</cell></row><row><cell>m-stoeckel</cell><cell>Goethe University Frankfurt</cell><cell>2</cell><cell>Germany</cell><cell>No</cell></row><row><cell>m.domrachev</cell><cell>Unaffiliated</cell><cell>1</cell><cell>Russia</cell><cell>No</cell></row><row><cell>naiven</cell><cell>JD</cell><cell>1</cell><cell>China</cell><cell>Yes</cell></row><row><cell>plubeda</cell><cell>Universidad de Jan</cell><cell>4</cell><cell>Spain</cell><cell>No</cell></row><row><cell>raduion</cell><cell>Research Institute for AI "Mihai Draganescu"</cell><cell>3</cell><cell>Romania</cell><cell>No</cell></row><row><cell>rriveraz</cell><cell>Carlos III University of Madrid</cell><cell>3</cell><cell>Spain</cell><cell>No</cell></row><row><cell>sohrab</cell><cell>National Institute of Advanced Industrial Science and Technology</cell><cell>4</cell><cell>Japan</cell><cell>No</cell></row><row><cell>tEarth</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row><row><cell>uyaseen</cell><cell>Siemens AG</cell><cell>2</cell><cell>Germany</cell><cell>Yes</cell></row><row><cell>VSP</cell><cell>Carlos III University of Madrid</cell><cell>1</cell><cell>Spain</cell><cell>No</cell></row><row><cell>xiongying</cell><cell>Harbin Institute of Technology</cell><cell>4</cell><cell>China</cell><cell>Yes</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Results for sub-track 1: NER offset and entity type classification.</figDesc><table><row><cell cols="2">Team Rank System Rank</cell><cell>User</cell><cell>Precision</cell><cell>Recall</cell><cell>F1</cell></row><row><cell></cell><cell>1</cell><cell></cell><cell>0.91226</cell><cell cols="2">0.90879 0.91052</cell></row><row><cell></cell><cell>2</cell><cell></cell><cell>0.91589</cell><cell cols="2">0.90445 0.91013</cell></row><row><cell>1</cell><cell>3</cell><cell>xiongying</cell><cell>0.91008</cell><cell cols="2">0.90662 0.90835</cell></row><row><cell></cell><cell>4</cell><cell></cell><cell>0.90751</cell><cell cols="2">0.90554 0.90652</cell></row><row><cell></cell><cell>5</cell><cell></cell><cell>0.90205</cell><cell cols="2">0.90988 0.90595</cell></row><row><cell>2</cell><cell>3</cell><cell>FSL</cell><cell>0.90625</cell><cell cols="2">0.91314 0.90968</cell></row><row><cell></cell><cell>7</cell><cell></cell><cell>0.90708</cell><cell cols="2">0.89082 0.89888</cell></row><row><cell>3</cell><cell>8</cell><cell>m-stoeckel</cell><cell>0.89297</cell><cell cols="2">0.89685 0.89491</cell></row><row><cell></cell><cell>13</cell><cell></cell><cell>0.88839</cell><cell cols="2">0.86369 0.87586</cell></row><row><cell></cell><cell>9</cell><cell></cell><cell>0.90463</cell><cell cols="2">0.88056 0.89243</cell></row><row><cell>4</cell><cell>10 14</cell><cell>CongSun</cell><cell>0.90704 0.89183</cell><cell cols="2">0.87405 0.89024 0.85939 0.87531</cell></row><row><cell></cell><cell>17</cell><cell></cell><cell>0.88732</cell><cell cols="2">0.85071 0.86863</cell></row><row><cell>5</cell><cell>11</cell><cell>naiven</cell><cell>0.90315</cell><cell cols="2">0.87079 0.88668</cell></row><row><cell></cell><cell>12</cell><cell></cell><cell>0.88950</cell><cell cols="2">0.88274 0.88610</cell></row><row><cell></cell><cell>27</cell><cell></cell><cell>0.85162</cell><cell cols="2">0.87242 0.86189</cell></row><row><cell>6</cell><cell>28</cell><cell>lukas.lange</cell><cell>0.86307</cell><cell cols="2">0.85885 0.86095</cell></row><row><cell></cell><cell>31</cell><cell></cell><cell>0.85078</cell><cell cols="2">0.86048 0.85560</cell></row><row><cell></cell><cell>32</cell><cell></cell><cell>0.85520</cell><cell cols="2">0.85288 0.85404</cell></row><row><cell>7</cell><cell>15</cell><cell>chaanim</cell><cell>0.87568</cell><cell cols="2">0.87188 0.87378</cell></row><row><cell></cell><cell>16</cell><cell></cell><cell>0.88098</cell><cell cols="2">0.85993 0.87033</cell></row><row><cell>8</cell><cell>22</cell><cell>foxlf823</cell><cell>0.87218</cell><cell cols="2">0.85939 0.86574</cell></row><row><cell></cell><cell>23</cell><cell></cell><cell>0.87674</cell><cell cols="2">0.85342 0.86492</cell></row><row><cell></cell><cell>18</cell><cell></cell><cell>0.90222</cell><cell cols="2">0.83659 0.86817</cell></row><row><cell></cell><cell>21</cell><cell></cell><cell>0.90088</cell><cell cols="2">0.83388 0.86608</cell></row><row><cell>9</cell><cell>42</cell><cell>ixamed</cell><cell>0.82981</cell><cell cols="2">0.85233 0.84092</cell></row><row><cell></cell><cell>49</cell><cell></cell><cell>0.81914</cell><cell cols="2">0.80402 0.81151</cell></row><row><cell></cell><cell>50</cell><cell></cell><cell>0.81914</cell><cell cols="2">0.80402 0.81151</cell></row><row><cell></cell><cell>19</cell><cell></cell><cell>0.86881</cell><cell cols="2">0.86645 0.86763</cell></row><row><cell></cell><cell>26</cell><cell></cell><cell>0.87079</cell><cell cols="2">0.85613 0.86340</cell></row><row><cell>10</cell><cell>39</cell><cell>sohrab</cell><cell>0.85320</cell><cell cols="2">0.83931 0.84620</cell></row><row><cell></cell><cell>41</cell><cell></cell><cell>0.83665</cell><cell cols="2">0.84528 0.84094</cell></row><row><cell></cell><cell>46</cell><cell></cell><cell>0.88483</cell><cell cols="2">0.77579 0.82673</cell></row><row><cell></cell><cell>20</cell><cell></cell><cell>0.90581</cell><cell cols="2">0.83008 0.86629</cell></row><row><cell></cell><cell>24</cell><cell></cell><cell>0.90482</cell><cell cols="2">0.82573 0.86347</cell></row><row><cell>11</cell><cell>25</cell><cell>uyaseen</cell><cell>0.90482</cell><cell cols="2">0.82573 0.86347</cell></row><row><cell></cell><cell>33</cell><cell></cell><cell>0.84644</cell><cell cols="2">0.85885 0.85260</cell></row><row><cell></cell><cell>37</cell><cell></cell><cell>0.88941</cell><cell cols="2">0.81650 0.85140</cell></row><row><cell>12</cell><cell>29 30</cell><cell>m.domrachev</cell><cell>0.87073 0.87073</cell><cell cols="2">0.84473 0.85754 0.84473 0.85754</cell></row><row><cell>-</cell><cell>-</cell><cell>baseline-med</cell><cell>0.87020</cell><cell cols="2">0.83713 0.85335</cell></row><row><cell></cell><cell>34</cell><cell></cell><cell>0.88538</cell><cell cols="2">0.82193 0.85248</cell></row><row><cell>13</cell><cell>35</cell><cell>rriveraz</cell><cell>0.88538</cell><cell cols="2">0.82193 0.85248</cell></row><row><cell></cell><cell>36</cell><cell></cell><cell>0.88538</cell><cell cols="2">0.82193 0.85248</cell></row><row><cell></cell><cell>38</cell><cell></cell><cell>0.90189</cell><cell cols="2">0.80347 0.84984</cell></row><row><cell></cell><cell>40</cell><cell></cell><cell>0.90043</cell><cell cols="2">0.79533 0.84462</cell></row><row><cell>14</cell><cell>47</cell><cell>raduion</cell><cell>0.89327</cell><cell cols="2">0.76330 0.82319</cell></row><row><cell></cell><cell>48</cell><cell></cell><cell>0.78281</cell><cell cols="2">0.84528 0.81284</cell></row><row><cell></cell><cell>52</cell><cell></cell><cell>0.92530</cell><cell cols="2">0.71281 0.80527</cell></row><row><cell></cell><cell>43</cell><cell></cell><cell>0.88882</cell><cell cols="2">0.78990 0.83645</cell></row><row><cell></cell><cell>44</cell><cell></cell><cell>0.89176</cell><cell cols="2">0.78719 0.83622</cell></row><row><cell>15</cell><cell>45</cell><cell>lluisp</cell><cell>0.88991</cell><cell cols="2">0.78556 0.83449</cell></row><row><cell></cell><cell>53</cell><cell></cell><cell>0.81160</cell><cell cols="2">0.76710 0.78872</cell></row><row><cell></cell><cell>61</cell><cell></cell><cell>0.73211</cell><cell cols="2">0.73887 0.73548</cell></row><row><cell>-</cell><cell>-</cell><cell>baseline-glove</cell><cell>0.83259</cell><cell cols="2">0.80999 0.82113</cell></row><row><cell>16</cell><cell>51 55</cell><cell>ghada.alfattni</cell><cell>0.85039 0.82776</cell><cell cols="2">0.77144 0.80900 0.72530 0.77315</cell></row><row><cell></cell><cell>54</cell><cell></cell><cell>0.88507</cell><cell cols="2">0.69815 0.78058</cell></row><row><cell></cell><cell>56</cell><cell></cell><cell>0.85992</cell><cell cols="2">0.69653 0.76965</cell></row><row><cell>17</cell><cell>60</cell><cell>plubeda</cell><cell>0.92602</cell><cell cols="2">0.61835 0.74154</cell></row><row><cell></cell><cell>62</cell><cell></cell><cell>0.84404</cell><cell cols="2">0.64929 0.73397</cell></row><row><cell>18</cell><cell>57 59</cell><cell>alily</cell><cell>0.86034 0.86981</cell><cell cols="2">0.68893 0.76515 0.67101 0.75759</cell></row><row><cell>19</cell><cell>58</cell><cell>VSP</cell><cell>0.81621</cell><cell cols="2">0.71607 0.76287</cell></row><row><cell></cell><cell>63</cell><cell></cell><cell>0.74668</cell><cell cols="2">0.61129 0.67224</cell></row><row><cell></cell><cell>67</cell><cell></cell><cell>0.43812</cell><cell cols="2">0.48046 0.45831</cell></row><row><cell>20</cell><cell>68</cell><cell>ayan7246</cell><cell>0.36910</cell><cell cols="2">0.47991 0.41728</cell></row><row><cell></cell><cell>69</cell><cell></cell><cell>0.33333</cell><cell cols="2">0.48046 0.39360</cell></row><row><cell></cell><cell>70</cell><cell></cell><cell>0.52283</cell><cell cols="2">0.19273 0.28163</cell></row><row><cell></cell><cell>64</cell><cell></cell><cell>0.88519</cell><cell cols="2">0.54098 0.67155</cell></row><row><cell>21</cell><cell>65</cell><cell>JoyHan</cell><cell>0.52523</cell><cell cols="2">0.52666 0.52594</cell></row><row><cell></cell><cell>66</cell><cell></cell><cell>0.88350</cell><cell cols="2">0.37193 0.52349</cell></row><row><cell>-</cell><cell>-</cell><cell>baseline-vt</cell><cell>0.67330</cell><cell cols="2">0.60641 0.63810</cell></row><row><cell></cell><cell>71</cell><cell></cell><cell>0.00280</cell><cell cols="2">0.00163 0.00206</cell></row><row><cell></cell><cell>72</cell><cell></cell><cell>0.00008</cell><cell cols="2">0.00163 0.00015</cell></row><row><cell>22</cell><cell>73</cell><cell>Edson</cell><cell>0.00007</cell><cell cols="2">0.00217 0.00014</cell></row><row><cell></cell><cell>74</cell><cell></cell><cell>0.00007</cell><cell cols="2">0.00217 0.00014</cell></row><row><cell></cell><cell>75</cell><cell></cell><cell>0.00002</cell><cell cols="2">0.00054 0.00004</cell></row><row><cell>20*</cell><cell>60* 70*</cell><cell>Edson</cell><cell>0.80660 0.63350</cell><cell cols="2">0.68920 0.74330 0.14930 0.24160</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Results for sub-track 2: Concept Indexing.</figDesc><table><row><cell cols="2">Team Rank System Rank</cell><cell>User</cell><cell>Precision</cell><cell>Recall</cell><cell>F1</cell></row><row><cell>1</cell><cell>1</cell><cell>FSL</cell><cell>0.91108</cell><cell cols="2">0.92083 0.91593</cell></row><row><cell></cell><cell>2</cell><cell></cell><cell>0.87964</cell><cell cols="2">0.82882 0.85347</cell></row><row><cell>2</cell><cell>3 9</cell><cell>ixamed</cell><cell>0.87623 0.82374</cell><cell cols="2">0.82810 0.85149 0.83666 0.83015</cell></row><row><cell></cell><cell>10</cell><cell></cell><cell>0.81232</cell><cell cols="2">0.80884 0.81058</cell></row><row><cell></cell><cell>4</cell><cell></cell><cell>0.82835</cell><cell cols="2">0.85021 0.83914</cell></row><row><cell></cell><cell>5</cell><cell></cell><cell>0.83809</cell><cell cols="2">0.83809 0.83809</cell></row><row><cell>3</cell><cell>6</cell><cell>xiongying</cell><cell>0.82202</cell><cell cols="2">0.84665 0.83415</cell></row><row><cell></cell><cell>7</cell><cell></cell><cell>0.82032</cell><cell cols="2">0.84665 0.83327</cell></row><row><cell></cell><cell>8</cell><cell></cell><cell>0.81699</cell><cell cols="2">0.84379 0.83018</cell></row><row><cell>4</cell><cell>11 12</cell><cell>sohrab</cell><cell>0.87532 0.88003</cell><cell cols="2">0.73609 0.79969 0.73252 0.79953</cell></row><row><cell></cell><cell>13</cell><cell></cell><cell>0.85207</cell><cell cols="2">0.63267 0.72616</cell></row><row><cell></cell><cell>14</cell><cell></cell><cell>0.82887</cell><cell cols="2">0.61840 0.70833</cell></row><row><cell>5</cell><cell>15</cell><cell>plubeda</cell><cell>0.87879</cell><cell cols="2">0.55849 0.68295</cell></row><row><cell></cell><cell>16</cell><cell></cell><cell>0.83350</cell><cell cols="2">0.57846 0.68295</cell></row><row><cell>6</cell><cell>17</cell><cell>VSP</cell><cell>0.66502</cell><cell cols="2">0.55215 0.60335</cell></row><row><cell>7</cell><cell>18 19</cell><cell>rriveraz</cell><cell>0.50000 0.48641</cell><cell cols="2">0.49287 0.49641 0.49786 0.49207</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 5 :</head><label>5</label><figDesc>Results by category for sub-track 1.</figDesc><table><row><cell></cell><cell cols="3">NORMALIZABLES</cell><cell cols="3">NO NORMALIZABLES</cell><cell></cell><cell>PROTEINAS</cell></row><row><cell></cell><cell>Precision</cell><cell>Recall</cell><cell>F1</cell><cell>Precision</cell><cell>Recall</cell><cell>F1</cell><cell>Precision</cell><cell>Recall</cell><cell>F1</cell></row><row><cell>Min</cell><cell>0.31976</cell><cell>0.17986</cell><cell>0.28618</cell><cell>0.00000</cell><cell cols="2">0.00000 0.00000</cell><cell>0.32377</cell><cell>0.12224</cell><cell>0.19981</cell></row><row><cell>Mean</cell><cell>0.87217</cell><cell>0.81754</cell><cell>0.83880</cell><cell>0.19844</cell><cell cols="2">0.03276 0.04984</cell><cell>0.81654</cell><cell>0.76428</cell><cell>0.78494</cell></row><row><cell>Median</cell><cell>0.90977</cell><cell>0.86434</cell><cell>0.87922</cell><cell>0.00000</cell><cell cols="2">0.00000 0.00000</cell><cell>0.85626</cell><cell>0.82421</cell><cell>0.83445</cell></row><row><cell>Maximum</cell><cell>0.95924</cell><cell>0.94142</cell><cell>0.94253</cell><cell>1.00000</cell><cell cols="2">0.40000 0.38095</cell><cell>0.89831</cell><cell>0.89406</cell><cell>0.88709</cell></row><row><cell>Std Dev</cell><cell>0.12742</cell><cell>0.12967</cell><cell>0.13065</cell><cell>0.38104</cell><cell cols="2">0.06854 0.09247</cell><cell>0.11328</cell><cell>0.15302</cell><cell>0.13668</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>m-stoeckel</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>Best team</cell><cell>raduion</cell><cell>FSL</cell><cell>xiongying</cell><cell>sohrab</cell><cell>FSL</cell><cell>FSL</cell><cell>plubeda</cell><cell cols="2">xiongying xiongying</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>xiongying</cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 6 :</head><label>6</label><figDesc>Statistics by track.</figDesc><table><row><cell>Track</cell><cell>Measure</cell><cell>Precision</cell><cell>Recall</cell><cell>F1</cell></row><row><cell></cell><cell>Minimum</cell><cell>0.33333</cell><cell cols="2">0.19273 0.28163</cell></row><row><cell></cell><cell>Mean</cell><cell>0.84211</cell><cell cols="2">0.77916 0.80493</cell></row><row><cell>1</cell><cell>Median</cell><cell>0.88417</cell><cell cols="2">0.82791 0.85248</cell></row><row><cell></cell><cell>Maximum</cell><cell>0.92602</cell><cell cols="2">0.91314 0.91052</cell></row><row><cell></cell><cell>Std Dev</cell><cell>0.12071</cell><cell cols="2">0.13840 0.12819</cell></row><row><cell></cell><cell>Minimum</cell><cell>0.48641</cell><cell cols="2">0.49287 0.49207</cell></row><row><cell></cell><cell>Mean</cell><cell>0.80152</cell><cell cols="2">0.72885 0.75936</cell></row><row><cell>2</cell><cell>Median</cell><cell>0.82887</cell><cell cols="2">0.80884 0.81058</cell></row><row><cell></cell><cell>Maximum</cell><cell>0.91108</cell><cell cols="2">0.92083 0.91593</cell></row><row><cell></cell><cell>Std Dev</cell><cell>0.11975</cell><cell cols="2">0.14059 0.12057</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 7 :</head><label>7</label><figDesc>Combining systems using a voting scheme. Surprisingly we had a considerably higher number of participants for the NER sub-track when compared to the concept-indexing sub-track. Future evaluation efforts should potentially consider also an entity grounding/normalization of chemical and drug mentions in clinical case reports.</figDesc><table><row><cell>Track</cell><cell>#</cell><cell>Train</cell><cell>Dev</cell><cell>Test</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">https://2019.bionlp-ost.org/ 2 https://github.com/PlanTL-SANIDAD/SPACCC 3 For a detailed description of the mentions types, see<ref type="bibr" target="#b8">(Rabal et al., 2018)</ref>.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">Mentions of this class were not part of the entities evaluated by this track, but served as additional annotations of medical relevance.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">The background set included the training, development and test sets, and an additional collection of 2,751 unlabeled clinical cases (total of 3,751 clinical cases).</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="6">http://temu.bsc.es/pharmaconer/ 7 https://competitions.codalab.org/ competitions/23159 8 http://temu.bsc.es/pharmaconer/index. php/data/ 9 https://github.com/PlanTL-SANIDAD/ PharmaCoNER-CODALAB-Evaluation-Script</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We acknowledge the Encargo of Plan TL (SEAD) to CNIO and BSC for funding, and the scientific committee for their valuable comments and guidance. We would also like to thank Siamak Barzegar for his help in setting up PharmaCoNER at CodaLab.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Pharmaconer tagger: a deep learning-based tool for automatically finding chemicals and drugs in spanish medical texts</title>
+		<author>
+			<persName><forename type="first">References</forename><surname>Jordi Armengol-Estapé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felipe</forename><surname>Soares</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Montserrat</forename><surname>Marimon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Krallinger</surname></persName>
+		</author>
+		<idno type="DOI">10.5808/GI.2019.17.2.e15</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Genomics Inform</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">e15</biblScope>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Integrating existing natural language processing tools for medication extraction from discharge summaries</title>
+		<author>
+			<persName><forename type="first">Son</forename><surname>Doan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lisa</forename><surname>Bastarache</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sergio</forename><surname>Klimkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joshua</forename><forename type="middle">C</forename><surname>Denny</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hua</forename><surname>Xu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="528" to="531" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The ddi corpus: An annotated corpus with pharmacological substances and drug-drug interactions</title>
+		<author>
+			<persName><forename type="first">María</forename><surname>Herrero-Zazo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isabel</forename><surname>Segura-Bedmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paloma</forename><surname>Martínez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thierry</forename><surname>Declerck</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of biomedical informatics</title>
+		<imprint>
+			<biblScope unit="volume">46</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="914" to="920" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Pubannotation: A persistent and sharable corpus and annotation repository</title>
+		<author>
+			<persName><forename type="first">Jin-Dong</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yue</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2012 Workshop on Biomedical Natural Language Processing</title>
+				<meeting>the 2012 Workshop on Biomedical Natural Language Processing<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="202" to="205" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">The chemdner corpus of chemicals and drugs and its annotation principles</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Krallinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Obdulia</forename><surname>Rabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Florian</forename><surname>Leitner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miguel</forename><surname>Vazquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Salgado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhiyong</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Leaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yanan</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Donghong</forename><surname>Ji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Daniel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lowe</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of cheminformatics</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">S2</biblScope>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Information retrieval and text mining technologies for chemistry</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Krallinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Obdulia</forename><surname>Rabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Analia</forename><surname>Lourenco</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julen</forename><surname>Oyarzabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alfonso</forename><surname>Valencia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Chemical reviews</title>
+		<imprint>
+			<biblScope unit="volume">117</biblScope>
+			<biblScope unit="issue">12</biblScope>
+			<biblScope unit="page" from="7673" to="7761" />
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Evaluation of chemical and gene/protein entity recognition systems at biocreative v. 5: the cemp and gpro patents tracks</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Pérez-Pérez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Obdulia</forename><surname>Rabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gael</forename><surname>Pérez-Rodríguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miguel</forename><surname>Vazquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Florentino</forename><surname>Fdez-Riverola</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julen</forename><surname>Oyarzabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alfonso</forename><surname>Valencia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anália</forename><surname>Lourenço</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Krallinger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">BC V.5 -Workshop Proceedings</title>
+				<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">Guías de anotación y normalización de compuestos químicos</title>
+		<author>
+			<persName><forename type="first">Obdulia</forename><surname>Rabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ander</forename><surname>Intxaurrondo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Krallinger</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Medical word embeddings for Spanish: Development and evaluation</title>
+		<author>
+			<persName><forename type="first">Felipe</forename><surname>Soares</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Villegas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aitor</forename><surname>Gonzalez-Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Krallinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jordi</forename><surname>Armengol-Estapé</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W19-1916</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2nd Clinical Natural Language Processing Workshop</title>
+				<meeting>the 2nd Clinical Natural Language Processing Workshop<address><addrLine>Minneapolis, Minnesota, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="124" to="133" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Brat: A web-based tool for nlp-assisted text annotation</title>
+		<author>
+			<persName><forename type="first">Pontus</forename><surname>Stenetorp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sampo</forename><surname>Pyysalo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Goran</forename><surname>Topić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomoko</forename><surname>Ohta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sophia</forename><surname>Ananiadou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jun'ichi</forename><surname>Tsujii</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Demonstrations at the 13th Conference of the European Chapter of the Association for Computational Linguistics, EACL &apos;12</title>
+				<meeting>the Demonstrations at the 13th Conference of the European Chapter of the Association for Computational Linguistics, EACL &apos;12<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="102" to="107" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Extracting medication information from clinical text</title>
+		<author>
+			<persName><forename type="first">Ozlem</forename><surname>Uzuner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Imre</forename><surname>Solti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eithon</forename><surname>Cadag</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="514" to="518" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Community annotation experiment for ground truth generation for the i2b2 medication challenge</title>
+		<author>
+			<persName><forename type="first">Ozlem</forename><surname>Uzuner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Imre</forename><surname>Solti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="519" to="523" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+	<note>Fei Xia, and Eithon Cadag</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Text mining for drugs and chemical compounds: methods, tools and applications</title>
+		<author>
+			<persName><forename type="first">Miguel</forename><surname>Vazquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Krallinger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Florian</forename><surname>Leitner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alfonso</forename><surname>Valencia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Molecular Informatics</title>
+		<imprint>
+			<biblScope unit="volume">30</biblScope>
+			<biblScope unit="issue">6-7</biblScope>
+			<biblScope unit="page" from="506" to="519" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Automatic extraction of medication information from medical discharge summaries</title>
+		<author>
+			<persName><forename type="first">Hui</forename><surname>Yang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<biblScope unit="page" from="545" to="548" />
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Frontiers of biomedical text mining: current progress</title>
+		<author>
+			<persName><forename type="first">Pierre</forename><surname>Zweigenbaum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hong</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><forename type="middle">B</forename><surname>Cohen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Briefings in bioinformatics</title>
+				<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page" from="358" to="375" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

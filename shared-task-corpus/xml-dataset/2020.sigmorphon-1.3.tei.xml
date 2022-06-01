@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">The SIGMORPHON 2020 Shared Task on Unsupervised Morphological Paradigm Completion</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+							<email>katharina.kann@colorado.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Garrett</forename><surname>Nicolai</surname></persName>
+							<email>garrett.nicolai@ubc.ca</email>
+						</author>
+						<author>
+							<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+							<email>mans.hulden@colorado.edu</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Colorado</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">Johns Hopkins University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="institution">University of British Columbia</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff3">
+								<orgName type="institution">University of Colorado</orgName>
+								<address>
+									<settlement>Boulder</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">The SIGMORPHON 2020 Shared Task on Unsupervised Morphological Paradigm Completion</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="DOI">10.18653/v1/P17</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:29+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this paper, we describe the findings of the SIGMORPHON 2020 shared task on unsupervised morphological paradigm completion (SIGMORPHON 2020 Task 2), a novel task in the field of inflectional morphology. Participants were asked to submit systems which take raw text and a list of lemmas as input, and output all inflected forms, i.e., the entire morphological paradigm, of each lemma. In order to simulate a realistic use case, we first released data for 5 development languages. However, systems were officially evaluated on 9 surprise languages, which were only revealed a few days before the submission deadline. We provided a modular baseline system, which is a pipeline of 4 components. 3 teams submitted a total of 7 systems, but, surprisingly, none of the submitted systems was able to improve over the baseline on average over all 9 test languages. Only on 3 languages did a submitted system obtain the best results. This shows that unsupervised morphological paradigm completion is still largely unsolved. We present an analysis here, so that this shared task will ground further research on the topic.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In morphologically rich languages, words inflect: grammatical information like person, number, tense, and case are incorporated into the word itself, rather than expressed via function words. Not all languages mark the same properties: German nouns, for instance, have more inflected forms than their English counterparts.</p><p>When acquiring a language, humans usually learn to inflect words without explicit instruction. Thus, most native speakers are capable of generating inflected forms even of artificial lemmas <ref type="bibr" target="#b3">(Berko, 1958)</ref>. However, models that can generate paradigms without explicit morphological train- * Equal contribution. Figure <ref type="figure">1</ref>: The task of unsupervised morphological paradigm completion <ref type="bibr" target="#b17">(Jin et al., 2020)</ref> consists of generating complete inflectional paradigms for given lemmas, with the only additional available information being a corpus without annotations. <ref type="bibr">ing</ref> have not yet been developed. We anticipate that such systems will be extremely useful, as they will open the possibility of rapid development of first-pass inflectional paradigms in a large set of languages. These can be utilized both in se for generation and as a starting point for elicitation , thus aiding the development of low-resource human language technologies <ref type="bibr" target="#b4">(Christianson et al., 2018)</ref>.</p><p>In this paper, we present the SIGMORPHON 2020 shared task on unsupervised morphological paradigm completion (SIGMORPHON 2020 Task 2). We asked participants to produce systems that can learn to inflect in an unsupervised fashion: given a small corpus (the Bible) together with a list of lemmas for each language, systems for the shared task should output all corresponding inflected forms. In their output, systems had to mark which forms expressed the same morphosyntactic features, e.g., demonstrate knowledge of the fact that walks is to walk as listens is to listen, despite not recognizing the morphological features explic-itly. We show a visualization of our shared task setup in Figure <ref type="figure">1</ref>.</p><p>Unsupervised morphological paradigm completion requires solving multiple subproblems either explicitly or implicitly. First, a system needs to figure out which words in the corpus belong to the same paradigm. This can, for instance, be done via string similarity: walks is similar to walk, but less so to listen. Second, it needs to figure out the shape of the paradigm. This requires detecting which forms of different lemmas express the same morphosyntactic features, even if they are not constructed from their respective lemmas in the exact same way. Third, a system needs to generate all forms not attested in the provided corpus. Using the collected inflected forms as training data, this can be reduced to the supervised morphological inflection task <ref type="bibr" target="#b10">(Cotterell et al., 2016)</ref>. This year's submitted systems can be split into two categories: those that built on the baseline (Retrieval+X) and those that did not (Segment+Conquer). The baseline system is set up as a pipeline which performs the following steps: edit tree retrieval, additional lemma retrieval, paradigm size discovery, and inflection generation <ref type="bibr" target="#b17">(Jin et al., 2020)</ref>. As it is highly modular, we provided two versions that employ different inflection models. <ref type="bibr">1</ref> All systems built on the baseline substituted the morphological inflection component.</p><p>No system outperformed the baseline overall. However, two Retrieval+X models slightly improved over the baseline on three individual languages. We conclude that the task of unsupervised morphological paradigm completion is still an open challenge, and we hope that this shared task will inspire future research in this area.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task and Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Unsupervised Morphological Paradigm Completion</head><p>Informal description. The task of unsupervised morphological paradigm completion mimics a setting where the only resources available in a language are a corpus and a short list of dictionary forms, i.e., lemmas. The latter could, for instance, be obtained via basic word-to-word translation.</p><p>The goal is to generate all inflected forms of the given lemmas.</p><p>For an English example, assume the following lemma list to be given: walk listen With the help of raw text, systems should then produce an output like this: walk walk 1 walk walks 2 walk walked 3 walk walking 4 walk walked 5</p><p>(1) listen listens 2 listen listened 5 listen listened 3 listen listening 4 listen listen 1</p><p>The numbers serve as unique identifiers for paradigm slots: in above example, "4" corresponds to the present participle. The inflections walking and talking therefore belong to the same paradigm slot. For the task, participants are not provided any knowledge of the grammatical content of the slots.</p><p>Formal definition. We denote the paradigm π( ) of a lemma as</p><formula xml:id="formula_0">π( ) = f ( , t γ ) γ∈Γ( ) ,<label>(2)</label></formula><p>with f : Σ * × T → Σ * being a function that maps a lemma and a vector of morphological features t γ ∈ T expressed by paradigm slot γ to the corresponding inflected form. Γ( ) is the set of slots in lemma 's paradigm. We then formally describe the task of unsupervised morphological paradigm completion as follows. Given a corpus D = w 1 , . . . , w |D| together with a list L = { j } of |L| lemmas belonging to the same part of speech, 2 unsupervised morphological paradigm completion consists of generating the paradigms {π( )} of all lemmas ∈ L.</p><p>Remarks. It is impossible for unsupervised systems to predict the names of the features expressed by paradigm slots, an arbitrary decision made by human annotators. This is why, for the shared task, we asked systems to mark which forms belong to the same slot by numbering them, e.g., to predict that walked is the form for slot 3, while listens corresponds to slot 2.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Macro-averaged Best-Match Accuracy</head><p>The official evaluation metric was macro-averaged best-match accuracy (BMAcc; <ref type="bibr" target="#b17">Jin et al., 2020)</ref>.</p><p>In contrast to supervised morphological inflection <ref type="bibr" target="#b10">(Cotterell et al., 2016)</ref>, our task cannot be evaluated with word-level accuracy. For the former, one can compare the prediction for each lemma and morphological feature vector to the ground truth. However, for unsupervised paradigm completion, this requires a mapping from predicted slots to the gold standard's paradigm slots.</p><p>BMAcc, thus, first computes the word-level accuracy each predicted slot would obtain against each true slot. It then constructs a complete bipartite graph, with those accuracies as edge weights. This enables computing of the maximum-weight full matching with the algorithm of <ref type="bibr" target="#b20">Karp (1980)</ref>. BMAcc then corresponds to the sum of all accuracies for the best matching, divided by the maximum of the number of gold and predicted slots.</p><p>BMAcc penalizes systems for predicting a wrong number of paradigm slots. However, detecting the correct number of identical slots -something we encounter in some languages due to syncretism -is extremely challenging. Thus, we merge slots with identical forms for all lemmas in both the predictions and the ground truth before evaluating.</p><p>Example. Assume our gold standard is (1) (the complete, 5-slot English paradigms for the verbs walk and listen) and a system outputs the following, including an error in the fourth row: walk walks 1 walk walking 2 listen listens 1 listen listenen 2 First, we merge slots 3 and 5 in the gold standard, since they are identical for both lemmas. Ignoring slot 5, we then compute the BMAcc as follows. Slot 1 yields an accuracy of 100% as compared to gold slot 2, and 0% otherwise. Similarly, slot 2 reaches an accuracy of 50% for gold slot 4, and 0% otherwise. Additionally, given the best mapping of those two slots, we obtain 0% accuracy for gold slots 1 and 3. Thus, the BMAcc is BMAcc = 1 + 0.5 + 0 + 0 4 = 0.375 (3)</p><p>3 Shared Task Data</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Provided Resources</head><p>We provided data for 5 development and 9 test languages. The development languages were available for system development and hyperparameter tuning, while the test languages were released shortly before the shared task deadline. For the test languages, no ground truth data was available before system submission. This setup emulated a realworld scenario with the goal to create a system for languages about which we have no information.</p><p>For the raw text corpora, we leveraged the JHU Bible Corpus . This resource covers 1600 languages, which will enable future work to quickly produce systems for a large set of languages. Additionally, using the Bible allowed for a fair comparison of models across languages without potential confounds such as domain mismatch. 7 of the languages have only the New Testament available (approximately 8k sentences), and 7 have both the New and Old Testaments (approximately 31k sentences).</p><p>All morphological information was taken from UniMorph <ref type="bibr" target="#b37">(Sylak-Glassman et al., 2015;</ref><ref type="bibr" target="#b21">Kirov et al., 2018)</ref>, a resource which contains paradigms for more than 100 languages. However, this information was only accessible to the participants for the development languages. UniMorph paradigms were further used internally for evaluation on the test languages-this data was then released after the conclusion of the shared task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Languages</head><p>During the development phase of the shared task, we released 5 languages to allow participants to investigate various design decisions: Maltese (MLT), Persian (FAS), Portuguese (POR), Russian (RUS), and Swedish (SWE). These languages are typologically and genetically varied, representing a number of verbal inflectional phenomena. Swedish and Portuguese are typical of Western European languages, and mostly exhibit fusional, suffixing verbal inflection. Russian, as an exemplar of Slavic languages, is still mostly suffixing, but does observe regular ablaut, and has considerable phonologicallyconditioned allomorphy. Maltese is a Semitic language with a heavy Romance influence, and verbs   combine templatic and suffixing inflection. Persian is mostly suffixing, but does allow for verbal inflectional prefixation, such as negation and marking subjunctive mood. Since the development languages were used for system tuning, their scores did not count towards the final ranking.</p><p>After a suitable period for system development and tuning, we released nine test languages: Basque (EUS), Bulgarian (BUL), English (ENG), Finnish (FIN), German (DEU), Kannada (KAN), Navajo (NAV), Spanish (SPA), and Turkish (TUR). Although these languages observe many features common to the development languages, such as fusional inflection, suffixation, and ablaut, they also cover inflectional categories absent in the development languages. Navajo, unlike any of the development languages, is strongly prefixing. Basque, Finnish, and Turkish are largely agglutinative, with long, complex affix chains that are difficult to identify through longest suffix matching. Furthermore, Finnish and Turkish feature vowel harmony and consonant gradation, which both require a method to identify allomorphs correctly to be able to merge different variants of the same paradigm slot.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Statistics</head><p>Statistics of the resources provided for all languages are shown in Table <ref type="table" target="#tab_2">1</ref> for the development languages and in Table <ref type="table" target="#tab_3">2</ref> for the test languages.</p><p>The token count (line 1) and, thus, the size of the provided Bible corpora, differs between 104,631 (Kannada) and 871,707 (Swedish). This number depends both on the typology of a language and on the completeness of the provided Bible translation. The number of types (line 2) is between 7,144 (English) and 59,458 (Turkish). It is strongly influenced by how morphologically rich a language is, i.e., how large the paradigms are, which is often approximated with the type-token ratio. The verbal paradigm size is listed in line 7: English has with a size of 5 the smallest paradigms, and, correspondingly, the lowest type count. Turkish, which has the highest number of types, in contrast, has large paradigms (120). The last line serves as an indicator of syncretism: subtracting line 8 from line 7 results in the number of paradigm slots that have been merged as a language evolved to use identical forms for different inflectional categories.</p><p>Lines 3 and 4 show the number of lemmas in the lemma lists for all languages, as well as the   In line 5, we list the number of total inflections, counting each one in the case of identical forms, i.e., this corresponds to the number of lines in our gold inflection file. English, due to its small verbal paradigm size, has only 500 inflections in our data. Conversely, Finnish has with 14,100 the largest number of inflections. Line 6 describes how many of the forms from line 5 appear in the corpus. As before, all forms are counted, even if they are identical. For all languages, a large majority of forms cannot be found in the corpus. This makes the task of unsupervised morphological paradigm completion with our provided data a challenging one.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Systems</head><p>In this section, we first review the baseline before describing the submitted systems. An additional overview of the submissions is shown in Table <ref type="table" target="#tab_5">3</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Baseline</head><p>We compared all submissions to the baseline system of <ref type="bibr" target="#b17">Jin et al. (2020)</ref>, graphically summarized in Figure <ref type="figure" target="#fig_0">2</ref>. It is a pipeline system, which consists of 4 separate modules, which, in turn, can be grouped into two major components: retrieval and generation. The retrieval component discovers and returns inflected forms -and, less importantly, additional lemmas -from the provided Bible corpus. The generation component produces new inflected forms which cannot be found in the raw text.</p><p>The retrieval component performs three steps: First, it extracts the most common edit trees <ref type="bibr" target="#b5">(Chrupała, 2008)</ref>, i.e., it detects regularities with regards to word formation, based on the lemma list. If, for instance, both walk and listen are the lemmas provided and both walked and listened are encountered in the corpus, the system notes that appending -ed is a common transformation, which might correspond to an inflectional strategy.</p><p>Second, it retrieves new lemmas, with the goal to gather additional evidence for our collected edit trees. If, for instance, it has already identified the suffix -ed as an inflectional marker, finding both pray and prayed in the Bible is an indication that pray might be a lemma. New lemmas can then, in turn, be used to detect new regularities, e.g., in the case that listen and listens as well as pray and prays are attested in the corpus, but walks is not. Due to their complementary nature, components one and two can, as a unit, be applied iteratively to bootstrap a larger list of lemmas and transformations. For the baseline, we apply each of them only once.</p><p>Finally, the baseline's retrieval component predicts the paradigm size by analyzing which edit trees might be representing the same inflection. For instance, the suffixes -d and -ed both represent the past tense in English. The output of the retrieval component is a list of inflected forms with their lemmas, annotated with a paradigm slot number.</p><p>The generation component receives this output and prepares the data to train an inflectional generator. First, identified inflections are divided into a training and development split, and missing paradigm slots are identified. The generator is trained on the discovered inflections, and new forms are predicted for each missing slot.</p><p>We used two morphological inflection systems for the two variants of our baseline: the non-neural baseline from <ref type="bibr" target="#b8">Cotterell et al. (2017)</ref> and the model proposed by <ref type="bibr" target="#b25">Makarov and Clematide (2018)</ref>. Both are highly suitable for the low-resource setting.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Submitted Systems: Retrieval+X</head><p>We now describe the first category of shared task submissions: Retrieval+X. Systems in this category leverage the retrieval component of the baseline, while substituting the morphological inflection component with a custom inflection system.</p><p>The IMS-CUBoulder team relied on LSTM (Hochreiter and Schmidhuber, 1997) sequence-tosequence models for inflection. In IMS-CUB-1, the generation component is based on the architecture by <ref type="bibr" target="#b2">Bahdanau et al. (2015)</ref>, but with fewer parameters, as suggested by <ref type="bibr" target="#b18">Kann and Schütze (2016)</ref>. This model -as well as all other inflection components used for systems in this category -receives the sequence of the lemma's characters and the paradigm slot number as input and produces a sequence of output characters.</p><p>Their second system, IMS-CUB-2, uses an LSTM pointer-generator network <ref type="bibr" target="#b31">(See et al., 2017)</ref> instead. This architecture has originally been proposed for low-resource morphological inflection by <ref type="bibr" target="#b32">Sharma et al. (2018)</ref>.</p><p>The NYU-CUBoulder team also substituted the baseline's generation component. Their morphological inflection models are ensembles of dif-ferent combinations of transformer sequence-tosequence models <ref type="bibr" target="#b39">(Vaswani et al., 2017)</ref> and pointergenerator transformers, a model they introduced for the task.</p><p>NYU-CUB-1 is an ensemble of 6 pointergenerator transformers, while NYU-CUB-2 is an ensemble of 6 vanilla transformers. Their last system, NYU-CUB-3, is an ensemble of all 12 models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Submitted Systems: Segment+Conquer</head><p>The KU-CST team did not modify the baseline directly, but, nevertheless, was heavily inspired by it. Their system first employs a charactersegmentation algorithm to identify stem-suffix splits in both the provided lemma list and the corpus, thus identifying potential suffix-replacement rules. Next, k-means is used to cluster the extracted suffixes into allomorphic groups. These suffixes are then concatenated with the most frequent stems obtained from the lemma list, and scored by a language model, in order to arrive at plausible inflectional candidates. This approach is KU-CST-2.</p><p>However, KU-CST-2 often produces very small inflectional paradigms; unsurprisingly, given that the provided corpora are small as well, and, thus, any particular lemma is only inflected in limited ways -if at all. Therefore, KU-CST-1 expands the lemma list with a logistic-regression classifier that identifies novel verbs to be added.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Results and Analysis</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Results on Development Languages</head><p>To encourage reproducibility, we first report the performance of all systems on the development languages in the upper part of Table <ref type="table" target="#tab_8">4</ref>. Although participants were not evaluated on these languages, the results provide insight and enable future researchers to benchmark their progress, while maintaining the held-out status of the test languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Official Shared Task Results</head><p>We show the official test results in the lower part of Table <ref type="table" target="#tab_8">4</ref>. Baseline-2 obtained the highest BMAcc on average, followed in order by Baseline-1, IMS-CUB-2, and NU-CUB-2. Overall, systems built on top of the baseline, i.e., systems from Re-trieval+X, performed better than systems from Seg-ment+Conquer: the best Segment+Conquer system only reached 4.66% BMAcc on average. This shows the effectiveness of the baseline. However, it also shows that we still have substantial room  <ref type="table" target="#tab_3">35 (9) 29.00 (9) 0.70 (425) 4.98 (40) 24.60 (9) 28.35 (9) 27.30 (9) 27.35 (9) 27.35 (9</ref>  for improvement on unsupervised morphological paradigm completion.</p><p>Looking at individual languages, Baseline-2 performed best for all languages except for EUS, where NYU-CUB-3 obtained the highest BMAcc, and BUL and KAN, where IMS-CUB-2 was best.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Analysis: Seen and Unseen Lemmas</head><p>We further look separately at the results for lemmas which appear in the corpus and those that do not. While seeing a lemma in context might help some systems, we additionally assume that inflections of attested lemmas are also more likely to appear in the corpus. Thus, we expect the performance for seen lemmas to be higher on average.</p><p>Examining the performance with respect to observed inflected forms might give cleaner results. However, we instead perform this analysis on a per-lemma basis, since the lemmas are part of a system's input, while the inflected forms are not.</p><p>Table <ref type="table" target="#tab_12">5</ref> shows the performance of all systems for seen and unseen lemmas. Surprisingly, both versions of the baseline show similar BMAcc for both settings with a maximum difference of 0.12% on average. However, the baseline is the only system that performs equally well for unseen lemmas; IMS-CUB-1 observes the largest difference, with an absolute drop of 7.85% BMAcc when generating the paradigms of unseen lemmas. Investigating the cause for IMS-CUB-1's low BMAcc, we manually inspected the English output files, and found that, for unseen lemmas, many generations are nonsensi-cal (e.g., demoates as an inflected form of demodulate). This does not happen in the case of seen lemmas. A similar effect has been found by <ref type="bibr" target="#b19">Kann and Schütze (2018)</ref>, who concluded that this might be caused by the LSTM sequence-to-sequence model not having seen similar character sequences during training. The fact that IMS-CUB-2, which uses another inflection model, performs better for unseen lemmas confirms this suspicion. Thus, additional training of the inflection component of IMS-CUB-1 on words from the corpus might improve generation. Conversely, the baseline -which benefits from inflection models specifically catered to low-resource settings -is better suited to inflecting unseen lemmas. Overall, we conclude that there is little evidence that the difficulty of the task increases for unseen lemmas. Rather, inflection systems need to compensate for the low contextual variety in their training data.</p><p>6 Where from and Where to?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Previous Work</head><p>Prior to this shared task, most research on unsupervised systems for morphology was concerned with developing approaches to segment words into morphemes, i.e., their smallest meaning-bearing units <ref type="bibr" target="#b14">(Goldsmith, 2001;</ref><ref type="bibr" target="#b11">Creutz, 2003;</ref><ref type="bibr" target="#b12">Creutz and Lagus, 2007;</ref><ref type="bibr" target="#b34">Snyder and Barzilay, 2008;</ref><ref type="bibr" target="#b15">Goldwater et al., 2009;</ref><ref type="bibr" target="#b23">Kurimo et al., 2010;</ref><ref type="bibr" target="#b22">Kudo and Richardson, 2018)</ref>. These methods were built around the observation that inflectional morphemes are very common across word types, and leveraged probabil-  <ref type="table" target="#tab_2">35 (171) 15.61 (172) 6.61 (44) 1.69 (1) 13.99 (172) 16.49 (172) 14.63 (172) 14.68 (172) 14.63 (172</ref>  <ref type="table" target="#tab_2">97 (29) 21.60 (29) 4.43 (225) 16.37 (40) 20.40 (29) 21.14 (29) 21.17 (29) 21.09 (29) 21.14 (29)  TUR 14.68 (104) 16.38 (104) 0.23(1772) 1.42 (502) 16.98 (104) 18.02 (104) 18.30 (104) 18.70 (104) 18.50 (104</ref>  ity estimates such as maximum likelihood (MLE) or maximum a posteriori (MAP) estimations to determine segmentation points, or minimum description length (MDL)-based approaches. However, they tended to make assumptions regarding how morphemes are combined, and worked best for purely concatenative morphology. Furthermore, these methods had no productive method of handling allomorphy-morphemic variance was simply treated as separate morphemes.</p><p>The task of unsupervised morphological paradigm completion concerns more than just segmentation: besides capturing how morphology is reflected in the word form, it also requires correctly clustering transformations into paradigm slots and, finally, generation of unobserved forms.</p><p>While <ref type="bibr" target="#b40">Xu et al. (2018)</ref> did discover something similar to paradigms, those paradigms were a means to a segmentation end and the shape or size of the paradigms was not a subject of their research. <ref type="bibr" target="#b28">Moon et al. (2009)</ref> similarly uses segmentation and clustering of affixes to group words into conflation sets, groups of morphologically related words, in an unsupervised way. Their work assumes prefixing and suffixing morphology. In a more task-driven line of research, <ref type="bibr" target="#b35">Soricut and Och (2015)</ref> develop an approach to learn morphological transformation rules from observing how consis-tently word embeddings change between related word forms, with the goal of providing useful word embeddings for unseen words.</p><p>Our task further differs from traditional paradigm completion (e.g., <ref type="bibr" target="#b13">Dreyer and Eisner, 2011;</ref><ref type="bibr" target="#b1">Ahlberg et al., 2015)</ref> in that no seed paradigms are observed. Thus, no information is being provided regarding the paradigm size, inflectional features, or relationships between lemmas and inflected forms. Other recent work <ref type="bibr" target="#b30">(Nicolai and Yarowsky, 2019;</ref> learned fine-grained morphosyntactic tools from the Bible, though they leveraged supervision projected from higher-resource languages <ref type="bibr" target="#b41">(Yarowsky et al., 2001;</ref><ref type="bibr" target="#b38">Täckström et al., 2013)</ref>.</p><p>Past shared tasks. This task extends a tradition of SIGMORPHON shared tasks concentrating on inflectional morphology.</p><p>The first such task <ref type="bibr" target="#b10">(Cotterell et al., 2016)</ref> encouraged participants to create inflectional tools in a typologically diverse group of 10 languages. The task was fully-supervised, requiring systems to learn inflectional morphology from a large annotated database. This task is similar to human learners needing to generate inflections of previously unencountered word forms, after having studied thousands of other types.</p><p>The second task <ref type="bibr" target="#b8">(Cotterell et al., 2017)</ref> extended the first task from 10 to 52 languages and started to encourage the development of tools for the lowresource setting. While the first shared task approximated an adult learner with experience with thousands of word forms, low-resource inflection was closer to the language learner that has only studied a small number of inflections-however, it was closer to L2 learning than L1, as it still required training sets with lemma-inflection-slot triplets. The 2017 edition of the shared task also introduced a paradigm-completion subtask: participants were given partially observed paradigms and asked to generate missing forms, based on complete paradigms observed during training. This could be described as the supervised version of our unsupervised task, and notably did not require participants to identify inflected forms from raw text-a crucial step in L1 learning.</p><p>The third year of the shared task <ref type="bibr" target="#b21">(Cotterell et al., 2018)</ref> saw a further extension to more than 100 languages and another step away from supervised learning, in the form of a contextual prediction task. This task stripped away inflectional annotations, requiring participants to generate an inflection solely utilizing a provided lemma and sentential cues. This task further imitated language learners, but extended beyond morphological learning to morphosyntactic incorporation. Furthermore, removing the requirement of an inflectional feature vector more closely approximated the generation step in our task. However, it was still supervised in that participants were provided with lemma-inflection pairs in context during training. We, in contrast, made no assumption of the existence of such pairs. Finally, the fourth iteration of the task <ref type="bibr">(Mc-Carthy et al., 2019)</ref> again concentrated on lesssupervised inflection. Cross-lingual training allowed low-resource inflectors to leverage information from high-resource languages, while a contextual analysis task flipped the previous year's contextual task on its head-tagging a sentence with inflectional information. This process is very similar to the retrieval portion of our task. We extended this effort to not only identify the paradigm slot of particular word, but to combine learned information from each class to extend and complete existing paradigms. Furthermore, we lifted the requirement of named inflectional features, more closely approximating the problem as approached by L1 language learners.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Future Shared Tasks</head><p>Future editions of the shared task could extend this year's Task 2 to a larger variety of languages or parts of speech. Another possible direction is to focus on derivational morphology instead of or in addition to inflectional morphology. We are also considering merging Task 2 with the traditional morphological inflection task: participants could then choose to work on the overall task or on either of the retrieval or generation subproblem.</p><p>Finally, we are looking into extending the shared task to use speech data as input. This is closer to how L1 learners acquire morphological knowledge, and, while this could make the task harder in some aspects, it could make it easier in others.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>We presented the findings of the SIGMORPHON 2020 shared task on unsupervised morphological paradigm completion (SIGMORPHON 2020 Task 2), in which participants were asked to generate paradigms without explicit supervision. Surprisingly, no team was able to outperform the provided baseline, a pipeline system, on average over all test languages. Even though 2 submitted systems were better on 3 individual languages, this highlights that the task is still an open challenge for the NLP community. We argue that it is an important one: systems obtaining high performance will be able to aid the development of human language technologies for low-resource languages.</p><p>All teams that participated in the shared task devised modular approaches. Thus, it will be easy to include improved components in the future as, for instance, systems for morphological inflection improve. We released all data, the baseline, the evaluation script, and the system outputs in the official repository, 3 in the hope that this shared task will lay the foundation for future research on unsupervised morphological paradigm completion.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Our baseline system: the retrieval component bootstraps lemma-form-slot triplets, which are then used by the generation component to generate unobserved inflections in the paradigm of each input lemma.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc>Dataset statistics: development languages. # Inflections=number of inflected forms in the gold file, token-based; # Inflections in corpus=number of inflections from the gold file which can be found in the corpus, token-based; Paradigm size=number of different morphological feature vectors in the dataset for the language; Paradigm size (merged)=paradigm size, but counting slots with all forms being identical only once.</figDesc><table><row><cell></cell><cell>EUS</cell><cell>BUL</cell><cell>ENG</cell><cell>FIN</cell><cell>DEU</cell><cell>KAN</cell><cell>NAV</cell><cell>SPA</cell><cell>TUR</cell></row><row><cell>1 # Tokens in corpus</cell><cell cols="9">195459 801657 236465 685699 826119 193213 104631 251581 616418</cell></row><row><cell>2 # Types in corpus</cell><cell>18367</cell><cell>37048</cell><cell>7144</cell><cell>54635</cell><cell>22584</cell><cell>28561</cell><cell>18799</cell><cell>9755</cell><cell>59458</cell></row><row><cell>3 # Lemmas</cell><cell>20</cell><cell>100</cell><cell>100</cell><cell>100</cell><cell>100</cell><cell>20</cell><cell>100</cell><cell>100</cell><cell>100</cell></row><row><cell>4 # Lemmas in corpus</cell><cell>4</cell><cell>50</cell><cell>50</cell><cell>50</cell><cell>50</cell><cell>10</cell><cell>9</cell><cell>50</cell><cell>50</cell></row><row><cell>5 # Inflections</cell><cell>10446</cell><cell>5600</cell><cell>500</cell><cell>14100</cell><cell>2900</cell><cell>2612</cell><cell>3000</cell><cell>7000</cell><cell>12000</cell></row><row><cell>6 # Inflections in corpus</cell><cell>97</cell><cell>915</cell><cell>127</cell><cell>497</cell><cell>631</cell><cell>1040</cell><cell>54</cell><cell>630</cell><cell>986</cell></row><row><cell>7 Paradigm size</cell><cell>1659</cell><cell>56</cell><cell>5</cell><cell>141</cell><cell>29</cell><cell>85</cell><cell>30</cell><cell>70</cell><cell>120</cell></row><row><cell>8 Paradigm size (merged)</cell><cell>1658</cell><cell>54</cell><cell>5</cell><cell>141</cell><cell>20</cell><cell>59</cell><cell>30</cell><cell>70</cell><cell>120</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table /><note>Dataset statistics: test languages. # Inflections=number of inflected forms in the gold file, token-based; # Inflections in corpus=number of inflections from the gold file which can be found in the corpus, token-based; Paradigm size=number of different morphological feature vectors in the dataset for the language; Paradigm size (merged)=paradigm size, but counting slots with all forms being identical only once.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>All submitted systems by institution, together with a reference to their description paper. The rank is relative to all other submitted systems and does not take the baselines into account.</figDesc><table><row><cell>Train,</cell><cell>lemma 1</cell></row><row><cell>dev,</cell><cell>guess 1 guess 2</cell></row><row><cell>test</cell><cell>guess 3 guess 4</cell></row><row><cell></cell><cell>guess 5 guess 6</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head></head><label></label><figDesc>MLT 9.12 (17) 20.00 (17) 0.22 (254) 1.30 (2) 14.41 (17) 17.35 (17) 15.29 (17) 15.59 (17) 15.88 (17) FAS 6.67 (31) 6.54 (31) 1.55 (11) 0.74 (2) 2.52 (31) 2.70 (31) 2.76 (31) 2.73 (31) 2.74 (31) POR 40.39 (34) 39.56 (34) 1.09(1104) 12.75 (70) 38.69 (34) 39.17 (34) 39.93 (34) 39.95 (34) 40.07 (34) RUS 40.68 (19) 41.68 (19) 0.35 (387) 7.06 (10) 38.63 (19) 41.11 (19) 39.26 (19) 40.00 (19) 39.74 (19) SWE 45.07 (15) 40.93 (15) 0.93 (588) 22.82 (17) 37.60 (15) 39.93 (15) 39.80 (15) 39.93 (15) 40.13 (15)</figDesc><table><row><cell></cell><cell></cell><cell>Baseline</cell><cell></cell><cell>KU-CST</cell><cell></cell><cell>IMS-CUB</cell><cell></cell><cell>NYU-CUB</cell></row><row><cell></cell><cell>1</cell><cell>2</cell><cell>1</cell><cell>2</cell><cell>1</cell><cell>2</cell><cell>1</cell><cell>2</cell><cell>3</cell></row><row><cell cols="2">avg. 28.39</cell><cell>29.74</cell><cell>0.83</cell><cell>8.93</cell><cell>26.37</cell><cell>28.05</cell><cell>27.41</cell><cell>27.64</cell><cell>27.71</cell></row><row><cell cols="10">EUS 0.06 (30) 0.06 (27) 0.02 (30) 0.01 (2) 0.04 (30) 0.06 (30) 0.05 (30) 0.05 (30) 0.07 (30)</cell></row><row><cell cols="10">BUL 28.30 (35) 31.69 (34) 2.99 (138) 4.15 (13) 27.22 (35) 32.11 (35) 27.69 (35) 28.94 (35) 27.89 (35)</cell></row><row><cell cols="10">ENG 65.60 (4) 66.20 (4) 3.53 (51) 17.29 (7) 47.80 (4) 61.00 (4) 50.20 (4) 52.80 (4) 51.20 (4)</cell></row><row><cell>FIN</cell><cell cols="9">5.33 (21) 5.50 (21) 0.39(1169) 2.08 (108) 4.90 (21) 5.38 (21) 5.36 (21) 5.47 (21) 5.35 (21)</cell></row><row><cell cols="2">DEU 28.</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 4 :</head><label>4</label><figDesc>BMAcc in percentages and the number of predicted paradigm slots after merging for all submitted systems and the baselines on all development (top) and test languages (bottom). Best scores are in bold.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 5 :</head><label>5</label><figDesc>BMAcc in percentages and the number of predicted paradigm slots after merging for all submitted systems and the baselines on all test languages; listed separately for lemmas which appear in the corpus (top) and lemmas which do not (bottom). Best scores are in bold.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">In this report, we use the words baseline and baselines interchangeably.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">This edition of the shared task was only concerned with verbs, though we are considering extending the task to other parts of speech in the future.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://github.com/sigmorphon/2020/tree/ master/task2</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>First and foremost, we would like to thank all of our shared task participants. We further thank the passionate morphologists who joined for lunch in Florence's mercato centrale on the last day of ACL 2019 to plan the 2020 shared task, as well as the SIGMORPHON Exec, who made this shared task possible.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">KU-CST at the SIGMORPHON 2020 task 2 on unsupervised morphological paradigm completion</title>
+		<author>
+			<persName><forename type="first">Manex</forename><surname>Agirrezabal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jürgen</forename><surname>Wedekind</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 17th Workshop on Computational Research in Phonetics, Phonology, and Morphology</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Paradigm classification in supervised learning of morphology</title>
+		<author>
+			<persName><forename type="first">Malin</forename><surname>Ahlberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Markus</forename><surname>Forsberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/v1/N15-1107</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2015 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Denver</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1024" to="1029" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Neural machine translation by jointly learning to align and translate</title>
+		<author>
+			<persName><forename type="first">Dzmitry</forename><surname>Bahdanau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kyunghyun</forename><surname>Cho</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoshua</forename><surname>Bengio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">3rd International Conference on Learning Representations</title>
+				<meeting><address><addrLine>San Diego, CA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015-05-07" />
+		</imprint>
+	</monogr>
+	<note>Conference Track Proceedings</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">The child&apos;s learning of english morphology</title>
+		<author>
+			<persName><forename type="first">Jean</forename><surname>Berko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Word</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="issue">2-3</biblScope>
+			<biblScope unit="page" from="150" to="177" />
+			<date type="published" when="1958" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Overview of the DARPA LORELEI program. Machine Translation</title>
+		<author>
+			<persName><forename type="first">Caitlin</forename><surname>Christianson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Duncan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Boyan</forename><surname>Onyshkevych</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s10590-017-9212-4</idno>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="page" from="3" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Towards a machinelearning architecture for lexical functional grammar parsing</title>
+		<author>
+			<persName><forename type="first">Grzegorz</forename><surname>Chrupała</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+		<respStmt>
+			<orgName>Dublin City University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Ph.D. thesis</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arya</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">The CoNLL-SIGMORPHON 2018 shared task: Universal morphological reinflection</title>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Kann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Mielke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Nicolai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Yarowsky</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/K18-3001</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection</title>
+				<meeting>the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection<address><addrLine>Brussels</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1" to="27" />
+		</imprint>
+	</monogr>
+	<note>Jason Eisner, and Mans Hulden</note>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">CoNLL-SIGMORPHON 2017 shared task: Universal morphological reinflection in 52 languages</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/K17-2001</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL SIGMORPHON 2017</title>
+				<meeting>the CoNLL SIGMORPHON 2017</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note>Jason Eisner, and Mans Hulden</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">Shared Task: Universal Morphological Reinflection, pages 1-30, Vancouver. Association for Computational Linguistics</title>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The SIGMORPHON 2016 shared Task-Morphological reinflection</title>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Eisner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Hulden</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W16-2002</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 14th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="10" to="22" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Unsupervised segmentation of words using prior distributions of morph length and frequency</title>
+		<author>
+			<persName><forename type="first">Mathias</forename><surname>Creutz</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/1075096.1075132</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 41st Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 41st Annual Meeting of the Association for Computational Linguistics<address><addrLine>Sapporo, Japan</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="280" to="287" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Unsupervised models for morpheme segmentation and morphology learning</title>
+		<author>
+			<persName><forename type="first">Mathias</forename><surname>Creutz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Krista</forename><surname>Lagus</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/1187415.1187418</idno>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Trans. Speech Lang. Process</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Discovering morphological paradigms from plain text using a Dirichlet process mixture model</title>
+		<author>
+			<persName><forename type="first">Markus</forename><surname>Dreyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Eisner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2011 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2011 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Edinburgh, Scotland, UK</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="616" to="627" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Unsupervised learning of the morphology of a natural language</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Goldsmith</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/089120101750300490</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="153" to="198" />
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">A Bayesian framework for word segmentation: Exploring the effects of context. Cognition</title>
+		<author>
+			<persName><forename type="first">Sharon</forename><surname>Goldwater</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><forename type="middle">L</forename><surname>Griffiths</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Johnson</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.cognition.2009.03.008</idno>
+		<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="volume">112</biblScope>
+			<biblScope unit="page" from="21" to="54" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Long short-term memory</title>
+		<author>
+			<persName><forename type="first">Sepp</forename><surname>Hochreiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jürgen</forename><surname>Schmidhuber</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/neco.1997.9.8.1735</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Neural Computation</title>
+		<imprint>
+			<biblScope unit="volume">9</biblScope>
+			<biblScope unit="issue">8</biblScope>
+			<biblScope unit="page" from="1735" to="1780" />
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Unsupervised morphological paradigm completion</title>
+		<author>
+			<persName><forename type="first">Huiming</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liwei</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yihui</forename><surname>Peng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chen</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Singlemodel encoder-decoder with explicit morphological representation for reinflection</title>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P16-2090</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Short Papers</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="555" to="560" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Neural transductive learning and beyond: Morphological generation in the minimal-resource setting</title>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1363</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="3254" to="3264" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">An algorithm to solve the m × n assignment problem in expected time O(mn log n)</title>
+		<author>
+			<persName><forename type="first">Richard</forename><forename type="middle">M</forename><surname>Karp</surname></persName>
+		</author>
+		<idno type="DOI">10.1002/net.3230100205</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Networks</title>
+		<imprint>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="143" to="152" />
+			<date type="published" when="1980" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">UniMorph 2.0: Universal morphology</title>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Géraldine</forename><surname>Walther</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Xia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manaal</forename><surname>Faruqui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Mielke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><surname>Mc-Carthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Kübler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC-2018)</title>
+				<meeting>the Eleventh International Conference on Language Resources and Evaluation (LREC-2018)<address><addrLine>Miyazaki, Japan</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note>Jason Eisner, and Mans Hulden. European Languages Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">SentencePiece: A simple and language independent subword tokenizer and detokenizer for neural text processing</title>
+		<author>
+			<persName><forename type="first">Taku</forename><surname>Kudo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Richardson</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-2012</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing: System Demonstrations</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing: System Demonstrations<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="66" to="71" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Morpho challenge 2005-2010: Evaluations and results</title>
+		<author>
+			<persName><forename type="first">Mikko</forename><surname>Kurimo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sami</forename><surname>Virpioja</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ville</forename><surname>Turunen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Krista</forename><surname>Lagus</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11th Meeting of the ACL Special Interest Group on Computational Morphology and Phonology</title>
+				<meeting>the 11th Meeting of the ACL Special Interest Group on Computational Morphology and Phonology<address><addrLine>Uppsala, Sweden</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="87" to="95" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">The IMS-CUBoulder system for the SIGMORPHON 2020 shared task on unsupervised morphological paradigm completion</title>
+		<author>
+			<persName><forename type="first">Manuel</forename><surname>Mager</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th Workshop on Computational Research in Phonetics, Phonology, and Morphology. Association for Computational Linguistics</title>
+				<meeting>the 17th Workshop on Computational Research in Phonetics, Phonology, and Morphology. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Imitation learning for neural morphological string transduction</title>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Makarov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Clematide</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D18-1314</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2877" to="2882" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">The SIGMORPHON 2019 shared task: Morphological analysis in context and cross-lingual transfer for inflection</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ekaterina</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shijie</forename><surname>Vylomova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chaitanya</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lawrence</forename><surname>Malaviya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Wolf-Sonkin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Nicolai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Miikka</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sebastian</forename><forename type="middle">J</forename><surname>Silfverberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Mielke</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Heinz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mans</forename><surname>Cotterell</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hulden</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/W19-4226</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 16th Workshop on Computational Research in Phonetics, Phonology, and Morphology</title>
+				<meeting>the 16th Workshop on Computational Research in Phonetics, Phonology, and Morphology<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="229" to="244" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">The Johns Hopkins University Bible Corpus: 1600+ tongues for typological exploration</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Arya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachel</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dylan</forename><surname>Wicks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aaron</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Winston</forename><surname>Mueller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oliver</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Adams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Nicolai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Post</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twelfth International Conference on Language Resources and Evaluation (LREC 2020). European Language Resources Association (ELRA)</title>
+				<meeting>the Twelfth International Conference on Language Resources and Evaluation (LREC 2020). European Language Resources Association (ELRA)</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Unsupervised morphological segmentation and clustering with document boundaries</title>
+		<author>
+			<persName><forename type="first">Taesun</forename><surname>Moon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katrin</forename><surname>Erk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Baldridge</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2009 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2009 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="668" to="677" />
+		</imprint>
+	</monogr>
+	<note>Singapore</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Fine-grained morphosyntactic analysis and generation tools for more than one thousand languages</title>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Nicolai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dylan</forename><surname>Lewis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arya</forename><forename type="middle">D</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aaron</forename><surname>Mueller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Winston</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of The 12th Language Resources and Evaluation Conference</title>
+				<meeting>The 12th Language Resources and Evaluation Conference<address><addrLine>Marseille, France</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="3963" to="3972" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Learning morphosyntactic analyzers from the Bible via iterative annotation projection across 26 languages</title>
+		<author>
+			<persName><forename type="first">Garrett</forename><surname>Nicolai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P19-1172</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1765" to="1774" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">Get to the point: Summarization with pointergenerator networks</title>
+		<author>
+			<persName><forename type="first">Abigail</forename><surname>See</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Peter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P17-1099</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2017" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1073" to="1083" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">IIT(BHU)-IIITH at CoNLL-SIGMORPHON 2018 shared task on universal morphological reinflection</title>
+		<author>
+			<persName><forename type="first">Abhishek</forename><surname>Sharma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ganesh</forename><surname>Katrapati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dipti Misra</forename><surname>Sharma</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/K18-3013</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection</title>
+				<meeting>the CoNLL-SIGMORPHON 2018 Shared Task: Universal Morphological Reinflection<address><addrLine>Brussels</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="105" to="111" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">The NYU-CUBoulder systems for SIGMORPHON 2020 Task 0 and Task 2</title>
+		<author>
+			<persName><forename type="first">Assaf</forename><surname>Singer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katharina</forename><surname>Kann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th Workshop on Computational Research in Phonetics, Phonology, and Morphology. Association for Computational Linguistics</title>
+				<meeting>the 17th Workshop on Computational Research in Phonetics, Phonology, and Morphology. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Unsupervised multilingual learning for morphological segmentation</title>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Snyder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Regina</forename><surname>Barzilay</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL-08: HLT</title>
+				<meeting>ACL-08: HLT<address><addrLine>Columbus, Ohio</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+			<biblScope unit="page" from="737" to="745" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Unsupervised morphology induction using word embeddings</title>
+		<author>
+			<persName><forename type="first">Radu</forename><surname>Soricut</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Franz</forename><surname>Och</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/v1/N15-1186</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2015 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Denver, Colorado</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1627" to="1637" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Remote elicitation of inflectional paradigms to seed morphological analysis in lowresource languages</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC 2016)</title>
+				<meeting>the Tenth International Conference on Language Resources and Evaluation (LREC 2016)<address><addrLine>Portorož, Slovenia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2016" />
+			<biblScope unit="page" from="3116" to="3120" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">A language-independent feature schema for inflectional morphology</title>
+		<author>
+			<persName><forename type="first">John</forename><surname>Sylak-Glassman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christo</forename><surname>Kirov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roger</forename><surname>Que</surname></persName>
+		</author>
+		<idno type="DOI">10.3115/v1/P15-2111</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="674" to="680" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Token and type constraints for cross-lingual part-of-speech tagging</title>
+		<author>
+			<persName><forename type="first">Oscar</forename><surname>Täckström</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dipanjan</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Mc-Donald</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Joakim</forename><surname>Nivre</surname></persName>
+		</author>
+		<idno type="DOI">10.1162/tacl_a_00205</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Transactions of the Association for Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1" to="12" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Attention is all you need</title>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Vaswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niki</forename><surname>Parmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aidan</forename><forename type="middle">N</forename><surname>Gomez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lukasz</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Advances in Neural Information Processing Systems 30: Annual Conference on Neural Information Processing Systems</title>
+				<meeting><address><addrLine>Long Beach, CA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017-12-09" />
+			<biblScope unit="page" from="5998" to="6008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Unsupervised morphology learning with statistical paradigms</title>
+		<author>
+			<persName><forename type="first">Hongzhi</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mitchell</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charles</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lyle</forename><surname>Ungar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 27th International Conference on Computational Linguistics</title>
+				<meeting>the 27th International Conference on Computational Linguistics<address><addrLine>Santa Fe, New Mexico, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="44" to="54" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Inducing multilingual text analysis tools via robust projection across aligned corpora</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Yarowsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Grace</forename><surname>Ngai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Wicentowski</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First International Conference on Human Language Technology Research</title>
+				<meeting>the First International Conference on Human Language Technology Research</meeting>
+		<imprint>
+			<date type="published" when="2001" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2007 Task 5: Multilingual Chinese-English Lexical Sample</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Peng</forename><surname>Jin</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Institute of Computational Linguistics</orgName>
+								<orgName type="institution">Peking University</orgName>
+								<address>
+									<settlement>Beijing</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yunfang</forename><surname>Wu</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Institute of Computational Linguistics</orgName>
+								<orgName type="institution">Peking University</orgName>
+								<address>
+									<settlement>Beijing</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Shiwen</forename><surname>Yu</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Institute of Computational Linguistics</orgName>
+								<orgName type="institution">Peking University</orgName>
+								<address>
+									<settlement>Beijing</settlement>
+									<country key="CN">China</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2007 Task 5: Multilingual Chinese-English Lexical Sample</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The Multilingual Chinese-English lexical sample task at SemEval-2007 provides a framework to evaluate Chinese word sense disambiguation and to promote research. This paper reports on the task preparation and the results of six participants.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The Multilingual Chinese-English lexical sample task is designed following the leading ideas of the Senseval-3 Multilingual English-Hindi lexical sample task . The "sense tags" for the ambiguous Chinese target words are given in the form of their English translations.</p><p>The data preparation is introduced in the second section. And then the participating systems are briefly described and their scores are listed.</p><p>In the conclusions we bring forward some suggestion for the next campaign.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Chinese Word Sense Annotated Corpus</head><p>All the training and test data come from the People's Daily in January, February and March of 2000. The People's Daily is the most popular newspaper in China and is open domain. Before manually sense annotating, the texts have been word-segmented and part of speech (PoS) tagged according to the PoS tagging scheme of Institute of Computational Linguistics in Peking University (ICL/PKU). The corpus had been used as one of the gold-standard data set for the second international Chinese word segmentation bakeoff in 2005. 1</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Manual Annotation</head><p>The sense annotated corpus is manually constructed with the help of a word sense annotating interface developed in Java. Three native annotators, two major in Chinese linguistics and one major in computer science took part in the construction of the sense-annotated corpus. A text generally is first annotated by one annotator and then verified by two checkers. Checking is of course a necessary procedure to keep the consistency. Inspired by the observation that checking all the instances of a word in a specific time frame will greatly improve the precision and accelerate the speed, a software tool is designed in Java to gather all the occurrences of a word in the corpus into a checking file with the sense KWIC (Key Word in Context) format in sense tags order. The interannotator agreement gets to 84.8% according to <ref type="bibr" target="#b3">Wu. et al. (2006)</ref>.</p><p>The sense entries are specified in the Chinese Semantic Dictionary (CSD) developed by ICL/PKU. The sense distinctions are made mainly according to the Contemporary Chinese Dictionary, the most widely used dictionary in mandarin Chinese, with necessary adjustment and improvement is implemented according to words usage in real texts. Word senses are described using the featurebased formalism. The features, which appear in the form "Attribute =Value", can incorporate extensive distributional information about a word sense. The feature set constitutes the representation of a sense, while the verbal definitions of meaning serve only as references for human use. The English translation is assigned to each sense in the attribute "English translation" in CSD.</p><p>Based on the sense-annotated corpus, a sense is replaced by its English translation, which might group different senses together under the same English word.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Instances selection</head><p>In this task together 40 Chinese ambiguous words: 19 nouns and 21 verbs are selected for the evaluation. Each sense of one word is provided at least 15 instances and at most 40 instances, in which around 2/3 is used as the training data and 1/3 as the test data. Table <ref type="table">1</ref>  In order to escape from the sense-skewed distribution that really exists in the corpus of People's Daily, many instances of some senses have been removed from the sense annotated corpus. So the sense distribution of the ambiguous words in this task does not reflect the usages in real texts.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Participating Systems</head><p>In order to facilitate participators to select the features, we gave a specification for the PoS-tag set. Both word-segmented and un-segmented context are provided.</p><p>Two kinds of precisions are evaluated. One is micro-average:</p><formula xml:id="formula_0">∑ ∑ = = = N i i N i i mir n m P 1 1 /</formula><p>N is the number of all target word-types. is the number of labeled correctly to one specific tar-get word-type and is the number of all test instances for this word-type.</p><formula xml:id="formula_1">i m i n</formula><p>The other is macro-average:</p><formula xml:id="formula_2">∑ = = N i i mar N p P 1 / , i i i n m p / =</formula><p>All teams attempted all test instances. So the recall is the same with the precision. The precision baseline is obtained by the most frequent sense. Because the corpus is not reflected the real usage, the precision is very low.</p><p>Six teams participated in this word sense disambiguation task. Four of them used supervised learning algorithms and two used un-supervised method. For each team two kinds of precision are given as in table 2.  • All the verbs and nouns in the context, that is, the words with tags "n, nr, ns, nt, nz, v, vd, vn"</p><p>• PoS of the left word and the right word • noun phrase, verb phrase, adjective phrase, time phrase, place phrase and quantity phrase.</p><p>These phrases are considered as constituents of context, as well as words and punctuations which do not belong to any phrase.</p><p>•the type of these phrases which are around the target phrases</p><p>• word category information comes from Chinese thesaurus I2R system used a semi-supervised classification algorithm (label propagation algorithm) <ref type="bibr" target="#b4">(Niu, et al., 2005)</ref>. They used three types of features: PoS of neighboring words with position information, unordered single words in topical context, and local collocations.</p><p>In the label propagation algorithm (LP) <ref type="bibr" target="#b2">(Zhu and Ghahramani, 2002)</ref>, label information of any vertex in a graph is propagated to nearby vertices through weighted edges until a global stable stage is achieved. Larger edge weights allow labels to travel through easier. Thus the closer the examples, the more likely they have similar labels (the global consistency assumption). In label propagation process, the soft label of each initial labeled example is clamped in each iteration to replenish label sources from these labeled data. Thus the labeled data act like sources to push out labels through unlabeled data. With this push from labeled examples, the class boundaries will be pushed through edges with large weights and settle in gaps along edges with small weights. If the data structure fits the classification goal, then LP algorithm can use these unlabeled data to help learning classification plane.</p><p>CITYU-HIF system was a fully supervised one based on a Naïve Bayes classifier with simple feature selection for each target word. The features used are as follows:</p><p>• Local features at specified positions:</p><p>PoS of word at w -2 , w -1 , w 1 , w 2 Word at w -2 , w -1 , w 1 , w 2 • Topical features within a given window:</p><p>Content words appearing within w -10 to w 10 • Syntactic features:</p><p>PoS bi-gram at w -2 w 0 , w -1 w 0 , w 0 w 1 , w 0 w 2 PoS tri-gram at w -2 w -1 w 0 and w 0 w 1 w 2 One characteristic of this system is the incorporation of the intrinsic nature of each target word in disambiguation. It is assumed that WSD is highly lexically sensitive and each word is best characterized by different lexical information. Human judged to consider for each target word the type of disambiguation information if they found useful. During disambiguation, they run two Naïve Bayes classifiers, one on all features above, and the other only on the type of information deemed useful by the human judges. When the probability of the best guess from the former is under a certain threshold, the best guess from the latter was used instead.</p><p>SWAT system uses a weighted vote from three different classifiers to make the prediction. The three systems are: a Naïve Bayes classifier that compares similarities based on Bayes' Rule, a classifier that creates a decision list of context features, and a classifier that compares the angles between vectors of the features found most commonly with each sense. The features include bigrams, and trigrams, and unigrams are weighted by distance from the ambiguous word.</p><p>TorMd used an unsupervised naive Bayes classifier. They combine Chinese text and an English thesaurus to create a `Chinese word'--`English category' co-occurrence matrix. This system generated the prior-probabilities and likelihoods of a Naïve Bayes word sense classifier not from senseannotated (in this case English translation annotated) data, but from this word--category cooccurrence matrix. They used the Macquarie Thesaurus as very coarse sense inventory.</p><p>They asked a native speaker of Chinese to map the English translations of the target words to appropriate thesaurus categories. Once the Naïve Bayes classifier identifies a particular category as the intended sense, the mapping file is used to label the target word with the corresponding English translation. They rely simply on the bag of words that co-occur with the target word (window size of 5 words on either side).</p><p>HIT is a fully unsupervised WSD system, which puts bag of words of Chinese sentences and the English translations of target ambiguous word to search engine (Google and Baidu). Then they could get all kinds of statistic data. The correct translation was found through comparing their cross entropy.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Conclusion</head><p>The goal of this task is to create a framework to evaluate Chinese word sense disambiguation and to promote research.  Together six teams participate in this WSD task, four of them adopt supervised learning methods and two of them used unsupervised algorithms. All of the four supervised learning systems exceed obviously the baseline obtained by the most frequent sense. It is noted that the performances of the first three systems are very close. Two unsupervised methods' scores are below the baseline. More unlabeled data maybe improve their performance.</p><p>Although the SRCB-WSD system got the highest scores among the six participants, it does not perform always better than other system from table 2 and table 3. But to each word, the four supervised systems always predict correctly more instances than the two un-supervised systems.</p><p>Besides the corpus, we provide a specification of the PoS tag set. Only SRCB-WSD system utilized this knowledge in feature selection. We will provide more instances in the next campaign.  </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>The scores of all participating systems As follow the participating systems are briefly introduced. SRCB-WSD system exploited maximum entropy model as the classifier from OpenNLP 2 The following features are used in this WSD system:</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 3 :</head><label>3</label><figDesc>Performance on verbs. Micro / macro average precisions are spitted by "/" at the last row.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4 :</head><label>4</label><figDesc>Performance on nouns. Micro / macro average precisions are spitted by "/" at the last row.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://sighan.cs.uchicago.edu/bakeoff2005/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">http:// maxent.sourceforge.net/</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Acknowledgements</head><p>We would like to thank Tao Guo and Yulai Pei for their hard work to guarantee the quality of the corpus. Huiming Duan provides us the corpus which has been word-segmented and PoS-tagged and gives some suggestions during the manual annotation.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">The Senseval-3 English lexical sample task</title>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Chklovski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Kilgarriff</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SENSEVAL-3</title>
+				<meeting>SENSEVAL-3</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="25" to="28" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">The Senseval-3 Multilingual English-Hindi lexical sample task</title>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Chklovski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rada</forename><surname>Mihalcea</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SENSEVAL-3</title>
+				<meeting>SENSEVAL-3</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="5" to="8" />
+		</imprint>
+	</monogr>
+	<note>Ted Pedersen and Amruta Purandare</note>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Learning from Labeled and Unlabeled Data with Label Propagation</title>
+		<author>
+			<persName><forename type="first">Xiaojin</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zoubin</forename><surname>Ghahramani</surname></persName>
+		</author>
+		<idno>CALD-02-107</idno>
+	</analytic>
+	<monogr>
+		<title level="j">CMU CALD tech report CMU</title>
+		<imprint>
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">A Chinese Corpus with Word Sense Annotation</title>
+		<author>
+			<persName><forename type="first">Yunfang</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peng</forename><surname>Jin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yangsen</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shiwen</forename><surname>Yu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ICCPOL</title>
+				<meeting>ICCPOL<address><addrLine>Singapore</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="414" to="421" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Word Sense Disambiguation Using Label Propagation Based Semi Supervised Learning</title>
+		<author>
+			<persName><forename type="first">Zhen-Yu</forename><surname>Niu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dong-Hong</forename><surname>Ji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chew-Lim</forename><surname>Tan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 43rd Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 43rd Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="395" to="402" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

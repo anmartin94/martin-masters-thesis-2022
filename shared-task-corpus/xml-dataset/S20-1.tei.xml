@@ -1,0 +1,2181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2020 Task 1: Unsupervised Lexical Semantic Change Detection</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Stuttgart</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Barbara</forename><surname>Mcgillivray</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">The Alan Turing Institute</orgName>
+								<orgName type="institution" key="instit2">♥ University of Cambridge</orgName>
+								<orgName type="institution" key="instit3">University of Gothenburg</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Simon</forename><surname>Hengchen</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Haim</forename><surname>Dubossarsky</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Nina</forename><surname>Tahmasebi</surname></persName>
+						</author>
+						<title level="a" type="main">SemEval-2020 Task 1: Unsupervised Lexical Semantic Change Detection</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:28+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Lexical Semantic Change detection, i.e., the task of identifying words that change meaning over time, is a very active research area, with applications in NLP, lexicography, and linguistics. Evaluation is currently the most pressing problem in Lexical Semantic Change detection, as no gold standards are available to the community, which hinders progress. We present the results of the first shared task that addresses this gap by providing researchers with an evaluation framework and manually annotated, high-quality datasets for English, German, Latin, and Swedish. 33 teams submitted 186 systems, which were evaluated on two subtasks.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Overview</head><p>Recent years have seen an exponentially rising interest in computational Lexical Semantic Change (LSC) detection <ref type="bibr" target="#b77">(Tahmasebi et al., 2018;</ref><ref type="bibr" target="#b44">Kutuzov et al., 2018)</ref>. However, the field is lacking standard evaluation tasks and data. Almost all papers differ in how the evaluation is performed and what factors are considered in the evaluation. Very few are evaluated on a manually annotated diachronic corpus <ref type="bibr" target="#b59">Perrone et al., 2019;</ref><ref type="bibr">Schlechtweg et al., 2019, e.g.)</ref>. This puts a damper on the development of computational models for LSC, and is a barrier for high-quality, comparable results that can be used in follow-up tasks.</p><p>We report the results of the first SemEval shared task on Unsupervised LSC detection. <ref type="bibr">1</ref> We introduce two related subtasks for computational LSC detection, which aim to identify the change in meaning of words over time using corpus data. We provide a high-quality multilingual (English, German, Latin, Swedish) LSC gold standard relying on approximately 100,000 instances of human judgment. For the first time, it is possible to compare the variety of proposed models on relatively solid grounds and across languages, and to put previously reached conclusions on trial. We may now provide answers to questions concerning the performance of different types of semantic representations (such as token embeddings vs. type embeddings, and topic models vs. vector space models), alignment methods and change measures. We provide a thorough analysis of the submitted results uncovering trends for models and opening perspectives for further improvements. In addition to this, the CodaLab website will remain open to allow any reader to directly and easily compare their results to the participating systems. We expect the long-term impact of the task to be significant, and hope to encourage the study of LSC in more languages than are currently studied, in particular less-resourced languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Subtasks</head><p>For the proposed tasks we rely on the comparison of two time-specific corpora C 1 and C 2 . While this simplifies the LSC detection problem, it has two main advantages: (i) it reduces the number of time periods for which data has to be annotated, so we can annotate larger corpus samples and hence more reliably represent the sense distributions of target words; (ii) it reduces the task complexity, allowing C1 C2 Senses chamber biology phone chamber biology phone # uses 12 18 0 4 11 18 Table <ref type="table">1</ref>: An example of a sense frequency distribution for the word cell in C 1 and C 2 .</p><p>different model architectures to be applied to it, widening the range of possible participants. Participants were asked to solve two subtasks:</p><p>Subtask 1 Binary classification: for a set of target words, decide which words lost or gained sense(s) between C 1 and C 2 , and which ones did not. Subtask 2 Ranking: rank a set of target words according to their degree of LSC between C 1 and C 2 .</p><p>For Subtask 1, consider the example of cell in Table <ref type="table">1</ref>, where the sense 'phone' is newly acquired from C 1 to C 2 because its frequency is 0 in C 1 and &gt; 0 in C 2 . Subtask 2, instead, captures fine-grained changes in the two sense frequency distributions. For example, Table <ref type="table">1</ref> shows that the frequency of the sense 'chamber' drops from C 1 to C 2 , although it is not totally lost. Such a change will increase the degree of LSC for Subtask 2, but will not count as change in Subtask 1. The notion of LSC underlying Subtask 1 is most relevant to historical linguistics and lexicography, while the majority of LSC detection models are rather designed to solve Subtask 2. Hence, we expected Subtask 1 to be a challenge for most models. Knowing whether, and to what degree a word has changed is crucial in other tasks, e.g. aiding in understanding historical documents, searching for relevant content, or historical sentiment analysis. The full LSC problem can be seen as a generalization of these two tasks into multiple time points where also the type of change needs to be identified.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data</head><p>The task took place in a realistic unsupervised learning scenario. Participants were provided with trial and test data, but no training data. The public trial and test data consisted of a diachronic corpus pair and a set of target words for each language. Participants' predictions were evaluated against a set of hidden gold labels. The trial data consisted of small samples from the test corpora (see below) and four target words per language to which we assigned binary and graded gold labels randomly. Participants could not use this data to develop their models, but only to test the data input format and the online submission format. For development data participants were referred to three pre-existing diachronic data sets: DURel <ref type="bibr" target="#b70">(Schlechtweg et al., 2018)</ref>, SemCor LSC (Schlechtweg and Schulte im Walde, 2020) and WSC <ref type="bibr" target="#b76">(Tahmasebi and Risse, 2017)</ref>. In the evaluation phase participants were provided with the test corpora and a set of target words for each language. 2 Participants were asked to train their models only on the corpora described in Table <ref type="table" target="#tab_0">2</ref>, though the use of pre-trained embeddings was allowed as long as they were trained in a completely unsupervised way, i.e., not on manually annotated data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Corpora</head><p>For English, we used the Clean Corpus of Historical American English (CCOHA) <ref type="bibr" target="#b22">(Davies, 2012;</ref><ref type="bibr" target="#b1">Alatrash et al., 2020)</ref>, which spans 1810s-2000s. For German, we used the DTA corpus (Deutsches <ref type="bibr" target="#b23">Textarchiv, 2017)</ref> and a combination of the <ref type="bibr">BZ and ND corpora (Berliner Zeitung, 2018;</ref><ref type="bibr" target="#b53">Neues Deutschland, 2018)</ref>. DTA contains texts from different genres spanning the 16th-20th centuries. BZ and ND are newspaper corpora jointly spanning 1945-1993. For Latin, we used the LatinISE corpus <ref type="bibr" target="#b49">(McGillivray and Kilgarriff, 2013)</ref> spanning from the 2nd century B.C. to the 21st century A.D. For Swedish, we used the Kubhist corpus <ref type="bibr">(Språkbanken, Downloaded in 2019)</ref>, a newspaper corpus containing texts from 18th-20th century. The corpora are lemmatised and POS-tagged. CCOHA and DTA are spelling-normalized. BZ, ND and Kubhist contain frequent OCR errors <ref type="bibr" target="#b0">(Adesam et al., 2019;</ref><ref type="bibr">Hengchen et al., to appear)</ref>.</p><p>From each corpus we extracted two time-specific subcorpora C 1 , C 2 , as defined in  two subcorpora we then sampled the released test corpora in the following way: Sentences with &lt; 10 tokens (&lt; 2 for Latin) were removed. German C 2 was downsampled to fit the size of C 1 by sampling all sentences containing target lemmas and combining them with a random sample of sentences not containing target lemmas of suited size. An equal procedure was applied to downsample English C 1 and C 2 . For Latin and Swedish the full amount of sentences was used. Finally, all tokens were replaced by their lemma, punctuation was removed and sentences were randomly shuffled within each of C 1 , C 2 . 3 Find a summary of the released test corpora in Table <ref type="table" target="#tab_0">2</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Target words</head><p>Target words are either: (i) words that changed their meaning(s) (lost or gained a sense) between C 1 and C 2 ; or (ii) stable words that did not change their meaning during that time. <ref type="bibr">4</ref> A large list of 100-200 changing words was selected by scanning etymological and historical dictionaries <ref type="bibr" target="#b57">(Paul, 2002;</ref><ref type="bibr" target="#b75">Svenska Akademien, 2009;</ref><ref type="bibr" target="#b55">OED, 2009)</ref> for changes within the time periods of the respective corpora. This list was then further reduced by one annotator who checked whether there were meaning differences in samples of 50 uses from C 1 and C 2 per target word. Stable words were then chosen by sampling a control counterpart for each of the changing words with the same POS and comparable frequency development between C 1 and C 2 , and manually verifying their diachronic stability as described above. Both types of words were annotated to obtain their sense frequency distributions as described below, which allowed us to verify the a-priori choice of changing and stable words. By balancing the target words for POS and frequency we aim to minimize the possibility that model biases towards these factors lead to artificially high performance <ref type="bibr" target="#b26">(Dubossarsky et al., 2017;</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Hidden/True Labels</head><p>For Subtask 1 (binary classification) each target word was assigned a binary label (l ∈ {0, 1}) via manual annotation (0 for stable, 1 for change). For Subtask 2 each target word was assigned a graded label (0 ≤ l ≤ 1) according to their degree of LSC derived from the annotation (0 means no change, 1 means total change). The hidden labels were published in the post-evaluation phase. <ref type="bibr">5</ref> Both types of labels (binary and graded) were derived from the sense frequency distributions of target words in C 1 and C 2 as obtained from the annotation process. For this, we adopt change notions similar to Schlechtweg and Schulte im Walde (2020) as described below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Annotation</head><p>We focused our efforts on annotating large and more representative samples for a limited number of words rather than annotating many words. <ref type="bibr">6</ref> In this section we describe the setup of the annotation for the modern 3 Sentence shuffling and lemmatization were done for copyright reasons. Participants were provided with start and end positions of sentences. Where Kubhist did not provide lemmatization (through KORP <ref type="bibr" target="#b16">(Borin et al., 2012)</ref>) we left tokens unlemmatized. Additional pre-processing steps were needed for English: for copyright reasons CCOHA contains frequent replacement tokens (10 x '@'). We split sentences around replacement tokens and removed them as a first step in the preprocessing pipeline. Further, because English frequently combines various POS in one lemma and many of our target words underwent POS-specific semantic changes, we concatenated targets in the English corpus with their broad POS tag ('target pos'). Also, the joint size of the CCOHA subcorpora had to be limited to ∼10M tokens because of copyright issues. <ref type="bibr">4</ref> A target word is represented by its lemma form. 5 https://www.ims.uni-stuttgart.de/data/sem-eval-ulscd-post 6 An indication that random samples with the chosen sizes can indeed be expected to be representative of the population is given by the results of the simulation study described in Appendix A: We were able to nearly fully recover the population clustering structure from the samples (average of &gt; .96 adjusted mean rand index).   <ref type="bibr" target="#b14">Blank (1997)</ref>'s continuum of semantic proximity (left) and the DURel relatedness scale derived from it (right). languages (English, German, and Swedish) first. The setup for Latin is slightly different and we describe it later in this section.</p><p>We started with four annotators per language, but had to add additional annotators later because of a high annotation load and dropouts. The total number of annotators for English/German/Swedish was 9/8/5. All annotators were native speakers and present or former university students. For German we had two annotators with a background in historical linguistics, while for English and Swedish we had one such annotator. For each target word we randomly sampled 100 uses from each of C 1 and C 2 for annotation (total of 200 uses per target word). <ref type="bibr">7</ref> If a target word had less than 100 uses, we annotated the full sample. We then mixed the use samples of a target word into a joint set U and annotated U using an extension of the DURel framework <ref type="bibr" target="#b70">(Schlechtweg et al., 2018;</ref><ref type="bibr" target="#b28">Erk et al., 2013)</ref>. DURel produces high inter-annotator agreement even between non-expert annotators relying on the simple notion of semantic relatedness. Pairs of word uses from C 1 and C 2 are annotated on a four-point scale from unrelated meanings (1) to identical meanings (4) (see Table <ref type="table" target="#tab_3">3</ref>). Our extension consisted in the sampling procedure of use pairs: instead of annotating a random sample of pairs and using comparison of their mean relatedness over time as a measure of LSC <ref type="bibr" target="#b70">(Schlechtweg et al., 2018)</ref>, we aimed to sample pairs such that after annotation they span a sparsely connected usage graph combining the uses from C 1 , C 2 , where nodes represent uses and edges represent (the median of) annotator judgments (see Figure <ref type="figure" target="#fig_0">1</ref>). This usage graph was then clustered into sets of uses expressing the same sense <ref type="bibr" target="#b72">(Schütze, 1998)</ref>. By further distinguishing two subgraphs for C 1 , C 2 we got two clusterings with a shared set of clusters, because they were obtained on the same total graph <ref type="bibr" target="#b56">(Palla et al., 2007)</ref>. We then equated the two clusterings obtained for C 1 , C 2 with their respective sense frequency distributions D 1 , D 2 . The change scores followed immediately (see below). Note that this extension remained hidden from the annotators: as with DURel their only task was to judge the relatedness of use pairs. These were presented to annotators in randomized order.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Edge sampling</head><p>Retrieving the full usage graph is not feasible even for a small set of n uses as this implies annotating n * (n − 1)/2 edges. Hence, the main challenge with our annotation approach was to reduce the number of edges to annotate as much as possible, while keeping the necessary information needed to infer a meaningful clustering on the graph. We did this by annotating the data in several rounds. After each round the usage graph of a target word was updated with the new annotations and a new clustering was obtained. <ref type="bibr">8</ref> Based on this clustering we sampled the edges for the next round applying simple heuristics similar to Biemann (2013), a detailed description of which can be found in Appendix A. We spread the annotation load randomly over annotators making sure that roughly half of the use pairs were annotated by more than one annotator.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Special Treatment of Latin</head><p>Latin poses a special case due to the lack of native speakers. We recruited 10 annotators with a high-level knowledge of Latin, and ranging from undergraduate students to PhD students, post-doctoral researchers, and more senior researchers. We selected a range of target words whose meaning had changed between the pre-Christian and the Christian era according to the literature <ref type="bibr" target="#b19">(Clackson, 2011)</ref> and in the pre-annotation trial we checked that both meanings were present in the corpus data. For each changed word, we  selected a control word whose meaning did not change from the pre-Christian era and the Christian era, whose PoS was the same as the changed word, and whose frequency values in each of the two subcorpora (f cc 1 and f cc 2 ) were in the following intervals:</p><formula xml:id="formula_0">f cc 1 ∈ [f tc 1 − p * f ct 1 , f tc 1 + p * f ct 1 ] and f cc 2 ∈ [f tc 2 − p * f ct 2 , f tc 2 + p * f ct 2 ]</formula><p>, respectively, where p ranged between 0.03 and 0.15 and f tc 1 and f tc 2 are the frequency of the changed word in C 1 , C 2 . <ref type="bibr">9</ref> In a trial annotation task our annotators reported difficulties and that they had to translate to their native language when comparing two excerpts of text. Hence, we decided to use a variation of the procedure described above which was introduced by <ref type="bibr" target="#b28">Erk et al. (2013)</ref>. Instead of use pairs, annotators judged the relatedness between a use and a sense definition from a dictionary, on the DURel scale. The sense definitions were taken from the Latin portion of the Logeion online dictionary. <ref type="bibr">10</ref> We selected 30 sample sentences for each of C 1 , C 2 . Due to the challenge of finding qualified annotators, each word was assigned only to one annotator. We treated sense definitions as additional nodes in a usage graph connected to uses by edges representing annotator judgments. Clustering was then performed as for the other languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Clustering</head><p>The usage graphs we obtain from the annotation are weighted, undirected, sparsely observed and noisy. This poses a very specific problem that calls for a robust clustering algorithm. For this, we rely on a variation of correlation clustering <ref type="bibr" target="#b8">(Bansal et al., 2004)</ref> by minimizing the sum of cluster disagreements, i.e., the sum of negative edge weights within a cluster plus the sum of positive edge weights across clusters.</p><p>To see this, consider Blank (1997)'s continuum of semantic proximity and the DURel relatedness scale derived from it, as illustrated in Table <ref type="table" target="#tab_3">3</ref>. In line with Blank, we assume that use pairs with judgments of 3 and 4 are more likely to belong to the same sense, while judgments of 1 and 2 are more likely to belong to different senses. Consequently, we shift the weight W (e) of all edges e ∈ E in a usage graph G = (U, E, W) by W (e) − 2.5. We refer to those edges e ∈ E with a weight W (e) ≥ 0 as positive edges P E and edges with weights W (e) &lt; 0 as negative edges N E . Let further C be some clustering on U , φ E,C be the set of positive edges across any of the clusters in clustering C and ψ E,C the set of negative edges within any of the clusters. We then search for a clustering C that minimizes L(C):</p><formula xml:id="formula_1">L(C) = e∈φ E,C W (e) + e∈ψ E,C |W (e)| .<label>(1)</label></formula><p>That is, we try to minimize the sum of positive edge weights between clusters and (absolute) negative edge weights within clusters. Minimizing L is a discrete optimization problem which is NP-hard <ref type="bibr" target="#b8">(Bansal et al., 2004)</ref>. However, we have a relatively low number of nodes (≤ 200), and hence, the global optimum can be approximated sufficiently with a standard optimization algorithm. We choose Simulated Annealing <ref type="bibr" target="#b61">(Pincus, 1970)</ref> as we do not have strong efficiency constraints and the algorithm showed superior performance in a simulation study. More details on the procedure can be found in Appendix A. In order to reduce the search space, we iterate over different values for the maximum number of clusters.</p><p>We also iterate over randomly as well as heuristically chosen initial clustering states. <ref type="bibr">11</ref> This way of clustering usage graphs has several advantages: (i) It finds the optimal number of clusters on its own. (ii) It easily handles missing information (non-observed edges). (iii) It is robust to errors by using the global information on the graph. That is, a wrong judgment can be outweighed by correct ones. (iv) It directly optimizes an intuitive quality criterion on usage graphs. Many other clustering algorithms such as Chinese Whispers <ref type="bibr" target="#b12">(Biemann, 2006</ref>) make local decisions, so that the final solution is not guaranteed to optimize a global criterion such as L. (v) By weighing each edge with its (shifted) weight, L respects the gradedness of word meaning. That is, edges with |W (e)| ≈ 0 have less influence on L than edges with |W (e)| ≈ 1.5. Finally, it showed superior performance to all other clustering algorithms we tested in a simulation study. (See Appendix A.)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Change scores</head><p>A sense frequency distribution (SFD) encodes how often a word w occurs in each of its senses <ref type="bibr" target="#b48">(McCarthy et al., 2004;</ref><ref type="bibr">Lau et al., 2014, e.g.)</ref>. From the clustering we obtain two SFDs D, E for a word w in the two corpora C 1 , C 2 , where each cluster corresponds to one sense. 12 Binary LSC for Subtask 1 of the word w is then defined as</p><formula xml:id="formula_2">B(w) = 1 if for some i, D i ≤ k and E i ≥ n, or vice versa. B(w) = 0 else. (2)</formula><p>where D i and E i are the frequencies of sense i in C 1 , C 2 and k, n are lower frequency thresholds aimed to avoid that small random fluctuations in sense frequencies caused by sampling variability or annotation error are misclassified as change (Schlechtweg and Schulte im Walde, 2020). According to Definition 2, a word is classified as gaining a sense, if the sense is attested at most k times in the annotation sample from C 1 , but attested at least n times in the sample from C 2 . (Similarly for words that lose a sense.) We set k = 0, n = 1 for the smaller samples (≤ 30) in Latin and k = 2, n = 5 for the larger samples (≤ 100) in English, German, Swedish. We make no distinction between words that gain vs. words that lose senses, both fall into the change class. Equally, we make no distinction between words that gain/lose one sense vs. words that gain/lose several senses.</p><p>For graded LSC in Subtask 2 we first normalize D and E to probability distributions P and Q by dividing each element by the total sum of the frequencies of all senses in the respective distribution. The degree of LSC of the word w is then defined as the Jensen-Shannon distance between the two normalized frequency distributions: G(w) = JSD(P, Q) where the Jensen-Shannon distance is the symmetrized square root of the Kullback-Leibler divergence <ref type="bibr" target="#b46">(Lin, 1991;</ref><ref type="bibr" target="#b25">Donoso and Sanchez, 2017)</ref>. G(w) is symmetric, ranges between 0 and 1 and is high if P and Q assign very different probabilities to the same senses. Note that B(w) and G(w) not necessarily correspond to each other: a word w may show no binary change but high graded change, or vice versa.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.5">Result</head><p>Figure <ref type="figure" target="#fig_0">1</ref> and Figure <ref type="figure" target="#fig_1">2</ref> show the annotated and clustered usage graphs for Swedish target ledning and German target Eintagsfliege. Nodes represent uses of the target word. Edges represent the median of relatedness judgments between uses (black/gray lines for positive/negative edges). Colors make clusters (senses) inferred on the full graph. After splitting the full graph into the two time-specific subgraphs for C 1 , C 2 we obtain the two sense frequency distributions D 1 , D 2 . From these we inferred the binary and the graded change value. The two words represent semantic changes indicative of Subtask 1 and 2 respectively: ledning gains a sense with rather low frequency in C 2 . Hence, it has binary change, but low graded change. For Eintagsfliege, however, its two main senses exist in both C 1 and C 2 , while their frequencies change dramatically. Hence, it has no binary change, but high graded change.</p><p>Find a summary of the annotation outcome for all languages and target words in Table <ref type="table" target="#tab_5">4</ref>. The final test sets contain between 31 (Swedish) and 48 (German) target words. Throughout the annotation we excluded several targets if they had a high number of '0' judgments or needed a high number of further edges to be annotated. As previous studies, we report the mean of Spearman correlations between annotator judgments as agreement measure. <ref type="bibr" target="#b28">Erk et al. (2013)</ref> and <ref type="bibr" target="#b70">Schlechtweg et al. (2018)</ref> report agreement scores between 0.55 and 0.68, which is comparable to our scores. <ref type="bibr">13</ref> The clustering loss is the value of L (Definition 1) divided by the maximum possible loss on the respective graph. It gives a measure of how well the graphs could be partitioned into clusters by the L criterion.</p><p>The class distribution (column 'LSC') for Subtask 1 differs per language as a result of several target words being dropped during the annotation. In Latin the majority of target words have binary change, while in Swedish the majority has no binary change. This is also reflected in the mean scores for graded LSC in Subtask 2. Despite the excluded target words the frequency statistics are roughly balanced (FRQ d , FRQ m ). However, we did not control the test sets for polysemy and there are strong correlations for English, German and Swedish between graded change and polysemy in Subtask 2 (PLY m ). This correlation reduces for binary change in Subtask 1 but is still moderate for English and Swedish and remains high for German.</p><p>In total, roughly 100,000 judgments were made by annotators. For English/German/Swedish ≈ 50% of the use pairs were annotated by more than one annotator. In total, the annotation cost roughly e 20,000 for 1,000 hours -twice as much as originally budgeted.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation</head><p>All teams were allowed a total of 10 submissions, the best of which was kept for the final ranking in the competition. Participants had to submit predictions for both subtasks and all languages. A submission's final score for each subtask was computed as the average performance across all four languages. During the evaluation phase, the leaderboard was hidden, as per SemEval recommendation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Scoring Measures</head><p>For Subtask 1 submitted predictions were evaluated against the hidden labels via accuracy, given that we anticipated the class distribution for target words to be approximately balanced before the annotation. Scores are bounded between 0 and 1. As the distribution turned out to be imbalanced for some languages, we also report F1-score in Appendix C. For Subtask 2, we used Spearman's rank-order correlation coefficient ρ with the gold rank. Spearman's ρ only considers the order of the words, the actual predicted change values were not taken into account. Ties are corrected by assigning the average of the ranks that would have been assigned to all the tied values to each value (e.g. two words sharing rank 1 both get assigned rank 1.5). Scores are bounded between −1 (completely opposite to true ranking) and 1 (exact match).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Baselines</head><p>For both subtasks, we have two baselines: (i) Normalized frequency difference (Freq. Baseline) first calculates the frequency for each target word in each of the two corpora, normalizes it by the total corpus frequency and then calculates the absolute difference between these values as a measure of change.</p><p>(ii) Count vectors with column intersection and cosine distance (Count Baseline) first learns vector representations for each of the two corpora, then aligns them by intersecting their columns and measures change by cosine distance between the two vectors for a target word. A Python implementation of both these baselines was provided in the starting kit. A third baseline, for Subtask 1, is the majority class prediction (Maj. Baseline), i.e., always predicting the '0' class (no change).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Participating Systems</head><p>Thirty-three teams participated in the task, totaling 53 members. The teams submitted a total of 186 submissions. Given the large number of teams, we provide a summary of the systems in the body of this paper. A more detailed description of each participating system for which a paper was submitted is available in Appendix B. We also encourage the reader to read the full system description papers.</p><p>Participating models can be described as a combination of (i) a semantic representation, (ii) an alignment technique and (iii) a change measure. Semantic representations are mainly average embeddings (type embeddings) and contextualized embeddings (token embeddings). Token embeddings are often combined with a clustering algorithm such as K-means, affinity propagation <ref type="bibr" target="#b29">(Frey and Dueck, 2007)</ref>, (H)DBSCAN, GMM, or agglomerative clustering. One team uses a graph-based semantic network, one a topic model and several teams also propose ensemble models. Alignment techniques include Orthogonal Procrustes <ref type="bibr">(Hamilton et al., 2016, OP)</ref>, Vector Initialization <ref type="bibr">(Kim et al., 2014, VI)</ref>, versions of Temporal Referencing <ref type="bibr">(Dubossarsky et al., 2019, TR)</ref>, and Canonical Correlation Analysis (CCA). A variety of change measures are applied, including Cosine Distance (CD), Euclidean Distance (ED), Local Neighborhood Distance (LND), Kullback-Leibler Divergence (KLD), mean/standard deviation of co-occurrence vectors, or cluster frequency. Table <ref type="table">5</ref> shows the type of system for every team's best submission for both subtasks.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Results</head><p>As illustrated by Table <ref type="table">5</ref>, UWB has the best performance in Subtask 1 for the average over all languages, closely followed by Life-Language, Jiaxin &amp; Jinan 14 and RPI-Trust. <ref type="bibr">15</ref> For Subtask 2, Table <ref type="table">5</ref>: Summary of the performance of systems for which a system description paper was submitted, as well as their type of semantic representation for that specific submission in Subtask 1 (left) and Subtask 2 (right). For each team, we report the values of accuracy (Subtask 1) and Spearman correlation (Subtask 2) corresponding to their best submission in the evaluation phase. Abbreviations: Avg. = average across languages, EN = English, DE = German, LA = Latin, and SV = Swedish, type = average embeddings, token = contextualised embeddings, topic = topic model, ens. = ensemble, graph = graph, UCD = University College Dublin.</p><p>UG Student Intern performs best, followed by Jiaxin &amp; Jinan and cs2020. 16 Across all systems, good performance in Subtask 1 does not indicate good performance in Subtask 2 (correlation between the system ranks is 0.22). However, and with the exception of Life-Language and cs2020, most top performing systems in Subtask 1 also excel in Subtask 2, albeit with a slight change of ranking. Remarkably, all the top performing systems use static-type embedding models, and differ only in terms of their solutions to the alignment problem (Canonical Correlation Analysis, Orthogonal Procrustes, or Temporal Referencing). Interestingly, the top systems refine their models using one or more of the following steps: a) computing additional features from the embedding space; b) combining scores from different models (or extracted features) using ensemble models; c) choosing a threshold for changed words based on a distribution of change scores. We conjecture that these additional (and sometimes very original) post-processing steps are crucial for these systems' success. We now briefly describe the top performing systems in terms of these three steps (for further details please see Appendix B). UWB (SGNS+CCA+CD) sets the average change score as the threshold (c). Life-Language (SGNS) represents words according to their distances to a set of stable pivot words in two unaligned spaces, and compares their divergence relative to a distribution of change scores obtained from unstable pivot words (a+c). RPI-Trust (SGNS+OP) extract features (a word's cosine distance, change of distances to its nearest-neighbours and change in frequency), transform each word's feature to a CDF score, and averages these probabilities (a+b+c). Jiaxin &amp; Jinan (SGNS+TR+CD) fits the empirical cosine distance change scores to a Gamma Quantile Threshold, and sets the 75% quantile as the threshold (c). UG Student Intern (SGNS+OP) measures change using Euclidean distance instead of cosine distance. cs2020 uses SGNS+OP+CD only as baseline method.</p><p>An important finding common to most systems is the difference between their performances across the four languages -systems that excel in one language do not necessarily perform well in another. This discrepancy may be due to a range of factors, including the difference in corpus size and the nature of the corpus data, as well as the relative availability of resources in some languages such as English over others. The Latin corpus, for example, covers a very long time span, and the lower performance of the systems on this language may be explained by the fact that the techniques employed, especially word token/type embeddings, have been developed for living languages and little research is available on their adaptation to dead and ancient languages. In general, dead languages tend to pose additional challenges compared to living languages <ref type="bibr" target="#b62">(Piotrowski, 2012)</ref>, due to a variety of factors, including their less-resourced status, lack of native speakers, high linguistic variation and non-standardized spelling, and errors in Optical Character Recognition (OCR). Other factors that should be investigated are data quality <ref type="bibr" target="#b36">(Hill and Hengchen, 2019;</ref><ref type="bibr" target="#b79">van Strien et al., 2020)</ref>: while English and Latin are clean data, German and Swedish present notorious OCR errors. The availability of tuned hyperparameters might have played a role as well: for German, some teams report following prior work such as . Finally, another factor for the discrepancy in performance between languages for any given system is not related to the nature of the systems nor of the data, but due to the fact that some teams focused on some languages, submitting dummy results for the others.</p><p>Type versus token embeddings Tables <ref type="table">5 and 6</ref> illustrate the gap in performance between type-based embedding models and the token-based ones. Out of the best 10 systems in Subtask 1/Subtask 2, 7/8 systems are based on type embeddings compared to only 2/2 systems that are based on token embeddings (same holds for each language individually). Contrary to the recent success of token embeddings <ref type="bibr" target="#b60">(Peters et al., 2018)</ref> and to commonly held view that contextual embeddings "do everything better", they are overwhelmingly outperformed by type embeddings in our task. This is most surprising for Subtask 1, because type embeddings do not distinguish between different senses, while token embeddings do. We suggest several possible reasons for these surprising results. The first is the fact that contextual embedding is a recent technology, and as such lacks proper usage conventions. For example, it is not clear whether a model should create an average token representation based on individual instances (and if so, which layers should be averaged), or if it should use clustering of individual instances instead (and if so, what type of clustering algorithm etc.). A second reason may be related to the fact that contextual models are pretrained and cannot exclusively be trained on the relevant historical resources (in contrast to type embeddings). As such, they carry additional, and possibly irrelevant, information that may mask true diachronic changes. The results may also be related to the specific preprocessing we applied to the corpora: (i) Only restricted context is available to the models as a result of the sentence shuffling. Usually, token-based models take more context into account than just the immediate sentence <ref type="bibr" target="#b47">(Martinc et al., 2020)</ref>. (ii) The corpora were lemmatized, while token-based models usually take the raw sentence as input. In order to make the input more suitable for token-based models, we also provide the raw corpora after the evaluation phase and will publish the annotated uses of the target words with additional context. <ref type="bibr">17</ref> The influence of frequency In prior work, the predictions of many systems have been shown to be inherently biased towards word frequency, either as a consequence of an increasing sampling error with lower frequency <ref type="bibr" target="#b26">(Dubossarsky et al., 2017)</ref> or by directly relying on frequency-related variables <ref type="bibr" target="#b69">(Schlechtweg et al., 2017;</ref>. We have controlled for frequency when selecting target words (recall Table <ref type="table" target="#tab_5">4</ref>) in order to test model performance when frequency is not an indicating factor. Despite the controlled test sets we observe strong frequency biases for the individual models as illustrated for Swedish in Figure <ref type="figure">3</ref>. <ref type="bibr">18</ref> Models rather correlate negatively with the minimum frequency of target words between corpora (FRQ m ), and positively with the change in their frequency across corpora (FRQ d ). This means that models predict higher change for low-frequency words and higher change for words with strong changes in frequency. Despite their superior performance, type embeddings are more Table <ref type="table">6</ref>: Average and maximum performance of best submissions per subtask for different system types. Submissions that corresponded exactly to the baselines or the sample submission were removed.</p><p>Figure <ref type="figure">3</ref>: Influence of frequency on model predictions in Subtask 2, Swedish. X-axis: correlations with FRQ d (left) and FRQ m (right), Y-axis: performance on Subtask 2. Gray line gives frequency correlation in gold data. strongly influenced by frequency than token embeddings, probably because the latter are not trained on the test corpora limiting the influence of frequency. Similar tendencies can be seen for the other languages. For a range of models correlations reach values &gt; 0.8.</p><p>The influence of polysemy We did not control the test sets for polysemy. As shown in Table <ref type="table" target="#tab_5">4</ref>, the change scores for both subtasks are moderately to highly correlated with polysemy (PLY m ). Hence, it is expected that model predictions would be positively correlated with polysemy. However, these are in almost all cases lower than for the change scores and in some cases even negative (Latin and partly English). We conclude that model predictions are only moderately biased towards polysemy on our data.</p><p>Prediction difficulty of words In order to quantify how difficult a target word is to predict we compute the mean error of all participants' predictions. <ref type="bibr">19</ref> In Subtask 1, we find that words with higher rank tend to have higher error, in particular for English, see Figure <ref type="figure" target="#fig_3">4</ref> (left) where words with the gold class 1 have almost twice as high average error than words with gold class 0, and Latin. This is likely due to the tendency for systems to provide zero-predictions following the published baselines. For Subtask 2 (right), we find that the opposite holds; stable words are harder to predict for all languages but Swedish, where instead, it seems that the words in the middle of the rank are the hardest to classify. For English, the top three hardest to predict words are for Subtask 1 vs. Subtask 2 are land, head, edge vs. word, head, multitude. For German, they are packen,überspannen, abgebrüht vs. packen, Seminar, vorliegen.</p><p>For Latin, they are cohors, credo, virtus vs. virtus, fidelis, itero. For Swedish, they are kemisk, central, bearbeta vs. central, färg, blockera. We could not identify a general pattern with regards to these words' frequency or polysemy properties. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>We presented the results of the first shared task on Unsupervised Lexical Semantic Change Detection. A wide range of systems were evaluated on two subtasks in four languages relying on a thoroughly annotated data set based on ∼100,000 human judgments. The task setup (unsupervised, no genuine development data, different corpora from different languages with very different sizes, varying class distributions) provided an opportunity to test models in heterogeneous learning scenarios, that was very challenging. Hence, both subtasks remain far from solved. However, several teams reach high performances on both subtasks. Surprisingly, type embeddings outperformed token embeddings on both subtasks. We suspect that the potential of token embeddings has not yet fully unfolded, as no canonical application concept is available and preprocessing was not optimal for token embeddings. We found that type embeddings are strongly influenced by frequency. Hence, one important challenge for future type-based models will be to avoid the frequency bias stemming from the corpus on which they are trained. An important challenge for token-based models will be to understand the reasons for their current low performance and to develop robust ways for their application. We found that change scores in our test sets strongly correlate with polysemy, despite model predictions not showing such strong influence. We believe that this should be pursued in the future by controlling test sets for polysemy. We hope that SemEval-2020 Task 1 makes a lasting contribution to the field of Unsupervised Lexical Semantic Change Detection by providing researchers with a standard evaluation framework and highquality data sets. Despite the limited size of the test sets, many previously reached conclusions can now be tested more thoroughly and future models can be compared on a shared benchmark. The current test set can also be used to test models that have been trained on the full data available for the participating corpora. Data from additional time periods can be utilized by models that need finer granularity for detection, while testing on the two time periods available in the current test sets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Annotation Details</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A.1 Edge sampling</head><p>Retrieving the full usage graph is not feasible even for a small set of n uses as this implies annotating n * (n − 1)/2 edges. Hence, the main challenge with our annotation approach was to reduce the number of edges to annotate as few as possible, while keeping the necessary information needed to infer a meaningful clustering on the graph. We did this by annotating the data in several rounds. After each round the usage graph of a target word was updated with the new annotations and a new clustering was obtained. <ref type="bibr">20</ref> Based on this clustering we sampled the edges for the next round applying simple heuristics similar to <ref type="bibr" target="#b13">Biemann (2013)</ref>. We spread the annotation load randomly over annotators making sure that roughly half of the use pairs is annotated by more than one annotator.</p><p>In the first round we aimed to obtain a small but good reference set of uses which would serve to compare the rest of uses in the second round. Hence, we sampled 10% of the uses from U and 30% of the edges from this sample by exploration, i.e., by a random walk through the sample graph guaranteeing that all nodes are connected by some path. Hence, the first clustering was obtained on a small but richly connected subgraph guaranteeing that we did not infer a larger number of clusters than present in the data in the first round, which would lead to a strong increase in annotation instances in the subsequent rounds. In all subsequent rounds we combined a combination step with an exploration step. A multi-cluster is a cluster with ≥ 2 uses. The combination step combined each single use u 1 which is not yet member of a multi-cluster with a random use u 2 from each of the multi-clusters to which u 1 had not yet been compared. The exploration step consisted of a random walk on 30% of the edges from the non-assignable uses, i.e., uses which had already been compared to each of the multi-clusters but were not assigned to any of these by the clustering algorithm. This procedure slowly populated the graph while minimizing the annotation of redundant information. The procedure stopped when each cluster had been compared to each other cluster. We validated the procedure in a simulation study (see below).</p><p>We combined the above procedure with further heuristics added after round 1: (i) we sampled a low number of randomly chosen edges and edges between already confirmed multi-clusters for further annotation to corroborate the inferred structure; (ii) we detected relevant disagreements between annotators, i.e., judgments with a difference of ≥ 2 on the scale or edges with a median ≈ 2.5, and redistributed the corresponding edges to another annotator to resolve the disagreements; and (iii) we detected clustering conflicts, i.e., positive edges between clusters and negative edges within clusters (see below) and sampled a new edge for each node connected by a conflicting edge. This added more information in regions of the graph where finding a good clustering was hard. Furthermore, after each round, we removed nodes from the graph whose 0-judgments (undecidable) made up more than half of their total judgments. We stopped the annotation after four rounds.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A.2 Example</head><p>Find an example of our annotation pipeline in Figure <ref type="figure" target="#fig_4">5</ref>. As the annotation proceeds through the rounds the graph becomes more populated and the true cluster structure is found. In round 1 one multi-cluster is found. Hence, all remaining uses are compared with this cluster in round 2 by the combination step. In rounds 3 and 4 the exploration step discovers more clusters not found in the rounds before.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A.3 Simulation</head><p>We validated the annotation procedure and the clustering algorithm described in Section 4 in a simulation study by simulating 40 ground truth usage graphs with zipfian sense frequency distributions covering roughly the frequency range of the majority our target words (50-1000). We introduced change to half of the target words by setting some of its senses' frequencies to 0 in either of D 1 , D 2 . We then sampled from these graphs in several rounds as described above, simulated an annotation in each round with a normally distributed error added to judgments and compared the resulting clustering to the clustering of the true graph. The true clustering could be recovered with high accuracy (average of &gt; .96 adjusted mean rand index). We also used the simulation to predict the feasibility of the study and to tune parameters of the annotation such as sample sizes for nodes and edges. With the finally chosen parameters described in Section 4.1 the algorithm converged on average after 5 rounds and ≈ 8000 judgments per annotator. This was within the bounds of our time limits and financial budget. We also tested the clustering algorithm against several standard techniques <ref type="bibr" target="#b12">(Biemann, 2006;</ref><ref type="bibr" target="#b15">Blondel et al., 2008)</ref> and varied the optimization algorithm for L. None of these variations performed compatible with our approach.</p><p>B Systems description cbk <ref type="bibr" target="#b10">(Beck, 2020)</ref> The team obtains contextual embeddings using BERT , and extracts for every target word usage a word embedding using bert-as-service <ref type="bibr" target="#b81">(Xiao, 2018)</ref>. The team uses the difference of mean value of all cosine distances <ref type="bibr" target="#b66">(Salton and McGill, 1983)</ref> of a target word between two corpora to detect change. cs2020 21 <ref type="bibr" target="#b5">(Arefyev and Zhikov, 2020)</ref> The team submits systems of two types: SGNS with an Orthogonal Procrustes alignment and cosine distance as a change measure, and a variation of a word-sense induction method by <ref type="bibr" target="#b3">Amrami and Goldberg (2018)</ref>. For the latter, the team replaces BERT by a finetuned version of XLM-R <ref type="bibr" target="#b20">(Conneau et al., 2019)</ref> and for every target word generates lexical substitutes following <ref type="bibr" target="#b4">Amrami and Goldberg (2019)</ref>, the vectors of the most probable of which are then clustered using agglomerative clustering, with cosine distance.</p><p>Discovery Team <ref type="bibr" target="#b47">(Martinc et al., 2020)</ref> The team uses two types of word representations: average embeddings from SGNS  with an Orthogonal Procrustes alignment and contextual embeddings using language-specific BERT . For SGNS+OP the team compares vectors using cosine <ref type="bibr" target="#b66">(Salton and McGill, 1983)</ref>, while contextual embeddings see two different strategies: averaging of target-word embeddings, and clustering using k-means and affinity NLPCR <ref type="bibr" target="#b65">(Rother et al., 2020)</ref> The team uses multilingual contextualized word embeddings <ref type="bibr" target="#b92">(Devlin et al., 2019)</ref> to represent a word's meaning. They then reduce the embedding dimensionality with either autoencoder or UMAP, and cluster the resulting representation with either GMM or HDBSCAN. For Subtask 1 they use the task's specification directly on the cluster assignments, and for Subtask 2 they use the Jensen-Shannon Divergence for ranking.</p><p>Random <ref type="bibr" target="#b17">(Cassotti et al., 2020)</ref> This team focused on the problem of identifying when a target word has gained or lost senses. They train dynamic word embeddings using methods based on both explicit alignment such as Dynamic Word2Vec <ref type="bibr" target="#b82">(Yao et al., 2018)</ref>, and implicit alignment, like Temporal Random Indexing <ref type="bibr" target="#b9">(Basile et al., 2015)</ref> and Temporal Referencing . They also use different similarity measures to determine the extent of a word semantic change and compare the cosine similarity with Pearson Correlation and the neighborhood similarity <ref type="bibr" target="#b73">(Shoemark et al., 2019)</ref>. They introduce a new method to classify changing vs. stable words by clustering the target similarity distributions via Gaussian Mixture Models.</p><p>RIJP <ref type="bibr" target="#b37">(Iwamoto and Yukawa, 2020)</ref> The team uses Gaussian embedding <ref type="bibr" target="#b80">(Vilnis and McCallum, 2015)</ref> to represent words distributions instead of a points as in standard embedding models. Mean vectors are learned with word2vec using <ref type="bibr" target="#b42">(Kim et al., 2014)</ref> method. Covariance matrices are not trained, but encode the words' frequency changes between two time points. Kullback-Leibler (KL) divergence is then applied to measure changes to a word's distribution. RPI-trust <ref type="bibr" target="#b30">(Gruppi et al., 2020)</ref> The team uses static word embedding aligned using Orthogonal Procrustes. They extract three features from these representations, cosine-distance between words in two time points, change to their nearest-neighbours and frequency change, which they use in an ensemble model. They adopt an anomaly detection approach to find the threshold for change words (Subtask1), and directly computing the rank on the ensemble score (Subtask 2).</p><p>Skurt <ref type="bibr" target="#b31">(Gyllensten et al., 2020)</ref> The team uses pretrained cross-lingual contextualized embedding model, XLM-R <ref type="bibr" target="#b20">(Conneau et al., 2019)</ref>, which enables them to use the same model for all languages. For each target word they generated contextual representations (token representations) from the two corpora, and cluster them using K-Means++ with a fixed number of clusters (8). They use these cluster assignments as a proxy for the words' senses, and compare their between the two corpora. For Subtask 1, they directly implement the criterion provided in the task reference for LSC, and for Subtask 2 they use the Jensen-Shannon Divergence as a score for the degree of change in these senses.</p><p>TUE 26 <ref type="bibr" target="#b41">(Karnysheva and Schwarz, 2020)</ref> The team uses a cross-lingual pretrained contextual word embedding model <ref type="bibr" target="#b18">(Che et al., 2018)</ref> to represent a word's meaning across the two corpora. They then cluster these representations using either K-Means or DBSCAN, and compare the words' cluster assignments between the two time points. These cluster assignments allows that to tackle Subtask 1 directly (using the criterion defined by the organizers), and to compute Jensen-Shannon Divergence for Subtask 2.</p><p>UG Student Intern <ref type="bibr" target="#b63">(Pömsl and Lyapin, 2020)</ref> The team submits three types of model: average embeddings from SGNS  with an Orthogonal Procrustes alignment with vector comparison through Euclidean distance, contextual embeddings using BERT  and a sentence time classification objective, and finally their ensemble model CIRCE.</p><p>UiO-UVA <ref type="bibr" target="#b43">(Kutuzov and Giulianelli, 2020)</ref> The team obtains contextual embeddings of two types: ELMo <ref type="bibr" target="#b60">(Peters et al., 2018)</ref> and BERT . The team measures change in three different ways: cosine distance <ref type="bibr" target="#b66">(Salton and McGill, 1983)</ref> on averaged vectors, average pairwise distance between all contextual vectors of a same target, and Jensen-Shannon divergence applied on clusters created with affinity propagation <ref type="bibr" target="#b29">(Frey and Dueck, 2007)</ref>.</p><p>University College Dublin <ref type="bibr">(Nulty and Lillis, 2020)</ref> The team represents words as nodes in a weighted undirected graph that represents their word associations in the two time points. Similar to the Temporal-Referencing model , the nodes represent all words in both time points, and only target words have two nodes. The edges' weights are determined by the words' ppmi scores that surpass a threshold. Resistance distance metric is used to evaluate the degree of change of the target words. For Subtask 1 a threshold is manually set to determine the change and stable words, and for Subtask 2 the distance metric is used straightforwardly in the ranking.</p><p>UoB 27 <ref type="bibr" target="#b67">(Sarsfield and Madabushi, 2020)</ref> The team uses a topic model (Hierarchical Dirichlet processes <ref type="bibr">(Teh et al., 2004, HDP)</ref>) to model senses for each word, and mimics  in utilising the novelty score as a similarity measure.</p><p>UWB <ref type="bibr" target="#b64">(Pražák et al., 2020)</ref> The team obtains average embeddings from SGNS , and aligns models from the two periods using Canonical Correlation Analysis (CCA), and Orthogonal Procrustes (using VecMap <ref type="bibr" target="#b6">(Artetxe et al., 2018)</ref>). The team measures change using cosine distance <ref type="bibr" target="#b66">(Salton and McGill, 1983)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C Results with F1, Precision and Recall</head><p>Find the participants' results on Subtask 1 evaluated with F1, Precision and Recall in Table <ref type="table">7</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Avg.</head><p>English German Latin Swedish  <ref type="bibr">.683 .487 .559 .778 .438 .56 .667 .588 .625 .786 .423 .55 .5 .5 .5 NLPCR .504 .567 .52 .667 .75 .706 .381 .471 .421 .611 .423 .5 .357 .625 .454 Discovery Team .593 .499 .51 .5 .438 .467 .556 .588 .572 .9 .346 .5 .417 .625 .5 UiO-UvA .5 .496 .493 .471 .5 .485 .5 .647 .564 .6 .462 .522 .429 .375 .4 DCC .625 .451 .492 .714 .312 .434 .524 .647 .579 .818 .346 .486 .444 .5 .47 Entity .622 .495 .478 .833 .312 .454 .524 .647 .579 .778 .269 .4 .353 .75 .48 cs2020 .468 .466 .464 .538 .438 .483 .267 .235 .25 .667 .692 .679 .4 .5 .444 RIJP .475 .462 .429 .462 .375 .414 .37 .588 .454 .833 .385 .527 .235 .5</ref>    <ref type="table">7</ref>: Summary of the precision (P), recall (R), and F1 scores on Subtask 1 for the baseline systems and the systems which submitted a system description paper. 'Avg.' refers to the average across all languages for each system. The baseline systems and the submitting systems are ordered by decreasing F1 of their best submission calculated on the average over all languages.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Usage graph of Swedish ledning. D 1 = (58, 0, 4, 0), D 2 = (52, 14, 5, 1), B(w) = 1 and G(w) = 0.34.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Usage graph of German Eintagsfliege. D 1 = (12, 45, 0, 1), D 2 = (85, 6, 1, 1), B(w) = 0 and G(w) = 0.66.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 4 :</head><label>4</label><figDesc>Figure 4: Normalized prediction errors for Subtask 1, English (left) and Subtask 2, German (right).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 5 :</head><label>5</label><figDesc>Figure 5: Simulated example of annotation pipeline.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head>Table 2 .</head><label>2</label><figDesc>The division was driven by considerations of data size and availability of target words (see below). From these</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell>C1</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>C2</cell></row><row><cell></cell><cell>corpus</cell><cell>period</cell><cell cols="3">tokens types TTR</cell><cell>corpus</cell><cell>period</cell><cell>tokens</cell><cell>types TTR</cell></row><row><cell>English</cell><cell cols="3">CCOHA 1810-1860 6.5M</cell><cell>87k</cell><cell cols="4">13.38 CCOHA 1960-2010 6.7M</cell><cell>150k</cell><cell>22.38</cell></row><row><cell cols="2">German DTA</cell><cell cols="5">1800-1899 70.2M 1.0M 14.25 BZ+ND</cell><cell cols="2">1946-1990 72.3M</cell><cell>2.3M 31.81</cell></row><row><cell>Latin</cell><cell cols="2">LatinISE -200-0</cell><cell>1.7M</cell><cell>65k</cell><cell cols="3">38.24 LatinISE 0-2000</cell><cell>9.4M</cell><cell>253k</cell><cell>26.91</cell></row><row><cell cols="2">Swedish Kubhist</cell><cell cols="5">1790-1830 71.0M 1.9M 47.88 Kubhist</cell><cell cols="2">1895-1903 110.0M 3.4M 17.27</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 2 :</head><label>2</label><figDesc>Statistics of test corpora. TTR = Type-Token ratio (number of types / number of tokens * 1000)</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4 :</head><label>4</label><figDesc>Overview target words. n = number of target words, N/V/A = number of nouns/verbs/adjectives, AGR = inter-annotator agreement in round 1, LOSS = mean of normalized clustering loss * 10, JUD = number of judged use pairs, LSC = mean binary/graded change score, FRQ d = Spearman correlation between change scores and target words' absolute difference in log-frequency between C 1 , C 2 . Similarly for minimum frequency (FRQ m ) and minimum number of senses (PLY m ) across C 1 , C 2 .</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head></head><label></label><figDesc>System Avg. EN DE LA SV UWB .687 .622 .750 .700 .677 type Life-Language .686 .703 .750 .550 .742 type Jiaxin &amp; Jinan .665 .649 .729 .700 .581 type RPI-Trust .660 .649 .750 .500 .742 type UG Student Intern .639 .568 .729 .550 .System Avg. EN DE LA SV UG Student Intern .527 .422 .725 .412 .547 type Jiaxin &amp; Jinan .518 .325 .717 .440 .588 type cs2020 .503 .375 .702 .399 .536 type UWB .481 .367 .697 .254 .604 type Discovery Team .442 .361 .603 .460 .343 ens.</figDesc><table><row><cell>Team</cell><cell>Subtask 1</cell><cell></cell><cell>Team</cell><cell></cell><cell cols="2">Subtask 2</cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell cols="2">710 type</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>DCC</cell><cell cols="2">.637 .649 .667 .525 .710 type</cell><cell>RPI-Trust</cell><cell cols="6">.427 .228 .520 .462 .498 type</cell></row><row><cell>NLP@IDSIA</cell><cell cols="2">.637 .622 .625 .625 .677 token</cell><cell>Skurt</cell><cell cols="6">.374 .209 .656 .399 .234 token</cell></row><row><cell>JCT</cell><cell cols="2">.636 .649 .688 .500 .710 type</cell><cell>IMS</cell><cell cols="6">.372 .301 .659 .098 .432 type</cell></row><row><cell>Skurt</cell><cell cols="2">.629 .568 .562 .675 .710 token</cell><cell>UiO-UvA</cell><cell cols="6">.370 .136 .695 .370 .278 token</cell></row><row><cell>Discovery Team</cell><cell cols="2">.621 .568 .688 .550 .677 ens.</cell><cell>Entity</cell><cell cols="6">.352 .250 .499 .303 .357 type</cell></row><row><cell>Count Bas.</cell><cell>.613 .595 .688 .525 .645</cell><cell>-</cell><cell>Random</cell><cell cols="6">.296 .211 .337 .253 .385 type</cell></row><row><cell>TUE</cell><cell cols="2">.612 .568 .583 .650 .645 token</cell><cell>NLPCR</cell><cell cols="6">.287 .436 .446 .151 .114 token</cell></row><row><cell>Entity</cell><cell cols="2">.599 .676 .667 .475 .581 type</cell><cell>JCT</cell><cell cols="6">.254 .014 .506 .419 .078 type</cell></row><row><cell>IMS</cell><cell cols="2">.598 .541 .688 .550 .613 type</cell><cell>cbk</cell><cell cols="6">.234 .059 .400 .341 .136 token</cell></row><row><cell>cs2020</cell><cell cols="2">.587 .595 .500 .575 .677 token</cell><cell>UCD</cell><cell cols="6">.234 .307 .216 .069 .344 graph</cell></row><row><cell>UiO-UvA</cell><cell cols="2">.587 .541 .646 .450 .710 token</cell><cell>Life-Language</cell><cell cols="6">.218 .299 .208 -.024 .391 type</cell></row><row><cell>NLPCR</cell><cell cols="2">.584 .730 .542 .450 .613 token</cell><cell>NLP@IDSIA</cell><cell cols="6">.194 .028 .176 .253 .321 token</cell></row><row><cell>Maj. Bas.</cell><cell>.576 .568 .646 .350 .742</cell><cell>-</cell><cell>Count Bas.</cell><cell cols="5">.144 .022 .216 .359 -.022</cell><cell>-</cell></row><row><cell>cbk</cell><cell cols="2">.554 .568 .625 .475 .548 token</cell><cell>UoB</cell><cell cols="6">.100 .105 .220 -.024 .102 topic</cell></row><row><cell>Random</cell><cell cols="2">.554 .486 .479 .475 .774 type</cell><cell>RIJP</cell><cell cols="6">.087 .157 .099 .065 .028 type</cell></row><row><cell>UoB</cell><cell cols="2">.526 .568 .479 .575 .484 topic</cell><cell>TUE</cell><cell cols="6">.087 -.155 .388 .177 -.062 token</cell></row><row><cell>UCD</cell><cell cols="2">.521 .622 .500 .350 .613 graph</cell><cell>DCC</cell><cell cols="6">-.083 -.217 .014 .020 -.150 type</cell></row><row><cell>RIJP</cell><cell cols="2">.511 .541 .500 .550 .452 type</cell><cell>Freq. Bas.</cell><cell cols="5">-.083 -.217 .014 .020 -.150</cell><cell>-</cell></row><row><cell>Freq. Bas.</cell><cell>.439 .432 .417 .650 .258</cell><cell>-</cell><cell>Maj. Bas.</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell><cell>-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head></head><label></label><figDesc>Jinan.583 .789 .646 .6 .562 .58 .583 .824 .683 .769 .769 .769 .381  1.0 .552 Skurt .549 .8 .63 .5 .625 .556 .441 .882 .588 .783 .692 .735 .471 1.0 .64 UWB .618 .672 .629 .556 .625 .588 .609 .824 .7 .889 .615 .727 .417 .625 .5 UG Student Intern .562 .7 .607 .5 .562 .529 .583 .824 .683 .7 .538 .608 .467 .875 .609 Freq. Bas. .426 .971 .579 .432 1.0 .603 .366 .882 .517 .65 1.0 .788 .258 1.0 .41 IMS .523 .654 .564 .474 .562 .514 .542 .765 .634 .7 .538 .608 .375 .75 .5 Random .512 .701 .56 .452 .875 .596 .395 .882 .546 .647 .423 .512 .556 .625 .588 Life-Language</figDesc><table><row><cell>Team</cell><cell>P</cell><cell>R</cell><cell>F1 P</cell><cell>R</cell><cell>F1 P</cell><cell>R</cell><cell>F1 P</cell><cell>R</cell><cell>F1 P</cell><cell>R</cell><cell>F1</cell></row><row><cell>Jiaxin &amp;</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head></head><label></label><figDesc>.32 NLP@IDSIA .571 .361 .42 .75 .188 .301 .462 .353 .4 .739 .654 .694 .333 .25 .286 RPI-Trust .789 .243 .365 1.0 .188 .316 .857 .353 .5 .8 .308 .445 .5 .125 .2 UCD .51 .481 .362 .75 .188 .301 .4 .824 .539 .5 .038 .071 .389 .875 .539 JCT .767 .226 .337 1.0 .188 .316 .667 .235 .348 1.0 .231 .375 .4 .25 .308 Count Bas. .682 .238 .318 1.0 .062 .117 .625 .294 .4 .818 .346 .486 .286 .25 .267 cbk .437 .216 -.5 .125 .2 .471 .471 .471 .778 .269 .4 .</figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>0 .0 -</cell></row><row><cell>UoB</cell><cell>-</cell><cell>.401 -</cell><cell>-</cell><cell>.0 -</cell><cell cols="6">.346 .529 .418 .714 .577 .638 .25 .5 .333</cell></row><row><cell>TUE</cell><cell>-</cell><cell>.341 -</cell><cell>-</cell><cell>.0 -</cell><cell cols="6">.4 .353 .375 .676 .885 .767 .2 .125 .154</cell></row><row><cell>Maj. Bas.</cell><cell>-</cell><cell>.0 -</cell><cell>-</cell><cell>.0 -</cell><cell>-</cell><cell>.0 -</cell><cell>-</cell><cell>.0 -</cell><cell>-</cell><cell>.0 -</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table</head><label></label><figDesc></figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">https://www.ims.uni-stuttgart.de/data/sem-eval-ulscd</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">We refer to an occurrence of a word w in a sentence by 'use of w'.8  If an edge was annotated by several annotators we took the median as an edge weight.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="9">We experimented with increasing values of p and chose the minimum for which a control word could be found for each changed word.10 https://logeion.uchicago.edu/.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11">We used mlrose to perform the clustering<ref type="bibr" target="#b34">(Hayes, 2019)</ref>.12  The frequency for sense i in corpus C is given by the number of uses from C in the cluster corresponding to sense i.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="13">Note that because we spread disagreements from previous rounds in each round to further annotators, on average uses in later rounds become much harder to judge, which has a negative effect on agreement. Hence, for comparability reasons we report the agreement in the first round where no disagreement detection has taken place. The agreement across all rounds, calculated as weighted mean of agreements is 0.52/0.60/-/0.58.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="14">The team is named "LYNX" on the competition CodaLab.15  The team submits an ensemble model. As all of the features are derived from the type vectors, we classify it as "type" in this section.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="16">The team is named "cs2020" and "cs2021" on the competition CodaLab. The combined number of submissions made by the two teams did not exceed the limit of 10.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="17">https://www.ims.uni-stuttgart.de/data/sem-eval-ulscd 18 Find the full set of analysis plots at https://www.ims.uni-stuttgart.de/data/sem-eval-ulscd-post.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="19">Because Subtask 2 is a ranking task, we divide the mean error by the expected error: since words in the middle have a lower expected error than words in the top or bottom.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="20">If an edge was annotated by several annotators we took the median as an edge weight.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="21">The team is named "cs2020" and "cs2021" on the competition CodaLab. The combined number of submissions made by the two teams did not exceed the limit of 10.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="26">The team is named "Schwaebischschwaetza tue" on the competition CodaLab.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="27">The team is named "Eleri Sarsfield" on the competition CodaLab.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>The authors would like to thank Dr. Diana McCarthy for her valuable input to the genesis of this task. DS was supported by the Konrad Adenauer Foundation and the CRETA center funded by the German Ministry for Education and Research (BMBF) during the conduct of this study. This task has been funded in part by the project Towards Computational Lexical Semantic Change Detection supported by the Swedish Research Council (2019-2022; dnr 2018-01184), and Nationella språkbanken (the Swedish National Language Bank) -jointly funded by (2018-2024; dnr 2017-00626) and its 10 partner institutions, to NT. The list of potential change words in Swedish was provided by the research group at the Department of Swedish, University of Gothenburg that works with the Contemporary Dictionary of the Swedish Academy. This work was supported by The Alan Turing Institute under the EPSRC grant EP/N510129/1, to BMcG. Additional thanks go to the annotators of our datasets, and an anonymous donor.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Exploring the quality of the digital historical newspaper archive KubHist</title>
+		<author>
+			<persName><forename type="first">Yvonne</forename><surname>Adesam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dana</forename><surname>Dannélls</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Tahmasebi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 DHN conference</title>
+				<meeting>the 2019 DHN conference</meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="9" to="17" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">CCOHA: Clean Corpus of Historical American English</title>
+		<author>
+			<persName><forename type="first">Reem</forename><surname>Alatrash</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jonas</forename><surname>Kuhn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Twelfth International Conference on Language Resources and Evaluation (LREC&apos;20). European Language Resources Association (ELRA)</title>
+				<meeting>the Twelfth International Conference on Language Resources and Evaluation (LREC&apos;20). European Language Resources Association (ELRA)</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">JCT at SemEval-2020 Task 1: Combined Semantic Vector Spaces Models for Unsupervised Lexical Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Efrat</forename><surname>Amar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chaya</forename><surname>Liebeskind</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Word sense induction with neural bilm and symmetric patterns</title>
+		<author>
+			<persName><forename type="first">Asaf</forename><surname>Amrami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1808.08518</idno>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Towards better substitution-based word sense induction</title>
+		<author>
+			<persName><forename type="first">Asaf</forename><surname>Amrami</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Goldberg</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1905.12598</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">BOS at SemEval-2020 Task 1: Word Sense Induction via Lexical Substitution for Lexical Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Nikolay</forename><surname>Arefyev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vasily</forename><surname>Zhikov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">A robust self-learning method for fully unsupervised cross-lingual mappings of word embeddings</title>
+		<author>
+			<persName><forename type="first">Mikel</forename><surname>Artetxe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gorka</forename><surname>Labaka</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018-07" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="789" to="798" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">EmbLexChange at SemEval-2020 Task 1: Unsupervised Embedding-based Detection of Lexical Semantic Changes</title>
+		<author>
+			<persName><forename type="first">Ehsaneddin</forename><surname>Asgari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christoph</forename><surname>Ringlstetter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Correlation clustering</title>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Bansal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Avrim</forename><surname>Blum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuchi</forename><surname>Chawla</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Machine Learning</title>
+				<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="volume">56</biblScope>
+			<biblScope unit="page" from="89" to="113" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Temporal random indexing: A system for analysing word meaning over time</title>
+		<author>
+			<persName><forename type="first">Pierpaolo</forename><surname>Basile</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Annalina</forename><surname>Caputo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Semeraro</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Italian Journal of Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="55" to="68" />
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">DiaSense at SemEval-2020 Task 1: Modeling sense change via pre-trained BERT embeddings</title>
+		<author>
+			<persName><forename type="first">Christin</forename><surname>Beck</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">Berliner</forename><surname>Zeitung</surname></persName>
+		</author>
+		<title level="m">Diachronic newspaper corpus published by Staatsbibliothek zu</title>
+				<meeting><address><addrLine>Berlin</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Chinese whispers: An efficient graph clustering algorithm and its application to natural language processing problems</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the First Workshop on Graph Based Methods for Natural Language Processing</title>
+				<meeting>the First Workshop on Graph Based Methods for Natural Language Processing<address><addrLine>USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2006" />
+			<biblScope unit="page" from="73" to="80" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Creating a system for lexical substitutions from scratch using crowdsourcing</title>
+		<author>
+			<persName><forename type="first">Chris</forename><surname>Biemann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Lang. Resour. Eval</title>
+		<imprint>
+			<biblScope unit="volume">47</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="97" to="122" />
+			<date type="published" when="2013-03" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Blank</surname></persName>
+		</author>
+		<title level="m">Prinzipien des lexikalischen Bedeutungswandels am Beispiel der romanischen Sprachen. Niemeyer</title>
+				<meeting><address><addrLine>Tübingen</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1997" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Fast unfolding of communities in large networks</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Vincent</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean-Loup</forename><surname>Blondel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Renaud</forename><surname>Guillaume</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Etienne</forename><surname>Lambiotte</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lefebvre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Statistical Mechanics: Theory and Experiment</title>
+		<imprint>
+			<biblScope unit="issue">10</biblScope>
+			<biblScope unit="page">10008</biblScope>
+			<date type="published" when="2008-10" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Korp -the corpus infrastructure of Språkbanken</title>
+		<author>
+			<persName><forename type="first">Lars</forename><surname>Borin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Markus</forename><surname>Forsberg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johan</forename><surname>Roxendal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Eighth International Conference on Language Resources and Evaluation (LREC&apos;12)</title>
+				<meeting>the Eighth International Conference on Language Resources and Evaluation (LREC&apos;12)<address><addrLine>Istanbul, Turkey, May</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="474" to="478" />
+		</imprint>
+	</monogr>
+	<note>European Language Resources Association (ELRA</note>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">GM-CTSC at SemEval-2020 Task 1: Gaussian Mixtures Cross Temporal Similarity Clustering</title>
+		<author>
+			<persName><forename type="first">Pierluigi</forename><surname>Cassotti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Annalina</forename><surname>Caputo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Polignano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pierpaolo</forename><surname>Basile</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Towards better ud parsing: Deep contextualized word embeddings, ensemble, and treebank concatenation</title>
+		<author>
+			<persName><forename type="first">Wanxiang</forename><surname>Che</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yijia</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuxuan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ting</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the CoNLL 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies</title>
+				<meeting>the CoNLL 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies</meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="55" to="64" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">A Companion to the Latin Language</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Clackson</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2011" />
+			<publisher>Wiley-Blackwell</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Unsupervised cross-lingual representation learning at scale</title>
+		<author>
+			<persName><forename type="first">Alexis</forename><surname>Conneau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kartikay</forename><surname>Khandelwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Naman</forename><surname>Goyal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vishrav</forename><surname>Chaudhary</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guillaume</forename><surname>Wenzek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Francisco</forename><surname>Guzmán</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edouard</forename><surname>Grave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Myle</forename><surname>Ott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1911.02116</idno>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Novel word-sense identification</title>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Cook</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jey</forename><forename type="middle">Han</forename><surname>Lau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING 2014, the 25th International Conference on Computational Linguistics: Technical Papers</title>
+				<meeting>COLING 2014, the 25th International Conference on Computational Linguistics: Technical Papers</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="1624" to="1635" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Expanding Horizons in Historical Linguistics with the 400-Million Word Corpus of Historical American English</title>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Davies</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Corpora</title>
+		<imprint>
+			<biblScope unit="volume">7</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="121" to="157" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Grundlage für ein Referenzkorpus der neuhochdeutschen Sprache</title>
+		<author>
+			<persName><forename type="first">Deutsches</forename><surname>Textarchiv</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Herausgegeben von der Berlin-Brandenburgischen Akademie der Wissenschaften</title>
+				<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">BERT: Pre-training of deep bidirectional transformers for language understanding</title>
+		<author>
+			<persName><forename type="first">Jacob</forename><surname>Devlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ming-Wei</forename><surname>Chang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kristina</forename><surname>Toutanova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Minneapolis, Minnesota</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019-06" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="4171" to="4186" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<monogr>
+		<title level="m" type="main">Dialectometric analysis of language variation in Twitter</title>
+		<author>
+			<persName><forename type="first">Gonzalo</forename><surname>Donoso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Sanchez</surname></persName>
+		</author>
+		<idno>abs/1702.06777</idno>
+		<imprint>
+			<date type="published" when="2017" />
+			<publisher>CoRR</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Outta control: Laws of semantic change and inherent biases in word representation models</title>
+		<author>
+			<persName><forename type="first">Haim</forename><surname>Dubossarsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daphna</forename><surname>Weinshall</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eitan</forename><surname>Grossman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2017 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Copenhagen, Denmark</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="1147" to="1156" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Time-Out: Temporal Referencing for Robust Modeling of Lexical Semantic Change</title>
+		<author>
+			<persName><forename type="first">Haim</forename><surname>Dubossarsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Hengchen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Tahmasebi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="457" to="470" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Measuring word meaning in context</title>
+		<author>
+			<persName><forename type="first">Katrin</forename><surname>Erk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nicholas</forename><surname>Gaylord</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">39</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="511" to="554" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Clustering by passing messages between data points</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Brendan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Delbert</forename><surname>Frey</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dueck</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Science</title>
+		<imprint>
+			<biblScope unit="volume">315</biblScope>
+			<biblScope unit="issue">5814</biblScope>
+			<biblScope unit="page" from="972" to="976" />
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">SChME at SemEval-2020 Task 1: A Model Ensemble for Detecting Lexical Semantic Change</title>
+		<author>
+			<persName><forename type="first">Maurício</forename><surname>Gruppi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sibel</forename><surname>Adalı</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pin-Yu</forename><surname>Chen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">SenseCluster at SemEval-2020 Task 1: Unsupervised Lexical Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Evangelia</forename><surname>Amaru Cuba Gyllensten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ariel</forename><surname>Gogoulou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Magnus</forename><surname>Ekgren</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Sahlgren</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Diachronic word embeddings reveal statistical laws of semantic change</title>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">L</forename><surname>Hamilton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jure</forename><surname>Leskovec</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dan</forename><surname>Jurafsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 54th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Berlin, Germany</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2016" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1489" to="1501" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">SURel: A gold standard for incorporating meaning shifts into term extraction</title>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Hätty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th Joint Conference on Lexical and Computational Semantics</title>
+				<meeting>the 8th Joint Conference on Lexical and Computational Semantics<address><addrLine>Minneapolis, MN, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<title level="m" type="main">mlrose: Machine Learning, Randomized Optimization and SEarch package for Python</title>
+		<author>
+			<persName><forename type="first">Genevieve</forename><surname>Hayes</surname></persName>
+		</author>
+		<ptr target="https://github.com/gkhayes/mlrose.Accessed" />
+		<imprint>
+			<date type="published" when="2019-05-22" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Hengchen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ruben</forename><surname>Ros</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jani</forename><surname>Marjanen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mikko</forename><surname>Tolonen</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+	<note>to appear. A data-driven approach to studying changing vocabularies in historical newspaper collections. Digital Scholarship in the Humanities</note>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Quantifying the impact of dirty OCR on historical text analysis: Eighteenth Century Collections Online as a case study</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Hill</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Hengchen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Digital Scholarship in the Humanities</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="825" to="843" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">RIJP at SemEval-2020 Task 1: Gaussian-based Embeddings for Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Ran</forename><surname>Iwamoto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Masahiro</forename><surname>Yukawa</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">GloVeInit at SemEval-2020 Task 1: Using GloVe Vector Initialization for Unsupervised Lexical Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Vaibhav</forename><surname>Jain</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">SST-BERT at SemEval-2020 Task 1: Semantic Shift Tracing by Clustering in BERT-based Embedding Spaces</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Vani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sandra</forename><surname>Mitrović</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Antonucci</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabio</forename><surname>Rinaldi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">IMS at SemEval-2020 Task 1: How low can you go? Dimensionality in Lexical Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Jens</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sean</forename><surname>Papay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">TUE at SemEval-2020 Task 1: Detecting semantic change by clustering contextual word embeddings</title>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Karnysheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pia</forename><surname>Schwarz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Temporal analysis of language through neural language models</title>
+		<author>
+			<persName><forename type="first">Yoon</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi-I</forename><surname>Chiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kentaro</forename><surname>Hanaki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Darshan</forename><surname>Hegde</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Slav</forename><surname>Petrov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">LTCSS@ACL</title>
+				<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="61" to="65" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">UiO-UvA at SemEval-2020 Task 1: Contextualised Embeddings for Lexical Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Andrey</forename><surname>Kutuzov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mario</forename><surname>Giulianelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Diachronic word embeddings and semantic shifts: A survey</title>
+		<author>
+			<persName><forename type="first">Andrey</forename><surname>Kutuzov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lilja</forename><surname>Øvrelid</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Terrence</forename><surname>Szymanski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Erik</forename><surname>Velldal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 27th International Conference on Computational Linguistics</title>
+				<meeting>the 27th International Conference on Computational Linguistics<address><addrLine>Santa Fe, New Mexico, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="1384" to="1397" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Learning word sense distributions, detecting unattested senses and identifying novel senses using topic models</title>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Jey Han Lau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Cook</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Spandana</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Timothy</forename><surname>Gella</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Baldwin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 52nd Annual Meeting of the Association for Computational Linguistics<address><addrLine>Baltimore, Maryland</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2014-06" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="259" to="270" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Divergence measures based on the Shannon entropy</title>
+		<author>
+			<persName><forename type="first">Jianhua</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Transactions on Information theory</title>
+		<imprint>
+			<biblScope unit="volume">37</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="145" to="151" />
+			<date type="published" when="1991" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Discovery Team at SemEval-2020 Task 1: Context-sensitive Embeddings not Always Better Than Static for Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Matej</forename><surname>Martinc</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Syrielle</forename><surname>Montariol</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elaine</forename><surname>Zosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lidia</forename><surname>Pivovarova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Finding predominant word senses in untagged text</title>
+		<author>
+			<persName><forename type="first">Diana</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Koeling</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julie</forename><surname>Weeds</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><surname>Carroll</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 42nd Meeting of the Association for Computational Linguistics (ACL&apos;04), Main Volume</title>
+				<meeting>the 42nd Meeting of the Association for Computational Linguistics (ACL&apos;04), Main Volume<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004-07" />
+			<biblScope unit="page" from="279" to="286" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Tools for historical corpus research, and a corpus of Latin</title>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Mcgillivray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Kilgarriff</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">New Methods in Historical Corpus Linguistics</title>
+				<editor>
+			<persName><forename type="first">Paul</forename><surname>Bennett</surname></persName>
+			<persName><forename type="first">Martin</forename><surname>Durrell</surname></persName>
+			<persName><forename type="first">Silke</forename><surname>Scheible</surname></persName>
+			<persName><forename type="first">Richard</forename><forename type="middle">J</forename><surname>Whitt</surname></persName>
+		</editor>
+		<meeting><address><addrLine>Tübingen. Narr</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">A computational approach to lexical polysemy in Ancient Greek</title>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Mcgillivray</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Hengchen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Viivi</forename><surname>Lähteenoja</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Palma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Vatri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Digital Scholarship in the Humanities</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="893" to="907" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<analytic>
+		<title level="a" type="main">Efficient estimation of word representations in vector space</title>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Greg</forename><surname>Corrado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Dean</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">1st International Conference on Learning Representations, ICLR 2013</title>
+				<meeting><address><addrLine>Scottsdale, Arizona, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013-05-02" />
+		</imprint>
+	</monogr>
+	<note>Workshop Track Proceedings</note>
+</biblStruct>
+
+<biblStruct xml:id="b52">
+	<analytic>
+		<title level="a" type="main">Distributed representations of words and phrases and their compositionality</title>
+		<author>
+			<persName><forename type="first">Tomas</forename><surname>Mikolov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ilya</forename><surname>Sutskever</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kai</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Greg</forename><surname>Corrado</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Dean</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NIPS</title>
+				<meeting>NIPS</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b53">
+	<monogr>
+		<author>
+			<persName><forename type="first">Neues</forename><surname>Deutschland</surname></persName>
+		</author>
+		<title level="m">Diachronic newspaper corpus published by Staatsbibliothek zu</title>
+				<meeting><address><addrLine>Berlin</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b54">
+	<analytic>
+		<title level="a" type="main">2020. The UCD-Net System at SemEval-2020 Task 1: Temporal Referencing with Semantic Network Distances</title>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Nulty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Lillis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b55">
+	<monogr>
+		<title level="m" type="main">Oxford English Dictionary</title>
+		<author>
+			<persName><surname>Oed</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+			<publisher>Oxford University Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b56">
+	<analytic>
+		<title level="a" type="main">Quantifying social group evolution</title>
+		<author>
+			<persName><forename type="first">Gergely</forename><surname>Palla</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Albert-László</forename><surname>Barabási</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tamás</forename><surname>Vicsek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">446</biblScope>
+			<biblScope unit="issue">7136</biblScope>
+			<biblScope unit="page" from="664" to="667" />
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b57">
+	<monogr>
+		<author>
+			<persName><forename type="first">Hermann</forename><surname>Paul</surname></persName>
+		</author>
+		<title level="m">Deutsches Wörterbuch: Bedeutungsgeschichte und Aufbau unseres Wortschatzes. Niemeyer</title>
+				<meeting><address><addrLine>Tübingen</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2002" />
+		</imprint>
+	</monogr>
+	<note>10. edition</note>
+</biblStruct>
+
+<biblStruct xml:id="b58">
+	<analytic>
+		<title level="a" type="main">Glove: Global vectors for word representation</title>
+		<author>
+			<persName><forename type="first">Jeffrey</forename><surname>Pennington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Manning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)<address><addrLine>Doha, Qatar</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2014-10" />
+			<biblScope unit="page" from="1532" to="1543" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b59">
+	<analytic>
+		<title level="a" type="main">GASC: Genre-aware semantic change for Ancient Greek</title>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Valerio Perrone</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Palma</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Hengchen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jim</forename><forename type="middle">Q</forename><surname>Vatri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Smith</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mcgillivray</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 1st International Workshop on Computational Approaches to Historical Language Change</title>
+				<meeting>the 1st International Workshop on Computational Approaches to Historical Language Change<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019-08" />
+			<biblScope unit="page" from="56" to="66" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b60">
+	<analytic>
+		<title level="a" type="main">Deep contextualized word representations</title>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Peters</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Neumann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Iyyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matt</forename><surname>Gardner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kenton</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Zettlemoyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, LA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="2227" to="2237" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b61">
+	<analytic>
+		<title level="a" type="main">A monte carlo method for the approximate solution of certain types of constrained optimization problems</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Pincus</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Operations Research</title>
+		<imprint>
+			<biblScope unit="volume">18</biblScope>
+			<biblScope unit="issue">6</biblScope>
+			<biblScope unit="page" from="1225" to="1228" />
+			<date type="published" when="1970" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b62">
+	<monogr>
+		<title level="m" type="main">Natural Language Processing for Historical Texts</title>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Piotrowski</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2012" />
+			<publisher>Morgan &amp; Claypool Publishers</publisher>
+			<pubPlace>San Rafael, California</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b63">
+	<analytic>
+		<title level="a" type="main">CIRCE at SemEval-2020 Task 1: Ensembling Context-Free and Context-Dependent Word Representations</title>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Pömsl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roman</forename><surname>Lyapin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b64">
+	<analytic>
+		<title level="a" type="main">UWB at SemEval-2020 Task 1: Lexical Semantic Change Detection</title>
+		<author>
+			<persName><forename type="first">Ondřej</forename><surname>Pražák</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pavel</forename><surname>Přibáň</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stephen</forename><surname>Taylor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakub</forename><surname>Sido</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b65">
+	<analytic>
+		<title level="a" type="main">CMCE at SemEval-2020 Task 1: Clustering on Manifolds of Contextualized Embeddings to Detect Historical Meaning Shifts</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Rother</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Haider</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Steffen</forename><surname>Eger</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b66">
+	<monogr>
+		<title level="m" type="main">Introduction to Modern Information Retrieval</title>
+		<author>
+			<persName><forename type="first">Gerard</forename><surname>Salton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Michael</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mcgill</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1983" />
+			<publisher>McGraw -Hill Book Company</publisher>
+			<pubPlace>New York</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b67">
+	<analytic>
+		<title level="a" type="main">UoB at SemEval-2020 Task 1: Automatic Identification of Novel Word Senses</title>
+		<author>
+			<persName><forename type="first">Eleri</forename><surname>Sarsfield</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Harish Tayyar Madabushi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b68">
+	<analytic>
+		<title level="a" type="main">Simulating lexical semantic change from senseannotated data</title>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The Evolution of Language: Proceedings of the 13th International Conference</title>
+				<editor>
+			<persName><forename type="first">A</forename><surname>Ravignani</surname></persName>
+			<persName><forename type="first">C</forename><surname>Barbieri</surname></persName>
+			<persName><forename type="first">M</forename><surname>Martins</surname></persName>
+			<persName><forename type="first">M</forename><surname>Flaherty</surname></persName>
+			<persName><forename type="first">Y</forename><surname>Jadoul</surname></persName>
+			<persName><forename type="first">E</forename><surname>Lattenkamp</surname></persName>
+			<persName><forename type="first">H</forename><surname>Little</surname></persName>
+			<persName><forename type="first">K</forename><surname>Mudd</surname></persName>
+			<persName><forename type="first">T</forename><surname>Verhoef</surname></persName>
+		</editor>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b69">
+	<analytic>
+		<title level="a" type="main">German in flux: Detecting metaphoric change via word entropy</title>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefanie</forename><surname>Eckmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Enrico</forename><surname>Santus</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 21st Conference on Computational Natural Language Learning</title>
+				<meeting>the 21st Conference on Computational Natural Language Learning<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="354" to="367" />
+		</imprint>
+	</monogr>
+	<note>Sabine Schulte im Walde, and Daniel Hole</note>
+</biblStruct>
+
+<biblStruct xml:id="b70">
+	<analytic>
+		<title level="a" type="main">Diachronic Usage Relatedness (DURel): A framework for the annotation of lexical semantic change</title>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stefanie</forename><surname>Eckmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>New Orleans, Louisiana</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="page" from="169" to="174" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b71">
+	<analytic>
+		<title level="a" type="main">A Wind of Change: Detecting and Evaluating Lexical Semantic Change across Times and Domains</title>
+		<author>
+			<persName><forename type="first">Dominik</forename><surname>Schlechtweg</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anna</forename><surname>Hätty</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><surname>Del Tredici</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sabine</forename><surname>Schulte Im Walde</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 57th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="732" to="746" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b72">
+	<analytic>
+		<title level="a" type="main">Automatic word sense discrimination</title>
+		<author>
+			<persName><forename type="first">Hinrich</forename><surname>Schütze</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">24</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="97" to="123" />
+			<date type="published" when="1998-03" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b73">
+	<analytic>
+		<title level="a" type="main">Room to glo: A systematic comparison of semantic change detection approaches with word embeddings</title>
+		<author>
+			<persName><forename type="first">Philippa</forename><surname>Shoemark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ferdousi</forename><surname>Farhana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dong</forename><surname>Liza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Scott</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Hale</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mcgillivray</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</title>
+				<meeting>the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019" />
+			<biblScope unit="page" from="66" to="76" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b74">
+	<monogr>
+		<title level="m" type="main">Downloaded in 2019. The Kubhist Corpus, v2</title>
+		<author>
+			<persName><surname>Språkbanken</surname></persName>
+		</author>
+		<imprint/>
+		<respStmt>
+			<orgName>Department of Swedish, University of Gothenburg</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b75">
+	<monogr>
+		<title level="m" type="main">Contemporary dictionary of the Swedish Academy. The changed words are extracted from a database managed by the research group that develops the Contemporary dictionary</title>
+		<author>
+			<persName><surname>Svenska Akademien</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b76">
+	<analytic>
+		<title level="a" type="main">Finding individual word sense changes and their delay in appearance</title>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Tahmasebi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Risse</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the International Conference Recent Advances in Natural Language Processing</title>
+				<meeting>the International Conference Recent Advances in Natural Language Processing<address><addrLine>Varna, Bulgaria</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017" />
+			<biblScope unit="page" from="741" to="749" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b77">
+	<analytic>
+		<title level="a" type="main">Survey of computational approaches to lexical semantic change</title>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Tahmasebi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lars</forename><surname>Borin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Jatowt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Preprint at ArXiv</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b78">
+	<analytic>
+		<title level="a" type="main">Sharing clusters among related groups: Hierarchical dirichlet processes</title>
+		<author>
+			<persName><forename type="first">Yee Whye</forename><surname>Teh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">I</forename><surname>Jordan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Matthew</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><forename type="middle">M</forename><surname>Beal</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Blei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 17th International Conference on Neural Information Processing Systems</title>
+				<meeting>the 17th International Conference on Neural Information Processing Systems</meeting>
+		<imprint>
+			<publisher>MIT Press</publisher>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="1385" to="1392" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b79">
+	<analytic>
+		<title level="a" type="main">Assessing the impact of OCR quality on downstream NLP tasks</title>
+		<author>
+			<persName><forename type="first">Kaspar</forename><surname>Daniel Van Strien</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Beelen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kasra</forename><surname>Mariona Coll Ardanuy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Barbara</forename><surname>Hosseini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><surname>Mcgillivray</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Colavizza</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICAART (1)</title>
+				<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="484" to="496" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b80">
+	<monogr>
+		<title level="m" type="main">Word representations via Gaussian embedding</title>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Vilnis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Mccallum</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+	<note>In ICLR</note>
+</biblStruct>
+
+<biblStruct xml:id="b81">
+	<monogr>
+		<title level="m" type="main">bert-as-service</title>
+		<author>
+			<persName><forename type="first">Han</forename><surname>Xiao</surname></persName>
+		</author>
+		<ptr target="https://github.com/hanxiao/bert-as-service" />
+		<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b82">
+	<analytic>
+		<title level="a" type="main">Dynamic word embeddings for evolving semantic discovery</title>
+		<author>
+			<persName><forename type="first">Zijun</forename><surname>Yao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yifan</forename><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Weicong</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Rao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hui</forename><surname>Xiong</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">WSDM 2018 -Proceedings of the 11th ACM International Conference on Web Search and Data Mining</title>
+				<imprint>
+			<date type="published" when="2018" />
+			<biblScope unit="volume">2018</biblScope>
+			<biblScope unit="page" from="673" to="681" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b83">
+	<analytic>
+		<title level="a" type="main">DCC-Uchile at SemEval-2020 Task 1: Temporal Referencing Word Embeddings</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Frank</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felipe</forename><surname>Zamora-Reina</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bravo-Marquez</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b84">
+	<analytic>
+		<title level="a" type="main">Clusters are then compared across time using Jensen-Shannon divergence. The team also submits an ensemble model that uses all four strategies</title>
+		<author>
+			<persName><forename type="first">Jinan</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiaxin</forename><surname>Li</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 14th International Workshop on Semantic Evaluation</title>
+				<meeting>the 14th International Workshop on Semantic Evaluation<address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+	<note>TemporalTeller at SemEval-2020 Task 1: Unsupervised Lexical Semantic Change Detection with Temporal Referencing. SGNS+OP, averaging, k-means, AP</note>
+</biblStruct>
+
+<biblStruct xml:id="b85">
+	<monogr>
+		<title level="m" type="main">They concatenated the corpora of different periods and treated the occurrences of target words in different periods as two independent tokens</title>
+		<author>
+			<persName><forename type="first">Bravo-Marquez ;</forename><surname>Dcc (zamora-Reina</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Dubossarsky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>This team&apos;s system was designed for Subtask 1 and is based on Temporal Referencing</note>
+</biblStruct>
+
+<biblStruct xml:id="b86">
+	<analytic>
+		<title level="a" type="main">they trained word embeddings on the joint corpus and compare the referenced vectors of each target word using cosine similarity. They used the Gensim package for training word2vec embeddings (Continuous Bag of Words with Negative Sampling)</title>
+		<author>
+			<persName><surname>Afterwards</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The number of negative samples was set to 5</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b87">
+	<monogr>
+		<title level="m" type="main">then applies vector initialization (VI) alignment (Kim et al., 2014) and measures change with cosine distance</title>
+		<author>
+			<persName><forename type="first">(</forename><surname>Entity</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Jain ; Pennington</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1983" />
+			<publisher>Salton and McGill</publisher>
+		</imprint>
+	</monogr>
+	<note>2020) The team obtains GloVe average embeddings</note>
+</biblStruct>
+
+<biblStruct xml:id="b88">
+	<monogr>
+		<title level="m" type="main">SGNS), then applies vector initialization (VI) alignment (Kim et al., 2014) and measures change with cosine distance</title>
+		<author>
+			<persName><surname>Kaiser</surname></persName>
+		</author>
+		<idno>IMS 22</idno>
+		<imprint>
+			<date type="published" when="1983" />
+			<publisher>Salton and McGill</publisher>
+		</imprint>
+	</monogr>
+	<note>2020) The team obtains average embeddings from Skip-Gram with Negative Sampling</note>
+</biblStruct>
+
+<biblStruct xml:id="b89">
+	<analytic>
+		<title level="a" type="main">The team uses two static word embedding models, SGNS and PPMI, in addition to averaged BERT representation, with different methods for alignment (Orthogonal Procrustes, Temporal Referencing, and Column Intersection). They compute the cosine distance between these representations and use it standardly for Subtask-2. For Subtask-1 they propose the Gamma Quantile Threshold as a novel approach too choose the change cutoff based on cosine-distance distributions. The team also provides a large scale comparison of two hyper-parameters</title>
+		<author>
+			<persName><forename type="first">Li</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Jiaxin &amp; Jinan</title>
+		<imprint>
+			<biblScope unit="volume">23</biblScope>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>embedding dimensionality and context size window</note>
+</biblStruct>
+
+<biblStruct xml:id="b90">
+	<monogr>
+		<title level="m" type="main">After defining a general threshold in an unsupervised way, they adjusted it to each of the models. They measured the models&apos; decision certainty and used it to filter the best models</title>
+		<author>
+			<persName><forename type="first">Liebeskind</forename><surname>Jct (amar</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note>The team systematically combined existing models for lexical semantic change detection, 24 and analyzed their score distribution</note>
+</biblStruct>
+
+<biblStruct xml:id="b91">
+	<monogr>
+		<title level="m" type="main">2020) The team trains static embedding (fasttext) on each corpus sepa</title>
+		<author>
+			<persName><surname>Life-Language (asgari</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b92">
+	<analytic>
+		<title level="a" type="main">The team uses Euclidean distance between vectors of word uses to create clusters using k-means, and the silhouette method to define the number of clusters. They cluster word vectors using two strategies: joined corpora</title>
+		<author>
+			<persName><forename type="first">K</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">NLP@IDSIA</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note>2020) The team obtains contextual embeddings using BERT. and separately (within-corpus clusters</note>
+</biblStruct>
+
+<biblStruct xml:id="b93">
+	<monogr>
+		<title level="m" type="main">The team is named</title>
+		<imprint/>
+	</monogr>
+	<note>in vain&quot; on the competition CodaLab. 23 The team is named &quot;LYNX&quot; on the competition CodaLab</note>
+</biblStruct>
+
+<biblStruct xml:id="b94">
+	<analytic>
+		<title level="a" type="main">Singular Value Decomposition, Random Indexing, and Skip-Gram with Negative Sampling), alignment methods (Column Intersection, Shared Random Vectors, Orthogonal Procrustes, Vector Initialization), and similarity and dispersion measures (cosine distance</title>
+	</analytic>
+	<monogr>
+		<title level="m">They considered various word representations (raw count vectors, positive Pointwise Mutual Information</title>
+				<imprint/>
+	</monogr>
+	<note>local neighbourhood distance, frequency difference, type difference, and entropy difference</note>
+</biblStruct>
+
+<biblStruct xml:id="b95">
+	<monogr>
+		<title level="m">The team is named &quot;Vani Kanjirangat&quot; on the competition CodaLab</title>
+				<imprint/>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Dutch Word Sense Disambiguation: Data and Preliminary Results</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Iris</forename><surname>Hendrickx</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">ILK / Computational Linguistics</orgName>
+								<orgName type="institution">Tilburg University</orgName>
+								<address>
+									<postCode>NL-5000 LE</postCode>
+									<settlement>Tilburg</settlement>
+									<country key="NL">The Netherlands</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Antal</forename><surname>Van Den Bosch</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">ILK / Computational Linguistics</orgName>
+								<orgName type="institution">Tilburg University</orgName>
+								<address>
+									<postCode>NL-5000 LE</postCode>
+									<settlement>Tilburg</settlement>
+									<country key="NL">The Netherlands</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution">WhizBang! Labs-Research</orgName>
+								<address>
+									<addrLine>4616 Henry Street</addrLine>
+									<postCode>15213</postCode>
+									<settlement>Pittsburgh</settlement>
+									<region>PA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Dutch Word Sense Disambiguation: Data and Preliminary Results</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:25+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>We describe the Dutch word sense disambiguation data submitted to SENSEVAL-2, and give preliminary results on the data using a WSD system based on memory-based learning and statistical keyword selection.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Solving lexical ambiguity, or word sense disambiguation (WSD), is an important task in Natural Language Processing systems. Much like syntactic word-class disambiguation, it is not a end in itself, but rather a subtask of other natural language processing tasks <ref type="bibr" target="#b3">(Kilgarriff and Rozenzweig, 2000)</ref>. The problem is far from solved, and research and competition in the development of WSD systems in isolation is merited, preferrably on many different languages and genres.</p><p>Here we introduce the first electronic Dutch word-sense annotated corpus, that was collected under a sociolinguistic research project <ref type="bibr" target="#b4">(Schrooten and Vermeer, 1994)</ref>, and was kindly donated by the team coordinators to the WSD systems community. In this paper we describe the original data and the preprocessing steps that were applied to it before submission to the SENSEVAL-2, in Section 2. We also present the first, preliminary, results obtained with MBWSD-D, the Memory-Based Word-Sense Disambiguation system for Dutch, that uses statistical keyword selection, in Section 3.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data: The Dutch child book corpus</head><p>The Dutch WSD corpus was built as a part of a sociolinguistic project, led by Walter <ref type="bibr">Schrooten and Anne Vermeer (1994)</ref>, on the active vocabulary of children in the age of 4 to 12 in the Netherlands. The aim of developing the corpus was to have a realistic wordlist of the most common words used at elementary schools. This wordlist was further used in the study to make literacy tests, including tests how many senses of ambiguous words were known by children of different ages.</p><p>The corpus consists of texts of 102 illustrated children books in the age range of 4 to 12. Each word in these texts is manually annotated with its appropriate sense. The data was annotated by six persons who all processed a different part of the data.</p><p>Each word in the dataset has a nonhierarchical, symbolic sense tag, realised as a mnemonic description of the specific meaning the word has in the sentence, often using a related term. As there was no gold standard sense set of Dutch available, Schrooten and Vermeer have made their own set of senses.</p><p>Sense tags consist of the word's lemma and a sense description of one or two words ( dro-gen_nat) or a reference of the grammatical category (fiets_N, fietsen_ V). Verbs have as their tag their lemma and often a reference to their function in the sentence (is/ zijn_kww). When a word has only one sense, this is represented with a simple"=". Names and sound imitations also have "=" as their sense tag.</p><p>The dataset also contains senses that span over multiple words. These multi-word expressions cover idiomatic expressions, sayings, proverbs, and strong collocations. Each word in the corpus that is part of such multi-word expression has as its meaning the atomic meaning of the expression.</p><p>These are two example sentences in the corpus:</p><p>"/= het/heLiidwoord raadsel/= vanjvan_prepositie de/=. verdwenenjverdwijnen regenboog/= kan /ku n nen JTiogelijkheid aileen j a lleen_adv The dataset needed some adaptations to make it fully usable for computational purposes. First, spelling and consistency errors have been corrected for most part, but in the data submitted to SENSEVAL-2, a certain amount of errors is still present. Second, in Dutch, prepositions are often combined with verbs as particles and these combinations have other meanings than the two separate words. Unfortunately the annotations of these cases were rather inconsistent and for that reason it was decided to give all prepositions the same sense tag "/prepositie" after their lemma.</p><p>The dataset consists of approximately 150,000 tokens (words and punctuation tokens) and about 10,000 different word forms. Nine thousand of these words have only one sense, leaving a thousand word types to disambiguate. These ambiguous types account for 54 % of the tokens in the corpus. The basic numbers can be found in Table <ref type="table">1</ref>.</p><p>For the SENSEVAL-2 competition, the dataset was divided in two parts. The training set consisted of 76 books and approximately 115.000 words. The test set consisted of the remaining 26 books and had about 38.000 words.</p><p>3 The MBWSD-D system and preliminary results</p><p>We first describe the representation of the corpus data in examples presented to a memory-14 based learner in Subsection 3.1. We then describe the architecture of the system in Subsection 3.2, and we then present its preliminary results in Subsection 4.</p><p>3.1 Representation: Local and keyword features As a general idea, disambiguation information is assumed to be present in the not-too-distant context of ambiguous words; the present instantiation of MBWSD-D limits this to the sentence the ambiguous word occurs in. Sentences are not represented as is, but rather as limited sets of features expected to give salient information about which sense of the word applies.</p><p>The first source of useful disambiguation information can be found immediately adjacent to the ambiguous word.It has been found that a four-word window, two words before the target word and two words after gives good results; cf. <ref type="bibr" target="#b5">(Veenstra et al., 2000)</ref>.</p><p>Second, information about the grammatical category of the target word and its direct context words can also be valuable. Consequently, each sentence of the Dutch corpus was tagged and the part-of-speech (POS) tags of the word and its direct context (two left, two right) are included in the representation of the sentence. Part-of-speech tagging was done with the Memory Based Tagger <ref type="bibr" target="#b1">(Daelemans et al., 1996)</ref>.</p><p>Third, informative words in the context ('keywords') are detected based on the statistical chi-squared test. Chi-square estimates the significance, or degree of surprise, of the number of keyword occurrences with respect to the expected number of occurrences (apriori probability):</p><formula xml:id="formula_0">x2 = t (ik -ek) 2 k=l ek (1)</formula><p>where fi is the keyword frequency and ei is the expected frequency. fi is the word frequency and ei is the expected word frequency. The expected frequency of the keyword is given in equation 3.1. It must be noted that the Chi-Square method cannot be considered reliable when the expected frequency has a value below 5: ei = Uwi/ fw) * ]k, where fi is the frequency the ambiguous word w of sensei, fw is the frequency of word wand fk is the frequency of the keyword.</p><p>The number of occurrences of a very good keyword will have a strong deviation of its expected number of occurrences divided over the senses. The expected probability with respect to all senses can be seen as a distribution of the keyword. A good keyword is a word that differs from the expected distribution and always cooccurs with a certain sense, or never co-occurs with a certain sense.</p><p>In sum, a representation of an instance of an. ambiguous word consists of the two words before the target word, two words after the word, the POS tags of these words and of the target word itself, a number of selected keywords, and of course the annotated sense of the word as the class label.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">System architecture</head><p>Following the example of ILK's previous wordsense disambiguation system for English <ref type="bibr" target="#b5">(Veenstra et al., 2000)</ref>, it was decided to use word experts. Berleant <ref type="bibr" target="#b0">(Berleant, 1995)</ref> defines a word expert as follows: "A word expert is a small expert system-like module for processing a particular word based on other words in its vicinity" (1995, p.1). Word experts are common in the field of word sense disambiguation, because words are very different from each other. Words all have different numbers of senses, different frequencies and. need different information sources for di~ambiguation. With word experts, each word can be treated with its own optimal method.</p><p>Making word experts for every ambiguous word may not be useful because many words occur only a few times in the corpus. It was decided to create word experts for wordforms with a threshold of minimal 10 occurrences in the training set. There are 524 of such words in the training set. 10 is a rather low threshold, but many words can be easily disambiguated by knowledge a single feature value, such as of their part-of-speech tag.</p><p>The software for emulating memory-based learning used in this research is TiMBL (Tilburg Memory-Based Learner). TiMBL <ref type="bibr" target="#b2">(Daelemans et al., 2001)</ref>  For each word a TiMBL word expert was trained on that portion of the training corpus that consisted of sentence representations containing that word. TiMBL was trained 300 times, each time with another combination of parameters. Each of these training sessions was evaluated with leave-one-out cross validation <ref type="bibr" target="#b6">(Weiss and Kulikowski, 1991)</ref> to select the optimal TiMBL setting for a particular word, to be used eventually for classifying the test material.</p><p>For each word expert a total of 300 experiments were performed, each with another combination of parameter settings. In this study the following options were used ( cf. <ref type="bibr" target="#b2">(Daelemans et al.,. 2001</ref>) for first pointers to descriptions of these metrics and functions):  <ref type="bibr">9, 11, 15, 25, 45, and 75</ref> The last step for each word expert was to test the optimal settings on the test set. To evaluate the results, described in the next Section, theresults were compared with a baseline score. The baseline was to select for each word the most frequent sense.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Results</head><p>The top line of Table <ref type="table">2</ref> shows the mean score of all the word experts together on the test set. The score of the word experts on the test set, 84.1%, is generously higher than the baseline score of 7 4.1%. These are the results of the word experts only; the second row also includes the best-guess outputs for the lowerfrequency words, lowering the system's performance slightly.</p><p>The same results, now split on the frequency of the words in the training set, can be seen in We can also calculate the score on all the words in the text, including the unambiguous words, to give an impression of the overall performance. The unambiguous words are given a score of 100%, because the task was to disambiguate the ambiguous words. It might be useful for a disambiguation system to tag unambiguous words with their lemma, but the kind of tagging this is not of interest in our task. The third row of Table <ref type="table">2</ref> shows the results on all words in which the system was applied with a threshold of 10: The system scores 4 % higher than the baseline.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Discussion</head><p>This paper introduced a Dutch child book corpus, generously donated to the WSD community by the team leaders of the sociolinguistic project that produced the corpus. The data is annotated with a non-hierarchical mnemonic sense inventory. The data has been cleaned up and split for the SENSEVAL-2 competition.</p><p>The data provides an arguably interesting case of a "fiat" semantic tagging, where there is obviously no gain from a governing wordnet, but alternatively it is not negatively biased by an inappropriate or badly-structured wordnet either. Learnability results are therefore an interesting baseline to beat when the data would be annotated with a Dutch wordnet.</p><p>The system applied to the data as a first indication of its complexity and learnability, consisted of an ensemble of word experts trained to disambiguate particular ambiguous word forms. The score of the system on the 16686 ambiguous words in the test set was 83.8% compared to a baseline score of 7 4.6%. On free held out text the system achieved a result of 92.9%; 4% over the baseline of 88.8%, or in other words yielding an error reduction of about 37%. These absolute and relative figures are roughly comparable to performances of other systems on other data, indicating at least that the data represents learnability properties typical for the WSD area.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head></head><label></label><figDesc>distance-weighted voting : (1) all neighbors have equal weight; (2) Inverse Distance weighting; (3) Inverse Linear weighting feature weighting : (1) no weighting; (2) Gain Ratio; (3) Information Gain; ( 4) Chi Square; (5) Shared Variance similarity metric : (1) Overlap metric; (2) MVDM number of nearest neighbours : 1, 3, 5, 7,</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 3 .</head><label>3</label><figDesc>The first column shows the frequency groups, based on the word frequencies in the training set, the second the number of words in</figDesc><table><row><cell>test selection</cell><cell></cell><cell>#words</cell><cell cols="2">baseline system</cell></row><row><cell cols="2">word-expert words</cell><cell>15365</cell><cell>74.1</cell><cell>84.1</cell></row><row><cell cols="2">all ambiguous words</cell><cell>16686</cell><cell>74.6</cell><cell>83.8</cell></row><row><cell>all words</cell><cell></cell><cell>37770</cell><cell>88.8</cell><cell>92.9</cell></row><row><cell cols="5">Tabl~ 2: Summary of results on test material</cell></row><row><cell cols="5">the test set, and the third column shows the</cell></row><row><cell cols="5">mean score of the WSD system. The scores</cell></row><row><cell cols="5">tend to get better as the frequency goes up, ex-</cell></row><row><cell cols="5">cept for the group of 40-49, which has the lowest</cell></row><row><cell cols="5">score of all. Note that the baseline score of the</cell></row><row><cell cols="5">group of words with a frequency below 10 is rel-</cell></row><row><cell cols="2">atively high: 80.5%.</cell><cell></cell><cell></cell></row><row><cell cols="5">frequency #words baseline system</cell></row><row><cell>&lt;10</cell><cell cols="2">1321 -</cell><cell></cell><cell>80.5</cell></row><row><cell>10-19</cell><cell cols="2">868 63.0</cell><cell></cell><cell>76.8</cell></row><row><cell>20-29</cell><cell cols="2">644 70.3</cell><cell></cell><cell>79.5</cell></row><row><cell>30-39</cell><cell cols="2">503 75.9</cell><cell></cell><cell>83.3</cell></row><row><cell>40-49</cell><cell cols="2">390 66.7</cell><cell></cell><cell>75.9</cell></row><row><cell>50-99</cell><cell cols="2">1873 73.7</cell><cell></cell><cell>85.4</cell></row><row><cell>100-199</cell><cell cols="2">2289 77.7</cell><cell></cell><cell>83.1</cell></row><row><cell>&gt; 200</cell><cell cols="2">8798 74.6</cell><cell></cell><cell>85.6</cell></row><row><cell>&gt; 100</cell><cell cols="2">10995 75.3</cell><cell></cell><cell>85.1</cell></row><row><cell cols="5">Table 3: Results divided into frequency groups</cell></row></table></figure>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Engineering word-experts for word disambiguation</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Berleant</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Natural Language Engineering</title>
+		<imprint>
+			<biblScope unit="page" from="339" to="362" />
+			<date type="published" when="1995" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Part-of-speech tagging of dutch with mbt, a memory-based tagger generator</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Daelemans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zavrel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Berek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Congresboek van de Interdisciplinaire Onderzoeksconferentie Informatiewetenchap</title>
+				<imprint>
+			<date type="published" when="1996" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<title level="m" type="main">Timbl: Tilburg memory based learner, version 4.0, reference guide</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Daelemans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zavrel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Van Der Sloot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Van Den</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bosch</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2001" />
+			<pubPlace>Tilburg University</pubPlace>
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical report</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Framework and results for english senseval</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kilgarriff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Rozenzweig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Computers and the Humanities</title>
+				<imprint>
+			<date type="published" when="2000" />
+			<biblScope unit="volume">34</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Woorden in het basisonderwijs. 15.000 woorden aangeboden aan leerlingen. TUP(Studies in meertaligheid 6)</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Schrooten</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vermeer</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1994" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Memory-based word sense disambiguation</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Veenstra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Van Den</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Bosch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Buchholz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Daelemans</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zavrel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computers and the Humanities</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">computer systems that learn</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Weiss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Kulikowski</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1991" />
+			<publisher>Morgan Kaufmann</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2015 Task 1: Paraphrase and Semantic Similarity in Twitter (PIT)</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Wei</forename><surname>Xu</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Pennsylvania Philadelphia</orgName>
+								<address>
+									<region>PA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Chris</forename><surname>Callison-Burch</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution">University of Pennsylvania Philadelphia</orgName>
+								<address>
+									<region>PA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">William</forename><forename type="middle">B</forename><surname>Dolan</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Microsoft Research Redmond</orgName>
+								<address>
+									<region>WA</region>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2015 Task 1: Paraphrase and Semantic Similarity in Twitter (PIT)</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this shared task, we present evaluations on two related tasks Paraphrase Identification (PI) and Semantic Textual Similarity (SS) systems for the Twitter data. Given a pair of sentences, participants are asked to produce a binary yes/no judgement or a graded score to measure their semantic equivalence. The task features a newly constructed Twitter Paraphrase Corpus that contains 18,762 sentence pairs. A total of 19 teams participated, submitting 36 runs to the PI task and 26 runs to the SS task. The evaluation shows encouraging results and open challenges for future research. The best systems scored a F1-measure of 0.674 for the PI task and a Pearson correlation of 0.619 for the SS task respectively, comparing to a strong baseline using logistic regression model of 0.589 F1 and 0.511 Pearson; while the best SS systems can often reach &gt;0.80 Pearson on well-formed text. This shared task also provides insights into the relation between the PI and SS tasks and suggests the importance to bringing these two research areas together. We make all the data, baseline systems and evaluation scripts publicly available. 1   </p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The ability to identify paraphrases, i.e. alternative expressions of the same (or similar) meaning, and the degree of their semantic similarity has proven useful for a wide variety of natural language processing applications <ref type="bibr" target="#b27">(Madnani and Dorr, 2010)</ref>. It is particularly useful to overcome the challenge of high redundancy in Twitter and the sparsity inherent in their short texts (e.g. oscar nom'd doc ↔ Oscarnominated documentary; some1 shot a cop ↔ someone shot a police). Emerging research shows paraphrasing techniques applied to Twitter data can improve tasks like first story detection <ref type="bibr" target="#b33">(Petrović et al., 2012)</ref>, information retrieval <ref type="bibr" target="#b48">(Zanzotto et al., 2011)</ref> and text normalization <ref type="bibr" target="#b47">(Xu et al., 2013;</ref><ref type="bibr" target="#b44">Wang et al., 2013)</ref>.</p><p>Previously, many researchers have investigated ways of automatically detecting paraphrases on more formal texts, like newswire text. The ACL Wiki 2 gives an excellent summary of the state-ofthe-art paraphrase identification techniques. These can be categorized into supervised methods <ref type="bibr" target="#b34">(Qiu et al., 2006;</ref><ref type="bibr" target="#b43">Wan et al., 2006;</ref><ref type="bibr" target="#b9">Das and Smith, 2009;</ref><ref type="bibr" target="#b39">Socher et al., 2011;</ref><ref type="bibr" target="#b7">Blacoe and Lapata, 2012;</ref><ref type="bibr" target="#b28">Madnani et al., 2012;</ref><ref type="bibr" target="#b24">Ji and Eisenstein, 2013)</ref> and unsupervised methods <ref type="bibr" target="#b29">(Mihalcea et al., 2006;</ref><ref type="bibr" target="#b37">Rus et al., 2008;</ref><ref type="bibr" target="#b14">Fernando and Stevenson, 2008;</ref><ref type="bibr" target="#b23">Islam and Inkpen, 2007;</ref><ref type="bibr" target="#b21">Hassan and Mihalcea, 2011)</ref>. A few recent studies have highlighted the potential and importance of developing paraphrase identification <ref type="bibr" target="#b48">(Zanzotto et al., 2011;</ref><ref type="bibr" target="#b47">Xu et al., 2013)</ref> and semantic similarity techniques <ref type="bibr" target="#b18">(Guo and Diab, 2012)</ref> specifically for tweets. They also indicated that the very informal language, especially the high degree of lexical variation, used in social media has posed serious challenges to both tasks.    <ref type="table" target="#tab_1">1</ref>) that is the same as the Twitter Paraphrase Corpus we developed earlier in <ref type="bibr" target="#b45">(Xu, 2014)</ref> and <ref type="bibr" target="#b46">(Xu et al., 2014)</ref>. This PIT-2015 paraphrase dataset is distinct from the data used in previous studies in many aspects: (i) it contains sentences that are opinionated and colloquial, representing realistic informal language usage; (ii) it contains paraphrases that are lexically diverse; and (iii) it contains sentences that are lexically similar but semantically dissimilar. It raises many interesting research questions and could lead to a better understanding of our daily used language and how semantics can be captured in such language. We believe that such a common testbed will facilitate docking of the different approaches for purposes of comparison, lead to a better understanding of how semantics are conveyed in natural language, and help advance other NLP techniques for noisy user-generated text in the long run.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description and Evaluation Metrics</head><p>The task has two sentence-level sub-tasks: a paraphrase identification task and an optional semantic textual similarity task. The two sub-tasks share the same data but differ in annotation and evaluation.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Task A -Paraphrase Identification (PI)</head><p>Given two sentences, determine whether they express the same or very similar meaning. Following the literature on paraphrase identification, we evaluate system performance by the F-1 score (harmonic mean of precision and recall) against human judgements.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Task B -Semantic Textual Similarity (SS)</head><p>Given two sentences, determine a numerical score between 0 (no relation) and 1 (semantic equivalence) to indicate their semantic similarity. Following the literature, the system outputs are compared by Pearson correlation with human scores. We also compute the maximum F-1 score over the precision-recall curve as an additional data point.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Corpus</head><p>In this shared task, we use the Twitter Paraphrase Corpus that we first presented in <ref type="bibr" target="#b45">(Xu, 2014)</ref> and <ref type="bibr" target="#b46">(Xu et al., 2014)</ref>.  <ref type="bibr" target="#b11">Dolan et al. (2004)</ref>. As noted in <ref type="bibr" target="#b9">(Das and Smith, 2009)</ref>, the lack of natural non-paraphrases in the MSR corpus creates bias towards certain models.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Annotation</head><p>In this section, we describe our data collection and annotation methodology. Since Twitter users are free to talk about anything regarding any topic, a random pair of sentences about the same topic has a low chance of expressing the same meaning (empirically, this is less than 8%). This causes two problems: a) it is expensive to obtain paraphrases via manual annotation; b) non-expert annotators tend to loosen the criteria and are more likely to make false positive errors. To address these challenges, we design a simple annotation task and introduce two selection mechanisms to select sentences which are more likely to be paraphrases, while preserving diversity and representativeness. The intensity along the diagonal indicates good reliability of crowdsourcing workers for this particular task; and the shift above the diagonal reflects the difference between the two annotation schemas. For crowdsourcing (turk), the numbers indicate how many annotators out of 5 picked the sentence pair as paraphrases; 0,1 are considered non-paraphrases; 3,4,5 are paraphrases. For expert annotation, all 0,1,2 are nonparaphrases; 4,5 are paraphrases. Medium-scored cases (2 for crowdsourcing; 3 for expert annotation) are discarded in the system evaluation of the PI sub-task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Raw Data from Twitter</head><p>We crawl Twitter's trending topics and their associated tweets using public APIs. <ref type="bibr">5</ref> According to Twitter, trends are determined by an algorithm which identifies topics that are immediately popular, rather than those that have been popular for longer periods of time or which trend on a daily basis. We tokenize, remove emoticons 6 and split tweet into sentences.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Task Design on Mechanical Turk</head><p>We show the annotator an original sentence, then ask them to pick sentences with the same meaning from 10 candidate sentences. The original and candidate sentences are randomly sampled from the same topic. For each such 1 vs. 10 question, we obtain binary judgements from 5 different annotators, paying each annotator $0.02 per question. On average, each question takes one annotator about 30 ∼ 45 seconds to answer.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Annotation Quality</head><p>We remove problematic annotators by checking their Cohen's Kappa agreement <ref type="bibr" target="#b1">(Artstein and Poesio, 2008)</ref> with other annotators. We also compute inter-annotator agreement with an expert annotator on the test dataset of 972 sentence pairs. In the expert annotation, we adopt a 5-point Likert scale to measure the degree of semantic similarity between sentences, which is defined by <ref type="bibr" target="#b0">Agirre et al. (2012)</ref> as follows:</p><p>5: Completely equivalent, as they mean the same thing; 4: Mostly equivalent, but some unimportant details differ; 3: Roughly equivalent, but some important information differs/missing. 2: Not equivalent, but share some details; 1: Not equivalent, but are on the same topic; 0: On different topics.</p><p>Although the two scales of expert and crowdsourcing annotation are defined differently, their Pearson correlation coefficient reaches 0.735 (twotailed significance 0.001). Figure <ref type="figure" target="#fig_0">1</ref> shows a heatmap representing the detailed overlap between the two annotations. It suggests that the graded similarity annotation task could be reduced to a binary choice in a crowdsourcing setup. As for the binary paraphrase judgements, the integrated judgement of five crowdsourcing workers achieve a F1-score of 0.823, precision of 0.752 and recall of 0.908 against expert annotations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Automatic Summarization Inspired</head><p>Sentence Filtering</p><p>We filter the sentences within each topic to select more probable paraphrases for annotation. Our method is inspired by a typical problem in extractive summarization, that the salient sentences are likely redundant (paraphrases) and need to be removed in the output summaries. We employ the scoring method used in SumBasic <ref type="bibr" target="#b30">(Nenkova and Vanderwende, 2005;</ref><ref type="bibr" target="#b42">Vanderwende et al., 2007)</ref>, a simple but powerful summarization system, to find salient sentences. For each topic, we compute the probability of each word P (w i ) by simply dividing its frequency by the total number of all words in all sentences. Each sentence s is scored as the average of the probabilities of the words in it, i.e.</p><p>Salience(s) =</p><formula xml:id="formula_0">w i ∈s P (w i ) |{w i |w i ∈ s}| (1)</formula><p>We then rank the sentences and pick the original sentence randomly from top 10% salient sentences and candidate sentences from top 50% to present to the annotators.</p><p>In a trial experiment of 20 topics, the filtering technique double the yield of paraphrases from 152 to 329 out of 2000 sentence pairs over naïve random sampling (Figure <ref type="figure" target="#fig_1">2</ref> and Figure <ref type="figure">3</ref>). We also use PINC <ref type="bibr" target="#b8">(Chen and Dolan, 2011)</ref> to measure the quality of paraphrases collected (Figure <ref type="figure">4</ref>). PINC was designed to measure n-gram dissimilarity between two sentences, and in essence it is the inverse of BLEU. In general, the cases with high PINC scores include more complex and interesting rephrasings.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.5">Topic Selection using Multi-Armed Bandits (MAB) Algorithm</head><p>Another approach to increasing paraphrase yield is to choose more appropriate topics. This is particularly important because the number of paraphrases varies greatly from topic to topic and thus the chance to encounter paraphrases during annotation (Figure <ref type="figure" target="#fig_1">2</ref>). We treat this topic selection problem as a variation of the Multi-Armed Bandit (MAB) problem <ref type="bibr" target="#b36">(Robbins, 1985)</ref> and adapt a greedy algorithm, the bounded -first algorithm, of Tran-Thanh et al.</p><p>(2012) to accelerate our corpus construction. Our strategy consists of two phases. In the first exploration phase, we dedicate a fraction of the total budget, , to explore randomly chosen arms of each slot machine (trending topic on Twitter), each m times. In the second exploitation phase, we sort all topics according to their estimated proportion of paraphrases, and sequentially annotate (1− )B l−m arms that have the highest estimated reward until reaching the maximum l = 10 annotations for any topic to insure data diversity.</p><p>We tune the parameters m to be 1 and to be between 0.35 ∼ 0.55 through simulation experiments, by artificially duplicating a small amount of real annotation data. We then apply this MAB algorithm in the real-world. We explore 500 random topics and then exploited 100 of them. The yield of paraphrases rises to 688 out of 2000 sentence pairs by using MAB and sentence filtering, a 4-fold increase compared to only using random selection (Figure <ref type="figure">3</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Baselines</head><p>We provide three baselines, including a random baseline, a strong supervised baseline and a stateof-the-art unsupervised system:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Random:</head><p>This baseline provides a randomized real num-ber between [0, 1] for each test sentence pair as semantic similarity score, and uses 0.5 as cutoff for binary paraphrase identification output.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Logistic Regression:</head><p>This is a supervised logistic regression (LR) baseline used by <ref type="bibr" target="#b9">Das and Smith (2009)</ref>. It uses simple n-gram (also in stemmed form) overlapping features but shows very competitive performance on the MSR news paraphrase corpus. It uses 0.5 as cutoff to create binary outputs for the paraphrase identification task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Weighted Matrix Factorization (WTMF): 7</head><p>The third baseline is a state-of-the-art unsupervised method developed by <ref type="bibr" target="#b18">Guo and Diab (2012)</ref>. It is specially developed for short sentences by modeling the semantic space of both words that are present in and absent from the sentences <ref type="bibr" target="#b18">(Guo and Diab, 2012)</ref>. The model was learned from WordNet <ref type="bibr" target="#b13">(Fellbaum, 2010)</ref>, OntoNotes <ref type="bibr" target="#b22">(Hovy et al., 2006)</ref>, Wiktionary, the Brown corpus <ref type="bibr" target="#b15">(Francis and Kucera, 1979)</ref>. It uses 0.5 as cutoff in the binary paraphrase identification task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Systems and Results</head><p>A total of 18 teams participated in the PI task (required), 13 of which also submitted to the SS task (optional). Every team submitted 2 runs except one (up to 2 were are allowed).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1">Evaluation Results</head><p>Table <ref type="table" target="#tab_6">3</ref> shows the evaluation results. We use the F1score and Pearson correlation as the primary evaluation metric for the PI and SS task respectively. The results are very exciting that most systems outperformed the two strong baselines we chose, while still showing room for improvement towards the human upper-bound estimated by the crowdsourcing worker's performance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2">Discussion</head><p>Most participants choose supervised methods, except for MathLingBp who uses semi-supervised, Columbia and Yamraj who use unsupervised methods. While the best performed systems are supervised, the best unsupervised system still outperforms some supervised systems and the state-of-the-art unsupervised baseline. About half of systems use word embeddings and many use neural networks.</p><p>To out best knowledge, this is the first time to have a large number of systems in an evaluation that has the two related tasks -paraphrase identification and semantic similarity, side by side for comparison. One interesting observation that comes out is the performance of the same system on the two tasks ("F1 vs. Pearson") are not necessarily related. For example, ASOBEK ranked 1st (out of 35 runs) and 18th (out of 25 runs) in the PI and SS tasks respectively, RTM-DCU ranked 27th and 3rd, while the MITRE system ranked 3nd and 1st place. Neither "F1 vs. max-F1" nor "Pearson vs. maxF1" nor "F1 vs. Pearson" show a strong correlation. It implies that (i) high-performance PI systems can be developed focusing on the binary classification problem without focusing on the degree of similarity; (ii) it is crucial to select the threshold to balance precision and recall for the PI binary classification problem; (iii) it is important for SS system to handle the debatable cases proporiately.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3">Participants' Systems</head><p>There are in total 19 teams participated: AJ: This team utilizes TERp and BLEU -automatic evaluation metrics for Machine Translation. The system uses a logistic regression model and performs threshold selection.</p><p>AMRITACEN: This team uses Recursive Auto Encoders (RAEs). The matrix generated for the given input sentences is of variable size, then converted to equal sized matrix using repeat matrix concept.</p><p>ASOBEK <ref type="bibr" target="#b12">(Eyecioglu and Keller, 2015)</ref>: This team uses SVM classifier with simple lexical word overlap and character n-grams features.</p><p>CDTDS <ref type="bibr" target="#b25">(Karampatsis, 2015)</ref>: This team uses support vector regression trained only on the training set using the numbers of positive votes out of the 5 crowdsourcing annotations.</p><p>Columbia: This system maps each original sentence to a low dimensional vector as Orthogonal Matrix Factorization <ref type="bibr" target="#b19">(Guo et al., 2014)</ref>, and then computes similarity score based on the low dimensional vectors.</p><p>Depth: This team uses neural network that learns representation of sentences, then compute similarity scores based on hidden vector representations between two sentences.</p><p>EBIQUITY <ref type="bibr" target="#b38">(Satyapanich et al., 2015)</ref>: This team trains supervised SVM and logistic re-  This causes that the F1-score in the PI task can be higher than the maximum F1-score in the SS task. Also note that the F1-scores of the baselines in the PI task are higher than reported in the Table <ref type="table" target="#tab_2">2</ref> of <ref type="bibr" target="#b46">(Xu et al., 2014)</ref>, because the later reported maximum F1-scores on the PI task, ignoring the debatable cases.</p><p>gression models using features of semantic similarities between sentence pairs. Hassy: This team uses a bag-of-embeddings approach via supervised learning. Two sentences are first embedded into a vector space, and then the system computes the dot-product of the two sentence embeddings.</p><p>HLTC-HKUST <ref type="bibr" target="#b2">(Bertero and Fung, 2015)</ref>: This team uses supervised classification with a standard two-layer neural network classifier. The features used include translation metrics, lexical, syntactic and semantic similarity scores, the latter with an emphasis on aligned semantic roles comparison.</p><p>MathLingBp: This team implements the alignand-penalize architecture described by <ref type="bibr" target="#b20">Han et al. (2013)</ref> with slight modifications and makes use of several word similarity metrics. One metric relies on a mapping of words to vectors built from the Rovereto Twitter N-Gram corpus, another on a synonym list built from Wiktionary's translations, while a third approach derives word similarity from concept graphs built using the 4lang lexicon and the Longman Dictionary of Contemporary English <ref type="bibr" target="#b26">(Kornai et al., 2015)</ref>.</p><p>MITRE <ref type="bibr" target="#b49">(Zarrella et al., 2015)</ref>: A recurrent neural network models semantic similarity between sentences using the sequence of symmetric word alignments that maximize cosine similarity between word embeddings. We include features from local similarity of characters, random projection, matching word sequences, pooling of word embeddings, and alignment quality metrics. The resulting ensemble uses both semantic and string matching at many levels of granularity.</p><p>RTM-DCU <ref type="bibr" target="#b5">(Bicici, 2015)</ref>: This team uses referential translation machines (RTM) and machine translation performance prediction system (MTPP) for predicting semantic similarity where indicators of translatability are used as features <ref type="bibr" target="#b3">(Biçici and Way, 2014)</ref> and instance selection for RTM is performed with FDA5 <ref type="bibr" target="#b4">(Biçici and Yuret, 2014)</ref>. RTM works as follows: FDA5 → MTPP → ML training → predict.</p><p>Rob (van der Goot and van Noord, 2015): This system is inspired by a state-of-the-art semantic relatedness prediction system by <ref type="bibr" target="#b6">Bjerva et al. (2014)</ref>. It combines features from different parses with lexical and compositional distributional feature using a logistic regression model.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>STANFORD:</head><p>This team uses a supervised system with sentiment, phrase similarity matrix, and alignment features. Similarity metrics are based on vector space representation of phrases which was trained on a large corpus.</p><p>TkLbLiiR <ref type="bibr" target="#b16">(Glavaš et al., 2015)</ref>: This team uses a supervised model with about 15 comparisonbased numeric features. The most important features are the distributional features weighted by the topic-specific information.</p><p>WHUHJP: This team uses the word2vec tool to train a vector model on the training data, then computes distributed representations of sentences in the test set and their cosine similarity.</p><p>Yamraj: This team uses pre-trained word and phrase vectors on Google News data set (about 100 billion words) and Wikipeida articles. The system relies on the cosine distance between vectors representing the sentences computed using open-source toolkit Gensim.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusions and Future Work</head><p>We have presented the task definition, data annotation and evaluation results to the first Paraphrase and Semantic Similarity In Twitter (PIT) shared task.</p><p>Our analysis provides some initial insights into the relation and the difference between paraphrase identification and semantic similarity problems. We make all the data, baseline systems and evaluation scripts publicly available. <ref type="bibr">8</ref> In the future, we plan to extend the task to allow leverage of more information from social networks, for example, by providing the full tweets (and their ids) that are associated with each sentence and with each topic.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure1: A heat-map showing overlap between expert and crowdsourcing annotation. The intensity along the diagonal indicates good reliability of crowdsourcing workers for this particular task; and the shift above the diagonal reflects the difference between the two annotation schemas. For crowdsourcing (turk), the numbers indicate how many annotators out of 5 picked the sentence pair as paraphrases; 0,1 are considered non-paraphrases; 3,4,5 are paraphrases. For expert annotation, all 0,1,2 are nonparaphrases; 4,5 are paraphrases. Medium-scored cases (2 for crowdsourcing; 3 for expert annotation) are discarded in the system evaluation of the PI sub-task.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: The proportion of paraphrases (percentage of positive votes from annotators) vary greatly across different topics. Automatic filtering in Section 4.4 roughly doubles the paraphrase yield.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :Figure 4 :</head><label>34</label><figDesc>Figure 3: Numbers of paraphrases collected by different methods. The annotation efficiency (3,4,5 are regarded as paraphrases) is significantly improved by the sentence filtering and Multi-Armed Bandits (MAB) based topic selection.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1</head><label>1</label><figDesc></figDesc><table><row><cell></cell><cell cols="5">: Representative examples from PIT-2015 Twitter Paraphrase Corpus</cell></row><row><cell></cell><cell cols="5"># Unique Sent # Sent Pair # Paraphrase # Non-Paraphrase # Debatable</cell></row><row><cell>Train</cell><cell>13231</cell><cell>13063</cell><cell>3996 (30.6%)</cell><cell>7534 (57.7%)</cell><cell>1533 (11.7%)</cell></row><row><cell>Dev</cell><cell>4772</cell><cell>4727</cell><cell>1470 (31.1%)</cell><cell>2672 (56.5%)</cell><cell>585 (12.4%)</cell></row><row><cell>Test</cell><cell>1295</cell><cell>972</cell><cell>175 (18.0%)</cell><cell>663 (68.2%)</cell><cell>134 (13.8%)</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table><row><cell>The SemEval-2015 shared task on Paraphrase and</cell></row><row><cell>Semantic Similarity In Twitter (PIT) uses a training</cell></row><row><cell>and development set of 17,790 sentence pairs and a</cell></row><row><cell>test set of 972 sentence pairs with paraphrase anno-</cell></row><row><cell>tations (see examples in Table</cell></row></table><note>Statistics of PIT-2015 Twitter Paraphrase Corpus. Debatable cases are those received a medium-score from annotators. The percentage of paraphrases is lower in the test set because it was constructed without topic selection.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2</head><label>2</label><figDesc></figDesc><table><row><cell>shows the basic statistics of the</cell></row><row><cell>corpus. The sentences are preprocessed with tok-</cell></row><row><cell>enization, 3 POS and named entity tags. 4 The train-</cell></row><row><cell>ing and development set consists of 17,790 sentence</cell></row><row><cell>pairs posted between April 24th and May 3rd, 2013</cell></row><row><cell>from 500+ trending topics featured on Twitter (ex-</cell></row><row><cell>cluding hashtags). The training and development set</cell></row><row><cell>is a random split. Each sentence pair is annotated by</cell></row><row><cell>5 different crowdsourcing workers. For the test set,</cell></row><row><cell>we obtain both crowdsourced and expert labels on</cell></row><row><cell>972 sentence pairs from 20 randomly sampled Twit-</cell></row><row><cell>ter trending topics between May 13th and June 10th,</cell></row><row><cell>2013. We use expert labels in this SemEval eval-</cell></row><row><cell>uation. Our dataset is more realistic and balanced,</cell></row><row><cell>containing about 70% non-paraphrases vs. the 34%</cell></row><row><cell>non-paraphrases in the benchmark Microsoft Para-</cell></row><row><cell>phrase Corpus derived from news articles by</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>Evaluation results. The first column presents the rank of each team in the two tasks based on each team's best system. The superscripts are the ranks of systems, ordered by F1 for Paraphrase Identification (PI) task and Pearson for Semantic Similarity (SS) task. indicates unsupervised or semi-supervised system. In total, 19 teams participated in the PI task, of which 14 teams also participated in the SS task. Note that although the two sub-tasks share the same test set of 972 sentence pairs, the PI task ignores 134 debatable cases (received a medium-score from expert annotator) and uses only 838 pairs (663 paraphrases and 175 non-paraphrases) in evaluation, while SS task uses all 972 pairs.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head></head><label></label><figDesc>ECNU<ref type="bibr" target="#b50">(Zhao and Lan, 2015)</ref>: This team adopts typical machine learning classifiers and uses a variety of features, such as surface text, semantic level, textual entailment, word distributional representations by deep learning methods.</figDesc><table><row><cell>FBK-HLT (Ngoc Phuoc An Vo and Popescu,</cell></row><row><cell>2015): This team uses supervised learning</cell></row><row><cell>model with different features for the 2 runs,</cell></row><row><cell>such as n-gram overlap, word alignment and</cell></row><row><cell>edit distance.</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://www.cis.upenn.edu/˜xwe/ semeval2015pit/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">http://aclweb.org/aclwiki/index.php? title=Paraphrase_Identification_(State_of_ the_art)</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">The tokenizer was developed by O'Connor et al. (2010): https://github.com/brendano/tweetmotif 4 The POS tagger was developed by Derczynski et al. (2013) and the NER tagger was developed by Ritter et al. (2011): https://github.com/aritter/twitter_nlp</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">More information about Twitter's APIs: https://dev. twitter.com/docs/api/1.1/overview 6 We use the toolkit developed by O'Connor et al. (2010): https://github.com/brendano/tweetmotif</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="7">The source code and data for WTMF is available at: http://www.cs.columbia.edu/˜weiwei/code. html</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>We would like to thank all participants, reviewers and SemEval organizers Preslav Nakov, Torsten Zesch, Daniel Cer, David Jurgens. This material is based in part on research sponsored by the NSF under grant IIS-1430651, DARPA under agreement number FA8750-13-2-0017 (the DEFT program) and through a Google Faculty Research Award to Chris Callison-Burch. The U.S. Government is authorized to reproduce and distribute reprints for governmental purposes. The views and conclusions contained in this publication are those of the authors and should not be interpreted as representing official policies or endorsements of DARPA or the U.S. Government.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Semeval-2012 task 6: A pilot on semantic textual similarity</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Diab</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Cer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gonzalez-Agirre</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Se-mEval</title>
+				<meeting>Se-mEval</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Inter-coder agreement for computational linguistics</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Artstein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Poesio</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<biblScope unit="volume">34</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">HLTC-HKUST: A neural network paraphrase classifier using translation metrics, semantic roles and lexical similarity features</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bertero</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Fung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">RTM-DCU: Referential translation machines for semantic similarity</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Biçici</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Way</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Optimizing instance selection for statistical machine translation with 8 https://github.com/cocoxu/ SemEval-PIT2015 feature decay algorithms</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Biçici</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Yuret</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Speech, and Language Processing (TASLP)</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">RTM-DCU: Predicting semantic similarity with referential translation machines</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Bicici</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">The meaning factory: Formal semantics for recognizing textual entailment and determining semantic similarity</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bjerva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Bos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Van Der Goot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Nissim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Se-mEval</title>
+				<meeting>Se-mEval</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">A comparison of vector-based representations for semantic composition</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Blacoe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lapata</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP-CoNLL</title>
+				<meeting>EMNLP-CoNLL</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Collecting highly parallel data for paraphrase evaluation</title>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">L</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">B</forename><surname>Dolan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Paraphrase identification as probabilistic quasi-synchronous recognition</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">A</forename><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL-IJCNLP</title>
+				<meeting>ACL-IJCNLP</meeting>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Twitter part-of-speech tagging for all: Overcoming sparse and noisy data</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Bontcheva</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of RANLP</title>
+				<meeting>RANLP</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Unsupervised construction of large paraphrase corpora: Exploiting massively parallel news sources</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Dolan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Quirk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Brockett</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING</title>
+				<meeting>COLING</meeting>
+		<imprint>
+			<date type="published" when="2004" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">ASOBEK: Twitter paraphrase identification with simple overlap features and SVMs</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Eyecioglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Keller</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Se-mEval</title>
+				<meeting>Se-mEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<author>
+			<persName><forename type="first">C</forename><surname>Fellbaum</surname></persName>
+		</author>
+		<title level="m">WordNet. In Theory and Applications of Ontology: Computer Applications</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">A semantic similarity approach to paraphrase detection</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Fernando</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Stevenson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Computational Linguistics UK (CLUK) 11th Annual Research Colloquium</title>
+				<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Brown corpus manual</title>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">N</forename><surname>Francis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Kucera</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1979" />
+		</imprint>
+		<respStmt>
+			<orgName>Brown University. Department of Linguistics</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical report</note>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">G</forename><surname>Glavaš</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Karan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Šnajder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><forename type="middle">D</forename><surname>Bašić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Vulić</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-F</forename><surname>Moens</surname></persName>
+		</author>
+		<idno>TKLBLIIR: 9</idno>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Detecting Twitter paraphrases with TweetingJay</title>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Modeling sentences in the latent space</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Diab</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ACL</title>
+				<meeting>ACL</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Fast tweet retrieval with compact binary codes</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Diab</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of COLING</title>
+				<meeting>COLING</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">UMBC EBIQUITY-CORE: Semantic textual similarity systems</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Han</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kashyap</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Finin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mayfield</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Weese</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of *SEM</title>
+				<meeting>*SEM</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Semantic relatedness using salient semantic analysis</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Hassan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mihalcea</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of AAAI</title>
+				<meeting>AAAI</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">OntoNotes: the 90% solution</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Hovy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Marcus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Palmer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ramshaw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Weischedel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of HLT-NAACL</title>
+				<meeting>HLT-NAACL</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Semantic similarity of short texts</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Islam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Inkpen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of RANLP</title>
+				<meeting>RANLP</meeting>
+		<imprint>
+			<date type="published" when="2007" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Discriminative improvements to distributional sentence similarity</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Ji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Eisenstein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">CDTDS: Predicting paraphrases in Twitter via support vector regression</title>
+		<author>
+			<persName><forename type="first">R.-M</forename><surname>Karampatsis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">Extending 4lang using monolingual dictionaries</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kornai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Makrai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Nemeskey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Recski</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+	<note>Unpublished manuscript</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Generating phrasal and sentential paraphrases: A survey of data-driven methods</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Madnani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><forename type="middle">J</forename><surname>Dorr</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computational Linguistics</title>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Re-examining machine translation metrics for paraphrase identification</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Madnani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tetreault</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chodorow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Corpus-based and knowledge-based measures of text semantic similarity</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Mihalcea</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Corley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Strapparava</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of AAAI</title>
+				<meeting>AAAI</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<monogr>
+		<title level="m" type="main">The impact of frequency on summarization</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Nenkova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Vanderwende</surname></persName>
+		</author>
+		<idno>MSR-TR-2005-101</idno>
+		<imprint>
+			<date type="published" when="2005" />
+			<pubPlace>Microsoft Research</pubPlace>
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical report</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">FBK-HLT: An application of semantic textual similarity for paraphrase and semantic similarity in Twitter</title>
+		<author>
+			<persName><forename type="first">Ngoc Phuoc An</forename><surname>Vo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">M</forename><surname>Popescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Tweetmotif: Exploratory search and topic summarization for Twitter</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>O'connor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Krieger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahn</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ICWSM</title>
+				<meeting>ICWSM</meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">Using paraphrases for improving first story detection in news and twitter</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Petrović</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Osborne</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Lavrenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NAACL-HLT</title>
+				<meeting>NAACL-HLT</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Paraphrase recognition via dissimilarity significance classification</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-Y</forename><surname>Kan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T.-S</forename><surname>Chua</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Named entity recognition in tweets: an experimental study</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>Etzioni</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Some aspects of the sequential design of experiments</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Robbins</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Herbert Robbins Selected Papers</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="1985" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Paraphrase identification with lexico-syntactic graph subsumption</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Rus</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">M</forename><surname>Mccarthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">C</forename><surname>Lintean</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">S</forename><surname>Mcnamara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">C</forename><surname>Graesser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of FLAIRS</title>
+				<meeting>FLAIRS</meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Ebiquity: Paraphrase and semantic similarity in Twitter using skipgrams</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Satyapanich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Gao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Finin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">Dynamic pooling and unfolding recursive autoencoders for paraphrase detection</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">H</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Pennin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of NIPS</title>
+				<meeting>NIPS</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Efficient crowdsourcing of unknown experts using multi-armed bandits</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Tran-Thanh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Stein</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Rogers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennings</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">R</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of ECAI</title>
+				<meeting>ECAI</meeting>
+		<imprint>
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">ROB: Using semantic meaning to recognize paraphrases</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Van Der Goot</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Van Noord</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Beyond SumBasic: Taskfocused summarization with sentence simplification and lexical expansion</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Vanderwende</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Suzuki</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Brockett</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Nenkova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Information Processing &amp; Management</title>
+				<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="page">43</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Using dependency-based features to take the parafarce out of paraphrase</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Wan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Dras</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Dale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paris</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Australasian Language Technology Workshop</title>
+				<meeting>the Australasian Language Technology Workshop</meeting>
+		<imprint>
+			<date type="published" when="2006" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Paraphrasing 4 microblog normalization</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Dyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">W</forename><surname>Black</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Trancoso</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<monogr>
+		<title level="m" type="main">Data-Drive Approaches for Paraphrasing Across Language Variations. PhD thesis</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Xu</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+		<respStmt>
+			<orgName>Department of Computer Science, New York University</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Extracting lexically divergent paraphrases from Twitter</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Callison-Burch</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><forename type="middle">B</forename><surname>Dolan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ji</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Transactions of the Association for Computational Linguistics (TACL)</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="volume">2</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Gathering and generating paraphrases from twitter with application to normalization</title>
+		<author>
+			<persName><forename type="first">W</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Grishman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Sixth Workshop on Building and Using Comparable Corpora</title>
+				<meeting>the Sixth Workshop on Building and Using Comparable Corpora</meeting>
+		<imprint>
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Linguistic redundancy in twitter</title>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">M</forename><surname>Zanzotto</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Pennacchiotti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Tsioutsiouliklis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of EMNLP</title>
+				<meeting>EMNLP</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">MITRE: Seven systems for semantic similarity in tweets</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Zarrella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Henderson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">M</forename><surname>Merkhofer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Strickhart</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">ECNU: Boosting performance for paraphrase and semantic similarity in Twitter by leveraging word embeddings</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval</title>
+				<meeting>SemEval</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2010 Task 13: TempEval-2</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<settlement>Massachusetts</settlement>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution">‡Barcelona Media</orgName>
+								<address>
+									<settlement>Barcelona</settlement>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><roleName>Roser Saurí ‡</roleName><forename type="first">Tommaso</forename><surname>Caselli</surname></persName>
+							<email>tommaso.caselli@ilc.cnr.it</email>
+							<affiliation key="aff2">
+								<orgName type="institution">ILC-CNR</orgName>
+								<address>
+									<settlement>Pisa</settlement>
+									<country key="IT">Italy</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+							<email>jamesp@cs.brandeis.edu</email>
+							<affiliation key="aff0">
+								<orgName type="department">Computer Science Department</orgName>
+								<orgName type="institution">Brandeis University</orgName>
+								<address>
+									<settlement>Massachusetts</settlement>
+									<country key="US">USA</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff1">
+								<orgName type="institution">‡Barcelona Media</orgName>
+								<address>
+									<settlement>Barcelona</settlement>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2010 Task 13: TempEval-2</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:26+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Tempeval-2 comprises evaluation tasks for time expressions, events and temporal relations, the latter of which was split up in four sub tasks, motivated by the notion that smaller subtasks would make both data preparation and temporal relation extraction easier. Manually annotated data were provided for six languages: Chinese, English, French, Italian, Korean and Spanish.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>The ultimate aim of temporal processing is the automatic identification of all temporal referring expressions, events and temporal relations within a text. However, addressing this aim is beyond the scope of an evaluation challenge and a more modest approach is appropriate.</p><p>The 2007 SemEval task, TempEval-1 <ref type="bibr" target="#b7">Verhagen et al., 2009)</ref>, was an initial evaluation exercise based on three limited temporal ordering and anchoring tasks that were considered realistic both from the perspective of assembling resources for development and testing and from the perspective of developing systems capable of addressing the tasks. <ref type="bibr">1</ref> TempEval-2 is based on TempEval-1, but is more elaborate in two respects: (i) it is a multilingual task, and (ii) it consists of six subtasks rather than three.</p><p>In the rest of this paper, we first introduce the data that we are dealing with. Which gets us in a position to present the list of task introduced by TempEval-2, including some motivation as to why we feel that it is a good idea to split up temporal relation classification into sub tasks. We proceed by shortly describing the data resources and their creation, followed by the performance of the systems that participated in the tasks. <ref type="bibr">1</ref> The Semeval-2007 task was actually known simply as TempEval, but here we use Tempeval-1 to avoid confusion.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">TempEval Annotation</head><p>The TempEval annotation language is a simplified version of TimeML. 2 using three TimeML tags: TIMEX3, EVENT and TLINK.</p><p>TIMEX3 tags the time expressions in the text and is identical to the TIMEX3 tag in TimeML. Times can be expressed syntactically by adverbial or prepositional phrases, as shown in the following example. The two main attributes of the TIMEX3 tag are TYPE and VAL, both shown in the example (2).</p><p>(2) November 22, 2004 type=" <ref type="bibr">DATE" val="2004-11-22"</ref> For TempEval-2, we distinguish four temporal types: TIME (at 2:45 p.m.), DATE (January 27, 1920, yesterday), DURATION (two weeks) and SET (every Monday morning). The VAL attribute assumes values according to an extension of the ISO 8601 standard, as enhanced by TIMEX2.</p><p>Each document has one special TIMEX3 tag, the Document Creation Time (DCT), which is interpreted as an interval that spans a whole day.</p><p>The EVENT tag is used to annotate those elements in a text that describe what is conventionally referred to as an eventuality. Syntactically, events are typically expressed as inflected verbs, although event nominals, such as "crash" in killed by the crash, should also be annotated as EVENTS. The most salient event attributes encode tense, aspect, modality and polarity information. Examples of some of these features are shown below:</p><p>(3) should have bought tense="PAST" aspect="PERFECTIVE" modality="SHOULD" polarity="POS" (4) did not teach tense="PAST" aspect="NONE" modality="NONE" polarity="NEG"</p><p>The relation types for the TimeML TLINK tag form a fine-grained set based on James Allen's interval logic <ref type="bibr" target="#b0">(Allen, 1983)</ref>. For TempEval, the set of labels was simplified to aid data preparation and to reduce the complexity of the task. We use only six relation types including the three core relations BEFORE, AFTER, and OVERLAP, the two less specific relations BEFORE-OR-OVERLAP and OVERLAP-OR-AFTER for ambiguous cases, and finally the relation VAGUE for those cases where no particular relation can be established.</p><p>Temporal relations come in two broad flavours: anchorings of events to time expressions and orderings of events. Events can be anchored to an adjacent time expression as in examples 5 and 6 or to the document creation time as in 7. The country defaulted e2 on debts for that entire year. <ref type="bibr">BEFORE(e2,</ref><ref type="bibr">dct)</ref> In addition, events can be ordered relative to other events, as in the examples below.</p><p>(8) The President spoke e1 to the nation on Tuesday on the financial crisis. He had conferred e2 with his cabinet regarding policy the day before. AFTER(e1,e2) (9) The students heard e1 a fire alarm e2 .</p><p>OVERLAP(e1,e2) (10) He said e1 they had postponed e2 the meeting.</p><p>AFTER(e1,e2)</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">TempEval-2 Tasks</head><p>We can now define the six TempEval tasks:</p><p>A. Determine the extent of the time expressions in a text as defined by the TimeML TIMEX3 tag. In addition, determine value of the features TYPE and VAL.</p><p>B. Determine the extent of the events in a text as defined by the TimeML EVENT tag. In addition, determine the value of the features CLASS, TENSE, ASPECT, POLARITY, and MODALITY.</p><p>C. Determine the temporal relation between an event and a time expression in the same sentence. This task is further restricted by requiring that either the event syntactically dominates the time expression or the event and time expression occur in the same noun phrase.</p><p>D. Determine the temporal relation between an event and the document creation time.</p><p>E. Determine the temporal relation between two main events in consecutive sentences.</p><p>F. Determine the temporal relation between two events where one event syntactically dominates the other event.</p><p>Of these tasks, C, D and E were also defined for TempEval-1. However, the syntactic locality restriction in task C was not present in TempEval-1.</p><p>Task participants could choose to either do all tasks, focus on the time expression task, focus on the event task, or focus on the four temporal relation tasks. In addition, participants could choose one or more of the six languages for which we provided data: Chinese, English, French, Italian, Korean, and Spanish.</p><p>We feel that well-defined tasks allow us to structure the workflow, allowing us to create taskspecific guidelines and using task-specific annotation tools to speed up annotation. More importantly, each task can be evaluated in a fairly straightforward way, contrary to for example the problems that pop up when evaluating two complex temporal graphs for the same document. In addition, tasks can be ranked, allowing systems to feed the results of one (more precise) task as a feature into another task.</p><p>Splitting the task into substask reduces the error rate in the manual annotation, and that merging the different sub-task into a unique layer as a postprocessing operation (see figure <ref type="figure">1</ref>) provides better Figure <ref type="figure">1</ref>: Merging Relations and more reliable results (annotated data) than doing a complex task all at once.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Data Preparation</head><p>The data for the five languages were prepared independently of each other and do not comprise a parallel corpus. However, annotation specifications and guidelines for the five languages were developed in conjunction with one other, in many cases based on version 1.2.1 of the TimeML annotation guidelines for English 3 . Not all corpora contained data for all six tasks. Table <ref type="table" target="#tab_1">1</ref>   All corpora include event and timex annotation. The French corpus contained a subcorpus with temporal relations but these relations were not split into the four tasks C through F.</p><p>Annotation proceeded in two phases: a dual annotation phase where two annotators annotate each document and an adjudication phase where a judge resolves disagreements between the annotators. Most languages used BAT, the Brandeis Annotation Tool <ref type="bibr" target="#b8">(Verhagen, 2010)</ref>, a generic webbased annotation tool that is centered around the notion of annotation tasks. With the task decomposition allowed by BAT, it is possible to structure the complex task of temporal annotation by splitting it up in as many sub tasks as seems useful. As 3 See http://www.timeml.org.</p><p>such, BAT was well-suited for TempEval-2 annotation.</p><p>We now give a few more details on the English and Spanish data, skipping the other languages for reasons that will become obvious at the beginning of section 6.</p><p>The English data sets were based on TimeBank <ref type="bibr" target="#b2">(Pustejovsky et al., 2003;</ref><ref type="bibr" target="#b1">Boguraev et al., 2007)</ref>, a hand-built gold standard of annotated texts using the TimeML markup scheme. <ref type="bibr">4</ref> However, all event annotation was reviewed to make sure that the annotation complied with the latest guidelines and all temporal relations were added according to the Tempeval-2 relation tasks, using the specified relation types.</p><p>The data released for the TempEval-2 Spanish edition is a fragment of the Spanish TimeBank, currently under development. Its documents are originally from the Spanish part of the AnCora corpus <ref type="bibr" target="#b5">(Taulé et al., 2008)</ref>. Data preparation followed the annotation guidelines created to deal with the specificities of event and timex expressions in Spanish <ref type="bibr" target="#b3">(Saurí et al., 2009a;</ref><ref type="bibr" target="#b4">Saurí et al., 2009b)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Evaluation Metrics</head><p>For the extents of events and time expressions (tasks A and B), precision, recall and the f1-measure are used as evaluation metrics, using the following formulas:</p><formula xml:id="formula_0">precision = tp/(tp + f p) recall = tp/(tp + f n) f -measure = 2 * (P * R)/(P + R)</formula><p>Where tp is the number of tokens that are part of an extent in both key and response, fp is the number of tokens that are part of an extent in the response but not in the key, and fn is the number of tokens that are part of an extent in the key but not in the response.</p><p>For attributes of events and time expressions (the second part of tasks A and B) and for relation types (tasks C through F) we use an even simpler metric: the number of correct answers divided by the number of answers.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">System Results</head><p>Eight teams participated in TempEval-2, submitting a grand total of eighteen systems. Some of these systems only participated in one or two tasks while others participated in all tasks. The distribution over the six languages was very uneven: sixteen systems for English, two for Spanish and one for English and Spanish.</p><p>The results for task A, recognition and normalization of time expressions, are given in tables 2 and 3.   The results for Spanish are more uniform and generally higher than the results for English. For Spanish, the f-measure for TIMEX3 extents ranges from 0.88 through 0.91 with an average of 0.89; for English the f-measure ranges from 0.26 through 0.86, for an average of 0.78. However, due to the small sample size it is hard to make any generalizations. In both languages, type detection clearly was a simpler task than determining the value.</p><p>The results for task B, event recognition, are given in tables 4 and 5. Both tables contain results for both Spanish and English, the first part of each ta-ble contains the results for Spanish and the next part the results for English.   As with the time expressions results, the sample size for Spanish is small, but note again the higher f-measure for event extents in Spanish.</p><p>Table <ref type="table" target="#tab_8">6</ref> shows the results for all relation tasks, with the Spanish systems in the first two rows and the English systems in the last six rows. Recall that for Spanish the training and test sets only contained data for tasks C and D.</p><p>Interestingly, the version of the TIPSem systems that were applied to the Spanish data did much better on task C compared to its English cousins, but much worse on task D, which is rather puzzling.</p><p>Such a difference in performance of the systems could be due to differences in annotation accurateness, or it could be due to some particularities of how the two languages express certain temporal  For each task, the test data provided the event pairs or event-timex pairs with the relation type set to NONE and participating systems would replace that value with one of the six allowed relation types. However, participating systems were allowed to not replace NONE and not be penalized for it. Those cases would not be counted when compiling the scores in table 6.   The results are very similar except for task D, but if we take a away the one outlier (the NCSUjoint score of 0.21) then the average becomes 0.78 with a standard deviation of 0.05. However, we had expected that for TempEval-2 the systems would score better on task C since we added the restriction that the event and time expression had to be syntactically adjacent. It is not clear why the results on task C have not improved.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>In this paper, we described the TempEval-2 task within the SemEval 2010 competition. This task involves identifying the temporal relations between events and temporal expressions in text. Using a subset of TimeML temporal relations, we show how temporal relations and anchorings can be annotated and identified in six different languages. The markup language adopted presents a descriptive framework with which to examine the temporal aspects of natural language information, demonstrating in particular, how tense and temporal information is encoded in specific sentences, and how temporal relations are encoded between events and temporal expressions. This work paves the way towards establishing a broad and open standard metadata markup language for natural language texts, examining events, temporal expressions, and their orderings.</p><p>One thing that would need to be addressed in a follow-up task is what the optimal number of tasks is. Tempeval-2 had six tasks, spread out over six languages. This brought about some logistical challenges that delayed data delivery and may have given rise to a situation where there was simply not enough time for many systems to properly prepare. And clearly, the shared task was not successful in attracting systems to four of the six languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Acknowledgements</head><p>Many people were involved in TempEval-2. We want to express our gratitude to the following key contributors: Nianwen Xue, Estela Saquete, Lotus Goldberg, Seohyun Im, André Bittar, Nicoletta Calzolari, Jessica Moszkowicz and Hyopil Shin.</p><p>Additional thanks to Joan Banach, Judith Domingo, Pau Giménez, Jimena del Solar, Teresa Suñol, Allyson Ettinger, Sharon Spivak, Nahed Abul-Hassan, Ari Abelman, John Polson, Alexandra Nunez, Virginia Partridge, , Amber Stubbs, Alex Plotnick, Yuping Zhou, Philippe Muller and Irina Prodanof.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>( 5 )</head><label>5</label><figDesc>Mary taught e1 on Tuesday morning t1 OVERLAP(e1,t1) (6) They cancelled the evening t2 class e2 OVERLAP(e2,t2) (7) Most troops will leave e1 Iraq by August of 2010. AFTER(e1,dct)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>gives the size of the training set and the relation tasks that were included.</figDesc><table><row><cell cols="2">language tokens C D E F X</cell></row><row><cell cols="2">Chinese 23,000</cell></row><row><cell>English</cell><cell>63,000</cell></row><row><cell>Italian</cell><cell>27,000</cell></row><row><cell>French</cell><cell>19,000</cell></row><row><cell>Korean</cell><cell>14,000</cell></row><row><cell>Spanish</cell><cell>68,000</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Corpus size and relation tasks</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc></figDesc><table><row><cell></cell><cell cols="4">Task A results for Spanish</cell></row><row><cell>team</cell><cell>p</cell><cell>r</cell><cell>f</cell><cell>type val</cell></row><row><cell>Edinburgh</cell><cell cols="4">0.85 0.82 0.84 0.84 0.63</cell></row><row><cell cols="5">HeidelTime1 0.90 0.82 0.86 0.96 0.85</cell></row><row><cell cols="5">HeidelTime2 0.82 0.91 0.86 0.92 0.77</cell></row><row><cell>JU CSE</cell><cell cols="4">0.55 0.17 0.26 0.00 0.00</cell></row><row><cell>KUL</cell><cell cols="4">0.78 0.82 0.80 0.91 0.55</cell></row><row><cell>KUL Run 2</cell><cell cols="4">0.73 0.88 0.80 0.91 0.55</cell></row><row><cell>KUL Run 3</cell><cell cols="4">0.85 0.84 0.84 0.91 0.55</cell></row><row><cell>KUL Run 4</cell><cell cols="4">0.76 0.83 0.80 0.91 0.51</cell></row><row><cell>KUL Run 5</cell><cell cols="4">0.75 0.85 0.80 0.91 0.51</cell></row><row><cell>TERSEO</cell><cell cols="4">0.76 0.66 0.71 0.98 0.65</cell></row><row><cell>TIPSem</cell><cell cols="4">0.92 0.80 0.85 0.92 0.65</cell></row><row><cell>TIPSem-B</cell><cell cols="4">0.88 0.60 0.71 0.88 0.59</cell></row><row><cell>TRIOS</cell><cell cols="4">0.85 0.85 0.85 0.94 0.76</cell></row><row><cell>TRIPS</cell><cell cols="4">0.85 0.85 0.85 0.94 0.76</cell></row><row><cell>USFD2</cell><cell cols="4">0.84 0.79 0.82 0.90 0.17</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Task A results for English</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 4</head><label>4</label><figDesc></figDesc><table><row><cell></cell><cell cols="3">: Event extent results</cell><cell></cell></row><row><cell cols="5">The column headers in table 5 are abbrevia-</cell></row><row><cell cols="5">tions for polarity (pol), mood (moo), modality</cell></row><row><cell cols="5">(mod), tense (tns), aspect (asp) and class (cl). Note</cell></row><row><cell cols="5">that the English team chose to include modality</cell></row><row><cell cols="4">whereas the Spanish team used mood.</cell><cell></cell></row><row><cell>team</cell><cell>pol</cell><cell>moo tns</cell><cell>asp</cell><cell>cl</cell></row><row><cell>TIPSem</cell><cell cols="4">0.92 0.80 0.96 0.89 0.66</cell></row><row><cell cols="5">TIPSem-B 0.92 0.79 0.96 0.89 0.66</cell></row><row><cell>team</cell><cell>pol</cell><cell>mod tns</cell><cell>asp</cell><cell>cl</cell></row><row><cell cols="5">Edinburgh 0.99 0.99 0.92 0.98 0.76</cell></row><row><cell>JU CSE</cell><cell cols="4">0.98 0.98 0.30 0.95 0.53</cell></row><row><cell>TIPSem</cell><cell cols="4">0.98 0.97 0.86 0.97 0.79</cell></row><row><cell cols="5">TIPSem-B 0.98 0.98 0.85 0.97 0.79</cell></row><row><cell>TRIOS</cell><cell cols="4">0.99 0.95 0.91 0.98 0.77</cell></row><row><cell>TRIPS</cell><cell cols="4">0.99 0.96 0.67 0.97 0.67</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 5 :</head><label>5</label><figDesc>Event attribute results</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 6</head><label>6</label><figDesc></figDesc><table><row><cell>: Results for relation tasks</cell></row><row><cell>aspects, or perhaps the one corpus is more ho-</cell></row><row><cell>mogeneous than the other. Again, there are not</cell></row><row><cell>enough data points, but the issue deserves further</cell></row><row><cell>attention.</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_9"><head>Table 7</head><label>7</label><figDesc></figDesc><table><row><cell></cell><cell></cell><cell></cell><cell></cell><cell>lists those</cell></row><row><cell cols="5">systems that did not classify all relation and the</cell></row><row><cell cols="5">percentage of relations for each task that those sys-</cell></row><row><cell cols="2">tems did not classify.</cell><cell></cell><cell></cell><cell></cell></row><row><cell>team</cell><cell>C</cell><cell>D</cell><cell>E</cell><cell>F</cell></row><row><cell cols="5">TRIOS 25% 19% 36% 31%</cell></row><row><cell cols="5">TRIPS 20% 10% 17% 10%</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 7 :</head><label>7</label><figDesc>Percentage not classifiedA comparison with the Tempeval-1 results from Semeval-2007 may be of interest. Six systems participated in the TempEval-1 tasks, compared to seven or eight systems for TempEval-2. Table8lists the average scores and the standard deviations for all the tasks (on the English data) that Tempeval-1 and Tempeval-2 have in common.</figDesc><table><row><cell></cell><cell>C</cell><cell>D</cell><cell>E</cell></row><row><cell cols="4">tempeval-1 average 0.59 0.76 0.51</cell></row><row><cell>stddev</cell><cell cols="3">0.03 0.03 0.05</cell></row><row><cell cols="4">tempeval-2 average 0.61 0.70 0.53</cell></row><row><cell>stddev</cell><cell cols="3">0.04 0.22 0.05</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 8 :</head><label>8</label><figDesc></figDesc><table /><note>Comparing Tempevals</note></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">See http://www.timeml.org for language specifications and annotation guidelines</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">See www.timeml.org for details on TimeML, Time-Bank is distributed free of charge by the Linguistic Data Consortium (www.ldc.upenn.edu), catalog number LDC2006T08.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The work on the Spanish corpus was supported by a EU Marie Curie International Reintegration Grant (PIRG04- GA-2008-239414). Work on the English corpus was supported under the NSF-CRI grant 0551615, "Towards a Comprehensive Linguistic Annotation of Language" and the NSF-INT-0753069 project "Sustainable Interoperability for Language Technology (SILT)", funded by the National Science Foundation.</p><p>Finally, thanks to all the participants, for sticking with a task that was not always as flawless and timely as it could have been in a perfect world.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Maintaining knowledge about temporal intervals</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Communications of the ACM</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="832" to="843" />
+			<date type="published" when="1983" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Timebank evolution as a community resource for timeml parsing. Language Resource and Evaluation</title>
+		<author>
+			<persName><forename type="first">Bran</forename><surname>Boguraev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rie</forename><surname>Ando</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007" />
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="page" from="91" to="115" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Day</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lisa</forename><surname>Ferro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Hanks</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcia</forename><surname>Lazo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roser</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>See</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Setzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Beth</forename><surname>Sundheim</surname></persName>
+		</author>
+		<title level="m">The TimeBank Corpus. Corpus Linguistics</title>
+				<imprint>
+			<date type="published" when="2003-03" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Annotating events in spanish. timeml annotation guidelines</title>
+		<author>
+			<persName><forename type="first">Roser</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Batiukova</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<idno>Version TempEval-2010.</idno>
+		<imprint>
+			<date type="published" when="2009" />
+			<pubPlace>Barcelona Media -Innovation Center</pubPlace>
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Annotating time expressions in spanish. timeml annotation guidelines</title>
+		<author>
+			<persName><forename type="first">Roser</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Estela</forename><surname>Saquete</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<idno>Version TempEval-2010</idno>
+		<imprint>
+			<date type="published" when="2009" />
+			<pubPlace>Barcelona Media -Innovation Center</pubPlace>
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Ancora: Multilevel annotated corpora for catalan and spanish</title>
+		<author>
+			<persName><forename type="first">Mariona</forename><surname>Taulé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Toni</forename><surname>Martí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Recasens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the LREC</title>
+				<meeting>the LREC<address><addrLine>Marrakesh, Morocco</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2008" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Semeval-2007 task 15: Tempeval temporal relation identification</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Schilder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Hepple</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Katz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the Fourth Int. Workshop on Semantic Evaluations (SemEval-2007)</title>
+				<meeting>of the Fourth Int. Workshop on Semantic Evaluations (SemEval-2007)<address><addrLine>Prague, Czech Republic</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2007-06" />
+			<biblScope unit="page" from="75" to="80" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">The tempeval challenge: identifying temporal relations in text. Language Resources and Evaluation</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Schilder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Hepple</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">The Brandeis Annotation Tool</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Language Resources and Evaluation Conference, LREC 2010</title>
+				<meeting><address><addrLine>Malta</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

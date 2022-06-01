@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2015 Task 10: Sentiment Analysis in Twitter</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Saif</forename><forename type="middle">M</forename><surname>Mohammad</surname></persName>
+							<email>saif.mohammad@nrc-cnrc.gc.ca</email>
+						</author>
+						<author>
+							<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+							<email>pnakov@qf.org.qa</email>
+						</author>
+						<author>
+							<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+							<email>aritter@cs.washington.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+							<email>svetlana.kiritchenko@nrc-cnrc.gc.ca</email>
+						</author>
+						<author>
+							<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">Columbia University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">National Research Council</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="department">Computing Research Institute</orgName>
+								<address>
+									<country key="QA">Qatar</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff3">
+								<orgName type="institution">The Ohio State University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff4">
+								<orgName type="institution">National Research Council</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2015 Task 10: Sentiment Analysis in Twitter</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>In this paper, we describe the 2015 iteration of the SemEval shared task on Sentiment Analysis in Twitter. This was the most popular sentiment analysis shared task to date with more than 40 teams participating in each of the last three years. This year's shared task competition consisted of five sentiment prediction subtasks. Two were reruns from previous years: (A) sentiment expressed by a phrase in the context of a tweet, and (B) overall sentiment of a tweet. We further included three new subtasks asking to predict (C) the sentiment towards a topic in a single tweet, (D) the overall sentiment towards a topic in a set of tweets, and (E) the degree of prior polarity of a phrase.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Social media such as Weblogs, microblogs, and discussion forums are used daily to express personal thoughts, which allows researchers to gain valuable insight into the opinions of a very large number of individuals, i.e., at a scale that was simply not possible a few years ago. As a result, nowadays, sentiment analysis is commonly used to study the public opinion towards persons, objects, and events. In particular, opinion mining and opinion detection are applied to product reviews <ref type="bibr" target="#b6">(Hu and Liu, 2004)</ref>, for agreement detection <ref type="bibr">(Hillard et al., 2003)</ref>, and even for sarcasm identification <ref type="bibr" target="#b5">(González-Ibáñez et al., 2011;</ref><ref type="bibr" target="#b13">Liebrecht et al., 2013)</ref>.</p><p>Early work on detecting sentiment focused on newswire text <ref type="bibr" target="#b1">Baccianella et al., 2010;</ref><ref type="bibr" target="#b19">Pang et al., 2002;</ref><ref type="bibr" target="#b6">Hu and Liu, 2004)</ref>. As later research turned towards social media, people realized this presented a number of new challenges.</p><p>Misspellings, poor grammatical structure, emoticons, acronyms, and slang were common in these new media, and were explored by a number of researchers <ref type="bibr" target="#b2">(Barbosa and Feng, 2010;</ref><ref type="bibr" target="#b3">Bifet et al., 2011;</ref><ref type="bibr" target="#b4">Davidov et al., 2010;</ref><ref type="bibr" target="#b7">Jansen et al., 2009;</ref><ref type="bibr" target="#b11">Kouloumpis et al., 2011;</ref><ref type="bibr" target="#b17">O'Connor et al., 2010;</ref><ref type="bibr" target="#b18">Pak and Paroubek, 2010)</ref>. Later, specialized shared tasks emerged, e.g., at SemEval <ref type="bibr" target="#b16">(Nakov et al., 2013;</ref><ref type="bibr" target="#b21">Rosenthal et al., 2014)</ref>, which compared teams against each other in a controlled environment using the same training and testing datasets. These shared tasks had the side effect to foster the emergence of a number of new resources, which eventually spread well beyond SemEval, e.g., NRC's Hashtag Sentiment lexicon and the Sentiment140 lexicon <ref type="bibr" target="#b15">(Mohammad et al., 2013)</ref>. <ref type="bibr">1</ref> Below, we discuss the public evaluation done as part of SemEval-2015 Task 10. In its third year, the SemEval task on Sentiment Analysis in Twitter has once again attracted a large number of participants: 41 teams across five subtasks, with most teams participating in more than one subtask.</p><p>This year the task included reruns of two legacy subtasks, which asked to detect the sentiment expressed in a tweet or by a particular phrase in a tweet. The task further added three new subtasks. The first two focused on the sentiment towards a given topic in a single tweet or in a set of tweets, respectively. The third new subtask focused on determining the strength of prior association of Twitter terms with positive sentiment; this acts as an intrinsic evaluation of automatic methods that build Twitter-specific sentiment lexicons with real-valued sentiment association scores.</p><p>In the remainder of this paper, we first introduce the problem of sentiment polarity classification and our subtasks. We then describe the process of creating the training, development, and testing datasets. We list and briefly describe the participating systems, the results, and the lessons learned. Finally, we compare the task to other related efforts and we point to possible directions for future research.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>Below, we describe the five subtasks of SemEval-2015 Task 10 on Sentiment Analysis in Twitter.</p><p>• Subtask A. Contextual Polarity Disambiguation: Given an instance of a word/phrase in the context of a message, determine whether it expresses a positive, a negative or a neutral sentiment in that context.</p><p>• Subtask B. Message Polarity Classification: Given a message, determine whether it expresses a positive, a negative, or a neutral/objective sentiment. If both positive and negative sentiment are expressed, the stronger one should be chosen.</p><p>• Subtask C. Topic-Based Message Polarity Classification: Given a message and a topic, decide whether the message expresses a positive, a negative, or a neutral sentiment towards the topic.</p><p>If both positive and negative sentiment are expressed, the stronger one should be chosen.</p><p>• Subtask D. Detecting Trend Towards a Topic: Given a set of messages on a given topic from the same period of time, classify the overall sentiment towards the topic in these messages as (a) strongly positive, (b) weakly positive, (c) neutral, (d) weakly negative, or (e) strongly negative.</p><p>• Subtask E. Determining Strength of Association of Twitter Terms with Positive Sentiment (Degree of Prior Polarity): Given a word/phrase, propose a score between 0 (lowest) and 1 (highest) that is indicative of the strength of association of that word/phrase with positive sentiment. If a word/phrase is more positive than another one, it should be assigned a relatively higher score.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Datasets</head><p>In this section, we describe the process of collecting and annotating our datasets of short social media text messages. We focus our discussion on the 2015 datasets; more detail about the 2013 and the 2014 datasets can be found in <ref type="bibr" target="#b16">(Nakov et al., 2013)</ref> and <ref type="bibr" target="#b21">(Rosenthal et al., 2014)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">Data Collection</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.1">Subtasks A-D</head><p>First, we gathered tweets that express sentiment about popular topics. For this purpose, we extracted named entities from millions of tweets, using a Twitter-tuned NER system <ref type="bibr" target="#b20">(Ritter et al., 2011)</ref>. Our initial training set was collected over a one-year period spanning from January 2012 to January 2013. Each subsequent Twitter test set was collected a few months prior to the corresponding evaluation. We used the public streaming Twitter API to download the tweets.</p><p>We then identified popular topics as those named entities that are frequently mentioned in association with a specific date <ref type="bibr">(Ritter et al., 2012)</ref>. Given this set of automatically identified topics, we gathered tweets from the same time period which mentioned the named entities. The testing messages had different topics from training and spanned later periods.</p><p>The collected tweets were greatly skewed towards the neutral class. In order to reduce the class imbalance, we removed messages that contained no sentiment-bearing words using SentiWordNet as a repository of sentiment words. Any word listed in SentiWordNet 3.0 with at least one sense having a positive or a negative sentiment score greater than 0.3 was considered a sentiment-bearing word. <ref type="bibr">2</ref> For subtasks C and D, we did some manual pruning based on the topics. First, we excluded topics that were incomprehensible, ambiguous (e.g., Barcelona, which is a name of a sports team and also of a place), or were too general (e.g., Paris, which is a name of a big city). Second, we discarded tweets that were just mentioning the topic, but were not really about the topic. Finally, we discarded topics with too few tweets, namely less than 10.</p><p>Instructions: Subjective words are ones which convey an opinion or sentiment. Given a Twitter message, identify whether it is objective, positive, negative, or neutral. Then, identify each subjective word or phrase in the context of the sentence and mark the position of its start and end in the text boxes below. The number above each word indicates its position. The word/phrase will be generated in the adjacent textbox so that you can confirm that you chose the correct range. Choose the polarity of the word or phrase by selecting one of the radio buttons: positive, negative, or neutral. If a sentence is not subjective please select the checkbox indicating that "There are no subjective words/phrases". If a tweet is sarcastic, please select the checkbox indicating that "The tweet is sarcastic". Please read the examples and invalid responses before beginning if this is your first time answering this hit.</p><p>Figure <ref type="figure">1</ref>: The instructions we gave to the workers on Mechanical Turk, followed by a screenshot.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.2">Subtask E</head><p>We selected high-frequency target terms from the Sentiment140 and the Hashtag Sentiment tweet corpora . In order to reduce the skewness towards the neutral class, we selected terms from different ranges of automatically determined sentiment values as provided by the corresponding Sentiment140 and Hashtag Sentiment lexicons. The term set comprised regular English words, hashtagged words (e.g., #loveumom), misspelled or creatively spelled words (e.g., parlament or happeeee), abbreviations, shortenings, and slang. Some terms were negated expressions such as no fun. (It is known that negation impacts the sentiment of its scope in complex ways .) We annotated these terms for degree of sentiment manually. Further details about the data collection and the annotation process can be found in Section 3.2.2 as well as in .</p><p>The trial dataset consisted of 200 instances, and no training dataset was provided. Note, however, that the trial data was large enough to be used as a development set, or even as a training set. Moreover, the participants were free to use any additional manually or automatically generated resources when building their systems for subtask E. The testset included 1,315 instances.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Annotation</head><p>Below we describe the data annotation process.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.1">Subtasks A-D</head><p>We used Amazon's Mechanical Turk for the annotations of subtasks A-D. Each tweet message was annotated by five Mechanical Turk workers, also known as Turkers. The annotations for subtasks A-D were done concurrently, in a single task. A Turker had to mark all the subjective words/phrases in the tweet message by indicating their start and end positions and to say whether each subjective word/phrase was positive, negative, or neutral (subtask A). He/she also had to indicate the overall polarity of the tweet message in general (subtask B) as well as the overall polarity of the message towards the given target topic (subtasks C and D). The instructions we gave to the Turkers, along with an example, are shown in Figure <ref type="figure">1</ref>. We further made available to the Turkers several additional examples, which we show in Table <ref type="table">1</ref>.</p><p>Providing all the required annotations for a given tweet message constituted a Human Intelligence Task, or a HIT. In order to qualify to work on our HITs, a Turker had to have an approval rate greater than 95% and should have completed at least 50 approved HITs.</p><p>Authorities are only too aware that Kashgar is 4,000 kilometres (2,500 miles) from Beijing but only a tenth of the distance from the Pakistani border, and are desperate to ensure instability or militancy does not leak over the frontiers.</p><p>Taiwan-made products stood a good chance of becoming even more competitive thanks to wider access to overseas markets and lower costs for material imports, he said.</p><p>"March appears to be a more reasonable estimate while earlier admission cannot be entirely ruled out," according to Chen, also Taiwan's chief WTO negotiator. friday evening plans were great, but saturday's plans didnt go as expected -i went dancing &amp; it was an ok club, but terribly crowded :-( WHY THE HELL DO YOU GUYS ALL HAVE MRS. KENNEDY! SHES A FUCKING DOUCHE AT&amp;T was okay but whenever they do something nice in the name of customer service it seems like a favor, while T-Mobile makes that a normal everyday thin obama should be impeached on TREASON charges. Our Nuclear arsenal was TOP Secret. Till HE told our enemies what we had. #Coward #Traitor My graduation speech: "I'd like to thanks Google, Wikipedia and my computer!" :D #iThingteens Table <ref type="table">1</ref>: List of example sentences and annotations we provided to the Turkers. All subjective phrases are italicized and color-coded: positive phrases are in green, negative ones are in red, and neutral ones are in blue.</p><p>I would love to watch Vampire Diaries :) and some Heroes! Great combination 9/13 I would love to watch Vampire Diaries :) and some Heroes! Great combination 11/13 I would love to watch Vampire Diaries :) and some Heroes! Great combination 10/13 I would love to watch Vampire Diaries :) and some Heroes! Great combination 13/13 I would love to watch Vampire Diaries :) and some Heroes! Great combination 12/13 I would love to watch Vampire Diaries :) and some Heroes! Great combination Table <ref type="table">2</ref>: Example of a sentence annotated for subjectivity on Mechanical Turk. Words and phrases that were marked as subjective are in bold italic. The first five rows are annotations provided by Turkers, and the final row shows their intersection. The last column shows the token-level accuracy for each annotation compared to the intersection.</p><p>We further discarded the following types of message annotations:</p><p>• containing overlapping subjective phrases;</p><p>• marked as subjective but having no annotated subjective phrases; • with every single word marked as subjective;</p><p>• with no overall sentiment marked;</p><p>• with no topic sentiment marked.</p><p>Recall that each tweet message was annotated by five different Turkers. We consolidated these annotations for subtask A using intersection as shown in the last row of Table <ref type="table">2</ref>. A word had to appear in 3/5 of the annotations in order to be considered subjective. It further had to be labeled with a particular polarity (positive, negative, or neutral) by three of the five Turkers in order to receive that polarity label. As the example shows, this effectively shortens the spans of the annotated phrases, often to single words, as it is hard to agree on long phrases.  We also experimented with two alternative methods for combining annotations: (i) by computing the union of the annotations for the sentence, and (ii) by taking the annotations by the Turker who has annotated the highest number of HITs. However, our manual analysis has shown that both alternatives performed worse than using the intersection.  For subtasks B and C, we consolidated the tweetlevel annotations using majority voting, requiring that the winning label be proposed by at least three of the five Turkers; we discarded all tweets for which 3/5 majority could not be achieved. As in previous years, we combined the objective and the neutral labels, which Turkers tended to mix up.</p><p>We used these consolidated annotations as gold labels for subtasks A, B, C &amp; D. The statistics for all datasets for these subtasks are shown in Tables <ref type="table" target="#tab_1">3, 4</ref>, and 5, respectively. Each dataset is marked with the year of the SemEval edition it was produced for. An annotated example from each source (Twitter, SMS, LiveJournal) is shown in Table <ref type="table" target="#tab_5">6</ref>; examples for sentiment towards a topic can be seen in Table <ref type="table">7</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.2">Subtask E</head><p>Subtask E asks systems to propose a numerical score for the positiveness of a given word or phrase. Many studies have shown that people are actually quite bad at assigning such absolute scores: interannotator agreement is low, and annotators struggle even to remain self-consistent. In contrast, it is much easier to make relative judgments, e.g., to say whether one word is more positive than another. Moreover, it is possible to derive an absolute score from pairwise judgments, but this requires a much larger number of annotations. Fortunately, there are schemes that allow to infer more pairwise annotations from less judgments.</p><p>One such annotation scheme is MaxDiff <ref type="bibr" target="#b14">(Louviere, 1991)</ref>, which is widely used in market surveys <ref type="bibr" target="#b0">(Almquist and Lee, 2009)</ref>; it was also used in a previous SemEval task <ref type="bibr" target="#b8">(Jurgens et al., 2012)</ref>.</p><p>In MaxDiff, the annotator is presented with four terms and asked which term is most positive and which is least positive. By answering just these two questions, five out of six pairwise rankings become known. Consider a set in which a judge evaluates A, B, C, and D. If she says that A and D are the most and the least positive, we can infer the following: A &gt; B, A &gt; C, A &gt; D, B &gt; D, C &gt; D. The responses to the MaxDiff questions can then be easily translated into a ranking for all the terms and also into a real-valued score for each term. We crowdsourced the MaxDiff questions on CrowdFlower, recruiting ten annotators per MaxDiff example. Further details can be found in Section 6.1.2. of .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Lower &amp; Upper Bounds</head><p>When building a system to solve a task, it is good to know how well we should expect it to perform. One good reference point is agreement between annotators. Unfortunately, as we derive annotations by agreement, we cannot calculate standard statistics such as Kappa. Instead, we decided to measure the agreement between our gold standard annotations (derived by agreement) and the annotations proposed by the best Turker, the worst Turker, and the average Turker (with respect to the gold/consensus annotation for a particular message). Given a HIT, we just calculate the overlaps as shown in the last column in Table <ref type="table">2</ref>, and then we calculate the best, the worst, and the average, which are respectively 13/13, 9/13 and 11/13, in the example. Finally, we average these statistics over all HITs that contributed to a given dataset, to produce lower, average, and upper averages for that dataset. The accuracy (with respect to the gold/consensus annotation) for different averages is shown in Table <ref type="table">8</ref>. Since the overall polarity of a message is chosen based on majority, the upper bound for subtask B is 100%. These averages give a good indication about how well we can expect the systems to perform. We can see that even if we used the best annotator for each HIT, it would still not be possible to get perfect accuracy, and thus we should also not expect it from a system.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Tweets Delivery</head><p>Due to restrictions in the Twitter's terms of service, we could not deliver the annotated tweets to the participants directly. Instead, we released annotation indexes and labels, a list of corresponding Twitter IDs, and a download script that extracts the corresponding tweets via the Twitter API. <ref type="bibr">3</ref> As a result, different teams had access to different number of training tweets depending on when they did the downloading. However, our analysis has shown that this did not have a major impact and many high-scoring teams had less training data compared to some lower-scoring ones. The participating systems were required to perform a three-way classification, i.e., to assign one of the folowing three labels: positive, negative or objective/neutral. We evaluated the systems in terms of a macro-averaged F 1 score for predicting positive and negative phrases/messages. We first computed positive precision, P pos as follows: we found the number of phrases/messages that a system correctly predicted to be positive, and we divided that number by the total number of examples it predicted to be positive. To compute positive recall, R pos , we found the number of phrases/messages correctly predicted to be positive and we divided that number by the total number of positives in the gold standard. We then calculated an F 1 score for the positive class as follows F pos = 2PposRpos Ppos+Rpos . We carried out similar computations for the negative phrases/messages, F neg . The overall score was then computed as the average of the F 1 scores for the positive and for the negative classes: F = (F pos + F neg )/2.</p><p>We provided the participants with a scorer that outputs the overall score F , as well as P , R, and F 1 scores for each class (positive, negative, neutral) and for each test set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Subtask D: Overall Polarity Towards a Topic</head><p>This subtask asks to predict the overall sentiment of a set of tweets towards a given topic. In other words, to predict the ratio r i of positive (pos i ) tweets to the number of positive and negative sentiment tweets in the set of tweets about the i-th topic:</p><formula xml:id="formula_0">r i = P os i /(P os i + N eg i )</formula><p>Note, that neutral tweets do not participate in the above formula; they have only an indirect impact on the calculation, similarly to subtasks A-C.</p><p>We use the following two evaluation measures for subtask D:</p><p>• AvgDiff (official score): Calculates the absolute difference betweeen the predicted r i and the gold r i for each i, and then averages this difference over all topics.</p><p>• AvgLevelDiff (unofficial score): This calculation is the same as AvgDiff, but with r i and r i first remapped to five coarse numerical categories: 5 (strongly positive), 4 (weakly positive), 3 (mixed), 2 (weakly negative), and 1 (strongly negative). We define this remapping based on intervals as follows:</p><p>-5: 0.8 &lt; x ≤ 1.0</p><formula xml:id="formula_1">-4: 0.6 &lt; x ≤ 0.8 -3: 0.4 &lt; x ≤ 0.6 -2: 0.2 &lt; x ≤ 0.4 -1: 0.0 ≤ x ≤ 0.2</formula></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3">Subtask E: Degree of Prior Polarity</head><p>The scores proposed by the participating systems were evaluated by first ranking the terms according to the proposed sentiment score and then comparing this ranked list to a ranked list obtained from aggregating the human ranking annotations. We used Kendall's rank correlation (Kendall's τ ) as the official evaluation metric to compare the ranked lists <ref type="bibr" target="#b9">(Kendall, 1938)</ref>. We also calculated scores for Spearman's rank correlation <ref type="bibr" target="#b12">(Lehmann and D'Abrera, 2006)</ref>, as an unofficial score.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Participants and Results</head><p>The task attracted 41 teams: 11 teams participated in subtask A, 40 in subtask B, 7 in subtask C, 6 in subtask D, and 10 in subtask E. The IDs and affiliations of the participating teams are shown in Table <ref type="table" target="#tab_8">9</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Subtask A: Phrase-Level Polarity</head><p>The results (macro-averaged F 1 score) for subtask A are shown in Table <ref type="table" target="#tab_10">10</ref>.</p><p>The official results on the new Twitter2015-test dataset are shown in the last column, while the first five columns show F 1 on the 2013 and on the 2014 progress test datasets: 4 Twitter2013-test, SMS2013test, Twitter2014-test, Twitter2014-sarcasm, and LiveJournal2014-test. There is an index for each result showing the relative rank of that result within the respective column. The participating systems are ranked by their score on the Twitter2015-test dataset, which is the official ranking for subtask A; all remaining rankings are secondary.  There were less participants this year, probably due to having a new similar subtask: C. Notably, many of the participating teams were newcomers.</p><p>We can see that all systems beat the majority class baseline by 25-40 F 1 points absolute on all datasets. The winning team unitn (using deep convolutional neural networks) achieved an F 1 of 84.79 on Twitter2015-test, followed closely by KLUEless (using logistic regression) with F 1 =84.51.</p><p>Looking at the progress datasets, we can see that unitn was also first on both progress Tweet datasets, and second on SMS and on LiveJournal. KLUEless won SMS and was second on Twitter2013-test. The best result on LiveJournal was achieved by IOA, who were also second on Twitter2014-test and third on the official Twitter2015-test. None of these teams was ranked in top-3 on Twitter2014-sarcasm, where the best team was GTI, followed by WarwickDCS.</p><p>Compared to 2014, there is an improvement on Twitter2014-test from 86.63 in 2014 (NRC-Canada) to 87.12 in 2015 (unitn). The best result on Twitter2013-test of 90.10 (unitn) this year is very close to the best in 2014 (90.14 by NRC-Canada). Similarly, the best result on LiveJournal stays exactly the same, i.e., F 1 =85.61 <ref type="bibr">(SentiKLUE in 2014 and</ref><ref type="bibr">IOA in 2015)</ref>. However, there is slight degradation for SMS2013-test from 89.31 (ECNU) in 2014 to 88.62 (KLUEless) in 2015. The results also degraded for Twitter2014-sarcasm from 82.75 (senti.ue) to 81.53 (GTI).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Subtask B: Message-Level Polarity</head><p>The results for subtask B are shown in Table <ref type="table" target="#tab_11">11</ref>. Again, we show results on the five progress test datasets from 2013 and 2014, in addition to those for the official Twitter2015-test datasets.</p><p>Subtask B attracted 40 teams, both newcomers and returning, similarly to 2013 and 2014. All managed to beat the baseline with the exception of one system for Twitter2015-test, and one for Twitter2014-test. There is a cluster of four teams at the top: Webis (ensemble combining four Twitter sentiment classification approaches that participated in previous editions) with an F 1 of 64.84, unitn with 64.59, lsislif (logistic regression with special weighting for positives and negatives) with 64.27, and INESC-ID (word embeddings) with 64.17.</p><p>The last column in the table shows the results for the 2015 sarcastic tweets. Note that, unlike in 2014, this time they were not collected separately and did not have a special #sarcasm tag; instead, they are a subset of 75 tweets from Twitter2015-test that were flagged as sarcastic by the human annotators. The top system is IOA with an F 1 of 65.77, followed by INESC-ID with 64.91, and NLP with 63.62.</p><p>Looking at the progress datasets, we can see that the second ranked unitn is also second on SMS and on Twitter2014-test, and third on Twitter2013-test. INESC-ID in turn is third on Twitter2014-test and also third on Twitter2014-sarcasm. Webis and lsislif were less strong on the progress datasets.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3">Subtask C: Topic-Level Polarity</head><p>The results for subtask C are shown in Table <ref type="table">12</ref>. This proved to be a hard subtask, and only three of the seven teams that participated in it managed to improve over a majority vote baseline. These three teams, TwitterHawk (using subtask B data to help with subtask C) with F 1 =50.51, KLUEless (which ignored the topics as if it was subtask B) with F 1 =45.48, and Whu-Nlp with F 1 =40.70, achieved scores that outperform the rest by a sizable margin: 15-25 points absolute more than the fourth team.</p><p>Note that, despite the apparent similarity, subtask C is much harder than subtask B: the top-3 teams achieved an F 1 of 64-65 for subtask B vs. an F 1 of 41-51 for subtask C. This cannot be blamed on the class distribution, as the difference in performance of the majority class baseline is much smaller: 30.3 for B vs. 26.7 for C. Finally, the last column in the table reports the results for the 75 sarcastic 2015 tweets. The winner here is KLUEless with an F 1 of 39.26, followed by TwitterHawk with F 1 =31.30, and then by UMDuluth-CS8761 with F 1 =29.91.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.4">Subtask D: Trend Towards a Topic</head><p>The results for subtask D are shown in Table <ref type="table" target="#tab_1">13</ref>. This subtask is closely related to subtask C (in fact, one obvious way to solve D is to solve C and then to calculate the proportion), and thus it has attracted the same teams, except for one. Again, only three of the participating teams managed to improve over the baseline; not suprisingly, those were the same three teams that were in top-3 for subtask C. However, the ranking is different from that in subtask C, e.g., TwitterHawk has dropped to third position, while KLUEless and Why-Nlp have each climbed one position up to positions 1 and 2, respectively.</p><p>Finally, note that avgDiff and avgLevelDiff yielded the same rankings.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.5">Subtask E: Degree of Prior Polarity</head><p>Ten teams participated in subtask E. Many chose an unsupervised approach and leveraged newlycreated and pre-existing sentiment lexicons such as the Hashtag Sentiment Lexicon, the Sentiment140 Lexicon , the MPQA Subjectivity Lexicon , and Sen-tiWordNet <ref type="bibr" target="#b1">(Baccianella et al., 2010)</ref>, among others. Several participants further automatically created their own sentiment lexicons from large collections of tweets. Three teams, including the winner INESC-ID, adopted a supervised approach and used word embeddings (supplemented with lexicon features) to train a regression model.</p><p>The results are presented in Table <ref type="table" target="#tab_14">14</ref>. The last row shows the performance of a lexicon-based baseline. For this baseline, we chose the two most frequently used existing, publicly available, and automatically generated sentiment lexicons: Hashtag Sentiment Lexicon and Sentiment140 Lexicon . <ref type="bibr">5</ref> These lexicons have real-valued sentiment scores for most of the terms in the test set. For negated phrases, we use the scores of the corresponding negated entries in the lexicons. For each term, we take its score from the Sentiment140 Lexicon if present; otherwise, we take the term's score from the Hashtag Sentiment Lexicon. For terms not found in any lexicon, we use the score of 0, which indicates a neutral term in these lexicons. The top three teams were able to improve over the baseline.  </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Discussion</head><p>As in the previous two years, almost all systems used supervised learning. Popular machine learning approaches included SVM, maximum entropy, CRFs, and linear regression. In several of the subtasks, the top system used deep neural networks and word embeddings, and some systems benefited from special weighting of the positive and negative examples. Once again, the most important features were those derived from sentiment lexicons. Other important features included bag-of-words features, hashtags, handling of negation, word shape and punctuation features, elongated words, etc. Moreover, tweet pre-processing and normalization were an important part of the processing pipeline.</p><p>Note that this year we did not make a distinction between constrained and unconstrained systems, and participants were free to use any additional data, resources and tools they wished to.</p><p>Overall, the task has attracted a total of 41 teams, which is comparable to previous editions: there were 46 teams in 2014, and 44 in 2013. As in previous years, subtask B was most popular, attracting almost all teams (40 out of 41). However, subtask A attracted just a quarter of the participants (11 out of 41), compared to about half in previous years, most likely due to the introduction of two new, very related subtasks C and D (with 6 and 7 participants, respectively). There was also a fifth subtask (E, with 10 participants), which further contributed to the participant split.</p><p>We should further note that our task was part of a larger Sentiment Track, together with three other closely-related tasks, which were also interested in sentiment analysis: Task 9 on CLIPEval Implicit Polarity of Events, Task 11 on Sentiment Analysis of Figurative Language in Twitter, and Task 12 on Aspect Based Sentiment Analysis. Another related task was Task 1 on Paraphrase and Semantic Similarity in Twitter, from the Text Similarity and Question Answering track, which also focused on tweets.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>We have described the five subtasks organized as part of SemEval-2015 Task 10 on Sentiment Analysis in Twitter: detecting sentiment of terms in context (subtask A), classifiying the sentiment of an entire tweet, SMS message or blog post (subtask B), predicting polarity towards a topic (subtask C), quantifying polarity towards a topic (subtask D), and proposing real-valued prior sentiment scores for Twitter terms (subtask E). Over 40 teams participated in these subtasks, using various techniques.</p><p>We plan a new edition of the task as part of SemEval-2016, where we will focus on sentiment with respect to a topic, but this time on a fivepoint scale, which is used for human review ratings on popular websites such as Amazon, TripAdvisor, Yelp, etc. From a research perspective, moving to an ordered five-point scale means moving from binary classification to ordinal regression.</p><p>We further plan to continue the trend detection subtask, which represents a move from classification to quantification, and is on par with what applications need. They are not interested in the sentiment of a particular tweet but rather in the percentage of tweets that are positive/negative.</p><p>Finally, we plan a new subtask on trend detection, but using a five-point scale, which would get us even closer to what business (e.g. marketing studies), and researchers, (e.g. in political science or public policy), want nowadays. From a research perspective, this is a problem of ordinal quantification.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 3 :</head><label>3</label><figDesc></figDesc><table /><note>Dataset statistics for subtask A.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 5 :</head><label>5</label><figDesc>Twitter-2015 statistics for subtasks C &amp; D.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head></head><label></label><figDesc>[still]-wear shorts when it's this cold?! I [love]+ how Britain see's a bit of sun and they're [like 'OOOH]+ LET'S STRIP!' positive SMS [Sorry]-I think tonight [cannot]-and I [not feeling well]-after my rest. negative LiveJournal [Cool]+ posts , dude ; very [colorful]+ , and [artsy]+ . positive Twitter Sarcasm [Thanks]+ manager for putting me on the schedule for Sunday negative</figDesc><table><row><cell>Source</cell><cell>Message</cell><cell>Message-Level</cell></row><row><cell></cell><cell></cell><cell>Polarity</cell></row><row><cell>Twitter</cell><cell>Why would you</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 6 :</head><label>6</label><figDesc>Example annotations for each source of messages. The subjective phrases are marked in [. . .], and are followed by their polarity (subtask A); the message-level polarity is shown in the last column (subtask B).</figDesc><table><row><cell>Topic</cell><cell>Message</cell><cell cols="2">Message-Level Topic-Level</cell></row><row><cell></cell><cell></cell><cell>Polarity</cell><cell>Polarity</cell></row><row><cell cols="2">leeds united Saturday without Leeds United is like Sunday dinner it doesn't</cell><cell>negative</cell><cell>positive</cell></row><row><cell>feel normal at all (Ryan)</cell><cell></cell><cell></cell></row><row><cell cols="2">demi lovato Who are you tomorrow? Will you make me smile or just bring</cell><cell>neutral</cell><cell>positive</cell></row><row><cell cols="2">me sorrow? #HottieOfTheWeek Demi Lovato</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 7 :Table 8</head><label>78</label><figDesc>Example of annotations in Twitter showing differences between topic-and message-level polarity.</figDesc><table><row><cell>Corpus</cell><cell>Subtask A</cell><cell>Subtask B</cell></row><row><cell></cell><cell>Low Avg Up</cell><cell>Avg</cell></row><row><cell>Twitter2013-train</cell><cell>75.1 89.7 97.9</cell><cell>77.6</cell></row><row><cell>Twitter2013-dev</cell><cell>66.6 85.3 97.1</cell><cell>86.4</cell></row><row><cell>Twitter2013-test</cell><cell>76.8 90.3 98.0</cell><cell>75.9</cell></row><row><cell>SMS2013-test</cell><cell>75.9 97.5 89.6</cell><cell>77.5</cell></row><row><cell cols="2">Livejournal2014-test 61.7 82.3 94.5</cell><cell>76.2</cell></row><row><cell>Twitter2014-test</cell><cell>75.3 88.9 97.5</cell><cell>74.7</cell></row><row><cell>Sarcasm2014-test</cell><cell>62.6 83.1 95.6</cell><cell>71.2</cell></row><row><cell>Twitter2015-test</cell><cell>73.2 87.6 96.8</cell><cell>75.7</cell></row></table><note>: Average (over all HITs) overlap of the gold annotations with the worst, average, and the worst Turker for each HIT, for subtasks A and B.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 9 :</head><label>9</label><figDesc>The participating teams and their affiliations.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 10 :</head><label>10</label><figDesc>Results for subtask A: Phrase-Level Polarity. The systems are ordered by their score on the Twitter2015 test dataset; the rankings on the individual datasets are indicated with a subscript.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 11 :</head><label>11</label><figDesc>24 65.14 10 66.05 21 49.23 14 71.47 16 59.57 19 57.74 11 20 SWASH 63.07 27 56.49 34 62.93 31 48.42 15 69.43 24 59.26 20 54.30 21 21 GTI 64.03 25 63.50 16 65.65 22 55.38 6 70.50 17 58.95 21 57.02 13 22 iitpsemeval 60.78 31 60.56 26 65.09 26 47.32 19 73.70 5 58.80 22 58.18 10 23 elirf 57.05 32 60.20 28 61.17 35 45.98 24 68.33 28 58.58 23 43.91 34 24 SWATAC 65.86 19 61.30 24 66.64 19 39.45 35 68.67 27 58.43 24 50.66 27 25 UIR-PKU 67.41 13 64.67 12 67.18 15 52.58 8 70.44 18 57.65 25 59.43 8 26 SWATCMW 65.67 21 65.43 9 65.62 23 37.48 36 69.52 23 57.60 26 56.69 14 27 WarwickDCS 66.57 15 61.92 22 65.47 24 45.03 28 68.98 25 57.32 27 56.58 15 28 SeNTU 63.50 26 60.53 27 66.85 18 45.18 27 68.70 26 57.06 28 49.53 29 29 DIEGOLab 62.49 28 58.60 30 63.99 28 47.62 18 63.74 34 56.72 29 55.56 18 30 Sentibase 61.56 30 59.26 29 63.29 30 47.07 20 67.55 29 56.67 30 62.96 4 31 Whu-Nlp 65.97 18 61.31 23 63.93 29 46.93 21 71.83 13 56.39 31 22.25 40 32 UPF-taln 66.15 17 57.84 31 65.05 27 50.93 11 64.50 32 55.59 32 41.63 35 33 RGUSentimentMiners123 56.41 34 57.14 32 59.44 36 44.72 29 64.39 33 53.73 33 48.21 31 34 IHS-RD 55.06 35 57.08 33 61.39 32 37.32 37 66.99 30 52.65 34 36.02 37 35 RoseMerry 52.33 37 53.00 36 61.27 34 49.25 13 62.54 35 51.18 35 49.62 28 36 Frisbee 49.37 38 46.59 38 53.92 38 42.07 32 57.94 38 49.19 36 48.26 30 37 UMDuluth-CS8761 54.17 36 50.64 37 55.82 37 43.74 30 60.23 37 47.77 37 34.40 38 38 UDLAP2014 41.93 39 39.35 39 45.93 39 41.04 33 50.11 39 42.10 38 40.59 36 39 SHELLFBK 32.14 40 26.14 40 32.20 40 35.58 40 34.06 40 32.45 39 25.73 39 40 whu-iss 56.51 33 54.28 35 61.31 33 47.78 17 61.98 36 24.80 40 57.73 12 Results for subtask B: Message-Level Polarity. The systems are ordered by their score on the Twitter2015 test dataset; the rankings on the individual datasets are indicated with a subscript. Systems with late submissions for the progress test datasets (but with timely submissions for the official 2015 test dataset) are marked with a .</figDesc><table><row><cell></cell><cell></cell><cell cols="2">2013: Progress</cell><cell cols="3">2014: Progress</cell><cell cols="2">2015: Official</cell></row><row><cell>#</cell><cell>System</cell><cell>Tweet</cell><cell>SMS</cell><cell>Tweet</cell><cell>Tweet</cell><cell>Live-</cell><cell>Tweet</cell><cell>Tweet</cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell cols="2">sarcasm Journal</cell><cell></cell><cell>sarcasm</cell></row><row><cell>1 Webis</cell><cell></cell><cell cols="3">68.49 10 63.92 14 70.86 7</cell><cell>49.33 12</cell><cell>71.64 14</cell><cell>64.84 1</cell><cell>53.59 22</cell></row><row><cell>2 unitn</cell><cell></cell><cell>72.79 2</cell><cell>68.37 2</cell><cell>73.60 2</cell><cell>55.44 5</cell><cell>72.48 12</cell><cell>64.59 2</cell><cell>55.01 19</cell></row><row><cell>3 lsislif</cell><cell></cell><cell cols="3">71.34 4 63.42 17 71.54 5</cell><cell>46.57 22</cell><cell>73.01 10</cell><cell>64.27 3</cell><cell>46.00 33</cell></row><row><cell cols="2">4 INESC-ID</cell><cell cols="3">71.97 3 63.78 15 72.52 3</cell><cell>56.23 3</cell><cell>69.78 22</cell><cell>64.17 4</cell><cell>64.91 2</cell></row><row><cell cols="2">5 Splusplus</cell><cell>72.80 1</cell><cell>67.16 5</cell><cell>74.42 1</cell><cell>42.86 31</cell><cell>75.34 1</cell><cell>63.73 5</cell><cell>60.99 7</cell></row><row><cell>6 wxiaoac</cell><cell></cell><cell cols="3">66.43 16 64.04 13 68.96 11</cell><cell>54.38 7</cell><cell>73.36 9</cell><cell>63.00 6</cell><cell>52.22 26</cell></row><row><cell>7 IOA</cell><cell></cell><cell>71.32 5</cell><cell>68.14 3</cell><cell>71.86 4</cell><cell>51.48 9</cell><cell>74.52 2</cell><cell>62.62 7</cell><cell>65.77 1</cell></row><row><cell cols="2">8 Swiss-Chocolate</cell><cell>68.80 9</cell><cell cols="3">65.56 6 68.74 12 48.22 16</cell><cell>73.95 4</cell><cell>62.61 8</cell><cell>54.66 20</cell></row><row><cell cols="2">9 CLaC-SentiPipe</cell><cell cols="4">70.42 7 63.05 18 70.16 10 51.43 10</cell><cell>73.59 6</cell><cell>62.00 9</cell><cell>58.55 9</cell></row><row><cell cols="2">10 TwitterHawk</cell><cell cols="3">68.44 11 62.12 20 70.64 9</cell><cell>56.02 4</cell><cell cols="2">70.17 19 61.99 10</cell><cell>61.24 6</cell></row><row><cell cols="2">11 SWATCS65</cell><cell cols="4">68.21 12 65.49 8 67.23 14 37.23 39</cell><cell>73.37 8</cell><cell cols="2">61.89 11 52.64 24</cell></row><row><cell>12 UNIBA</cell><cell></cell><cell cols="4">61.66 29 65.50 7 65.11 25 37.30 38</cell><cell cols="3">70.05 20 61.55 12 48.16 32</cell></row><row><cell cols="2">13 KLUEless</cell><cell>70.64 6</cell><cell>67.66 4</cell><cell>70.89 6</cell><cell>45.36 26</cell><cell>73.50 7</cell><cell cols="2">61.20 13 56.19 17</cell></row><row><cell>14 NLP</cell><cell></cell><cell cols="4">66.96 14 61.05 25 67.45 13 39.87 34</cell><cell cols="2">66.12 31 60.93 14</cell><cell>63.62 3</cell></row><row><cell cols="2">15 ZWJYYC</cell><cell cols="3">69.56 8 64.72 11 70.77 8</cell><cell>46.34 23</cell><cell cols="3">71.60 15 60.77 15 52.40 25</cell></row><row><cell cols="2">16 Gradiant-Analytics</cell><cell cols="3">65.29 22 61.97 21 66.87 17</cell><cell>59.11 1</cell><cell cols="3">72.63 11 60.62 16 56.45 16</cell></row><row><cell>17 IIIT-H</cell><cell></cell><cell cols="3">65.68 20 62.25 19 67.04 16</cell><cell>57.50 2</cell><cell cols="2">69.91 21 59.83 17</cell><cell>62.75 5</cell></row><row><cell>18 ECNU</cell><cell></cell><cell cols="4">65.25 23 68.49 1 66.37 20 45.87 25</cell><cell>74.40 3</cell><cell cols="2">59.72 18 52.67 23</cell></row><row><cell cols="2">19 CIS-positiv</cell><cell>64.82</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 13 :</head><label>13</label><figDesc>Results for Subtask D: Trend Towards a Topic. The systems are sorted by the official 2015 score.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_14"><head>Table 14 :</head><label>14</label><figDesc>Results for Subtask E: Degree of Prior Polarity. The systems are ordered by their Kendall's τ score, which was the official score.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://www.purl.com/net/lexicons</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">Filtering based on an existing lexicon does bias the dataset to some degree; however, note that the text still contains sentiment expressions outside those in the lexicon.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3">https://dev.twitter.com</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">Note that the 2013 and the 2014 test datasets were made available for development, but it was explicitly forbidden to use them for training.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">http://www.purl.com/net/lexicons</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgements</head><p>The authors would like to thank SIGLEX for supporting subtasks A-D, and the National Research Council Canada for funding subtask E.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">What do customers really want?</title>
+		<author>
+			<persName><forename type="first">Eric</forename><surname>Almquist</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Lee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Harvard Business Review</title>
+		<imprint>
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">SentiWordNet 3.0: An enhanced lexical resource for sentiment analysis and opinion mining</title>
+		<author>
+			<persName><forename type="first">Stefano</forename><surname>Baccianella</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Esuli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fabrizio</forename><surname>Sebastiani</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Conference on Language Resources and Evaluation, LREC &apos;10</title>
+				<meeting>the Seventh International Conference on Language Resources and Evaluation, LREC &apos;10<address><addrLine>Valletta, Malta</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="2200" to="2204" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Robust sentiment detection on Twitter from biased and noisy data</title>
+		<author>
+			<persName><forename type="first">Luciano</forename><surname>Barbosa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Junlan</forename><surname>Feng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 23rd International Conference on Computational Linguistics: Posters, COLING &apos;10</title>
+				<meeting>the 23rd International Conference on Computational Linguistics: Posters, COLING &apos;10<address><addrLine>Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="36" to="44" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Detecting sentiment change in Twitter streaming data</title>
+		<author>
+			<persName><forename type="first">Albert</forename><surname>Bifet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffrey</forename><surname>Holmes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernhard</forename><surname>Pfahringer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ricard</forename><surname>Gavaldà</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings Track</title>
+				<meeting>Track</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="page" from="5" to="11" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Semi-supervised recognition of sarcasm in Twitter and Amazon</title>
+		<author>
+			<persName><forename type="first">Dmitry</forename><surname>Davidov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Tsur</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ari</forename><surname>Rappoport</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourteenth Conference on Computational Natural Language Learning, CoNLL &apos;10</title>
+				<meeting>the Fourteenth Conference on Computational Natural Language Learning, CoNLL &apos;10<address><addrLine>Uppsala, Sweden</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="107" to="116" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Detection of agreement vs. disagreement in meetings: Training with unlabeled data</title>
+		<author>
+			<persName><forename type="first">Roberto</forename><surname>González-Ibáñez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Smaranda</forename><surname>Muresan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nina</forename><surname>Wacholder</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies -Short Papers, ACL-HLT &apos;11</title>
+				<editor>
+			<persName><forename type="first">Dustin</forename><surname>Hillard</surname></persName>
+			<persName><forename type="first">Mari</forename><surname>Ostendorf</surname></persName>
+			<persName><forename type="first">Elizabeth</forename><surname>Shriberg</surname></persName>
+		</editor>
+		<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies -Short Papers, ACL-HLT &apos;11<address><addrLine>Portland, Oregon, USA; Edmonton, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="34" to="36" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the 2003 Conference of the North American Chapter of the Association for Computational Linguistics on Human Language Technology</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Mining and summarizing customer reviews</title>
+		<author>
+			<persName><forename type="first">Minqing</forename><surname>Hu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bing</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 10th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;04</title>
+				<meeting>the 10th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD &apos;04<address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="168" to="177" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Twitter power: Tweets as electronic word of mouth</title>
+		<author>
+			<persName><forename type="first">Bernard</forename><surname>Jansen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mimi</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kate</forename><surname>Sobel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Abdur</forename><surname>Chowdury</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Am. Soc. Inf. Sci. Technol</title>
+		<imprint>
+			<biblScope unit="volume">60</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="2169" to="2188" />
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">SemEval-2012 Task 2: Measuring degrees of relational similarity</title>
+		<author>
+			<persName><forename type="first">David</forename><surname>Jurgens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saif</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Turney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Keith</forename><surname>Holyoak</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Sixth International Workshop on Semantic Evaluation, SemEval &apos;12</title>
+				<meeting>the Sixth International Workshop on Semantic Evaluation, SemEval &apos;12<address><addrLine>Montréal, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012" />
+			<biblScope unit="page" from="356" to="364" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">A new measure of rank correlation</title>
+		<author>
+			<persName><forename type="first">G</forename><surname>Maurice</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kendall</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Biometrika</title>
+		<imprint>
+			<biblScope unit="page" from="81" to="93" />
+			<date type="published" when="1938" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Sentiment analysis of short informal texts</title>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodan</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saif</forename><forename type="middle">M</forename><surname>Mohammad</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Artificial Intelligence Research (JAIR)</title>
+		<imprint>
+			<biblScope unit="volume">50</biblScope>
+			<biblScope unit="page" from="723" to="762" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Twitter sentiment analysis: The good the bad and the OMG!</title>
+		<author>
+			<persName><forename type="first">Efthymios</forename><surname>Kouloumpis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Theresa</forename><surname>Wilson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Johanna</forename><surname>Moore</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fifth International Conference on Weblogs and Social Media, ICWSM &apos;11</title>
+				<meeting>the Fifth International Conference on Weblogs and Social Media, ICWSM &apos;11<address><addrLine>Barcelona, Catalonia, Spain</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="538" to="541" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Nonparametrics: statistical methods based on ranks</title>
+		<author>
+			<persName><forename type="first">Erich</forename><forename type="middle">Leo</forename><surname>Lehmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jm D'</forename><surname>Howard</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Abrera</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2006" />
+			<publisher>Springer</publisher>
+			<pubPlace>New York</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">The perfect solution for detecting sarcasm in tweets #not</title>
+		<author>
+			<persName><forename type="first">Christine</forename><surname>Liebrecht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Florian</forename><surname>Kunneman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antal</forename><surname>Van Den</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bosch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis</title>
+				<meeting>the 4th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="29" to="37" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Best-worst scaling: A model for the largest difference judgments</title>
+		<author>
+			<persName><forename type="first">Jordan</forename><forename type="middle">J</forename><surname>Louviere</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1991" />
+		</imprint>
+		<respStmt>
+			<orgName>University of Alberta</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical report</note>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">NRC-Canada: Building the state-of-theart in sentiment analysis of tweets</title>
+		<author>
+			<persName><forename type="first">Saif</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodan</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="321" to="327" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">SemEval-2013 Task 2: Sentiment analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zornitsa</forename><surname>Kozareva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Theresa</forename><surname>Wilson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="312" to="320" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">From tweets to polls: Linking text sentiment to public opinion time series</title>
+		<author>
+			<persName><forename type="first">O'</forename><surname>Brendan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramnath</forename><surname>Connor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bryan</forename><surname>Balasubramanyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noah</forename><surname>Routledge</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Smith</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth International Conference on Weblogs and Social Media, ICWSM &apos;10</title>
+				<meeting>the Fourth International Conference on Weblogs and Social Media, ICWSM &apos;10<address><addrLine>Washington, DC, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="122" to="129" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Twitter based system: Using Twitter for disambiguating sentiment ambiguous adjectives</title>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Pak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Paroubek</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Workshop on Semantic Evaluation, Se-mEval &apos;10</title>
+				<meeting>the 5th International Workshop on Semantic Evaluation, Se-mEval &apos;10<address><addrLine>Uppsala, Sweden</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="436" to="439" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Thumbs up?: Sentiment classification using machine learning techniques</title>
+		<author>
+			<persName><forename type="first">Bo</forename><surname>Pang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lillian</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shivakumar</forename><surname>Vaithyanathan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing<address><addrLine>Philadephia, Pennsylvania, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2002" />
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="page" from="79" to="86" />
+		</imprint>
+	</monogr>
+	<note>EMNLP &apos;02</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Named entity recognition in tweets: An experimental study</title>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Oren</forename><surname>Etzioni</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</title>
+				<meeting>the 18th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining<address><addrLine>Edinburgh, Scotland, UK. Alan Ritter, Oren Etzioni, Sam Clark; Beijing, China</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="1104" to="1112" />
+		</imprint>
+	</monogr>
+	<note>Proceedings of the Conference on Empirical Methods in Natural Language Processing</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">SemEval-2014 Task 9: Sentiment analysis in Twitter</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Rosenthal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><surname>Ritter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Veselin</forename><surname>Stoyanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 8th International Workshop on Semantic Evaluation, Se-mEval &apos;14</title>
+				<meeting>the 8th International Workshop on Semantic Evaluation, Se-mEval &apos;14<address><addrLine>Dublin, Ireland</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="73" to="80" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Annotating expressions of opinions and emotions in language</title>
+		<author>
+			<persName><forename type="first">Janyce</forename><surname>Wiebe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Theresa</forename><surname>Wilson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Claire</forename><surname>Cardie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Language Resources and Evaluation</title>
+		<imprint>
+			<biblScope unit="volume">39</biblScope>
+			<biblScope unit="issue">2-3</biblScope>
+			<biblScope unit="page" from="165" to="210" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">Recognizing contextual polarity in phraselevel sentiment analysis</title>
+		<author>
+			<persName><forename type="first">Theresa</forename><surname>Wilson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Janyce</forename><surname>Wiebe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><surname>Hoffmann</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Human Language Technology and Empirical Methods in Natural Language Processing, HLT-EMNLP &apos;05</title>
+				<meeting>the Conference on Human Language Technology and Empirical Methods in Natural Language Processing, HLT-EMNLP &apos;05<address><addrLine>Vancouver, British Columbia, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2005" />
+			<biblScope unit="page" from="347" to="354" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">An empirical study on the effect of negation words on sentiment</title>
+		<author>
+			<persName><forename type="first">Xiaodan</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hongyu</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saif</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Kiritchenko</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 52nd Annual Meeting of the Association for Computational Linguistics<address><addrLine>Baltimore, Maryland, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="304" to="313" />
+		</imprint>
+	</monogr>
+	<note>Long Papers), ACL &apos;14</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

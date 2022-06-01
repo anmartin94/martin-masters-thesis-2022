@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2017 Task 8: RumourEval: Determining rumour veracity and support for rumours</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author role="corresp">
+							<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+							<email>leon.d@shef.ac.uk</email>
+						</author>
+						<author>
+							<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Warwick</orgName>
+								<address>
+									<postCode>CV4 7AL</postCode>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Warwick</orgName>
+								<address>
+									<postCode>CV4 7AL</postCode>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Geraldine</forename><surname>Wong</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Sak</forename><surname>Hoi</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Arkaitz</forename><surname>Zubiaga</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Warwick</orgName>
+								<address>
+									<postCode>CV4 7AL</postCode>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="department">Department of Computer Science</orgName>
+								<orgName type="institution">University of Sheffield</orgName>
+								<address>
+									<postCode>S1 4DP</postCode>
+									<country key="GB">UK</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<address>
+									<settlement>Bern</settlement>
+									<country key="CH">Switzerland</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">SemEval-2017 Task 8: RumourEval: Determining rumour veracity and support for rumours</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Media is full of false claims. Even Oxford Dictionaries named "post-truth" as the word of 2016. This makes it more important than ever to build systems that can identify the veracity of a story, and the nature of the discourse around it. Ru-mourEval is a SemEval shared task that aims to identify and handle rumours and reactions to them, in text. We present an annotation scheme, a large dataset covering multiple topics -each having their own families of claims and replies -and use these to pose two concrete challenges as well as the results achieved by participants on these challenges.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction and Motivation</head><p>Rumours are rife on the web. False claims affect people's perceptions of events and their behaviour, sometimes in harmful ways. With the increasing reliance on the Web -social media, in particularas a source of information and news updates by individuals, news professionals, and automated systems, the potential disruptive impact of rumours is further accentuated.</p><p>The task of analysing and determining veracity of social media content has been of recent interest to the field of natural language processing. After initial work <ref type="bibr" target="#b18">(Qazvinian et al., 2011)</ref>, increasingly advanced systems and annotation schemas have been developed to support the analysis of rumour and misinformation in text <ref type="bibr" target="#b11">(Kumar and Geethakumari, 2014;</ref><ref type="bibr" target="#b25">Zhang et al., 2015;</ref><ref type="bibr" target="#b19">Shao et al., 2016;</ref><ref type="bibr" target="#b30">Zubiaga et al., 2016b)</ref>. Veracity judgment can be decomposed intuitively in terms of a comparison between assertions made in -and entailments from -a candidate text, and external world knowledge. Intermediate linguistic cues have also been shown to play a role. Critically, based on recent work the task appears deeply nuanced and very challenging, while having important applications in, for example, journalism and disaster mitigation <ref type="bibr" target="#b9">(Hermida, 2012;</ref><ref type="bibr" target="#b16">Procter et al., 2013a;</ref><ref type="bibr" target="#b23">Veil et al., 2011)</ref>.</p><p>We propose a shared task where participants analyse rumours in the form of claims made in user-generated content, and where users respond to one another within conversations attempting to resolve the veracity of the rumour. We define a rumour as a "circulating story of questionable veracity, which is apparently credible but hard to verify, and produces sufficient scepticism and/or anxiety so as to motivate finding out the actual truth" <ref type="bibr" target="#b28">(Zubiaga et al., 2015b)</ref>. While breaking news unfold, gathering opinions and evidence from as many sources as possible as communities react becomes crucial to determine the veracity of rumours and consequently reduce the impact of the spread of misinformation.</p><p>Within this scenario where one needs to listen to, and assess the testimony of, different sources to make a final decision with respect to a rumour's veracity, we ran a task in SemEval consisting of two subtasks: (a) stance classification towards rumours, and (b) veracity classification. Subtask A corresponds to the core problem in crowd response analysis when using discourse around claims to verify or disprove them. Subtask B corresponds to the AI-hard task of assessing directly whether or not a claim is false.  determine how other users in social media regard the rumour <ref type="bibr" target="#b17">(Procter et al., 2013b)</ref>. We propose to tackle this analysis by looking at the conversation stemming from direct and nested replies to the tweet originating the rumour (source tweet).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.1">Subtask</head><p>To this effect RumourEval provided participants with a tree-structured conversation formed of tweets replying to the originating rumourous tweet, directly or indirectly. Each tweet presents its own type of support with respect to the rumour (see Figure <ref type="figure" target="#fig_0">1</ref>). We frame this in terms of supporting, denying, querying or commenting on (SDQC) the original rumour <ref type="bibr" target="#b30">(Zubiaga et al., 2016b)</ref>. Therefore, we introduce a subtask where the goal is to label the type of interaction between a given statement (rumourous tweet) and a reply tweet (the latter can be either direct or nested replies).</p><p>We note that superficially this subtask may bear similarity to SemEval-2016 Task 6 on stance detection from tweets <ref type="bibr" target="#b14">(Mohammad et al., 2016)</ref>, where participants are asked to determine whether a tweet is in favour, against or neither, of a given target entity (e.g. Hillary Clinton) or topic (e.g. climate change). Our SQDC subtask differs in two aspects. Firstly, participants needed to determine the objective support towards a rumour, an entire statement, rather than individual target concepts. Moreover, they are asked to determine additional response types to the rumourous tweet that are relevant to the discourse, such as a request for more information (questioning, Q) and making a com-ment (C), where the latter doesn't directly address support or denial towards the rumour, but provides an indication of the conversational context surrounding rumours. For example, certain patterns of comments and questions can be indicative of false rumours and others indicative of rumours that turn out to be true.</p><p>Secondly, participants need to determine the type of response towards a rumourous tweet from a tree-structured conversation, where each tweet is not necessarily sufficiently descriptive on its own, but needs to be viewed in the context of an aggregate discussion consisting of tweets preceding it in the thread. This is more closely aligned with stance classification as defined in other domains, such as public debates <ref type="bibr" target="#b0">(Anand et al., 2011)</ref>. The latter also relates somewhat to the SemEval-2015 Task 3 on Answer Selection in Community Question Answering <ref type="bibr" target="#b15">(Moschitti et al., 2015)</ref>, where the task was to determine the quality of responses in tree-structured threads in CQA platforms. Responses to questions are classified as 'good', 'potential' or 'bad'. Both tasks are related to textual entailment and textual similarity. However, Semeval-2015 Task3 is clearly a question answering task, the platform itself supporting a QA format in contrast with the more free-form format of conversations in Twitter. Moreover, as a question answering task Semeval-2015 Task 3 is more concerned with relevance and retrieval whereas the task we propose here is about whether support or denial can be inferred towards the original statement (source tweet) from the reply tweets.</p><p>Each tweet in the tree-structured thread is categorised into one of the following four categories, following <ref type="bibr" target="#b17">Procter et al. (2013b)</ref>:</p><p>• Support: the author of the response supports the veracity of the rumour. • Deny: the author of the response denies the veracity of the rumour. • Query: the author of the response asks for additional evidence in relation to the veracity of the rumour. • Comment: the author of the response makes their own comment without a clear contribution to assessing the veracity of the rumour. Prior work in the area has found the task difficult, compounded by the variety present in language use between different stories <ref type="bibr" target="#b13">(Lukasik et al., 2015;</ref><ref type="bibr" target="#b26">Zubiaga et al., 2017)</ref>. This indicates it is challenging enough to make for an interesting Se-mEval shared task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.2">Subtask B -Veracity prediction</head><p>The goal of this subtask is to predict the veracity of a given rumour. The rumour is presented as a tweet, reporting an update associated with a newsworthy event, but deemed unsubstantiated at the time of release. Given such a tweet/claim, and a set of other resources provided, systems should return a label describing the anticipated veracity of the rumour as true or false -see Figure <ref type="figure">2</ref>.</p><p>The ground truth of this task has been manually established by journalist members of the team who identified official statements or other trustworthy sources of evidence that resolved the veracity of the given rumour. Examples of tweets annotated for veracity are shown in Figure <ref type="figure">2</ref>.</p><p>The participants in this subtask chose between two variants. In the first case -the closed variant -the veracity of a rumour had to be predicted solely from the tweet itself (for example <ref type="bibr" target="#b12">(Liu et al., 2015)</ref> rely only on the content of tweets to assess the veracity of tweets in real time, while systems such as Tweet-Cred <ref type="bibr" target="#b7">(Gupta et al., 2014</ref>) follow a tweet level analysis for a similar task where the credibility of a tweet is predicted). In the second case -the open variant -additional context was provided as input to veracity prediction systems; this context consists of a Wikipedia dump. Critically, no external resources could be used that contained information from after the rumour's resolu-tion. To control this, we specified precise versions of external information that participants could use. This was important to make sure we introduced time sensitivity into the task of veracity prediction. In a practical system, the classified conversation threads from Subtask A could be used as context.</p><p>We take a simple approach to this task, using only true/false labels for rumours. In practice, however, many claims are hard to verify; for example, there were many rumours concerning Vladimir Putin's activities in early 2015, many wholly unsubstantiable. Therefore, we also expect systems to return a confidence value in the range of 0-1 for each rumour; if the rumour is unverifiable, a confidence of 0 should be returned.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.3">Impact</head><p>Identifying the veracity of claims made on the web is an increasingly important task <ref type="bibr" target="#b28">(Zubiaga et al., 2015b)</ref>. Decision support, digital journalism and disaster response already rely on picking out such claims <ref type="bibr" target="#b17">(Procter et al., 2013b)</ref>. Additionally, web and social media are a more challenging environment than e.g. newswire, which has traditionally provided the mainstay of similar tasks (such as RTE <ref type="bibr" target="#b2">(Bentivogli et al., 2011)</ref>). Last year we ran a workshop at WWW 2015, Rumors and Deception in Social Media: Detection, Tracking, and Visualization (RDSM 2015) 1 which garnered interest from researchers coming from a variety of backgrounds, including natural language processing, web science and computational journalism.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Data &amp; Resources</head><p>To capture web claims and the community reaction around them, we take data from the "model organism" of social media, Twitter <ref type="bibr" target="#b22">(Tufekci, 2014)</ref>. Data for the task is available in the form of online discussion threads, each pertaining to a particular event and the rumours around it. These threads form a tree, where each tweet has a parent tweet it responds to. Together these form a conversation, initiated by a source tweet (see Figure <ref type="figure" target="#fig_0">1</ref>). The data has already been annotated for veracity and SDQC following a published annotation scheme <ref type="bibr" target="#b30">(Zubiaga et al., 2016b)</ref>, as part of the PHEME project <ref type="bibr" target="#b4">(Derczynski and Bontcheva, 2014)</ref>, in which the task organisers are partners.   </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">Training Data</head><p>Our training dataset comprises 297 rumourous threads collected for 8 events in total, which include 297 source and 4,222 reply tweets, amounting to 4,519 tweets in total. These events include well-known breaking news such as the Charlie Hebdo shooting in Paris, the Ferguson unrest in the US, and the Germanwings plane crash in the French Alps. The size of the dataset means it can be distributed without modifications, according to Twitter's current data usage policy, as JSON files. This dataset is already publicly available (Zubiaga et al., 2016a) and constitutes the training and development data.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Test Data</head><p>For the test data, we annotated 28 additional threads. These include 20 threads extracted from the same events as the training set, and 8 threads from two newly collected events: (1) a rumour that Hillary Clinton was diagnosed with pneumonia during the 2016 US election campaign, and (2) a rumour that Youtuber Marina Joyce had been kidnapped.</p><p>The test dataset includes, in total, 1,080 tweets, 28 of which are source tweets and 1,052 replies. The distribution of labels in the training and test datasets is summarised in Table <ref type="table" target="#tab_2">1</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Context Data</head><p>Along with the tweet threads, we also provided additional context that participants could make use of. The context we provided was two-fold: (1) Wikipedia articles associated with the event in question. We provided the last revision of the article prior to the source tweet being posted, and (2) content of linked URLs, using the Internet Archive to retrieve the latest revision prior to the link being tweeted, where available.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Data Annotation</head><p>The annotation of rumours and their subsequent interactions was performed in two steps. In the first step, we sampled a subset of likely rumourous tweets from all the tweets associated with the event in question, where we used the high number of retweets as an indication of a tweet being potentially rumourous. These sampled tweets were fed to an annotation tool, by means of which our expert journalist annotators members manually identified the ones that did indeed report unverified updates and were considered to be rumours. Whenever possible, they also annotated rumours that had ultimately been proven true or the ones that had been debunked as false stories; the rest were annotated as "unverified". In the second step, we collected conversations associated with those rumourous tweets, which included all replies succeeding a rumourous source tweet. The type of support (SDQC) expressed by each participant in the conversation was then annotated through crowdsourcing. The methodology for performing this crowdsourced annotation process has been previously assessed and validated <ref type="bibr" target="#b27">(Zubiaga et al., 2015a)</ref>, and is further detailed in <ref type="bibr" target="#b30">(Zubiaga et al., 2016b)</ref>. The overall inter-annotator agreement rate of 63.7% showed the task to be challenging, and easier for source tweets (81.1%) than for replying tweets (62.2%).</p><p>The evaluation data was not available to those participating in any way in the task, and selec-tion decisions were taken only by organisers not connected with any submission, to retain fairness across submissions. Figure <ref type="figure" target="#fig_0">1</ref> shows an example of what a data instance looks like, where the source tweet in the tree presents a rumourous statement that is supported, denied, queried and commented on by others. Note that replies are nested, where some tweets reply directly to the source, while other tweets reply to earlier replies, e.g., u4 and u5 engage in a short conversation replying to each other in the second example. The input to the veracity prediction task is simpler than this; here participants had to determine if a rumour was true or false by only looking at the source tweet (see Figure <ref type="figure">2</ref>), and optionally making use of the additional context provided by the organisers.</p><p>To prepare the evaluation resources, we collected and sampled the tweets around which there is most interaction, placed these in an existing annotation tool to be annotated as rumour vs. nonrumour, categorised them into rumour sub-stories, and labelled them for veracity.</p><p>For Subtask A, the extra annotation for support / deny / question / comment at the tweet level within the conversations were performed through crowdsourcing -as performed to satisfactory quality already with the existing training data <ref type="bibr" target="#b27">(Zubiaga et al., 2015a)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Evaluation</head><p>The two subtasks were evaluated as follows.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>SDQC stance classification:</head><p>The evaluation of the SDQC needed careful consideration, as the distribution of the categories is clearly skewed towards comments. Evaluation is through classification accuracy.</p><p>Veracity prediction: The evaluation of the predicted veracity, which is either true or false for each instance, was done using macroaveraged accuracy, hence measuring the ratio of instances for which a correct prediction was made. Additionally, we calculated RMSE ρ for the difference between system and reference confidence in correct examples and provided the mean of these scores. Incorrect examples have an RMSE of 1. This is normalised and combined with the macroaveraged accuracy to give a final score; e.g. acc = (1 − ρ)acc.</p><p>The baseline is the most common class. For Task A, we also introduce a baseline excluding the common, low-impact "comment" class, considering accuracy over only support, deny and query. This is included as the SDQ baseline.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Participant Systems and Results</head><p>We have had 13 system submissions at Ru-mourEval, eight submissions for Subtask A <ref type="bibr" target="#b10">(Kochkina et al., 2017;</ref><ref type="bibr" target="#b1">Bahuleyan and Vechtomova, 2017;</ref><ref type="bibr" target="#b21">Srivastava et al., 2017;</ref><ref type="bibr" target="#b24">Wang et al., 2017;</ref><ref type="bibr" target="#b20">Singh et al., 2017;</ref><ref type="bibr" target="#b3">Chen et al., 2017;</ref><ref type="bibr" target="#b6">García Lozano et al., 2017;</ref><ref type="bibr" target="#b5">Enayet and El-Beltagy, 2017)</ref>, the identification of stance towards rumours, and five submissions for Subtask B <ref type="bibr" target="#b21">(Srivastava et al., 2017;</ref><ref type="bibr" target="#b24">Wang et al., 2017;</ref><ref type="bibr" target="#b20">Singh et al., 2017;</ref><ref type="bibr" target="#b3">Chen et al., 2017;</ref><ref type="bibr" target="#b5">Enayet and El-Beltagy, 2017)</ref>, the rumour veracity classification task, with participant teams coming from four continents (Europe: Germany, Sweden, UK; North America: Canada; Asia: China, India, Taiwan; Africa: Egypt), showing the global reach of the issue of rumour veracity on social media.</p><p>Most participants tackled Subtask A, which involves classifying a tweet in a conversation thread as either supporting (S), denying (D), querying (Q) or commenting on (C) a rumour. Results are given in Table <ref type="table">2</ref> The distribution of SDQC labels in the training, development and test sets favours comments (see Table <ref type="table" target="#tab_2">1</ref>. Including and recognising the items that fit in this class is important for reducing noise in the other, information-bearing classifications (support, deny and query). In actual fact, comments are often express implicit support; the absence of dispute is a soft signal of agreement.</p><p>Systems generally viewed this task as a fourway single tweet classification task, with the ex-ception of the best performing system (Turing), which addressed it as a sequential classification problem, where the SDQC label of each tweet depends on the features and labels of the previous tweets, and the ECNU and IITP systems. The IITP system takes as input pairs of source and reply tweets whereas the ECNU system addressed class imbalance by decomposing the problem into a two step classification task <ref type="bibr">(comment vs. non-comment)</ref>, and all non-comment tweets classified as SDQ. Half of the systems employed ensemble classifiers, where classification was obtained through majority voting (ECNU, MamaEdha, UWaterloo, DFKI-DKT). In some cases the ensembles were hybrid, consisting both of machine learning classifiers and manually created rules, with differential weighting of classifiers for different class labels (ECNU, MamaEdha, DFKI-DKT). Three systems used deep learning, with team Turing employing LSTMs for sequential classification, team IKM using convolutional neural networks (CNN) for obtaining the representation of each tweet, assigned a probability for a class by a softmax classifier and team Mama Edha using CNN as one of the classifiers in their hybrid conglomeration. The remaining two systems NileTMRG and IITP used support vector machines with linear and polynomial kernel respectively. Half of the systems invested in elaborate feature engineering including cue words and expressions denoting Belief, Knowledge, Doubt and Denial (UWaterloo) as well as Tweet domain features including meta-data about users, hashtags and event specific keywords (ECNU, UWaterloo, IITP, NileTMRG). The systems with the least elaborate features were IKM and Mama Edha for CNNs (word embeddings), DFKI-DKT (sparse word vectors as input to logistic regression) and Turing (average word vectors, punctuation, similarity between word vectors in current tweet, source tweet and previous tweet, presence of negation, picture, URL). Five out of the eight systems used pre-trained word embeddings, mostly Google News word2vec embeddings, while ECNU used four different types of embeddings. Overall, elaborate feature engineering and a strategy for addressing class imbalance seemed to pay off, as can be seen by the success of the high performance of the UWaterloo and ECNU systems. The success of the best performing system (Turing) can be attributed both to the use of LSTM to address   the problem as a sequential task and the choice of word embeddings. Subtask B, veracity classification of a source tweet, was viewed as either a threeway (NileTMRG, ECNU, IITP) or two-way (IKM, DFKI-DKT) single tweet classification task. Results are given in Table <ref type="table" target="#tab_5">3</ref> for the open variant, where external resources may be used, 2 and Table <ref type="table" target="#tab_6">4</ref> for the closed variant -with no external resource use permitted. The systems used mostly similar features and classifiers to those in Subtask A, though some added features more specific to the distribution of SDQC labels in replies to the source tweet (e.g. the best performing system in this task, NileTMRG, considered the percentage of reply tweets classified as either S, D or Q).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Conclusion</head><p>Detecting and verifying rumours is a critical task and in the current media landscape, vital to populations so they can make decisions based on the truth. This shared task brought together many approaches to fixing veracity in real media, working through community interactions and claims made on the web. Many systems were able to achieve good results on unravelling the argument around various claims, finding out whether a discussion supports, denies, questions or comments on rumours.</p><p>The commentary around a story often helps determine how true that story is, so this advance is a great positive. However, finding out accurately whether a story is false or true remains really tough. Systems did not reach the most-commonclass baseline, despite the data not being exceptionally skewed. even the best systems could have the wrong level of confidence in a true/false judgment, weakly verifying stories that are true and so on. This tells us that we are making progress, but that the problem is so far very hard.</p><p>RumourEval leaves behind competitive results, a large number of approaches to be dissected by future researchers, and a benchmark dataset of thousands of documents and novel news stories. This sets a good baseline for the next steps in the area of fake news detection, as well as the material anyone needs to get started on the problem and evaluate and improve their systems.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure1: Examples of tree-structured threads discussing the veracity of a rumour, where the label associated with each tweet is the target of the SDQC support classification task.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>Veracity prediction examples: u1: Hostage-taker in supermarket siege killed, reports say. #ParisAttacks -LINK-[true] u1: OMG. #Prince rumoured to be performing in Toronto today. Exciting! [false]</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>We understand there are two gunmen and up to a dozen hostages inside the cafe under siege at Sydney.. ISIS flags remain on display #7News[support]   u2: @u1 not ISIS flags [deny] u3: @u1 sorry -how do you know it's an ISIS flag? Can you actually confirm that? [query] u4: @u3 no she can't cos it's actually not [deny] u5: @u1 More on situation at Martin Place in Sydney, AU -LINK-[comment] u6: @u1 Have you actually confirmed its an ISIS flag or are you talking shit[query]    </figDesc><table><row><cell>SDQC support classification. Example 1:</cell></row><row><cell>u1: SDQC support classification. Example 2:</cell></row><row><cell>u1: These are not timid colours; soldiers back guarding Tomb of Unknown Soldier after today's shooting #StandforCanada</cell></row><row><cell>-PICTURE-[support]</cell></row><row><cell>u2: @u1 Apparently a hoax. Best to take Tweet down. [deny]</cell></row><row><cell>u3: @u1 This photo was taken this morning, before the shooting. [deny]</cell></row><row><cell>u4: @u1 I don't believe there are soldiers guarding this area right now. [deny]</cell></row><row><cell>u5: @u4 wondered as well. I've reached out to someone who would know just to confirm that. Hopefully get</cell></row><row><cell>response soon. [comment]</cell></row><row><cell>u4: @u5 ok, thanks. [comment]</cell></row><row><cell>A -SDQC Support/ Rumour</cell></row><row><cell>stance classification</cell></row><row><cell>Related to the objective of predicting a rumour's</cell></row><row><cell>veracity, Subtask A deals with the complementary</cell></row><row><cell>objective of tracking how other sources orient to</cell></row><row><cell>the accuracy of the rumourous story. A key step</cell></row><row><cell>in the analysis of the surrounding discourse is to</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head></head><label></label><figDesc>Figure2: Examples of source tweets with a veracity value, which has to be predicted in the veracity prediction task.</figDesc><table><row><cell></cell><cell></cell><cell cols="2">Subtask A</cell></row><row><cell></cell><cell>S</cell><cell>D</cell><cell>Q</cell><cell>C</cell></row><row><cell cols="5">Train 910 344 358 2,907</cell></row><row><cell>Test</cell><cell>94</cell><cell>71</cell><cell cols="2">106 778</cell></row><row><cell></cell><cell></cell><cell cols="2">Subtask B</cell></row><row><cell></cell><cell></cell><cell>T</cell><cell>F</cell><cell>U</cell></row><row><cell></cell><cell cols="4">Train 137 62 98</cell></row><row><cell></cell><cell>Test</cell><cell>8</cell><cell cols="2">12 8</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 1 :</head><label>1</label><figDesc></figDesc><table /><note>Label distribution of training and test datasets.</note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 3 :</head><label>3</label><figDesc>Results for Task B: Rumour veracityopen variant.</figDesc><table><row><cell>Team</cell><cell cols="2">Score Confidence RMSE</cell></row><row><cell cols="2">DFKI DKT 0.393</cell><cell>0.845</cell></row><row><cell>ECNU</cell><cell>0.464</cell><cell>0.736</cell></row><row><cell>IITP</cell><cell>0.286</cell><cell>0.807</cell></row><row><cell>IKM</cell><cell>0.536</cell><cell>0.763</cell></row><row><cell cols="2">NileTMRG 0.536</cell><cell>0.672</cell></row><row><cell>Baseline</cell><cell>0.571</cell><cell>-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 4</head><label>4</label><figDesc></figDesc><table><row><cell>: Results for Task B: Rumour veracity -</cell></row><row><cell>closed variant.</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://www.pheme.eu/events/rdsm2015/</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">Namely, the 20160901 English Wikipedia dump.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This work is supported by the European Commission's 7th Framework Programme for research, under grant No. 611223 PHEME. This work is also supported by the European Unions Horizon 2020 research and innovation programme under grant agreement No. 687847 COMRADES. We are grateful to Swissinfo.ch for their extended support in the form of journalistic advice, keeping the task well-grounded, and annotation and task design efforts. We also extend our thanks to the SemEval organisers for their sustained hard work, and to our participants for bearing with us during the first shared task of this nature and all the joy and trouble that comes with it.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Cats rule and dogs drool!: Classifying stance in online debate</title>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Anand</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marilyn</forename><surname>Walker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Abbott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jean</forename><forename type="middle">E</forename><surname>Fox Tree</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robeson</forename><surname>Bowmani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Minor</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2Nd Workshop on Computational Approaches to Subjectivity and Sentiment Analysis</title>
+				<meeting>the 2Nd Workshop on Computational Approaches to Subjectivity and Sentiment Analysis<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">UWaterloo at SemEval-2017 Task 8: Detecting Stance towards Rumours with Topic Independent Features</title>
+		<author>
+			<persName><forename type="first">Hareesh</forename><surname>Bahuleyan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Vechtomova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">The seventh Pascal Recognizing Textual Entailment challenge</title>
+		<author>
+			<persName><forename type="first">Luisa</forename><surname>Bentivogli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Clark</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ido</forename><surname>Dagan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hoa</forename><surname>Dang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danilo</forename><surname>Giampiccolo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Text Analysis Conference. NIST</title>
+				<meeting>the Text Analysis Conference. NIST</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">IKM at SemEval-2017 Task 8: Convolutional Neural Networks for Stance Detection and Rumor Verification</title>
+		<author>
+			<persName><forename type="first">Yi-Chin</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zhao-Yand</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hung-Yu</forename><surname>Kao</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Pheme: Veracity in digital social networks</title>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">UMAP Workshops</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">NileTMRG at SemEval-2017 Task 8: Determining Rumour and Veracity Support for Rumours on Twitter</title>
+		<author>
+			<persName><forename type="first">Omar</forename><surname>Enayet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Samhaa</surname></persName>
+		</author>
+		<author>
+			<persName><surname>El-Beltagy</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Mama Edha at SemEval-2017 Task 8: Stance Classification with CNN and Rules</title>
+		<author>
+			<persName><forename type="first">Marianela</forename><forename type="middle">García</forename><surname>Lozano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hanna</forename><surname>Lilja</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Tjörnhammar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maja Maja</forename><surname>Karasalo</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Tweetcred: Real-time credibility assessment of content on twitter</title>
+		<author>
+			<persName><forename type="first">Aditi</forename><surname>Gupta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ponnurangam</forename><surname>Kumaraguru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Carlos</forename><surname>Castillo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Meier</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">SocInfo</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="page" from="228" to="243" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1007/978-3-319-13734-616</idno>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Tweets and truth: Journalism as a discipline of collaborative verification</title>
+		<author>
+			<persName><forename type="first">Alfred</forename><surname>Hermida</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journalism Practice</title>
+		<imprint>
+			<biblScope unit="volume">6</biblScope>
+			<biblScope unit="issue">5-6</biblScope>
+			<biblScope unit="page" from="659" to="668" />
+			<date type="published" when="2012" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Turing at SemEval-2017 Task 8: Sequential Approach to Rumour Stance Classification with Branch-LSTM</title>
+		<author>
+			<persName><forename type="first">Elena</forename><surname>Kochkina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isabelle</forename><surname>Augenstein</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Detecting misinformation in online social networks using cognitive psychology</title>
+		<author>
+			<persName><forename type="first">Krishna</forename><surname>Kp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Kumar</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Geethakumari</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Human-centric Computing and Information Sciences</title>
+		<imprint>
+			<biblScope unit="volume">4</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1" to="22" />
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Real-time rumor debunking on twitter</title>
+		<author>
+			<persName><forename type="first">Xiaomo</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Armineh</forename><surname>Nourbakhsh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quanzhi</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rui</forename><surname>Fang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameena</forename><surname>Shah</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 24th ACM International on Conference on Information and Knowledge Management</title>
+				<meeting>the 24th ACM International on Conference on Information and Knowledge Management</meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1867" to="1870" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Classifying tweet level judgements of rumours in social media</title>
+		<author>
+			<persName><forename type="first">Michal</forename><surname>Lukasik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Trevor</forename><surname>Cohn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="volume">2</biblScope>
+			<biblScope unit="page" from="2590" to="2595" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">SemEval-2016 Task 6: Detecting Stance in Tweets</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saif</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Svetlana</forename><surname>Mohammad</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Parinaz</forename><surname>Kiritchenko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaodan</forename><surname>Sobhani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Colin</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Cherry</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Workshop on Semantic Evaluation</title>
+				<meeting>the Workshop on Semantic Evaluation</meeting>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Moschitti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Preslav</forename><surname>Nakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluıs</forename><surname>Marquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walid</forename><surname>Magdy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Glass</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bilal</forename><surname>Randeree</surname></persName>
+		</author>
+		<title level="m">Semeval-2015 task 3: Answer selection in community question answering</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page">269</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jeremy</forename><surname>Crump</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Susanne</forename><surname>Karstedt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Voss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Cantijoch</surname></persName>
+		</author>
+		<title level="m">Reading the riots: What were the Police doing on Twitter? Policing and Society</title>
+				<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="volume">23</biblScope>
+			<biblScope unit="page" from="413" to="436" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Reading the riots on twitter: methodological innovation for the analysis of big data</title>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Farida</forename><surname>Vis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alex</forename><surname>Voss</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">International journal of social research methodology</title>
+		<imprint>
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="197" to="214" />
+			<date type="published" when="2013" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Rumor has it: Identifying misinformation in microblogs</title>
+		<author>
+			<persName><forename type="first">Emily</forename><surname>Vahed Qazvinian</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Rosengren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qiaozhu</forename><surname>Dragomir R Radev</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Conference on Empirical Methods in Natural Language Processing. Association for Computational Linguistics</title>
+				<meeting>the Conference on Empirical Methods in Natural Language Processing. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="1589" to="1599" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">Hoaxy: A platform for tracking online misinformation</title>
+		<author>
+			<persName><forename type="first">Chengcheng</forename><surname>Shao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giovanni</forename><forename type="middle">Luca</forename><surname>Ciampaglia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Flammini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Filippo</forename><surname>Menczer</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1603.01511</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">IITP at SemEval-2017 Task 8: A Supervised Approach for Rumour Evaluation</title>
+		<author>
+			<persName><forename type="first">Vikram</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sunny</forename><surname>Narayan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Md</forename><forename type="middle">Shad</forename><surname>Akhtar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Asif</forename><surname>Ekbal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pushpak</forename><surname>Bhattacharya</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">DFKI-DKT at SemEval-2017 Task 8: Rumour Detection and Classification using Cascading Heuristics</title>
+		<author>
+			<persName><forename type="first">Ankit</forename><surname>Srivastava</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rehm</forename><surname>Rehm</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julian Moreno</forename><surname>Schneider</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Big questions for social media big data: Representativeness, validity and other methodological pitfalls</title>
+		<author>
+			<persName><forename type="first">Zeynep</forename><surname>Tufekci</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI International Conference on Weblogs and Social Media</title>
+				<meeting>the AAAI International Conference on Weblogs and Social Media</meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">A work-in-process literature review: Incorporating social media in risk and crisis communication</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Shari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tara</forename><surname>Veil</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">J</forename><surname>Buehner</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Palenchar</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of contingencies and crisis management</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="110" to="122" />
+			<date type="published" when="2011" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">ECNU at SemEval-2017 Task 8: Rumour Evaluation Using Effective Features and Supervised Ensemble Models</title>
+		<author>
+			<persName><forename type="first">Feixiang</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Man</forename><surname>Lan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuanbin</forename><surname>Wu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of SemEval. ACL</title>
+				<meeting>SemEval. ACL</meeting>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Automatic detection of rumor on social network</title>
+		<author>
+			<persName><forename type="first">Qiao</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shuiyuan</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jian</forename><surname>Dong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinhua</forename><surname>Xiong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xueqi</forename><surname>Cheng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Natural Language Processing and Chinese Computing</title>
+				<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="113" to="122" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">Detection and resolution of rumours in social media: A survey</title>
+		<author>
+			<persName><forename type="first">Arkaitz</forename><surname>Zubiaga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ahmet</forename><surname>Aker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1704.00656</idno>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Crowdsourcing the annotation of rumourous conversations in social media</title>
+		<author>
+			<persName><forename type="first">Arkaitz</forename><surname>Zubiaga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Tolmie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 24th International Conference on World Wide Web: Companion volume. International World Wide Web Conferences Steering Committee</title>
+				<meeting>the 24th International Conference on World Wide Web: Companion volume. International World Wide Web Conferences Steering Committee</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="347" to="353" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Towards detecting rumours in social media</title>
+		<author>
+			<persName><forename type="first">Arkaitz</forename><surname>Zubiaga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalina</forename><surname>Bontcheva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Tolmie</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the AAAI Workshop on AI for Cities</title>
+				<meeting>the AAAI Workshop on AI for Cities</meeting>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">PHEME rumour scheme dataset: Journalism use case</title>
+		<author>
+			<persName><forename type="first">Arkaitz</forename><surname>Zubiaga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+		<idno type="DOI">10.6084/m9.figshare.2068650.v1</idno>
+		<imprint>
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Geraldine Wong Sak Hoi, and Peter Tolmie</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Analysing how people orient to and spread rumours in social media by looking at conversational threads</title>
+		<author>
+			<persName><forename type="first">Arkaitz</forename><surname>Zubiaga</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Maria</forename><surname>Liakata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rob</forename><surname>Procter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">PLoS ONE</title>
+		<imprint>
+			<biblScope unit="volume">11</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="1" to="29" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+	<note>Geraldine Wong Sak Hoi, and Peter Tolmie</note>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title/>
+		<idno type="DOI">10.1371/journal.pone.0150989</idno>
+		<ptr target="https://doi.org/10.1371/journal.pone.0150989" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">SemEval-2015 Task 4: TimeLine: Cross-Document Event Ordering</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Anne-Lyse</forename><surname>Minard</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Manuela</forename><surname>Speranza</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Eneko</forename><surname>Agirre</surname></persName>
+							<email>e.agirre@ehu.eus</email>
+							<affiliation key="aff0">
+								<orgName type="institution">The University of the Basque Country (UPV/EHU)</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Itziar</forename><surname>Aldabe</surname></persName>
+							<email>itziar.aldabe@ehu.eus</email>
+							<affiliation key="aff0">
+								<orgName type="institution">The University of the Basque Country (UPV/EHU)</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Marieke</forename><surname>Van Erp</surname></persName>
+							<email>marieke.van.erp@vu.nl</email>
+							<affiliation key="aff1">
+								<orgName type="institution">VU University Amsterdam</orgName>
+								<address>
+									<country key="NL">the Netherlands</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Bernardo</forename><surname>Magnini</surname></persName>
+							<email>magnini@fbk.eu</email>
+						</author>
+						<author>
+							<persName><forename type="first">German</forename><surname>Rigau</surname></persName>
+							<email>german.rigau@ehu.eus</email>
+							<affiliation key="aff0">
+								<orgName type="institution">The University of the Basque Country (UPV/EHU)</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Rubén</forename><surname>Urizar</surname></persName>
+							<email>ruben.urizar@ehu.eus</email>
+							<affiliation key="aff0">
+								<orgName type="institution">The University of the Basque Country (UPV/EHU)</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><roleName>Trento, Italy</roleName><forename type="first">Fondazione</forename><forename type="middle">Bruno</forename><surname>Kessler</surname></persName>
+						</author>
+						<title level="a" type="main">SemEval-2015 Task 4: TimeLine: Cross-Document Event Ordering</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:27+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper describes the outcomes of the TimeLine task (Cross-Document Event Ordering), that was organised within the Time and Space track of SemEval-2015. Given a set of documents and a set of target entities, the task consisted of building a timeline for each entity, by detecting, anchoring in time and ordering the events involving that entity. The TimeLine task goes a step further than previous evaluation challenges by requiring participant systems to perform both event coreference and temporal relation extraction across documents. Four teams submitted the output of their systems to the four proposed subtracks for a total of 13 runs, the best of which obtained an F 1 -score of 7.85 in the main track (timeline creation from raw text).</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>In any domain, it is important that professionals have access to high quality knowledge for taking wellinformed decisions. As daily tasks of information professionals revolve around reconstructing a chain of previous events, an insightful way of presenting information to them is by means of timelines. The aim of the Cross-Document Event Ordering task is to build timelines from English news articles. To provide focus to the timeline creation, the task is presented as an ordering task in which events involving a particular target entity are to be ordered chronologically. The task focuses on cross-document event coreference resolution and cross-document temporal relation extraction.</p><p>The latter has been the topic of the three previous TempEval tasks within the SemEval challenges: Additionally, it has also been the focus of the 6th i2b2 NLP Challenge for clinical records <ref type="bibr">(Sun et al., 2013)</ref>. The cross-document aspect, however, has not often been explored. One example is the work described in <ref type="bibr" target="#b4">(Ji et al., 2009)</ref> using the ACE 2005 training corpora. Here the authors link pre-defined events involving the same centroid entities (i.e. entities frequently participating in events) on a timeline. Nominal coreference resolution has been the topic of Se-mEval 2010 Task on Coreference Resolution in Multiple Languages <ref type="bibr" target="#b8">(Recasens et al., 2010)</ref>. TimeLine is a pilot task that goes beyond the above-mentioned evaluation exercises by addressing coreference resolution for events and temporal relation extraction at a cross document level.</p><p>This task was motivated by work done in the NewsReader project 1 . The goal of the NewsReader project is to reconstruct story lines across news articles in order to provide policy and decision makers with an overview of what happened, to whom, when, and where. Thus, the NewsReader project aims to present end-users with cross-document storylines. Timelines are intermediate event represen- (sentence id: 2) Steve Jobs, founder of Apple, has chosen to step down from his post as CEO of the company.</p><p>(sentence id: 7) Steve Jobs has been fighting pancreatic cancer since 2004 and has been on medical leave since January of this year.</p><p>(sentence id: 4) He has been fighting pancreatic cancer since 2004.</p><p>(sentence id: 18) The current Microsoft CEO described Jobs as "one of the founders of our industry and a true visionary". tations towards this goal. The remainder of this paper is organised as follows. In Section 2, we introduce the task. In Section 3, we describe the data annotation protocol. In Section 4, we present the characteristics of our dataset and gold standard timelines. In Section 5, we describe our evaluation methodology, followed by the description of participant systems in Section 6 and the results obtained by the participants to the task in Section 7. Lessons learnt and limitations of our setup are discussed in Section 8.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">Task Description</head><p>Given a set of documents and a set of target entities, the task consists of building a timeline related to each entity, i.e. detecting, anchoring in time, and ordering the events in which the target entity is involved <ref type="bibr" target="#b6">(Minard et al., 2014b)</ref>. We base our notion of event on TimeML, according to which an event is a cover term for situations that happen or occur, including predicates describing states or circumstances in which something obtains or holds true <ref type="bibr" target="#b7">(Pustejovsky et al., 2003)</ref>.</p><p>As input data, we provide a set of documents and a set of target entities; only entities involved in more than two events across at least two different documents are considered as candidates target entities. We also propose two different tracks on the basis of the data used as input: Track A, for which we provided only the raw text sources (main track), and Track B, for which we also made gold event mentions available.</p><p>The expected output, both for Track A and B, is one timeline for each target entity. A timeline for a specific target entity consists of the ordered list of the events in which that entity participates. Events in a timeline are anchored in time through the time anchor attribute; however, for both Track A and B, we also propose a subtrack in which the events do not need to be associated to a time anchor.</p><p>In Figure <ref type="figure">1</ref> we show an example of a timeline for the target entity Steve Jobs built using five sentences extracted from three documents. In bold we represent the events that form the timeline.</p><p>In order to perform the task, participants are required to resolve entity coreference, as timelines should contain events involving all coreferring textual mentions of the target entities (including pronominal mentions). For example, in Figure <ref type="figure">1</ref>, the event fighting involving the target entity Steve Jobs mentioned as he is included in the timeline together with other events also referring to Steve Jobs.</p><p>The dataset released for this task is composed of 120 Wikinews 2 articles and 44 target entities. 30 documents and 6 target entities (each associated to a timeline) are provided as trial data, while the evaluation dataset consist of 90 documents and 38 target entities (each associated to a timeline).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">Data Annotation</head><p>We manually selected a set of target entities that appeared in at least two different documents and were involved in more than two events.</p><p>The target entities are restricted to type PERSON (single persons or sets of people), ORGANISATION (corporations, agencies, and other groups of people defined by an established organisational structure), PRODUCT (anything that might satisfy a want or need, including facilities, food, products, services, etc.), and FINANCIAL (the entities belonging to the financial domain that are not included in one of the other entity types).</p><p>Some examples of target entities are Steve Jobs (PERSON), Apple Inc. (ORGANISATION), Airbus A380 (PRODUCT), and Nasdaq (FINANCIAL).</p><p>The annotation procedure for the creation of gold standard timelines for the target entities required one person month. It consisted of four steps, as described below.</p><p>Entity annotation. All occurrences of the target entities in the four corpora were marked following . Cross-document co-reference was annotated according to the NewsReader crossdocument annotation guidelines . For this task, we used CROMER 3 <ref type="bibr" target="#b3">(Girardi et al., 2014)</ref>, a tool designed specifically for cross-document annotation.</p><p>Event and time anchor annotation. Using CROMER, the corpora were annotated with events following the NewsReader cross-document annotation guidelines . The annotation of events as defined in  was restricted by limiting the annotation to events that could be placed on a timeline. Thus, we did not annotate adjectival events, cognitive events, counter-factual events (which certainly did not happen), uncertain events (which might or might not have happened) and grammatical events 4 . For example, the events gave, chosen and been (on medical leave) in Figure <ref type="figure">1</ref> are excluded from the timeline as they are grammatical events.</p><p>Furthermore, timelines only contain events in which target entities explicitly participate in a has participant relation as defined in , with the semantic role ARG0 (i.e. agent) or ARG1 (i.e. patient), as defined in the PropBank Guidelines <ref type="bibr" target="#b1">(Bonial et al., 2010)</ref>. In the example in Figure <ref type="figure">1</ref> we have an explicit has participant relation between the entity Steve Jobs and the event fighting with semantic role ARG0, and one with semantic role ARG1 between Steve Jobs and described.</p><p>Based on TimeML <ref type="bibr" target="#b7">(Pustejovsky et al., 2003)</ref>, a time anchor corresponds to a TIMEX3 of type DATE; the time anchor attribute of an event takes as value the point in time when the event occurred (in the case of punctual events) or began (in the case of durative events). Its format follows the ISO-8601 standard: YYYY-MM-DD (i.e. Year, Month, and Day).</p><p>The finest granularity for time anchor values is DAY; other granularities admitted are MONTH and YEAR (references to months are specified as YYYY-MM and references to years are expressed as YYYY). The place-holder character, X, is used for unfilled positions in the value of a component. Thus, an event happened some day (not specified in the text) in July 2010 (for example, resigned in The company's CEO met his employees one morning last July) has time anchor 2010-07-XX (granu-larity DAY), while an event happened in the same month but with a granularity lower than day (for example in Apple received criticism last month for the placement of the antenna on iPhone 4), has time anchor 2010-07. Similarly, XXXX-XX-XX is used when the time anchor is completely unknown and the granularity is DAY, while XXXX-XX and XXXX are used when the time anchor is unknown and the granularity is MONTH and YEAR respectively <ref type="bibr" target="#b5">(Minard et al., 2014a)</ref>.</p><p>Automatic creation of timelines. We represent timelines in a simple tab format. On each line, we first have a cardinal number indicating the position of an event in the timeline, then the value of the anchor time attribute for the same event, and finally the event itself, which is represented as follows: document identifier, sentence number and textual extent of the event. For example, the event 18315-7-leave in Figure <ref type="figure">1</ref> (occurring in sentence 7 of document 18315) occupies position 4 in the timeline and is anchored to 2011-01.</p><p>In the case of event coreference, in the third column, there is a list of coreferring events separated by tabs instead of a single event (see the coreferring events 18315-7-fighting and 18355-4-fighting at position 1 in the example in Figure <ref type="figure">1</ref>).</p><p>If two events have the same value for the anchor time attribute, they are placed in the same position (i.e. the same number in the first column), but on different lines.</p><p>The automatic created timelines are produced by a script that orders events in a timeline on the basis of the time anchors (all events with the same time anchor are simultaneous and all events with unknown time anchor are at position 0).</p><p>Manual revision of the timelines. The manual revision consists of ordering events with the same time anchor or with unknown time anchor taking into consideration textual information that goes beyond the defining of time anchor <ref type="bibr" target="#b5">(Minard et al., 2014a)</ref>.</p><p>For example both founded and closed in The firm was founded in 2010 and closed before the end of the year have anchor time 2010; nonetheless, based on textual information, it is possible to order them (the firm first was founded and then closed). When it is not possible to order events based either on the time anchor or on textual information, annotators leave them at the same position on the timeline. The same holds for events with anchor time XXXX-XX-XX; if annotators have no textual information that can help ordering them, they leave them at position 0; otherwise they place them on the timeline.</p><p>Inter-annotator agreement Three annotators have annotated a corpus starting from one target entity, i.e. they have annotated entity coreferences refering to the target entity and the events in which this entity participates. The corpus used is the trial corpus about Apple Inc. and the target entity iPhone 4. We compute the inter-annotator agreement using the Dice's coefficient <ref type="bibr" target="#b2">(Dice, 1945)</ref>. For the annotation of entity and event mentions, the agreement is respectively 0.81 and 0.66, and for entity coreferences of 0.84.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Task Dataset</head><p>The dataset used for this task is composed of articles from Wikinews, a collection of multilingual online news articles written collaboratively in a wikilike manner. The reason for choosing Wikinews as a source is its creative commons license allowing us to freely release this dataset to the research community. For this task, we selected Wikinews articles around four topics:</p><p>• Apple Inc. (trial corpus); • Airbus and Boeing (corpus 1); • General Motors, Chrysler and Ford (corpus 2); • Stock Market (corpus 3).</p><p>The trial data consists of one corpus of 30 documents and gold standard timelines for six target entities. The other three corpora, each consisting of 30 documents (about 30,000 tokens each) were used as the evaluation dataset.</p><p>As reported in Table <ref type="table">1</ref>, the total number of target entities in the evaluation dataset amounts to 38, but for the evaluation we used 37 timelines instead as one of the timelines contained no events.</p><p>The trial data contains one target entity of type ORGANISATION, one of type PERSON and 4 of type PRODUCT. The distribution of target entity types in the evaluation dataset is the following: 18 of type ORGANISATION, 10 of type FINANCIAL, 7 of type PERSON and 3 of type PRODUCT. The three evaluation corpora are very similar in terms of size. It is interesting to notice, however, that the timelines created from the Stock Market corpus have peculiar features as they contain a lower average number of events with respect to those created from the other corpora. On the other hand, on average, Stock Market timelines contain events from a higher number of different documents, i.e. 9.1, versus 6.2 for Airbus and 5.7 for GM.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Evaluation Methodology</head><p>The evaluation methodology of this task is based on the evaluation metric used for TempEval-3 (UzZaman et al., 2013) to evaluate relations in terms of recall, precision and F 1 -score. The metric captures the temporal awareness of an annotation (UzZaman and Allen, 2011).</p><p>Temporal awareness is defined as the performance of an annotation as identifying and categorizing temporal relations, which implies the correct recognition and classification of the temporal entities involved in the relations.</p><p>We calculate the Precision by checking the number of reduced system relations that can be verified from the reference annotation temporal closure graph, out of number of temporal relations in the reduced system relations. Similarly, we calculate the Recall by checking the number of reduced reference annotation rela- Before evaluating temporal awareness, each timeline needs to be transformed into a set of temporal relations. Figure <ref type="figure" target="#fig_2">2</ref> shows the explicit relations resulting from the timeline of Figure <ref type="figure">1</ref> as well as the implicit relations captured by the temporal graph. In order to convert each timeline, we defined the following transformation steps:</p><p>1. Each time anchor is represented as a TIMEX3. 2. Each event is related to one TIMEX3 with the SIMULTANEOUS relation type.</p><p>3. If one event happens before another one, a BE-FORE relation type is created between both events. 4. If one event happens at the same time as another one, a SIMULTANEOUS relation type is created between both events.</p><p>Note that the evaluation of subtracks (ordering only), requires steps 3 and 4 alone.</p><p>For this first pilot on timelines, we decided to simplify the representation of durative events in the timelines by anchoring them in time considering their starting point. For this reason we represent relations between each event and its time anchor with the SIMULTANEOUS relation type (instead of other possibilities like BEGUN BY or INCLUDES).</p><p>Events placed at the beginning of the timeline at position 0, i.e. events that were not ordered, are not considered in the evaluation. The official scores are based on the micro-average of the individual F 1scores for each timeline, i.e. the scores are averaged over the events of the timelines of each corpus. The micro-average precision and recall values are also provided.</p><p>6 Participant Systems 29 teams signed up for the evaluation task, 8 teams downloaded the evaluation dataset and only 4 teams submitted results. A total of 13 unique runs were submitted: 3 for Track A (for which the participants worked on the raw texts), 2 for SubTrack A, 4 for Track B (for which the event mentions were provided) and 4 for SubTrack B.</p><p>The WHUNLP team processed the texts with Stanford CoreNLP. They applied a rule-based approach to extract target entities and their predicates, and perform temporal reasoning.</p><p>The SPINOZAVU 5 system is based on the pipeline developed in the NewsReader project and on the TIPSem tool. The tools are used for pre-processing, dependency parsing, semantic role labelling, event detection, temporal expression normalisation, coreference resolution and temporal relations extraction.</p><p>The GPLSIUA team also used a pipeline approach, employing the OpeNER language analysis toolchain, the Semantic Role Labeller from SENNA and the TIPSem tool for temporal processing. In addition, in order to detect event coreferences, they used the topic modelling algorithm of MALLET.</p><p>The HEIDELTOUL team used the HeidelTime tool for time expression recognition and normalisation and Stanford CoreNLP for coreference resolution. Afterwards, they used a cosine similarity matching function and a distance measure to select sentences relevant for a target entity and their events.</p><p>Three teams, SPINOZAVU, GPLSIUA and HEI-DELTOUL, participated in the subtracks. They all submitted the same timelines both for the Tracks and the SubTracks, simply removing time anchors.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Evaluation Results</head><p>The official results are presented in Table <ref type="table" target="#tab_3">2</ref>. For each corpus we present the micro F 1 -score and in the last three columns the micro precision, micro recall and micro F 1 -score overall the three corpora. In the main track, Track A, WHUNLP 1 was the best run and achieved an F 1 of 7.28%. In Track B, GPLSIUA 1 obtained the best scores with an F 1 of 25.36%.</p><p>The subtracks were proposed in order to evaluate systems that do not perform time normalisation or event anchoring in time but focus on temporal relations between events. In the end, the events ordering of the runs submitted to the subtracks was the same as those submitted to the main tracks. In SubTrack A the best results are obtained with the run 1 of SPINOZAVU team, achieving an F 1 -score of 1.69%. In SubTrack B, the best system is the same as in Track B, GPLSIUA 1, with an F 1 -score of 23.15%.</p><p>We evaluate the selection of the relevant events involving a target entity using the classic evaluation metrics: recall, precision and F 1 -score. All events are taken into account independently of their ordering in timelines; events placed at position 0 are also evaluated. The number of true positives and F 1scores obtained on each corpus as well as the microaverage F 1 -scores are presented in Table <ref type="table">3</ref>. In Table 3 we also provide the evaluation of time anchors assignment in terms of accurracy. For each timeline, the accurracy is computed by dividing the number of matching events/time anchors by the number of    <ref type="table">3</ref>: Evaluation of the selection of events in which a target entity is involved and of time anchors assignment; TP: number of correctly identified events; F 1 : micro-average F 1 -score for the selection of events; Acc: accurracy in assignment of time anchors. correctly identified events (TP in the table <ref type="table">)</ref>.</p><p>The results obtained in SubTracks, when evaluating only events ordering, are mainly lower than in Tracks, except on the "GM" corpus. For example the HEIDELTOUL 1 system achieved an F 1 -score of 17.03% overall the 3 corpora in Track B and 14.42% <ref type="bibr">6</ref> We found an error in the format of some event ids and reprocessed the evaluation on a corrected version of the timelines.</p><p>7 HEIDELTOUL 1 and HEIDELTOUL 2 are shorthand for HEIDELTOUL NONTOLMATCHPRUNE and HEIDEL-TOUL TOLMATCHPRUNE respectively.</p><p>in SubTrack B. But on "GM" corpus, the HEIDEL-TOUL 1 system obtained an F 1 -score twice as high as in Track B, obtaining an F 1 -score of 14.78% (vs. 7.25% in Track B). In evaluating the time anchors assignment (see Table <ref type="table">3</ref>), we observed that HEI-DELTOUL and GPLSIUA systems performed better on the "Airbus" and "Stock" corpora than on "GM". This explains in part the better performance of their systems on the "GM" corpus when evaluating only events ordering (SubTrack B) than when evaluating both time anchors assignment and events ordering (Track B). Furthermore, the task of time expression extraction and normalisation has been the topic of different shared tasks and the obtained results are high with an F 1 -score of 90.30 for time expression detection and of 77.61 for normalisation (results obtained by HeidelTime <ref type="bibr" target="#b11">(Strötgen et al., 2013)</ref> at TempEval-3). However, the performance of temporal relation extraction systems is quite low with an F 1 -score of 36.26 obtained by ClearTK-2 <ref type="bibr" target="#b0">(Bethard, 2013)</ref>, the best system at TempEval-3 on Task C.</p><p>Observing the results by corpus in Table <ref type="table" target="#tab_3">2</ref>, we notice that, except for Track A, the best results are obtained on the "Stock Market" corpus. One of the reasons is that in the timelines related to this corpus all events were ordered (only one event was placed at position 0), while in "Airbus" and "GM" corpora less than 70% of the events were ordered.</p><p>In the "GM" corpus, one timeline was empty ("General Motors creditors"), i.e. the corpus does not contain any event that have this target entity as Arg0 or Arg1, therefore this timeline was removed from the evaluation. We observed that SPINOZAVU systems in Track A and GPLSIUA systems in Track B correctly returned an empty timeline, while WHUNLP created a timeline with 3 events in Track A and HEIDELTOUL 1 and HEIDEL-TOUL 2 produced a timeline containing respectively 32 and 78 events for this target entity in Track B.</p><p>Track B was proposed as a simplified task given that annotated texts with events were distributed to participants. Unfortunately no results from the same system run on both Tracks A and B were submitted, therefore, at the moment, we cannot evaluate the impact of pre-annotation of events.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">Conclusion</head><p>The TimeLine task is the first task focusing on crossdocument ordering of events. For this task, we have defined guidelines for cross-document annotation and for timeline creation, as well as annotated trial and evaluation datasets. The results submitted by four teams show much room for improvement. Obviously, timeline creation is a very challenging task which deserves more attention in future research.</p><p>Additionally, during the organisation of this task, many issues arose that provide interesting avenues of future research into timeline creation. Our three main issues concern durative versus punctual events, events without explicit time anchors and the relation between target entities and events. Below, we detail each of these questions.</p><p>Anchoring events in time. The ordering of an event in a timeline is based on the time when the event occurred. However, many events are durative events that have a starting point and/or an ending point. For the task, we decided to order durative events according to their starting points. We are investigating whether a new timeline format can be defined to represent the durative aspect of these events.</p><p>Events without explicit textual time anchor. We made the choice to include them in the timelines but not to evaluate them (events at position 0). The difficulty is to identify cases in which an event cannot be ordered in order to give instruction to annotators and systems. When ordering an event, should we take into consideration the information contained inside one document or inside one corpus, or could (should) we consider also background knowledge?</p><p>The relation between target entities and events. We chose to select events in which one target entity is explicitly involved in a participant relation. Amongst others, this rule excludes events involving a group of which a target entity is member. For example the event received in The two companies have received $13.4 billion (in which the two companies refers to General Motors and Chrysler) does not appear either in the "General Motors" timeline or in the "Chrysler" timeline. Considering also implicit has participant relations would take the timeline task into the domain of complex entity relationships, but could possibly be interesting if considered in combination with taxonomy induction tasks.</p><p>With this TimeLine task, we aimed to take a step forward in the current state-of-the-art in crossdocument coreference and temporal relation extraction. As organisers, we needed to come up with new ways of annotating and representing data. For the participating teams, the task meant that they needed to combine cutting-edge NLP technologies. This pilot task has shown us that the goal of automatic timeline extraction from raw text is challenging, but it has given us many more insights into what is possible, and what issues still need to be addressed.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>•</head><label></label><figDesc>TempEval-1 (2007): Temporal Relation Identification (Verhagen et al., 2009) • TempEval-2 (2010): Evaluating Events, Time Expressions, and Temporal Relations (Verhagen et al., 2010) • TempEval-3 (2013): Temporal Annotation (Uz-Zaman et al., 2013)</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head></head><label></label><figDesc>: 2) Apple Computer CEO and co-founder Steve Jobs gave his annual opening keynote on Monday.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Explicit and implicit relations resulting from the timeline of Figure 1.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 2 :</head><label>2</label><figDesc>Official results of the TimeLine task of the four participating teams 7 presented per subcorpus and over the whole dataset. (Track A: timelines with time anchors from raw text; SubTrack A: timelines without time anchors from raw text; Track B: timelines with time anchors from texts annotated with events; SubTrack B: timelines without time anchors from texts annotated with events.)</figDesc><table><row><cell></cell><cell></cell><cell>Airbus</cell><cell></cell><cell></cell><cell>GM</cell><cell></cell><cell></cell><cell>Stock</cell><cell></cell><cell></cell><cell>Total</cell><cell></cell></row><row><cell></cell><cell cols="2">Events</cell><cell>TA</cell><cell cols="2">Events</cell><cell>TA</cell><cell cols="2">Events</cell><cell>TA</cell><cell cols="2">Events</cell><cell>TA</cell></row><row><cell>Team runs</cell><cell>TP</cell><cell>F 1</cell><cell>Acc</cell><cell>TP</cell><cell>F 1</cell><cell>Acc</cell><cell>TP</cell><cell>F 1</cell><cell>Acc</cell><cell>TP</cell><cell>F 1</cell><cell>Acc</cell></row><row><cell>WHUNLP</cell><cell cols="7">120 34.53 42.50 120 34.33 34.17 91</cell><cell cols="5">42.52 17.58 331 36.33 32.63</cell></row><row><cell>SPINOZAVU 1</cell><cell>46</cell><cell cols="3">17.59 23.91 61</cell><cell cols="3">22.93 36.07 57</cell><cell cols="2">30.24 0.00</cell><cell cols="3">164 22.91 20.12</cell></row><row><cell>SPINOZAVU 2</cell><cell>30</cell><cell cols="3">13.16 26.67 50</cell><cell cols="3">21.69 30.00 45</cell><cell cols="2">26.55 0.00</cell><cell cols="3">125 19.90 18.40</cell></row><row><cell>GPLSIUA 1</cell><cell cols="12">240 59.33 36.67 234 67.73 24.34 190 72.80 43.16 664 65.68 34.17</cell></row><row><cell>GPLSIUA 2</cell><cell cols="12">197 53.53 32.49 188 57.58 22.87 152 59.14 41.45 537 56.44 31.66</cell></row><row><cell cols="8">HEIDELTOUL 1 172 50.44 38.95 119 49.90 10.92 98</cell><cell cols="5">46.34 47.96 389 49.18 32.65</cell></row><row><cell cols="13">HEIDELTOUL 2 250 45.83 37.60 182 54.98 16.48 178 55.02 48.31 610 50.83 34.43</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table</head><label></label><figDesc></figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1">http://www.newsreader-project.eu</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">http://en.wikinews.org. 3 https://hlt.fbk.eu/technologies/cromer</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4">Grammatical events are verbs or nouns that are semantically dependent on a governing content verb/noun. Typical examples of grammatical events are copula verbs, light verbs followed by a nominal event, aspectual verbs and nouns, verbs and nouns expressing causal and motivational relations, and verbs and nouns expressing occurrence.</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="5">The members of the SPINOZAVU team involved in the NewsReader project were not involved in any annotation work or discussions around the organisation of the TimeLine task.</note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This research was funded by the European Union's 7th Framework Programme via the NewsReader (ICT-316404) project.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">ClearTK-TimeML: A minimalist approach to TempEval</title>
+		<author>
+			<persName><forename type="first">Steven</forename><surname>Bethard</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013-06" />
+			<biblScope unit="page" from="10" to="14" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Propbank annotation guidelines</title>
+		<author>
+			<persName><forename type="first">Claire</forename><surname>Bonial</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Olga</forename><surname>Babko-Malaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinho</forename><forename type="middle">D</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jena</forename><surname>Hwang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martha</forename><surname>Palmer</surname></persName>
+		</author>
+		<ptr target="http://www.ldc.upenn.edu/Catalog/docs/LDC2011T03/propbank/english-propbank.pdf" />
+		<imprint>
+			<date type="published" when="2010-12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Measures of the amount of ecologic association between species</title>
+		<author>
+			<persName><forename type="first">Lee</forename><surname>Raymond Dice</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Ecology</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="297" to="302" />
+			<date type="published" when="1945-07" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">CROMER: a Tool for Cross-Document Event and Entity Coreference</title>
+		<author>
+			<persName><forename type="first">Christian</forename><surname>Girardi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Speranza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachele</forename><surname>Sprugnoli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Tonelli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Ninth International Conference on Language Resources and Evaluation (LREC&apos;14)</title>
+				<meeting>the Ninth International Conference on Language Resources and Evaluation (LREC&apos;14)<address><addrLine>Iceland, may</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Cross-document event extraction and tracking: Task, evaluation, techniques and challenges</title>
+		<author>
+			<persName><forename type="first">Heng</forename><surname>Ji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ralph</forename><surname>Grishman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zheng</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Prashant</forename><surname>Gupta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">RANLP</title>
+				<imprint>
+			<date type="published" when="2009" />
+			<biblScope unit="page" from="166" to="172" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">TimeLine: Cross-Document Event Ordering</title>
+		<author>
+			<persName><forename type="first">Anne-Lyse</forename><surname>Minard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Marchetti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Speranza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernardo</forename><surname>Magnini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Itziar</forename><surname>Marieke Van Erp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rubén</forename><surname>Aldabe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Urizar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">German</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Rigau</surname></persName>
+		</author>
+		<idno>NWR2014-11</idno>
+		<ptr target="http://www.newsreader-project.eu/files/2014/12/NWR-2014-111.pdf" />
+	</analytic>
+	<monogr>
+		<title level="m">SemEval 2015 -Task 4. Annotation Guidelines</title>
+				<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">TimeLine: Cross-Document Event Ordering. SemEval 2015 -Task 4</title>
+		<author>
+			<persName><forename type="first">Anne-Lyse</forename><surname>Minard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Speranza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bernardo</forename><surname>Magnini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Itziar</forename><surname>Marieke Van Erp</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rubén</forename><surname>Aldabe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eneko</forename><surname>Urizar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">German</forename><surname>Agirre</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Rigau</surname></persName>
+		</author>
+		<idno>NWR2014-10</idno>
+		<ptr target="http://www.newsreader-project.eu/files/2013/01/SemEvaltaskdescription.pdf" />
+	</analytic>
+	<monogr>
+		<title level="j">Fondazione Bruno Kessler</title>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">TimeML: robust specification of event and temporal expressions in text</title>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">José</forename><surname>Castaño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Ingria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roser</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrea</forename><surname>Setzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Katz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Fifth International Workshop on Computational Semantics (IWCS-5)</title>
+				<imprint>
+			<date type="published" when="2003" />
+			<biblScope unit="page" from="1" to="11" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">SemEval-2010 Task 1: Coreference Resolution in Multiple Languages</title>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Recasens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lluís</forename><surname>Màrquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emili</forename><surname>Sapena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">Antònia</forename><surname>Martí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mariona</forename><surname>Taulé</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Véronique</forename><surname>Hoste</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Massimo</forename><surname>Poesio</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannick</forename><surname>Versley</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Workshop on Semantic Evaluation, SemEval &apos;10</title>
+				<meeting>the 5th International Workshop on Semantic Evaluation, SemEval &apos;10<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Speranza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anne-Lyse</forename><surname>Minard</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">NewsReader Cross-Document Annotation Guidelines</title>
+		<idno>NWR2014-9</idno>
+		<ptr target="http://www.newsreader-project" />
+		<imprint/>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Heideltime: Tuning english and developing spanish resources for tempeval-3</title>
+		<author>
+			<persName><forename type="first">Jannik</forename><surname>Strötgen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julian</forename><surname>Zell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Gertz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation, Se-mEval &apos;13</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation, Se-mEval &apos;13<address><addrLine>Atlanta, Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013-09" />
+			<biblScope unit="volume">20</biblScope>
+			<biblScope unit="page" from="806" to="813" />
+		</imprint>
+	</monogr>
+	<note>Evaluating temporal relations in clinical text: 2012 i2b2 Challenge</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">NewsReader Guidelines for Annotation at Document Level</title>
+		<author>
+			<persName><forename type="first">Sara</forename><surname>Tonelli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rachele</forename><surname>Sprugnoli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuela</forename><surname>Speranza</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anne-Lyse</forename><surname>Minard</surname></persName>
+		</author>
+		<idno>NWR2014-2-2</idno>
+		<ptr target="http://www.newsreader-project" />
+		<imprint>
+			<date type="published" when="2014" />
+			<pubPlace>Fondazione Bruno Kessler</pubPlace>
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Temporal evaluation</title>
+		<author>
+			<persName><forename type="first">Naushad</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies</title>
+				<meeting>the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies<address><addrLine>Oregon, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2011" />
+			<biblScope unit="page" from="351" to="356" />
+		</imprint>
+	</monogr>
+	<note>Portland</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">SemEval-2013 Task 1: TempEval-3: Evaluating Time Expressions, Events, and Temporal Relations</title>
+		<author>
+			<persName><forename type="first">Naushad</forename><surname>Uzzaman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hector</forename><surname>Llorens</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Derczynski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Allen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13</title>
+				<meeting>the Seventh International Workshop on Semantic Evaluation, SemEval &apos;13<address><addrLine>Georgia, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">The TempEval challenge: identifying temporal relations in text</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><forename type="middle">J</forename><surname>Gaizauskas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Schilder</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><surname>Hepple</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><surname>Moszkowicz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Language Resources and Evaluation</title>
+		<imprint>
+			<biblScope unit="volume">43</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="161" to="179" />
+			<date type="published" when="2009" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">SemEval-2010 Task 13: TempEval-2</title>
+		<author>
+			<persName><forename type="first">Marc</forename><surname>Verhagen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Roser</forename><surname>Saurí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tommaso</forename><surname>Caselli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">James</forename><surname>Pustejovsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 5th International Workshop on Semantic Evaluation, SemEval &apos;10</title>
+				<meeting>the 5th International Workshop on Semantic Evaluation, SemEval &apos;10<address><addrLine>Stroudsburg, PA, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010" />
+			<biblScope unit="page" from="57" to="62" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

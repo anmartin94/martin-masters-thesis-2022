@@ -1,0 +1,1486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Overview of the MEDIQA 2021 Shared Task on Summarization in the Medical Domain</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Asma</forename><forename type="middle">Ben</forename><surname>Abacha</surname></persName>
+							<email>benabachaa@nih.gov</email>
+						</author>
+						<author>
+							<persName><forename type="first">Yassine</forename><surname>Mrabet</surname></persName>
+							<email>mrabety@mail.nih.gov</email>
+						</author>
+						<author>
+							<persName><forename type="first">Yuhao</forename><surname>Zhang</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Chaitanya</forename><surname>Shivade</surname></persName>
+							<email>shivadc@amazon.com</email>
+						</author>
+						<author>
+							<persName><forename type="first">Curtis</forename><surname>Langlotz</surname></persName>
+							<email>langlotz@stanford.edu</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution">Stanford University</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution">Stanford University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Overview of the MEDIQA 2021 Shared Task on Summarization in the Medical Domain</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.6.2" ident="GROBID" when="2021-08-25T17:31+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The MEDIQA 2021 shared tasks at the BioNLP 2021 workshop addressed three tasks on summarization for medical text: (i) a question summarization task aimed at exploring new approaches to understanding complex real-world consumer health queries, (ii) a multi-answer summarization task that targeted aggregation of multiple relevant answers to a biomedical question into one concise and relevant answer, and (iii) a radiology report summarization task addressing the development of clinically relevant impressions from radiology report findings. Thirty-five teams participated in these shared tasks with sixteen working notes submitted (fifteen accepted) describing a wide variety of models developed and tested on the shared and external datasets. In this paper, we describe the tasks, the datasets, the models and techniques developed by various teams, the results of the evaluation, and a study of correlations among various summarization evaluation measures. We hope that these shared tasks will bring new research and insights in biomedical text summarization and evaluation.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Text summarization aims to create natural language summaries that represent the most important information in a given text. Extractive summarization approaches tackle the task by selecting content from the original text without any modification <ref type="bibr" target="#b30">(Nallapati et al., 2017;</ref><ref type="bibr" target="#b40">Xiao and Carenini, 2019;</ref><ref type="bibr" target="#b48">Zhong et al., 2020)</ref>, while abstractive approaches extend the summaries' vocabulary to out-of-text words <ref type="bibr" target="#b33">(Rush et al., 2015;</ref><ref type="bibr" target="#b14">Gehrmann et al., 2018;</ref><ref type="bibr" target="#b7">Chen and Bansal, 2018)</ref>.</p><p>Several past challenges and shared tasks have focused on summarization. The Document Understanding Conference 1 (DUC) organized seven 1 www-nlpir.nist.gov/projects/duc challenges from 2000 to 2007 and the Text Analysis Conference 2 (TAC) ran four shared tasks <ref type="bibr">(2008)</ref><ref type="bibr">(2009)</ref><ref type="bibr">(2010)</ref><ref type="bibr">(2011)</ref> on news summarization. The last TAC 2014 summarization task tackled biomedical article summarization with referring sentences from external citations. Recent efforts in summarization have focused on neural methods <ref type="bibr" target="#b35">(See et al., 2017;</ref><ref type="bibr" target="#b14">Gehrmann et al., 2018)</ref> using benchmark datasets compiled from news articles, such as the CNN-DailyMail dataset (CNN-DM) <ref type="bibr" target="#b16">(Hermann et al., 2015)</ref>. However, despite its importance, fewer efforts have tackled text summarization in the biomedical domain for both consumer and clinical text and its applications in Question Answering (QA) <ref type="bibr" target="#b0">(Afantenos et al., 2005;</ref><ref type="bibr" target="#b27">Mishra et al., 2014;</ref><ref type="bibr" target="#b1">Afzal et al., 2020)</ref>.</p><p>While the 2019 BioNLP-MEDIQA 3 edition focused on question entailment and textual inference and their applications in medical Question Answering <ref type="bibr" target="#b2">(Ben Abacha et al., 2019)</ref>, MEDIQA 2021 4 addresses the gap in medical text summarization by promoting research on summarization for consumer health QA and clinical text. Three shared tasks are proposed for the summarization of (i) consumer health questions, (ii) multiple answers extracted from reliable medical sources to create one answer for each question, and (iii) textual clinical findings in radiology reports to generate radiology impression statements.</p><p>For the first two tasks, we created new test sets for the official evaluation using consumer health questions received by the U.S. National Library of Medicine (NLM) and answers retrieved from reliable sources using the Consumer Health Question Answering system CHiQA 5 . For the third task, we created a new test set by combining public radiology reports in the Indiana Univer-sity dataset <ref type="bibr" target="#b10">(Demner-Fushman et al., 2016)</ref> and newly released chest x-ray reports from the Stanford Health Care.</p><p>Through these tasks, we focus on studying:</p><p>• The best approaches according to the summarization task objective and the language/vocabulary (consumers' questions, patient-oriented medical text, and professional clinical reports);</p><p>• The impact of medical data scarcity on the development and performance of summarization methods in comparison with opendomain summarization;</p><p>• The effects of different summary evaluation measures including lexical metrics such as ROUGE <ref type="bibr" target="#b23">(Lin, 2004)</ref>, embedding-based metrics such as BERTScore <ref type="bibr" target="#b45">(Zhang et al., 2019)</ref>, and hybrid ensemble-oriented metrics such as HOLMS .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">MEDIQA 2021 Task Descriptions</head><p>2.1 Consumer Health Question Summarization (QS)</p><p>Consumer health questions tend to contain peripheral information that hinders automatic Question Answering (QA). Empirical studies based on manual expert summarization of these questions showed a substantial improvement of 58% in QA performance <ref type="bibr">(Ben Abacha and Demner-Fushman, 2019a)</ref>. Effective automatic summarization methods for consumer health questions could therefore play a key role in enhancing medical question answering. The goal of this task is to promote the development of new summarization approaches that address specifically the challenges of long and potentially complex consumer health questions. Relevant approaches should be able to generate a condensed question expressing the minimum information required to find correct answers to the original question <ref type="bibr">(Ben Abacha and Demner-Fushman, 2019b)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Multi-Answer Summarization (MAS)</head><p>Different answers can bring complementary perspectives that are likely to benefit the users of QA systems. The goal of this task is to promote the development of multi-answer summarization approaches that could solve simultaneously the aggregation and summarization problems posed by multiple relevant answers to a medical question <ref type="bibr" target="#b34">(Savery et al., 2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Radiology Report Summarization (RRS)</head><p>The task of radiology report summarization aims to promote the development of clinical summarization models that are able to generate the concise impression section (i.e., summary) of a radiology report conditioned on the free-text findings and background sections <ref type="bibr" target="#b46">(Zhang et al., 2018)</ref>. The resulting systems have significant potential to improve the efficiency of clinical communications and accelerate the radiology workflow. While state-of-the-art techniques in language generation have enabled the generation of fluent summaries, these models occasionally generate spurious facts limiting the clinical validity of the generated summaries <ref type="bibr" target="#b47">(Zhang et al., 2020b)</ref>. It is therefore important to develop systems that are able to summarize the radiology findings in a consistent manner.</p><p>3 Data Description  their summaries with additional annotations of the question focus and type. The test set contains 80 consumer health questions. Table <ref type="table" target="#tab_1">1</ref> presents two examples from the QS test set.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">MAS Datasets</head><p>The MEDIQA-AnS dataset <ref type="bibr" target="#b34">(Savery et al., 2020)</ref> was suggested as a training set for the MAS task. Participants were allowed to use available external resources (e.g. existing medical QA datasets) as well as data creation, selection, and augmentation methods. To create the MAS validation and test sets 8 , we used 130 consumer health questions received by NLM. In order to retrieve more accurate answers, we created question summaries that we used to query the medical QA system CHiQA that searches for answers from only trustworthy medical information sources <ref type="bibr">(Ben Abacha and Demner-Fushman, 2019c;</ref>).</p><p>The answer summaries were manually created by medical experts. We provided both extractive and abstractive gold summaries, and encouraged the use of all types of summarization approaches (extractive, abstractive, and hybrid). The MAS validation set contains 192 answers to 50 medical questions. The test set contains 303 answers to 80 medical questions. Each question has at least two answers, one extractive multi-answer summary, and one abstractive multi-answer summary. Table <ref type="table" target="#tab_2">2</ref> presents an example from the test set.</p><p>8 https://github.com/abachaa/ MEDIQA2021/tree/main/Task2</p><p>Original NLM question: I have dementia like symptoms and wanted to know where is the best source to be tested for diagnosis? I have been prescribed Anticholinergic medicine since 2008...since I have been diagnosed with, Celiac disease and Obstructive Sleep Apnea. I think I have Frontal Temporal lobe atrophy. I'm going to try to get tested...any references on which process is easiest would be much appreciated. I can't take my Nasalcrom allergy spay any more nor, valium or prozac, benadryl and glutamate additives in meats because it sends me straight into cognitive emergency state and irrational thinking Question summary used in answer retrieval: What tests are used to diagnose dementia? CHiQA's Answer #1: Dementia is not a specific disease. It is a descriptive term for a collection of symptoms that can be caused by a number of disorders that affect the brain. People with dementia have significantly impaired intellectual functioning that interferes with normal activities and relationships. They also lose their ability to solve problems and maintain emotional control, and they may experience personality changes and behavioral problems, such as agitation, delusions, and hallucinations (...). CHiQA's Answer #2: To diagnose dementia, doctors first assess whether a person has an underlying treatable condition such as depression, abnormal thyroid function, normal pressure hydrocephalus, or vitamin B12 deficiency. Early diagnosis is important, as some causes for symptoms can be treated. In many cases, the specific type of dementia a person has may not be confirmed until after the person has died and the brain is examined.A medical assessment for dementia generally includes:-Patient history (...) -Physical exam (...) -Neurological tests (...). Reference Extractive Summary: Dementia is not a specific disease. It is a descriptive term for a collection of symptoms that can be caused by a number of disorders that affect the brain. Doctors diagnose dementia only if two or more brain functions -such as memory and language skills -are significantly impaired without loss of consciousness. To diagnose dementia, doctors first assess whether a person has an underlying treatable condition such as depression, abnormal thyroid function, normal pressure hydrocephalus, or vitamin B12 deficiency. Early diagnosis is important, as some causes for symptoms can be treated. In many cases, the specific type of dementia a person has may not be confirmed until after the person has died and the brain is examined.A medical assessment for dementia generally includes:-Patient history (...) -Physical exam (...) -Neurological tests (...). Reference Abstractive Summary: Dementia could be caused by many different diseases of the brain. it is diagnosed if at least two brain functions are effected, for example, if people experience memory loss and changes in behavior and personality. Diagnostic tests for dementia include family history, physical examination, and neurological tests to asses balance, sensory functions, reflexes, vision, eye movements, and cognitive functions. In many cases, the type of dementia is confirmed after the person dies. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">RRS Datasets</head><p>We focus on the summarization of chest radiography reports for the RRS task, since chest radiography represents the most common study type in radiology, and public resources for chest studies are easily accessible. For training, we sampled a collection of 91,544 reports from the MIMIC-CXR chest X-ray report dataset 9 based on simple criteria such as the acceptable length of each section. For validation, we combined another 2,000 reports from the MIMIC-CXR dataset and 2,000 reports from the Indiana University chest X-ray dataset 10 (Demner-Fushman et al., 2016). We sampled the reports such that there is no overlapping patients in the validation and training sets.</p><p>For the official test set, we used a combination of 300 reports from the Indiana dataset and 300 newly released chest X-ray reports drawn from the Stanford Health Care system. We intentionally designed the test set to be partially from a hospital system different from the training set (out-ofdomain) to test the generalizability of the participating systems.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Evaluation Measures</head><p>Several new metrics for evaluating text generation systems were studied in recent years <ref type="bibr" target="#b26">(Mao et al., 2020;</ref><ref type="bibr">Bhandari et al., 2020a,b;</ref><ref type="bibr" target="#b45">Zhang et al., 2019;</ref><ref type="bibr" target="#b36">Sellam et al., 2020)</ref>, with a focus on evaluating text generation based on deep and contextualized representations. To understand these metrics in the context of summarization, Fabbri et al. (2020) have compared 34 traditional and recent model-based metrics on a manually annotated subset from the CNN-DM dataset. Although the study relied only on one correlation factor (Kendall's Tau) and one dataset, it highlighted the (continued) general relevance of ROUGE variants <ref type="bibr" target="#b23">(Lin, 2004)</ref> and the challenge of designing or determining the best measure to use. Specifically, the study found that a different measure obtained the best score in each of the four considered evaluation dimensions: coherence, consistency, fluency, and relevance, with substantial discrepancies in rankings.</p><p>In parallel, HOLMS was recently proposed as an ensemble measure combining both contextual-9 https://physionet.org/content/ mimic-cxr/2.0.0/ 10 openi.nlm.nih.gov/faq#collection ized similarity and a lexical ROUGE component through a multi-dimensional Gaussian function . HOLMS was evaluated on multiple DUC and TAC datasets, and three correlation factors (Pearson's, Spearman's, and Kendall's), and was shown to benefit from the complementary strengths of lexical and language model-based similarity measurements for evaluating summarization systems.</p><p>In this shared task, we chose ROUGE-2 as our official ranking metric following its superiority observed by <ref type="bibr" target="#b31">Owczarzak et al. (2012)</ref> on multiple TAC summarization datasets, and by <ref type="bibr" target="#b5">Bhandari et al. (2020c)</ref> on the CNN-DM dataset.</p><p>We chose two additional metrics for the three tasks: (1) BERTScore for its wider adoption as a language model-based text generation metric, and (2) HOLMS for its hybrid and ensemble-oriented approach. For the RRS task we also considered an additional evaluation metric based on the hamming similarity on the labels produced by the CheXbert labeler <ref type="bibr" target="#b37">(Smit et al., 2020)</ref> when applied to both the system and reference summaries, similar to the approach by <ref type="bibr" target="#b47">Zhang et al. (2020b)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Baseline Systems</head><p>Our baseline system for the QS task relied on a distilled PEGASUS model <ref type="bibr" target="#b44">(Zhang et al., 2020a)</ref> trained on the CNN-DM dataset and fine-tuned on a combination of biomedical answer-to-question data and question summarization data from MeQ-Sum, LiveQA-Med data <ref type="bibr">(Ben Abacha et al., 2017)</ref>, a collection of clinical questions <ref type="bibr" target="#b12">(Ely et al., 2000)</ref>, and Quora question pairs dataset <ref type="bibr" target="#b17">(Iyer et al., 2017)</ref>. For the Quora and clinical questions datasets, we extracted only the question pairs with a minimum token reduction ratio of 33%.</p><p>Our extractive baseline for the MAS task relied on sentence clustering and selection. We used our fine-tuned question summarization model to generate a short question from each sentence, and then clustered the sentences using a word-based cosine distance between the generated questions and a distance threshold set to 0.7. Intersecting clusters were merged. For each cluster, we selected the sentence that was the best cumulative TF-IDF answer to all other sentences as a representative.</p><p>For the RRS task, we prepared three baselines: a base pointer-generator model without modeling the background section of a radiology report, a full pointer-generator model with background model-ing <ref type="bibr" target="#b46">(Zhang et al., 2018)</ref>, and a zero-shot T5-base summarization model <ref type="bibr" target="#b32">(Raffel et al., 2020)</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Official Results</head><p>We published three AIcrowd projects (one for each task) to release the datasets and manage team registration, submission, and leaderboard ranking 11 .</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">Participating Teams</head><p>In total, 35 teams participated in the MEDIQA shared tasks and submitted 310 individual runs (with a limit of ten runs per team per task). Table 3 presents the participating teams with accepted working notes papers. The results of all 35 teams are available on AIcrowd and on the MEDIQA 2021 website.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">Summarization Approaches &amp; Results</head><p>A vast majority of the approaches submitted to the QS and RRS tasks were abstractive and relied on fine-tuning of pre-trained generative language models and encoders-decoders architectures. For the MAS task, most submitted approaches were extractive and used a wide spectrum of sentence selection techniques. Question Summarization. Table <ref type="table" target="#tab_4">4</ref> presents the official results of the teams with accepted working notes papers from the 22 teams that participated in the QS task.</p><p>All approaches submitted to the question summarization task were abstractive methods relying on the fine-tuning of pretrained transformer models <ref type="bibr" target="#b39">(Vaswani et al., 2017)</ref>. A wide variety of fine tuning, knowledge-based, and ensemble methods was investigated by the participating teams to achieve higher performance <ref type="bibr" target="#b29">(Mrini et al., 2021;</ref><ref type="bibr" target="#b41">Xu et al., 2021;</ref><ref type="bibr" target="#b8">Zhu et al., 2021;</ref><ref type="bibr" target="#b38">Sänger et al., 2021;</ref><ref type="bibr" target="#b22">Lee et al., 2021b;</ref><ref type="bibr">Balumuri et al., 2021;</ref><ref type="bibr" target="#b43">Yadav et al., 2021;</ref><ref type="bibr">He et al., 2021;</ref><ref type="bibr" target="#b21">Lee et al., 2021a)</ref>. A first interesting insight from the overview is that building ensemble models with deep neural networks such as discriminators is not a trivial task, and achieves results that stay on par with the best single model <ref type="bibr" target="#b38">(Sänger et al., 2021)</ref>. In contrast, heuristic, downstream ensembles of the models outputs led to substantial improvements when compared to its components/single models <ref type="bibr">(He et al., 2021)</ref>. The best performing approach relied on such an ensemble by ranking the outputs of PEGASUS, T5, and BART models according to hand-picked features based on the contents of the input question and lengths of the outputs. Spell checking was also a performance boost factor in the question summarization task with some teams using a knowledge base to correct misspelling errors in the original long questions <ref type="bibr">(He et al., 2021)</ref>, and others relying on third party tools such as CSpell <ref type="bibr" target="#b43">(Yadav et al., 2021;</ref><ref type="bibr" target="#b24">Lu et al., 2019)</ref>. The datasets used for transfer learning or fine-tuning also played a major role in the achieved performance as demonstrated, for instance, by the combination of datasets from HealthCareMagic, question entailment recognition and question summarization in <ref type="bibr" target="#b29">(Mrini et al., 2021)</ref>. Moving forward, we think that the overview of the question summarization task revealed two key challenges that need to be addressed to enhance the relevance and performance of existing systems:</p><p>1. a relevant learning-based ensemble method that could rely either on the textual outputs or the logits of single models.</p><p>2. a more systemic way to select the most relevant datasets for both pretraining and fine tuning.</p><p>Multi-Answer Summarization. Both extractive and abstractive approaches were used by the 17 teams that submitted runs to MAS task <ref type="bibr" target="#b8">(Zhu et al., 2021;</ref><ref type="bibr" target="#b6">Can et al., 2021;</ref><ref type="bibr" target="#b41">Xu et al., 2021;</ref><ref type="bibr" target="#b29">Mrini et al., 2021;</ref><ref type="bibr" target="#b43">Yadav et al., 2021;</ref><ref type="bibr" target="#b20">Le et al., 2021;</ref><ref type="bibr" target="#b21">Lee et al., 2021a)</ref>. Table <ref type="table" target="#tab_5">5</ref> and Table <ref type="table" target="#tab_6">6</ref> present official results of the teams with extractive and abstractive systems when evaluated, respectively, on extractive gold summaries and abstractive gold summaries. The best MAS run <ref type="bibr" target="#b8">(Zhu et al., 2021)</ref> relied on an ensemble method and a recent multi-document summarization approach (Xu and Lapata, 2020) using a Roberta model to rank locally the candidate sentences and a Markov chain to evaluate them globally. A similar approach was also used by the ChicHealth team <ref type="bibr" target="#b41">(Xu et al., 2021)</ref> without a downstream ensemble method. Participating teams used transfer learning (e.g. <ref type="bibr" target="#b29">(Mrini et al., 2021)</ref>) as well as answer sentence selection methods. Sentence selection was used in building extractive summaries (e.g. <ref type="bibr" target="#b6">(Can et al., 2021)</ref>) and as an intermediate step in abstractive summarization to provide more concise inputs to generative models (e.g. <ref type="bibr" target="#b20">(Le et al., 2021)</ref>). Different models, such</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Team</head><p>Institution QS MAS RRS BDKG <ref type="bibr" target="#b8">(Dai et al., 2021)</ref> Baidu, Inc ChicHealth <ref type="bibr" target="#b41">(Xu et al., 2021)</ref> Chic Health damo nlp <ref type="bibr">(He et al., 2021)</ref> Alibaba Group IBMResearch <ref type="bibr" target="#b25">(Mahajan et al., 2021)</ref> IBM Research MNLP <ref type="bibr" target="#b21">(Lee et al., 2021a)</ref> George Mason University NCUEE-NLP <ref type="bibr" target="#b22">(Lee et al., 2021b)</ref> National Central University NLM <ref type="bibr" target="#b43">(Yadav et al., 2021)</ref> U.S. National Library of Medicine optumize <ref type="bibr" target="#b19">(Kondadadi et al., 2021)</ref> Optum paht nlp <ref type="bibr" target="#b8">(Zhu et al., 2021)</ref> ECNU &amp; Pingan Health Tech QIAI <ref type="bibr" target="#b9">(Delbrouck et al., 2021)</ref> Stanford University SB NITK <ref type="bibr">(Balumuri et al., 2021)</ref> National Institute of Technology Karnataka UCSD-Adobe <ref type="bibr" target="#b29">(Mrini et al., 2021)</ref> UC San Diego &amp; Adobe Research UETfishes <ref type="bibr" target="#b20">(Le et al., 2021)</ref> VNU University of Engineering and Technology UETrice <ref type="bibr" target="#b6">(Can et al., 2021)</ref> VNU University of Engineering and Technology WBI <ref type="bibr" target="#b38">(Sänger et al., 2021)</ref> Humboldt University of Berlin      as BART and T5, and datasets (e.g. MEDIQA-AnS, MSMARCO, MEDIQA-2019) have been used for single and multiple answer summarization <ref type="bibr" target="#b43">(Yadav et al., 2021;</ref><ref type="bibr" target="#b29">Mrini et al., 2021;</ref><ref type="bibr" target="#b8">Zhu et al., 2021;</ref><ref type="bibr" target="#b6">Can et al., 2021)</ref>. Radiology Report Summarization. 14 teams participated in the RRS task. Table <ref type="table" target="#tab_7">7</ref> presents the official results of the teams (with accepted papers) on the full test set, and Table <ref type="table" target="#tab_8">8</ref> presents the results on the Stanford and Indiana subsets of the test set. Similar to the previous tasks, participating teams for the RRS task have extensively used pretrained transformer models: out of the 7 teams that submitted papers describing their systems, 6 reported the use of pretrained language models such as BART or PEGASUS in their submissions <ref type="bibr" target="#b41">(Xu et al., 2021;</ref><ref type="bibr" target="#b8">Zhu et al., 2021;</ref><ref type="bibr" target="#b19">Kondadadi et al., 2021;</ref><ref type="bibr" target="#b8">Dai et al., 2021;</ref><ref type="bibr" target="#b25">Mahajan et al., 2021;</ref><ref type="bibr">He et al., 2021)</ref>. Among them, <ref type="bibr" target="#b41">Xu et al. (2021)</ref>; <ref type="bibr" target="#b8">Zhu et al. (2021)</ref>; <ref type="bibr" target="#b8">Dai et al. (2021)</ref> reported that best results were achieved with pretrained PEGASUS models, while <ref type="bibr" target="#b19">Kondadadi et al. (2021)</ref> reported better results from BART. <ref type="bibr" target="#b41">Xu et al. (2021)</ref> and <ref type="bibr" target="#b8">Zhu et al. (2021)</ref> reported that using PEGASUS models pretrained on the PubMed corpus yielded worse results than using the general PEGASUS models, potentially due to the domain difference of the RRS task with the PubMed text.</p><p>In addition to the use of pretrained models, the highest-ranked systems from <ref type="bibr" target="#b8">Dai et al. (2021)</ref> made effective use of a dedicated domain adaptation module, an ensemble module, and text normalization heuristics. <ref type="bibr" target="#b8">Zhu et al. (2021)</ref> reported that freezing the embedding layer in the pretrained models helps the model generalize at test time. <ref type="bibr" target="#b19">Kondadadi et al. (2021)</ref> reported that adding the background section as input improves performance at validation time, but not test time, suggesting that the model performance is sensitive to the different text styles of the background sections from different splits. <ref type="bibr" target="#b25">Mahajan et al. (2021)</ref> focused their study on the factual consistency of generated summaries, and proposed a specialized factaware re-ranking approach based on the predicted disease values from the findings section with a transformer model. As a result, their submissions achieved competitive rankings under the CheXbert metric. Lastly, <ref type="bibr" target="#b9">Delbrouck et al. (2021)</ref> studied the use of image features for the RSS task: they retrieved and linked images for each study to the report at training and validation time, and combined a visual encoder with a text encoder for the summarization task. They found that at validation time the multi-modal setting is beneficial to the summarization of MIMIC reports, but not to the Indiana reports, potentially due to the distribution shift in the images.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Correlations among the Evaluation Measures</head><p>In this section, we discuss correlations between the different evaluation metrics that we used in the challenge. Table <ref type="table" target="#tab_10">9</ref> shows Pearson correlations between the F1 scores of the three lexical measures (ROUGE-1, ROUGE-2, and ROUGE-L) and the two language model-based and ensemblebased measures (i.e., HOLMS and BERTScore). Over all three tasks the HOLMS metric had a better Pearson correlation with ROUGE, ranging from 0.734 to 0.755, while also maintaining a high correlation of 0.736 with BERTScore. This observation supports the findings from the experiments in , which suggested that lexical measures such as ROUGE and language model-based measures bring different and complementary perspectives to summaryevaluation.</p><p>Table <ref type="table" target="#tab_1">10</ref> shows Pearson correlations for the RRS task. HOLMS is substantially closer than CheXbert and BERTScore in its correlation with ROUGE for the RRS task, while maintaining high correlation of respectively 0.645 and 0.702 with CheXbert and BERTScore.</p><p>In contrast, BERTScore is substantially closer than HOLMS in its correlation with the ROUGE metrics for both the MAS task (cf. table 11) and the QS task (see Table <ref type="table" target="#tab_1">12</ref>). Two factors that could explain these correlations are (i) the predominance of extractive runs in the MAS task and (ii) the sequential n-gram-based modeling in HOLMS that takes into account the order of the n-grams, while BERTScore relies on a cosine distance between two given sets of token embeddings.</p><p>Both language model-based measures had positive correlations with ROUGE for the QS task, but the level of correlation was substantially lower when compared to the MAS and RRS tasks, going from a Pearson coefficient range between 0.663 and 0.958 to a range between 0.193 and 0.372. As all submitted QS runs were described as abstractive or hybrid approaches, this discrepancy might be due to a stronger disagreement on summary assessment due to semantically-close but lexically distant summaries. It is also likely that the lexical distance between paraphrases was more pronounced due to the lengths of the question summaries, which are shorter than the summaries in the MAS task.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Conclusion</head><p>We presented an overview of the MEDIQA 2021 shared tasks on summarization in the medical domain. We presented the results for the three tasks on Question Summarization, Multi-Answer Summarization and Radiology Reports Summarization, and discussed the impact of summarization approaches and automatic evaluation methods. We find that pre-trained transformer models, fine-tuning on the carefully selected domainspecific text and ensemble methods worked well for all three summarization tasks. The results encourage future research to include in-depth exploration of ensemble methods, systematic approaches to selection of datasets for pre-training and fine-tuning, as well as a thorough assessment of the quality and relevance of different evaluation measures for summarization. We hope that the MEDIQA 2021 shared tasks will encourage further research efforts in medical text summarization and evaluation.     </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_0"><head></head><label></label><figDesc>NLM Question: did anyone have this and does it require surgery? my mri says forminal stenosis from bone spurs c4,5,6. my nerve test shows severe nerve compression c7,8. i'm in so much pain, mostly my arm and shoulder and leg. waiting to see the pain specialist to see what's next. would love to know what you guys think is required.</figDesc><table><row><cell>Example 1 (QID: 139)</cell></row><row><cell>Question Summary: How can I get rid of pain caused</cell></row><row><cell>by foraminal stenosis and nerve compression?</cell></row><row><cell>Example 2 (QID: 111)</cell></row><row><cell>NLM Question:</cell></row><row><cell>covid-19 how long to quarantine after being positive</cell></row><row><cell>how long are you contagious if i tested positive for</cell></row><row><cell>covid-19. how long before i can safely return to work</cell></row><row><cell>after a positive covid 19 test</cell></row><row><cell>Question Summary: How long will I remain conta-</cell></row><row><cell>gious after testing positive for COVID-19?</cell></row><row><cell>3.1 QS Datasets</cell></row><row><cell>The MeQSum dataset of consumer health ques-</cell></row><row><cell>tions and their summaries (Ben Abacha and</cell></row><row><cell>Demner-Fushman, 2019b) was suggested as a</cell></row><row><cell>training dataset. It consists of 1,000 consumer</cell></row><row><cell>health questions and their associated summaries.</cell></row><row><cell>Participants were encouraged to use available ex-</cell></row><row><cell>ternal resources including, but not limited to, med-</cell></row><row><cell>ical QA datasets and question focus and type</cell></row><row><cell>recognition datasets. For instance, the Consumer</cell></row><row><cell>Health Questions dataset (Kilicoglu et al., 2018)</cell></row><row><cell>contains annotations of medical entities, focus,</cell></row><row><cell>and type of the MeQSum questions and additional</cell></row><row><cell>NLM questions 6 .</cell></row><row><cell>The new QS validation and test sets 7 cover a</cell></row><row><cell>wide range of topics and question types such as</cell></row><row><cell>Treatment, Information, Side effects, Cause, Ef-</cell></row><row><cell>fect, Person-Organization, Diet-Lifestyle, Compli-</cell></row><row><cell>cations, Contraindications, Diagnosis, Usage, In-</cell></row><row><cell>teraction, Ingredients, Prognosis, Susceptibility,</cell></row><row><cell>Transmission, and Toxicity. They consist of man-</cell></row><row><cell>ually de-identified consumer health questions re-</cell></row><row><cell>ceived by the U.S. National Library of Medicine</cell></row><row><cell>and gold summaries created by medical experts.</cell></row><row><cell>The validation set includes 50 NLM questions and</cell></row><row><cell>6 https://bionlp.nlm.nih.gov/</cell></row><row><cell>CHIQAcollections/CHQA-Corpus-1.0.zip</cell></row><row><cell>7 https://github.com/abachaa/</cell></row><row><cell>MEDIQA2021/tree/main/Task1</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>Test set examples for the QS task.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Test set example for the MAS task (QID:105).</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>Participating teams with accepted working notes papers at BioNLP-MEDIQA 2021</figDesc><table><row><cell cols="2">Rank Team</cell><cell cols="5">ROUGE-2 ROUGE-1 ROUGE-L HOLMS BERTScore</cell></row><row><cell>1</cell><cell>damo nlp</cell><cell>0.1608</cell><cell>0.3514</cell><cell>0.3131</cell><cell>0.5677</cell><cell>0.6898</cell></row><row><cell>2</cell><cell>WBI</cell><cell>0.1599</cell><cell>0.3340</cell><cell>0.3149</cell><cell>0.5767</cell><cell>0.6996</cell></row><row><cell>3</cell><cell>NCUEE-NLP</cell><cell>0.1597</cell><cell>0.3352</cell><cell>0.3090</cell><cell>0.5787</cell><cell>0.6960</cell></row><row><cell>4</cell><cell>NLM</cell><cell>0.1514</cell><cell>0.3556</cell><cell>0.3110</cell><cell>0.5649</cell><cell>0.6892</cell></row><row><cell>5</cell><cell>UCSD-Adobe</cell><cell>0.1414</cell><cell>0.3463</cell><cell>0.3065</cell><cell>0.5586</cell><cell>0.6942</cell></row><row><cell>6</cell><cell>ChicHealth</cell><cell>0.1398</cell><cell>0.3403</cell><cell>0.2962</cell><cell>0.5551</cell><cell>0.6810</cell></row><row><cell>7</cell><cell>SB NITK</cell><cell>0.1393</cell><cell>0.3331</cell><cell>0.3077</cell><cell>0.5663</cell><cell>0.7025</cell></row><row><cell>-</cell><cell>QS Baseline</cell><cell>0.1373</cell><cell>0.3203</cell><cell>0.2962</cell><cell>0.5672</cell><cell>0.6277</cell></row><row><cell>8</cell><cell>MNLP</cell><cell>0.1114</cell><cell>0.2840</cell><cell>0.2587</cell><cell>0.5455</cell><cell>0.6732</cell></row><row><cell>9</cell><cell>paht nlp</cell><cell>0.0935</cell><cell>0.2486</cell><cell>0.2331</cell><cell>0.5428</cell><cell>0.6591</cell></row><row><cell>10</cell><cell>QIAI</cell><cell>0.0385</cell><cell>0.1514</cell><cell>0.1356</cell><cell>0.4898</cell><cell>0.5101</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_4"><head>Table 4 :</head><label>4</label><figDesc>Official results of the MEDIQA-QS task.</figDesc><table><row><cell>Rank</cell><cell>Team</cell><cell cols="5">ROUGE-2 ROUGE-1 ROUGE-L HOLMS BERTScore</cell></row><row><cell>1</cell><cell>paht nlp</cell><cell>0.5076</cell><cell>0.5848</cell><cell>0.4354</cell><cell>0.7047</cell><cell>0.8038</cell></row><row><cell>2</cell><cell>UETrice</cell><cell>0.5040</cell><cell>0.6110</cell><cell>0.4412</cell><cell>0.7383</cell><cell>0.7958</cell></row><row><cell>3</cell><cell>ChicHealth</cell><cell>0.4893</cell><cell>0.5776</cell><cell>0.4261</cell><cell>0.7033</cell><cell>0.7916</cell></row><row><cell>4</cell><cell>UCSD-Adobe</cell><cell>0.4720</cell><cell>0.6073</cell><cell>0.4289</cell><cell>0.7612</cell><cell>0.7753</cell></row><row><cell>5</cell><cell>NLM</cell><cell>0.4677</cell><cell>0.5470</cell><cell>0.3276</cell><cell>0.6575</cell><cell>0.7645</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 5 :</head><label>5</label><figDesc>Official results of the MEDIQA-MAS task (1): Extractive Approaches.</figDesc><table><row><cell>Team</cell><cell cols="6">Rank ROUGE-2 ROUGE-1 ROUGE-L HOLMS BERTScore</cell></row><row><cell>paht nlp</cell><cell>1</cell><cell>0.5076</cell><cell>0.5848</cell><cell>0.4354</cell><cell>0.7047</cell><cell>0.8038</cell></row><row><cell></cell><cell>(1)</cell><cell>0.1621</cell><cell>0.3215</cell><cell>0.1910</cell><cell>0.4220</cell><cell>0.6528</cell></row><row><cell>UETfishes</cell><cell>2</cell><cell>0.4698</cell><cell>0.5720</cell><cell>0.4001</cell><cell>0.6970</cell><cell>0.7821</cell></row><row><cell></cell><cell>(3)</cell><cell>0.1495</cell><cell>0.3124</cell><cell>0.1885</cell><cell>0.4213</cell><cell>0.6466</cell></row><row><cell>UCSD-Adobe</cell><cell>3</cell><cell>0.4595</cell><cell>0.5921</cell><cell>0.4170</cell><cell>0.7502</cell><cell>0.7689</cell></row><row><cell></cell><cell>(2)</cell><cell>0.1604</cell><cell>0.3843</cell><cell>0.2117</cell><cell>0.4937</cell><cell>0.6326</cell></row><row><cell>MNLP</cell><cell>4</cell><cell>0.2594</cell><cell>0.4220</cell><cell>0.2954</cell><cell>0.6568</cell><cell>0.6479</cell></row><row><cell></cell><cell>(4)</cell><cell>0.1167</cell><cell>0.3490</cell><cell>0.2047</cell><cell>0.5269</cell><cell>0.5763</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 6 :</head><label>6</label><figDesc>Official results of the MEDIQA-MAS task (2): Abstractive Approaches. Ranks in bold and in parenthesis correspond to evaluation on extractive gold summaries and on abstractive gold summaries, respectively.</figDesc><table><row><cell cols="2">Rank Team</cell><cell>R-2</cell><cell>R-1</cell><cell>R-L</cell><cell cols="2">HOLMS BERTScore CheXbert</cell></row><row><cell>1</cell><cell>BDKG</cell><cell cols="3">0.4362 0.5572 0.5365</cell><cell>0.7402</cell><cell>0.7184</cell><cell>0.6927</cell></row><row><cell>2</cell><cell>IBMResearch</cell><cell cols="3">0.4082 0.5328 0.5134</cell><cell>0.7185</cell><cell>0.7115</cell><cell>0.6774</cell></row><row><cell>3</cell><cell>optumize</cell><cell cols="3">0.3918 0.5185 0.4957</cell><cell>0.7087</cell><cell>0.6975</cell><cell>0.6773</cell></row><row><cell>4</cell><cell>QIAI</cell><cell cols="3">0.3778 0.4954 0.4793</cell><cell>0.7132</cell><cell>0.5328</cell><cell>0.5565</cell></row><row><cell>5</cell><cell>ChicHealth</cell><cell cols="3">0.3236 0.4606 0.4410</cell><cell>0.6822</cell><cell>0.6768</cell><cell>0.6261</cell></row><row><cell>6</cell><cell>damo nlp</cell><cell cols="3">0.2763 0.4329 0.4115</cell><cell>0.6604</cell><cell>0.6576</cell><cell>0.6343</cell></row><row><cell>-</cell><cell>baseline (PG-full)</cell><cell cols="3">0.2734 0.4182 0.4041</cell><cell>0.6647</cell><cell>0.6194</cell><cell>0.6014</cell></row><row><cell>-</cell><cell cols="4">baseline (PG-base) 0.2639 0.4026 0.3885</cell><cell>0.6553</cell><cell>0.6103</cell><cell>0.5537</cell></row><row><cell>7</cell><cell>paht nlp</cell><cell cols="3">0.1987 0.3400 0.3053</cell><cell>0.5915</cell><cell>0.5985</cell><cell>0.6705</cell></row><row><cell>-</cell><cell>baseline (T5)</cell><cell cols="3">0.0945 0.2108 0.1831</cell><cell>0.4432</cell><cell>0.4921</cell><cell>0.5245</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_7"><head>Table 7 :</head><label>7</label><figDesc>Official results of the MEDIQA-RRS task on the full test set.</figDesc><table><row><cell>Rank</cell><cell>Team</cell><cell cols="2">ROUGE-2</cell><cell cols="2">CheXbert</cell></row><row><cell></cell><cell></cell><cell>Stanford</cell><cell>Indiana</cell><cell>Stanford</cell><cell>Indiana</cell></row><row><cell>1</cell><cell>BDKG</cell><cell>0.2768</cell><cell>0.5955</cell><cell>0.6547</cell><cell>0.7052</cell></row><row><cell>2</cell><cell>ChicHealth</cell><cell>0.2690</cell><cell>0.3781</cell><cell>0.6291</cell><cell>0.5873</cell></row><row><cell>3</cell><cell>damo nlp</cell><cell>0.2687</cell><cell>0.2839</cell><cell>0.6645</cell><cell>0.5517</cell></row><row><cell>4</cell><cell>optumize</cell><cell>0.2654</cell><cell>0.5182</cell><cell>0.6474</cell><cell>0.6592</cell></row><row><cell>5</cell><cell>QIAI</cell><cell>0.2516</cell><cell>0.5039</cell><cell>0.5508</cell><cell>0.4970</cell></row><row><cell>6</cell><cell>paht nlp</cell><cell>0.2491</cell><cell>0.1483</cell><cell>0.6834</cell><cell>0.6148</cell></row><row><cell>-</cell><cell>baseline (PG-full)</cell><cell>0.2414</cell><cell>0.3054</cell><cell>0.6216</cell><cell>0.5466</cell></row><row><cell>-</cell><cell>baseline (PG-base)</cell><cell>0.2408</cell><cell>0.2870</cell><cell>0.5892</cell><cell>0.4754</cell></row><row><cell>7</cell><cell>IBMResearch</cell><cell>0.2283</cell><cell>0.5880</cell><cell>0.6472</cell><cell>0.6937</cell></row><row><cell>-</cell><cell>baseline (T5)</cell><cell>0.1280</cell><cell>0.0610</cell><cell>0.5067</cell><cell>0.5609</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 8 :</head><label>8</label><figDesc>Official results of the MEDIQA-RRS task on the Stanford and Indiana test splits.</figDesc><table /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_10"><head>Table 9 :</head><label>9</label><figDesc>Pearson correlations between metrics aggregated over all three tasks. For ROUGE and BERTScore we use their F1 scores. Best correlations with the ROUGE metrics are highlighted in bold.</figDesc><table><row><cell>Measure</cell><cell cols="6">ROUGE-1 ROUGE-2 ROUGE-L CheXbert HOLMS BERTScore</cell></row><row><cell>ROUGE-1</cell><cell>1.000</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ROUGE-2</cell><cell>0.970</cell><cell>1.000</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ROUGE-L</cell><cell>0.998</cell><cell>0.975</cell><cell>1.000</cell><cell></cell><cell></cell><cell></cell></row><row><cell>CheXbert</cell><cell>0.777</cell><cell>0.667</cell><cell>0.749</cell><cell>1.000</cell><cell></cell><cell></cell></row><row><cell>HOLMS</cell><cell>0.951</cell><cell>0.938</cell><cell>0.958</cell><cell>0.645</cell><cell>1.000</cell><cell></cell></row><row><cell>BERTScore</cell><cell>0.752</cell><cell>0.663</cell><cell>0.743</cell><cell>0.719</cell><cell>0.702</cell><cell>1.000</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_11"><head>Table 10 :</head><label>10</label><figDesc>Pearson correlations between metrics for the RRS task. For ROUGE and BERTScore we used the F1 scores. Best correlations with the lexical measures are highlighted in bold.</figDesc><table><row><cell>Measure</cell><cell cols="5">ROUGE-1 ROUGE-2 ROUGE-L HOLMS BERTScore</cell></row><row><cell>ROUGE-1</cell><cell>1.000</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ROUGE-2</cell><cell>0.960</cell><cell>1.000</cell><cell></cell><cell></cell><cell></cell></row><row><cell>ROUGE-L</cell><cell>0.951</cell><cell>0.946</cell><cell>1.000</cell><cell></cell><cell></cell></row><row><cell>HOLMS</cell><cell>0.812</cell><cell>0.823</cell><cell>0.873</cell><cell>1.000</cell><cell></cell></row><row><cell>BERTSCore</cell><cell>0.913</cell><cell>0.924</cell><cell>0.889</cell><cell>0.784</cell><cell>1.000</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_12"><head>Table 11 :</head><label>11</label><figDesc>Pearson correlations between metrics for the MAS task. Extractive runs were evaluated on extractive gold summaries. Abstractive runs were evaluated on both extractive and abstractive gold summaries. All evaluation scores were concatenated to compute correlations. For ROUGE and BERTScore we used the F1 scores. Best correlations with the lexical measures are highlighted in bold.</figDesc><table><row><cell>Measure</cell><cell cols="5">ROUGE-1 ROUGE-2 ROUGE-L HOLMS BERTScore</cell></row><row><cell>ROUGE-1</cell><cell>1.000</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>ROUGE-2</cell><cell>0.951</cell><cell>1.000</cell><cell></cell><cell></cell><cell></cell></row><row><cell>ROUGE-L</cell><cell>0.944</cell><cell>0.981</cell><cell>1.000</cell><cell></cell><cell></cell></row><row><cell>HOLMS</cell><cell>0.193</cell><cell>0.204</cell><cell>0.259</cell><cell>1.000</cell><cell></cell></row><row><cell>BERTSCore</cell><cell>0.292</cell><cell>0.332</cell><cell>0.372</cell><cell>0.972</cell><cell>1.000</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_13"><head>Table 12 :</head><label>12</label><figDesc>Pearson correlations between metrics for the QS task. For ROUGE and BERTScore we used the F1 scores. Best correlations with the lexical measures are highlighted in bold. neural network: Model development and validation. J Med Internet Res, 22(10):e19810. Spandana Balumuri, Sony Bachina, and Sowmya Kamath S. 2021. Sb nitk at mediqa 2021: Leveraging transfer learning for question summarization in medical domain. In Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics. Asma Ben Abacha, Eugene Agichtein, Yuval Pinter, and Dina Demner-Fushman. 2017. Overview of the medical question answering task at trec 2017 liveqa. In TREC 2017. Asma Ben Abacha and Dina Demner-Fushman. 2019a. On the role of question summarization and information source restriction in consumer health question answering. In Proceedings of the AMIA 2019 Informatics Summit, San Francisco, CA, USA, 2019. Asma Ben Abacha and Dina Demner-Fushman. 2019b. On the summarization of consumer health questions. In Proceedings of the 57th Conference of the Association for Computational Linguistics, ACL 2019, Florence, Italy, July 28-August 2, 2019, Volume 1: Long Papers, pages 2228-2234. Association for Computational Linguistics. Asma Ben Abacha and Dina Demner-Fushman. 2019c. A question-entailment approach to question answering. BMC Bioinform., 20(1):511:1-511:23.</figDesc><table /></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2">tac.nist.gov/tracks 3 sites.google.com/view/mediqa2019 4 sites.google.com/view/mediqa2021 5 chiqa.nlm.nih.gov</note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="11"> www.aicrowd.com/challenges/  mediqa-2021   </note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Acknowledgments</head><p>This research was partially supported by the Intramural Research Program of the National Library of Medicine, National Institutes of Health. We thank Anna Ripple (NLM/NIH) for her help with the manual annotation and Soumya Gayen (NLM/NIH) for his help with the summarization interface.</p></div>
+			</div>
+
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Summarization from medical documents: A survey</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Stergos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vangelis</forename><surname>Afantenos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Panagiotis</forename><surname>Karkaletsis</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Stamatopoulos</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Artif Intell Med</title>
+		<imprint>
+			<biblScope unit="volume">33</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="157" to="177" />
+			<date type="published" when="2005" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Clinical contextaware biomedical text summarization using deep</title>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Afzal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fakhare</forename><surname>Alam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Khalid Mahmood</forename><surname>Malik</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ghaus M</forename><surname>Malik</surname></persName>
+		</author>
+		<idno type="DOI">10.2196/19810</idno>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Overview of the MEDIQA 2019 shared task on textual inference, question entailment and question answering</title>
+		<author>
+			<persName><forename type="first">Asma</forename><surname>Ben Abacha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Chaitanya</forename><surname>Shivade</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 18th BioNLP Workshop and Shared Task, BioNLP@ACL 2019</title>
+				<meeting>the 18th BioNLP Workshop and Shared Task, BioNLP@ACL 2019<address><addrLine>Florence, Italy</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019-08-01" />
+			<biblScope unit="page" from="370" to="379" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Metrics also disagree in the low scoring range: Revisiting summarization evaluation metrics</title>
+		<author>
+			<persName><forename type="first">Manik</forename><surname>Bhandari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Narayan Gour</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Atabak</forename><surname>Ashfaq</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pengfei</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 28th International Conference on Computational Linguistics</title>
+				<meeting>the 28th International Conference on Computational Linguistics<address><addrLine>Barcelona, Spain (Online)</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020-12-08" />
+			<biblScope unit="volume">2020</biblScope>
+			<biblScope unit="page" from="5702" to="5711" />
+		</imprint>
+	</monogr>
+	<note>International Committee on Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Reevaluating evaluation in text summarization</title>
+		<author>
+			<persName><forename type="first">Manik</forename><surname>Bhandari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Narayan Gour</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Atabak</forename><surname>Ashfaq</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pengfei</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Neubig</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.emnlp-main.751</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Online</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2020-11-16" />
+			<biblScope unit="volume">2020</biblScope>
+			<biblScope unit="page" from="9347" to="9359" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Reevaluating evaluation in text summarization</title>
+		<author>
+			<persName><forename type="first">Manik</forename><surname>Bhandari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Narayan Gour</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Atabak</forename><surname>Ashfaq</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pengfei</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Graham</forename><surname>Neubig</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<publisher>EMNLP</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Uetrice at mediqa 2021: A prosper-thyneighbour extractive multi-document summarization model</title>
+		<author>
+			<persName><forename type="first">Duy-Cat</forename><surname>Can</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc-An</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc-Hung</forename><surname>Duong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Minh-Quang</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huy-Son</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cam-Van Thi</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quang-Thuy</forename><surname>Ha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mai-Vu</forename><surname>Tran</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Fast abstractive summarization with reinforce-selected sentence rewriting</title>
+		<author>
+			<persName><forename type="first">Yen-Chun</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohit</forename><surname>Bansal</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics, ACL 2018</title>
+				<meeting>the 56th Annual Meeting of the Association for Computational Linguistics, ACL 2018<address><addrLine>Melbourne, Australia</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2018-07-15" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="675" to="686" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Bdkg at mediqa 2021: System report for the radiology report summarization task</title>
+		<author>
+			<persName><forename type="first">Songtai</forename><surname>Dai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quan</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yajuan</forename><surname>Lyu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yong</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Qiai at mediqa 2021: Multimodal radiology report summarization</title>
+		<author>
+			<persName><forename type="first">Jean-Benoit</forename><surname>Delbrouck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Cassie</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Rubin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Preparing a collection of radiology examinations for distribution and retrieval</title>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Marc</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Kohli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sonya</forename><forename type="middle">E</forename><surname>Marc B Rosenman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laritza</forename><surname>Shooshan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sameer</forename><surname>Rodriguez</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Antani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Clement J</forename><surname>George R Thoma</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mcdonald</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">23</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="304" to="310" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Consumer health information and question answering: helping consumers find answers to their health-related information needs</title>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yassine</forename><surname>Mrabet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Asma</forename><surname>Ben Abacha</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Am. Medical Informatics Assoc</title>
+		<imprint>
+			<biblScope unit="volume">27</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page" from="194" to="201" />
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">A taxonomy of generic clinical questions: classification study</title>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">W</forename><surname>Ely</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jerome</forename><forename type="middle">A</forename><surname>Osheroff</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><forename type="middle">N</forename><surname>Gorman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mark</forename><forename type="middle">H</forename><surname>Ebell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">Lee</forename><surname>Chambliss</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eric</forename><forename type="middle">A</forename><surname>Pifer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">Zoe</forename><surname>Stavri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">British Medical Journal</title>
+		<imprint>
+			<biblScope unit="volume">321</biblScope>
+			<biblScope unit="page" from="429" to="432" />
+			<date type="published" when="2000" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<author>
+			<persName><forename type="first">Wojciech</forename><surname>Alexander R Fabbri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bryan</forename><surname>Kryściński</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Caiming</forename><surname>Mccann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Richard</forename><surname>Xiong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dragomir</forename><surname>Socher</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Radev</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2007.12626</idno>
+		<title level="m">Summeval: Reevaluating summarization evaluation</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">Bottom-up abstractive summarization</title>
+		<author>
+			<persName><forename type="first">Sebastian</forename><surname>Gehrmann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuntian</forename><surname>Deng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><forename type="middle">M</forename><surname>Rush</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2018 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Brussels, Belgium</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2018-10-31" />
+			<biblScope unit="page" from="4098" to="4109" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">2021. damo nlp at mediqa 2021: Knowledge-base preprocessing and coverage-oriented reranking for medical question summarization</title>
+		<author>
+			<persName><forename type="first">Yifan</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mosha</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Songfang</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Teaching machines to read and comprehend</title>
+		<author>
+			<persName><forename type="first">Karl</forename><surname>Moritz Hermann</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tomás</forename><surname>Kociský</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Edward</forename><surname>Grefenstette</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lasse</forename><surname>Espeholt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Will</forename><surname>Kay</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mustafa</forename><surname>Suleyman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Phil</forename><surname>Blunsom</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NIPS</title>
+				<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="1693" to="1701" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">First quora dataset release: Question pairs</title>
+		<author>
+			<persName><forename type="first">Shankar</forename><surname>Iyer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nikhil</forename><surname>Dandekar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kornél</forename><surname>Csernai</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Semantic annotation of consumer health questions</title>
+		<author>
+			<persName><forename type="first">Halil</forename><surname>Kilicoglu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Asma</forename><surname>Ben Abacha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yassine</forename><surname>Mrabet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sonya</forename><forename type="middle">E</forename><surname>Shooshan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laritza</forename><surname>Rodriguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kate</forename><surname>Masterton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+		<idno type="DOI">10.1186/s12859-018-2045-1</idno>
+	</analytic>
+	<monogr>
+		<title level="j">BMC Bioinform</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page">28</biblScope>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Optum at mediqa 2021: Abstractive summarization of radiology reports using simple bart finetuning</title>
+		<author>
+			<persName><forename type="first">Ravi</forename><surname>Kondadadi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sahil</forename><surname>Manchanda</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Ngo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ronan</forename><surname>Mccormack</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Uetfishes at mediqa 2021: Standing-on-the-shoulders-of-giants model for abstractive multi-answer summarization</title>
+		<author>
+			<persName><forename type="first">Quoc-An</forename><surname>Hoang-Quynh Le</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Quoc-Hung</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Minh-Quang</forename><surname>Duong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huy-Son</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tam</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hai-Yen Thi</forename><surname>Doan Thanh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Trang</forename><forename type="middle">M</forename><surname>Vuong</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Nguyen</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Mnlp at mediqa 2021: Fine-tuning pegasus for consumer health question summarization</title>
+		<author>
+			<persName><forename type="first">Jooyeon</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Huong</forename><surname>Dang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ozlem</forename><surname>Uzuner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sam</forename><surname>Henry</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">Ncuee-nlp at mediqa 2021: Health question summarization using pegasus transformers</title>
+		<author>
+			<persName><forename type="first">Po-Han</forename><surname>Lung-Hao Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu-Xiang</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Po-Lei</forename><surname>Zeng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kuo-Kai</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Shyu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<analytic>
+		<title level="a" type="main">ROUGE: A package for automatic evaluation of summaries</title>
+		<author>
+			<persName><forename type="first">Chin-Yew</forename><surname>Lin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Text Summarization Branches Out</title>
+				<meeting><address><addrLine>Barcelona, Spain</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2004" />
+			<biblScope unit="page" from="74" to="81" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Spell checker for consumer language (cspell)</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Chris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alan</forename><forename type="middle">R</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sonya</forename><forename type="middle">E</forename><surname>Aronson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Shooshan</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Demner-Fushman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the American Medical Informatics Association</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="211" to="218" />
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Ibmresearch at mediqa 2021: Toward improving factual correctness of radiology report abstractive summarization</title>
+		<author>
+			<persName><forename type="first">Diwakar</forename><surname>Mahajan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ching-Huei</forename><surname>Tsou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jennifer</forename><forename type="middle">J</forename><surname>Liang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<title level="a" type="main">Facet-aware evaluation for extractive summarization</title>
+		<author>
+			<persName><forename type="first">Yuning</forename><surname>Mao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Liyuan</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qi</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiang</forename><surname>Ren</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiawei</forename><surname>Han</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/2020.acl-main.445</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020-07-05" />
+			<biblScope unit="volume">2020</biblScope>
+			<biblScope unit="page" from="4941" to="4957" />
+		</imprint>
+	</monogr>
+	<note>Association for Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Text summarization in the biomedical domain: A systematic review of recent research</title>
+		<author>
+			<persName><forename type="first">Rashmi</forename><surname>Mishra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jiantao</forename><surname>Bian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcelo</forename><surname>Fiszman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Charlene</forename><forename type="middle">R</forename><surname>Weir</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Siddhartha</forename><surname>Jonnalagadda</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.jbi.2014.06.009</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Special Section: Methods in Clinical Research Informatics</title>
+				<imprint>
+			<date type="published" when="2014" />
+			<biblScope unit="volume">52</biblScope>
+			<biblScope unit="page" from="457" to="467" />
+		</imprint>
+	</monogr>
+	<note>Javed Mostafa, and Guilherme Del Fiol</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">HOLMS: alternative summary evaluation with large language models</title>
+		<author>
+			<persName><forename type="first">Yassine</forename><surname>Mrabet</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+		<idno>De- cember 8-13</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 28th International Conference on Computational Linguistics</title>
+				<meeting>the 28th International Conference on Computational Linguistics<address><addrLine>Barcelona, Spain (Online</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="volume">2020</biblScope>
+			<biblScope unit="page" from="5679" to="5688" />
+		</imprint>
+	</monogr>
+	<note>International Committee on Computational Linguistics</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">Ucsd-adobe at mediqa 2021: Transfer learning and answer sentence selection for medical summarization</title>
+		<author>
+			<persName><forename type="first">Khalil</forename><surname>Mrini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Franck</forename><surname>Dernoncourt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seunghyun</forename><surname>Yoon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Trung</forename><surname>Bui</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Walter</forename><surname>Chang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+	<note>Emilias Farcas, and Ndapa Nakashole</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Summarunner: A recurrent neural network based sequence model for extractive summarization of documents</title>
+		<author>
+			<persName><forename type="first">Ramesh</forename><surname>Nallapati</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Feifei</forename><surname>Zhai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Bowen</forename><surname>Zhou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Thirty-First AAAI Conference on Artificial Intelligence</title>
+				<meeting>the Thirty-First AAAI Conference on Artificial Intelligence<address><addrLine>San Francisco, CA, USA.</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2017-02-04" />
+			<biblScope unit="page" from="3075" to="3081" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<analytic>
+		<title level="a" type="main">An assessment of the accuracy of automatic evaluation in summarization</title>
+		<author>
+			<persName><forename type="first">Karolina</forename><surname>Owczarzak</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">John</forename><forename type="middle">M</forename><surname>Conroy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hoa</forename><forename type="middle">Trang</forename><surname>Dang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ani</forename><surname>Nenkova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of Workshop on Evaluation Metrics and System Comparison for Automatic Summarization@NACCL-HLT 2012</title>
+				<meeting>Workshop on Evaluation Metrics and System Comparison for Automatic Summarization@NACCL-HLT 2012<address><addrLine>Montrèal, Canada</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2012-06" />
+			<biblScope unit="page" from="1" to="9" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Exploring the limits of transfer learning with a unified text-to-text transformer</title>
+		<author>
+			<persName><forename type="first">Colin</forename><surname>Raffel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Adam</forename><surname>Roberts</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Katherine</forename><surname>Lee</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sharan</forename><surname>Narang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><surname>Matena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yanqi</forename><surname>Zhou</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter J</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">21</biblScope>
+			<biblScope unit="page" from="1" to="67" />
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">A neural attention model for abstractive sentence summarization</title>
+		<author>
+			<persName><forename type="first">Alexander</forename><forename type="middle">M</forename><surname>Rush</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sumit</forename><surname>Chopra</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jason</forename><surname>Weston</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2015 Conference on Empirical Methods in Natural Language Processing<address><addrLine>Lisbon, Portugal</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015-09-17" />
+			<biblScope unit="page" from="379" to="389" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Question-driven summarization of answers to consumer health questions. Scientific Data</title>
+		<author>
+			<persName><forename type="first">Max</forename><forename type="middle">E</forename><surname>Savery</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Asma</forename><surname>Ben Abachaand Soumya Gayen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dina</forename><surname>Demner-Fushman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="page">7</biblScope>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Get to the point: Summarization with pointergenerator networks</title>
+		<author>
+			<persName><forename type="first">Abigail</forename><surname>See</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Peter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Manning</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/P17-1099</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 55th Annual Meeting of the Association for Computational Linguistics<address><addrLine>Vancouver, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>Long Papers</publisher>
+			<date type="published" when="2017-07-30" />
+			<biblScope unit="volume">1</biblScope>
+			<biblScope unit="page" from="1073" to="1083" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<monogr>
+		<author>
+			<persName><forename type="first">Thibault</forename><surname>Sellam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dipanjan</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ankur P</forename><surname>Parikh</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2004.04696</idno>
+		<title level="m">Bleurt: Learning robust metrics for text generation</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Combining automatic labelers and expert annotations for accurate radiology report labeling using BERT</title>
+		<author>
+			<persName><forename type="first">Akshay</forename><surname>Smit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Saahil</forename><surname>Jain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pranav</forename><surname>Rajpurkar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anuj</forename><surname>Pareek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><surname>Ng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Lungren</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing</meeting>
+		<imprint>
+			<publisher>EMNLP</publisher>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<analytic>
+		<title level="a" type="main">Wbi at mediqa 2021: Summarizing consumer health questions with generative transformers</title>
+		<author>
+			<persName><forename type="first">Mario</forename><surname>Sänger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Leon</forename><surname>Weber</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ulf</forename><surname>Leser</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing</meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<monogr>
+		<author>
+			<persName><forename type="first">Ashish</forename><surname>Vaswani</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Noam</forename><surname>Shazeer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Niki</forename><surname>Parmar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jakob</forename><surname>Uszkoreit</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Llion</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aidan</forename><forename type="middle">N</forename><surname>Gomez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lukasz</forename><surname>Kaiser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Illia</forename><surname>Polosukhin</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1706.03762</idno>
+		<title level="m">Attention is all you need</title>
+				<imprint>
+			<date type="published" when="2017" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<analytic>
+		<title level="a" type="main">Extractive summarization of long documents by combining global and local context</title>
+		<author>
+			<persName><forename type="first">Wen</forename><surname>Xiao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Giuseppe</forename><surname>Carenini</surname></persName>
+		</author>
+		<idno type="DOI">10.18653/v1/D19-1298</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing</title>
+				<meeting>the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing<address><addrLine>Hong Kong, China</addrLine></address></meeting>
+		<imprint>
+			<publisher>Association for Computational Linguistics</publisher>
+			<date type="published" when="2019-11-03" />
+			<biblScope unit="page" from="3009" to="3019" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Chichealth @ mediqa 2021: Exploring the limits of pre-trained seq2seq models for medical summarization</title>
+		<author>
+			<persName><forename type="first">Liwen</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yan</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lei</forename><surname>Hong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Cai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Szui</forename><surname>Sung</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<analytic>
+		<title level="a" type="main">Coarse-tofine query focused multi-document summarization</title>
+		<author>
+			<persName><forename type="first">Yumo</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mirella</forename><surname>Lapata</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</title>
+				<meeting>the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+			<biblScope unit="page" from="3632" to="3645" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<analytic>
+		<title level="a" type="main">Nlm at mediqa 2021: Transfer learningbased approaches for consumer question and multianswer summarization</title>
+		<author>
+			<persName><forename type="first">Shweta</forename><surname>Yadav</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mourad</forename><surname>Sarrouti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Deepak</forename><surname>Gupta</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2021" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">PEGASUS: Pre-training with extracted gap-sentences for abstractive summarization</title>
+		<author>
+			<persName><forename type="first">Jingqing</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yao</forename><surname>Zhao</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mohammad</forename><surname>Saleh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Liu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Conference on Machine Learning</title>
+				<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<monogr>
+		<author>
+			<persName><forename type="first">Tianyi</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Varsha</forename><surname>Kishore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Felix</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Q</forename><surname>Kilian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yoav</forename><surname>Weinberger</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Artzi</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1904.09675</idno>
+		<title level="m">Bertscore: Evaluating text generation with bert</title>
+				<imprint>
+			<date type="published" when="2019" />
+		</imprint>
+	</monogr>
+	<note type="report_type">arXiv preprint</note>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">Learning to summarize radiology findings</title>
+		<author>
+			<persName><forename type="first">Yuhao</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daisy</forename><forename type="middle">Yi</forename><surname>Ding</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Tianpei</forename><surname>Qian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Curtis</forename><forename type="middle">P</forename><surname>Langlotz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">EMNLP 2018 Workshop on Health Text Mining and Information Analysis</title>
+				<imprint>
+			<date type="published" when="2018" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Optimizing the factual correctness of a summary: A study of summarizing radiology reports</title>
+		<author>
+			<persName><forename type="first">Yuhao</forename><surname>Zhang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Derek</forename><surname>Merck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Emily</forename><forename type="middle">Bao</forename><surname>Tsai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">D</forename><surname>Manning</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Curtis</forename><surname>Langlotz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Extractive summarization as text matching</title>
+		<author>
+			<persName><forename type="first">Ming</forename><surname>Zhong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Pengfei</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yiran</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danqing</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xipeng</forename><surname>Qiu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xuanjing</forename><surname>Huang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</title>
+				<meeting>the 58th Annual Meeting of the Association for Computational Linguistics</meeting>
+		<imprint>
+			<date type="published" when="2020" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">2021. paht nlp at mediqa 2021: Multi-grained query focused multi-answer summarization</title>
+		<author>
+			<persName><forename type="first">Wei</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yilong</forename><surname>He</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ling</forename><surname>Chai</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yunxiao</forename><surname>Fan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yuan</forename><surname>Ni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guotong</forename><surname>Xie</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaoling</forename><surname>Wang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</title>
+				<meeting>the 20th SIGBioMed Workshop on Biomedical Language Processing, NAACL-BioNLP 2021. Association for Computational Linguistics</meeting>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>
