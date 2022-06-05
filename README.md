@@ -1,6 +1,8 @@
 # martin-masters-thesis-2022
+This repository contains the corpus NLPSharedTasks we created and the experimental code we ran on NLPSharedTasks for the master's thesis _Annotating and Automatically Extracting Task Descriptions from Shared Task Overview Papers in Natural Language Processing Domains_. The corpus is provided in the directory `shared-task-corpus` and the experimental code is found in the directory `shared-task-classification-project`. For details on both projects, see `Martin-Thesis-2022.pdf`.
 
 ## NLPSharedTasks Corpus
+NLPSharedTasks contains 254 Shared Task Overview papers in natural language processing domains published in the Association for Computational Linguistics Anthology between 2000 and 2021. For each paper, a single consecutive span of text is annotated as a Task Description Phrase (unless no qualifying spans are found in the paper). 
 
 ### Corpus Usage
 Three forms of the corpus are provided:
