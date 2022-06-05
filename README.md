@@ -4,6 +4,7 @@
 
 ### Data Statement
 Following is the Data Statement for our corpus NLPSharedTasks (version 1).
+#### Curation Rationale
 
 ## Thesis Experiments
 
