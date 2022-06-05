@@ -27,7 +27,7 @@ The papers included in NLPSharedTasks were written between 2000 and 2021 in rese
 The genre of the texts included in NLPSharedTasks can be described as written scientific communication in computational linguistics domains and other fields. As such, scientific vocabulary is used throughout that is specific to these domains and the documents are structured in a formal way. Texts are structured with sections under headers including _Title_, _Abstract_, _Introduction_, _Related Work_, _Task Description_, _Results_, and _Conclusion_, among others.
 
 #### G. Corpus Access
-NLPSharedTasks is licensed under a [https://creativecommons.org/licenses/by/4.0/](Creative Commons Attribution 4.0 International License).
+NLPSharedTasks is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
 
 ## Thesis Experiments
 
