@@ -1,5 +1,10 @@
 # martin-masters-thesis-2022
 
+## NLPSharedTasks Corpus
+
+### Data Statement
+Following is the Data Statement for our corpus NLPSharedTasks (version 1).
+
 ## Thesis Experiments
 
 This repository contains the datasets and experiments created for Anna Martin's master's thesis.
