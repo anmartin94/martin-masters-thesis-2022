@@ -65,7 +65,7 @@ unzip crawl-300d-2M-subword.zip
 ### Run thesis-ml-experiments.py 
 This file takes two command line arguments. The first is the file path to the training file and the second is a number that dictates how many times each model and encoding combination is trained. 
 ```bash
-python3 thesis-ml-experiments.py 10
+python3 thesis-ml-experiments.py datasets/reduced-train.csv 10
 ```
 
 ### Run bert-experiments.py
