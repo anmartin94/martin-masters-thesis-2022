@@ -14,7 +14,7 @@ This program takes 7 command line arguments:
 5.) The number of epochs
 6.) The batch size
 7.) The learning rate
-EXAMPLE: python3 test.py reduced_train.csv 0 1 'allenai/scibert_scivocab_uncased' 4 32 5e-5
+EXAMPLE: python3 test.py datasets/reduced_train.csv 0 1 'allenai/scibert_scivocab_uncased' 4 32 5e-5
 """
 import datetime
 from keras.preprocessing.sequence import pad_sequences
