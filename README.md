@@ -90,6 +90,20 @@ This file takes five command line arguments:
 python3 bert-experiments.py datasets/reduced-train.csv 10 1 uncased scibert
 ```
 
+### Run test.py
+This file takes seven command line arguments:
+* The file containing the training data
+* Whether to use contextual data (1) or the simple dataset (0)
+* Whether to use the cased (1) or uncased (0) version of BERT
+* The specific BERT model
+* The number of epochs
+* The batch size
+* The learning rate
+It trains a BERT model using the provided hyperparameters and tests the trained model on three versions of the test set. The results for each version of the test set can be seen in the output files full.txt, auto_reduced.txt, and reduced.txt, with one line for each test sample. The scores are printed to the terminal.
+```bash
+python3 test.py reduced_train.csv 0 1 'allenai/scibert_scivocab_uncased' 4 32 5e-5
+```
+
 ### About the Data
 `shared-task-classification-project/` contains a subdirectory called `datasets/`. This directory contains preprocessed data for training and testing models on the NLPSharedTasks corpus. The provided training file is named `reduced_train.csv` because it is a smaller version from the original corpus. The training dataset was reduced by eliminating all paper sections that do not contain a task description. The dataset was reduced in this way to improve the balance between positive and negative samples. 
 
@@ -108,4 +122,9 @@ The .csv files contain 10 columns.
 * Column 9: the label `labels`
 
 The data found in Columns 3-7 are used as training features in our experiments that use sentence context. This data is ignored in our experiments that learn only from the sentence data.
+
+Data can be extracted into train and test csv files by running make_dataset.py. This program requires two arguments: the filepath to the folder containing the annotated text files, and the filepath to the folder where the output .csv files will be stored. For example:
+```bash
+python3 make-dataset.py shared-task-corpus/annotated-txt-files/ shared-task-classification-project/datasets/
+```
 
