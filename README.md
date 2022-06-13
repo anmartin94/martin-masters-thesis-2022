@@ -49,9 +49,20 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the req
 pip install fasttext
 pip install numpy
 pip install pandas
+pip install seaborn
 pip install sklearn
+pip install stanza
 pip install tensorflow
 pip install xgboost
+```
+It is necessary to install PyTorch. Note that the version of PyTorch will depend on whether a GPU is available and the version of CUDA. 
+For a CPU run:
+```bash
+pip3 install torch==1.10.0+cpu torchvision==0.11.1+cpu torchaudio==0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
+```
+For CUDA version 11.3 run:
+```bash
+pip3 install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio==0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 ```
 The script install.sh provided in the repository can be run to download the files required to use fasttext embeddings.
 ```bash
