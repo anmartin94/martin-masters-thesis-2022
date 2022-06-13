@@ -33,8 +33,6 @@ def extract_data_into_dict(annotated_data_path):
     sentence_id = 0
     for ann_file in ann_files:
         print("Progress:", ann_files.index(ann_file), "/", len(ann_files)) #script might take between 10 and 12 minutes to run
-        if ann_files.index(ann_file) == 30:
-            break
         sentences = []
         paper_id = ann_file[10:-4]
         paper_ids.append(paper_id)
