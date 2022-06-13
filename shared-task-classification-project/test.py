@@ -228,9 +228,9 @@ def main():
     epochs = int(sys.argv[5])
     batch_size = int(sys.argv[6])
     lr = float(sys.argv[7])
-    model = run(train_filepath, "reduced_test.csv", context, cased, bert, epochs, batch_size, lr)
-    run(train_filepath, "auto_reduced_test.csv", context, cased, bert, epochs, batch_size, lr, from_saved=True, model=model)
-    run(train_filepath, "full_test.csv", context, cased, bert, epochs, batch_size, lr, from_saved=True, model=model)
+    model = run(train_filepath, "datasets/reduced_test.csv", context, cased, bert, epochs, batch_size, lr)
+    run(train_filepath, "datasets/auto_reduced_test.csv", context, cased, bert, epochs, batch_size, lr, from_saved=True, model=model)
+    run(train_filepath, "datasets/full_test.csv", context, cased, bert, epochs, batch_size, lr, from_saved=True, model=model)
     
 if __name__=="__main__":
   main()
